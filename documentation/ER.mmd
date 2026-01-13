@@ -1,0 +1,441 @@
+---
+config:
+    layout: elk
+    theme: default
+    width: 15000
+---
+%% PK = Primary Key
+%% FK = Foreign Key
+%% UUID = Universally Unique Identifier
+%% DATE = Datum/tijdstip met tijdzone
+erDiagram
+    direction LR
+
+    classDef audit fill:lightgrey,stroke:black,stroke-width:1px,color:black;
+    classDef milieugegevens fill:orange,stroke:black,stroke-width:1px,color:black;
+    classDef bedrijfsgegevens fill:violet,stroke:black,stroke-width:1px,color:black;
+    classDef observatiegegevens fill:lightblue,stroke:black,stroke-width:1px,color:black;
+    classDef algemenegegevens fill:lightgreen,stroke:black,stroke-width:1px,color:black;
+
+    %% ------------------------
+    %% Algemene gegevens
+    %% ------------------------
+    NOSE_CODE["algemeen.nose_code"] {
+        string code PK "NOSE-code"
+        string beschrijving
+    }
+    class NOSE_CODE algemenegegevens
+    TYPE_STATUS["algemeen.type_status"] {
+        string code PK "Statuscode"
+        string beschrijving
+    }
+    class TYPE_STATUS algemenegegevens
+    NACEBEL["algemeen.nacebel"] {
+        string code PK "NACEBEL-code"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string parent_code FK "Referentie naar parent NACEBEL-code"
+        string beschrijving
+        int niveau
+        char sector
+        char subsector
+        int afdeling
+        int groep
+        int klasse
+        int subklasse
+    }
+    class NACEBEL algemenegegevens
+    %% Functie rdfs:subClassOf vcard:Role
+    FUNCTIE["algemeen.contact_functie"] {
+        string code PK  "Functiecode"
+        string beschrijving
+    }
+    class FUNCTIE algemenegegevens
+    %% Grooteenheid rdfs:subClassOf qudt:Unit
+    GROOTEENHEID["algemeen.eenheid_grooteenheid"] {
+        string code PK "Grooteenheidcode (m, g, l, mol, ...)"
+        string beschrijving
+        string dimensie "Lengte, Massa, Volume, ..."
+    }
+    class GROOTEENHEID algemenegegevens
+    %% Eenheid rdfs:subClassOf qudt:Unit
+    EENHEID["algemeen.eenheid"] {
+        string code PK "Eenheidcode (cm, kg, ml, ...)"
+        string grooteenheid_code FK "Referentie naar grooteenheid"
+        string beschrijving
+    }
+    class EENHEID algemenegegevens
+    EENHEID many to one GROOTEENHEID : "heeftGrooteenheid"
+    RECHTSVORM["algemeen.bedrijf_rechtsvorm"] {
+        string code PK "Rechtsvormcode"
+        string afkorting
+        string beschrijving
+    }
+    class RECHTSVORM algemenegegevens
+    NIS_REGIO["algemeen.nis_regio"] {
+        int code PK "NIS-regiocode"
+        string nutscode "NUTS-code"
+        string beschrijving
+    }
+    class NIS_REGIO algemenegegevens
+    NIS_PROVINCIE["algemeen.nis_provincie"] {
+        int code PK "NIS-provinciecode"
+        int regio_code FK "Referentie naar NIS-regio"
+        string nutscode "NUTS-code"
+        string beschrijving
+    }
+    class NIS_PROVINCIE algemenegegevens
+    NIS_PROVINCIE many to one NIS_REGIO : "heeftNisRegio"
+    NIS_GEMEENTE["algemeen.nis_gemeente"] {
+        int code PK "NIS-gemeentecode"
+        int provincie_code FK "Referentie naar NIS-provincie"
+        string naam
+        string naam_capitalized
+    }
+    class NIS_GEMEENTE algemenegegevens
+    NIS_GEMEENTE many to one NIS_PROVINCIE : "heeftNisProvincie"
+
+    RUBRIEK["algemeen.rubriek"] {
+        enum type PK "Rubriektype (Vlarem, RIE, ...)"
+        string nummer PK "Rubrieknummer"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string beschrijving
+        string parent_nummer FK "Optionele referentie naar parent rubriek"
+    }
+    class RUBRIEK algemenegegevens
+    RUBRIEK many to one RUBRIEK : parentRubriek
+
+    %% ------------------------
+    %% Bedrijfsgegevens
+    %% ------------------------
+    %% Adres rdfs:subClassOf lloc:Address
+    ADRES["bedrijf.adres"] {
+        UUID uuid PK
+        string naam
+        string provincie
+        string gemeente
+        string gemeente_code FK "Referentie naar NIS-gemeente"
+        string postcode
+        string straatnaam
+        int huisnummer
+        int begin_huisnummer "Begin huisnummer (voor reeksen)"
+        int eind_huisnummer "Eind huisnummer (voor reeksen)"
+        string busnummer
+        string land
+        string aanvulling
+        int nis "NIS-code"
+    }
+    class ADRES bedrijfsgegevens
+    ADRES many to one NIS_GEMEENTE : "heeftNisGemeente"
+    CONTACTPERSOON["bedrijf.contactpersoon"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        UUID adres_uuid FK "Referentie naar adres"
+        string voornaam
+        string achternaam
+        string functie FK "Referentie naar functie"
+        string email
+        string faxnummer
+        string telefoonnummer
+    }
+    class CONTACTPERSOON bedrijfsgegevens
+    CONTACTPERSOON one to many FUNCTIE : heeftFunctie
+    CONTACTPERSOON many to one ADRES : "heeftAdres"
+    %% Bedrijf rdfs:subClassOf prov:Agent
+    BEDRIJF["bedrijf.bedrijf"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string naam
+        string kbo_nummer "KBO-nummer"
+        string btw_nummer "BTW-nummer"
+        string rsz_nummer "RSZ-nummer"
+        UUID adres_uuid FK "Referentie naar adres"
+        string rechtsvorm_code FK "Referentie naar rechtsvorm"
+    }
+    class BEDRIJF bedrijfsgegevens
+    BEDRIJF many to one ADRES : "heeftAdres"
+    BEDRIJF one to many CONTACTPERSOON : heeftContactpersoon
+    BEDRIJF many to one RECHTSVORM : "heeftRechtsvorm"
+    %% Vestiging rdfs:subClassOf prov:Agent
+    VESTIGING["bedrijf.vestiging"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        UUID bedrijf_uuid FK "Referentie naar bedrijf"
+        UUID adres_uuid FK "Referentie naar adres"
+        string naam
+        string beschrijving
+        string vestigingsnummer "Uniek nummer van de vestiging"
+        int capaciteit "Capaciteit in aantal werknemers"
+    }
+    class VESTIGING bedrijfsgegevens
+    VESTIGING many to one ADRES : "heeftAdres"
+    BEDRIJF one to many VESTIGING : heeftVestiging
+    BEDRIJF_SECTOR["bedrijf.bedrijf_sector"] {
+        UUID bedrijf_uuid PK, FK
+        string nacebel_code PK, FK "Referentie naar NACEBEL-code"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+    }
+    class BEDRIJF_SECTOR bedrijfsgegevens
+    BEDRIJF_SECTOR many to one NACEBEL : "heeftNacebelCode"
+    BEDRIJF many to one BEDRIJF_SECTOR : behoortTotSector
+
+    %% ------------------------
+    %% Milieugegevens
+    %% ------------------------
+    %% Metadata
+    EMISSIEPUNT_METADATA["milieugegevens.emissiepunt_metadata"] {
+        UUID uuid PK, FK
+        string key PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string value
+    }
+    class EMISSIEPUNT_METADATA milieugegevens
+    EMISSIEPUNT one to many EMISSIEPUNT_METADATA : heeftMetadata
+    ACTIVITEIT_METADATA["milieugegevens.activiteit_metadata"] {
+        UUID uuid PK, FK
+        string key PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string value
+    }
+    class ACTIVITEIT_METADATA milieugegevens
+    ACTIVITEIT one to many ACTIVITEIT_METADATA : heeftMetadata
+    INSTALLATIE_METADATA["milieugegevens.installatie_metadata"] {
+        UUID uuid PK, FK
+        string key PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string value
+    }
+    class INSTALLATIE_METADATA milieugegevens
+    INSTALLATIE one to many INSTALLATIE_METADATA : heeftMetadata
+
+    %% Geometrie rdfs:subClassOf geo:Geometry
+    GEOMETRIE["milieu.geometrie"] {
+        UUID uuid PK
+        int dimensie "Dimensie van de geometrie (2D, 3D, ...)"
+        enum type "Type geometrie (Point, LineString, Polygon, ...)"
+        float lambertX  "Centrum X"
+        float lambertY "Centrum Y"
+        string wkt "Well-Known Text representatie"
+    }
+    class GEOMETRIE milieugegevens
+
+    BEDRIJF one to many VESTIGING : heeftVestiging
+    VESTIGING one to many ACTIVITEIT : activiteiten
+    %% Activiteit rdfs:subClassOf prov:Activity
+    ACTIVITEIT["milieu.activiteit"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        UUID parent_uuid FK "Optionele referentie naar parent activiteit"
+        UUID geometrie_uuid FK "Referentie naar geometrie"
+        UUID vestiging_uuid FK "Referentie naar vestiging"
+        string naam
+        string beschrijving
+        string code FK "NOSE code"
+        enum status "actief, inactief, ..."
+        enum type "Type activiteit"
+    }
+    class ACTIVITEIT milieugegevens
+    ACTIVITEIT many to one GEOMETRIE : "heeftGeometrie"
+    ACTIVITEIT many to one ACTIVITEIT : onderdeelVan
+    ACTIVITEIT many to one NOSE_CODE : "heeftNoseCode"
+    ACTIVITEIT_IDENTIFICATIE["milieu.activiteit_identificatie"] {
+        UUID activiteit_uuid PK, FK
+        enum type PK "Identificatietype (VMM, ...)"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        string externe_identificatie "Identificatiewaarde"
+    }
+    class ACTIVITEIT_IDENTIFICATIE milieugegevens
+    ACTIVITEIT one to many ACTIVITEIT_IDENTIFICATIE : heeftExterneIdentificatie
+
+    %% Installatie rdfs:subClassOf  ssn:System, geo:SpatialObjectCollection
+    INSTALLATIE["milieu.installatie"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        enum type "GPBV, IEPR, ..."
+        string naam
+        string beschrijving
+        enum status "actief, inactief, ..."
+        UUID vestiging_uuid FK "Referentie naar vestiging"
+    }
+    class INSTALLATIE milieugegevens
+    INSTALLATIE many to one VESTIGING : "behoortTotVestiging"
+    INSTALLATIE_RUBRIEKEN["milieu.installatie_rubrieken"] {
+        UUID installatie_uuid PK, FK
+        enum rubriekType PK, FK "Vlarem, RIE, ..."
+        DATE geldigVanaf PK
+        DATE geldigTot
+        string rubriekNummer FK "Referentie naar rubriek"
+    }
+    class INSTALLATIE_RUBRIEKEN milieugegevens
+    INSTALLATIE one to many INSTALLATIE_RUBRIEKEN : heeftRubriek
+    INSTALLATIE_RUBRIEKEN many to one RUBRIEK : "heeftRubriekDetails"
+    INSTALLATIE_IDENTIFICATIE["milieu.installatie_identificatie"] {
+        UUID installatie_uuid PK, FK
+        enum type PK "Identificatietype (IIOA, E-PRTR, ...)"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        string externe_identificatie "Identificatiewaarde"
+    }
+    class INSTALLATIE_IDENTIFICATIE milieugegevens
+    INSTALLATIE one to many INSTALLATIE_IDENTIFICATIE : heeftExterneIdentificatie
+    
+    %% Emissiepunt rdfs:subClassOf geo:SpatialObject
+    EMISSIEPUNT["milieu.emissiepunt"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        enum type "Type emissiepunt"
+        UUID geometrie_uuid FK "Referentie naar geometrie"
+        UUID vestiging_uuid FK "Referentie naar vestiging"
+    }
+    class EMISSIEPUNT milieugegevens
+    EMISSIEPUNT many to one GEOMETRIE : "heeftGeometrie"
+    EMISSIEPUNT many to one VESTIGING : "behoortTotVestiging"
+    EMISSIEPUNT_IDENTIFICATIE["milieu.emissiepunt_identificatie"] {
+        UUID emissiepunt_uuid PK, FK
+        enum type PK "Identificatietype (VMM, ...)"
+        DATE geldigVanaf PK
+        DATE geldigTot
+        string externe_identificatie "Identificatiewaarde"
+    }
+    class EMISSIEPUNT_IDENTIFICATIE milieugegevens
+    EMISSIEPUNT one to many EMISSIEPUNT_IDENTIFICATIE : heeftExterneIdentificatie
+    INSTALLATIE_EMISSIEPUNT["milieu.installatie_emissiepunt"] {
+        UUID installatie_uuid PK, FK
+        UUID emissiepunt_uuid PK, FK
+        DATE geldigVanaf PK
+        DATE geldigTot
+    }
+    class INSTALLATIE_EMISSIEPUNT milieugegevens
+    INSTALLATIE }|..|{ INSTALLATIE_EMISSIEPUNT: heeftEmissiepunt
+    EMISSIEPUNT }|..|{ INSTALLATIE_EMISSIEPUNT: hoortBijInstallatie
+    %% Meetpunt rdfs:subClassOf geo:SpatialObject
+    MEETPUNT["milieu.meetpunt"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        UUID geometrie_uuid FK "Referentie naar geometrie"
+        UUID emissiepunt_uuid FK "Referentie naar emissiepunt"
+        enum type "Type meetpunt"
+    }
+    class MEETPUNT milieugegevens
+    MEETPUNT many to one GEOMETRIE : "heeftGeometrie"
+    MEETPUNT many to one EMISSIEPUNT : proxyVoor
+    %% Apparaat rdfs:subClassOf geo:SpatialObject
+    APPARAAT["milieu.apparaat"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        enum type "Lucht, Water, ..."
+        string naam
+        string beschrijving
+        UUID geometrie_uuid FK "Referentie naar geometrie"
+    }
+    class APPARAAT milieugegevens
+    APPARAAT many to one GEOMETRIE : "heeftGeometrie"
+    APPARAAT_METADATA["milieu.apparaat_metadata"] {
+        UUID uuid PK, FK
+        string key PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        int versie PK "Versienummer"
+        string value
+    }
+    class APPARAAT_METADATA milieugegevens
+    APPARAAT one to many APPARAAT_METADATA : heeftMetadata
+    INSTALLATIE_APPARAAT["milieu.installatie_apparaat"] {
+        UUID installatie_uuid PK, FK
+        UUID apparaat_uuid PK, FK
+        DATE geldigVanaf PK
+        DATE geldigTot
+    }
+    class INSTALLATIE_APPARAAT milieugegevens
+    INSTALLATIE }|..|{ INSTALLATIE_APPARAAT: heeftApparaat
+    APPARAAT }|..|{ INSTALLATIE_APPARAAT: hoortBijInstallatie
+
+    PROCEDURE_TYPE["milieu.procedure_type"] {
+        string code PK "Procedure type code"
+        string beschrijving
+    }
+    class PROCEDURE_TYPE milieugegevens
+    %% Procedure
+    PROCEDURE_STAP many to one PROCEDURE_STAP: voorgaandeStap
+    %% ProcedureStap rdfs:subClassOf p-plan:Step
+    PROCEDURE_STAP["milieu.procedure_stap"] {
+        UUID uuid PK
+        DATE geldigVanaf PK
+        DATE geldigTot
+        UUID voorafgaandeStap FK "Optionele referentie naar vorige stap"
+        enum type FK "Stap of stroom type"
+        string naam
+        string beschrijving
+    }
+    class PROCEDURE_STAP milieugegevens
+    PROCEDURE_STAP many to one PROCEDURE_TYPE : "heeftProcedureType"
+    INSTALLATIE_PROCEDURE_STAP["milieu.installatie_procedure_stap"] {
+        UUID installatie_uuid PK, FK
+        UUID procedure_stap_uuid PK, FK
+        DATE geldigVanaf PK
+        DATE geldigTot
+    }
+    class INSTALLATIE_PROCEDURE_STAP milieugegevens
+    INSTALLATIE }|..|{ INSTALLATIE_PROCEDURE_STAP: heeftProcedureStap
+    PROCEDURE_STAP }|..|{ INSTALLATIE_PROCEDURE_STAP: hoortBijInstallatie
+
+    %% ------------------------
+    %% Observatiegegevens
+    %% ------------------------
+    %% Observatie(s)
+    OBSERVATIE many to many MEETPUNT: meetpunt
+    OBSERVATIE["aangifte.observatie"] {
+        UUID uuid PK "Niet in de scope van deze analyze"
+        DATE tijdstip PK
+        UUID meetpunt_uuid FK "Referentie naar meetpunt"
+    }
+    class OBSERVATIE observatiegegevens
+
+    %% ------------------------
+    %% Algemene auditvelden
+    %% ------------------------
+    %% Audit tabellen
+    BEDRIJF_AUDIT["bedrijf.audit"] {
+        UUID uuid PK
+        int versie PK
+        DATE actiefVanaf
+        DATE actiefTot
+        DATE gewijzigdOp
+        string gewijzigdDoor
+        string reden
+    }
+    class BEDRIJF_AUDIT audit
+    MILIEU_AUDIT["milieugegevens.audit"] {
+        UUID uuid PK
+        int versie PK
+        DATE actiefVanaf
+        DATE actiefTot
+        DATE gewijzigdOp
+        string gewijzigdDoor
+        string reden
+    }
+    class MILIEU_AUDIT audit
