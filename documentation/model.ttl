@@ -1,0 +1,28 @@
+PREFIX cs:   <https://data.vlaanderen.be/ns/chemische_stof#>
+PREFIX csc:  <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
+PREFIX dbo:  <http://dbpedia.org/ontology/>
+PREFIX dbp:  <http://dbpedia.org/property/>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX vlcs: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
+
+<http://www.w3.org/ns/sosa/Observation>
+        rdf:type  "rdfs:Resource";
+        <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                "rdfs:Resource";
+        <http://www.w3.org/ns/sosa/hasResult>
+                <http://www.w3.org/ns/sosa/Result>;
+        <http://www.w3.org/ns/sosa/hasSimpleResult>
+                "http://www.w3.org/2001/XMLSchema#integer" , "http://www.w3.org/2001/XMLSchema#double";
+        <http://www.w3.org/ns/sosa/observedProperty>
+                "rdfs:Resource";
+        <http://www.w3.org/ns/sosa/resultTime>
+                "http://www.w3.org/2001/XMLSchema#dateTime" .
+
+<http://www.w3.org/ns/sosa/Result>
+        rdf:type   "rdfs:Resource";
+        rdf:value  "rdfs:Resource" , "http://www.w3.org/2001/XMLSchema#decimal";
+        <http://purl.org/linked-data/sdmx/2009/attribute#unitMeasure>
+                "rdfs:Resource" .
