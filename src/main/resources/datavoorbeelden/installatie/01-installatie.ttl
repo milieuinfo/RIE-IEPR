@@ -1,0 +1,31 @@
+## ---------------------------------------
+## Datavoorbeeld: Installatie met emissiepunten en andere kenmerken
+## Doelstelling: Illustreren van een installatie met emissiepunten en andere relevante kenmerken
+## ---------------------------------------
+
+# URI's voor datavoorbeelden zijn fictief
+@prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix installatie: <https://data.rieiepr.omgeving.vlaanderen.be/id/installatie/#> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+
+## ---------------------------------------
+## Context voor concepten in datavoorbeeld
+
+# TODO: na te kijken: kan geen skos:Collection zijn, installatie op zich is een skos:Concept en disjoint met skos:Collection
+rieiepr:Installatie a ogc:SpatialObjectCollection .
+## ---------------------------------------
+
+# Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.
+# Deze installatie kan al dan niet vergund zijn.
+installatie:GPBV_12345 a rieiepr:Installatie ;
+    rdfs:label "Fictieve Installatie BV"@nl ;
+    rdfs:member <...>, <...> .
+
+installatie:IEPR_67890 a rieiepr:Installatie ;
+    rdfs:label "Fictieve IEPR Installatie"@nl ;
+    rdfs:member <...>, <...> .
+    
