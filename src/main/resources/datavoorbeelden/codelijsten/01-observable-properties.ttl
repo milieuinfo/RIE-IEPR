@@ -1,0 +1,24 @@
+## ---------------------------------------
+## Datavoorbeeld: 
+## ---------------------------------------
+
+## WORK IN PROGRESS
+
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix quantalitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
+## ---------------------------------------
+
+:ZinkConcentratie a sosa:ObservableProperty ;
+    rdfs:label "Zink concentratie"@nl ;
+    qudt:quantityKind quantalitykind:MassConcentration ;
+    # TODO: Niet juist; wat als meerdere opties mogelijk in codelijst
+    # Eerder weglaten en in datamodel toelaten om meerdere units te koppelen - in principe is massconcentration genoeg?
+    qudt:unit unit:MicrogramPerCubicMeter .
+
+:Zuurtegraad a sosa:ObservableProperty ;
+    rdfs:label "Zuurtegraad"@nl ;
+    qudt:quantityKind quantalitykind:Acidity ;
+    qudt:unit unit:PH .

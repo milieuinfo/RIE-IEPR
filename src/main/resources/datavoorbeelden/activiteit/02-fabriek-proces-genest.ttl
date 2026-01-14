@@ -8,6 +8,8 @@
 ## - https://vocab.linkeddata.es/p-plan/index.html#MultiStep
 ## ---------------------------------------
 
+## WORK IN PROGRESS
+
 # URI's voor datavoorbeelden zijn fictief
 @prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix activiteit: <https://data.rieiepr.omgeving.vlaanderen.be/id/activiteit/#> .
@@ -21,6 +23,28 @@
 @prefix pplan: <http://purl.org/net/p-plan#> .
 
 rieiepr:Activiteit a pplan:Plan .
-riepr:ProcedureStap a pplan:Step .
 ## ---------------------------------------
 
+# Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie
+# bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven.
+activiteit:ACTIVITEIT_001 a rieiepr:Activiteit ;
+    rdfs:label "Koekjes maken"@nl .
+
+
+# De procedurestap is een individuele stap binnen een enkele activiteit.
+procedurestap:STAP_001 a pplan:MultiStep ;
+    rdfs:label "Koekjesdeeg maken"@nl ;
+    pplan:isStepOfPlan activiteit:ACTIVITEIT_001 .
+procedurestap:STAP_001_1 a pplan:Step ;
+    rdfs:label "Ingrediënten mengen"@nl ;
+    pplan:isStepOfPlan procedurestap:STAP_001 .
+procedurestap:STAP_001_2 a pplan:Step ;
+    rdfs:label "Deeg laten rusten"@nl ;
+    pplan:isStepOfPlan procedurestap:STAP_001 ;
+    pplan:isPrecededBy procedurestap:STAP_001_1 .
+
+procedurestap:STAP_002 a pplan:Step ;
+    rdfs:label "Koekjes bakken"@nl ;
+    pplan:isStepOfPlan activiteit:ACTIVITEIT_001 ;
+    # TODO: deze stap maakt gebruik van emissiepunt X
+    pplan:isPrecededBy procedurestap:STAP_001 .

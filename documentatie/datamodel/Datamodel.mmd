@@ -46,21 +46,30 @@ flowchart LR
     WATEREMISSIEPUNT([Wateremissiepunt])
     GRONDWATEREMISSIEPUNT([Grondwateremissiepunt])
      
-    LUCHTEMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
-    WATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIE
-    GRONDWATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
-    VERBRUIK -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
-    EMISSIE -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
-    INSTALLATIE -. rdfs:subClassOf .-> SOSA_SYSTEM
-    INSTALLATIE -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT_COLLECTION
-     
-    %% -- Bedrijf en vestiging
-    BEDRIJF -. rdfs:subClassOf .-> PROV_AGENT
-    VESTIGING -. rdfs:subClassOf .-> PROV_AGENT
- 
+    %% Class hierarchie
+    %% LUCHTEMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
+    %% WATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIE
+    %% GRONDWATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
+    %% VERBRUIK -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
+    %% EMISSIE -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
+    %% INSTALLATIE -. rdfs:subClassOf .-> SOSA_SYSTEM
+    %% INSTALLATIE -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT_COLLECTION
+    %% BEDRIJF -. rdfs:subClassOf .-> PROV_AGENT
+    %% VESTIGING -. rdfs:subClassOf .-> PROV_AGENT
+    %% ACTIVITEIT -. rdfs:subClassOf .-> PPLAN_PLAN
+    %% PROCEDURE -. rdfs:subClassOf .-> SOSA_PROCEDURE
+    %% APPARAAT -. rdfs:subClassOf .-> SOSA_SYSTEM
+    %% APPARAAT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% LOCATIE -. rdfs:subClassOf .-> SCHEMA_PLACE
+    %% LOCATIE -. rdfs:subClassOf .-> GEO_GEOMETRY
+    %% PPLAN_STEP -. rdfs:subClassOf .-> PPLAN_STEP
+    %% OBSERVATIE -. rdfs:subClassOf .-> SOSA_OBSERVATION
+    %% EMISSIEPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% MEETPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% MEETPUNT -. rdfs:subClassOf .-> SOSA_SENSOR
+    
     %% -- Activiteit
     ACTIVITEIT([Activiteit])
-    ACTIVITEIT -. rdfs:subClassOf .-> PPLAN_PLAN
     ACTIVITEIT -->|prov:wasAssociatedWith| VESTIGING
     ACTIVITEIT -->|prov:wasAssociatedWith| BEDRIJF
     ACTIVITEIT -->|prov:hadPlan| PROCEDURE
@@ -72,8 +81,6 @@ flowchart LR
     VERBRUIKS_PROCEDURE([Verbruiksprocedure])
     METINGS_PROCEDURE([Metingsprocedure])
     STROOM_PROCEDURE([StroomProcedure])
-    PROCEDURE_STAP([ProcedureStap])
-    PROCEDURE -. rdfs:subClassOf .-> SOSA_PROCEDURE
     PROCEDURE -->|rdf:type| PPLAN_PLAN
     VERWERKINGS_PROCEDURE -->|rdf:type| PROCEDURE
     METINGS_PROCEDURE -->|rdf:type| PROCEDURE
@@ -81,32 +88,21 @@ flowchart LR
     EMISSIE_PROCEDURE -->|rdf:type| PROCEDURE
     STROOM_PROCEDURE -->|rdf:type| PROCEDURE
     class VERWERKINGS_PROCEDURE,METINGS_PROCEDURE,VERBRUIKS_PROCEDURE,EMISSIE_PROCEDURE,STROOM_PROCEDURE instance;
-    PROCEDURE_STAP -. rdfs:subClassOf .-> PPLAN_STEP
-    PROCEDURE_STAP -->|p-plan:isStepOfPlan| ACTIVITEIT
-    PROCEDURE_STAP -->|p-plan:isPrecededBy| PROCEDURE_STAP
-    class PROCEDURE,PROCEDURE_STAP mainClasses;
+    PPLAN_STEP -->|p-plan:isStepOfPlan| ACTIVITEIT
+    PPLAN_STEP -->|p-plan:isPrecededBy| PPLAN_STEP
+    class PROCEDURE,PPLAN_STEP mainClasses;
  
-    OBSERVATIE -. rdfs:subClassOf .-> SOSA_OBSERVATION
-    EMISSIEPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
-    MEETPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
-    MEETPUNT -. rdfs:subClassOf .-> SOSA_SENSOR
     MEETPUNT -->|sosa:isProxyFor| EMISSIEPUNT
     OBSERVATIE -->|sosa:observedProperty| SOSA_OBSERVABLE_PROPERTY
     OBSERVATIE -->|sosa:madeBySensor| MEETPUNT
-    OBSERVATIE -->|prov:wasGeneratedBy| PROCEDURE_STAP
+    OBSERVATIE -->|prov:wasGeneratedBy| PPLAN_STEP
     VESTIGING -->|geo:sfContains| INSTALLATIE
     INSTALLATIE -->|rdfs:member| GEO_SPATIAL_OBJECT
-    APPARAAT -. rdfs:subClassOf .-> SOSA_SYSTEM
-    APPARAAT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
     INSTALLATIE -->|geo:sfContains| APPARAAT
     EMISSIEPUNT -->|geo:hasGeometry| LOCATIE
     MEETPUNT -->|geo:hasGeometry| LOCATIE
     VESTIGING -->|geo:hasGeometry| LOCATIE
     VESTIGING -->|prov:qualifiedAssociation| BEDRIJF
- 
-    %% -- Locatie
-    LOCATIE -. rdfs:subClassOf .-> SCHEMA_PLACE
-    LOCATIE -. rdfs:subClassOf .-> GEO_GEOMETRY
  
     class VESTIGING,OBSERVATIE,EMISSIEPUNT,MEETPUNT mainClasses;
     class BEDRIJF,LOCATIE mainClasses;

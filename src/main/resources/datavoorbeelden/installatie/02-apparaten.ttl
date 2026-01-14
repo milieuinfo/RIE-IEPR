@@ -1,0 +1,34 @@
+## ---------------------------------------
+## Datavoorbeeld: Installatie met apparaten
+## Doelstelling: Illustreren van een installatie met apparaten
+## ---------------------------------------
+
+## WORK IN PROGRESS
+
+# URI's voor datavoorbeelden zijn fictief
+@prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix installatie: <https://data.rieiepr.omgeving.vlaanderen.be/id/installatie/#> .
+@prefix apparaat: <https://data.rieiepr.omgeving.vlaanderen.be/id/apparaat/#> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+
+## ---------------------------------------
+## Context voor concepten in datavoorbeeld
+
+rieiepr:Installatie a ogc:SpatialObjectCollection .
+rieiepr:Apparaat a skos:Concept .
+## ---------------------------------------
+
+
+installatie:GPBV_12345 a rieiepr:Installatie ;
+    rdfs:member apparaat:AP_001, <...> .
+
+# Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.
+apparaat:AP_001 a rieiepr:Apparaat ;
+    rdfs:label "Zuiveringsapparaat 1"@nl .
+
+    
