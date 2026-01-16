@@ -1,0 +1,58 @@
+@prefix :       <http://data.vlaanderen.be/ns/riepr#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov:   <http://www.w3.org/ns/prov#> .
+@prefix pplan:  <http://purl.org/net/p-plan#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
+@prefix sosa:   <http://www.w3.org/ns/sosa/> .
+
+# --------------------------------------- #
+# Classes
+# --------------------------------------- #
+
+:Activiteit a owl:Class ;
+    rdfs:label "Ingedeelde Inrichting of Activiteit"@nl ;
+    rdfs:comment " Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven."@nl ;
+    rdfs:subClassOf pplan:Plan ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ActiviteitStap a owl:Class ;
+    rdfs:label "Activiteit Stap"@nl ;
+    rdfs:comment "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl ;
+    rdfs:subClassOf pplan:Step ;
+    owl:equivalentClass [ a owl:Class ;
+        owl:unionOf ( pplan:Step pplan:MultiStep ) 
+    ] ;
+    # Stap (als superclass van prov:Activiteit) kan gebruikmaken van een emissiepunt of apparaat
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty prov:used ; 
+        owl:someValuesFrom :Emissiepunt 
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty prov:used ; 
+        owl:someValuesFrom :Apparaat 
+    ] .
+    
+:Installatie a owl:Class ;
+    rdfs:label "Installatie"@nl ;
+    rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn."@nl ;
+    rdfs:subClassOf ogc:SpatialObjectCollection .
+
+:Emissiepunt a owl:Class ;
+    rdfs:label "Emissiepunt"@nl ;
+    rdfs:comment "Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten."@nl ;
+    rdfs:subClassOf ogc:SpatialObject .
+
+:Meetpunt a owl:Class ;
+    rdfs:label "Meetpunt"@nl ;
+    rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
+    rdfs:subClassOf ogc:SpatialObject .
+
+:Apparaat a owl:Class ;
+    rdfs:label "Apparaat"@nl ;
+    rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
+    rdfs:subClassOf ogc:SpatialObject .
