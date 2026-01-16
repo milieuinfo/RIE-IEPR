@@ -5,6 +5,9 @@
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
+@prefix ssn:    <http://www.w3.org/ns/ssn/> .
+@prefix dbo:    <http://dbpedia.org/ontology/> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
 # --------------------------------------- #
 # Classes
@@ -12,8 +15,8 @@
 
 :Activiteit a owl:Class ;
     rdfs:label "Ingedeelde Inrichting of Activiteit"@nl ;
-    rdfs:comment " Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven."@nl ;
-    rdfs:subClassOf pplan:Plan ;
+    rdfs:comment "Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven."@nl ;
+    rdfs:subClassOf pplan:Plan, dbo:Project ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een benaming hebben
         owl:onProperty rdfs:label ;
@@ -48,6 +51,12 @@
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty prov:used ; 
         owl:someValuesFrom :Apparaat ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    # Stap kan een procedure implementeren (optioneel)
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty ssn:implements ; 
+        owl:someValuesFrom sosa:Procedure ; # e.g., EmissieProcedure
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] 
     # TODO: Een stap kan gebruikmaken van een invoer/uitvoer van een bepaald type
@@ -91,6 +100,11 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
+:EmissieProcedure a owl:Class ;
+    rdfs:label "Emissie Procedure"@nl ;
+    rdfs:comment "Een emissie procedure is een actie die de uitstoot van stoffen aan een emissiepunt beschrijft."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
@@ -104,3 +118,11 @@
 # --------------------------------------- #
 # Constant Individuals
 # --------------------------------------- #
+
+:lozingsProces a :EmissieProcedure ;
+    rdfs:label "Lozingsproces"@nl ;
+    rdfs:comment "Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater."@nl .
+
+:uitstootProces a :EmissieProcedure ;
+    rdfs:label "Uitstootproces"@nl ;
+    rdfs:comment "Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht."@nl .
