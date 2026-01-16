@@ -9,32 +9,30 @@
 ## WORK IN PROGRESS
 
 # URI's voor datavoorbeelden zijn fictief
-@prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
-@prefix activiteit: <https://data.rieiepr.omgeving.vlaanderen.be/id/activiteit/#> .
-@prefix procedurestap: <https://data.rieiepr.omgeving.vlaanderen.be/id/procedure/#> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/#> .
+@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/#> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 ## ---------------------------------------
 ## Context voor concepten in datavoorbeeld
 @prefix pplan: <http://purl.org/net/p-plan#> .
-
-rieiepr:Activiteit a pplan:Plan .
 ## ---------------------------------------
 
-# Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie
-# bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven.
-activiteit:IDENTIFIERTEBEPALEN a rieiepr:Activiteit ;
-    rdfs:label "Koekjes maken"@nl .
+# TODO: Idealiter vestiging + NACEBEL + datum willen
+activiteit:2238530069_KOEKJES_20170929 a riepr:Activiteit ;
+    rdfs:label "Koekjes maken"@nl ;
+    prov:startedAtTime "2017-09-29T00:00:00"^^xsd:dateTime .
+    # TODO link met vestiging (2238530069)
 
-
-# De procedurestap is een individuele stap binnen een enkele activiteit.
-procedurestap:IDENTIFIERTEBEPALEN a pplan:Step ;
+procedurestap:2238530070_KOEKJES_DEEGMAKEN_20170929 a riepr:ActiviteitStap ;
     rdfs:label "Koekjesdeeg maken"@nl ;
-    pplan:isStepOfPlan activiteit:IDENTIFIERTEBEPALEN .
-procedurestap:ANDEREIDENTIFIERTEBEPALEN a pplan:Step ;
+    pplan:isStepOfPlan activiteit:2238530069_KOEKJES_20170929 .
+procedurestap:2238530071_KOEKJES_BAKKEN_20170929 a riepr:ActiviteitStap ;
     rdfs:label "Koekjes bakken"@nl ;
-    pplan:isStepOfPlan activiteit:IDENTIFIERTEBEPALEN ;
-    # TODO: deze stap maakt gebruik van emissiepunt X
-    pplan:isPrecededBy procedurestap:IDENTIFIERTEBEPALEN .
+    pplan:isStepOfPlan activiteit:2238530069_KOEKJES_20170929 ;
+    pplan:isPrecededBy procedurestap:2238530070_KOEKJES_DEEGMAKEN_20170929 ;
+    prov:used emissiepunt:TBD .

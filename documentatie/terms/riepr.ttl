@@ -1,4 +1,4 @@
-@prefix :       <http://data.vlaanderen.be/ns/riepr#> .
+@prefix :       <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix prov:   <http://www.w3.org/ns/prov#> .
 @prefix pplan:  <http://purl.org/net/p-plan#> .
@@ -18,6 +18,18 @@
         # Een activiteit moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit moet een startdatum hebben
+        owl:onProperty prov:startedAtTime ; # TODO: Mogelijk voor een uitvoering dus fout
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit kan een einddatum hebben
+        owl:onProperty prov:endedAtTime ;   # TODO: Mogelijk voor een uitvoering dus fout
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :ActiviteitStap a owl:Class ;
@@ -30,12 +42,17 @@
     # Stap (als superclass van prov:Activiteit) kan gebruikmaken van een emissiepunt of apparaat
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty prov:used ; 
-        owl:someValuesFrom :Emissiepunt 
+        owl:someValuesFrom :Emissiepunt ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty prov:used ; 
-        owl:someValuesFrom :Apparaat 
-    ] .
+        owl:someValuesFrom :Apparaat ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] 
+    # TODO: Een stap kan gebruikmaken van een invoer/uitvoer van een bepaald type
+    # Voorbeeld: verbruik/grondstof/afval/...
+    .
     
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
@@ -50,9 +67,40 @@
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
-    rdfs:subClassOf ogc:SpatialObject .
+    rdfs:subClassOf ogc:SpatialObject ;
+    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty sosa:isProxyFor ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] .
 
 :Apparaat a owl:Class ;
     rdfs:label "Apparaat"@nl ;
     rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
     rdfs:subClassOf ogc:SpatialObject .
+
+:Observatie a owl:Class ;
+    rdfs:label "Observatie"@nl ;
+    rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
+    rdfs:subClassOf sosa:Observation ;
+    # Een observatie moet gekoppeld zijn aan exact één meetpunt
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty sosa:hasFeatureOfInterest ; 
+        owl:someValuesFrom :Meetpunt ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+# --------------------------------------- #
+# Object Properties
+# --------------------------------------- #
+
+
+# --------------------------------------- #
+# Data Properties
+# --------------------------------------- #
+
+
+# --------------------------------------- #
+# Constant Individuals
+# --------------------------------------- #
