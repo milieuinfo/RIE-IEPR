@@ -66,7 +66,16 @@
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
     rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn."@nl ;
-    rdfs:subClassOf ogc:SpatialObjectCollection .
+    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System .
+# TODO: Nog te bepalen of deze onderklasse nodig is
+:IEPRInstallatie a owl:Class ;
+    rdfs:label "IEPR Installatie"@nl ;
+    rdfs:comment "Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation)."@nl ;
+    rdfs:subClassOf :Installatie .
+:GPBVInstallatie a owl:Class ;
+    rdfs:label "GPBV Installatie"@nl ;
+    rdfs:comment "Een GPBV installatie is een specifieke type installatie die valt onder de regelgeving van het GPBV (Geïntegreerde preventie en bestrijding van verontreiniging)."@nl ;
+    rdfs:subClassOf :Installatie .
 
 :Emissiepunt a owl:Class ;
     rdfs:label "Emissiepunt"@nl ;
@@ -86,7 +95,7 @@
 :Apparaat a owl:Class ;
     rdfs:label "Apparaat"@nl ;
     rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
-    rdfs:subClassOf ogc:SpatialObject .
+    rdfs:subClassOf ogc:SpatialObject, ssn:System .
 
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
@@ -100,9 +109,18 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
+# Types stappen van een activiteit
 :EmissieProcedure a owl:Class ;
     rdfs:label "Emissie Procedure"@nl ;
     rdfs:comment "Een emissie procedure is een actie die de uitstoot van stoffen aan een emissiepunt beschrijft."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:VerwerkingsProcedure a owl:Class ;
+    rdfs:label "Verwerkings Procedure"@nl ;
+    rdfs:comment "Een verwerkings procedure is een actie die de verwerking van stoffen binnen een activiteit beschrijft."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:TransportProcedure a owl:Class ;
+    rdfs:label "Transport Procedure"@nl ;
+    rdfs:comment "Een transport procedure is een actie die het transport van stoffen binnen of buiten een activiteit beschrijft."@nl ;
     rdfs:subClassOf sosa:Procedure .
 
 # --------------------------------------- #
@@ -126,3 +144,7 @@
 :uitstootProces a :EmissieProcedure ;
     rdfs:label "Uitstootproces"@nl ;
     rdfs:comment "Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht."@nl .
+
+:stoomProces a :TransportProcedure ;
+    rdfs:label "Stoomproces"@nl ;
+    rdfs:comment "Een stoomproces is een specifieke procedure die betrekking heeft op het transport van stoffen via stoom binnen een activiteit."@nl .
