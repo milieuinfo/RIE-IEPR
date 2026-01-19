@@ -6,10 +6,10 @@
 ## WORK IN PROGRESS
 
 # URI's voor datavoorbeelden zijn fictief
-@prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
-@prefix installatie: <https://data.rieiepr.omgeving.vlaanderen.be/id/installatie/> .
-@prefix emissiepunt: <https://data.rieiepr.omgeving.vlaanderen.be/id/emissiepunt/> .
-@prefix meetpunt: <https://data.rieiepr.omgeving.vlaanderen.be/id/meetpunt/#> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix meetpunt: <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/#> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -18,19 +18,9 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 
-## ---------------------------------------
-## Context voor concepten in datavoorbeeld
-
-# TODO: na te kijken: kan geen skos:Collection zijn, installatie op zich is een skos:Concept en disjoint met skos:Collection
-rieiepr:Installatie a ogc:SpatialObjectCollection .
-rieiepr:Emissiepunt a ogc:SpatialObject .
-rieiepr:Meetpunt a sosa:FeatureOfInterest .
-## ---------------------------------------
-
-
 # Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.
 # Deze installatie kan al dan niet (GPBV-)vergund zijn.
-installatie:GPBV_12345 a rieiepr:Installatie ;
+installatie:GPBV_12345 a riepr:Installatie ;
     rdfs:label "Fictief NV"@nl ;
     adms:identifier [
         skos:notation "BE.VL.000000001.INSTALLATION" ;
@@ -44,12 +34,12 @@ installatie:GPBV_12345 a rieiepr:Installatie ;
     rdfs:member <...>, <...> .
 
 # Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.
-emissiepunt:EP_001 a rieiepr:Emissiepunt ;
+emissiepunt:EP_001 a riepr:Emissiepunt ;
     rdfs:label "Emissiepunt Schoorsteen 1"@nl ;
     ogc:hasGeometry <...> .
 
 # Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.
-meetpunt:MP_001 a rieiepr:Meetpunt ;
+meetpunt:MP_001 a riepr:Meetpunt ;
     rdfs:label "Meetpunt Luchtkwaliteit 1"@nl ;
     sosa:isProxyFor emissiepunt:EP_001 ; # optioneel
     ogc:hasGeometry <...> .

@@ -6,9 +6,9 @@
 ## WORK IN PROGRESS
 
 # URI's voor datavoorbeelden zijn fictief
-@prefix rieiepr: <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/> .
-@prefix installatie: <https://data.rieiepr.omgeving.vlaanderen.be/id/installatie/> .
-@prefix apparaat: <https://data.rieiepr.omgeving.vlaanderen.be/id/apparaat/> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix apparaat: <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -19,16 +19,16 @@
 ## ---------------------------------------
 ## Context voor concepten in datavoorbeeld
 
-rieiepr:Installatie a ogc:SpatialObjectCollection .
-rieiepr:Apparaat a skos:Concept .
+riepr:Installatie a ogc:SpatialObjectCollection .
+riepr:Apparaat a skos:Concept .
 ## ---------------------------------------
 
 
-installatie:GPBV_12345 a rieiepr:Installatie ;
+installatie:GPBV_12345 a riepr:Installatie ;
     rdfs:member apparaat:AP_001, <...> .
 
 # Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.
-apparaat:AP_001 a rieiepr:Apparaat ;
+apparaat:AP_001 a riepr:Apparaat ;
     rdfs:label "Zuiveringsapparaat 1"@nl .
 
     
