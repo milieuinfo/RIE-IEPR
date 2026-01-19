@@ -12,23 +12,24 @@ The system consists of several components:
 
 ## Usage
 
-### Basic Usage
+### Basic Usage (with Relationships)
 
 ```bash
-cd RIE-IEPR/documentatie/datamodel
+cd /home/gehau/git/RIE-IEPR/documentatie/datamodel
 ./mermaid.sh
 ```
 
 This will:
 1. Find all TTL files in the data directory
+2. 
 2. Combine them into a single RDF dataset
-3. Run the SPARQL query to extract class information
-4. Generate a Mermaid class diagram in `mermaid_class_diagram.mmd`
+3. Run the SPARQL query to extract class information and relationships
+4. Generate a Mermaid class diagram with relationships in `mermaid_class_diagram.mmd`
 
 ### Output
 
 The generated Mermaid diagram will be saved as:
-- `mermaid_class_diagram.mmd` - Main output file
+- `mermaid_class_diagram.mmd` - Main output file with classes and relationships
 
 ## Components
 
@@ -39,13 +40,15 @@ This query extracts:
 - Properties of instances
 - Labels and comments
 - Data types of literal values
+- Relationships between classes
 
 ### 2. Python Converter (`csv_to_mermaid.py`)
 
 This script:
 - Reads CSV output from the SPARQL query
 - Groups properties by class
-- Generates clean Mermaid syntax
+- Detects and processes relationships between classes
+- Generates clean Mermaid syntax with relationships
 - Handles URI simplification
 - Escapes special characters
 
@@ -93,34 +96,47 @@ classDiagram
 
 ## Examples
 
-### Generated Class Example
-
-```mermaid
-class Activiteit {
-    label: langString
-    startedAtTime: dateTime
-    type: string
-}
-```
-
-### Adding Relationships Manually
+### Generated Class with Relationships
 
 ```mermaid
 classDiagram
-    %% Auto-generated classes
     class Activiteit {
         label: langString
         startedAtTime: dateTime
+        type: string
     }
     
-    class Vestiging {
+    class ActiviteitStap {
+        isPrecededBy: string
+        isStepOfPlan: string
         label: langString
+        type: string
+        used: string
     }
     
-    %% Manual relationships
-    Activiteit --> Vestiging : "located at"
-    Vestiging --> Installatie : "contains"
+    class Installatie {
+        identifier: string
+        label: langString
+        member: string
+        seeAlso: string
+        type: string
+    }
+    
+    %% Auto-generated relationships
+    ActiviteitStap --> Activiteit : isStepOfPlan
+    Installatie --> Apparaat : member
+    Meetpunt --> Emissiepunt : isProxyFor
 ```
+
+### Relationship Types Found
+
+The system automatically detects various types of relationships:
+
+- **Type relationships**: `Activiteit --> Plan : type`
+- **Step relationships**: `ActiviteitStap --> Activiteit : isStepOfPlan`
+- **Containment**: `Installatie --> Apparaat : member`
+- **Proxy relationships**: `Meetpunt --> Emissiepunt : isProxyFor`
+- **Precedence**: `Step --> MultiStep : isPrecededBy`
 
 ## Integration with Documentation
 
