@@ -1,0 +1,97 @@
+classDiagram
+    %% Generated from RDF data using csv_to_mermaid.py
+    %% Source: RIE-IEPR datamodel
+
+    class Activiteit {
+        label: langString
+        startedAtTime: dateTime
+        type: string
+    }
+
+    class ActiviteitStap {
+        isPrecededBy: string
+        isStepOfPlan: string
+        label: langString
+        type: string
+        used: string
+    }
+
+    class Apparaat {
+        label: langString
+        type: string
+    }
+
+    class Concept {
+        type: string
+    }
+
+    class Emissiepunt {
+        hasGeometry: string
+        label: langString
+        type: string
+    }
+
+    class FeatureOfInterest {
+        type: string
+    }
+
+    class Installatie {
+        identifier: string
+        label: langString
+        member: string
+        seeAlso: string
+        type: string
+    }
+
+    class Meetpunt {
+        hasGeometry: string
+        isProxyFor: string
+        label: langString
+        type: string
+    }
+
+    class MultiStep {
+        isStepOfPlan: string
+        label: langString
+        type: string
+    }
+
+    class ObservableProperty {
+        label: langString
+        quantityKind: string
+        type: string
+        unit: string
+    }
+
+    class Plan {
+        type: string
+    }
+
+    class SpatialObject {
+        type: string
+    }
+
+    class SpatialObjectCollection {
+        type: string
+    }
+
+    class Step {
+        isPrecededBy: string
+        isStepOfPlan: string
+        label: langString
+        type: string
+    }
+
+    %% Relationships
+    Activiteit --> Plan : type
+    ActiviteitStap --> Activiteit : isStepOfPlan
+    Apparaat --> Concept : type
+    Emissiepunt --> SpatialObject : type
+    Installatie --> Apparaat : member
+    Installatie --> SpatialObjectCollection : type
+    Meetpunt --> Emissiepunt : isProxyFor
+    Meetpunt --> FeatureOfInterest : type
+    MultiStep --> Activiteit : isStepOfPlan
+    Step --> Activiteit : isStepOfPlan
+    Step --> MultiStep : isPrecededBy
+    Step --> MultiStep : isStepOfPlan
