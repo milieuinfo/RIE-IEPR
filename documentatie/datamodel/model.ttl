@@ -1,25 +1,24 @@
 PREFIX :               <https://data.riepr.omgeving.vlaanderen.be/id/concept/>
-PREFIX activiteit:     <https://data.rieiepr.omgeving.vlaanderen.be/id/activiteit/>
+PREFIX activiteit:     <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/>
 PREFIX adms:           <http://www.w3.org/ns/adms#>
-PREFIX apparaat:       <https://data.rieiepr.omgeving.vlaanderen.be/id/apparaat/>
+PREFIX apparaat:       <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/>
 PREFIX cs:             <https://data.vlaanderen.be/ns/chemische_stof#>
 PREFIX csc:            <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
 PREFIX dbo:            <http://dbpedia.org/ontology/>
 PREFIX dbp:            <http://dbpedia.org/property/>
-PREFIX emissiepunt:    <https://data.rieiepr.omgeving.vlaanderen.be/id/emissiepunt/>
-PREFIX installatie:    <https://data.rieiepr.omgeving.vlaanderen.be/id/installatie/>
-PREFIX meetpunt:       <https://data.rieiepr.omgeving.vlaanderen.be/id/meetpunt/#>
+PREFIX emissiepunt:    <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/>
+PREFIX installatie:    <https://data.riepr.omgeving.vlaanderen.be/id/installatie/>
+PREFIX meetpunt:       <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/#>
 PREFIX ogc:            <http://www.opengis.net/ont/geosparql#>
 PREFIX owl:            <http://www.w3.org/2002/07/owl#>
 PREFIX pplan:          <http://purl.org/net/p-plan#>
-PREFIX procedurestap:  <https://data.rieiepr.omgeving.vlaanderen.be/id/procedure/>
+PREFIX procedurestap:  <https://data.riepr.omgeving.vlaanderen.be/id/procedure/>
 PREFIX prov:           <http://www.w3.org/ns/prov#>
 PREFIX quantalitykind: <http://qudt.org/vocab/quantitykind/>
 PREFIX qudt:           <http://qudt.org/schema/qudt/>
 PREFIX rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:           <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX rieiepr:        <https://data.rieiepr.omgeving.vlaanderen.be/id/concept/>
-PREFIX riepr:          <https://data.riepr.omgeving.vlaanderen.be/id/concept/>
+PREFIX riepr:          <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 PREFIX skos:           <http://www.w3.org/2004/02/skos/core#>
 PREFIX sosa:           <http://www.w3.org/ns/sosa/>
 PREFIX unit:           <http://qudt.org/vocab/unit/>
@@ -29,20 +28,19 @@ PREFIX xsd:            <http://www.w3.org/2001/XMLSchema#>
 pplan:Step  rdf:type        "rdfs:Resource";
         rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
         pplan:isPrecededBy  pplan:MultiStep , pplan:Step;
-        pplan:isStepOfPlan  rieiepr:Activiteit , pplan:MultiStep .
+        pplan:isStepOfPlan  riepr:Activiteit , pplan:MultiStep .
 
-rieiepr:Installatie  rdf:type  ogc:SpatialObjectCollection;
+riepr:Installatie  rdf:type  ogc:SpatialObjectCollection;
         rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
         rdfs:member      "rdfs:Resource";
-        rdfs:member      rieiepr:Apparaat;
+        rdfs:member      riepr:Apparaat;
         rdfs:seeAlso     "rdfs:Resource";
         adms:identifier  "rdfs:Resource" .
 
-rieiepr:Apparaat  rdf:type  skos:Concept;
-        rdfs:Label  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
-
-rieiepr:Activiteit  rdf:type  pplan:Plan;
-        rdfs:Label  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
+riepr:ActiviteitStap  rdf:type  "rdfs:Resource";
+        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
+        pplan:isPrecededBy  riepr:ActiviteitStap;
+        pplan:isStepOfPlan  riepr:Activiteit .
 
 sosa:ObservableProperty
         rdf:type           "rdfs:Resource";
@@ -50,15 +48,10 @@ sosa:ObservableProperty
         qudt:quantityKind  "rdfs:Resource";
         qudt:unit          "rdfs:Resource" .
 
+riepr:Apparaat  rdf:type  skos:Concept;
+        rdfs:Label  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
+
 skos:Concept  rdf:type  "rdfs:Resource" .
-
-pplan:Plan  rdf:type  "rdfs:Resource" .
-
-riepr:ActiviteitStap  rdf:type  "rdfs:Resource";
-        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        pplan:isPrecededBy  riepr:ActiviteitStap;
-        pplan:isStepOfPlan  riepr:Activiteit;
-        prov:used           "rdfs:Resource" .
 
 riepr:Activiteit  rdf:type  "rdfs:Resource";
         rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
@@ -67,20 +60,15 @@ riepr:Activiteit  rdf:type  "rdfs:Resource";
 ogc:SpatialObjectCollection
         rdf:type  "rdfs:Resource" .
 
-rieiepr:Emissiepunt  rdf:type  ogc:SpatialObject;
+riepr:Emissiepunt  rdf:type  "rdfs:Resource";
         rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
         ogc:hasGeometry  "rdfs:Resource" .
 
-ogc:SpatialObject  rdf:type  "rdfs:Resource" .
-
-sosa:FeatureOfInterest
-        rdf:type  "rdfs:Resource" .
-
 pplan:MultiStep  rdf:type   "rdfs:Resource";
         rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        pplan:isStepOfPlan  rieiepr:Activiteit .
+        pplan:isStepOfPlan  riepr:Activiteit .
 
-rieiepr:Meetpunt  rdf:type  sosa:FeatureOfInterest;
+riepr:Meetpunt  rdf:type  "rdfs:Resource";
         rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
         ogc:hasGeometry  "rdfs:Resource";
-        sosa:isProxyFor  rieiepr:Emissiepunt .
+        sosa:isProxyFor  riepr:Emissiepunt .
