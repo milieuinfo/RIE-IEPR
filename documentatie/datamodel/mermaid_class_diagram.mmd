@@ -3,95 +3,96 @@ classDiagram
     %% Source: RIE-IEPR datamodel
 
     class Activiteit {
-        label: langString
-        startedAtTime: dateTime
-        type: string
+        rdfs:label langString
+        prov:startedAtTime dateTime
+        rdf:type string
     }
 
     class ActiviteitStap {
-        isPrecededBy: string
-        isStepOfPlan: string
-        label: langString
-        type: string
-        used: string
+        pplan:isPrecededBy string
+        pplan:isStepOfPlan string
+        rdfs:label langString
+        rdf:type string
+        prov:used string
     }
 
     class Apparaat {
-        label: langString
-        type: string
+        rdfs:label langString
+        rdf:type string
     }
 
     class Concept {
-        type: string
+        rdf:type string
     }
 
     class Emissiepunt {
-        hasGeometry: string
-        label: langString
-        type: string
+        geo:hasGeometry string
+        rdfs:label langString
+        rdf:type string
     }
 
     class FeatureOfInterest {
-        type: string
+        rdf:type string
     }
 
     class Installatie {
-        identifier: string
-        label: langString
-        member: string
-        seeAlso: string
-        type: string
+        identifier string
+        rdfs:label langString
+        rdfs:member string
+        rdfs:seeAlso string
+        rdf:type string
     }
 
     class Meetpunt {
-        hasGeometry: string
-        isProxyFor: string
-        label: langString
-        type: string
+        geo:hasGeometry string
+        sosa:isProxyFor string
+        rdfs:label langString
+        rdf:type string
     }
 
     class MultiStep {
-        isStepOfPlan: string
-        label: langString
-        type: string
+        pplan:isStepOfPlan string
+        rdfs:label langString
+        rdf:type string
     }
 
     class ObservableProperty {
-        label: langString
-        quantityKind: string
-        type: string
-        unit: string
+        rdfs:label langString
+        quantityKind string
+        rdf:type string
+        unit string
     }
 
     class Plan {
-        type: string
+        rdf:type string
     }
 
     class SpatialObject {
-        type: string
+        rdf:type string
     }
 
     class SpatialObjectCollection {
-        type: string
+        rdf:type string
     }
 
     class Step {
-        isPrecededBy: string
-        isStepOfPlan: string
-        label: langString
-        type: string
+        pplan:isPrecededBy string
+        pplan:isStepOfPlan string
+        rdfs:label langString
+        rdf:type string
     }
 
     %% Relationships
-    Activiteit --> Plan : type
-    ActiviteitStap --> Activiteit : isStepOfPlan
-    Apparaat --> Concept : type
-    Emissiepunt --> SpatialObject : type
-    Installatie --> Apparaat : member
-    Installatie --> SpatialObjectCollection : type
-    Meetpunt --> Emissiepunt : isProxyFor
-    Meetpunt --> FeatureOfInterest : type
-    MultiStep --> Activiteit : isStepOfPlan
-    Step --> Activiteit : isStepOfPlan
-    Step --> MultiStep : isPrecededBy
-    Step --> MultiStep : isStepOfPlan
+
+    Activiteit --> Plan : rdf_type
+    ActiviteitStap --> Activiteit : pplan_isStepOfPlan
+    Apparaat --> Concept : rdf_type
+    Emissiepunt --> SpatialObject : rdf_type
+    Installatie --> Apparaat : rdfs_member
+    Installatie --> SpatialObjectCollection : rdf_type
+    Meetpunt --> Emissiepunt : sosa_isProxyFor
+    Meetpunt --> FeatureOfInterest : rdf_type
+    MultiStep --> Activiteit : pplan_isStepOfPlan
+    Step --> Activiteit : pplan_isStepOfPlan
+    Step --> MultiStep : pplan_isPrecededBy
+    Step --> MultiStep : pplan_isStepOfPlan
