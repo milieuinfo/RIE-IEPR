@@ -380,9 +380,9 @@ erDiagram
     }
     class PROCEDURE_TYPE milieugegevens
     %% Procedure
-    PROCEDURE_STAP many to one PROCEDURE_STAP: voorgaandeStap
-    %% ProcedureStap rdfs:subClassOf p-plan:Step
-    PROCEDURE_STAP["milieu.procedure_stap"] {
+    ACTIVITEIT_STAP many to one ACTIVITEIT_STAP: voorgaandeStap
+    %% ActiviteitStap rdfs:subClassOf p-plan:Step
+    ACTIVITEIT_STAP["milieu.activiteit_stap"] {
         UUID uuid PK
         DATE geldigVanaf PK
         DATE geldigTot
@@ -391,17 +391,17 @@ erDiagram
         string naam
         string beschrijving
     }
-    class PROCEDURE_STAP milieugegevens
-    PROCEDURE_STAP many to one PROCEDURE_TYPE : "heeftProcedureType"
-    INSTALLATIE_PROCEDURE_STAP["milieu.installatie_procedure_stap"] {
+    class ACTIVITEIT_STAP milieugegevens
+    ACTIVITEIT_STAP many to one PROCEDURE_TYPE : "heeftProcedureType"
+    INSTALLATIE_ACTIVITEIT_STAP["milieu.installatie_activiteit_stap"] {
         UUID installatie_uuid PK, FK
-        UUID procedure_stap_uuid PK, FK
+        UUID activiteit_stap_uuid PK, FK
         DATE geldigVanaf PK
         DATE geldigTot
     }
-    class INSTALLATIE_PROCEDURE_STAP milieugegevens
-    INSTALLATIE }|..|{ INSTALLATIE_PROCEDURE_STAP: heeftProcedureStap
-    PROCEDURE_STAP }|..|{ INSTALLATIE_PROCEDURE_STAP: hoortBijInstallatie
+    class INSTALLATIE_ACTIVITEIT_STAP milieugegevens
+    INSTALLATIE }|..|{ INSTALLATIE_ACTIVITEIT_STAP: heeftProcedureStap
+    ACTIVITEIT_STAP }|..|{ INSTALLATIE_ACTIVITEIT_STAP: hoortBijInstallatie
 
     %% ------------------------
     %% Observatiegegevens
