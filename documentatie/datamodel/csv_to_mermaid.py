@@ -48,8 +48,12 @@ def generate_mermaid(csv_file):
     reader = csv.DictReader(csv_file)
     
     for row in reader:
-        class_name = simplify_uri(row['class'])
-        
+        clas = simplify_uri(row['class'])
+        class_prefix = get_prefix(row['class'])
+        if class_prefix:
+            class_name = f"{class_prefix}{clas}".replace(":", "_")
+        else:
+            class_name = clas
         # Skip empty or invalid classes
         if not class_name or class_name.startswith('http'):
             continue

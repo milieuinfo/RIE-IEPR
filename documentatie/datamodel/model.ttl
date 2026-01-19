@@ -1,74 +1,159 @@
-PREFIX :               <https://data.riepr.omgeving.vlaanderen.be/id/concept/>
-PREFIX activiteit:     <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/>
-PREFIX adms:           <http://www.w3.org/ns/adms#>
-PREFIX apparaat:       <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/>
-PREFIX cs:             <https://data.vlaanderen.be/ns/chemische_stof#>
-PREFIX csc:            <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
-PREFIX dbo:            <http://dbpedia.org/ontology/>
-PREFIX dbp:            <http://dbpedia.org/property/>
-PREFIX emissiepunt:    <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/>
-PREFIX installatie:    <https://data.riepr.omgeving.vlaanderen.be/id/installatie/>
-PREFIX meetpunt:       <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/#>
-PREFIX ogc:            <http://www.opengis.net/ont/geosparql#>
-PREFIX owl:            <http://www.w3.org/2002/07/owl#>
-PREFIX pplan:          <http://purl.org/net/p-plan#>
-PREFIX procedurestap:  <https://data.riepr.omgeving.vlaanderen.be/id/procedure/>
-PREFIX prov:           <http://www.w3.org/ns/prov#>
-PREFIX quantalitykind: <http://qudt.org/vocab/quantitykind/>
-PREFIX qudt:           <http://qudt.org/schema/qudt/>
-PREFIX rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs:           <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX riepr:          <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
-PREFIX skos:           <http://www.w3.org/2004/02/skos/core#>
-PREFIX sosa:           <http://www.w3.org/ns/sosa/>
-PREFIX unit:           <http://qudt.org/vocab/unit/>
-PREFIX vlcs:           <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
-PREFIX xsd:            <http://www.w3.org/2001/XMLSchema#>
+PREFIX :                    <https://data.riepr.omgeving.vlaanderen.be/ns/riepr/>
+PREFIX activiteit:          <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/>
+PREFIX apparaat:            <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/>
+PREFIX bedrijf:             <https://data.riepr.omgeving.vlaanderen.be/id/bedrijf/>
+PREFIX cs:                  <https://data.vlaanderen.be/ns/chemische_stof#>
+PREFIX csc:                 <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
+PREFIX dbo:                 <http://dbpedia.org/ontology/>
+PREFIX dbp:                 <http://dbpedia.org/property/>
+PREFIX emissie:             <https://data.riepr.omgeving.vlaanderen.be/id/emissie/>
+PREFIX emissiepunt:         <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/>
+PREFIX geo:                 <http://www.opengis.net/ont/geosparql#>
+PREFIX installatie:         <https://data.riepr.omgeving.vlaanderen.be/id/installatie/>
+PREFIX lloc:                <http://purl.org/linked-data/location#>
+PREFIX locatie:             <https://data.riepr.omgeving.vlaanderen.be/id/locatie/>
+PREFIX meetpunt:            <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/>
+PREFIX observable_property: <https://data.riepr.omgeving.vlaanderen.be/id/observable-property/>
+PREFIX observatie:          <https://data.riepr.omgeving.vlaanderen.be/id/observatie/>
+PREFIX owl:                 <http://www.w3.org/2002/07/owl#>
+PREFIX pplan:               <http://purl.org/net/p-plan#>
+PREFIX procedure:           <https://data.riepr.omgeving.vlaanderen.be/id/procedure/>
+PREFIX prov:                <http://www.w3.org/ns/prov#>
+PREFIX rdf:                 <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:                <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema:              <http://schema.org/>
+PREFIX skos:                <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:                <http://www.w3.org/ns/sosa/>
+PREFIX step:                <https://data.riepr.omgeving.vlaanderen.be/id/step/>
+PREFIX verbruik:            <https://data.riepr.omgeving.vlaanderen.be/id/verbruik/>
+PREFIX vestiging:           <https://data.riepr.omgeving.vlaanderen.be/id/vestiging/>
+PREFIX vlcs:                <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
+PREFIX xsd:                 <http://www.w3.org/2001/XMLSchema#>
+
+schema:Place  rdf:type  "rdfs:Resource";
+        rdfs:Label      "http://www.w3.org/2001/XMLSchema#string";
+        schema:address  "http://www.w3.org/2001/XMLSchema#string" .
 
 pplan:Step  rdf:type        "rdfs:Resource";
-        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        pplan:isPrecededBy  pplan:MultiStep , pplan:Step;
-        pplan:isStepOfPlan  riepr:Activiteit , pplan:MultiStep .
+        rdfs:Label          "http://www.w3.org/2001/XMLSchema#string";
+        pplan:isPrecededBy  pplan:Step , prov:Activity;
+        pplan:isStepOfPlan  :Verwerkingsprocedure , :Procedure , pplan:Plan , prov:Entity .
 
-riepr:Installatie  rdf:type  ogc:SpatialObjectCollection;
-        rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        rdfs:member      "rdfs:Resource";
-        rdfs:member      riepr:Apparaat;
-        rdfs:seeAlso     "rdfs:Resource";
-        adms:identifier  "rdfs:Resource" .
+:Locatie  rdf:type      "rdfs:Resource";
+        rdfs:Label      "http://www.w3.org/2001/XMLSchema#string";
+        schema:address  "http://www.w3.org/2001/XMLSchema#string" .
 
-riepr:ActiviteitStap  rdf:type  "rdfs:Resource";
-        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        pplan:isPrecededBy  riepr:ActiviteitStap;
-        pplan:isStepOfPlan  riepr:Activiteit .
+:Verwerkingsprocedure
+        rdf:type      "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+:Emissie  rdf:type    "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+:Activiteit  rdf:type           "rdfs:Resource";
+        rdfs:Label              "http://www.w3.org/2001/XMLSchema#string";
+        prov:hadPlan            :Verwerkingsprocedure , :Procedure , pplan:Plan , prov:Entity;
+        prov:wasAssociatedWith  :Bedrijf , :Vestiging .
+
+:Procedure  rdf:type  "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+:Vestiging  rdf:type               "rdfs:Resource";
+        rdfs:Label                 "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry            schema:Place , :Locatie , geo:Geometry;
+        prov:qualifiedAssociation  :Bedrijf .
+
+:Installatie  rdf:type  "rdfs:Resource";
+        rdfs:Label   "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:member  :Apparaat , sosa:System , geo:SpatialObject .
+
+:Metingsprocedure  rdf:type  "rdfs:Resource";
+        rdfs:Label  "http://www.w3.org/2001/XMLSchema#string" .
+
+:Apparaat  rdf:type   "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+sosa:System  rdf:type  "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
 
 sosa:ObservableProperty
-        rdf:type           "rdfs:Resource";
-        rdfs:Label         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        qudt:quantityKind  "rdfs:Resource";
-        qudt:unit          "rdfs:Resource" .
+        rdf:type      "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
 
-riepr:Apparaat  rdf:type  skos:Concept;
-        rdfs:Label  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
+sosa:Sensor  rdf:type    "rdfs:Resource";
+        rdfs:Label       "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry  :Locatie , geo:Geometry;
+        sosa:isProxyFor  :Emissiepunt , :Luchtemissiepunt , geo:SpatialObject .
 
-skos:Concept  rdf:type  "rdfs:Resource" .
+sosa:Observation  rdf:type     "rdfs:Resource";
+        rdfs:Label             "http://www.w3.org/2001/XMLSchema#string";
+        prov:wasGeneratedBy    pplan:Step , prov:Activity;
+        sosa:hasResult         "http://www.w3.org/2001/XMLSchema#decimal";
+        sosa:madeBySensor      sosa:Sensor , geo:SpatialObject , :Meetpunt;
+        sosa:observedProperty  :Emissie , sosa:ObservableProperty;
+        sosa:resultTime        "http://www.w3.org/2001/XMLSchema#dateTime" .
 
-riepr:Activiteit  rdf:type  "rdfs:Resource";
-        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        prov:startedAtTime  "http://www.w3.org/2001/XMLSchema#dateTime" .
+prov:Activity  rdf:type         "rdfs:Resource";
+        rdfs:Label              "http://www.w3.org/2001/XMLSchema#string";
+        pplan:isPrecededBy      pplan:Step , prov:Activity;
+        pplan:isStepOfPlan      :Verwerkingsprocedure , :Procedure , pplan:Plan , prov:Entity;
+        prov:hadPlan            :Verwerkingsprocedure , :Procedure , pplan:Plan , prov:Entity;
+        prov:wasAssociatedWith  :Bedrijf , :Vestiging .
 
-ogc:SpatialObjectCollection
-        rdf:type  "rdfs:Resource" .
+:Emissiepunt  rdf:type   "rdfs:Resource";
+        rdfs:Label       "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry  :Locatie , geo:Geometry .
 
-riepr:Emissiepunt  rdf:type  "rdfs:Resource";
-        rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        ogc:hasGeometry  "rdfs:Resource" .
+geo:Geometry  rdf:type  "rdfs:Resource";
+        rdfs:Label      "http://www.w3.org/2001/XMLSchema#string";
+        schema:address  "http://www.w3.org/2001/XMLSchema#string" .
 
-pplan:MultiStep  rdf:type   "rdfs:Resource";
-        rdfs:Label          "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        pplan:isStepOfPlan  riepr:Activiteit .
+pplan:Plan  rdf:type  "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
 
-riepr:Meetpunt  rdf:type  "rdfs:Resource";
-        rdfs:Label       "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        ogc:hasGeometry  "rdfs:Resource";
-        sosa:isProxyFor  riepr:Emissiepunt .
+prov:Entity  rdf:type  "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+geo:SpatialObjectCollection
+        rdf:type     "rdfs:Resource";
+        rdfs:Label   "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:member  :Apparaat , sosa:System , geo:SpatialObject .
+
+:Luchtemissiepunt  rdf:type  "rdfs:Resource";
+        rdfs:Label       "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry  :Locatie , geo:Geometry .
+
+geo:SpatialObject  rdf:type  "rdfs:Resource";
+        rdfs:comment     "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label       "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry  :Locatie , geo:Geometry;
+        sosa:isProxyFor  :Emissiepunt , :Luchtemissiepunt , geo:SpatialObject .
+
+:Bedrijf  rdf:type   "rdfs:Resource";
+        rdfs:Label   "http://www.w3.org/2001/XMLSchema#string";
+        schema:name  "http://www.w3.org/2001/XMLSchema#string" .
+
+:Observatie  rdf:type          "rdfs:Resource";
+        rdfs:Label             "http://www.w3.org/2001/XMLSchema#string";
+        prov:wasGeneratedBy    pplan:Step , prov:Activity;
+        sosa:hasResult         "http://www.w3.org/2001/XMLSchema#decimal";
+        sosa:madeBySensor      sosa:Sensor , geo:SpatialObject , :Meetpunt;
+        sosa:observedProperty  :Emissie , sosa:ObservableProperty;
+        sosa:resultTime        "http://www.w3.org/2001/XMLSchema#dateTime" .
+
+:Verbruik  rdf:type   "rdfs:Resource";
+        rdfs:comment  "http://www.w3.org/2001/XMLSchema#string";
+        rdfs:Label    "http://www.w3.org/2001/XMLSchema#string" .
+
+:Meetpunt  rdf:type      "rdfs:Resource";
+        rdfs:Label       "http://www.w3.org/2001/XMLSchema#string";
+        geo:hasGeometry  :Locatie , geo:Geometry;
+        sosa:isProxyFor  :Emissiepunt , :Luchtemissiepunt , geo:SpatialObject .

@@ -9,6 +9,7 @@ classDiagram
     }
 
     class ActiviteitStap {
+        implements string
         pplan:isPrecededBy string
         pplan:isStepOfPlan string
         rdfs:label langString
@@ -21,17 +22,9 @@ classDiagram
         rdf:type string
     }
 
-    class Concept {
-        rdf:type string
-    }
-
     class Emissiepunt {
         geo:hasGeometry string
         rdfs:label langString
-        rdf:type string
-    }
-
-    class FeatureOfInterest {
         rdf:type string
     }
 
@@ -50,48 +43,41 @@ classDiagram
         rdf:type string
     }
 
-    class MultiStep {
+    class geo_SpatialObjectCollection {
+        rdf:type string
+    }
+
+    class pplan_MultiStep {
         pplan:isStepOfPlan string
         rdfs:label langString
         rdf:type string
     }
 
-    class ObservableProperty {
-        rdfs:label langString
-        quantityKind string
-        rdf:type string
-        unit string
-    }
-
-    class Plan {
-        rdf:type string
-    }
-
-    class SpatialObject {
-        rdf:type string
-    }
-
-    class SpatialObjectCollection {
-        rdf:type string
-    }
-
-    class Step {
+    class pplan_Step {
         pplan:isPrecededBy string
         pplan:isStepOfPlan string
         rdfs:label langString
         rdf:type string
     }
 
+    class skos_Concept {
+        rdf:type string
+    }
+
+    class sosa_ObservableProperty {
+        rdfs:label langString
+        quantityKind string
+        rdf:type string
+        unit string
+    }
+
     %% Relationships
 
-    Activiteit --> Plan : rdf_type
     ActiviteitStap --> Activiteit : pplan_isStepOfPlan
     Apparaat --> Concept : rdf_type
-    Emissiepunt --> SpatialObject : rdf_type
     Installatie --> Apparaat : rdfs_member
     Installatie --> SpatialObjectCollection : rdf_type
     Meetpunt --> Emissiepunt : sosa_isProxyFor
-    Meetpunt --> FeatureOfInterest : rdf_type
     MultiStep --> Activiteit : pplan_isStepOfPlan
     Step --> Activiteit : pplan_isStepOfPlan
     Step --> MultiStep : pplan_isPrecededBy
