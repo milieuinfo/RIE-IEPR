@@ -1,80 +1,110 @@
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
-@prefix geo: <http://www.opengis.net/ont/geosparql#>.
-@prefix geometry: <https://data.omgeving.vlaanderen.be/id/geometry/>.
-@prefix conc_p: <https://data.omgeving.vlaanderen.be/id/concept/procedure/>.
-@prefix juridische_categorie: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>.
-@prefix ruimtelijke_eenheid: <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>.
-@prefix adms: <http://www.w3.org/ns/adms#>.
-@prefix concept: <https://data.omgeving.vlaanderen.be/id/concept/>.
-@prefix dbo: <http://dbpedia.org/ontology/>.
-@prefix eurovoc: <http://eurovoc.europa.eu/>.
-@prefix perceel: <https://data.vlaanderen.be/ns/perceel#>.
-@prefix identificator: <https://data.omgeving.vlaanderen.be/id/identificator/>.
-@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
-@prefix locn: <http://www.w3.org/ns/locn#>.
-@prefix omv: <https://data.vlaanderen.be/ns/omgevingsvergunning#>.
-@prefix project: <https://data.omgeving.vlaanderen.be/id/project/>.
-@prefix voorwerp: <https://data.omgeving.vlaanderen.be/id/voorwerp/>.
-@prefix omv_id: <https://data.omgeving.vlaanderen.be/id/concept/identifier/>.
-@prefix dct: <http://purl.org/dc/terms/>.
-@prefix inh: <https://data.omgeving.vlaanderen.be/id/inhoud/>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-@prefix dc: <http://purl.org/dc/elements/1.1/>.
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix cpsv: <http://purl.org/vocab/cpsv#>.
-@prefix m8g: <http://data.europa.eu/m8g/>.
-@prefix frbr: <http://purl.org/vocab/frbr/core#>.
-@prefix rechtssubject: <https://data.omgeving.vlaanderen.be/id/rechtssubject/>.
-@prefix procedurestap: <https://data.omgeving.vlaanderen.be/id/procedurestap/>.
-@prefix zaakhandeling: <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>.
-@prefix identifier: <https://data.omgeving.vlaanderen.be/id/identifier/>.
-@prefix zaak: <https://data.omgeving.vlaanderen.be/id/zaak/>.
-@prefix crs: <http://www.opengis.net/def/crs/EPSG/0/>.
-@prefix location: <https://data.omgeving.vlaanderen.be/id/location/>.
-@prefix activiteit: <https://data.omgeving.vlaanderen.be/id/activiteit/>.
-@prefix stedenbouwkundig_code: <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>.
-@prefix handeling_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>.
-@prefix functie_tobe_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>.
-@prefix functie_tobe_cascade: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>.
-@prefix voorwerptype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>.
-@prefix iioa_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>.
-@prefix actuele_rubriek_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>.
-@prefix actuele_rubriek: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>.
-@prefix stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>.
-@prefix terreinobjecttype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>.
-@prefix verkavelingtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>.
-@prefix verkavelingtype_code2: <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>.
-@prefix conceptscheme: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>.
-@prefix owl: <http://www.w3.org/2002/07/owl#>.
+PREFIX activiteit:                <https://data.omgeving.vlaanderen.be/id/activiteit/>
+PREFIX actuele_rubriek:           <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>
+PREFIX actuele_rubriek_klasse:    <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>
+PREFIX adms:                      <http://www.w3.org/ns/adms#>
+PREFIX conc_p:                    <https://data.omgeving.vlaanderen.be/id/concept/procedure/>
+PREFIX concept:                   <https://data.omgeving.vlaanderen.be/id/concept/>
+PREFIX conceptscheme:             <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
+PREFIX cpsv:                      <http://purl.org/vocab/cpsv#>
+PREFIX crs:                       <http://www.opengis.net/def/crs/EPSG/0/>
+PREFIX dbo:                       <http://dbpedia.org/ontology/>
+PREFIX dc:                        <http://purl.org/dc/elements/1.1/>
+PREFIX dct:                       <http://purl.org/dc/terms/>
+PREFIX eurovoc:                   <http://eurovoc.europa.eu/>
+PREFIX frbr:                      <http://purl.org/vocab/frbr/core#>
+PREFIX functie_tobe_cascade:      <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>
+PREFIX functie_tobe_code:         <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>
+PREFIX geo:                       <http://www.opengis.net/ont/geosparql#>
+PREFIX geometry:                  <https://data.omgeving.vlaanderen.be/id/geometry/>
+PREFIX handeling_code:            <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>
+PREFIX identificator:             <https://data.omgeving.vlaanderen.be/id/identificator/>
+PREFIX identifier:                <https://data.omgeving.vlaanderen.be/id/identifier/>
+PREFIX iioa_klasse:               <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>
+PREFIX inh:                       <https://data.omgeving.vlaanderen.be/id/inhoud/>
+PREFIX juridische_categorie:      <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>
+PREFIX location:                  <https://data.omgeving.vlaanderen.be/id/location/>
+PREFIX locn:                      <http://www.w3.org/ns/locn#>
+PREFIX m8g:                       <http://data.europa.eu/m8g/>
+PREFIX omv:                       <https://data.vlaanderen.be/ns/omgevingsvergunning#>
+PREFIX omv_id:                    <https://data.omgeving.vlaanderen.be/id/concept/identifier/>
+PREFIX owl:                       <http://www.w3.org/2002/07/owl#>
+PREFIX perceel:                   <https://data.vlaanderen.be/ns/perceel#>
+PREFIX procedurestap:             <https://data.omgeving.vlaanderen.be/id/procedurestap/>
+PREFIX project:                   <https://data.omgeving.vlaanderen.be/id/project/>
+PREFIX rdf:                       <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:                      <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rechtssubject:             <https://data.omgeving.vlaanderen.be/id/rechtssubject/>
+PREFIX ruimtelijke_eenheid:       <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>
+PREFIX skos:                      <http://www.w3.org/2004/02/skos/core#>
+PREFIX stedenbouwkundig_code:     <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>
+PREFIX stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>
+PREFIX terreinobjecttype_code:    <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>
+PREFIX verkavelingtype_code:      <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>
+PREFIX verkavelingtype_code2:     <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>
+PREFIX voorwerp:                  <https://data.omgeving.vlaanderen.be/id/voorwerp/>
+PREFIX voorwerptype_code:         <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>
+PREFIX xsd:                       <http://www.w3.org/2001/XMLSchema#>
+PREFIX zaak:                      <https://data.omgeving.vlaanderen.be/id/zaak/>
+PREFIX zaakhandeling:             <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>
 
-<https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en> <https://ogp.me/ns#determiner> "auto"@en;
-    <https://ogp.me/ns#site_name> "INSPIRE Knowledge Base"@en;
-    <https://ogp.me/ns#type> "website"@en;
-    <https://ogp.me/ns#url> "https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en"@en;
-    <https://ogp.me/ns#title> "INSPIRE Data Specification on Environmental Monitoring Facilities – Technical Guidelines"@en;
-    <https://ogp.me/ns#description> "-"@en;
-    <https://ogp.me/ns#image> "https://knowledge-base.inspire.ec.europa.eu/profiles/contrib/ewcms/modules/ewcms_seo/assets/images/ec-socialmedia-fallback.png"@en;
-    <https://ogp.me/ns#image:alt> "INSPIRE Knowledge Base"@en;
-    <https://ogp.me/ns#updated_time> "2024-01-31T13:00:00+0100"@en.
-_:df_11_0 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#search>.
-_:df_11_1 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#img>.
-<https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en#oe-search-search-form> <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#search>.
-_:df_11_2 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#alert>.
-_:df_11_3 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#alert>.
-_:df_11_4 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#navigation>.
-_:df_11_5 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#presentation>.
-_:df_11_6 <http://www.w3.org/1999/xhtml/vocab#role> <http://www.w3.org/1999/xhtml/vocab#presentation>.
-<https://knowledge-base.inspire.ec.europa.eu/index_en> <http://schema.org/name> "Home".
-_:df_13_0 a <http://schema.org/ListItem>;
-    <http://schema.org/position> 1;
-    <http://schema.org/item> <https://knowledge-base.inspire.ec.europa.eu/index_en>.
-<https://knowledge-base.inspire.ec.europa.eu/publications_en> <http://schema.org/name> "Publications".
-_:df_13_1 a <http://schema.org/ListItem>;
-    <http://schema.org/position> 2;
-    <http://schema.org/item> <https://knowledge-base.inspire.ec.europa.eu/publications_en>.
-<https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en> <http://schema.org/name> "INSPIRE Data Specification on Environmental Monitoring Facilities – Technical Guidelines".
-_:df_13_2 a <http://schema.org/ListItem>;
-    <http://schema.org/position> 3;
-    <http://schema.org/item> <https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en>.
-_:df_13_3 a <http://schema.org/BreadcrumbList>;
-    <http://schema.org/itemListElement> df_13_0, df_13_1, df_13_2.
+[ rdf:type  <http://schema.org/BreadcrumbList> ] .
+
+[ rdf:type                      <http://schema.org/ListItem>;
+  <http://schema.org/item>      <https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en>;
+  <http://schema.org/position>  3
+] .
+
+[ rdf:type                      <http://schema.org/ListItem>;
+  <http://schema.org/item>      <https://knowledge-base.inspire.ec.europa.eu/publications_en>;
+  <http://schema.org/position>  2
+] .
+
+<https://knowledge-base.inspire.ec.europa.eu/publications_en>
+        <http://schema.org/name>  "Publications" .
+
+[ rdf:type                      <http://schema.org/ListItem>;
+  <http://schema.org/item>      <https://knowledge-base.inspire.ec.europa.eu/index_en>;
+  <http://schema.org/position>  1
+] .
+
+<https://knowledge-base.inspire.ec.europa.eu/index_en>
+        <http://schema.org/name>  "Home" .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#presentation> ] .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#presentation> ] .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#navigation> ] .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#alert> ] .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#alert> ] .
+
+<https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en#oe-search-search-form>
+        <http://www.w3.org/1999/xhtml/vocab#role>
+                <http://www.w3.org/1999/xhtml/vocab#search> .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#img> ] .
+
+[ <http://www.w3.org/1999/xhtml/vocab#role>
+          <http://www.w3.org/1999/xhtml/vocab#search> ] .
+
+<https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en>
+        <http://schema.org/name>        "INSPIRE Data Specification on Environmental Monitoring Facilities – Technical Guidelines";
+        <https://ogp.me/ns#description>
+                "-"@en;
+        <https://ogp.me/ns#determiner>  "auto"@en;
+        <https://ogp.me/ns#image>       "https://knowledge-base.inspire.ec.europa.eu/profiles/contrib/ewcms/modules/ewcms_seo/assets/images/ec-socialmedia-fallback.png"@en;
+        <https://ogp.me/ns#image:alt>   "INSPIRE Knowledge Base"@en;
+        <https://ogp.me/ns#site_name>   "INSPIRE Knowledge Base"@en;
+        <https://ogp.me/ns#title>       "INSPIRE Data Specification on Environmental Monitoring Facilities – Technical Guidelines"@en;
+        <https://ogp.me/ns#type>        "website"@en;
+        <https://ogp.me/ns#updated_time>
+                "2024-01-31T13:00:00+0100"@en;
+        <https://ogp.me/ns#url>         "https://knowledge-base.inspire.ec.europa.eu/publications/inspire-data-specification-environmental-monitoring-facilities-technical-guidelines_en"@en .
