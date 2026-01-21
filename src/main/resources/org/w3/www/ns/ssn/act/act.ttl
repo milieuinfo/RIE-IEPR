@@ -1,0 +1,565 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix geo: <http://www.opengis.net/ont/geosparql#>.
+@prefix geometry: <https://data.omgeving.vlaanderen.be/id/geometry/>.
+@prefix conc_p: <https://data.omgeving.vlaanderen.be/id/concept/procedure/>.
+@prefix juridische_categorie: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>.
+@prefix ruimtelijke_eenheid: <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>.
+@prefix adms: <http://www.w3.org/ns/adms#>.
+@prefix concept: <https://data.omgeving.vlaanderen.be/id/concept/>.
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@prefix eurovoc: <http://eurovoc.europa.eu/>.
+@prefix perceel: <https://data.vlaanderen.be/ns/perceel#>.
+@prefix identificator: <https://data.omgeving.vlaanderen.be/id/identificator/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix locn: <http://www.w3.org/ns/locn#>.
+@prefix omv: <https://data.vlaanderen.be/ns/omgevingsvergunning#>.
+@prefix project: <https://data.omgeving.vlaanderen.be/id/project/>.
+@prefix voorwerp: <https://data.omgeving.vlaanderen.be/id/voorwerp/>.
+@prefix omv_id: <https://data.omgeving.vlaanderen.be/id/concept/identifier/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix inh: <https://data.omgeving.vlaanderen.be/id/inhoud/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix cpsv: <http://purl.org/vocab/cpsv#>.
+@prefix m8g: <http://data.europa.eu/m8g/>.
+@prefix frbr: <http://purl.org/vocab/frbr/core#>.
+@prefix rechtssubject: <https://data.omgeving.vlaanderen.be/id/rechtssubject/>.
+@prefix procedurestap: <https://data.omgeving.vlaanderen.be/id/procedurestap/>.
+@prefix zaakhandeling: <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>.
+@prefix identifier: <https://data.omgeving.vlaanderen.be/id/identifier/>.
+@prefix zaak: <https://data.omgeving.vlaanderen.be/id/zaak/>.
+@prefix crs: <http://www.opengis.net/def/crs/EPSG/0/>.
+@prefix location: <https://data.omgeving.vlaanderen.be/id/location/>.
+@prefix activiteit: <https://data.omgeving.vlaanderen.be/id/activiteit/>.
+@prefix stedenbouwkundig_code: <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>.
+@prefix handeling_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>.
+@prefix functie_tobe_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>.
+@prefix functie_tobe_cascade: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>.
+@prefix voorwerptype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>.
+@prefix iioa_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>.
+@prefix actuele_rubriek_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>.
+@prefix actuele_rubriek: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>.
+@prefix stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>.
+@prefix terreinobjecttype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>.
+@prefix verkavelingtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>.
+@prefix verkavelingtype_code2: <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>.
+@prefix conceptscheme: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<http://purl.org/vocommons/voaf#Vocabulary> a owl:Class.
+<http://xmlns.com/foaf/0.1/Agent> a owl:Class.
+<http://xmlns.com/foaf/0.1/name> a owl:AnnotationProperty.
+dct:title a owl:AnnotationProperty.
+dct:description a owl:AnnotationProperty.
+dct:rights a owl:AnnotationProperty.
+dct:license a owl:AnnotationProperty.
+dct:created a owl:AnnotationProperty.
+dct:creator a owl:AnnotationProperty.
+skos:definition a owl:AnnotationProperty.
+skos:example a owl:AnnotationProperty.
+<http://purl.org/vocab/vann/preferredNamespacePrefix> a owl:AnnotationProperty.
+<http://purl.org/vocab/vann/preferredNamespaceUri> a owl:AnnotationProperty.
+<http://www.w3.org/ns/ssn/> a owl:Ontology, <http://purl.org/vocommons/voaf#Vocabulary>;
+    dct:title "Semantic Sensor Network Ontology"@en;
+    dct:description "This ontology describes sensors, actuators and observations, and related concepts. It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports."@en.
+_:n3-2251 a <http://xmlns.com/foaf/0.1/Agent>;
+    <http://xmlns.com/foaf/0.1/name> "W3C/OGC Spatial Data on the Web Working Group"@en.
+<http://www.w3.org/ns/ssn/> dct:creator -2251;
+    dct:rights "Copyright 2017 W3C/OGC.";
+    dct:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document>, <http://www.opengeospatial.org/ogc/Software>;
+    owl:versionInfo "New modular version of the SSN ontology. \n\nThis ontology was originally developed in 2009-2011 by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/. The ontology was revised and modularized in 2015-2017 by the W3C/OGC Spatial Data on the Web Working Group, see: https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology. \n\nIn particular, (a) the scope is extended to include actuation and sampling; (b) the core concepts and properties are factored out into the SOSA ontology. The SSN ontology imports SOSA and adds formal axiomatization consistent with the text definitions in SOSA, and adds classes and properties to accommodate the scope of the original SSN ontology. "@en;
+    rdfs:comment "Please report any errors to the W3C Spatial Data on the Web Working Group via the SDW WG Public List public-sdw-wg@w3.org"@en;
+    rdfs:seeAlso <https://www.w3.org/2015/spatial/wiki/Semantic_Sensor_Network_Ontology>;
+    dct:created "2017-04-17"^^xsd:date;
+    <http://purl.org/vocab/vann/preferredNamespacePrefix> "ssn";
+    <http://purl.org/vocab/vann/preferredNamespaceUri> "http://www.w3.org/ns/ssn/";
+    owl:imports <http://www.w3.org/ns/sosa/>.
+_:n3-2252 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasProperty>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/FeatureOfInterest> rdfs:subClassOf 252.
+_:n3-2253 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasProperty>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Property>.
+<http://www.w3.org/ns/sosa/FeatureOfInterest> rdfs:subClassOf 253.
+_:n3-2254 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasSample>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sample>.
+<http://www.w3.org/ns/sosa/FeatureOfInterest> rdfs:subClassOf 254;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/ssn/Property> a owl:Class;
+    rdfs:label "Property"@en;
+    skos:definition "A quality of an entity. An aspect of an entity that is intrinsic to and cannot exist without the entity."@en;
+    rdfs:comment "A quality of an entity. An aspect of an entity that is intrinsic to and cannot exist without the entity."@en.
+_:n3-2255 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/isPropertyOf>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/FeatureOfInterest>.
+<http://www.w3.org/ns/ssn/Property> rdfs:subClassOf 255;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/hasProperty> a owl:ObjectProperty;
+    rdfs:label "has property"@en;
+    skos:definition "Relation between an entity and a Property of that entity."@en;
+    rdfs:comment "Relation between an entity and a Property of that entity."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/isPropertyOf>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/isPropertyOf> a owl:ObjectProperty;
+    rdfs:label "is property of"@en;
+    skos:definition "Relation between a Property and the entity it belongs to."@en;
+    rdfs:comment "Relation between a Property and the entity it belongs to."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/hasProperty>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/sosa/ObservableProperty> rdfs:subClassOf <http://www.w3.org/ns/ssn/Property>.
+_:n3-2256 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isObservedBy>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sensor>.
+<http://www.w3.org/ns/sosa/ObservableProperty> rdfs:subClassOf 256.
+_:n3-2257 a owl:Restriction.
+_:n3-2258 owl:inverseOf <http://www.w3.org/ns/sosa/observedProperty>.
+n3-2257 owl:onProperty n3-2258;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Observation>.
+<http://www.w3.org/ns/sosa/ObservableProperty> rdfs:subClassOf 257.
+_:n3-2259 a owl:Restriction.
+_:n3-2260 owl:inverseOf <http://www.w3.org/ns/ssn/isProxyFor>.
+n3-2259 owl:onProperty n3-2260;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Stimulus>.
+<http://www.w3.org/ns/sosa/ObservableProperty> rdfs:subClassOf 259;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/ActuatableProperty> rdfs:subClassOf <http://www.w3.org/ns/ssn/Property>.
+_:n3-2261 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isActedOnBy>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Actuation>.
+<http://www.w3.org/ns/sosa/ActuatableProperty> rdfs:subClassOf 261;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Sample> rdfs:subClassOf <http://www.w3.org/ns/sosa/FeatureOfInterest>, <http://www.w3.org/ns/sosa/Result>.
+_:n3-2262 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isResultOf>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sample> rdfs:subClassOf 262.
+_:n3-2263 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isSampleOf>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/FeatureOfInterest>.
+<http://www.w3.org/ns/sosa/Sample> rdfs:subClassOf 263.
+_:n3-2264 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isSampleOf>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sample> rdfs:subClassOf 264.
+_:n3-2265 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isResultOf>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sampling>.
+<http://www.w3.org/ns/sosa/Sample> rdfs:subClassOf 265;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/hasSample> a owl:InverseFunctionalProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isSampleOf> a owl:FunctionalProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+_:n3-2266 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hosts>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/System>.
+<http://www.w3.org/ns/sosa/Platform> rdfs:subClassOf 266.
+_:n3-2267 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/inDeployment>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Deployment>.
+<http://www.w3.org/ns/sosa/Platform> rdfs:subClassOf 267;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+_:n3-2268 rdf:first <http://www.w3.org/ns/ssn/inDeployment>;
+    rdf:rest _:n3-2269.
+n3-2269 rdf:first <http://www.w3.org/ns/ssn/deployedSystem>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/sosa/hosts> owl:propertyChainAxiom -2268;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isHostedBy> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+_:n3-2270 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasInput>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Input>.
+<http://www.w3.org/ns/sosa/Procedure> rdfs:subClassOf 270.
+_:n3-2271 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasOutput>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Output>.
+<http://www.w3.org/ns/sosa/Procedure> rdfs:subClassOf 271.
+_:n3-2272 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/implementedBy>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/System>.
+<http://www.w3.org/ns/sosa/Procedure> rdfs:subClassOf 272;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/ssn/hasInput> a owl:ObjectProperty;
+    rdfs:label "has input"@en;
+    skos:definition "Relation between a Procedure and an Input to it."@en;
+    rdfs:comment "Relation between a Procedure and an Input to it."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/Input> a owl:Class;
+    rdfs:label "Input"@en;
+    skos:definition "Any information that is provided to a Procedure for its use."@en;
+    rdfs:comment "Any information that is provided to a Procedure for its use."@en.
+_:n3-2273 a owl:Restriction.
+_:n3-2274 owl:inverseOf <http://www.w3.org/ns/ssn/hasInput>.
+n3-2273 owl:onProperty n3-2274;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/ssn/Input> rdfs:subClassOf 273.
+_:n3-2275 a owl:Restriction.
+_:n3-2276 owl:inverseOf <http://www.w3.org/ns/ssn/hasInput>.
+n3-2275 owl:onProperty n3-2276;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/ssn/Input> rdfs:subClassOf 275;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/hasOutput> a owl:ObjectProperty;
+    rdfs:label "has output"@en;
+    skos:definition "Relation between a Procedure and an Output of it."@en;
+    rdfs:comment "Relation between a Procedure and an Output of it."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/Output> a owl:Class;
+    rdfs:label "Output"@en;
+    skos:definition "Any information that is reported from a Procedure."@en;
+    rdfs:comment "Any information that is reported from a Procedure."@en.
+_:n3-2277 a owl:Restriction.
+_:n3-2278 owl:inverseOf <http://www.w3.org/ns/ssn/hasOutput>.
+n3-2277 owl:onProperty n3-2278;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/ssn/Output> rdfs:subClassOf 277.
+_:n3-2279 a owl:Restriction.
+_:n3-2280 owl:inverseOf <http://www.w3.org/ns/ssn/hasOutput>.
+n3-2279 owl:onProperty n3-2280;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/ssn/Output> rdfs:subClassOf 279;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/implements> a owl:ObjectProperty;
+    rdfs:label "implements"@en;
+    skos:definition "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en;
+    rdfs:comment "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en;
+    skos:example "For example, the relationship between a sensor and the scientific measuring Procedure via which it senses."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/implementedBy>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/implementedBy> a owl:ObjectProperty;
+    rdfs:label "implemented by"@en;
+    skos:definition "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en;
+    rdfs:comment "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en;
+    skos:example "For example, the relationship between a scientific measuring Procedure and a sensor that senses via that Procedure."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/implements>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/sosa/Sensor> rdfs:subClassOf <http://www.w3.org/ns/ssn/System>.
+_:n3-2281 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/implements>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sensor> rdfs:subClassOf 281.
+_:n3-2282 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/observes>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/ObservableProperty>.
+<http://www.w3.org/ns/sosa/Sensor> rdfs:subClassOf 282.
+_:n3-2283 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeObservation>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Observation>.
+<http://www.w3.org/ns/sosa/Sensor> rdfs:subClassOf 283.
+_:n3-2284 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/detects>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Stimulus>.
+<http://www.w3.org/ns/sosa/Sensor> rdfs:subClassOf 284;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/observes> rdfs:subPropertyOf <http://www.w3.org/ns/ssn/forProperty>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isObservedBy> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Actuator> rdfs:subClassOf <http://www.w3.org/ns/ssn/System>.
+_:n3-2285 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/implements>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuator> rdfs:subClassOf 285.
+_:n3-2286 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/forProperty>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/ActuatableProperty>.
+<http://www.w3.org/ns/sosa/Actuator> rdfs:subClassOf 286.
+_:n3-2287 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeActuation>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Actuation>.
+<http://www.w3.org/ns/sosa/Actuator> rdfs:subClassOf 287;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Sampler> rdfs:subClassOf <http://www.w3.org/ns/ssn/System>.
+_:n3-2288 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/implements>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sampler> rdfs:subClassOf 288.
+_:n3-2289 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeSampling>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sampling>.
+<http://www.w3.org/ns/sosa/Sampler> rdfs:subClassOf 289;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+_:n3-2290 rdf:first <http://www.w3.org/ns/sosa/madeBySensor>;
+    rdf:rest _:n3-2291.
+n3-2291 rdf:first <http://www.w3.org/ns/ssn/implements>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/sosa/usedProcedure> owl:propertyChainAxiom -2290.
+_:n3-2292 rdf:first <http://www.w3.org/ns/sosa/madeByActuator>;
+    rdf:rest _:n3-2293.
+n3-2293 rdf:first <http://www.w3.org/ns/ssn/implements>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/sosa/usedProcedure> owl:propertyChainAxiom -2292.
+_:n3-2294 rdf:first <http://www.w3.org/ns/sosa/madeBySampler>;
+    rdf:rest _:n3-2295.
+n3-2295 rdf:first <http://www.w3.org/ns/ssn/implements>;
+    rdf:rest rdf:nil.
+<http://www.w3.org/ns/sosa/usedProcedure> owl:propertyChainAxiom -2294;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/hasFeatureOfInterest> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isFeatureOfInterestOf> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Observation> a owl:Class.
+_:n3-2296 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeBySensor>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 296.
+_:n3-2297 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeBySensor>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sensor>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 297.
+_:n3-2298 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/usedProcedure>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 298.
+_:n3-2299 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 299.
+_:n3-2300 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/FeatureOfInterest>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 300.
+_:n3-2301 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/observedProperty>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 301.
+_:n3-2302 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/observedProperty>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/ObservableProperty>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 302.
+_:n3-2303 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/wasOriginatedBy>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 303.
+_:n3-2304 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/wasOriginatedBy>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Stimulus>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 304.
+_:n3-2305 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/phenomenonTime>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 305.
+_:n3-2306 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 306.
+_:n3-2307 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Result>.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 307.
+_:n3-2308 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/resultTime>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Observation> rdfs:subClassOf 308;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeObservation> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeBySensor> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/observedProperty> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Actuation> a owl:Class.
+_:n3-2309 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeByActuator>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 309.
+_:n3-2310 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeByActuator>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Actuator>.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 310.
+_:n3-2311 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/usedProcedure>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 311.
+_:n3-2312 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 312.
+_:n3-2313 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/FeatureOfInterest>.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 313.
+_:n3-2314 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/actsOnProperty>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 314.
+_:n3-2315 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/actsOnProperty>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/ActuatableProperty>.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 315.
+_:n3-2316 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 316.
+_:n3-2317 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Result>.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 317.
+_:n3-2318 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/resultTime>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Actuation> rdfs:subClassOf 318;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeActuation> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeByActuator> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/actsOnProperty> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isActedOnBy> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/Sampling> a owl:Class.
+_:n3-2319 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeBySampler>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 319.
+_:n3-2320 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/madeBySampler>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sampler>.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 320.
+_:n3-2321 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/usedProcedure>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 321.
+_:n3-2322 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 322.
+_:n3-2323 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasFeatureOfInterest>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/FeatureOfInterest>.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 323.
+_:n3-2324 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 324.
+_:n3-2325 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/hasResult>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sample>.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 325.
+_:n3-2326 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/resultTime>;
+    owl:cardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Sampling> rdfs:subClassOf 326;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeSampling> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/madeBySampler> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/ssn/Stimulus> a owl:Class;
+    rdfs:label "Stimulus"@en;
+    skos:definition "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en;
+    rdfs:comment "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en.
+_:n3-2327 a owl:Restriction.
+_:n3-2328 owl:inverseOf <http://www.w3.org/ns/ssn/wasOriginatedBy>.
+n3-2327 owl:onProperty n3-2328;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Observation>.
+<http://www.w3.org/ns/ssn/Stimulus> rdfs:subClassOf 327.
+_:n3-2329 a owl:Restriction.
+_:n3-2330 owl:inverseOf <http://www.w3.org/ns/ssn/detects>.
+n3-2329 owl:onProperty n3-2330;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Sensor>.
+<http://www.w3.org/ns/ssn/Stimulus> rdfs:subClassOf 329.
+_:n3-2331 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/isProxyFor>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/ObservableProperty>.
+<http://www.w3.org/ns/ssn/Stimulus> rdfs:subClassOf 331;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/wasOriginatedBy> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:label "was originated by"@en;
+    skos:definition "Relation between an Observation and the Stimulus that originated it."@en;
+    rdfs:comment "Relation between an Observation and the Stimulus that originated it."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/detects> a owl:ObjectProperty;
+    rdfs:label "detects"@en;
+    skos:definition "A relation from a Sensor to the Stimulus that the Sensor detects. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en;
+    rdfs:comment "A relation from a Sensor to the Stimulus that the Sensor detects. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/isProxyFor> a owl:ObjectProperty;
+    rdfs:label "is proxy for"@en;
+    skos:definition "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en;
+    rdfs:comment "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en;
+    skos:example "For example, the expansion of quicksilver is a stimulus that serves as a proxy for some temperature property. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for the wind speed."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+_:n3-2332 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isResultOf>;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger.
+<http://www.w3.org/ns/sosa/Result> rdfs:subClassOf 332;
+    rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/hasResult> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/isResultOf> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/hasSimpleResult> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/resultTime> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/sosa/phenomenonTime> rdfs:isDefinedBy <http://www.w3.org/ns/sosa/>.
+<http://www.w3.org/ns/ssn/System> a owl:Class;
+    rdfs:label "System"@en;
+    skos:definition "System is a unit of abstraction for pieces of infrastructure that implement Procedures. A System may have components, its subsystems, which are other systems."@en;
+    rdfs:comment "System is a unit of abstraction for pieces of infrastructure that implement Procedures. A System may have components, its subsystems, which are other systems."@en.
+_:n3-2333 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/sosa/isHostedBy>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Platform>.
+<http://www.w3.org/ns/ssn/System> rdfs:subClassOf 333.
+_:n3-2334 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/implements>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Procedure>.
+<http://www.w3.org/ns/ssn/System> rdfs:subClassOf 334.
+_:n3-2335 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasSubSystem>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/System>.
+<http://www.w3.org/ns/ssn/System> rdfs:subClassOf 335.
+_:n3-2336 a owl:Restriction.
+_:n3-2337 owl:inverseOf <http://www.w3.org/ns/ssn/hasSubSystem>.
+n3-2336 owl:onProperty n3-2337;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/System>.
+<http://www.w3.org/ns/ssn/System> rdfs:subClassOf 336.
+_:n3-2338 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/hasDeployment>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Deployment>.
+<http://www.w3.org/ns/ssn/System> rdfs:subClassOf 338;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/hasSubSystem> a owl:ObjectProperty;
+    rdfs:label "has subsystem"@en;
+    skos:definition "Relation between a System and its component parts."@en;
+    rdfs:comment "Relation between a System and its component parts."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/Deployment> a owl:Class;
+    rdfs:label "Deployment"@en;
+    skos:definition "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en;
+    rdfs:comment "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en;
+    skos:example "For example, a temperature Sensor deployed on a wall, or a whole network of Sensors deployed for an Observation campaign."@en.
+_:n3-2339 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/deployedSystem>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/System>.
+<http://www.w3.org/ns/ssn/Deployment> rdfs:subClassOf 339.
+_:n3-2340 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/deployedOnPlatform>;
+    owl:allValuesFrom <http://www.w3.org/ns/sosa/Platform>.
+<http://www.w3.org/ns/ssn/Deployment> rdfs:subClassOf 340.
+_:n3-2341 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/ssn/forProperty>;
+    owl:allValuesFrom <http://www.w3.org/ns/ssn/Property>.
+<http://www.w3.org/ns/ssn/Deployment> rdfs:subClassOf 341;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/deployedSystem> a owl:ObjectProperty;
+    rdfs:label "deployed system"@en;
+    skos:definition "Relation between a Deployment and a deployed System."@en;
+    rdfs:comment "Relation between a Deployment and a deployed System."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/hasDeployment>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/hasDeployment> a owl:ObjectProperty;
+    rdfs:label "has deployment"@en;
+    skos:definition "Relation between a System and a Deployment, recording that the System is deployed in that Deployment."@en;
+    rdfs:comment "Relation between a System and a Deployment, recording that the System is deployed in that Deployment."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/deployedSystem>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/deployedOnPlatform> a owl:ObjectProperty;
+    rdfs:label "deployed on platform"@en;
+    skos:definition "Relation between a Deployment and the Platform on which the Systems are deployed."@en;
+    rdfs:comment "Relation between a Deployment and the Platform on which the Systems are deployed."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/inDeployment>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/inDeployment> a owl:ObjectProperty;
+    rdfs:label "in deployment"@en;
+    skos:definition "Relation between a Platform and a Deployment, meaning that the deployedSystems of the Deployment are hosted on the Platform."@en;
+    rdfs:comment "Relation between a Platform and a Deployment, meaning that the deployedSystems of the Deployment are hosted on the Platform."@en;
+    skos:example "For example, a relation between a buoy and a deployment of several Sensors."@en;
+    owl:inverseOf <http://www.w3.org/ns/ssn/deployedOnPlatform>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.
+<http://www.w3.org/ns/ssn/forProperty> a owl:ObjectProperty;
+    rdfs:label "for property"@en;
+    skos:definition "A relation between some aspect of an entity and a Property."@en;
+    rdfs:comment "A relation between some aspect of an entity and a Property."@en;
+    skos:example "For example, from a Sensor to the properties it can observe; from an Actuator to the properties it can act on; from a Deployment to the properties it was installed to observe or act on; from a SystemCapability to the Property the capability is described for."@en;
+    rdfs:isDefinedBy <http://www.w3.org/ns/ssn/>.

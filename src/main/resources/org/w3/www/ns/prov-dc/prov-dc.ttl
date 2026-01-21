@@ -1,0 +1,125 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix geo: <http://www.opengis.net/ont/geosparql#>.
+@prefix geometry: <https://data.omgeving.vlaanderen.be/id/geometry/>.
+@prefix conc_p: <https://data.omgeving.vlaanderen.be/id/concept/procedure/>.
+@prefix juridische_categorie: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>.
+@prefix ruimtelijke_eenheid: <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>.
+@prefix adms: <http://www.w3.org/ns/adms#>.
+@prefix concept: <https://data.omgeving.vlaanderen.be/id/concept/>.
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@prefix eurovoc: <http://eurovoc.europa.eu/>.
+@prefix perceel: <https://data.vlaanderen.be/ns/perceel#>.
+@prefix identificator: <https://data.omgeving.vlaanderen.be/id/identificator/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix locn: <http://www.w3.org/ns/locn#>.
+@prefix omv: <https://data.vlaanderen.be/ns/omgevingsvergunning#>.
+@prefix project: <https://data.omgeving.vlaanderen.be/id/project/>.
+@prefix voorwerp: <https://data.omgeving.vlaanderen.be/id/voorwerp/>.
+@prefix omv_id: <https://data.omgeving.vlaanderen.be/id/concept/identifier/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix inh: <https://data.omgeving.vlaanderen.be/id/inhoud/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix cpsv: <http://purl.org/vocab/cpsv#>.
+@prefix m8g: <http://data.europa.eu/m8g/>.
+@prefix frbr: <http://purl.org/vocab/frbr/core#>.
+@prefix rechtssubject: <https://data.omgeving.vlaanderen.be/id/rechtssubject/>.
+@prefix procedurestap: <https://data.omgeving.vlaanderen.be/id/procedurestap/>.
+@prefix zaakhandeling: <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>.
+@prefix identifier: <https://data.omgeving.vlaanderen.be/id/identifier/>.
+@prefix zaak: <https://data.omgeving.vlaanderen.be/id/zaak/>.
+@prefix crs: <http://www.opengis.net/def/crs/EPSG/0/>.
+@prefix location: <https://data.omgeving.vlaanderen.be/id/location/>.
+@prefix activiteit: <https://data.omgeving.vlaanderen.be/id/activiteit/>.
+@prefix stedenbouwkundig_code: <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>.
+@prefix handeling_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>.
+@prefix functie_tobe_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>.
+@prefix functie_tobe_cascade: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>.
+@prefix voorwerptype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>.
+@prefix iioa_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>.
+@prefix actuele_rubriek_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>.
+@prefix actuele_rubriek: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>.
+@prefix stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>.
+@prefix terreinobjecttype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>.
+@prefix verkavelingtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>.
+@prefix verkavelingtype_code2: <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>.
+@prefix conceptscheme: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<http://www.w3.org/ns/prov-dc#> a owl:Ontology;
+    rdfs:label "Dublin Core extensions of the W3C PROVenance Interchange Ontology (PROV-O)"@en;
+    owl:versionInfo "2013-04-30"@en;
+    owl:versionIRI <http://www.w3.org/ns/prov-dc-20130430>;
+    rdfs:seeAlso <http://www.w3.org/TR/2013/NOTE-prov-dc-20130430/>, <http://www.w3.org/ns/prov>;
+    rdfs:comment "This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page).\n\nIf you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-request@w3.org, archives http://lists.w3.org/Archives/Public/public-prov-comments/). All feedback is welcome."@en;
+    owl:imports <http://www.w3.org/ns/prov-o#>;
+    <http://www.w3.org/ns/prov#alternateOf> <http://www.w3.org/ns/prov-dc-refinements#>;
+    <http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.w3.org/ns/prov-dc-refinements#>;
+    frbr:abridgement <http://www.w3.org/ns/prov-dc-refinements#>;
+    frbr:complement <http://www.w3.org/ns/prov-dc-directmappings#>.
+<http://www.w3.org/ns/prov#Publish> a owl:Class;
+    rdfs:label "Publish"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the publication of a resource"@en.
+<http://www.w3.org/ns/prov#Contribute> a owl:Class;
+    rdfs:label "Contribute"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies any contribution of an agent to a resource."@en.
+<http://www.w3.org/ns/prov#Create> a owl:Class;
+    rdfs:label "Create"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Contribute>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the creation of a resource"@en.
+<http://www.w3.org/ns/prov#RightsAssignment> a owl:Class;
+    rdfs:label "RightsAssignment"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the rights assignment of a resource."@en.
+<http://www.w3.org/ns/prov#Modify> a owl:Class;
+    rdfs:label "Modify"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the modification of a resource."@en.
+<http://www.w3.org/ns/prov#Accept> a owl:Class;
+    rdfs:label "Accept"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the acceptance of a resource (e.g., an article in a conference)"@en.
+<http://www.w3.org/ns/prov#Copyright> a owl:Class;
+    rdfs:label "Copyright"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the Copyrighting activity associated to a resource."@en.
+<http://www.w3.org/ns/prov#Submit> a owl:Class;
+    rdfs:label "Submit"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the issuance (e.g., publication) of a resource."@en.
+<http://www.w3.org/ns/prov#Replace> a owl:Class;
+    rdfs:label "Replace"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Activity that identifies the replacement of a resource."@en.
+<http://www.w3.org/ns/prov#Publisher> a owl:Class;
+    rdfs:label "Publisher"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Role>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Role with the function of publishing a resource. The Agent assigned to this role is associated with a Publish Activity"@en.
+<http://www.w3.org/ns/prov#Contributor> a owl:Class;
+    rdfs:label "Contributor"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Role>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Role with the function of having responsibility for making contributions to a resource. The Agent assigned to this role is associated with a Modify or Create Activities"@en.
+<http://www.w3.org/ns/prov#Creator> a owl:Class;
+    rdfs:label "Creator"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Contributor>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Role with the function of creating a resource. The Agent assigned to this role is associated with a Create Activity"@en.
+<http://www.w3.org/ns/prov#RightsHolder> a owl:Class;
+    rdfs:label "RightsHolder"@en;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Role>;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov-dc#>;
+    <http://www.w3.org/ns/prov#definition> "Role with the function of owning or managing rights over a resource. The Agent assigned to this role is associated with a RightsAssignment Activity"@en.

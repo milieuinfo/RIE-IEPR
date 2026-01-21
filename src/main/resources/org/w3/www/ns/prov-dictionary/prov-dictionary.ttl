@@ -1,0 +1,244 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix geo: <http://www.opengis.net/ont/geosparql#>.
+@prefix geometry: <https://data.omgeving.vlaanderen.be/id/geometry/>.
+@prefix conc_p: <https://data.omgeving.vlaanderen.be/id/concept/procedure/>.
+@prefix juridische_categorie: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>.
+@prefix ruimtelijke_eenheid: <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>.
+@prefix adms: <http://www.w3.org/ns/adms#>.
+@prefix concept: <https://data.omgeving.vlaanderen.be/id/concept/>.
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@prefix eurovoc: <http://eurovoc.europa.eu/>.
+@prefix perceel: <https://data.vlaanderen.be/ns/perceel#>.
+@prefix identificator: <https://data.omgeving.vlaanderen.be/id/identificator/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix locn: <http://www.w3.org/ns/locn#>.
+@prefix omv: <https://data.vlaanderen.be/ns/omgevingsvergunning#>.
+@prefix project: <https://data.omgeving.vlaanderen.be/id/project/>.
+@prefix voorwerp: <https://data.omgeving.vlaanderen.be/id/voorwerp/>.
+@prefix omv_id: <https://data.omgeving.vlaanderen.be/id/concept/identifier/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix inh: <https://data.omgeving.vlaanderen.be/id/inhoud/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix cpsv: <http://purl.org/vocab/cpsv#>.
+@prefix m8g: <http://data.europa.eu/m8g/>.
+@prefix frbr: <http://purl.org/vocab/frbr/core#>.
+@prefix rechtssubject: <https://data.omgeving.vlaanderen.be/id/rechtssubject/>.
+@prefix procedurestap: <https://data.omgeving.vlaanderen.be/id/procedurestap/>.
+@prefix zaakhandeling: <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>.
+@prefix identifier: <https://data.omgeving.vlaanderen.be/id/identifier/>.
+@prefix zaak: <https://data.omgeving.vlaanderen.be/id/zaak/>.
+@prefix crs: <http://www.opengis.net/def/crs/EPSG/0/>.
+@prefix location: <https://data.omgeving.vlaanderen.be/id/location/>.
+@prefix activiteit: <https://data.omgeving.vlaanderen.be/id/activiteit/>.
+@prefix stedenbouwkundig_code: <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>.
+@prefix handeling_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>.
+@prefix functie_tobe_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>.
+@prefix functie_tobe_cascade: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>.
+@prefix voorwerptype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>.
+@prefix iioa_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>.
+@prefix actuele_rubriek_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>.
+@prefix actuele_rubriek: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>.
+@prefix stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>.
+@prefix terreinobjecttype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>.
+@prefix verkavelingtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>.
+@prefix verkavelingtype_code2: <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>.
+@prefix conceptscheme: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<http://www.w3.org/ns/prov-dictionary#> a owl:Ontology;
+    rdfs:comment "This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page). \r\n\r\nIf you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-request@w3.org, archives http://lists.w3.org/Archives/Public/public-prov-comments/). All feedback is welcome."@en;
+    rdfs:label "W3C PROVenance Interchange Ontology (PROV-O) Dictionary Extension"@en;
+    rdfs:seeAlso <http://www.w3.org/TR/prov-dictionary/>, <http://www.w3.org/ns/prov>.
+<http://www.w3.org/ns/prov#> a owl:Ontology.
+<http://www.w3.org/ns/prov#Dictionary> a owl:Class;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "Dictionary";
+    <http://www.w3.org/ns/prov#definition> "A dictionary is an entity that provides a structure to some constituents, which are themselves entities. These constituents are said to be member of the dictionary.";
+    rdfs:comment "This concept allows for the provenance of the dictionary, but also of its constituents to be expressed. Such a notion of dictionary corresponds to a wide variety of concrete data structures, such as a maps or associative arrays.", "A given dictionary forms a given structure for its members. A different structure (obtained either by insertion or removal of members) constitutes a different dictionary.";
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-conceptual-definition"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#EmptyDictionary> a owl:Class;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "Empty Dictionary";
+    <http://www.w3.org/ns/prov#definition> "An empty dictionary (i.e. has no members).";
+    rdfs:subClassOf <http://www.w3.org/ns/prov#EmptyCollection>, <http://www.w3.org/ns/prov#Dictionary>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-conceptual-definition"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#KeyEntityPair> a owl:Class;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "Key-Entity Pair";
+    <http://www.w3.org/ns/prov#definition> "A key-entity pair. Part of a prov:Dictionary through prov:hadDictionaryMember. The key is any RDF Literal, the value is a prov:Entity.".
+_:n3-74 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#pairKey>;
+    owl:cardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#KeyEntityPair> rdfs:subClassOf 4.
+_:n3-75 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#pairEntity>;
+    owl:cardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#KeyEntityPair> rdfs:subClassOf 5;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#Insertion> a owl:Class;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "Insertion";
+    <http://www.w3.org/ns/prov#definition> "Insertion is a derivation that transforms a dictionary into another, by insertion of one or more key-entity pairs.";
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Derivation>.
+_:n3-76 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#dictionary>;
+    owl:cardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#Insertion> rdfs:subClassOf 6.
+_:n3-77 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#insertedKeyEntityPair>;
+    owl:minCardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#Insertion> rdfs:subClassOf 7;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#unqualifiedForm> <http://www.w3.org/ns/prov#derivedByInsertionFrom>.
+<http://www.w3.org/ns/prov#Removal> a owl:Class;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "Removal";
+    <http://www.w3.org/ns/prov#definition> "Removal is a derivation that transforms a dictionary into another, by removing one or more key-entity pairs.";
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Derivation>.
+_:n3-78 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#dictionary>;
+    owl:cardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#Removal> rdfs:subClassOf 8.
+_:n3-79 a owl:Restriction;
+    owl:onProperty <http://www.w3.org/ns/prov#removedKey>;
+    owl:minCardinality "1"^^xsd:int.
+<http://www.w3.org/ns/prov#Removal> rdfs:subClassOf 9;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#unqualifiedForm> <http://www.w3.org/ns/prov#derivedByRemovalFrom>.
+<http://www.w3.org/ns/prov#dictionary> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "dictionary";
+    <http://www.w3.org/ns/prov#definition> "The property used by a prov:Insertion and prov:Removal to cite the prov:Dictionary that was prov:derivedByInsertionFrom or prov:derivedByRemovalFrom another dictionary.";
+    rdfs:subPropertyOf <http://www.w3.org/ns/prov#entity>;
+    rdfs:domain <http://www.w3.org/ns/prov#Insertion>, <http://www.w3.org/ns/prov#Removal>;
+    rdfs:range <http://www.w3.org/ns/prov#Dictionary>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI, "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI, "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#derivedByInsertionFrom> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "derivedByInsertionFrom";
+    <http://www.w3.org/ns/prov#definition> "The dictionary was derived from the other by insertion. prov:qualifiedInsertion shows details of the insertion, in particular the inserted key-entity pairs.";
+    rdfs:subPropertyOf <http://www.w3.org/ns/prov#wasDerivedFrom>;
+    rdfs:domain <http://www.w3.org/ns/prov#Dictionary>;
+    rdfs:range <http://www.w3.org/ns/prov#Dictionary>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#derivedByRemovalFrom> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "derivedByRemovalFrom";
+    <http://www.w3.org/ns/prov#definition> "The dictionary was derived from the other by removal. prov:qualifiedRemoval shows details of the removal, in particular the removed key-entity pairs.";
+    rdfs:subPropertyOf <http://www.w3.org/ns/prov#wasDerivedFrom>;
+    rdfs:domain <http://www.w3.org/ns/prov#Dictionary>;
+    rdfs:range <http://www.w3.org/ns/prov#Dictionary>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#insertedKeyEntityPair> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "insertedKeyEntityPair";
+    <http://www.w3.org/ns/prov#definition> "An object property to refer to the prov:KeyEntityPair inserted into a prov:Dictionary.";
+    rdfs:domain <http://www.w3.org/ns/prov#Insertion>;
+    rdfs:range <http://www.w3.org/ns/prov#KeyEntityPair>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#hadDictionaryMember> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "hadDictionaryMember";
+    <http://www.w3.org/ns/prov#definition> "Describes the key-entity pair that was member of a prov:Dictionary. A dictionary can have multiple members.";
+    rdfs:domain <http://www.w3.org/ns/prov#Dictionary>;
+    rdfs:range <http://www.w3.org/ns/prov#KeyEntityPair>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#pairKey> a owl:DatatypeProperty, owl:FunctionalProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "pairKey";
+    <http://www.w3.org/ns/prov#definition> "The key of a KeyEntityPair, which is an element of a prov:Dictionary.";
+    rdfs:domain <http://www.w3.org/ns/prov#KeyEntityPair>;
+    rdfs:range rdfs:Literal;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#pairEntity> a owl:ObjectProperty, owl:FunctionalProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "pairKey";
+    <http://www.w3.org/ns/prov#definition> "The value of a KeyEntityPair.";
+    rdfs:domain <http://www.w3.org/ns/prov#KeyEntityPair>;
+    rdfs:range <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-membership"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#qualifiedInsertion> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "qualifiedInsertion";
+    <http://www.w3.org/ns/prov#definition> "The dictionary was derived from the other by insertion. prov:qualifiedInsertion shows details of the insertion, in particular the inserted key-entity pairs.";
+    rdfs:subPropertyOf <http://www.w3.org/ns/prov#qualifiedDerivation>;
+    rdfs:domain <http://www.w3.org/ns/prov#Dictionary>;
+    rdfs:range <http://www.w3.org/ns/prov#Insertion>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#qualifiedRemoval> a owl:ObjectProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "qualifiedRemoval";
+    <http://www.w3.org/ns/prov#definition> "The dictionary was derived from the other by removal. prov:qualifiedRemoval shows details of the removal, in particular the removed keys.";
+    rdfs:subPropertyOf <http://www.w3.org/ns/prov#qualifiedDerivation>;
+    rdfs:domain <http://www.w3.org/ns/prov#Dictionary>;
+    rdfs:range <http://www.w3.org/ns/prov#Removal>;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.
+<http://www.w3.org/ns/prov#removedKey> a owl:DatatypeProperty;
+    rdfs:isDefinedBy <http://www.w3.org/ns/prov#>;
+    rdfs:label "removedKey";
+    <http://www.w3.org/ns/prov#definition> "The key removed in a Removal.";
+    rdfs:domain <http://www.w3.org/ns/prov#Removal>;
+    rdfs:range rdfs:Literal;
+    <http://www.w3.org/ns/prov#category> "collections";
+    <http://www.w3.org/ns/prov#component> "collections";
+    <http://www.w3.org/ns/prov#dm> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#n> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-removal"^^xsd:anyURI;
+    <http://www.w3.org/ns/prov#constraints> "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI.

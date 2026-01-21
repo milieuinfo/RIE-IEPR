@@ -1,0 +1,176 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix geo: <http://www.opengis.net/ont/geosparql#>.
+@prefix geometry: <https://data.omgeving.vlaanderen.be/id/geometry/>.
+@prefix conc_p: <https://data.omgeving.vlaanderen.be/id/concept/procedure/>.
+@prefix juridische_categorie: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/>.
+@prefix ruimtelijke_eenheid: <https://data.omgeving.vlaanderen.be/id/ruimtelijke_eenheid/>.
+@prefix adms: <http://www.w3.org/ns/adms#>.
+@prefix concept: <https://data.omgeving.vlaanderen.be/id/concept/>.
+@prefix dbo: <http://dbpedia.org/ontology/>.
+@prefix eurovoc: <http://eurovoc.europa.eu/>.
+@prefix perceel: <https://data.vlaanderen.be/ns/perceel#>.
+@prefix identificator: <https://data.omgeving.vlaanderen.be/id/identificator/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix locn: <http://www.w3.org/ns/locn#>.
+@prefix omv: <https://data.vlaanderen.be/ns/omgevingsvergunning#>.
+@prefix project: <https://data.omgeving.vlaanderen.be/id/project/>.
+@prefix voorwerp: <https://data.omgeving.vlaanderen.be/id/voorwerp/>.
+@prefix omv_id: <https://data.omgeving.vlaanderen.be/id/concept/identifier/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix inh: <https://data.omgeving.vlaanderen.be/id/inhoud/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix cpsv: <http://purl.org/vocab/cpsv#>.
+@prefix m8g: <http://data.europa.eu/m8g/>.
+@prefix frbr: <http://purl.org/vocab/frbr/core#>.
+@prefix rechtssubject: <https://data.omgeving.vlaanderen.be/id/rechtssubject/>.
+@prefix procedurestap: <https://data.omgeving.vlaanderen.be/id/procedurestap/>.
+@prefix zaakhandeling: <https://data.omgeving.vlaanderen.be/id/zaakhandeling/>.
+@prefix identifier: <https://data.omgeving.vlaanderen.be/id/identifier/>.
+@prefix zaak: <https://data.omgeving.vlaanderen.be/id/zaak/>.
+@prefix crs: <http://www.opengis.net/def/crs/EPSG/0/>.
+@prefix location: <https://data.omgeving.vlaanderen.be/id/location/>.
+@prefix activiteit: <https://data.omgeving.vlaanderen.be/id/activiteit/>.
+@prefix stedenbouwkundig_code: <https://data.omgeving.vlaanderen.be/id/concept/stedenbouwkundig_code/>.
+@prefix handeling_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/handeling_code/>.
+@prefix functie_tobe_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_code/>.
+@prefix functie_tobe_cascade: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/functie_tobe_cascade/>.
+@prefix voorwerptype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/voorwerptype_code/>.
+@prefix iioa_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/iioa_klasse/>.
+@prefix actuele_rubriek_klasse: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek_klasse/>.
+@prefix actuele_rubriek: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/actuele_rubriek/>.
+@prefix stedenbouwkundigtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/stedenbouwkundigtype_code/>.
+@prefix terreinobjecttype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/terreinobjecttype_code/>.
+@prefix verkavelingtype_code: <https://data.omgeving.vlaanderen.be/id/concept/juridische_categorie/verkavelingtype_code/>.
+@prefix verkavelingtype_code2: <https://data.omgeving.vlaanderen.be/id/concept/verkavelingtype_code/>.
+@prefix conceptscheme: <https://data.omgeving.vlaanderen.be/id/conceptscheme/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#> dc:description "This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.";
+    dc:date "2019-12-16";
+    dc:title "The RDF Concepts Vocabulary (RDF)";
+    a owl:Ontology.
+rdf:Alt rdfs:comment "The class of containers of alternatives.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "Alt";
+    rdfs:subClassOf rdfs:Container;
+    a rdfs:Class.
+rdf:Bag rdfs:comment "The class of unordered containers.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "Bag";
+    rdfs:subClassOf rdfs:Container;
+    a rdfs:Class.
+rdf:HTML rdfs:comment "The datatype of RDF literals storing fragments of HTML content";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "HTML";
+    rdfs:seeAlso <http://www.w3.org/TR/rdf11-concepts/#section-html>;
+    rdfs:subClassOf rdfs:Literal;
+    a rdfs:Datatype.
+rdf:List rdfs:comment "The class of RDF Lists.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "List";
+    rdfs:subClassOf rdfs:Resource;
+    a rdfs:Class.
+rdf:PlainLiteral rdfs:comment "The class of plain (i.e. untyped) literal values, as used in RIF and OWL 2";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "PlainLiteral";
+    rdfs:seeAlso <http://www.w3.org/TR/rdf-plain-literal/>;
+    rdfs:subClassOf rdfs:Literal;
+    a rdfs:Datatype.
+rdf:Property rdfs:comment "The class of RDF properties.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "Property";
+    rdfs:subClassOf rdfs:Resource;
+    a rdfs:Class.
+rdf:Seq rdfs:comment "The class of ordered containers.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "Seq";
+    rdfs:subClassOf rdfs:Container;
+    a rdfs:Class.
+rdf:Statement rdfs:comment "The class of RDF statements.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "Statement";
+    rdfs:subClassOf rdfs:Resource;
+    a rdfs:Class.
+rdf:XMLLiteral rdfs:comment "The datatype of XML literal values.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "XMLLiteral";
+    rdfs:subClassOf rdfs:Literal;
+    a rdfs:Datatype.
+rdf:first rdfs:comment "The first item in the subject RDF list.";
+    rdfs:domain rdf:List;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "first";
+    rdfs:range rdfs:Resource;
+    a rdf:Property.
+rdf:langString rdfs:comment "The datatype of language-tagged string values";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "langString";
+    rdfs:seeAlso <http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal>;
+    rdfs:subClassOf rdfs:Literal;
+    a rdfs:Datatype.
+rdf:nil rdfs:comment "The empty list, with no items in it. If the rest of a list is nil then the list has no more items in it.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "nil";
+    a rdf:List.
+rdf:object rdfs:comment "The object of the subject RDF statement.";
+    rdfs:domain rdf:Statement;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "object";
+    rdfs:range rdfs:Resource;
+    a rdf:Property.
+rdf:predicate rdfs:comment "The predicate of the subject RDF statement.";
+    rdfs:domain rdf:Statement;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "predicate";
+    rdfs:range rdfs:Resource;
+    a rdf:Property.
+rdf:rest rdfs:comment "The rest of the subject RDF list after the first item.";
+    rdfs:domain rdf:List;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "rest";
+    rdfs:range rdf:List;
+    a rdf:Property.
+rdf:subject rdfs:comment "The subject of the subject RDF statement.";
+    rdfs:domain rdf:Statement;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "subject";
+    rdfs:range rdfs:Resource;
+    a rdf:Property.
+rdf:type rdfs:comment "The subject is an instance of a class.";
+    rdfs:domain rdfs:Resource;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "type";
+    rdfs:range rdfs:Class;
+    a rdf:Property.
+rdf:value rdfs:comment "Idiomatic property used for structured values.";
+    rdfs:domain rdfs:Resource;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "value";
+    rdfs:range rdfs:Resource;
+    a rdf:Property.
+rdf:JSON rdfs:comment "The datatype of RDF literals storing JSON content.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "JSON";
+    rdfs:seeAlso <https://www.w3.org/TR/json-ld11/#the-rdf-json-datatype>;
+    rdfs:subClassOf rdfs:Literal;
+    a rdfs:Datatype.
+rdf:CompoundLiteral rdfs:comment "A class representing a compound literal.";
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "CompoundLiteral";
+    rdfs:subClassOf rdfs:Resource;
+    rdfs:seeAlso <https://www.w3.org/TR/json-ld11/#the-rdf-compoundliteral-class-and-the-rdf-language-and-rdf-direction-properties>;
+    a rdfs:Class.
+rdf:language rdfs:comment "The language component of a CompoundLiteral.";
+    rdfs:domain rdf:CompoundLiteral;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "language";
+    rdfs:seeAlso <https://www.w3.org/TR/json-ld11/#the-rdf-compoundliteral-class-and-the-rdf-language-and-rdf-direction-properties>;
+    a rdf:Property.
+rdf:direction rdfs:comment "The base direction component of a CompoundLiteral.";
+    rdfs:domain rdf:CompoundLiteral;
+    rdfs:isDefinedBy <http://www.w3.org/1999/02/22-rdf-syntax-ns#>;
+    rdfs:label "direction";
+    rdfs:seeAlso <https://www.w3.org/TR/json-ld11/#the-rdf-compoundliteral-class-and-the-rdf-language-and-rdf-direction-properties>;
+    a rdf:Property.
