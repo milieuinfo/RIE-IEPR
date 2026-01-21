@@ -1,0 +1,19 @@
+Zet hier een maven java spring boot project op. De javacode kan je onder dit pad zetten /home/gehau/git/RIE-IEPR/src/main/java/be/vlaanderen/omgeving/riepr een voorlopige pom.xml vind je hier /home/gehau/git/RIE-IEPR/pom.xml
+
+De bedoeling van dit project is een analysetraject om tot een datamodel te komen. Het einddoel is afspraken rond aan te leveren parquet files op een data lake, met als finaliteit het opzetten van een LDES-server die deze data als rdf in turtle-formaat beschikbaar stelt.
+
+De methode die we in onze analyse volgen volgt het omgekeerde pad. Turtle => inferred turtle => jsonld => json => parquet. Zo verzekeren we onszelf ervan dat we vanuit de parquet file terug turtle kunnen maken
+
+1. We starten met het maken van datavoorbeelden in turtle. Die turtle bestanden staan onder dit pad: /home/gehau/git/RIE-IEPR/src/main/resources/individual/turtle
+    1.1 De applicatie leest de ontologies in een jena Model als bean. Deze ontologies bevinden zich in .ttl bestanden onder volgende paden /home/gehau/git/RIE-IEPR/src/main/resources/be/vlaanderen/omgeving/riepr/data/ns , /home/gehau/git/RIE-IEPR/src/main/resources/org en /home/gehau/git/RIE-IEPR/src/main/resources/eu.
+    1.2 De applicatie leest jena rules als bean in uit dit bestand /home/gehau/git/RIE-IEPR/src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules
+    1.3 De applicatie leest deze turtle voorbeeldbestanden onder pad /home/gehau/git/RIE-IEPR/src/main/resources/individual/turtle een voor een in een jena Model
+    1.4 De applicatie combineert de ontologies en de datavoorbeelden en voert er met behulp van de jena rules een reasoning op uit met een GenericRuleReasoner.
+    1.5 De appicatie schrijft de inferred triples samen met de oorspronkelijke voorbeelddata weg in turtle bestanden onder /home/gehau/git/RIE-IEPR/src/main/resources/individual/turtle_inferred, in subdirectories vereenkomstig de paden van de bron voorbeelden.  Er wordt ook nog een turtle file, met een bundeling van alle voorbeelddata, weggeschreven in deze directory : /home/gehau/git/RIE-IEPR/src/main/resources/individual/turtle_inferred/be/vlaanderen/omgeving/riepr/data/id
+
+2. De applicatie serialiseert de rdf naar jsonld met behulp van een generieke context en een frame, voor jsonld-framing, per voorbeeld turtle bestand. Een voorlopige context, die je nog moet aanpassen, vind je hier: /home/gehau/git/RIE-IEPR/src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json. Een van de frame voorbeelden vind je hier. /home/gehau/git/RIE-IEPR/src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame_pplan_step.json. Het doel van de frames is om een jsonld te maken met een array structuur van niet geneste objecten te maken.
+Het resulterend jsonld bestand wordt telkens onder dit pad weggeschreven: /home/gehau/git/RIE-IEPR/src/main/resources/individual/jsonld in een analoge subdirectory structuur als de voorbeeld source turtle bestanden.
+
+3. De applicatie gebruikt jackson om de array binnen @graph binnen de jsonld te selecteren. Deze json arrays worden in afzonderlijke json bestanden weggescreven onder dit pad: /home/gehau/git/RIE-IEPR/src/main/resources/individual/json
+
+4. De records, objecten, in de json arrays worden als records toegevoegd aan een parquet file. Per voorbeeld bronbestand wordt een parquet file weggeschreven onder dit pad:  /home/gehau/git/RIE-IEPR/src/main/resources/individual/parquet conform, analoog aan, de oorspronkelijke subdirectory structuur van de turtle voorbeeld bronbestanden. Tenslotte wordt er nog een parquet file, met een bundeling van alle voorbeelddata, weggeschreven in deze directory : /home/gehau/git/RIE-IEPR/src/main/resources/individual/parquet/be/vlaanderen/omgeving/riepr/data/id

@@ -1,0 +1,9 @@
+# domain inference
+[domainRule: (?p rdfs:domain ?c), (?x ?p ?y) -> (?x rdf:type ?c)]
+
+# range inference
+[rangeRule: (?p rdfs:range ?c), (?x ?p ?y) -> (?y rdf:type ?c)]
+
+[subPropertyRule: (?p rdfs:subPropertyOf ?q), (?x ?p ?y) -> (?x ?q ?y)]
+
+[inversePropertyRule: (?p owl:inverseOf ?q), (?x ?p ?y) -> (?y ?q ?x)]
