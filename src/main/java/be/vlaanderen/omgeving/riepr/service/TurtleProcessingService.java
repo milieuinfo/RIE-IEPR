@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TurtleProcessingService {
@@ -49,7 +51,7 @@ public class TurtleProcessingService {
         createCombinedInferredModel();
     }
 
-    private void processDirectory(File sourceDir, File targetDir) throws IOException {
+    private void processDirectory(File sourceDir, File targetRootDir) throws IOException {
         if (!sourceDir.exists() || !sourceDir.isDirectory()) {
             return;
         }
@@ -61,13 +63,9 @@ public class TurtleProcessingService {
         
         for (File file : files) {
             if (file.isDirectory()) {
-                File newTargetDir = new File(targetDir, file.getName());
-                if (!newTargetDir.exists()) {
-                    newTargetDir.mkdirs();
-                }
-                processDirectory(file, newTargetDir);
+                processDirectory(file, targetRootDir);
             } else if (file.getName().endsWith(".ttl")) {
-                processTurtleFile(file, targetDir);
+                processTurtleFile(file, targetRootDir);
             }
         }
     }
@@ -124,7 +122,7 @@ public class TurtleProcessingService {
         Model combinedInferredModel = ModelFactory.createDefaultModel();
         
         // Find all inferred turtle files
-        File[] inferredFiles = findAllInferredTurtleFiles(turtleInferredPath.getFile());
+        List<File> inferredFiles = findAllInferredTurtleFiles(turtleInferredPath.getFile());
         
         for (File file : inferredFiles) {
             Model model = FileManager.get().loadModel(file.getAbsolutePath());
@@ -146,17 +144,26 @@ public class TurtleProcessingService {
         System.out.println("Written combined inferred turtle to: " + combinedOutputFile.getAbsolutePath());
     }
 
-    private File[] findAllInferredTurtleFiles(File baseDir) {
+    private List<File> findAllInferredTurtleFiles(File baseDir) {
         return findFilesRecursively(baseDir, ".ttl");
     }
 
-    private File[] findFilesRecursively(File dir, String extension) {
-        return dir.listFiles((file, name) -> {
+    private List<File> findFilesRecursively(File dir, String extension) {
+        List<File> result = new ArrayList<>();
+        
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return result;
+        }
+        
+        for (File file : files) {
             if (file.isDirectory()) {
-                File[] subFiles = findFilesRecursively(file, extension);
-                return subFiles != null && subFiles.length > 0;
+                result.addAll(findFilesRecursively(file, extension));
+            } else if (file.getName().endsWith(extension)) {
+                result.add(file);
             }
-            return name.endsWith(extension);
-        });
+        }
+        
+        return result;
     }
 }

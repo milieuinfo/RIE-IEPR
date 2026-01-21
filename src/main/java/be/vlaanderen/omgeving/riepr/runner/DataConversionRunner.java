@@ -35,8 +35,36 @@ public class DataConversionRunner implements CommandLineRunner {
         boolean runAutomatically = shouldRunAutomatically(args);
         
         if (runAutomatically) {
-            System.out.println("Running full workflow automatically...");
-            runFullWorkflow();
+            boolean runFullWorkflow = false;
+            boolean runTurtleProcessing = false;
+            boolean runJsonLdConversion = false;
+            boolean runParquetConversion = false;
+            
+            for (String arg : args) {
+                if (arg.equals("--run-full-workflow")) {
+                    runFullWorkflow = true;
+                } else if (arg.equals("--run-turtle-processing")) {
+                    runTurtleProcessing = true;
+                } else if (arg.equals("--run-jsonld-conversion")) {
+                    runJsonLdConversion = true;
+                } else if (arg.equals("--run-parquet-conversion")) {
+                    runParquetConversion = true;
+                }
+            }
+            
+            if (runFullWorkflow) {
+                System.out.println("Running full workflow...");
+                runFullWorkflow();
+            } else if (runTurtleProcessing) {
+                System.out.println("Running turtle processing...");
+                runTurtleProcessing();
+            } else if (runJsonLdConversion) {
+                System.out.println("Running JSON-LD conversion...");
+                runJsonLdConversion();
+            } else if (runParquetConversion) {
+                System.out.println("Running Parquet conversion...");
+                runParquetConversion();
+            }
         } else {
             System.out.println("Skipping automatic workflow execution. Use API endpoints or command line arguments to run.");
             System.out.println("Available commands:");
