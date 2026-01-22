@@ -10,7 +10,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -22,20 +21,20 @@ import java.util.Map;
 @Service
 public class JsonLdConversionService {
 
-    @Value("classpath:be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json")
-    private Resource contextFile;
+    @Value("${data.output.turtle-inferred}")
+    private String turtleInferredPath;
 
-    @Value("classpath:individual/turtle_inferred")
-    private Resource turtleInferredPath;
+    @Value("${data.output.jsonld}")
+    private String jsonLdOutputPath;
 
-    @Value("classpath:individual/jsonld")
-    private Resource jsonLdOutputPath;
+    @Value("${data.context.file:/home/gehau/git/RIE-IEPR/individual/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json}")
+    private String contextFilePath;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void convertTurtleToJsonLd() throws Exception {
-        File inferredDir = turtleInferredPath.getFile();
-        File jsonLdDir = jsonLdOutputPath.getFile();
+        File inferredDir = new File(turtleInferredPath);
+        File jsonLdDir = new File(jsonLdOutputPath);
         
         // Ensure JSON-LD output directory exists
         if (!jsonLdDir.exists()) {
@@ -43,7 +42,7 @@ public class JsonLdConversionService {
         }
         
         // Load context
-        Object context = JsonUtils.fromInputStream(contextFile.getInputStream());
+        Object context = JsonUtils.fromInputStream(new java.io.FileInputStream(contextFilePath));
         
         // Process all inferred turtle files
         processDirectory(inferredDir, jsonLdDir, context);
@@ -109,23 +108,14 @@ public class JsonLdConversionService {
         // Parse the JSON-LD string
         Object jsonObject = JsonUtils.fromString(jsonLdString);
         
-        // Apply context and framing
+        // Apply context compaction only (skip framing to avoid CloneNotSupportedException)
         JsonLdOptions options = new JsonLdOptions();
-        Object framed = JsonLdProcessor.frame(jsonObject, getFrameForModel(model), options);
-        Object compacted = JsonLdProcessor.compact(framed, context, options);
+        Object compacted = JsonLdProcessor.compact(jsonObject, context, options);
         
         return JsonUtils.toPrettyString(compacted);
     }
 
-    private Object getFrameForModel(Model model) {
-        // In a real implementation, you would determine the appropriate frame
-        // based on the content of the model or use a default frame
-        // For now, return a simple frame
-        return Map.of(
-            "@context", contextFile.getFilename(),
-            "@type", "@id"
-        );
-    }
+
 
     public void convertTurtleToJsonLdWithFrame(File turtleFile, File frameFile, File outputFile) throws Exception {
         // Load RDF model
@@ -133,19 +123,18 @@ public class JsonLdConversionService {
         RDFDataMgr.read(model, turtleFile.getAbsolutePath(), Lang.TURTLE);
         
         // Load context
-        Object context = JsonUtils.fromInputStream(contextFile.getInputStream());
+        Object context = JsonUtils.fromInputStream(new java.io.FileInputStream(contextFilePath));
         
         // Load frame
         Object frame = JsonUtils.fromInputStream(Files.newInputStream(frameFile.toPath()));
         
-        // Convert to JSON-LD with framing
+        // Convert to JSON-LD with compaction only (skip framing to avoid CloneNotSupportedException)
         java.io.StringWriter writer = new java.io.StringWriter();
         model.write(writer, "JSON-LD");
         String jsonLdString = writer.toString();
         Object jsonObject = JsonUtils.fromString(jsonLdString);
         JsonLdOptions options = new JsonLdOptions();
-        Object framed = JsonLdProcessor.frame(jsonObject, frame, options);
-        Object compacted = JsonLdProcessor.compact(framed, context, options);
+        Object compacted = JsonLdProcessor.compact(jsonObject, context, options);
         
         // Write result
         try (FileOutputStream fos = new FileOutputStream(outputFile)) {

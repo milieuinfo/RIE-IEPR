@@ -7,7 +7,6 @@ import org.apache.parquet.hadoop.metadata.CompressionCodecName;
 import org.apache.parquet.schema.MessageType;
 import org.apache.parquet.schema.MessageTypeParser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -21,21 +20,21 @@ import java.util.List;
 @Service
 public class JsonToParquetService {
 
-    @Value("classpath:individual/jsonld")
-    private Resource jsonLdInputPath;
+    @Value("${data.output.jsonld}")
+    private String jsonLdInputPath;
 
-    @Value("classpath:individual/json")
-    private Resource jsonOutputPath;
+    @Value("${data.output.json}")
+    private String jsonOutputPath;
 
-    @Value("classpath:individual/parquet")
-    private Resource parquetOutputPath;
+    @Value("${data.output.parquet}")
+    private String parquetOutputPath;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void convertJsonLdToJsonAndParquet() throws Exception {
-        File jsonLdDir = jsonLdInputPath.getFile();
-        File jsonDir = jsonOutputPath.getFile();
-        File parquetDir = parquetOutputPath.getFile();
+        File jsonLdDir = new File(jsonLdInputPath);
+        File jsonDir = new File(jsonOutputPath);
+        File parquetDir = new File(parquetOutputPath);
         
         // Ensure output directories exist
         if (!jsonDir.exists()) {
@@ -131,7 +130,7 @@ public class JsonToParquetService {
         System.out.println("Creating combined Parquet file...");
         
         // Find all JSON files
-        File[] jsonFiles = findAllJsonFiles(jsonOutputPath.getFile());
+        File[] jsonFiles = findAllJsonFiles(new File(jsonOutputPath));
         
         // Combine all JSON arrays into one
         List<JsonNode> allRecords = new ArrayList<>();
@@ -145,7 +144,7 @@ public class JsonToParquetService {
         }
         
         // Create combined Parquet file
-        File combinedParquetDir = new File(parquetOutputPath.getFile(), "be/vlaanderen/omgeving/riepr/data/id");
+        File combinedParquetDir = new File(parquetOutputPath, "be/vlaanderen/omgeving/riepr/data/id");
         if (!combinedParquetDir.exists()) {
             combinedParquetDir.mkdirs();
         }

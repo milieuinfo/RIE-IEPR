@@ -1,0 +1,33 @@
+@prefix activiteit:    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix pplan:         <http://purl.org/net/p-plan#> .
+@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:         <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+
+procedurestap:STAP_001
+        rdf:type            pplan:MultiStep;
+        rdfs:label          "Koekjesdeeg maken"@nl;
+        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+
+activiteit:ACTIVITEIT_001
+        rdf:type    riepr:Activiteit;
+        rdfs:label  "Koekjes maken"@nl .
+
+procedurestap:STAP_001_2
+        rdf:type            pplan:Step;
+        rdfs:label          "Deeg laten rusten"@nl;
+        pplan:isPrecededBy  procedurestap:STAP_001_1;
+        pplan:isStepOfPlan  procedurestap:STAP_001 .
+
+procedurestap:STAP_002
+        rdf:type            pplan:Step;
+        rdfs:label          "Koekjes bakken"@nl;
+        pplan:isPrecededBy  procedurestap:STAP_001;
+        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+
+procedurestap:STAP_001_1
+        rdf:type            pplan:Step;
+        rdfs:label          "Ingrediënten mengen"@nl;
+        pplan:isStepOfPlan  procedurestap:STAP_001 .

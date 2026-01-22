@@ -19,6 +19,7 @@ public class RulesService {
     private Resource rulesFile;
 
     private Reasoner reasoner;
+    private List<Rule> rules = new ArrayList<>();
 
     @PostConstruct
     public void loadRules() {

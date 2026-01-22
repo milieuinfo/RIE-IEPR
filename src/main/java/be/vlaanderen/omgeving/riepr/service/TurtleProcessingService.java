@@ -3,6 +3,9 @@ package be.vlaanderen.omgeving.riepr.service;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ValidityReport;
 import org.apache.jena.riot.RDFDataMgr;
@@ -18,7 +21,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TurtleProcessingService {
@@ -35,20 +40,44 @@ public class TurtleProcessingService {
     @Value("${data.output.turtle-inferred}")
     private String turtleInferredPath;
 
+    private final Model combinedInferredModel = ModelFactory.createDefaultModel();
+
     public void processTurtleFiles() throws IOException {
         File sourceDir = new File(turtleSourcePath);
         File inferredDir = new File(turtleInferredPath);
-        
-        // Ensure inferred directory exists
+
         if (!inferredDir.exists()) {
             inferredDir.mkdirs();
         }
-        
-        // Process all turtle files recursively
+
         processDirectory(sourceDir, inferredDir);
-        
-        // Also create a combined inferred model
-        createCombinedInferredModel();
+
+        writeCombinedInferredModel();
+    }
+
+    private void writeCombinedInferredModel() throws IOException {
+        System.out.println("Writing combined inferred model...");
+
+        File combinedOutputDir =
+                new File(turtleInferredPath, "be/vlaanderen/omgeving/riepr/data/id");
+
+        if (!combinedOutputDir.exists()) {
+            combinedOutputDir.mkdirs();
+        }
+
+        File combinedOutputFile =
+                new File(combinedOutputDir, "combined_inferred.ttl");
+
+        combinedInferredModel.setNsPrefixes(ontologyService.getCombinedOntologyModel());
+
+        try (FileOutputStream fos = new FileOutputStream(combinedOutputFile)) {
+            combinedInferredModel.write(fos, "TURTLE");
+        }
+
+        System.out.println(
+                "Written combined inferred turtle to: " +
+                        combinedOutputFile.getAbsolutePath()
+        );
     }
 
     private void processDirectory(File sourceDir, File targetRootDir) throws IOException {
@@ -79,18 +108,35 @@ public class TurtleProcessingService {
         
         // Get ontology model
         Model ontologyModel = ontologyService.getCombinedOntologyModel();
-        
-        // Combine data and ontology
-        Model combinedModel = ModelFactory.createDefaultModel();
-        combinedModel.add(ontologyModel);
-        combinedModel.add(dataModel);
-        
-        // Get reasoner and apply reasoning
-        Reasoner reasoner = rulesService.getReasoner();
-        InfModel infModel = ModelFactory.createInfModel(reasoner, combinedModel);
-        
-        // Get only the inferred triples (deductions) and union with original data model
-        Model inferredModel = infModel.getDeductionsModel().union(dataModel);
+
+        Reasoner baseReasoner = rulesService.getReasoner();
+        Reasoner reasoner = baseReasoner.bindSchema(ontologyModel);
+
+// Reason only over the data
+        InfModel infModel = ModelFactory.createInfModel(reasoner, dataModel);
+
+// inferred triples ONLY about data
+        Model cleanDeductions = ModelFactory.createDefaultModel();
+
+        StmtIterator it = infModel.getDeductionsModel().listStatements();
+        while (it.hasNext()) {
+            Statement s = it.next();
+
+            if (s.getSubject().isURIResource()) {
+                String uri = s.getSubject().getURI();
+
+                if (uri.startsWith("https://data.riepr.omgeving.vlaanderen.be/")) {
+                    cleanDeductions.add(s);
+                }
+            }
+        }
+
+        Model inferredModel = dataModel.union(cleanDeductions);
+
+
+        synchronized (combinedInferredModel) {
+            combinedInferredModel.add(inferredModel);
+        }
         
         // Validate the reasoning
         // Note: Not all Reasoner implementations support validate()
@@ -119,56 +165,7 @@ public class TurtleProcessingService {
         return basePath.relativize(filePath).toString();
     }
 
-    private void createCombinedInferredModel() throws IOException {
-        System.out.println("Creating combined inferred model...");
-        
-        // Create a combined model from all inferred files
-        Model combinedInferredModel = ModelFactory.createDefaultModel();
-        
-        // Find all inferred turtle files
-        List<File> inferredFiles = findAllInferredTurtleFiles(new File(turtleInferredPath));
-        
-        for (File file : inferredFiles) {
-            Model model = ModelFactory.createDefaultModel();
-            RDFDataMgr.read(model, file.getAbsolutePath());
-            combinedInferredModel.add(model);
-        }
-        
-        // Create output directory if it doesn't exist
-        File combinedOutputDir = new File(turtleInferredPath, "be/vlaanderen/omgeving/riepr/data/id");
-        if (!combinedOutputDir.exists()) {
-            combinedOutputDir.mkdirs();
-        }
-        
-        // Write combined model
-        File combinedOutputFile = new File(combinedOutputDir, "combined_inferred.ttl");
-        try (FileOutputStream fos = new FileOutputStream(combinedOutputFile)) {
-            combinedInferredModel.write(fos, "TURTLE");
-        }
-        
-        System.out.println("Written combined inferred turtle to: " + combinedOutputFile.getAbsolutePath());
-    }
 
-    private List<File> findAllInferredTurtleFiles(File baseDir) {
-        return findFilesRecursively(baseDir, ".ttl");
-    }
 
-    private List<File> findFilesRecursively(File dir, String extension) {
-        List<File> result = new ArrayList<>();
-        
-        File[] files = dir.listFiles();
-        if (files == null) {
-            return result;
-        }
-        
-        for (File file : files) {
-            if (file.isDirectory()) {
-                result.addAll(findFilesRecursively(file, extension));
-            } else if (file.getName().endsWith(extension)) {
-                result.add(file);
-            }
-        }
-        
-        return result;
-    }
+
 }

@@ -38,7 +38,7 @@ public class OntologyService {
             loadOntologiesFromPattern("classpath:org/**/*.ttl");
             
             // Load ontologies from eu directory
-            loadOntologiesFromPattern("classpath:eu/**/*.ttl");
+            //loadOntologiesFromPattern("classpath:eu/**/*.ttl");
             
             System.out.println("Successfully loaded ontologies");
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class OntologyService {
             addOntologyFilesFromPattern("classpath:org/**/*.ttl", ontologyFiles);
             
             // Add files from eu directory
-            addOntologyFilesFromPattern("classpath:eu/**/*.ttl", ontologyFiles);
+            //addOntologyFilesFromPattern("classpath:eu/**/*.ttl", ontologyFiles);
         } catch (IOException e) {
             System.err.println("Error getting ontology files: " + e.getMessage());
         }
