@@ -30,19 +30,20 @@ The application follows this conversion workflow:
 1. **Turtle Processing with Reasoning**
    - Loads ontologies from `.ttl` files in `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/`, `org/`, and `eu/` directories
    - Loads reasoning rules from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules`
-   - Processes example turtle files from `src/main/resources/individual/turtle/`
+   - Processes example turtle files from `/home/gehau/git/RIE-IEPR/individual/turtle/`
    - Applies reasoning using Jena's GenericRuleReasoner
-   - Writes inferred triples to `src/main/resources/individual/turtle_inferred/`
+   - Writes inferred triples to `/home/gehau/git/RIE-IEPR/individual/turtle_inferred/`
+   - Excludes ontology triples from output to keep only data-specific inferences
 
 2. **JSON-LD Conversion**
    - Converts inferred RDF to JSON-LD using context from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json`
    - Applies JSON-LD framing to create array structures
-   - Writes JSON-LD files to `src/main/resources/individual/jsonld/`
+   - Writes JSON-LD files to `/home/gehau/git/RIE-IEPR/individual/jsonld/`
 
 3. **JSON and Parquet Conversion**
    - Extracts `@graph` arrays from JSON-LD files
-   - Writes JSON arrays to `src/main/resources/individual/json/`
-   - Converts JSON arrays to Parquet files in `src/main/resources/individual/parquet/`
+   - Writes JSON arrays to `/home/gehau/git/RIE-IEPR/individual/json/`
+   - Converts JSON arrays to Parquet files in `/home/gehau/git/RIE-IEPR/individual/parquet/`
 
 ## Usage
 
@@ -83,9 +84,23 @@ The application provides REST endpoints at `http://localhost:8080/api/conversion
 The application uses Spring Boot's standard configuration. You can customize:
 
 - Server port in `application.properties`
-- Input/output directories via Spring `@Value` annotations
+- Input/output directories via Spring `@Value` annotations (currently configured to use absolute paths outside the project directory)
 - Reasoning rules by modifying the `.rules` file
 - JSON-LD context and framing in the JSON files
+
+### Current Path Configuration
+
+The application is currently configured to use absolute paths:
+
+```properties
+data.input.turtle=/home/gehau/git/RIE-IEPR/individual/turtle
+data.output.turtle-inferred=/home/gehau/git/RIE-IEPR/individual/turtle_inferred
+data.output.jsonld=/home/gehau/git/RIE-IEPR/individual/jsonld
+data.output.json=/home/gehau/git/RIE-IEPR/individual/json
+data.output.parquet=/home/gehau/git/RIE-IEPR/individual/parquet
+```
+
+To use relative paths or different locations, modify these properties in `src/main/resources/application.properties`.
 
 ## Dependencies
 
@@ -134,12 +149,30 @@ JSON Array Files
 Parquet Files
 ```
 
+## Recent Changes
+
+### Version Update (Jan 22, 2026)
+
+- **Fixed inference to exclude ontologies from output**: The turtle processing now filters inferred triples to include only data-specific URIs (starting with `https://data.riepr.omgeving.vlaanderen.be/`), excluding ontology triples from the output.
+
+- **Fixed turtle processing workflow issues**:
+  - Added missing `individual/turtle_inferred` directory with `.keep` file
+  - Added missing `individual/jsonld` directory with `.keep` file
+  - Fixed `findFilesRecursively` method to prevent infinite recursion
+  - Fixed output file path calculation in `processTurtleFile` method
+  - Fixed `DataConversionRunner` to properly handle individual workflow steps
+  - Updated `processDirectory` to use root target directory consistently
+
+- **Configuration changes**: Updated input/output paths to use absolute paths outside the project directory structure for better separation of concerns.
+
 ## Notes
 
 - The application preserves the directory structure of input files in output directories
 - Each step creates both individual files and combined/bundled files
 - The workflow ensures that the final Parquet files can be converted back to the original Turtle format
 - Reasoning includes domain/range inference, subproperty inference, and inverse property inference
+- The application now excludes ontology triples from the inferred output to keep only data-specific inferences
+- Fixed issues with infinite recursion and FileNotFoundException in the turtle processing workflow
 
 
                                                                                                                                                                                                                                                                                                                                          

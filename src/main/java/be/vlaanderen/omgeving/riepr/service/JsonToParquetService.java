@@ -121,6 +121,10 @@ public class JsonToParquetService {
         // }
         
         // For now, just create an empty file as placeholder
+        // Delete existing file if it exists to avoid FileAlreadyExistsException
+        if (parquetFile.exists()) {
+            Files.delete(parquetFile.toPath());
+        }
         Files.createFile(parquetFile.toPath());
         
         System.out.println("Parquet conversion placeholder - implement proper Parquet writing");
