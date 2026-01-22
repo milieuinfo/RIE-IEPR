@@ -1,14 +1,14 @@
 package be.vlaanderen.omgeving.riepr.service;
 
+import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ValidityReport;
-import org.apache.jena.util.FileManager;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -29,15 +29,15 @@ public class TurtleProcessingService {
     @Autowired
     private RulesService rulesService;
 
-    @Value("classpath:individual/turtle")
-    private Resource turtleSourcePath;
+    @Value("${data.input.turtle}")
+    private String turtleSourcePath;
 
-    @Value("classpath:individual/turtle_inferred")
-    private Resource turtleInferredPath;
+    @Value("${data.output.turtle-inferred}")
+    private String turtleInferredPath;
 
     public void processTurtleFiles() throws IOException {
-        File sourceDir = turtleSourcePath.getFile();
-        File inferredDir = turtleInferredPath.getFile();
+        File sourceDir = new File(turtleSourcePath);
+        File inferredDir = new File(turtleInferredPath);
         
         // Ensure inferred directory exists
         if (!inferredDir.exists()) {
@@ -74,7 +74,8 @@ public class TurtleProcessingService {
         System.out.println("Processing turtle file: " + turtleFile.getAbsolutePath());
         
         // Load the turtle file
-        Model dataModel = FileManager.get().loadModel(turtleFile.getAbsolutePath());
+        Model dataModel = ModelFactory.createDefaultModel();
+        RDFDataMgr.read(dataModel, turtleFile.getAbsolutePath());
         
         // Get ontology model
         Model ontologyModel = ontologyService.getCombinedOntologyModel();
@@ -86,7 +87,10 @@ public class TurtleProcessingService {
         
         // Get reasoner and apply reasoning
         Reasoner reasoner = rulesService.getReasoner();
-        Model inferredModel = ModelFactory.createInfModel(reasoner, combinedModel);
+        InfModel infModel = ModelFactory.createInfModel(reasoner, combinedModel);
+        
+        // Get only the inferred triples (deductions) and union with original data model
+        Model inferredModel = infModel.getDeductionsModel().union(dataModel);
         
         // Validate the reasoning
         // Note: Not all Reasoner implementations support validate()
@@ -95,7 +99,7 @@ public class TurtleProcessingService {
         System.out.println("Reasoning applied successfully");
         
         // Create output file path
-        String relativePath = getRelativePath(turtleFile, turtleSourcePath.getFile());
+        String relativePath = getRelativePath(turtleFile, new File(turtleSourcePath));
         File outputFile = new File(targetDir, relativePath);
         
         // Ensure parent directories exist
@@ -122,15 +126,16 @@ public class TurtleProcessingService {
         Model combinedInferredModel = ModelFactory.createDefaultModel();
         
         // Find all inferred turtle files
-        List<File> inferredFiles = findAllInferredTurtleFiles(turtleInferredPath.getFile());
+        List<File> inferredFiles = findAllInferredTurtleFiles(new File(turtleInferredPath));
         
         for (File file : inferredFiles) {
-            Model model = FileManager.get().loadModel(file.getAbsolutePath());
+            Model model = ModelFactory.createDefaultModel();
+            RDFDataMgr.read(model, file.getAbsolutePath());
             combinedInferredModel.add(model);
         }
         
         // Create output directory if it doesn't exist
-        File combinedOutputDir = new File(turtleInferredPath.getFile(), "be/vlaanderen/omgeving/riepr/data/id");
+        File combinedOutputDir = new File(turtleInferredPath, "be/vlaanderen/omgeving/riepr/data/id");
         if (!combinedOutputDir.exists()) {
             combinedOutputDir.mkdirs();
         }
