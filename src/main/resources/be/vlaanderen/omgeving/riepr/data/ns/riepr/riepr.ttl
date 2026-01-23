@@ -8,6 +8,7 @@
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
 @prefix dbo:    <http://dbpedia.org/ontology/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix org:    <http://www.w3.org/ns/org#> .
 
 # --------------------------------------- #
 # Classes
@@ -66,7 +67,20 @@
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
     rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn."@nl ;
-    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System .
+    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet onderdeel van een vestiging zijn
+        owl:onProperty TBD:TBD ; # TODO: property voor "is onderdeel van vestiging" (spatial)
+        owl:someValuesFrom :Vestiging ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ]
+    .
 # TODO: Nog te bepalen of deze onderklasse nodig is
 :IEPRInstallatie a owl:Class ;
     rdfs:label "IEPR Installatie"@nl ;
@@ -86,7 +100,7 @@
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     rdfs:subClassOf ogc:SpatialObject ;
-    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt
+    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt OF een activiteit stap
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:isProxyFor ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
@@ -122,6 +136,40 @@
     rdfs:label "Transport Procedure"@nl ;
     rdfs:comment "Een transport procedure is een actie die het transport van stoffen binnen of buiten een activiteit beschrijft."@nl ;
     rdfs:subClassOf sosa:Procedure .
+:VerbruiksProcedure a owl:Class ;
+    rdfs:label "Verbruiks Procedure"@nl ;
+    rdfs:comment "Een verbruiks procedure is een actie die het verbruik van grondstoffen binnen een activiteit beschrijft."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+
+## -- Organisaties en vestigingen
+## TODO: Zijn hier bestaande Vlaamse ontologieën en URIs voor (KBO)
+
+:Organisatie a owl:Class ;
+    rdfs:label "Organisatie"@nl ;
+    rdfs:comment "Een organisatie is een entiteit die een bedrijf of instelling vertegenwoordigt."@nl ;
+    rdfs:subClassOf dbo:Organisation, org:Organization ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een organisatie moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Vestiging a owl:Class ;
+    rdfs:label "Vestiging"@nl ;
+    rdfs:comment "Een vestiging is een specifieke locatie waar een organisatie haar activiteiten uitvoert."@nl ;
+    rdfs:subClassOf org:Site ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een vestiging moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een vestiging moet gekoppeld zijn aan exact één organisatie
+        owl:onProperty org:siteOf ;
+        owl:someValuesFrom :Organisatie ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
 
 # --------------------------------------- #
 # Object Properties
@@ -137,6 +185,10 @@
 # Constant Individuals
 # --------------------------------------- #
 
+:overbrengingsProces a :TransportProcedure ;
+    rdfs:label "Overbrengingsproces"@nl ;
+    rdfs:comment "Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging."@nl .
+
 :lozingsProces a :EmissieProcedure ;
     rdfs:label "Lozingsproces"@nl ;
     rdfs:comment "Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater."@nl .
@@ -148,3 +200,7 @@
 :stoomProces a :TransportProcedure ;
     rdfs:label "Stoomproces"@nl ;
     rdfs:comment "Een stoomproces is een specifieke procedure die betrekking heeft op het transport van stoffen via stoom binnen een activiteit."@nl .
+
+:electriciteitsVerbruikProces a :VerbruiksProcedure ;
+    rdfs:label "Elektriciteitsverbruikproces"@nl ;
+    rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit."@nl .
