@@ -1,0 +1,107 @@
+{
+  "@context" : {
+    "id" : "@id",
+    "type" : "@type",
+    "geo" : "http://www.opengis.net/ont/geosparql#",
+    "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
+    "adms" : "http://www.w3.org/ns/adms#",
+    "dct" : "http://purl.org/dc/terms/",
+    "locn" : "http://www.w3.org/ns/locn#",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
+    "prov" : "http://www.w3.org/ns/prov#",
+    "schema" : "http://schema.org/",
+    "riepr" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#",
+    "meetpunt" : "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/",
+    "emissiepunt" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/",
+    "activiteit" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/",
+    "procedure" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/",
+    "sosa" : "http://www.w3.org/ns/sosa/",
+    "ssn" : "http://www.w3.org/ns/ssn/",
+    "pplan" : "http://purl.org/net/p-plan#",
+    "concept" : "https://data.riepr.omgeving.vlaanderen.be/id/concept/",
+    "installatiefiche" : "https://gpbv.omgeving.vlaanderen.be/installatiefiche/",
+    "apparaat" : "https://data.riepr.omgeving.vlaanderen.be/id/apparaat/",
+    "qudt" : "http://qudt.org/schema/qudt/",
+    "identifier" : {
+      "@id" : "adms:identifier",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "rdfs:label",
+      "@language" : "nl"
+    },
+    "member" : {
+      "@id" : "rdfs:member",
+      "@type" : "@id"
+    },
+    "seeAlso" : {
+      "@id" : "rdfs:seeAlso",
+      "@type" : "@id"
+    },
+    "isStepOfPlan" : {
+      "@id" : "pplan:isStepOfPlan",
+      "@type" : "@id"
+    },
+    "isPrecededBy" : {
+      "@id" : "pplan:isPrecededBy",
+      "@type" : "@id"
+    },
+    "quantityKind" : {
+      "@id" : "qudt:quantityKind",
+      "@type" : "@id"
+    },
+    "unit" : {
+      "@id" : "qudt:unit",
+      "@type" : "@id"
+    },
+    "notation" : {
+      "@id" : "skos:notation"
+    },
+    "startedAtTime" : {
+      "@id" : "prov:startedAtTime",
+      "@type" : "xsd:dateTime"
+    },
+    "used" : {
+      "@id" : "prov:used",
+      "@type" : "@id"
+    },
+    "wasInfluencedBy" : {
+      "@id" : "prov:wasInfluencedBy",
+      "@type" : "@id"
+    },
+    "implements" : {
+      "@id" : "ssn:implements",
+      "@type" : "@id"
+    },
+    "influenced" : {
+      "@id" : "prov:influenced",
+      "@type" : "@id"
+    },
+    "hasGeometry" : {
+      "@id" : "geo:hasGeometry",
+      "@type" : "@id"
+    },
+    "isProxyFor" : {
+      "@id" : "sosa:isProxyFor",
+      "@type" : "@id"
+    },
+    "hasProxy" : {
+      "@id" : "sosa:hasProxy",
+      "@type" : "@id"
+    }
+  },
+  "@graph" : [ {
+    "id" : "concept:ZinkConcentratie",
+    "type" : "sosa:ObservableProperty",
+    "quantityKind" : "http://qudt.org/vocab/quantitykind/MassConcentration",
+    "unit" : "http://qudt.org/vocab/unit/MicrogramPerCubicMeter",
+    "label" : "Zink concentratie"
+  }, {
+    "id" : "concept:Zuurtegraad",
+    "type" : "sosa:ObservableProperty",
+    "quantityKind" : "http://qudt.org/vocab/quantitykind/Acidity",
+    "unit" : "http://qudt.org/vocab/unit/PH",
+    "label" : "Zuurtegraad"
+  } ]
+}

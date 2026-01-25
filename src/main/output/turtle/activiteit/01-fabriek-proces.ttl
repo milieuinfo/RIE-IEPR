@@ -1,0 +1,52 @@
+@prefix :              <http://purl.org/net/p-plan#> .
+@prefix activiteit:    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix dqv:           <http://www.w3.org/ns/dqv#> .
+@prefix emissiepunt:   <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix foaf:          <http://xmlns.com/foaf/0.1/> .
+@prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix pplan:         <http://purl.org/net/p-plan#> .
+@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix prov:          <http://www.w3.org/ns/prov#> .
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:         <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix schema:        <http://schema.org/> .
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:          <http://www.w3.org/ns/sosa/> .
+@prefix sosa-act:      <http://www.w3.org/ns/sosa/act/> .
+@prefix sosa-common:   <http://www.w3.org/ns/sosa/common/> .
+@prefix sosa-dep:      <http://www.w3.org/ns/sosa/dep/> .
+@prefix sosa-obs:      <http://www.w3.org/ns/sosa/obs/> .
+@prefix sosa-sam:      <http://www.w3.org/ns/sosa/sam/> .
+@prefix sp:            <http://www.w3.org/ns/sosa/prov/> .
+@prefix ssn:           <http://www.w3.org/ns/ssn/> .
+@prefix ssn-act:       <http://www.w3.org/ns/ssn/act/> .
+@prefix ssn-common:    <http://www.w3.org/ns/ssn/common/> .
+@prefix ssn-dep:       <http://www.w3.org/ns/ssn/dep/> .
+@prefix ssn-obs:       <http://www.w3.org/ns/ssn/obs/> .
+@prefix ssn-sam:       <http://www.w3.org/ns/ssn/sam/> .
+@prefix terms:         <http://purl.org/dc/terms/> .
+@prefix time:          <http://www.w3.org/2006/time#> .
+@prefix vann:          <http://purl.org/vocab/vann/> .
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
+
+emissiepunt:TBD  rdf:type  prov:Entity .
+
+procedurestap:2238530070_KOEKJES_DEEGMAKEN_20170929
+        rdf:type            pplan:Step , riepr:ActiviteitStap;
+        rdfs:label          "Koekjesdeeg maken"@nl;
+        pplan:isStepOfPlan  activiteit:2238530069_KOEKJES_20170929 .
+
+procedurestap:2238530071_KOEKJES_BAKKEN_20170929
+        rdf:type            pplan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label          "Koekjes bakken"@nl;
+        pplan:isPrecededBy  procedurestap:2238530070_KOEKJES_DEEGMAKEN_20170929;
+        pplan:isStepOfPlan  activiteit:2238530069_KOEKJES_20170929;
+        prov:used           emissiepunt:TBD;
+        ssn:implements      riepr:uitstootProces .
+
+activiteit:2238530069_KOEKJES_20170929
+        rdf:type            pplan:Plan , pplan:Entity , prov:Plan , prov:Entity , riepr:Activiteit;
+        rdfs:label          "Koekjes maken"@nl;
+        prov:startedAtTime  "2017-09-29T00:00:00"^^xsd:dateTime .
