@@ -1,29 +1,36 @@
 package be.vlaanderen.omgeving.riepr.service;
 
-import org.apache.jena.rdf.model.InfModel;
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.reasoner.Reasoner;
-import org.apache.jena.reasoner.ValidityReport;
+
+
+
+
+
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.vocabulary.ReasonerVocabulary;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import be.vlaanderen.omgeving.riepr.config.ReasoningModelConfiguration;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+
+
+
+
+
+
+
+
+
+
 
 @Service
 public class TurtleProcessingService {
@@ -33,6 +40,12 @@ public class TurtleProcessingService {
 
     @Autowired
     private RulesService rulesService;
+
+    @Autowired
+    private TransformatieService transformatieService;
+
+    @Autowired
+    private ReasoningModelConfiguration reasoningModelConfiguration;
 
     @Value("${data.input.turtle}")
     private String turtleSourcePath;
@@ -92,6 +105,12 @@ public class TurtleProcessingService {
         
         for (File file : files) {
             if (file.isDirectory()) {
+                // Create corresponding target directory
+                String relativePath = getRelativePath(file, new File(turtleSourcePath));
+                File targetSubDir = new File(targetRootDir, relativePath);
+                if (!targetSubDir.exists()) {
+                    targetSubDir.mkdirs();
+                }
                 processDirectory(file, targetRootDir);
             } else if (file.getName().endsWith(".ttl")) {
                 processTurtleFile(file, targetRootDir);
@@ -106,32 +125,12 @@ public class TurtleProcessingService {
         Model dataModel = ModelFactory.createDefaultModel();
         RDFDataMgr.read(dataModel, turtleFile.getAbsolutePath());
         
-        // Get ontology model
-        Model ontologyModel = ontologyService.getCombinedOntologyModel();
-
-        Reasoner baseReasoner = rulesService.getReasoner();
-        Reasoner reasoner = baseReasoner.bindSchema(ontologyModel);
-
-// Reason only over the data
-        InfModel infModel = ModelFactory.createInfModel(reasoner, dataModel);
-
-// inferred triples ONLY about data
-        Model cleanDeductions = ModelFactory.createDefaultModel();
-
-        StmtIterator it = infModel.getDeductionsModel().listStatements();
-        while (it.hasNext()) {
-            Statement s = it.next();
-
-            if (s.getSubject().isURIResource()) {
-                String uri = s.getSubject().getURI();
-
-                if (uri.startsWith("https://data.riepr.omgeving.vlaanderen.be/")) {
-                    cleanDeductions.add(s);
-                }
-            }
-        }
-
-        Model inferredModel = dataModel.union(cleanDeductions);
+        // Use TransformatieService for simplified inference
+        Model inferredModel = transformatieService.inferTriples(
+            dataModel,
+            ontologyService.getCombinedOntologyModel(),
+            reasoningModelConfiguration.getRules()
+        );
 
 
         synchronized (combinedInferredModel) {

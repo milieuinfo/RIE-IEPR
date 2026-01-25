@@ -2,20 +2,22 @@ package be.vlaanderen.omgeving.riepr.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.parquet.hadoop.ParquetWriter;
-import org.apache.parquet.hadoop.metadata.CompressionCodecName;
-import org.apache.parquet.schema.MessageType;
-import org.apache.parquet.schema.MessageTypeParser;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SaveMode;
+import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.functions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Paths;
 
 @Service
 public class JsonToParquetService {
@@ -29,29 +31,53 @@ public class JsonToParquetService {
     @Value("${data.output.parquet}")
     private String parquetOutputPath;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    /**
+     * Backward-compatible entrypoint voor controllers & runners.
+     * Dit vervangt de oude Arrow-implementatie.
+     */
 
-    public void convertJsonLdToJsonAndParquet() throws Exception {
-        File jsonLdDir = new File(jsonLdInputPath);
-        File jsonDir = new File(jsonOutputPath);
-        File parquetDir = new File(parquetOutputPath);
-        
-        // Ensure output directories exist
-        if (!jsonDir.exists()) {
-            jsonDir.mkdirs();
+    public void convertJsonLdToJsonAndParquet() throws IOException {
+        File inputJson = new File(jsonLdInputPath);
+        File outputJson = new File(jsonOutputPath);
+        File outputParquet = new File(parquetOutputPath);
+
+        // Zorg ervoor dat de output directories bestaan
+        if (!outputJson.exists()) {
+            outputJson.mkdirs();
         }
-        if (!parquetDir.exists()) {
-            parquetDir.mkdirs();
+        if (!outputParquet.exists()) {
+            outputParquet.mkdirs();
         }
-        
-        // Process all JSON-LD files
-        processDirectory(jsonLdDir, jsonDir, parquetDir);
-        
-        // Create combined parquet file
-        createCombinedParquetFile();
+
+        convertJsonLdToJsonAndParquet(inputJson, outputJson, outputParquet);
     }
 
-    private void processDirectory(File sourceDir, File jsonTargetDir, File parquetTargetDir) throws Exception {
+    /**
+     * Nieuwe implementatie die JSON-LD naar JSON converteert met Jackson
+     */
+    public void convertJsonLdToJson(File jsonLdInput, File jsonOutput) throws IOException {
+        processJsonLdToJsonDirectory(jsonLdInput, jsonOutput);
+    }
+
+    /**
+     * Nieuwe implementatie die JSON naar Parquet converteert met Spark
+     */
+    public void convertJsonToParquet(File jsonInput, File parquetOutputDir) throws IOException {
+        processJsonToParquetDirectory(jsonInput, parquetOutputDir);
+    }
+
+    /**
+     * Gecombineerde methode voor backward compatibility
+     */
+    public void convertJsonLdToJsonAndParquet(File jsonLdInput, File jsonOutput, File parquetOutputDir) throws IOException {
+        // Eerst JSON-LD naar JSON converteren
+        convertJsonLdToJson(jsonLdInput, jsonOutput);
+        
+        // Dan JSON naar Parquet converteren
+        convertJsonToParquet(jsonOutput, parquetOutputDir);
+    }
+
+    private void processJsonLdToJsonDirectory(File sourceDir, File jsonOutputRoot) throws IOException {
         if (!sourceDir.exists() || !sourceDir.isDirectory()) {
             return;
         }
@@ -63,126 +89,213 @@ public class JsonToParquetService {
         
         for (File file : files) {
             if (file.isDirectory()) {
-                File newJsonTargetDir = new File(jsonTargetDir, file.getName());
-                File newParquetTargetDir = new File(parquetTargetDir, file.getName());
-                if (!newJsonTargetDir.exists()) {
-                    newJsonTargetDir.mkdirs();
+                // Create corresponding target directories
+                String relativePath = getRelativePath(file, new File(jsonLdInputPath));
+                File jsonTargetSubDir = new File(jsonOutputRoot, relativePath);
+                
+                if (!jsonTargetSubDir.exists()) {
+                    jsonTargetSubDir.mkdirs();
                 }
-                if (!newParquetTargetDir.exists()) {
-                    newParquetTargetDir.mkdirs();
-                }
-                processDirectory(file, newJsonTargetDir, newParquetTargetDir);
-            } else if (file.getName().endsWith(".jsonld")) {
-                convertJsonLdFile(file, jsonTargetDir, parquetTargetDir);
+                
+                processJsonLdToJsonDirectory(file, jsonOutputRoot);
+            } else if (file.getName().endsWith(".jsonld") || file.getName().endsWith(".json")) {
+                processJsonLdToJsonFile(file, jsonOutputRoot);
             }
         }
     }
 
-    private void convertJsonLdFile(File jsonLdFile, File jsonTargetDir, File parquetTargetDir) throws Exception {
-        System.out.println("Processing JSON-LD file: " + jsonLdFile.getAbsolutePath());
-        
-        // Read JSON-LD file
-        JsonNode jsonLdNode = objectMapper.readTree(jsonLdFile);
-        
-        // Extract @graph array
-        JsonNode graphNode = jsonLdNode.get("@graph");
-        if (graphNode == null || !graphNode.isArray()) {
-            System.out.println("No @graph array found in JSON-LD file: " + jsonLdFile.getName());
+    private void processJsonToParquetDirectory(File sourceDir, File parquetOutputRoot) throws IOException {
+        if (!sourceDir.exists() || !sourceDir.isDirectory()) {
             return;
         }
         
-        // Create JSON output file
-        String jsonFileName = jsonLdFile.getName().replace(".jsonld", ".json");
-        File jsonOutputFile = new File(jsonTargetDir, jsonFileName);
-        
-        // Write JSON array to file
-        objectMapper.writeValue(jsonOutputFile, graphNode);
-        System.out.println("Written JSON array to: " + jsonOutputFile.getAbsolutePath());
-        
-        // Convert JSON to Parquet
-        String parquetFileName = jsonLdFile.getName().replace(".jsonld", ".parquet");
-        File parquetOutputFile = new File(parquetTargetDir, parquetFileName);
-        
-        convertJsonToParquet(graphNode, parquetOutputFile);
-        System.out.println("Written Parquet file to: " + parquetOutputFile.getAbsolutePath());
-    }
-
-    private void convertJsonToParquet(JsonNode jsonArray, File parquetFile) throws Exception {
-        // In a real implementation, you would use a Parquet library to convert JSON to Parquet
-        // This is a placeholder for the actual implementation
-        
-        // For now, we'll create a simple Parquet file with basic schema inference
-        // You'll need to add proper Parquet dependencies and implement this properly
-        
-        // Example using Apache Parquet (you'll need to add the dependency):
-        // MessageType schema = inferSchemaFromJson(jsonArray);
-        // try (ParquetWriter<Group> writer = new ParquetWriter<>(...)) {
-        //     writer.write(...);
-        // }
-        
-        // For now, just create an empty file as placeholder
-        // Delete existing file if it exists to avoid FileAlreadyExistsException
-        if (parquetFile.exists()) {
-            Files.delete(parquetFile.toPath());
+        File[] files = sourceDir.listFiles();
+        if (files == null) {
+            return;
         }
-        Files.createFile(parquetFile.toPath());
         
-        System.out.println("Parquet conversion placeholder - implement proper Parquet writing");
+        for (File file : files) {
+            if (file.isDirectory()) {
+                // Create corresponding target directories
+                String relativePath = getRelativePath(file, new File(jsonOutputPath));
+                File parquetTargetSubDir = new File(parquetOutputRoot, relativePath);
+                
+                if (!parquetTargetSubDir.exists()) {
+                    parquetTargetSubDir.mkdirs();
+                }
+                
+                processJsonToParquetDirectory(file, parquetOutputRoot);
+            } else if (file.getName().endsWith(".json")) {
+                processJsonToParquetFile(file, parquetOutputRoot);
+            }
+        }
     }
 
-    private void createCombinedParquetFile() throws Exception {
-        System.out.println("Creating combined Parquet file...");
+    private void processJsonLdToJsonFile(File jsonLdFile, File jsonOutputRoot) throws IOException {
+        System.out.println("Processing JSON-LD file: " + jsonLdFile.getAbsolutePath());
         
-        // Find all JSON files
-        File[] jsonFiles = findAllJsonFiles(new File(jsonOutputPath));
-        
-        // Combine all JSON arrays into one
-        List<JsonNode> allRecords = new ArrayList<>();
-        for (File jsonFile : jsonFiles) {
-            JsonNode jsonArray = objectMapper.readTree(jsonFile);
-            if (jsonArray.isArray()) {
-                for (JsonNode record : jsonArray) {
-                    allRecords.add(record);
+        // First, check if this is a context-only JSON-LD file
+        try {
+            String content = new String(Files.readAllBytes(jsonLdFile.toPath()));
+            String trimmedContent = content.trim();
+            
+            // Check if the file is just a @context object with no actual data
+            if (trimmedContent.startsWith("{") && trimmedContent.endsWith("}")) {
+                // Remove the outer braces to check the content structure
+                String innerContent = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
+                
+                // If the file only contains @context (possibly with some whitespace/formatting)
+                // and no other top-level properties like @id, @graph, etc.
+                if (innerContent.startsWith("\"@context\" : ") || 
+                    innerContent.startsWith("\"@context\":")) {
+                    
+                    // Find the @context section and check if there's any other content
+                    int contextStart = innerContent.indexOf("\"@context\"");
+                    if (contextStart >= 0) {
+                        // Find the matching closing brace for the @context object
+                        int braceCount = 0;
+                        int i = contextStart;
+                        boolean inContext = false;
+                        
+                        while (i < innerContent.length()) {
+                            if (innerContent.charAt(i) == '{') {
+                                braceCount++;
+                                inContext = true;
+                            } else if (innerContent.charAt(i) == '}') {
+                                braceCount--;
+                                if (braceCount == 0 && inContext) {
+                                    break;
+                                }
+                            }
+                            i++;
+                        }
+                        
+                        String beforeContext = innerContent.substring(0, contextStart).trim();
+                        String afterContext = innerContent.substring(i + 1).trim();
+                        
+                        // If there's no content before or after @context, it's a context-only file
+                        if (beforeContext.isEmpty() && afterContext.isEmpty()) {
+                            System.out.println("Skipping context-only JSON-LD file: " + jsonLdFile.getAbsolutePath());
+                            return;
+                        }
+                    }
                 }
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not pre-check file content: " + e.getMessage());
+        }
+        
+        // Use Jackson to process JSON-LD and convert to clean JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonLdFile);
+        
+        // Create output file path
+        String relativePath = getRelativePath(jsonLdFile, new File(jsonLdInputPath));
+        String jsonOutputPathStr = relativePath.replaceFirst("\\.jsonld$", ".json").replaceFirst("\\.json$", ".json");
+        File jsonOutputFile = new File(jsonOutputRoot, jsonOutputPathStr);
+        
+        // Ensure parent directory exists
+        jsonOutputFile.getParentFile().mkdirs();
+        
+        // Process @graph arrays if present
+        if (rootNode.has("@graph") && rootNode.get("@graph").isArray()) {
+            ArrayNode graphArray = (ArrayNode) rootNode.get("@graph");
+            
+            // Write each object in the @graph array as a separate JSON object
+            try (FileOutputStream fos = new FileOutputStream(jsonOutputFile)) {
+                for (int i = 0; i < graphArray.size(); i++) {
+                    JsonNode graphObject = graphArray.get(i);
+                    
+                    // Remove @context from individual objects if present
+                    if (graphObject.has("@context")) {
+                        ((ObjectNode) graphObject).remove("@context");
+                    }
+                    
+                    // Write JSON object
+                    String jsonString = objectMapper.writeValueAsString(graphObject);
+                    fos.write(jsonString.getBytes());
+                    fos.write("\n".getBytes());
+                }
+            }
+            
+            System.out.println("Extracted " + graphArray.size() + " records from @graph array");
+        } else {
+            // For non-@graph files, just remove @context and write as single JSON object
+            if (rootNode.has("@context")) {
+                ((ObjectNode) rootNode).remove("@context");
+            }
+            
+            try (FileOutputStream fos = new FileOutputStream(jsonOutputFile)) {
+                String jsonString = objectMapper.writeValueAsString(rootNode);
+                fos.write(jsonString.getBytes());
             }
         }
         
-        // Create combined Parquet file
-        File combinedParquetDir = new File(parquetOutputPath, "be/vlaanderen/omgeving/riepr/data/id");
-        if (!combinedParquetDir.exists()) {
-            combinedParquetDir.mkdirs();
-        }
-        
-        File combinedParquetFile = new File(combinedParquetDir, "combined.parquet");
-        
-        // Convert combined JSON to Parquet
-        JsonNode combinedJsonArray = objectMapper.valueToTree(allRecords);
-        convertJsonToParquet(combinedJsonArray, combinedParquetFile);
-        
-        System.out.println("Written combined Parquet file to: " + combinedParquetFile.getAbsolutePath());
+        System.out.println("Written JSON to: " + jsonOutputFile.getAbsolutePath());
     }
 
-    private File[] findAllJsonFiles(File baseDir) {
-        return findFilesRecursively(baseDir, ".json");
-    }
-
-    private File[] findFilesRecursively(File dir, String extension) {
-        if (!dir.exists() || !dir.isDirectory()) {
-            return new File[0];
-        }
+    private void processJsonToParquetFile(File jsonFile, File parquetOutputRoot) throws IOException {
+        System.out.println("Processing JSON file for Parquet conversion: " + jsonFile.getAbsolutePath());
         
-        List<File> result = new ArrayList<>();
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    result.addAll(List.of(findFilesRecursively(file, extension)));
-                } else if (file.getName().endsWith(extension)) {
-                    result.add(file);
-                }
+        SparkSession spark = SparkSession.builder()
+                .appName("riepr-json-to-parquet")
+                .master("local[*]")
+                .config("spark.ui.enabled", "false")
+                .getOrCreate();
+
+        try {
+            // Lees individueel JSON bestand
+            Dataset<Row> dataset = spark.read()
+                    .option("multiLine", true)
+                    .option("samplingRatio", 1.0)
+                    .option("inferSchema", true)
+                    .option("allowComments", true)
+                    .option("allowUnquotedFieldNames", true)
+                    .option("allowSingleQuotes", true)
+                    .json(jsonFile.getAbsolutePath());
+
+            // Controleer of de dataset leeg is
+            if (dataset.columns().length == 0) {
+                System.out.println("Skipping empty dataset (no columns): " + jsonFile.getAbsolutePath());
+                return;
             }
+
+            // Controleer of de dataset rijen heeft
+            try {
+                if (dataset.count() == 0) {
+                    System.out.println("Skipping empty dataset (no rows): " + jsonFile.getAbsolutePath());
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println("Skipping problematic dataset: " + jsonFile.getAbsolutePath() + " - " + e.getMessage());
+                return;
+            }
+
+            // Create output file path
+            String relativePath = getRelativePath(jsonFile, new File(jsonOutputPath));
+            String parquetOutputPathStr = relativePath.replaceFirst("\\.json$", "");
+            File parquetOutputFile = new File(parquetOutputRoot, parquetOutputPathStr);
+            
+            // Ensure parent directory exists
+            parquetOutputFile.getParentFile().mkdirs();
+
+            // Schrijf Parquet bestand
+            dataset.write()
+                    .mode(SaveMode.Overwrite)
+                    .parquet(parquetOutputFile.getAbsolutePath());
+
+            System.out.println("Written Parquet to: " + parquetOutputFile.getAbsolutePath());
+
+        } finally {
+            spark.stop();
         }
-        
-        return result.toArray(new File[0]);
     }
+
+    private String getRelativePath(File file, File baseDir) {
+        Path filePath = file.toPath();
+        Path basePath = baseDir.toPath();
+        return basePath.relativize(filePath).toString();
+    }
+
+
 }
