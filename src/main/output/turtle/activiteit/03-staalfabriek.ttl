@@ -22,6 +22,13 @@
 @prefix vkbo:               <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Overbrenging naar decarburisatie"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        ssn:implements       riepr:overbrengingsProces .
+
 emissiepunt:0400123123_6851234567_0000003
         rdf:type               prov:Entity , geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
         rdfs:comment           "Afzuiging en ontstoffing van de stroomboogoven"@nl;
@@ -111,15 +118,6 @@ apparaat:0400123123_6851234567_0003
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
 
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000003;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003;
-        ssn:implements        riepr:uitstootProces .
-
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002
         rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
         rdfs:label            "Afgassing"@nl;
@@ -127,6 +125,15 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002
         p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
         prov:used             emissiepunt:0400123123_6851234567_0000001;
         prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000001;
+        ssn:implements        riepr:uitstootProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             emissiepunt:0400123123_6851234567_0000003;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003;
         ssn:implements        riepr:uitstootProces .
 
 installatie:0400123123_6851234567_0000001
@@ -161,7 +168,7 @@ osm:6851234567  rdf:type  prov:Entity;
 
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009
         rdf:type              prov:Activity , p-plan:Step , riepr:ActiviteitStap;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b;
         p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
         prov:used             apparaat:0400123123_6851234567_0003;
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0003;
