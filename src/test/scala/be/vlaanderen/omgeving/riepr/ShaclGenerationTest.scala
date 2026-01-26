@@ -5,9 +5,7 @@ import org.apache.jena.riot.RDFDataMgr
 import org.apache.jena.shacl.Shapes
 import org.junit.jupiter.api.Assertions._
 import org.junit.jupiter.api.Test
-import be.vlaanderen.omgeving.riepr.OwlToShaclGenerator
-import be.vlaanderen.omgeving.riepr.ShaclValidator
-import be.vlaanderen.omgeving.riepr.TurtleTransformer
+
 
 class ShaclGenerationTest {
 
@@ -65,7 +63,7 @@ class ShaclGenerationTest {
       RDFDataMgr.read(data, s"$testDataDir/$file")
 
       val report =
-        ShaclValidator.get.validate(shapes, data.getGraph)
+        org.apache.jena.shacl.ShaclValidator.get().validate(shapes, data.getGraph)
 
       assertEquals(
         shouldBeValid,
@@ -96,7 +94,7 @@ class ShaclGenerationTest {
       RDFDataMgr.read(data, s"$testDataDir/$file")
 
       val report =
-        ShaclValidator.get.validate(shapes, data.getGraph)
+        org.apache.jena.shacl.ShaclValidator.get().validate(shapes, data.getGraph)
 
       assertEquals(
         shouldBeValid,

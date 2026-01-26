@@ -5,9 +5,6 @@ import org.apache.jena.riot.RDFDataMgr
 import org.apache.jena.shacl.Shapes
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
-import be.vlaanderen.omgeving.riepr.OwlToShaclGenerator
-import be.vlaanderen.omgeving.riepr.ShaclValidator
-import be.vlaanderen.omgeving.riepr.TurtleTransformer
 
 
 class ShaclGenerationSpec extends AnyFunSuite with Matchers {
@@ -27,7 +24,7 @@ class ShaclGenerationSpec extends AnyFunSuite with Matchers {
 
     val generatedShacl = OwlToShaclGenerator.generate(ontology)
 
-    generatedShacl.size() should be > 0
+    generatedShacl.size() should be > 0L
   }
 
   test("Generated SHACL should be isomorphic to expected SHACL") {
@@ -62,7 +59,9 @@ class ShaclGenerationSpec extends AnyFunSuite with Matchers {
         RDFDataMgr.read(dataModel, s"$testDataDir/$fileName")
 
         val report =
-          ShaclValidator.get.validate(shapes, dataModel.getGraph)
+          org.apache.jena.shacl.ShaclValidator
+            .get()
+            .validate(shapes, dataModel.getGraph)
 
         report.conforms() shouldBe shouldBeValid
       }
@@ -91,7 +90,9 @@ class ShaclGenerationSpec extends AnyFunSuite with Matchers {
         RDFDataMgr.read(dataModel, s"$testDataDir/$fileName")
 
         val report =
-          ShaclValidator.get.validate(shapes, dataModel.getGraph)
+          org.apache.jena.shacl.ShaclValidator
+          .get()
+          .validate(shapes, dataModel.getGraph)
 
         report.conforms() shouldBe shouldBeValid
       }
