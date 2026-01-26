@@ -7,21 +7,21 @@
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasProperty> ]
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/actsOn> ]
-                        ];
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
-                                   );
-                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/actsOnProperty> ]
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/observedProperty> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/actsOnProperty> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isProxyFor> ]
@@ -98,25 +98,25 @@
 
 <http://www.w3.org/ns/sosa/SampleShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
+                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasResult> ]
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSample> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
-                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSamplingHasResult> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sample> .
 
@@ -147,13 +147,13 @@
 <http://www.w3.org/ns/sosa/ExecutionShape>
         a               sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeExecution> ]
@@ -244,28 +244,28 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SystemShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isSubSystemOf> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/propertyFor> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSubSystem> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hosts> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/deployedAsset> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/propertyFor> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSubSystem> ]
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySystem> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hosts> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isSubSystemOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/System> .
 
@@ -275,22 +275,22 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SamplingCollectionShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
-                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isResultOf> ]
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isResultOf> ]
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
@@ -308,13 +308,13 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasActedOnBy> ]
@@ -365,22 +365,22 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/ExecutionCollectionShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeExecution> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeExecution> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/ExecutionCollection> .
 
@@ -479,19 +479,19 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/DeploymentShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   <http://www.w3.org/ns/sosa/deployedSystem>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/inDeployment> ]
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Platform> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/System> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasDeployment> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/systemDeployment> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/inDeployment> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Deployment> .
 
@@ -533,17 +533,17 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/ObservationShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeObservation> ]
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/originated> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeObservation> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasObservedBy> ]
@@ -559,14 +559,14 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SamplingShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isResultOf> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
@@ -595,19 +595,19 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SensorShape>
         a               sh:NodeShape;
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
-                                   );
-                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySensor> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isObservedBy> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
                           sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isDetectedBy> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isObservedBy> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySensor> ]
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sensor> .
 
@@ -622,30 +622,30 @@ owl:ThingShape  a       sh:NodeShape;
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSample> ]
+                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sample> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SampleCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSample> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSamplingHasResult> ]
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSamplingHasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/SampleCollection> .
 

@@ -29,6 +29,13 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b
         p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
         ssn:implements       riepr:overbrengingsProces .
 
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Overbrenging naar gietinstallatie"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        ssn:implements       riepr:overbrengingsProces .
+
 emissiepunt:0400123123_6851234567_0000003
         rdf:type               prov:Entity , geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
         rdfs:comment           "Afzuiging en ontstoffing van de stroomboogoven"@nl;
@@ -39,13 +46,6 @@ emissiepunt:0400123123_6851234567_0000003
                                ];
         prov:atLocation        exploitatielocatie:0400123123_6851234567;
         prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Overbrenging naar gietinstallatie"@nl;
-        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
-        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements       riepr:overbrengingsProces .
 
 apparaat:0400123123_6851234567_0002
         rdf:type         prov:Entity , riepr:Apparaat;
