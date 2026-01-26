@@ -1,9 +1,14 @@
 flowchart TD
     step0["Toevoeging van grondstoffen"]
+    style step0 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     step3["(Apparaat: Stroomboogoven)"]
+    style step3 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     step6["(Apparaat: Argon-zuurstofontkoling)"]
+    style step6 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     step9["(Apparaat: Decarburisatie)"]
+    style step9 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     step12["(Apparaat: Gieterijmachine)"]
+    style step12 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     emissiepunt0(["Schouw 1"])
     emissiepunt1(["Schouw 2"])
     emissiepunt2(["Schouw 3"])
@@ -11,21 +16,30 @@ flowchart TD
     emissiepunt4(["Schouw 5"])
     subgraph Stroomboogoven
         emissiepunt0
+        style emissiepunt0 fill:#7ED321,stroke:#5A9E17,color:#fff
         step3
         emissiepunt1
+        style emissiepunt1 fill:#7ED321,stroke:#5A9E17,color:#fff
     end
+    style Stroomboogoven fill:#D3D3D3,stroke:#808080,color:#000
     subgraph Gieterij
         step12
         emissiepunt4
+        style emissiepunt4 fill:#7ED321,stroke:#5A9E17,color:#fff
     end
+    style Gieterij fill:#D3D3D3,stroke:#808080,color:#000
     subgraph VOD-installatie
         step9
         emissiepunt3
+        style emissiepunt3 fill:#7ED321,stroke:#5A9E17,color:#fff
     end
+    style VOD-installatie fill:#D3D3D3,stroke:#808080,color:#000
     subgraph AOD-installatie
         step6
         emissiepunt2
+        style emissiepunt2 fill:#7ED321,stroke:#5A9E17,color:#fff
     end
+    style AOD-installatie fill:#D3D3D3,stroke:#808080,color:#000
 
     step0 -.->|Afgassing| emissiepunt0
     step0 ==>|Schroot| step3
