@@ -1,4 +1,4 @@
-# RIE-IEPR Data Conversion Application (Scala)
+# RIE-IEPR Data Model
 
 This Scala application provides a workflow for converting RDF/Turtle data to JSON-LD and Parquet format for use in a data lake and LDES server.
 
