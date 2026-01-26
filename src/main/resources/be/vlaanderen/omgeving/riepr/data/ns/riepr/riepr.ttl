@@ -8,6 +8,10 @@
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
 @prefix dbo:    <http://dbpedia.org/ontology/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix org:    <http://www.w3.org/ns/org#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/>
 
 # --------------------------------------- #
 # Classes
@@ -24,14 +28,21 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een startdatum hebben
-        owl:onProperty prov:startedAtTime ; # TODO: Mogelijk voor een uitvoering dus fout
+        owl:onProperty prov:startedAtTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit kan een einddatum hebben
-        owl:onProperty prov:endedAtTime ;   # TODO: Mogelijk voor een uitvoering dus fout
+        owl:onProperty prov:endedAtTime ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit vindt plaats op een enkele exploitatie locatie
+        owl:onProperty prov:wasAssociatedWith ;
+        owl:someValuesFrom :ExploitatieLocatie ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
@@ -56,17 +67,27 @@
     # Stap kan een procedure implementeren (optioneel)
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty ssn:implements ; 
-        owl:someValuesFrom sosa:Procedure ; # e.g., EmissieProcedure
+        owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] 
-    # TODO: Een stap kan gebruikmaken van een invoer/uitvoer van een bepaald type
-    # Voorbeeld: verbruik/grondstof/afval/...
-    .
+    ] .
     
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
     rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn."@nl ;
-    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System .
+    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet onderdeel van een vestiging zijn
+        owl:onProperty TBD:TBD ; # TODO: property voor "is onderdeel van vestiging" (spatial)
+        owl:someValuesFrom :Vestiging ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ]
+    .
 # TODO: Nog te bepalen of deze onderklasse nodig is
 :IEPRInstallatie a owl:Class ;
     rdfs:label "IEPR Installatie"@nl ;
@@ -86,7 +107,7 @@
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     rdfs:subClassOf ogc:SpatialObject ;
-    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt
+    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt OF een activiteit stap
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:isProxyFor ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
@@ -109,18 +130,63 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-# Types stappen van een activiteit
-:EmissieProcedure a owl:Class ;
-    rdfs:label "Emissie Procedure"@nl ;
-    rdfs:comment "Een emissie procedure is een actie die de uitstoot van stoffen aan een emissiepunt beschrijft."@nl ;
-    rdfs:subClassOf sosa:Procedure .
-:VerwerkingsProcedure a owl:Class ;
-    rdfs:label "Verwerkings Procedure"@nl ;
-    rdfs:comment "Een verwerkings procedure is een actie die de verwerking van stoffen binnen een activiteit beschrijft."@nl ;
-    rdfs:subClassOf sosa:Procedure .
-:TransportProcedure a owl:Class ;
+:Exploitant a owl:Class ;
+    rdfs:label "Exploitant"@nl ;
+    rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        owl:onProperty rdf:type ;
+        # Een exploitant moet een organisatie of persoon zijn
+        # maar niet beide tegelijk
+        owl:someValuesFrom ( org:Organization foaf:Person ) ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ExploitatieLocatie a owl:Class ;
+    rdfs:label "Exploitatie Locatie"@nl ;
+    rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert."@nl ;
+    rdfs:subClassOf ogc:SpatialObjectCollection ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
+        owl:onProperty prov:wasAssociatedWith ;
+        owl:someValuesFrom :Exploitant ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan overeenkomen met één vestigingen
+        owl:onProperty prov:hadPrimarySource ;
+        owl:someValuesFrom org:Site ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    .
+
+# Procedure types as subclasses of sosa:Procedure
+:TransportProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Transport Procedure"@nl ;
-    rdfs:comment "Een transport procedure is een actie die het transport van stoffen binnen of buiten een activiteit beschrijft."@nl ;
+    rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
+    rdfs:label "Verbruiks Procedure"@nl ;
+    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het verbruik van grondstoffen binnen een activiteit."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:VerwerkingsProcedure a owl:Class, skos:ConceptScheme ;
+    rdfs:label "Verwerkings Procedure"@nl ;
+    rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:EmissieProcedure a owl:Class, skos:ConceptScheme ;
+    rdfs:label "Emissie Procedure"@nl ;
+    rdfs:comment "Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
     rdfs:subClassOf sosa:Procedure .
 
 # --------------------------------------- #
@@ -132,19 +198,35 @@
 # Data Properties
 # --------------------------------------- #
 
-
 # --------------------------------------- #
-# Constant Individuals
+# Individuals
 # --------------------------------------- #
+:overbrengingsProces a skos:Concept ;
+    rdfs:label "Overbrengingsproces"@nl ;
+    rdfs:comment "Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging."@nl ;
+    skos:broader :TransportProcedure ;
+    skos:prefLabel "Overbrengingsproces"@nl .
 
-:lozingsProces a :EmissieProcedure ;
+:lozingsProces a skos:Concept ;
     rdfs:label "Lozingsproces"@nl ;
-    rdfs:comment "Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater."@nl .
+    rdfs:comment "Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater."@nl ;
+    skos:broader :EmissieProcedure ;
+    skos:prefLabel "Lozingsproces"@nl .
 
-:uitstootProces a :EmissieProcedure ;
+:uitstootProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Uitstootproces"@nl ;
-    rdfs:comment "Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht."@nl .
+    rdfs:comment "Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht."@nl ;
+    skos:broader :EmissieProcedure ;
+    skos:prefLabel "Uitstootproces"@nl .
 
-:stoomProces a :TransportProcedure ;
+:stoomProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Stoomproces"@nl ;
-    rdfs:comment "Een stoomproces is een specifieke procedure die betrekking heeft op het transport van stoffen via stoom binnen een activiteit."@nl .
+    rdfs:comment "Een stoomproces is een specifieke procedure die betrekking heeft op het transport van stoffen via stoom binnen een activiteit."@nl ;
+    skos:broader :TransportProcedure ;
+    skos:prefLabel "Stoomproces"@nl .
+
+:electriciteitsVerbruikProces a skos:Concept, sosa:Procedure ;
+    rdfs:label "Elektriciteitsverbruikproces"@nl ;
+    rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit."@nl ;
+    skos:broader :VerbruiksProcedure ;
+    skos:prefLabel "Elektriciteitsverbruikproces"@nl .
