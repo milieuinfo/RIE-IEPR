@@ -134,13 +134,6 @@ export PATH=$JAVA_HOME/bin:$PATH
 mvn exec:java -Dexec.mainClass="TurtleTransformer"
 ```
 
-### Testing
-
-The project includes test scripts:
-
-- `test_json_conversion.sh` - Tests JSON conversion
-- `test_json_processing.py` - Python tests for JSON processing
-- `test_empty_json.py` - Tests for empty JSON handling
 
 ## Data Flow
 
