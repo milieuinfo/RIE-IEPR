@@ -1,26 +1,33 @@
-# RIE-IEPR Data Conversion Application
+# RIE-IEPR Data Conversion Application (Scala)
 
-This Spring Boot application provides a workflow for converting RDF/Turtle data to JSON-LD and Parquet format for use in a data lake and LDES server.
+This Scala application provides a workflow for converting RDF/Turtle data to JSON-LD and Parquet format for use in a data lake and LDES server.
 
 ## Project Structure
 
 ```
-src/main/java/be/vlaanderen/omgeving/riepr/
-├── RieprApplication.java              # Main Spring Boot application
-├── controller/
-│   └── DataConversionController.java  # REST API endpoints
-├── service/
-│   ├── OntologyService.java           # Loads ontologies from TTL files
-│   ├── RulesService.java              # Loads Jena reasoning rules
-│   ├── TurtleProcessingService.java   # Processes turtle files with reasoning
-│   ├── JsonLdConversionService.java   # Converts RDF to JSON-LD
-│   └── JsonToParquetService.java      # Converts JSON to Parquet
-├── runner/
-│   └── DataConversionRunner.java      # Command line runner
-├── config/
-│   └── ParquetConfig.java            # Parquet configuration
-└── util/
-    └── FileUtils.java                 # File utility methods
+src/main/scala/
+└── TurtleTransformer.scala          # Main Scala application with all conversion logic
+
+src/main/resources/
+├── be/vlaanderen/omgeving/riepr/
+│   └── data/id/jsonld/frame.json    # JSON-LD framing configuration
+├── ssn-sosa-prov-p-plan.ttl         # Combined ontology
+├── ssn-sosa_2023.ttl                # SSN-SOSA ontology
+├── prov-o.ttl                       # PROV-O ontology
+├── p-plan.ttl                       # P-Plan ontology
+└── be/                              # Additional ontology files
+
+src/main/input/
+├── activiteit/                      # Activity data
+├── bedrijf/                        # Company data
+├── codelijsten/                     # Code lists
+└── installatie/                     # Installation data
+
+src/main/output/
+├── json/                            # JSON output
+├── jsonld/                          # JSON-LD output
+├── parquet/                         # Parquet output
+└── turtle/                          # Inferred Turtle output
 ```
 
 ## Workflow
@@ -28,112 +35,81 @@ src/main/java/be/vlaanderen/omgeving/riepr/
 The application follows this conversion workflow:
 
 1. **Turtle Processing with Reasoning**
-   - Loads ontologies from `.ttl` files in `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/`, `org/`, and `eu/` directories
+   - Loads ontologies from `.ttl` files in `src/main/resources/`
    - Loads reasoning rules from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules`
-   - Processes example turtle files from `/home/gehau/git/RIE-IEPR/individual/turtle/`
+   - Processes turtle files from `src/main/input/` recursively
    - Applies reasoning using Jena's GenericRuleReasoner
-   - Writes inferred triples to `/home/gehau/git/RIE-IEPR/individual/turtle_inferred/`
-   - Excludes ontology triples from output to keep only data-specific inferences
+   - Writes inferred triples to `src/main/output/turtle/`
 
 2. **JSON-LD Conversion**
-   - Converts inferred RDF to JSON-LD using context from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json`
-   - Applies JSON-LD framing to create array structures
-   - Writes JSON-LD files to `/home/gehau/git/RIE-IEPR/individual/jsonld/`
+   - Converts inferred RDF to JSON-LD
+   - Applies JSON-LD framing using `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json`
+   - Writes JSON-LD files to `src/main/output/jsonld/`
 
 3. **JSON and Parquet Conversion**
    - Extracts `@graph` arrays from JSON-LD files
-   - Writes JSON arrays to `/home/gehau/git/RIE-IEPR/individual/json/`
-   - Converts JSON arrays to Parquet files in `/home/gehau/git/RIE-IEPR/individual/parquet/`
+   - Writes JSON arrays to `src/main/output/json/`
+   - Converts JSON arrays to Parquet files in `src/main/output/parquet/`
 
 ## Usage
 
 ### Running the Application
 
-1. **Build and run with Maven:**
-   ```bash
-   mvn spring-boot:run
-   ```
+The application is a standalone Scala program that can be run directly:
 
-2. **Run specific workflow steps:**
-   ```bash
-   # Run full workflow
-   mvn spring-boot:run -Dspring-boot.run.arguments="--run-full-workflow"
-   
-   # Run only turtle processing
-   mvn spring-boot:run -Dspring-boot.run.arguments="--run-turtle-processing"
-   
-   # Run only JSON-LD conversion
-   mvn spring-boot:run -Dspring-boot.run.arguments="--run-jsonld-conversion"
-   
-   # Run only Parquet conversion
-   mvn spring-boot:run -Dspring-boot.run.arguments="--run-parquet-conversion"
-   ```
+```bash
+# Compile and run using Maven
+mvn compile exec:java -Dexec.mainClass="TurtleTransformer"
+```
 
-### Using the REST API
+### Running with Spark
 
-The application provides REST endpoints at `http://localhost:8080/api/conversion`:
-
-- `GET /api/conversion/status` - Get application status and loaded ontologies
-- `GET /api/conversion/run-full-workflow` - Run complete conversion workflow
-- `GET /api/conversion/run-turtle-processing` - Run turtle processing only
-- `GET /api/conversion/run-jsonld-conversion` - Run JSON-LD conversion only
-- `GET /api/conversion/run-parquet-conversion` - Run Parquet conversion only
+The application uses Apache Spark for Parquet conversion. Ensure you have Spark properly configured in your environment.
 
 ## Configuration
 
-The application uses Spring Boot's standard configuration. You can customize:
+The application uses the following key resources:
 
-- Server port in `application.properties`
-- Input/output directories via Spring `@Value` annotations (currently configured to use absolute paths outside the project directory)
-- Reasoning rules by modifying the `.rules` file
-- JSON-LD context and framing in the JSON files
-
-### Current Path Configuration
-
-The application is currently configured to use absolute paths:
-
-```properties
-data.input.turtle=/home/gehau/git/RIE-IEPR/individual/turtle
-data.output.turtle-inferred=/home/gehau/git/RIE-IEPR/individual/turtle_inferred
-data.output.jsonld=/home/gehau/git/RIE-IEPR/individual/jsonld
-data.output.json=/home/gehau/git/RIE-IEPR/individual/json
-data.output.parquet=/home/gehau/git/RIE-IEPR/individual/parquet
-```
-
-To use relative paths or different locations, modify these properties in `src/main/resources/application.properties`.
+- **Ontologies**: Located in `src/main/resources/` (SSN-SOSA, PROV-O, P-Plan)
+- **JSON-LD Frame**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json`
+- **Reasoning Rules**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules`
+- **Input Data**: `src/main/input/` (recursively processes all `.ttl` files)
+- **Output Data**: `src/main/output/` (json, jsonld, parquet, turtle directories)
 
 ## Dependencies
 
 Key dependencies include:
 
-- **Spring Boot 3.5.8** - Core framework
-- **Apache Jena 4.10.0** - RDF processing and reasoning
-- **JSONLD-Java 0.13.3** - JSON-LD conversion
+- **Scala 2.13** - Programming language
+- **Apache Jena** - RDF processing and reasoning
+- **JSONLD-Java** - JSON-LD conversion
 - **Jackson** - JSON processing
-- **Apache Parquet** - Parquet file format support
-- **Hadoop** - Required for Parquet functionality
+- **Apache Spark** - Parquet file format support
+- **Apache Parquet** - Parquet file format
 
 ## Development
 
 ### Building
 
 ```bash
-mvn clean package
+mvn clean compile
+```
+
+### Running
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+mvn exec:java -Dexec.mainClass="TurtleTransformer"
 ```
 
 ### Testing
 
-```bash
-mvn test
-```
+The project includes test scripts:
 
-### Running Tests
-
-The application includes basic tests in `src/test/java/`. You can run them with:
-
-```bash
-mvn test
-```
+- `test_json_conversion.sh` - Tests JSON conversion
+- `test_json_processing.py` - Python tests for JSON processing
+- `test_empty_json.py` - Tests for empty JSON handling
 
 ## Data Flow
 
@@ -145,34 +121,38 @@ Inferred Turtle Files
 JSON-LD Files
     ↓ (JSON Extraction)
 JSON Array Files
-    ↓ (Parquet Conversion)
+    ↓ (Spark Parquet Conversion)
 Parquet Files
 ```
 
-## Recent Changes
+## Key Features
 
-### Version Update (Jan 22, 2026)
+1. **Recursive File Processing**: Automatically finds and processes all `.ttl` files in the input directory and subdirectories
+2. **Reasoning**: Applies Jena reasoning rules to infer additional triples
+3. **JSON-LD Framing**: Uses JSON-LD framing to create structured JSON output
+4. **Parquet Conversion**: Converts JSON data to efficient Parquet format using Spark
+5. **Multiple Output Formats**: Generates Turtle, JSON, JSON-LD, and Parquet outputs
 
-- **Fixed inference to exclude ontologies from output**: The turtle processing now filters inferred triples to include only data-specific URIs (starting with `https://data.riepr.omgeving.vlaanderen.be/`), excluding ontology triples from the output.
+## Implementation Details
 
-- **Fixed turtle processing workflow issues**:
-  - Added missing `individual/turtle_inferred` directory with `.keep` file
-  - Added missing `individual/jsonld` directory with `.keep` file
-  - Fixed `findFilesRecursively` method to prevent infinite recursion
-  - Fixed output file path calculation in `processTurtleFile` method
-  - Fixed `DataConversionRunner` to properly handle individual workflow steps
-  - Updated `processDirectory` to use root target directory consistently
+The `TurtleTransformer.scala` file contains all the logic:
 
-- **Configuration changes**: Updated input/output paths to use absolute paths outside the project directory structure for better separation of concerns.
+- `loadFrame()`: Loads JSON-LD framing configuration
+- `loadOntology()`: Loads RDF ontologies
+- `listTurtleFiles()`: Recursively finds all `.ttl` files
+- `parseTurtle()`: Parses Turtle files into Jena models
+- `inferTriples()`: Applies reasoning to infer additional triples
+- `modelToJsonLd()`: Converts RDF models to JSON-LD
+- `frameJsonLd()`: Applies JSON-LD framing
+- `extractGraph()`: Extracts `@graph` arrays from framed JSON-LD
+- `writeGraphToParquet()`: Converts JSON to Parquet using Spark
+- `writeModelToTurtle()`: Writes inferred models to Turtle format
+- `writeJson()`: Writes JSON output files
 
 ## Notes
 
 - The application preserves the directory structure of input files in output directories
-- Each step creates both individual files and combined/bundled files
-- The workflow ensures that the final Parquet files can be converted back to the original Turtle format
-- Reasoning includes domain/range inference, subproperty inference, and inverse property inference
-- The application now excludes ontology triples from the inferred output to keep only data-specific inferences
-- Fixed issues with infinite recursion and FileNotFoundException in the turtle processing workflow
-
-
-                                                                                                                                                                                                                                                                                                                                         
+- Each input Turtle file generates corresponding output files in all formats
+- The workflow ensures that the final Parquet files contain the complete inferred data
+- Reasoning includes domain/range inference, subproperty inference, and other rules defined in the rules file
+- The application handles empty or invalid inputs gracefully by returning `None`/`Option` types

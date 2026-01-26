@@ -93,28 +93,28 @@
   },
   "@graph" : [ {
     "id" : "activiteit:2238530069_KOEKJES_20170929",
-    "type" : "riepr:Activiteit",
+    "type" : [ "pplan:Plan", "pplan:Entity", "prov:Plan", "prov:Entity", "riepr:Activiteit", "prov:Activity" ],
     "label" : "Koekjes maken",
     "startedAtTime" : "2017-09-29T00:00:00"
   }, {
     "id" : "procedure:2238530070_KOEKJES_DEEGMAKEN_20170929",
-    "type" : "riepr:ActiviteitStap",
+    "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
     "isStepOfPlan" : {
       "id" : "activiteit:2238530069_KOEKJES_20170929",
-      "type" : "riepr:Activiteit",
+      "type" : [ "pplan:Plan", "pplan:Entity", "prov:Plan", "prov:Entity", "riepr:Activiteit", "prov:Activity" ],
       "label" : "Koekjes maken",
       "startedAtTime" : "2017-09-29T00:00:00"
     },
     "label" : "Koekjesdeeg maken"
   }, {
     "id" : "procedure:2238530071_KOEKJES_BAKKEN_20170929",
-    "type" : "riepr:ActiviteitStap",
+    "type" : [ "pplan:Step", "prov:Activity", "riepr:ActiviteitStap" ],
     "isPrecededBy" : {
       "id" : "procedure:2238530070_KOEKJES_DEEGMAKEN_20170929",
-      "type" : "riepr:ActiviteitStap",
+      "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
       "isStepOfPlan" : {
         "id" : "activiteit:2238530069_KOEKJES_20170929",
-        "type" : "riepr:Activiteit",
+        "type" : [ "pplan:Plan", "pplan:Entity", "prov:Plan", "prov:Entity", "riepr:Activiteit", "prov:Activity" ],
         "label" : "Koekjes maken",
         "startedAtTime" : "2017-09-29T00:00:00"
       },
@@ -122,12 +122,15 @@
     },
     "isStepOfPlan" : {
       "id" : "activiteit:2238530069_KOEKJES_20170929",
-      "type" : "riepr:Activiteit",
+      "type" : [ "pplan:Plan", "pplan:Entity", "prov:Plan", "prov:Entity", "riepr:Activiteit", "prov:Activity" ],
       "label" : "Koekjes maken",
       "startedAtTime" : "2017-09-29T00:00:00"
     },
     "label" : "Koekjes bakken",
-    "used" : "emissiepunt:TBD",
+    "used" : {
+      "id" : "emissiepunt:TBD",
+      "type" : "prov:Entity"
+    },
     "implements" : "riepr:uitstootProces"
   } ]
 }

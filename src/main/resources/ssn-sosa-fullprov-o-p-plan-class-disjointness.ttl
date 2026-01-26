@@ -1,0 +1,48 @@
+PREFIX :            <http://www.w3.org/ns/prov#>
+PREFIX dcterms:     <http://purl.org/dc/terms/>
+PREFIX dqv:         <http://www.w3.org/ns/dqv#>
+PREFIX foaf:        <http://xmlns.com/foaf/0.1/>
+PREFIX owl:         <http://www.w3.org/2002/07/owl#>
+PREFIX prov:        <http://www.w3.org/ns/prov#>
+PREFIX rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema:      <http://schema.org/>
+PREFIX skos:        <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:        <http://www.w3.org/ns/sosa/>
+PREFIX sosa-act:    <http://www.w3.org/ns/sosa/act/>
+PREFIX sosa-common: <http://www.w3.org/ns/sosa/common/>
+PREFIX sosa-dep:    <http://www.w3.org/ns/sosa/dep/>
+PREFIX sosa-obs:    <http://www.w3.org/ns/sosa/obs/>
+PREFIX sosa-sam:    <http://www.w3.org/ns/sosa/sam/>
+PREFIX sp:          <http://www.w3.org/ns/sosa/prov/>
+PREFIX ssn:         <http://www.w3.org/ns/ssn/>
+PREFIX ssn-act:     <http://www.w3.org/ns/ssn/act/>
+PREFIX ssn-common:  <http://www.w3.org/ns/ssn/common/>
+PREFIX ssn-dep:     <http://www.w3.org/ns/ssn/dep/>
+PREFIX ssn-obs:     <http://www.w3.org/ns/ssn/obs/>
+PREFIX ssn-sam:     <http://www.w3.org/ns/ssn/sam/>
+PREFIX terms:       <http://purl.org/dc/terms/>
+PREFIX time:        <http://www.w3.org/2006/time#>
+PREFIX vann:        <http://purl.org/vocab/vann/>
+PREFIX xsd:         <http://www.w3.org/2001/XMLSchema#>
+
+sosa:ObservationCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:SampleCollection , sosa:ActuationCollection .
+
+sosa:SampleCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:ObservationCollection , sosa:ActuationCollection .
+
+sosa:SamplingCollection
+        owl:disjointWith  sosa:ActuationCollection , sosa:ObservationCollection , sosa:SampleCollection .
+
+sosa:ActuationCollection
+        owl:disjointWith  sosa:ObservationCollection , sosa:SampleCollection , sosa:SamplingCollection .
+
+prov:Entity  owl:disjointWith  prov:InstantaneousEvent .
+
+prov:Agent  owl:disjointWith  prov:InstantaneousEvent .
+
+prov:ActivityInfluence
+        owl:disjointWith  prov:EntityInfluence .
+
+prov:Activity  owl:disjointWith  prov:Entity .

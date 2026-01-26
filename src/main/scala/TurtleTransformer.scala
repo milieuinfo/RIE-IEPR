@@ -4,13 +4,26 @@ import com.github.jsonldjava.core.{JsonLdOptions, JsonLdProcessor}
 import com.github.jsonldjava.utils.JsonUtils
 import org.apache.jena.rdf.model.{Model, ModelFactory}
 import org.apache.jena.reasoner.rulesys.{GenericRuleReasoner, Rule}
+import org.apache.jena.reasoner.{Reasoner, ReasonerRegistry}
 import org.apache.jena.riot.{Lang, RDFParser}
 import org.apache.spark.sql.SparkSession
+import org.slf4j.LoggerFactory
 
 import java.io.{ByteArrayOutputStream, File, FileInputStream, FileOutputStream, FileWriter}
 import scala.collection.JavaConverters._
 
+case class ValidationResult(
+                             valid: Boolean,
+                             messages: Seq[String]
+                           )
+
+
 object TurtleTransformer {
+
+  // ------------------------
+  // Logging
+  // ------------------------
+  private val logger = LoggerFactory.getLogger(getClass)
 
   // ------------------------
   // ObjectMapper hergebruiken
@@ -106,6 +119,21 @@ object TurtleTransformer {
     result
   }
 
+  /** Validatie t.o.v. ontologie */
+  def validateModel(model: Model, owlReasonerWithSchema: Reasoner): ValidationResult = {
+    //val owlReasoner = ReasonerRegistry.getOWLReasoner
+    //val owlReasoner = ReasonerRegistry.getOWLMiniReasoner
+    //val owlReasonerWithSchema = owlReasoner.bindSchema(ontology) // Voeg ontology toe aan reasoner
+    val infModel = ModelFactory.createInfModel(owlReasonerWithSchema, model) // gebruik inferredModel
+
+    val report = infModel.validate()
+    val messages =
+      if (report.isValid) Seq.empty
+      else report.getReports.asScala.map(_.getDescription).toSeq
+
+    ValidationResult(report.isValid, messages)
+  }
+
   /** Alle Turtle-bestanden in map (recursief) */
   def listTurtleFiles(dir: File): List[File] =
     Option(dir.listFiles()).getOrElse(Array.empty).toList.flatMap {
@@ -136,10 +164,18 @@ object TurtleTransformer {
 
     val frame = loadFrame("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json")
     val ontology = loadOntology("src/main/resources/ssn-sosa-prov-p-plan.ttl")
+    val provOntology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-class-disjointness.ttl")
     val reasoner = new GenericRuleReasoner(
       Rule.rulesFromURL("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules")
     )
     reasoner.setDerivationLogging(true)
+
+    //val owlReasoner = ReasonerRegistry.getOWLMiniReasoner
+    //val owlReasonerWithSchema = owlReasoner.bindSchema(ontology) // Voeg ontology toe aan reasoner
+    lazy val owlReasonerWithSchema =
+      ReasonerRegistry
+        .getOWLMiniReasoner
+        .bindSchema(provOntology)
 
     val spark = SparkSession.builder()
       .appName("TurtleTransformerExample")
@@ -149,17 +185,28 @@ object TurtleTransformer {
     val inputDir = new File("src/main/input")
 
     listTurtleFiles(inputDir).foreach { file =>
-      println(s"Processing: ${file.getPath}")
+      logger.info(s"Processing: ${file.getPath}")
 
       val model = parseTurtle(file)
+
       val inferredModel = inferTriples(model, ontology, reasoner)
 
       // Schrijf Turtle
       writeModelToTurtle(inferredModel, file.getPath)
 
+      // OWL reasoning
+      val validation = validateModel(inferredModel, owlReasonerWithSchema) // gebruik inferredModel
+      //val validation = validateModel(model, owlReasonerWithSchema) // gebruik model
+      if (!validation.valid) {
+        validation.messages.foreach(m =>
+          logger.warn(s"[MODEL INVALID] ${file.getName}: $m")
+        )
+      }
+
       // JSON-LD verwerking
       for {
         jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
+        //jsonLd <- modelToJsonLd(model) // gebruik model
         framed <- frameJsonLd(jsonLd, frame)
         graph <- extractGraph(framed)
       } {
