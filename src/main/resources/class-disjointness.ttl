@@ -1,0 +1,24 @@
+PREFIX owl:         <http://www.w3.org/2002/07/owl#>
+PREFIX prov:        <http://www.w3.org/ns/prov#>
+PREFIX sosa:        <http://www.w3.org/ns/sosa/>
+
+sosa:ObservationCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:SampleCollection , sosa:ActuationCollection .
+
+sosa:SampleCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:ObservationCollection , sosa:ActuationCollection .
+
+sosa:SamplingCollection
+        owl:disjointWith  sosa:ActuationCollection , sosa:ObservationCollection , sosa:SampleCollection .
+
+sosa:ActuationCollection
+        owl:disjointWith  sosa:ObservationCollection , sosa:SampleCollection , sosa:SamplingCollection .
+
+prov:Entity  owl:disjointWith  prov:InstantaneousEvent .
+
+prov:Agent  owl:disjointWith  prov:InstantaneousEvent .
+
+prov:ActivityInfluence
+        owl:disjointWith  prov:EntityInfluence .
+
+prov:Activity  owl:disjointWith  prov:Entity .

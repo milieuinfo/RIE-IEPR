@@ -163,8 +163,8 @@ object TurtleTransformer {
   def main(args: Array[String]): Unit = {
 
     val frame = loadFrame("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json")
-    val ontology = loadOntology("src/main/resources/ssn-sosa-prov-p-plan.ttl")
-    val provOntology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-class-disjointness.ttl")
+    val inferenceOntology = loadOntology("src/main/resources/inference_source.ttl")
+    val reasoningOntology = loadOntology("src/main/resources/class-disjointness.ttl")
     val reasoner = new GenericRuleReasoner(
       Rule.rulesFromURL("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules")
     )
@@ -175,7 +175,7 @@ object TurtleTransformer {
     lazy val owlReasonerWithSchema =
       ReasonerRegistry
         .getOWLMiniReasoner
-        .bindSchema(provOntology)
+        .bindSchema(reasoningOntology)
 
     val spark = SparkSession.builder()
       .appName("TurtleTransformerExample")
@@ -189,7 +189,7 @@ object TurtleTransformer {
 
       val model = parseTurtle(file)
 
-      val inferredModel = inferTriples(model, ontology, reasoner)
+      val inferredModel = inferTriples(model, inferenceOntology, reasoner)
 
       // Schrijf Turtle
       writeModelToTurtle(inferredModel, file.getPath)
