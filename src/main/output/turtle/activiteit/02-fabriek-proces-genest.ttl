@@ -12,7 +12,7 @@
 @prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
 
 procedurestap:STAP_001
-        rdf:type             p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , p-plan:Step , p-plan:MultiStep;
+        rdf:type             p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , p-plan:Step , riepr:ActiviteitStap;
         rdfs:label           "Koekjesdeeg maken"@nl;
         p-plan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
 
@@ -21,18 +21,18 @@ activiteit:ACTIVITEIT_001
         rdfs:label  "Koekjes maken"@nl .
 
 procedurestap:STAP_001_2
-        rdf:type             p-plan:Step;
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
         rdfs:label           "Deeg laten rusten"@nl;
         p-plan:isPrecededBy  procedurestap:STAP_001_1;
         p-plan:isStepOfPlan  procedurestap:STAP_001 .
 
 procedurestap:STAP_002
-        rdf:type             p-plan:Step;
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
         rdfs:label           "Koekjes bakken"@nl;
         p-plan:isPrecededBy  procedurestap:STAP_001;
         p-plan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
 
 procedurestap:STAP_001_1
-        rdf:type             p-plan:Step;
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
         rdfs:label           "Ingrediënten mengen"@nl;
         p-plan:isStepOfPlan  procedurestap:STAP_001 .

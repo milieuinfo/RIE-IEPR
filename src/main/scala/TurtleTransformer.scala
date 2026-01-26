@@ -58,6 +58,16 @@ object TurtleTransformer {
     }
   }
 
+  /** Maak een directory indien nodig */
+  /** Zorg dat de directory voor een bestand bestaat */
+  private def ensureParentDir(file: File): Unit = {
+    val parent = file.getParentFile
+    if (!parent.exists()) {
+      if (!parent.mkdirs()) {
+        throw new RuntimeException(s"Kon directory niet aanmaken: ${parent.getPath}")
+      }
+    }
+  }
 
   /** @graph extraheren als JsonNode */
   def extractGraph(framed: JsonNode): Option[JsonNode] =
@@ -66,6 +76,9 @@ object TurtleTransformer {
   /** JSON → Parquet (Spark) */
   def writeGraphToParquet(graph: JsonNode, inputPath: String, spark: SparkSession): Unit = {
     import spark.implicits._
+    val outputPath = inputPath.replace("/input/", "/output/parquet/").replace(".ttl", "")
+    val outDir = new File(outputPath)
+    ensureParentDir(outDir) // ✅ check / maak folders aan
     val records = graph.elements().asScala.map(n => mapper.writeValueAsString(n)).toSeq
     if (records.nonEmpty) {
       spark.read.json(spark.createDataset(records))
@@ -78,6 +91,7 @@ object TurtleTransformer {
   /** JSON → bestand */
   def writeJson(json: JsonNode, inputPath: String, typ: String): Unit = {
     val file = new File(inputPath.replace("/input/", s"/output/$typ/").replace(".ttl", s".$typ"))
+    ensureParentDir(file) // ✅ check / maak folders aan
     file.getParentFile.mkdirs() // folder aanmaken indien nodig
     val writer = new FileWriter(file)
     try JsonUtils.writePrettyPrint(writer, json)
@@ -144,6 +158,8 @@ object TurtleTransformer {
 
   /** Model → Turtle-bestand */
   def writeModelToTurtle(model: Model, inputPath: String): Unit = {
+    val file = new File(inputPath.replace("/input/", "/output/turtle/"))
+    ensureParentDir(file) // ✅ check / maak folders aan
     val fos = new FileOutputStream(inputPath.replace("/input/", "/output/turtle/"))
     try model.write(fos, "TURTLE")
     finally fos.close()
