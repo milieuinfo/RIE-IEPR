@@ -2,8 +2,8 @@ flowchart TD
     step0["Toevoeging van grondstoffen"]
     step3["(Apparaat: Stroomboogoven)"]
     step6["(Apparaat: Argon-zuurstofontkoling)"]
-    step8["(Apparaat: Decarburisatie)"]
-    step11["(Apparaat: Gieterijmachine)"]
+    step9["(Apparaat: Decarburisatie)"]
+    step12["(Apparaat: Gieterijmachine)"]
     emissiepunt0(["Schouw 1"])
     emissiepunt1(["Schouw 2"])
     emissiepunt2(["Schouw 3"])
@@ -15,11 +15,11 @@ flowchart TD
         emissiepunt1
     end
     subgraph Gieterij
-        step11
+        step12
         emissiepunt4
     end
     subgraph VOD-installatie
-        step8
+        step9
         emissiepunt3
     end
     subgraph AOD-installatie
@@ -32,7 +32,7 @@ flowchart TD
     step3 -.->|Afgassing| emissiepunt1
     step3 ==>|Overbrenging vloeibaar staal| step6
     step6 -.->|Afgassing| emissiepunt2
-    step6 -->|0400123123_6851234567_ACTIVITEIT_1_0009| step8
-    step8 -.->|Afgassing| emissiepunt3
-    step8 ==>|Overbrenging naar gietinstallatie| step11
-    step11 -.->|Afgassing| emissiepunt4
+    step6 ==>|Overbrenging naar decarburisatie| step9
+    step9 -.->|Afgassing| emissiepunt3
+    step9 ==>|Overbrenging naar gietinstallatie| step12
+    step12 -.->|Afgassing| emissiepunt4

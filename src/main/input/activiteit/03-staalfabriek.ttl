@@ -86,13 +86,18 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:ActiviteitStap ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 ;
     ssn:implements riepr:uitstootProces ;
     prov:used emissiepunt:0400123123_6851234567_0000003 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:ActiviteitStap ;
+    rdfs:label "Overbrenging naar decarburisatie"@nl ;
+    ssn:implements riepr:overbrengingsProces ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
 ## ONDERDEEL VAN Decarburisatie proces
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:ActiviteitStap ;
     ssn:implements riepr:apparaatVerwerkingsProces ;
     prov:used apparaat:0400123123_6851234567_0003 ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009b a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
