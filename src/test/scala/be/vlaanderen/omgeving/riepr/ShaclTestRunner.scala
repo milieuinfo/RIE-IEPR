@@ -1,6 +1,8 @@
-import org.apache.jena.rdf.model.{Model, ModelFactory}
+package be.vlaanderen.omgeving.riepr
+
+import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.riot.RDFDataMgr
-import org.apache.jena.shacl.{Shapes, ValidationReport}
+
 import java.io.File
 
 object ShaclTestRunner {

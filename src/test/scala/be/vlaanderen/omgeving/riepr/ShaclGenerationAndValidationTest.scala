@@ -1,9 +1,11 @@
-import org.apache.jena.rdf.model.{Model, ModelFactory}
+package be.vlaanderen.omgeving.riepr
+
+import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.riot.RDFDataMgr
-import org.apache.jena.shacl.{Shapes, ValidationReport}
+import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.BeforeAndAfter
+
 import java.io.File
 
 class ShaclGenerationAndValidationTest extends AnyFlatSpec with Matchers with BeforeAndAfter {

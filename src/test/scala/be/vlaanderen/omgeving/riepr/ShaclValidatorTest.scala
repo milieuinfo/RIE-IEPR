@@ -1,9 +1,9 @@
-import org.apache.jena.rdf.model.{Model, ModelFactory}
-import org.apache.jena.shacl.{Shapes, ValidationReport}
-import org.apache.jena.vocabulary.{RDF, RDFS}
+package be.vlaanderen.omgeving.riepr
+
+import org.apache.jena.rdf.model.ModelFactory
+import org.apache.jena.vocabulary.RDF
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import java.io.ByteArrayInputStream
 
 class ShaclValidatorTest extends AnyFlatSpec with Matchers {
 

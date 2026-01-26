@@ -1,7 +1,10 @@
-import org.apache.jena.rdf.model.{Model, ModelFactory}
+package be.vlaanderen.omgeving.riepr
+
+import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.vocabulary.{OWL, RDF, RDFS}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+
 import java.io.File
 
 class TurtleTransformerTest extends AnyFlatSpec with Matchers {
