@@ -1,28 +1,33 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix pplan: <http://purl.org/net/p-plan#> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
 
 activiteit:ACTIVITEIT_001 a riepr:Activiteit ;
     rdfs:label "Koekjes maken"@nl .
 
-procedurestap:STAP_001 a riepr:ActiviteitStap ;
+activiteitstap:STAP_001 a riepr:ActiviteitStap ;
     rdfs:label "Koekjesdeeg maken"@nl ;
     pplan:isStepOfPlan activiteit:ACTIVITEIT_001 .
-procedurestap:STAP_001_1 a riepr:ActiviteitStap ;
+activiteitstap:STAP_001_1 a riepr:ActiviteitStap ;
     rdfs:label "Ingrediënten mengen"@nl ;
-    pplan:isStepOfPlan procedurestap:STAP_001 .
-procedurestap:STAP_001_2 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan activiteitstap:STAP_001 .
+activiteitstap:STAP_001_2 a riepr:ActiviteitStap ;
+    ssn:implements riepr:overbrengingsProces ;
+    pplan:isStepOfPlan activiteitstap:STAP_001 ;
+    pplan:isPrecededBy activiteitstap:STAP_001_1 .
+activiteitstap:STAP_001_3 a riepr:ActiviteitStap ;
     rdfs:label "Deeg laten rusten"@nl ;
-    pplan:isStepOfPlan procedurestap:STAP_001 ;
-    pplan:isPrecededBy procedurestap:STAP_001_1 .
-
-procedurestap:STAP_002 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan activiteitstap:STAP_001 ;
+    pplan:isPrecededBy activiteitstap:STAP_001_2 .
+    
+activiteitstap:STAP_002 a riepr:ActiviteitStap ;
     rdfs:label "Koekjes bakken"@nl ;
     pplan:isStepOfPlan activiteit:ACTIVITEIT_001 ;
     # TODO: deze stap maakt gebruik van emissiepunt X
-    pplan:isPrecededBy procedurestap:STAP_001 .
+    pplan:isPrecededBy activiteitstap:STAP_001 .
