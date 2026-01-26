@@ -1,5 +1,8 @@
+package be.vlaanderen.omgeving.riepr
+
 import org.apache.jena.rdf.model._
 import org.apache.jena.vocabulary.{OWL, RDF, RDFS}
+
 import scala.collection.JavaConverters._
 
 object OwlToShaclGenerator {

@@ -1,3 +1,5 @@
+package be.vlaanderen.omgeving.riepr
+
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.github.jsonldjava.core.{JsonLdOptions, JsonLdProcessor}
@@ -9,7 +11,7 @@ import org.apache.jena.riot.{Lang, RDFParser}
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
-import java.io.{ByteArrayOutputStream, File, FileInputStream, FileOutputStream, FileWriter}
+import java.io._
 import scala.collection.JavaConverters._
 
 case class ValidationResult(
