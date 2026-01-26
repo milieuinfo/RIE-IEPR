@@ -1,24 +1,29 @@
-PREFIX owl:         <http://www.w3.org/2002/07/owl#>
-PREFIX prov:        <http://www.w3.org/ns/prov#>
-PREFIX sosa:        <http://www.w3.org/ns/sosa/>
+PREFIX geo:  <http://www.opengis.net/ont/geosparql#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
 
-sosa:ObservationCollection
-        owl:disjointWith  sosa:SamplingCollection , sosa:SampleCollection , sosa:ActuationCollection .
+geo:Feature  owl:disjointWith  geo:Geometry .
 
-sosa:SampleCollection
-        owl:disjointWith  sosa:SamplingCollection , sosa:ObservationCollection , sosa:ActuationCollection .
+geo:Geometry  owl:disjointWith  geo:Feature .
 
-sosa:SamplingCollection
-        owl:disjointWith  sosa:ActuationCollection , sosa:ObservationCollection , sosa:SampleCollection .
-
-sosa:ActuationCollection
-        owl:disjointWith  sosa:ObservationCollection , sosa:SampleCollection , sosa:SamplingCollection .
-
-prov:Entity  owl:disjointWith  prov:InstantaneousEvent .
-
-prov:Agent  owl:disjointWith  prov:InstantaneousEvent .
+prov:Activity  owl:disjointWith  prov:Entity .
 
 prov:ActivityInfluence
         owl:disjointWith  prov:EntityInfluence .
 
-prov:Activity  owl:disjointWith  prov:Entity .
+prov:Agent  owl:disjointWith  prov:InstantaneousEvent .
+
+prov:Entity  owl:disjointWith  prov:InstantaneousEvent .
+
+sosa:ActuationCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:SampleCollection , sosa:ObservationCollection .
+
+sosa:SamplingCollection
+        owl:disjointWith  sosa:SampleCollection , sosa:ObservationCollection , sosa:ActuationCollection .
+
+sosa:SampleCollection
+        owl:disjointWith  sosa:ActuationCollection , sosa:ObservationCollection , sosa:SamplingCollection .
+
+sosa:ObservationCollection
+        owl:disjointWith  sosa:ActuationCollection , sosa:SampleCollection , sosa:SamplingCollection .

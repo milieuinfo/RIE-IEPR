@@ -178,7 +178,7 @@ object TurtleTransformer {
   // ------------------------
   def main(args: Array[String]): Unit = {
 
-    val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan.ttl")
+    val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql.ttl")
 
     val shaclModel = OwlToShaclGenerator.generate(ontology)
     shaclModel.write(
