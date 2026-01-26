@@ -1,0 +1,60 @@
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+
+@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix exploitant: <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
+@prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pplan: <http://purl.org/net/p-plan#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix vkbo: <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
+@prefix osm: <https://www.openstreetmap.org/node/> .
+
+# Staalfabriek (KBO nummer als exploitant ID)
+exploitant:0400123123 a riepr:Exploitant ;
+    rdfs:label "Staalfabriek NV"@nl ;
+    owl:sameAs vkbo:0400123123 .
+
+# Een locatie waar de staalfabriek is gevestigd
+# Vestigingsnummer als deel van de URI
+exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
+    rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
+    prov:wasAssociatedWith exploitant:0400123123 ;
+    prov:hadPrimarySource osm:6851234567 ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
+    ] .
+
+# Procesketen van de staalfabriek
+
+# Emissiepunten
+emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;
+    rdfs:label "Schouw 1"@nl ;
+    rdfs:comment "Afzuiging en ontstoffing van de toevoeginstallatie"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.3505 51.2005)"^^ogc:WKTLiteral
+    ] .
+emissiepunt:0400123123_6851234567_0000002 a riepr:Emissiepunt ;
+    rdfs:label "Schouw 2"@nl ;
+    rdfs:comment "Afzuiging en ontstoffing van de oven"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.3510 51.2000)"^^ogc:WKTLiteral
+    ] .
+emissiepunt:0400123123_6851234567_0000003 a riepr:Emissiepunt ;
+    rdfs:label "Schouw 3"@nl ;
+    rdfs:comment "Afzuiging en ontstoffing van de AOD"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
+    ] .
+
+# Installaties op de exploitatielocatie
+installatie:0400123123_6851234567_0000001 a riepr:Installatie ;
+    rdfs:label "Electric Furnace"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .

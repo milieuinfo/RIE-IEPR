@@ -26,19 +26,20 @@ activiteit:ACTIVITEIT_001 a riepr:Activiteit ;
     rdfs:label "Koekjes maken"@nl .
 
 
-# De procedurestap is een individuele stap binnen een enkele activiteit.
-procedurestap:STAP_001 a pplan:MultiStep ;
+# De procedurestap (ActiviteitStap) is een individuele of meervoudige stap binnen een activiteit.
+# MultiStep wordt gebruikt voor stappen die zelf sub-stappen bevatten
+procedurestap:STAP_001 a riepr:ActiviteitStap ;
     rdfs:label "Koekjesdeeg maken"@nl ;
     pplan:isStepOfPlan activiteit:ACTIVITEIT_001 .
-procedurestap:STAP_001_1 a pplan:Step ;
+procedurestap:STAP_001_1 a riepr:ActiviteitStap ;
     rdfs:label "Ingrediënten mengen"@nl ;
     pplan:isStepOfPlan procedurestap:STAP_001 .
-procedurestap:STAP_001_2 a pplan:Step ;
+procedurestap:STAP_001_2 a riepr:ActiviteitStap ;
     rdfs:label "Deeg laten rusten"@nl ;
     pplan:isStepOfPlan procedurestap:STAP_001 ;
     pplan:isPrecededBy procedurestap:STAP_001_1 .
 
-procedurestap:STAP_002 a pplan:Step ;
+procedurestap:STAP_002 a riepr:ActiviteitStap ;
     rdfs:label "Koekjes bakken"@nl ;
     pplan:isStepOfPlan activiteit:ACTIVITEIT_001 ;
     # TODO: deze stap maakt gebruik van emissiepunt X
