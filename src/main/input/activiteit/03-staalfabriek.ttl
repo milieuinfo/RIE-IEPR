@@ -1,9 +1,12 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 
 @prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
 @prefix exploitant: <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix apparaat: <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
 
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -13,6 +16,8 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix vkbo: <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
 @prefix osm: <https://www.openstreetmap.org/node/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 
 # Staalfabriek (KBO nummer als exploitant ID)
 exploitant:0400123123 a riepr:Exploitant ;
@@ -29,7 +34,85 @@ exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
         ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
     ] .
 
+activiteit:0400123123_6851234567_ACTIVITEIT_1 a riepr:Activiteit ;
+    rdfs:label "Staalproductieproces"@nl ;
+    prov:startedAtTime "2020-01-01T00:00:00"^^xsd:dateTime ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+
 # Procesketen van de staalfabriek
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 a riepr:ActiviteitStap ;
+    rdfs:label "Toevoeging van grondstoffen"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:ActiviteitStap ;
+    rdfs:label "Afgassing"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000001 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:ActiviteitStap ;
+    rdfs:label "Schroot"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
+    ssn:implements riepr:overbrengingsProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 ;
+    prov:used apparaat:0400123123_6851234567_0000004 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:ActiviteitStap ;
+    rdfs:label "Afgassing"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000002 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:ActiviteitStap ;
+    rdfs:label "Overbrenging vloeibaar staal"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
+    ssn:implements riepr:overbrengingsProces .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0000003 ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:ActiviteitStap ;
+    rdfs:label "Afgassing"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000003 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0000002 ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 ;
+    prov:used emissiepunt:0400123123_6851234567_0000004 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_0 a riepr:ActiviteitStap ;
+    rdfs:label "Afzuiging"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000004 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:ActiviteitStap ;
+    rdfs:label "Overbrenging naar gietinstallatie"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    ssn:implements riepr:overbrengingsProces .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0000002 ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:ActiviteitStap ;
+    rdfs:label "Afgassing"@nl ;
+    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000005 .
 
 # Emissiepunten
 emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;
@@ -48,13 +131,50 @@ emissiepunt:0400123123_6851234567_0000002 a riepr:Emissiepunt ;
     ] .
 emissiepunt:0400123123_6851234567_0000003 a riepr:Emissiepunt ;
     rdfs:label "Schouw 3"@nl ;
-    rdfs:comment "Afzuiging en ontstoffing van de AOD"@nl ;
+    rdfs:comment "Afzuiging en ontstoffing van de stroomboogoven"@nl ;
     prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
     ] .
+emissiepunt:0400123123_6851234567_0000004 a riepr:Emissiepunt ;
+    rdfs:label "Schouw 4"@nl ;
+    rdfs:comment "Stoomketel"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.3495 51.2000)"^^ogc:WKTLiteral
+    ] .
+emissiepunt:0400123123_6851234567_0000005 a riepr:Emissiepunt ;
+    rdfs:label "Schouw 5"@nl ;
+    rdfs:comment "Onstoffing van gieterij"@nl .
+
+# Apparaten
+apparaat:0400123123_6851234567_0001 a riepr:Apparaat ;
+    rdfs:label "Stroomboogoven"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0002 a riepr:Apparaat ;
+    rdfs:label "Gieterijmachine"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0003 a riepr:Apparaat ;
+    rdfs:label "Decarburisatie"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0004 a riepr:Apparaat ;
+    rdfs:label "Argon-zuurstofontkoling"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
 
 # Installaties op de exploitatielocatie
 installatie:0400123123_6851234567_0000001 a riepr:Installatie ;
-    rdfs:label "Electric Furnace"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    rdfs:label "Stroomboogoven"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    rdfs:member emissiepunt:0400123123_6851234567_0000001, apparaat:0400123123_6851234567_0001 .
+installatie:0400123123_6851234567_0000002 a riepr:Installatie ;
+    rdfs:label "Gieterij"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    rdfs:member emissiepunt:0400123123_6851234567_0000005, apparaat:0400123123_6851234567_0002 .
+installatie:0400123123_6851234567_0000003 a riepr:Installatie ;
+    rdfs:label "VOD-installatie"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003 .
+installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
+    rdfs:label "AOD-installatie"@nl ;
+    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0004 .
