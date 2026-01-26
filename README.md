@@ -67,7 +67,10 @@ The application follows this conversion workflow:
    - Validates inferred models against generated SHACL shapes
    - Provides detailed validation reports
 
-## Prerequisites
+
+## Usage
+
+### Prerequisites
 
 ```bash
 # Check for java 11
@@ -78,8 +81,6 @@ echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 . ~/.bashrc
 ```
-
-## Usage
 
 ### Running the Application
 
