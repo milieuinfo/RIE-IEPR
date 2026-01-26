@@ -18,6 +18,7 @@
 @prefix osm: <https://www.openstreetmap.org/node/> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+@prefix schema: <http://schema.org/> .
 
 # Staalfabriek (KBO nummer als exploitant ID)
 exploitant:0400123123 a riepr:Exploitant ;
@@ -28,7 +29,7 @@ exploitant:0400123123 a riepr:Exploitant ;
 # Vestigingsnummer als deel van de URI
 exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
     rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
-    prov:wasAssociatedWith exploitant:0400123123 ;
+    prov:atLocation exploitant:0400123123 ;
     prov:hadPrimarySource osm:6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
@@ -36,8 +37,8 @@ exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
 
 activiteit:0400123123_6851234567_ACTIVITEIT_1 a riepr:Activiteit ;
     rdfs:label "Staalproductieproces"@nl ;
-    prov:startedAtTime "2020-01-01T00:00:00"^^xsd:dateTime ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    schema:startDate "2020-01-01T00:00:00"^^xsd:dateTime ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
 
 # Procesketen van de staalfabriek
 
@@ -120,28 +121,28 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:ActiviteitStap ;
 emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;
     rdfs:label "Schouw 1"@nl ;
     rdfs:comment "Afzuiging en ontstoffing van de toevoeginstallatie"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3505 51.2005)"^^ogc:WKTLiteral
     ] .
 emissiepunt:0400123123_6851234567_0000002 a riepr:Emissiepunt ;
     rdfs:label "Schouw 2"@nl ;
     rdfs:comment "Afzuiging en ontstoffing van de oven"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3510 51.2000)"^^ogc:WKTLiteral
     ] .
 emissiepunt:0400123123_6851234567_0000003 a riepr:Emissiepunt ;
     rdfs:label "Schouw 3"@nl ;
     rdfs:comment "Afzuiging en ontstoffing van de stroomboogoven"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
     ] .
 emissiepunt:0400123123_6851234567_0000004 a riepr:Emissiepunt ;
     rdfs:label "Schouw 4"@nl ;
     rdfs:comment "Stoomketel"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3495 51.2000)"^^ogc:WKTLiteral
     ] .
@@ -152,31 +153,31 @@ emissiepunt:0400123123_6851234567_0000005 a riepr:Emissiepunt ;
 # Apparaten
 apparaat:0400123123_6851234567_0001 a riepr:Apparaat ;
     rdfs:label "Stroomboogoven"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0002 a riepr:Apparaat ;
     rdfs:label "Gieterijmachine"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0003 a riepr:Apparaat ;
     rdfs:label "Decarburisatie"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0004 a riepr:Apparaat ;
     rdfs:label "Argon-zuurstofontkoling"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 .
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
 
 # Installaties op de exploitatielocatie
 installatie:0400123123_6851234567_0000001 a riepr:Installatie ;
     rdfs:label "Stroomboogoven"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     rdfs:member emissiepunt:0400123123_6851234567_0000001, emissiepunt:0400123123_6851234567_0000002, apparaat:0400123123_6851234567_0001 .
 installatie:0400123123_6851234567_0000002 a riepr:Installatie ;
     rdfs:label "Gieterij"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     rdfs:member emissiepunt:0400123123_6851234567_0000005, apparaat:0400123123_6851234567_0002 .
 installatie:0400123123_6851234567_0000003 a riepr:Installatie ;
     rdfs:label "VOD-installatie"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003 .
 installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
     rdfs:label "AOD-installatie"@nl ;
-    prov:wasAssociatedWith exploitatielocatie:0400123123_6851234567 ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     rdfs:member emissiepunt:0400123123_6851234567_0000003, apparaat:0400123123_6851234567_0004 .

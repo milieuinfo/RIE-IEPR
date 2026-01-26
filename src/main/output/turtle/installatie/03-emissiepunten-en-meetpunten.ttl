@@ -1,33 +1,46 @@
-@prefix adms:        <http://www.w3.org/ns/adms#> .
-@prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
-@prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
-@prefix meetpunt:    <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/#> .
-@prefix ogc:         <http://www.opengis.net/ont/geosparql#> .
-@prefix owl:         <http://www.w3.org/2002/07/owl#> .
-@prefix p-plan:      <http://purl.org/net/p-plan#> .
-@prefix prov:        <http://www.w3.org/ns/prov#> .
-@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix riepr:       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
-@prefix skos:        <http://www.w3.org/2004/02/skos/core#> .
-@prefix sosa:        <http://www.w3.org/ns/sosa/> .
-@prefix sp:          <http://www.w3.org/ns/sosa/prov/> .
-@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteitstap/> .
+@prefix adms:           <http://www.w3.org/ns/adms#> .
+@prefix emissiepunt:    <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix geosparql:      <http://www.opengis.net/ont/geosparql#> .
+@prefix installatie:    <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix meetpunt:       <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
+@prefix ogc:            <http://www.opengis.net/ont/geosparql#> .
+@prefix owl:            <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:         <http://purl.org/net/p-plan#> .
+@prefix prov:           <http://www.w3.org/ns/prov#> .
+@prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:           <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:          <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix skos:           <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:           <http://www.w3.org/ns/sosa/> .
+@prefix sp:             <http://www.w3.org/ns/sosa/prov/> .
+@prefix xsd:            <http://www.w3.org/2001/XMLSchema#> .
 
-meetpunt:MP_001  rdf:type  riepr:Meetpunt;
-        rdfs:label       "Meetpunt Luchtkwaliteit 1"@nl;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
-        sosa:isProxyFor  emissiepunt:EP_001 .
+<file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>
+        rdf:type  geosparql:Geometry , geosparql:SpatialObject .
+
+meetpunt:MP_001  rdf:type      geosparql:Feature , geosparql:SpatialObject , riepr:Meetpunt;
+        rdfs:label             "Meetpunt Luchtkwaliteit 1"@nl;
+        geosparql:hasGeometry  <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>;
+        sosa:isProxyFor        emissiepunt:EP_001 .
 
 installatie:GPBV_12345
         rdf:type         riepr:Installatie;
         rdfs:label       "Fictief NV"@nl;
-        rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
+        rdfs:member      <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>;
         rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
         adms:identifier  [ skos:notation  "BE.VL.000000001.INSTALLATION" ];
         adms:identifier  [ skos:notation  "20260101-0001" ] .
 
-emissiepunt:EP_001  rdf:type  riepr:Emissiepunt;
-        rdfs:label       "Emissiepunt Schoorsteen 1"@nl;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
-        sosa:hasProxy    meetpunt:MP_001 .
+meetpunt:MP_002  rdf:type      geosparql:Feature , geosparql:SpatialObject , riepr:Meetpunt;
+        rdfs:label             "Meetpunt Waterkwaliteit 1"@nl;
+        geosparql:hasGeometry  <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>;
+        sosa:isProxyFor        activiteitstap:STAP_001 .
+
+emissiepunt:EP_001  rdf:type   geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
+        rdfs:label             "Emissiepunt Schoorsteen 1"@nl;
+        geosparql:hasGeometry  <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>;
+        sosa:hasProxy          meetpunt:MP_001 .
+
+activiteitstap:STAP_001
+        sosa:hasProxy  meetpunt:MP_002 .

@@ -87,9 +87,11 @@ echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 The application is a standalone Scala program that can be run directly:
 
 ```bash
-# Compile and run using Maven
-mvn compile exec:java -Dexec.mainClass="TurtleTransformer"
+export PATH=$JAVA_HOME/bin:$PATH
+mvn compile exec:java
 ```
+
+**Important Note:** This application requires Java 11 to run due to Spark 3.5.1 compatibility. If you encounter `UnsupportedOperationException: getSubject is not supported` errors, ensure you're using Java 11 instead of Java 17 or 21.
 
 ### Running with Spark
 

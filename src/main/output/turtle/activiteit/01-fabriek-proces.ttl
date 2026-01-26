@@ -10,14 +10,14 @@
 @prefix rdf:                <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix schema:             <http://schema.org/> .
 @prefix sosa:               <http://www.w3.org/ns/sosa/> .
 @prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
 @prefix ssn:                <http://www.w3.org/ns/ssn/> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
 exploitatielocatie:0408249136_6842345678
-        rdf:type         prov:Agent;
-        prov:influenced  activiteit:89031055579_6839805367_ACTIVITEIT_1 .
+        rdf:type  prov:Location .
 
 procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002
         rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
@@ -29,11 +29,10 @@ procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002
         ssn:implements        riepr:uitstootProces .
 
 activiteit:89031055579_6839805367_ACTIVITEIT_1
-        rdf:type                riepr:Activiteit , p-plan:Plan , prov:Entity , prov:Activity , p-plan:Entity , prov:Plan;
-        rdfs:label              "Koekjes maken"@nl;
-        prov:startedAtTime      "2017-09-29T00:00:00"^^xsd:dateTime;
-        prov:wasAssociatedWith  exploitatielocatie:0408249136_6842345678;
-        prov:wasInfluencedBy    exploitatielocatie:0408249136_6842345678 .
+        rdf:type          p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , riepr:Activiteit;
+        rdfs:label        "Koekjes maken"@nl;
+        schema:startDate  "2017-09-29T00:00:00"^^xsd:dateTime;
+        prov:atLocation   exploitatielocatie:0408249136_6842345678 .
 
 emissiepunt:TBD  rdf:type  prov:Entity;
         prov:influenced  procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002 .
