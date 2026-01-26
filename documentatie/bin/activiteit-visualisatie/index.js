@@ -38,11 +38,16 @@ function isTransportProcedure(store, procedureUri) {
 }
 
 function isUitstootProcedure(store, procedureUri) {
-    return getProcedureType(store, procedureUri).some(typeUri => typeUri === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#UitstootProcedure');
+    return getProcedureType(store, procedureUri).some(typeUri => typeUri === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure');
 }
 
+function isVerwerkingsProcedure(store, procedureUri) {
+    return getProcedureType(store, procedureUri).some(typeUri => typeUri === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingsProcedure');
+}
 function isApparaatVerwerkingsProcedure(store, procedureUri) {
-    return getProcedureType(store, procedureUri).some(typeUri => typeUri === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ApparaatVerwerkingsProcedure');
+    return isVerwerkingsProcedure(store, procedureUri) &&
+        // URI = apparaatVerwerkingsProcedure
+        procedureUri === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#apparaatVerwerkingsProces';
 }
 
 async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
@@ -67,14 +72,21 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
         const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
         if (procedureUri && (
             isTransportProcedure(combinedStore, procedureUri) ||
-            isUitstootProcedure(combinedStore, procedureUri) ||
-            isApparaatVerwerkingsProcedure(combinedStore, procedureUri)
+            isUitstootProcedure(combinedStore, procedureUri)
         )) {
             continue; // Skip transport/uitstoot procedures for now
         }
         const label = getLabel(combinedStore, stepUri);
-        const nodeLabel = implementsQuads.length > 0 ? `${label}[${getLabel(combinedStore, implementsQuads[0].object.value)}]` : label;
-        
+        let nodeLabel = implementsQuads.length > 0 ? `${label}[${getLabel(combinedStore, implementsQuads[0].object.value)}]` : label;
+        if (isApparaatVerwerkingsProcedure(combinedStore, procedureUri)) {
+            // Get label of apparaat used
+            const gebruikteApparaten = exampleStore.getQuads(namedNode(stepUri), namedNode('http://www.w3.org/ns/prov#used'), null);
+            if (gebruikteApparaten.length > 0) {
+                const apparaatUri = gebruikteApparaten[0].object.value;
+                const apparaatLabel = getLabel(combinedStore, apparaatUri);
+                nodeLabel = `(Apparaat: ${apparaatLabel})`;
+            }
+        }
         mermaid += `    ${nodeId}["${nodeLabel}"]\n`;
     }
     // Add emissiepunt nodes
@@ -85,13 +97,32 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
         const label = getLabel(combinedStore, puntUri);
         mermaid += `    ${puntId}${index}(["${label}"])\n`;
     }
-    // Add apparaat nodes
-    const apparaten = exampleStore.getQuads(null, namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat'));
-    const apparaatId = 'apparaat';
-    for (const [index, apparaatQuad] of apparaten.entries()) {
-        const apparaatUri = apparaatQuad.subject.value;
-        const label = getLabel(combinedStore, apparaatUri);
-        mermaid += `    ${apparaatId}${index}(["${label}"])\n`;
+
+    // Add installation subgraphs
+    const installaties = exampleStore.getQuads(null, namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie'));
+    for (const installatieQuad of installaties) {
+        const installatieUri = installatieQuad.subject.value;
+        const installatieLabel = getLabel(combinedStore, installatieUri);
+        mermaid += `    subgraph ${installatieLabel}\n`;
+        // Find all apparatus associated with this installation (rdfs:member)
+        // Assign the correct node (emissipunt id and step ids)
+        const apparatusQuads = exampleStore.getQuads(namedNode(installatieUri), namedNode('http://www.w3.org/2000/01/rdf-schema#member'), null);
+        for (const apparaatQuad of apparatusQuads) {
+            const apparaatUri = apparaatQuad.object.value;
+            // Find steps that use this apparatus
+            const gebruikteInStappen = exampleStore.getQuads(null, namedNode('http://www.w3.org/ns/prov#used'), namedNode(apparaatUri));
+            for (const gebruikteStapQuad of gebruikteInStappen) {
+                const stepUri = gebruikteStapQuad.subject.value;
+                const nodeId = nodeMap.get(stepUri);
+                const emissiepuntId = emissiePunten.findIndex(eq => eq.subject.value === apparaatUri);
+                if (emissiepuntId !== -1) {
+                    mermaid += `        ${puntId}${emissiepuntId}\n`;
+                } else if (nodeId) {
+                    mermaid += `        ${nodeId}\n`;
+                }
+            }
+        }
+        mermaid += '    end\n';
     }
 
     mermaid += '\n';
@@ -105,7 +136,7 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
         })?.subject.value || null;
         const previousStepUri = exampleStore.getQuads(namedNode(stepUri), namedNode('http://purl.org/net/p-plan#isPrecededBy'), null)
             .map(q => q.object.value);
-        // Skip if the previous step was a transport procedure
+        // Skip if the previous step was a transport procedure (edge)
         if (previousStepUri.some(uri => {
             const implementsQuads = exampleStore.getQuads(namedNode(uri), namedNode('http://www.w3.org/ns/ssn/implements'), null);
             return implementsQuads.length > 0 && isTransportProcedure(combinedStore, implementsQuads[0].object.value);
@@ -136,9 +167,8 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
                 const gebruikteApparaten = exampleStore.getQuads(namedNode(stepUri), namedNode('http://www.w3.org/ns/prov#used'), null);
                 for (const apparaat of gebruikteApparaten) {
                     const apparaatUri = apparaat.object.value;
-                    const appId = `apparaat${apparaten.findIndex(aq => aq.subject.value === apparaatUri)}`;
                     const apparaatLabel = getLabel(combinedStore, apparaatUri);
-                    mermaid += `    ${previousNodeId} -->|${apparaatLabel}| ${appId}\n`;
+                    mermaid += `    ${previousNodeId} -->|${label}| ${currentNodeId}\n`;
                 }
             } else if (currentNodeId) {
                 mermaid += `    ${previousNodeId} --> ${currentNodeId}\n`;
