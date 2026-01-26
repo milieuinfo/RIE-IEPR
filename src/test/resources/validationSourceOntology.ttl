@@ -1,0 +1,112 @@
+PREFIX owl:         <http://www.w3.org/2002/07/owl#>
+PREFIX prov:        <http://www.w3.org/ns/prov#>
+PREFIX rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:        <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:        <http://www.w3.org/ns/sosa/>
+PREFIX sosa-common: <http://www.w3.org/ns/sosa/common/>
+PREFIX xsd:         <http://www.w3.org/2001/XMLSchema#>
+
+
+
+sosa:Property  rdf:type   owl:Class;
+        rdfs:isDefinedBy  sosa-common:;
+        rdfs:label        "Property"@en;
+        rdfs:subClassOf   prov:Entity;
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:Sensor;
+                                    owl:onProperty     sosa:isObservedBy
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  [ owl:unionOf  ( sosa:Observation sosa:ObservationCollection )
+                                                       ];
+                                    owl:onProperty     sosa:wasObservedBy
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:Stimulus;
+                                    owl:onProperty     [ owl:inverseOf  sosa:isProxyFor ]
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:Actuator;
+                                    owl:onProperty     sosa:isActedOnBy
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  [ owl:unionOf  ( sosa:Actuation sosa:ActuationCollection )
+                                                       ];
+                                    owl:onProperty     sosa:wasActedOnBy
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:FeatureOfInterest;
+                                    owl:onProperty     sosa:isPropertyOf
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:Procedure;
+                                    owl:onProperty     sosa:hasProcedure
+                          ];
+        skos:definition   "\n  identifiable quality of features of interest that can be observed or acted upon\n\n  A property can apply to different features of interest.\n\n  "@en;
+        skos:example      "Cars (a feature type) all have a characteristic colour, where 'colour' is a property."@en;
+        skos:note         "Concepts from existing code lists, vocabularies, and taxonomies, may be used as instances of Property"@en .
+
+
+
+sosa:ExecutionCollection
+        rdf:type          owl:Class;
+        rdfs:isDefinedBy  sosa-common:;
+        rdfs:label        "Execution Collection"@en;
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:System;
+                                    owl:onProperty     sosa:madeBySystem
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:Procedure;
+                                    owl:onProperty     sosa:usedProcedure
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:FeatureOfInterest;
+                                    owl:onProperty     sosa:hasFeatureOfInterest
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  sosa:FeatureOfInterest;
+                                    owl:onProperty     sosa:hasUltimateFeatureOfInterest
+                          ];
+        rdfs:subClassOf   [ rdf:type           owl:Restriction;
+                                    owl:allValuesFrom  [ owl:unionOf  ( sosa:Execution sosa:ExecutionCollection )
+                                                       ];
+                                    owl:onProperty     sosa:hasMember
+                          ];
+        skos:definition   "\n  set of one or more Executions or ExecutionCollections; collections may be nested\n\n  All Execution properties may appear in an Execution Collection, including: \n  hasFeatureOfInterest , usedProcedure , madeBySystem , endTime, resultTime , startTime . \n  If they are present, the value of these properties summarize the values of the matching properties of the member Executions, where membership is either direct or transitive through one or more member execution collections.\n\n  The following consistency rules apply with respect to the execution properties listed above: \n  \n  1. Where an individual Execution Collection omits a property, a member Execution (direct or transitive) MAY have any value for that property.\n\n  2. Where an individual Execution Collection has a single value for a property, each member Execution (direct or transitive) MUST have that same value for the property - i.e., the collection is homogeneous in that property.  That property MAY then be omitted in any member Execution or Execution Collection.\n\n  3. Where an individual Execution Collection has more than one value for a property, each member Execution (direct or transitive) MUST have a value for that property that matches one of the values for the property in the collection. \n  \n  4. Where an individual Execution Collection has a value for a property that is a range or interval, each member Execution (direct or transitive) MUST have a value for that property that matches or falls within that range or interval.\n\n  5. Where an individual Execution Collection has more than one value for a property that is a range or interval, each member Execution (direct or transitive) MUST have a value for that property that either matches or falls within one of those ranges or intervals.\n  "@en;
+        skos:note         "The members of a collection do not necessarily share a common value for any property. "@en;
+        skos:scopeNote    "\n  Execution Collection generalizes the Actuation Collection, Observation Collection, and Sampling Collection classes. \n  It is included in the ontology to support the definition of a common pattern for executions and their properties. \n\n  Execution Collection MUST be considered to be abstract, so any individual Execution Collection SHOULD be declared to be an instance of one of the concrete sub-classes, and not of the Execution Collection class.\n  "@en .
+
+
+sosa:Result  rdf:type     owl:Class;
+        rdfs:isDefinedBy  sosa-common:;
+        rdfs:label        "Result"@en;
+        rdfs:subClassOf   [ rdf:type            owl:Restriction;
+                                    owl:onProperty      sosa:isResultOf;
+                                    owl:someValuesFrom  sosa:Execution
+                          ];
+        owl:deprecated    true;
+        skos:definition   "\n  outcome of an Observation, Actuation, or act of Sampling. \n  \n  To store an observation's simple result value one can use the hasSimpleResult property.\n  "@en;
+        skos:example      "The value 20 as the height of a certain tree together with the unit, e.g., Meter."@en .
+
+
+prov:Insertion  rdf:type      owl:Class;
+        rdfs:isDefinedBy      prov:;
+        rdfs:label            "Insertion";
+        rdfs:subClassOf       prov:Derivation;
+        rdfs:subClassOf       [ rdf:type            owl:Restriction;
+                                        owl:minCardinality  "1"^^xsd:int;
+                                        owl:onProperty      prov:insertedKeyEntityPair
+                              ];
+        rdfs:subClassOf       [ rdf:type         owl:Restriction;
+                                        owl:cardinality  "1"^^xsd:int;
+                                        owl:onProperty   prov:dictionary
+                              ];
+        prov:category         "collections";
+        prov:component        "collections";
+        prov:constraints      "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#dictionary-constraints"^^xsd:anyURI;
+        prov:definition       "Insertion is a derivation that transforms a dictionary into another, by insertion of one or more key-entity pairs.";
+        prov:dm               "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#term-dictionary-insertion"^^xsd:anyURI;
+        prov:n                "http://www.w3.org/TR/2013/NOTE-prov-dictionary-20130430/#expression-dictionary-insertion"^^xsd:anyURI;
+        prov:unqualifiedForm  prov:derivedByInsertionFrom .
