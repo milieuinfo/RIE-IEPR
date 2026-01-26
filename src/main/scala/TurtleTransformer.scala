@@ -2,42 +2,80 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.github.jsonldjava.core.{JsonLdOptions, JsonLdProcessor}
 import com.github.jsonldjava.utils.JsonUtils
-import org.apache.jena.rdf.model.{InfModel, Model, ModelFactory}
-import org.apache.jena.reasoner.rulesys.GenericRuleReasoner
-import org.apache.jena.reasoner.rulesys.Rule
-import org.apache.jena.riot.{Lang, RDFDataMgr, RDFParser}
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.jena.rdf.model.{Model, ModelFactory}
+import org.apache.jena.reasoner.rulesys.{GenericRuleReasoner, Rule}
+import org.apache.jena.riot.{Lang, RDFParser}
+import org.apache.spark.sql.SparkSession
 
 import java.io.{ByteArrayOutputStream, File, FileInputStream, FileOutputStream, FileWriter}
-
 import scala.collection.JavaConverters._
 
 object TurtleTransformer {
 
-  // Hulpmethodes
-  def loadFrame(path: String): Object =
-    JsonUtils.fromString(
-      scala.io.Source.fromFile(path, "utf-8").getLines.mkString
-    )
+  // ------------------------
+  // ObjectMapper hergebruiken
+  // ------------------------
+  val mapper = new ObjectMapper()
+  mapper.registerModule(DefaultScalaModule)
 
-  def loadOntology(path: String): Model = {
-    val model = ModelFactory.createDefaultModel()
-    RDFParser.create()
-      .source(new FileInputStream(path))
-      .lang(Lang.TURTLE)
-      .parse(model)
-    model
+  // ------------------------
+  // JSON-LD Hulpmethodes
+  // ------------------------
+
+  /** Model → JSON-LD als JsonNode */
+  def modelToJsonLd(model: Model): Option[JsonNode] = {
+    if (model.isEmpty) return None
+    val out = new ByteArrayOutputStream()
+    model.write(out, "JSON-LD")
+    val jsonString = out.toString("UTF-8")
+    Some(mapper.readTree(jsonString))
   }
 
-  // Bestanden vinden
-  def listTurtleFiles(dir: File): List[File] =
-    Option(dir.listFiles()).getOrElse(Array.empty).toList.flatMap {
-      case d if d.isDirectory => listTurtleFiles(d)
-      case f if f.getName.endsWith(".ttl") => List(f)
-      case _ => Nil
-    }
+  /** JSON-LD framen → JsonNode */
+  def frameJsonLd(jsonLd: JsonNode, frame: JsonNode): Option[JsonNode] = {
+    val options = new JsonLdOptions()
+    try {
+      val jsonLdObj = JsonUtils.fromString(jsonLd.toString)
+      val frameObj  = JsonUtils.fromString(frame.toString)
 
-  // Turtle → Jena Model
+      val framed = JsonLdProcessor.frame(jsonLdObj, frameObj, options)
+      Some(mapper.readTree(JsonUtils.toPrettyString(framed)))
+    } catch {
+      case _: Exception => None
+    }
+  }
+
+
+  /** @graph extraheren als JsonNode */
+  def extractGraph(framed: JsonNode): Option[JsonNode] =
+    Option(framed.get("@graph")).filter(_.isArray)
+
+  /** JSON → Parquet (Spark) */
+  def writeGraphToParquet(graph: JsonNode, inputPath: String, spark: SparkSession): Unit = {
+    import spark.implicits._
+    val records = graph.elements().asScala.map(n => mapper.writeValueAsString(n)).toSeq
+    if (records.nonEmpty) {
+      spark.read.json(spark.createDataset(records))
+        .coalesce(1)
+        .write.mode("overwrite")
+        .parquet(inputPath.replace("/input/", "/output/parquet/").replace(".ttl", ""))
+    }
+  }
+
+  /** JSON → bestand */
+  def writeJson(json: JsonNode, inputPath: String, typ: String): Unit = {
+    val file = new File(inputPath.replace("/input/", s"/output/$typ/").replace(".ttl", s".$typ"))
+    file.getParentFile.mkdirs() // folder aanmaken indien nodig
+    val writer = new FileWriter(file)
+    try JsonUtils.writePrettyPrint(writer, json)
+    finally writer.close()
+  }
+
+  // ------------------------
+  // Jena Hulpmethodes
+  // ------------------------
+
+  /** Turtle-bestand laden naar Jena Model */
   def parseTurtle(file: File): Model = {
     val model = ModelFactory.createDefaultModel()
     RDFParser.create()
@@ -47,14 +85,18 @@ object TurtleTransformer {
     model
   }
 
-  // Inference
+  /** Ontologie laden */
+  def loadOntology(path: String): Model = {
+    val model = ModelFactory.createDefaultModel()
+    RDFParser.create()
+      .source(new FileInputStream(path))
+      .lang(Lang.TURTLE)
+      .parse(model)
+    model
+  }
 
-  def inferTriples(
-                    dataModel: Model,
-                    ontologyModel: Model,
-                    reasoner: GenericRuleReasoner
-                  ): Model = {
-
+  /** Inferentie uitvoeren */
+  def inferTriples(dataModel: Model, ontologyModel: Model, reasoner: GenericRuleReasoner): Model = {
     val reasonerWithSchema = reasoner.bindSchema(ontologyModel)
     val infModel = ModelFactory.createInfModel(reasonerWithSchema, dataModel)
     val result = ModelFactory.createDefaultModel()
@@ -64,103 +106,39 @@ object TurtleTransformer {
     result
   }
 
-
-
-
-  // Model → JSON-LD
-  def modelToJsonLd(
-                     model: Model
-                   ): Option[Object] = {
-    if (model.isEmpty) return None
-
-    val out = new ByteArrayOutputStream()
-    model.write(out, "JSON-LD")
-    Some(JsonUtils.fromString(out.toString("UTF-8")))
-  }
-
-  // JSON-LD framen
-  def frameJsonLd(
-                   jsonLd: Object,
-                   frame: Object
-                 ): Option[java.util.Map[String, Object]] = {
-    val options = new JsonLdOptions()
-    try {
-      Some(JsonLdProcessor.frame(jsonLd, frame, options))
-    } catch {
-      case _: NullPointerException =>
-        None // leeg of ongeldig input → geen framing
+  /** Alle Turtle-bestanden in map (recursief) */
+  def listTurtleFiles(dir: File): List[File] =
+    Option(dir.listFiles()).getOrElse(Array.empty).toList.flatMap {
+      case d if d.isDirectory => listTurtleFiles(d)
+      case f if f.getName.endsWith(".ttl") => List(f)
+      case _ => Nil
     }
-  }
 
-  // @graph extraheren
-  def extractGraph(
-                    framed: java.util.Map[String, Object]
-                  ): Option[JsonNode] = {
-    val mapper = new ObjectMapper()
-    mapper.registerModule(DefaultScalaModule)
-
-    val root = mapper.readTree(JsonUtils.toPrettyString(framed))
-    Option(root.get("@graph")).filter(_.isArray)
-  }
-
-
-  // JSON → Parquet (Spark)
-  def writeGraphToParquet(
-                           graph: JsonNode,
-                           inputPath: String,
-                           spark: SparkSession
-                         ): Unit = {
-
-    val mapper = new ObjectMapper()
-    mapper.registerModule(DefaultScalaModule)
-
-    import spark.implicits._
-
-    val records = graph.elements().asScala
-      .map(n => mapper.writeValueAsString(n))
-      .toSeq
-
-    if (records.nonEmpty) {
-      spark.read.json(spark.createDataset(records))
-        .coalesce(1)
-        .write.mode("overwrite")
-        .parquet(inputPath.replace("/input/", "/output/parquet/").replace(".ttl", ""))
-    }
-  }
-
-  // Write ttl
-  def writeModelToTurtle(
-                          model: Model,
-                          inputPath: String
-                        ): Unit = {
+  /** Model → Turtle-bestand */
+  def writeModelToTurtle(model: Model, inputPath: String): Unit = {
     val fos = new FileOutputStream(inputPath.replace("/input/", "/output/turtle/"))
-    try {
-      model.write(fos, "TURTLE") // Other formats: "RDF/XML", "N-TRIPLES", "TURTLE"
-    }
-    finally {
-      fos.close()
-    }
+    try model.write(fos, "TURTLE")
+    finally fos.close()
   }
 
-  // Write json
-  def writeJson(
-                 json: JsonNode,
-                 inputPath: String,
-                 typ: String
-               ): Unit = {
-    val writer = new FileWriter(inputPath.replace("/input/", s"/output/${typ}/").replace(".ttl", s".${typ}"))
-    try {
-      JsonUtils.writePrettyPrint(writer, json)
-    } finally {
-      writer.close()
-    }
+  // ------------------------
+  // JSON Frame laden
+  // ------------------------
+  def loadFrame(path: String): JsonNode = {
+    val jsonString = scala.io.Source.fromFile(path, "utf-8").getLines().mkString
+    mapper.readTree(jsonString)
   }
 
+  // ------------------------
+  // Main
+  // ------------------------
   def main(args: Array[String]): Unit = {
 
     val frame = loadFrame("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json")
     val ontology = loadOntology("src/main/resources/ssn-sosa-prov-p-plan.ttl")
-    val reasoner = new GenericRuleReasoner(Rule.rulesFromURL("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules"))
+    val reasoner = new GenericRuleReasoner(
+      Rule.rulesFromURL("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules")
+    )
     reasoner.setDerivationLogging(true)
 
     val spark = SparkSession.builder()
@@ -174,41 +152,23 @@ object TurtleTransformer {
       println(s"Processing: ${file.getPath}")
 
       val model = parseTurtle(file)
+      val inferredModel = inferTriples(model, ontology, reasoner)
 
-      val inferredModel = inferTriples(dataModel = model, ontologyModel = ontology, reasoner)
+      // Schrijf Turtle
+      writeModelToTurtle(inferredModel, file.getPath)
 
-      writeModelToTurtle(
-        inferredModel,
-        file.getPath
-      )
-
+      // JSON-LD verwerking
       for {
-        jsonLd <- modelToJsonLd(model)
+        jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
         framed <- frameJsonLd(jsonLd, frame)
         graph <- extractGraph(framed)
       } {
-        writeJson(
-          graph,
-          file.getPath,
-          "json"
-        )
-        // schrijf het hele framed object als "jsonld"
-        val mapper = new ObjectMapper()
-        mapper.registerModule(DefaultScalaModule)
-        val framedJsonNode = mapper.readTree(JsonUtils.toPrettyString(framed))
-        writeJson(
-          framedJsonNode,
-          file.getPath,
-          "jsonld"
-        )
-        writeGraphToParquet(
-          graph,
-          file.getPath,
-          spark
-        )
+        writeJson(graph, file.getPath, "json")       // alleen @graph
+        writeJson(framed, file.getPath, "jsonld")   // volledig framed document
+        writeGraphToParquet(graph, file.getPath, spark)
       }
     }
+
     spark.stop()
   }
-
 }
