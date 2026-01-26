@@ -1,0 +1,654 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+
+<http://www.w3.org/ns/sosa/PropertyShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasProperty> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/actsOnProperty> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/observedProperty> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isProxyFor> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/observes> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/actsOn> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Property> .
+
+<http://www.w3.org/ns/prov#InfluenceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Influence> .
+
+<http://www.w3.org/ns/prov#AgentShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Agent> .
+
+<http://www.w3.org/ns/prov#OrganizationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Organization> .
+
+<http://www.w3.org/ns/prov#AcceptShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Accept> .
+
+<http://www.w3.org/ns/prov#QuotationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Quotation> .
+
+<http://www.w3.org/ns/prov#CopyrightShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Copyright> .
+
+<http://www.w3.org/ns/sosa/ObservationCollectionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasObservedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeObservation> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/ObservationCollection> .
+
+<http://www.w3.org/ns/prov#DerivationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Derivation> .
+
+<http://www.w3.org/ns/sosa/StatisticalSampleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/sosa/StatisticalSample> .
+
+<http://www.w3.org/ns/prov#PlanShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Plan> .
+
+<http://www.w3.org/ns/prov#UsageShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Usage> .
+
+<http://www.w3.org/ns/prov#RevisionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Revision> .
+
+<http://www.w3.org/ns/sosa/SampleShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSample> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSamplingHasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Sample> .
+
+<http://purl.org/net/p-plan#ActivityShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Activity> .
+
+<http://www.w3.org/ns/prov#ServiceDescriptionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#ServiceDescription> .
+
+<http://purl.org/net/p-plan#StepShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Step> .
+
+<http://purl.org/net/p-plan#EntityShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Entity> .
+
+<http://www.w3.org/ns/prov#PersonShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Person> .
+
+<http://www.w3.org/ns/prov#ContributeShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Contribute> .
+
+<http://www.w3.org/ns/sosa/ExecutionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeExecution> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Execution> .
+
+<http://www.w3.org/ns/prov#ContributorShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Contributor> .
+
+<http://www.w3.org/ns/prov#RoleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Role> .
+
+<http://www.w3.org/ns/prov#AttributionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Attribution> .
+
+<http://purl.org/net/p-plan#BundleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Bundle> .
+
+<http://www.w3.org/ns/prov#CreatorShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Creator> .
+
+<http://www.w3.org/ns/prov#PublishShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Publish> .
+
+owl:ThingShape  a       sh:NodeShape;
+        sh:targetClass  owl:Thing .
+
+<http://www.w3.org/ns/prov#AssociationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Association> .
+
+<http://purl.org/net/p-plan#MultiStepShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#MultiStep> .
+
+<http://www.w3.org/ns/prov#ActivityInfluenceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#ActivityInfluence> .
+
+<http://www.w3.org/ns/prov#ModifyShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Modify> .
+
+<http://www.w3.org/ns/sosa/ResultShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/sosa/Result> .
+
+<http://www.w3.org/ns/prov#AgentInfluenceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#AgentInfluence> .
+
+<http://www.w3.org/ns/sosa/ActuatorShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeByActuator> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isActedOnBy> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Actuator> .
+
+<http://www.w3.org/ns/sosa/SamplerShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySampler> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Sampler> .
+
+<http://www.w3.org/ns/sosa/SystemShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isSubSystemOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/propertyFor> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySystem> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/deployedAsset> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hosts> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSubSystem> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/System> .
+
+<http://www.w3.org/ns/prov#PrimarySourceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#PrimarySource> .
+
+<http://www.w3.org/ns/sosa/SamplingCollectionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isResultOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/SamplingCollection> .
+
+<http://www.w3.org/ns/prov#EndShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#End> .
+
+<http://www.w3.org/ns/sosa/ActuationCollectionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasActedOnBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeActuation> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/ActuationCollection> .
+
+<http://www.w3.org/ns/sosa/PlatformShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/System> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/Platform> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isHostedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/deployedOnPlatform> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Platform> .
+
+<http://www.w3.org/ns/prov#GenerationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Generation> .
+
+<http://www.w3.org/ns/prov#StartShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Start> .
+
+<http://www.w3.org/ns/prov#RemovalShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Removal> .
+
+<http://www.w3.org/ns/sosa/StimulusShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasProxy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/detects> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/wasOriginatedBy> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Stimulus> .
+
+<http://www.w3.org/ns/sosa/ExecutionCollectionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeExecution> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/ExecutionCollection> .
+
+<http://www.w3.org/ns/sosa/SpatialSampleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/sosa/SpatialSample> .
+
+<http://www.w3.org/ns/prov#RightsHolderShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#RightsHolder> .
+
+<http://www.w3.org/ns/prov#SoftwareAgentShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#SoftwareAgent> .
+
+<http://www.w3.org/ns/prov#EntityShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Entity> .
+
+<http://www.w3.org/ns/prov#LocationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Location> .
+
+<http://www.w3.org/ns/sosa/ActuationShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasActedOnBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeActuation> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Actuation> .
+
+<http://www.w3.org/ns/prov#EmptyDictionaryShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#EmptyDictionary> .
+
+<http://www.w3.org/ns/prov#DictionaryShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Dictionary> .
+
+<http://www.w3.org/ns/prov#CreateShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Create> .
+
+<http://www.w3.org/ns/prov#ActivityShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Activity> .
+
+<http://www.w3.org/ns/prov#InsertionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Insertion> .
+
+<http://www.w3.org/ns/sosa/ObservingProcedureShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implements> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/ObservingProcedure> .
+
+<http://www.w3.org/ns/prov#InstantaneousEventShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#InstantaneousEvent> .
+
+<http://www.w3.org/ns/prov#BundleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Bundle> .
+
+<http://www.w3.org/ns/sosa/FeatureOfInterestShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isPropertyOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isSampleOf> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/FeatureOfInterest> .
+
+<http://www.w3.org/ns/prov#CommunicationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Communication> .
+
+<http://www.w3.org/ns/sosa/DeploymentShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   <http://www.w3.org/ns/sosa/deployedSystem>
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Platform> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/System> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasDeployment> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/inDeployment> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Deployment> .
+
+<http://www.w3.org/ns/sosa/ActuatingProcedureShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implements> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/ActuatingProcedure> .
+
+<http://www.w3.org/ns/prov#EntityInfluenceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#EntityInfluence> .
+
+<http://www.w3.org/ns/prov#ReplaceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Replace> .
+
+<http://www.w3.org/ns/sosa/ProcedureShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/propertyFor> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implements> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Procedure> .
+
+<http://www.w3.org/ns/sosa/SamplingProcedureShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implements> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/SamplingProcedure> .
+
+<http://www.w3.org/ns/prov#RightsAssignmentShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#RightsAssignment> .
+
+<http://www.w3.org/ns/sosa/ObservationShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/wasObservedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/originated> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeObservation> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Observation> .
+
+<http://purl.org/net/p-plan#VariableShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Variable> .
+
+<http://www.w3.org/ns/sosa/SamplingShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecution> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSampling> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isResultOf> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Sampling> .
+
+<http://purl.org/net/p-plan#PlanShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://purl.org/net/p-plan#Plan> .
+
+<http://www.w3.org/ns/prov#SubmitShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Submit> .
+
+<http://www.w3.org/ns/prov#DelegationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Delegation> .
+
+<http://www.w3.org/ns/prov#DirectQueryServiceShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#DirectQueryService> .
+
+<http://www.w3.org/ns/prov#KeyEntityPairShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#KeyEntityPair> .
+
+<http://www.w3.org/ns/sosa/SensorShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isDetectedBy> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/madeBySensor> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/implementedBy> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isObservedBy> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/Sensor> .
+
+<http://www.w3.org/ns/prov#PublisherShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Publisher> .
+
+<http://www.w3.org/ns/sosa/SampleCollectionShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sample> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SampleCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/hasSample> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/usedForExecutionHasResult> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isOriginalSampleOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/madeSamplingHasResult> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sample> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SampleCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/isMemberOf> ]
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/featureHasUltimateSample> ]
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
+                                   );
+                          sh:path  [ sh:inversePath  <http://www.w3.org/ns/sosa/hasResult> ]
+                        ];
+        sh:targetClass  <http://www.w3.org/ns/sosa/SampleCollection> .
+
+<http://www.w3.org/ns/sosa/MaterialSampleShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/sosa/MaterialSample> .
+
+<http://www.w3.org/ns/prov#EmptyCollectionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#EmptyCollection> .
+
+<http://www.w3.org/ns/prov#CollectionShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Collection> .
+
+<http://www.w3.org/ns/prov#InvalidationShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Invalidation> .

@@ -162,6 +162,15 @@ object TurtleTransformer {
   // ------------------------
   def main(args: Array[String]): Unit = {
 
+    val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan.ttl")
+
+    val shaclModel = OwlToShaclGenerator.generate(ontology)
+    shaclModel.write(
+      new FileOutputStream("src/main/resources/generated-shapes.ttl"),
+      "TURTLE"
+    )
+    val shaclShapes = ShaclValidator.loadShapes("src/main/resources/generated-shapes.ttl")
+
     val frame = loadFrame("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json")
     val inferenceOntology = loadOntology("src/main/resources/inference_source.ttl")
     val reasoningOntology = loadOntology("src/main/resources/class-disjointness.ttl")
@@ -199,9 +208,13 @@ object TurtleTransformer {
       //val validation = validateModel(model, owlReasonerWithSchema) // gebruik model
       if (!validation.valid) {
         validation.messages.foreach(m =>
-          logger.warn(s"[MODEL INVALID] ${file.getName}: $m")
+          logger.warn(s"❌ [MODEL INVALID] ${file.getName}: $m")
         )
       }
+
+      // Shacl validation
+      val report = ShaclValidator.validate(inferredModel, shaclShapes) // gebruik inferredModel
+      ShaclValidator.printReport(report)
 
       // JSON-LD verwerking
       for {
