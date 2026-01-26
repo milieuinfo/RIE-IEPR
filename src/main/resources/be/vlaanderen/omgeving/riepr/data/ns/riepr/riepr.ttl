@@ -1,4 +1,5 @@
 @prefix :       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix prov:   <http://www.w3.org/ns/prov#> .
 @prefix pplan:  <http://purl.org/net/p-plan#> .
@@ -11,7 +12,7 @@
 @prefix org:    <http://www.w3.org/ns/org#> .
 @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
-@prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/>
+@prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 
 # --------------------------------------- #
 # Classes
@@ -82,7 +83,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet onderdeel van een vestiging zijn
-        owl:onProperty TBD:TBD ; # TODO: property voor "is onderdeel van vestiging" (spatial)
+        owl:onProperty prov:wasAssociatedWith ;
         owl:someValuesFrom :Vestiging ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -201,6 +202,12 @@
 # --------------------------------------- #
 # Individuals
 # --------------------------------------- #
+:apparaatVerwerkingsProces a skos:Concept, sosa:Procedure ;
+    rdfs:label "Apparaatverwerkingsproces"@nl ;
+    rdfs:comment "Een apparaatverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een apparaat."@nl ;
+    skos:broader :VerwerkingsProcedure ;
+    skos:prefLabel "Apparaatverwerkingsproces"@nl .
+
 :overbrengingsProces a skos:Concept ;
     rdfs:label "Overbrengingsproces"@nl ;
     rdfs:comment "Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging."@nl ;
