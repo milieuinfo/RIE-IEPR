@@ -45,6 +45,14 @@ const styles = {
     installatie: 'fill:#D3D3D3,stroke:#808080,color:#000',
 }
 
+function indentContent(text, spaces = 4) {
+    return text
+        .split('\n')
+        .filter(Boolean)
+        .map(line => `${' '.repeat(spaces)}${line}`)
+        .join('\n') + (text.endsWith('\n') ? '\n' : '');
+}
+
 async function parseTTL(filePath) {
     const parser = new N3.Parser({ format: 'Turtle' });
     const store = new N3.Store();
@@ -99,7 +107,7 @@ function getActivitySteps(store, activityUri) {
         });
 }
 
-function constructMermaidGraph(store, steps, nodeMap) {
+function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgraphDefs) {
     let mermaid = '';
     for (const stepQuad of steps) {
         const index = nodeMap.size;
@@ -108,10 +116,17 @@ function constructMermaidGraph(store, steps, nodeMap) {
         nodeMap.set(stepUri, nodeId);
         const subSteps = getActivitySteps(store, stepUri);
         if (subSteps.length > 0) {
-            mermaid += `    subgraph ${nodeId}["${getLabel(store, stepUri)}"]\n`;
-            mermaid += constructMermaidGraph(store, subSteps, nodeMap);
-            mermaid += '    end\n';
-            mermaid += `    style ${nodeId} ${styles.activiteit}\n`;
+            const content = constructMermaidGraph(store, subSteps, nodeMap, parentMap, nodeDefs, subgraphDefs);
+            for (const sub of subSteps) {
+                parentMap.set(sub.subject.value, stepUri);
+            }
+            const definition =`
+                subgraph ${nodeId}["${getLabel(store, stepUri)}"]
+                ${indentContent(content)}end
+                style ${nodeId} ${styles.activiteit}
+            `;
+            mermaid += definition;
+            subgraphDefs.set(stepUri, definition);
             continue;
         }
         // If non-transport, add as normal node to flowchart
@@ -123,7 +138,7 @@ function constructMermaidGraph(store, steps, nodeMap) {
         )) {
             continue; // Skip transport/uitstoot procedures for now
         }
-        
+
         const label = getLabel(store, stepUri);
         let nodeLabel = implementsQuads.length > 0 ? `${label}[${getLabel(store, implementsQuads[0].object.value)}]` : label;
         if (isApparaatVerwerkingsProcedure(store, procedureUri)) {
@@ -135,8 +150,9 @@ function constructMermaidGraph(store, steps, nodeMap) {
                 nodeLabel = `(Apparaat: ${apparaatLabel})`;
             }
         }
-        mermaid += `    ${nodeId}["${nodeLabel}"]\n`;
-        mermaid += `    style ${nodeId} ${styles.activiteit}\n`;
+        const definition = `${nodeId}["${nodeLabel}"]\nstyle ${nodeId} ${styles.activiteit}\n`;
+        nodeDefs.set(stepUri, definition);
+        mermaid += definition;
     }
     return mermaid;
 }
@@ -145,57 +161,119 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
     console.log('Parsing ontology and example...');
     const { store: ontologyStore } = await parseTTL(ontologyPath);
     const { store: exampleStore } = await parseTTL(examplePath);
-    
+
     const combinedStore = new N3.Store([...ontologyStore, ...exampleStore]);
-    
+
     // Root activity (IoA)
     const rootActivityUri = getRootActivity(exampleStore);
 
     // Collect all activity steps of type riepr:ActiviteitStap
     const steps = exampleStore.getQuads(null, rdf.type, riepr.ActiviteitStap);
     const rootSteps = getActivitySteps(exampleStore, rootActivityUri);
-    
+
     let mermaid = 'flowchart TD\n';
     const nodeMap = new Map();
+    const nodeDefs = new Map();
+    const subgraphDefs = new Map();
+    const parentMap = new Map();
 
-    mermaid += constructMermaidGraph(combinedStore, rootSteps, nodeMap);
+    constructMermaidGraph(combinedStore, rootSteps, nodeMap, parentMap, nodeDefs, subgraphDefs);
 
-    // Add emissiepunt nodes
     const emissiePunten = exampleStore.getQuads(null, rdf.type, riepr.Emissiepunt);
     const puntId = 'emissiepunt';
-    for (const [index, puntQuad] of emissiePunten.entries()) {
-        const puntUri = puntQuad.subject.value;
-        const label = getLabel(combinedStore, puntUri);
-        mermaid += `    ${puntId}${index}(["${label}"])\n`;
-    }
+    const emissiepuntIndex = new Map(emissiePunten.map((q, idx) => [q.subject.value, idx]));
 
-    // Add installation subgraphs
     const installaties = exampleStore.getQuads(null, rdf.type, riepr.Installatie);
+
+    const indent = (text, spaces = 4) => text
+        .split('\n')
+        .filter(Boolean)
+        .map(line => `${' '.repeat(spaces)}${line}`)
+        .join('\n') + (text.endsWith('\n') ? '\n' : '');
+
+    const emittedSteps = new Set();
+    const emittedEmissiepunten = new Set();
+
+    const getAncestorSteps = (stepUri) => {
+        const ancestors = [];
+        let current = stepUri;
+        while (parentMap.has(current)) {
+            const parent = parentMap.get(current);
+            ancestors.push(parent);
+            current = parent;
+        }
+        return ancestors;
+    };
+
     for (const installatieQuad of installaties) {
         const installatieUri = installatieQuad.subject.value;
         const installatieLabel = getLabel(combinedStore, installatieUri);
-        mermaid += `    subgraph ${installatieLabel}\n`;
-        // Find all apparatus associated with this installation (rdfs:member)
-        // Assign the correct node (emissipunt id and step ids)
+        let body = '';
+
         const apparatusQuads = exampleStore.getQuads(namedNode(installatieUri), rdfs.member, null);
+        const stapUris = new Set();
+
         for (const apparaatQuad of apparatusQuads) {
             const apparaatUri = apparaatQuad.object.value;
-            // Find steps that use this apparatus
             const gebruikteInStappen = exampleStore.getQuads(null, prov.used, namedNode(apparaatUri));
             for (const gebruikteStapQuad of gebruikteInStappen) {
                 const stepUri = gebruikteStapQuad.subject.value;
-                const nodeId = nodeMap.get(stepUri);
-                const emissiepuntId = emissiePunten.findIndex(eq => eq.subject.value === apparaatUri);
-                if (emissiepuntId !== -1) {
-                    mermaid += `        ${puntId}${emissiepuntId}\n`;
-                    mermaid += `        style ${puntId}${emissiepuntId} ${styles.emissiepunt}\n`;
-                } else if (nodeId) {
-                    mermaid += `        ${nodeId}\n`;
+                stapUris.add(stepUri);
+                getAncestorSteps(stepUri).forEach(ancestor => stapUris.add(ancestor));
+            }
+
+            if (emissiepuntIndex.has(apparaatUri)) {
+                const idx = emissiepuntIndex.get(apparaatUri);
+                const label = getLabel(combinedStore, apparaatUri);
+                const def = `${puntId}${idx}(["${label}"])\nstyle ${puntId}${idx} ${styles.emissiepunt}\n`;
+                if (!emittedEmissiepunten.has(apparaatUri)) {
+                    body += indent(def);
+                    emittedEmissiepunten.add(apparaatUri);
                 }
             }
         }
-        mermaid += '    end\n';
-        mermaid += `    style ${installatieLabel} ${styles.installatie}\n`;
+
+        for (const stepUri of stapUris) {
+            const ancestorInSet = getAncestorSteps(stepUri).some(ancestor => stapUris.has(ancestor));
+            if (ancestorInSet) continue;
+            if (subgraphDefs.has(stepUri) && !emittedSteps.has(stepUri)) {
+                body += indent(subgraphDefs.get(stepUri));
+                emittedSteps.add(stepUri);
+            } else if (nodeDefs.has(stepUri) && !emittedSteps.has(stepUri)) {
+                body += indent(nodeDefs.get(stepUri));
+                emittedSteps.add(stepUri);
+            }
+        }
+
+        if (body) {
+            mermaid += `    subgraph ${installatieLabel}\n`;
+            mermaid += body;
+            mermaid += '    end\n';
+            mermaid += `    style ${installatieLabel} ${styles.installatie}\n`;
+        }
+    }
+
+    // Emit any remaining steps or emissiepunten not tied to an installation
+    for (const [stepUri, def] of nodeDefs.entries()) {
+        if (!emittedSteps.has(stepUri)) {
+            mermaid += indent(def);
+            emittedSteps.add(stepUri);
+        }
+    }
+
+    for (const [stepUri, def] of subgraphDefs.entries()) {
+        if (!emittedSteps.has(stepUri)) {
+            mermaid += indent(def);
+            emittedSteps.add(stepUri);
+        }
+    }
+
+    for (const [uri, idx] of emissiepuntIndex.entries()) {
+        if (!emittedEmissiepunten.has(uri)) {
+            const label = getLabel(combinedStore, uri);
+            mermaid += indent(`${puntId}${idx}(["${label}"])\nstyle ${puntId}${idx} ${styles.emissiepunt}\n`);
+            emittedEmissiepunten.add(uri);
+        }
     }
 
     mermaid += '\n';
@@ -218,13 +296,13 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
         const currentNodeId = nodeMap.get(stepUri);
         const nextNodeId = nodeMap.get(nextStepUri);
         const precededByQuads = exampleStore.getQuads(namedNode(stepUri), pplan.isPrecededBy, null);
-        
+
         for (const precededQuad of precededByQuads) {
             const previousNodeId = nodeMap.get(precededQuad.object.value);
             if (!previousNodeId) continue;
-            
+
             const implementsQuads = exampleStore.getQuads(namedNode(stepUri), ssn.implements, null);
-            
+
             const label = getLabel(combinedStore, stepUri);
             if (implementsQuads.length > 0 && isTransportProcedure(combinedStore, implementsQuads[0].object.value)) {
                 mermaid += `    ${previousNodeId} ==>|${label}| ${nextNodeId}\n`;

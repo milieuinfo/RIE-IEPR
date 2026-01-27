@@ -94,14 +94,37 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:ActiviteitStap ;
 
 ## ONDERDEEL VAN Decarburisatie proces
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0003 ;
+    rdfs:label "Decarburisatie"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009b a riepr:ActiviteitStap ;
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
+    ssn:implements riepr:uitstootProces ;
+    prov:used emissiepunt:0400123123_6851234567_0000004 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0007 ; # Afwerkstand
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:ActiviteitStap ;
+    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:used apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:ActiviteitStap ;
+    rdfs:label "Afgassing"@nl ;
+    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
     ssn:implements riepr:uitstootProces ;
     prov:used emissiepunt:0400123123_6851234567_0000004 .
 
@@ -145,8 +168,7 @@ emissiepunt:0400123123_6851234567_0000003 a riepr:Emissiepunt ;
         ogc:asWKT "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
     ] .
 emissiepunt:0400123123_6851234567_0000004 a riepr:Emissiepunt ;
-    rdfs:label "Schouw 4"@nl ;
-    rdfs:comment "Stoomketel"@nl ;
+    rdfs:label "Schoorsteen Ketels"@nl ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3495 51.2000)"^^ogc:WKTLiteral
@@ -163,7 +185,19 @@ apparaat:0400123123_6851234567_0002 a riepr:Apparaat ;
     rdfs:label "Gieterijmachine"@nl ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0003 a riepr:Apparaat ;
-    rdfs:label "Decarburisatie"@nl ;
+    rdfs:label "Toevoeginstallatie VOD"@nl ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0005 a riepr:Apparaat ;
+    rdfs:label "Zuiveringsapparaat Toevoeginstallatie"@nl ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0006 a riepr:Apparaat ;
+    rdfs:label "Stoomketel 1"@nl ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0007 a riepr:Apparaat ;
+    rdfs:label "Afwerkstand"@nl ;
+    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0008 a riepr:Apparaat ;
+    rdfs:label "Zuiveringsapparaat Afwerkstand"@nl ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0004 a riepr:Apparaat ;
     rdfs:label "Argon-zuurstofontkoling"@nl ;
@@ -181,7 +215,7 @@ installatie:0400123123_6851234567_0000002 a riepr:Installatie ;
 installatie:0400123123_6851234567_0000003 a riepr:Installatie ;
     rdfs:label "VOD-installatie"@nl ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
-    rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003 .
+    rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003, apparaat:0400123123_6851234567_0008, apparaat:0400123123_6851234567_0007, apparaat:0400123123_6851234567_0005 .
 installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
     rdfs:label "AOD-installatie"@nl ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
