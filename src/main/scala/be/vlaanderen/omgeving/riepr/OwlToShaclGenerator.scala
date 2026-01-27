@@ -27,9 +27,63 @@ object OwlToShaclGenerator {
     }
   }
 
-  private def createOrList(unionClass: Resource, shacl: Model): RDFNode = {
-    val listNode = unionClass.getPropertyResourceValue(OWL.unionOf)
-    val rdfList = listNode.as(classOf[RDFList])
+  private def addCardinality(
+                              restriction: Resource,
+                              propShape: Resource,
+                              shacl: Model
+                            ): Unit = {
+
+    def intLiteral(p: Property): Option[Int] =
+      Option(restriction.getProperty(p))
+        .map(_.getObject)
+        .collect {
+          case l: Literal if l.getDatatypeURI != null => l.getInt
+        }
+
+    intLiteral(OWL.minCardinality).foreach { min =>
+      propShape.addLiteral(
+        shacl.createProperty(SH + "minCount"),
+        min
+      )
+    }
+
+    intLiteral(OWL.maxCardinality).foreach { max =>
+      propShape.addLiteral(
+        shacl.createProperty(SH + "maxCount"),
+        max
+      )
+    }
+
+    intLiteral(OWL.cardinality).foreach { exact =>
+      propShape.addLiteral(
+        shacl.createProperty(SH + "minCount"),
+        exact
+      )
+      propShape.addLiteral(
+        shacl.createProperty(SH + "maxCount"),
+        exact
+      )
+    }
+  }
+
+
+  private def createOrList(node: Resource, shacl: Model): RDFNode = {
+
+    val rdfList =
+      if (node.canAs(classOf[RDFList])) {
+        // direct ( A B )
+        node.as(classOf[RDFList])
+      }
+      else {
+        // _:x owl:unionOf ( A B )
+        val listNode = node.getPropertyResourceValue(OWL.unionOf)
+        if (listNode == null)
+          throw new IllegalArgumentException(
+            s"Expected owl:unionOf or RDFList but got: $node"
+          )
+        listNode.as(classOf[RDFList])
+      }
+
     val members = rdfList.iterator().asScala.toSeq
 
     val shapes = members.map { cls =>
@@ -44,6 +98,7 @@ object OwlToShaclGenerator {
     shacl.createList(shapes.iterator.asJava)
   }
 
+
   private def generatePropertyShape(
                                      restriction: Resource,
                                      shacl: Model,
@@ -51,9 +106,11 @@ object OwlToShaclGenerator {
                                    ): Unit = {
 
     val onProp = restriction.getPropertyResourceValue(OWL.onProperty)
-    val allValuesFrom = restriction.getPropertyResourceValue(OWL.allValuesFrom)
+    if (onProp == null) return
 
-    if (onProp == null || allValuesFrom == null) return
+    val allValuesFrom  = restriction.getPropertyResourceValue(OWL.allValuesFrom)
+    val someValuesFrom = restriction.getPropertyResourceValue(OWL.someValuesFrom)
+
 
     val propShape = shacl.createResource()
     propShape.addProperty(
@@ -61,27 +118,74 @@ object OwlToShaclGenerator {
       createPath(onProp, shacl)
     )
 
-    // Voor owl:someValuesFrom, minCount = 1
-    if (restriction.hasProperty(OWL.someValuesFrom)) {
+
+
+
+    if (someValuesFrom != null) {
+
+      // someValuesFrom met lijst
+      if (someValuesFrom.canAs(classOf[RDFList])) {
+        val rdfList = someValuesFrom.as(classOf[RDFList])
+        val members = rdfList.iterator().asScala.toSeq
+
+        val orList = shacl.createList(
+          members.map { cls =>
+            val b = shacl.createResource()
+            b.addProperty(
+              shacl.createProperty(SH + "class"),
+              shacl.createResource(cls.asResource().getURI)
+            )
+            b
+          }.iterator.asJava
+        )
+
+        propShape.addProperty(
+          shacl.createProperty(SH + "or"),
+          orList
+        )
+      }
+
+      // Enkel klasse
+      else if (someValuesFrom.isURIResource) {
+        propShape.addProperty(
+          shacl.createProperty(SH + "class"),
+          shacl.createResource(someValuesFrom.getURI)
+        )
+      }
+    }
+
+    // owl:someValuesFrom ⇒ minCount = 1 (tenzij expliciet overschreven)
+    if (restriction.hasProperty(OWL.someValuesFrom)
+      && !restriction.hasProperty(OWL.minCardinality)
+      && !restriction.hasProperty(OWL.cardinality)) {
+
       propShape.addLiteral(
         shacl.createProperty(SH + "minCount"),
-        1 // Int literal, compiler kiest juiste overload
+        1
       )
     }
 
+    // Cardinaliteiten
+    addCardinality(restriction, propShape, shacl)
+
+
     // Voor owl:allValuesFrom
-    if (allValuesFrom.hasProperty(OWL.unionOf)) {
-      val orList = createOrList(allValuesFrom, shacl)
-      propShape.addProperty(
-        shacl.createProperty(SH + "or"),
-        orList
-      )
-    } else if (allValuesFrom.isURIResource) {
-      propShape.addProperty(
-        shacl.createProperty(SH + "class"),
-        shacl.createResource(allValuesFrom.getURI)
-      )
+    if (allValuesFrom != null) {
+      if (allValuesFrom.hasProperty(OWL.unionOf) || allValuesFrom.canAs(classOf[RDFList])) {
+        val orList = createOrList(allValuesFrom, shacl)
+        propShape.addProperty(
+          shacl.createProperty(SH + "or"),
+          orList
+        )
+      }
+      else if (allValuesFrom.isURIResource) {
+        propShape.addProperty(
+          shacl.createProperty(SH + "class"),
+          shacl.createResource(allValuesFrom.getURI)
+        )
+      }
     }
+
 
     nodeShape.addProperty(
       shacl.createProperty(SH + "property"),
