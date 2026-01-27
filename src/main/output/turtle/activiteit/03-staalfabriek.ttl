@@ -22,20 +22,6 @@
 @prefix vkbo:               <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Overbrenging naar decarburisatie"@nl;
-        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
-        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements       riepr:overbrengingsProces .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Overbrenging naar gietinstallatie"@nl;
-        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
-        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements       riepr:overbrengingsProces .
-
 emissiepunt:0400123123_6851234567_0000003
         rdf:type               prov:Entity , geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
         rdfs:comment           "Afzuiging en ontstoffing van de stroomboogoven"@nl;
@@ -47,11 +33,194 @@ emissiepunt:0400123123_6851234567_0000003
         prov:atLocation        exploitatielocatie:0400123123_6851234567;
         prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 .
 
+installatie:0400123123_6851234567_0000003
+        rdf:type         riepr:Installatie;
+        rdfs:label       "VOD-installatie"@nl;
+        rdfs:member      emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0008 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0005;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Schroot"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        ssn:implements       riepr:overbrengingsProces .
+
+apparaat:0400123123_6851234567_0005
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Zuiveringsapparaat Toevoeginstallatie"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             apparaat:0400123123_6851234567_0008;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0008;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009
+        rdf:type             p-plan:Step , p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , riepr:ActiviteitStap;
+        rdfs:label           "Decarburisatie"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             apparaat:0400123123_6851234567_0002;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0002;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+emissiepunt:0400123123_6851234567_0000004
+        rdf:type               prov:Entity , geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
+        rdfs:label             "Schoorsteen Ketels"@nl;
+        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
+                                 geosparql:asWKT             "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral;
+                                 geosparql:hasSerialization  "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral
+                               ];
+        prov:atLocation        exploitatielocatie:0400123123_6851234567;
+        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003 , activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006 .
+
+osm:6851234567  rdf:type  prov:Entity;
+        prov:influenced  exploitatielocatie:0400123123_6851234567 .
+
+installatie:0400123123_6851234567_0000004
+        rdf:type         riepr:Installatie;
+        rdfs:label       "AOD-installatie"@nl;
+        rdfs:member      emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0004;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             apparaat:0400123123_6851234567_0001;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0001;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+apparaat:0400123123_6851234567_0006
+        rdf:type         riepr:Apparaat;
+        rdfs:label       "Stoomketel 1"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             emissiepunt:0400123123_6851234567_0000004;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004;
+        ssn:implements        riepr:uitstootProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             emissiepunt:0400123123_6851234567_0000005;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000005;
+        ssn:implements        riepr:uitstootProces .
+
+emissiepunt:0400123123_6851234567_0000005
+        rdf:type         prov:Entity , riepr:Emissiepunt;
+        rdfs:comment     "Onstoffing van gieterij"@nl;
+        rdfs:label       "Schouw 5"@nl;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 .
+
+apparaat:0400123123_6851234567_0001
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Stroomboogoven"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             apparaat:0400123123_6851234567_0003;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0003;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             emissiepunt:0400123123_6851234567_0000002;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000002;
+        ssn:implements        riepr:uitstootProces .
+
+apparaat:0400123123_6851234567_0007
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Afwerkstand"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+
 apparaat:0400123123_6851234567_0002
         rdf:type         prov:Entity , riepr:Apparaat;
         rdfs:label       "Gieterijmachine"@nl;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             apparaat:0400123123_6851234567_0005;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0005;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Overbrenging vloeibaar staal"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        ssn:implements       riepr:overbrengingsProces .
+
+apparaat:0400123123_6851234567_0008
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Zuiveringsapparaat Afwerkstand"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
+
+emissiepunt:0400123123_6851234567_0000001
+        rdf:type               prov:Entity , geosparql:Feature , geosparql:SpatialObject , riepr:Emissiepunt;
+        rdfs:comment           "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
+        rdfs:label             "Schouw 1"@nl;
+        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
+                                 geosparql:asWKT             "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral;
+                                 geosparql:hasSerialization  "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral
+                               ];
+        prov:atLocation        exploitatielocatie:0400123123_6851234567;
+        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002 .
+
+installatie:0400123123_6851234567_0000001
+        rdf:type         riepr:Installatie;
+        rdfs:label       "Stroomboogoven"@nl;
+        rdfs:member      emissiepunt:0400123123_6851234567_0000001 , emissiepunt:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0001;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Toevoeging van grondstoffen"@nl;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+
+apparaat:0400123123_6851234567_0003
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Toevoeginstallatie VOD"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             emissiepunt:0400123123_6851234567_0000004;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004;
+        ssn:implements        riepr:uitstootProces .
 
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007
         rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
@@ -61,18 +230,70 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0004;
         ssn:implements        riepr:apparaatVerwerkingsProces .
 
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Toevoeging van grondstoffen"@nl;
-        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+activiteit:0400123123_6851234567_ACTIVITEIT_1
+        rdf:type          p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , riepr:Activiteit;
+        rdfs:label        "Staalproductieproces"@nl;
+        schema:startDate  "2020-01-01T00:00:00"^^xsd:dateTime;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567 .
 
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009b
+emissiepunt:0400123123_6851234567_0000002
+        rdf:type               geosparql:Feature , geosparql:SpatialObject , prov:Entity , riepr:Emissiepunt;
+        rdfs:comment           "Afzuiging en ontstoffing van de oven"@nl;
+        rdfs:label             "Schouw 2"@nl;
+        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
+                                 geosparql:asWKT             "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral;
+                                 geosparql:hasSerialization  "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral
+                               ];
+        prov:atLocation        exploitatielocatie:0400123123_6851234567;
+        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005 .
+
+exploitant:0400123123
+        rdf:type    prov:Location , riepr:Exploitant;
+        rdfs:label  "Staalfabriek NV"@nl;
+        owl:sameAs  vkbo:0400123123 .
+
+installatie:0400123123_6851234567_0000002
+        rdf:type         riepr:Installatie;
+        rdfs:label       "Gieterij"@nl;
+        rdfs:member      emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002
         rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
         rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001;
         p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000004;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004;
+        prov:used             emissiepunt:0400123123_6851234567_0000001;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000001;
+        ssn:implements        riepr:uitstootProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b
+        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdfs:label           "Overbrenging naar decarburisatie"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
+        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        ssn:implements       riepr:overbrengingsProces .
+
+apparaat:0400123123_6851234567_0004
+        rdf:type         prov:Entity , riepr:Apparaat;
+        rdfs:label       "Argon-zuurstofontkoling"@nl;
+        prov:atLocation  exploitatielocatie:0400123123_6851234567;
+        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004
+        rdf:type              prov:Activity , p-plan:Step , riepr:ActiviteitStap;
+        p-plan:isStepOfPlan   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:used             apparaat:0400123123_6851234567_0007;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0007;
+        ssn:implements        riepr:apparaatVerwerkingsProces .
+
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008
+        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdfs:label            "Afgassing"@nl;
+        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
+        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:used             emissiepunt:0400123123_6851234567_0000003;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003;
         ssn:implements        riepr:uitstootProces .
 
 exploitatielocatie:0400123123_6851234567
@@ -87,171 +308,9 @@ exploitatielocatie:0400123123_6851234567
         prov:wasDerivedFrom    osm:6851234567;
         prov:wasInfluencedBy   osm:6851234567 .
 
-activiteit:0400123123_6851234567_ACTIVITEIT_1
-        rdf:type          p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , riepr:Activiteit;
-        rdfs:label        "Staalproductieproces"@nl;
-        schema:startDate  "2020-01-01T00:00:00"^^xsd:dateTime;
-        prov:atLocation   exploitatielocatie:0400123123_6851234567 .
-
-emissiepunt:0400123123_6851234567_0000004
-        rdf:type               geosparql:Feature , geosparql:SpatialObject , prov:Entity , riepr:Emissiepunt;
-        rdfs:comment           "Stoomketel"@nl;
-        rdfs:label             "Schouw 4"@nl;
-        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
-                                 geosparql:asWKT             "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral;
-                                 geosparql:hasSerialization  "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral
-                               ];
-        prov:atLocation        exploitatielocatie:0400123123_6851234567;
-        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009b .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0002;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0002;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
-
-apparaat:0400123123_6851234567_0003
-        rdf:type         prov:Entity , riepr:Apparaat;
-        rdfs:label       "Decarburisatie"@nl;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000003;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003;
-        ssn:implements        riepr:uitstootProces .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000001;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000001;
-        ssn:implements        riepr:uitstootProces .
-
-installatie:0400123123_6851234567_0000001
-        rdf:type         riepr:Installatie;
-        rdfs:label       "Stroomboogoven"@nl;
-        rdfs:member      emissiepunt:0400123123_6851234567_0000001 , emissiepunt:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0001;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
-
-emissiepunt:0400123123_6851234567_0000005
-        rdf:type         prov:Entity , riepr:Emissiepunt;
-        rdfs:comment     "Onstoffing van gieterij"@nl;
-        rdfs:label       "Schouw 5"@nl;
-        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000005;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000005;
-        ssn:implements        riepr:uitstootProces .
-
-apparaat:0400123123_6851234567_0004
-        rdf:type         prov:Entity , riepr:Apparaat;
-        rdfs:label       "Argon-zuurstofontkoling"@nl;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
-
-osm:6851234567  rdf:type  prov:Entity;
-        prov:influenced  exploitatielocatie:0400123123_6851234567 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009
-        rdf:type              prov:Activity , p-plan:Step , riepr:ActiviteitStap;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0003;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0003;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003
+activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010
         rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Schroot"@nl;
-        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001;
-        p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements       riepr:overbrengingsProces .
-
-installatie:0400123123_6851234567_0000002
-        rdf:type         riepr:Installatie;
-        rdfs:label       "Gieterij"@nl;
-        rdfs:member      emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
-
-exploitant:0400123123
-        rdf:type    prov:Location , riepr:Exploitant;
-        rdfs:label  "Staalfabriek NV"@nl;
-        owl:sameAs  vkbo:0400123123 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0001;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0001;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
-
-installatie:0400123123_6851234567_0000003
-        rdf:type         riepr:Installatie;
-        rdfs:label       "VOD-installatie"@nl;
-        rdfs:member      emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0003;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
-
-emissiepunt:0400123123_6851234567_0000001
-        rdf:type               geosparql:Feature , geosparql:SpatialObject , prov:Entity , riepr:Emissiepunt;
-        rdfs:comment           "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
-        rdfs:label             "Schouw 1"@nl;
-        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
-                                 geosparql:asWKT             "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral;
-                                 geosparql:hasSerialization  "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral
-                               ];
-        prov:atLocation        exploitatielocatie:0400123123_6851234567;
-        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        p-plan:isPrecededBy   activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004;
-        p-plan:isStepOfPlan   activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000002;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000002;
-        ssn:implements        riepr:uitstootProces .
-
-installatie:0400123123_6851234567_0000004
-        rdf:type         riepr:Installatie;
-        rdfs:label       "AOD-installatie"@nl;
-        rdfs:member      emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0004;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
-
-emissiepunt:0400123123_6851234567_0000002
-        rdf:type               geosparql:Feature , geosparql:SpatialObject , prov:Entity , riepr:Emissiepunt;
-        rdfs:comment           "Afzuiging en ontstoffing van de oven"@nl;
-        rdfs:label             "Schouw 2"@nl;
-        geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
-                                 geosparql:asWKT             "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral;
-                                 geosparql:hasSerialization  "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral
-                               ];
-        prov:atLocation        exploitatielocatie:0400123123_6851234567;
-        prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005 .
-
-apparaat:0400123123_6851234567_0001
-        rdf:type         prov:Entity , riepr:Apparaat;
-        rdfs:label       "Stroomboogoven"@nl;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 .
-
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
-        rdfs:label           "Overbrenging vloeibaar staal"@nl;
-        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004;
+        rdfs:label           "Overbrenging naar gietinstallatie"@nl;
+        p-plan:isPrecededBy  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009;
         p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
         ssn:implements       riepr:overbrengingsProces .

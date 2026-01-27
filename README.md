@@ -133,7 +133,7 @@ mvn clean compile
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
-mvn exec:java -Dexec.mainClass="TurtleTransformer"
+mvn exec:java -Dexec.mainClass="be.vlaanderen.omgeving.riepr.TurtleTransformer"
 ```
 
 

@@ -14,6 +14,7 @@
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix schema: <http://schema.org/> .
+
 # --------------------------------------- #
 # Classes
 # --------------------------------------- #
@@ -52,7 +53,20 @@
     rdfs:comment "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl ;
     rdfs:subClassOf pplan:Step ;
     owl:equivalentClass [ a owl:Class ;
+        # Stap kan een plan op zichzelf zijn (multi step)
         owl:unionOf ( pplan:Step pplan:MultiStep ) 
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een stap kan een startdatum hebben
+        owl:onProperty schema:startDate ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een stap kan een einddatum hebben
+        owl:onProperty schema:endDate ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     # Stap (als superclass van prov:Activiteit) kan gebruikmaken van een emissiepunt of apparaat
     rdfs:subClassOf [ a owl:Restriction ; 
@@ -82,14 +96,25 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een installatie moet onderdeel van een locatie
+        # Een installatie moet een startdatum hebben
+        owl:onProperty schema:startDate ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie kan een einddatum hebben
+        owl:onProperty schema:endDate ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet onderdeel van een locatie zijn
         owl:onProperty prov:atLocation ;
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ]
-    .
-# TODO: Nog te bepalen of deze onderklasse nodig is
+    ] .
+
 :IEPRInstallatie a owl:Class ;
     rdfs:label "IEPR Installatie"@nl ;
     rdfs:comment "Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation)."@nl ;
@@ -111,6 +136,7 @@
     # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt OF een activiteit stap
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:isProxyFor ; 
+        owl:someValuesFrom ( :Emissiepunt :ActiviteitStap ) ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -134,6 +160,18 @@
 :Exploitant a owl:Class ;
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant kan een startdatum hebben
+        owl:onProperty schema:startDate ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant kan een einddatum hebben
+        owl:onProperty schema:endDate ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         owl:onProperty rdf:type ;
         # Een exploitant moet een organisatie of persoon zijn
@@ -236,3 +274,29 @@
     rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit."@nl ;
     skos:broader :VerbruiksProcedure ;
     skos:prefLabel "Elektriciteitsverbruikproces"@nl .
+
+# --------------------------------------- #
+# Axioms
+# --------------------------------------- #
+# ActiviteitStap met een emissieprocedure moet een emissiepunt gebruiken
+[ a owl:Class ;
+    owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+        owl:onProperty ssn:implements ;
+        owl:someValuesFrom :EmissieProcedure
+    ] )
+] rdfs:subClassOf [ a owl:Restriction ;
+    owl:onProperty prov:used ;
+    owl:someValuesFrom :Emissiepunt
+] .
+
+# ActiviteitStap met een apparaatverwerkingsproces moet een apparaat gebruiken
+[ a owl:Class ;
+    owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+        owl:onProperty ssn:implements ;
+        owl:someValuesFrom :apparaatVerwerkingsProces
+    ] )
+] rdfs:subClassOf [ a owl:Restriction ;
+    owl:onProperty prov:used ;
+    owl:someValuesFrom :Apparaat
+] .
+
