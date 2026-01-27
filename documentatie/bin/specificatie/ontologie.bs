@@ -75,6 +75,26 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 # Klassen # {#classes}
 
+## Klassenhiërarchie ## {#class-hierarchy}
+
+* [Activiteit Stap](#ActiviteitStap)
+* [Apparaat](#Apparaat)
+* [Emissie Procedure](#EmissieProcedure)
+* [Emissiepunt](#Emissiepunt)
+  * [Grondwaterput](#Grondwaterput)
+  * [Schouw](#Schouw)
+* [Exploitant](#Exploitant)
+* [Exploitatie Locatie](#ExploitatieLocatie)
+* [Ingedeelde Inrichting of Activiteit](#Activiteit)
+* [Installatie](#Installatie)
+  * [GPBV Installatie](#GPBVInstallatie)
+  * [IEPR Installatie](#IEPRInstallatie)
+* [Meetpunt](#Meetpunt)
+* [Observatie](#Observatie)
+* [Transport Procedure](#TransportProcedure)
+* [Verbruiks Procedure](#VerbruiksProcedure)
+* [Verwerkings Procedure](#VerwerkingsProcedure)
+
 ## Activiteit Stap ## {#ActiviteitStap}
 
 **IRI:** `riepr:ActiviteitStap`
@@ -82,6 +102,18 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 **Definitie:** De activiteit stap is een individuele of meervoudige stap binnen een activiteit.
 
 **Subklasse van:** `pplan:Step`
+
+**Constraints:** valid: min 0, max 1; used: min 0 of Emissiepunt; used: min 0 of Apparaat; implements: min 0 of Procedure
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:ActiviteitStap ;
+  rdfs:label "Verwerking van grondstoffen"@nl ;
+  ssn:implements [ rdf:type riepr:VerwerkingsProcedure ]
+]
+```
 
 
 ## Apparaat ## {#Apparaat}
@@ -91,6 +123,19 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 **Definitie:** Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.
 
 **Subklasse van:** `ssn:System`, `ogc:SpatialObject`
+
+**Constraints:** atLocation: min 1, max 1 of n3-45; label: min 1
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Apparaat ;
+  rdfs:label "Filterinstallatie Schouw 1"@nl ;
+  prov:atLocation [ rdf:type riepr:Installatie ;
+  rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ]
+]
+```
 
 
 ## Emissie Procedure ## {#EmissieProcedure}
@@ -110,12 +155,80 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 **Subklasse van:** `ogc:SpatialObject`
 
+**Constraints:** atLocation: min 1, max 1 of n3-24; label: min 1
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Emissiepunt ;
+  rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
+  prov:atLocation [ rdf:type riepr:Installatie ;
+  rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ] ;
+  ogc:hasGeometry [ rdf:type ogc:Geometry ;
+  ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral ]
+]
+```
+
+
+### Grondwaterput ### {#Grondwaterput}
+
+**IRI:** `riepr:Grondwaterput`
+
+**Definitie:** Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater.
+
+**Subklasse van:** `riepr:Emissiepunt`
+
+**Constraints:** depth: min 1
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Grondwaterput ;
+  rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
+  prov:atLocation [ rdf:type riepr:Installatie ;
+  rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ] ;
+  ogc:hasGeometry [ rdf:type ogc:Geometry ;
+  ogc:asWKT "POINT(4.4020 51.2190)"^^ogc:wktLiteral ] ;
+  dbo:depth "15.0"^^xsd:float
+]
+```
+
+
+### Schouw ### {#Schouw}
+
+**IRI:** `riepr:Schouw`
+
+**Definitie:** Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.
+
+**Subklasse van:** `riepr:Emissiepunt`
+
+**Constraints:** diameter: min 1; height: min 1
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Schouw ;
+  rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
+  prov:atLocation [ rdf:type riepr:Installatie ;
+  rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ] ;
+  ogc:hasGeometry [ rdf:type ogc:Geometry ;
+  ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral ] ;
+  dbo:diameter "2.5"^^xsd:float ;
+  dbo:height "30.0"^^xsd:float
+]
+```
+
 
 ## Exploitant ## {#Exploitant}
 
 **IRI:** `riepr:Exploitant`
 
 **Definitie:** Een exploitant is een entiteit die een milieuimpact heeft.
+
+**Constraints:** valid: min 0, max 1; type: min 1 of n3-53; label: min 1
 
 
 ## Exploitatie Locatie ## {#ExploitatieLocatie}
@@ -126,32 +239,7 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 **Subklasse van:** `ogc:SpatialObjectCollection`, `prov:Entity`
 
-
-## GPBV Installatie ## {#GPBVInstallatie}
-
-**IRI:** `riepr:GPBVInstallatie`
-
-**Definitie:** Een GPBV installatie is een specifieke type installatie die valt onder de regelgeving van het GPBV (Geïntegreerde preventie en bestrijding van verontreiniging).
-
-**Subklasse van:** `riepr:Installatie`
-
-
-## Grondwaterput ## {#Grondwaterput}
-
-**IRI:** `riepr:Grondwaterput`
-
-**Definitie:** Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater.
-
-**Subklasse van:** `riepr:Emissiepunt`
-
-
-## IEPR Installatie ## {#IEPRInstallatie}
-
-**IRI:** `riepr:IEPRInstallatie`
-
-**Definitie:** Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation).
-
-**Subklasse van:** `riepr:Installatie`
+**Constraints:** atLocation: min 1, max 1 of Exploitant; label: min 1; hadPrimarySource: min 1, max 1 of Site; wasInfluencedBy: min 0
 
 
 ## Ingedeelde Inrichting of Activiteit ## {#Activiteit}
@@ -162,14 +250,61 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 **Subklasse van:** `pplan:Plan`, `dbo:Project`
 
+**Constraints:** created: min 1, max 1; label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Activiteit ;
+  rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
+  <http://purl.org/dc/terms/created> "2024-01-15T10:00:00"^^xsd:dateTime ;
+  <http://purl.org/dc/terms/valid> "2020-01-01/2030-12-31" ;
+  prov:atLocation [ rdf:type riepr:ExploitatieLocatie ;
+  rdfs:label "Cementfabriek Antwerpen"@nl ]
+]
+```
+
 
 ## Installatie ## {#Installatie}
 
 **IRI:** `riepr:Installatie`
 
-**Definitie:** Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn.
+**Definitie:** Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.
 
 **Subklasse van:** `ogc:SpatialObjectCollection`, `ssn:System`
+
+**Constraints:** label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Installatie ;
+  rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
+  <http://purl.org/dc/terms/valid> "2020-01-01/2030-12-31" ;
+  prov:atLocation [ rdf:type riepr:ExploitatieLocatie ;
+  rdfs:label "Cementfabriek Antwerpen"@nl ]
+]
+```
+
+
+### GPBV Installatie ### {#GPBVInstallatie}
+
+**IRI:** `riepr:GPBVInstallatie`
+
+**Definitie:** Een GPBV installatie is een specifieke type installatie die valt onder de regelgeving van het GPBV (Geïntegreerde preventie en bestrijding van verontreiniging).
+
+**Subklasse van:** `riepr:Installatie`
+
+
+### IEPR Installatie ### {#IEPRInstallatie}
+
+**IRI:** `riepr:IEPRInstallatie`
+
+**Definitie:** Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation).
+
+**Subklasse van:** `riepr:Installatie`
 
 
 ## Meetpunt ## {#Meetpunt}
@@ -180,6 +315,21 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 **Subklasse van:** `ogc:SpatialObject`
 
+**Constraints:** isProxyFor: min 1 of n3-40
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Meetpunt ;
+  rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
+  ogc:hasGeometry [ rdf:type ogc:Geometry ;
+  ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral ] ;
+  sosa:isProxyFor [ rdf:type riepr:Emissiepunt ;
+  rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ]
+]
+```
+
 
 ## Observatie ## {#Observatie}
 
@@ -189,14 +339,7 @@ Deze ontologie definieert 17 klassen en 6 concept instanties.
 
 **Subklasse van:** `sosa:Observation`
 
-
-## Schouw ## {#Schouw}
-
-**IRI:** `riepr:Schouw`
-
-**Definitie:** Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.
-
-**Subklasse van:** `riepr:Emissiepunt`
+**Constraints:** hasFeatureOfInterest: min 1, max 1 of n3-49
 
 
 ## Transport Procedure ## {#TransportProcedure}
@@ -289,7 +432,3 @@ Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
 * [Turtle formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.ttl)
 * [RDF/XML formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.rdf)
 * [JSON-LD formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.jsonld)
-
-<div class="note">
-Deze specificatie is automatisch gegenereerd uit de RIE-IEPR ontologie. Voor feedback en suggesties, zie de GitHub repository.
-</div>

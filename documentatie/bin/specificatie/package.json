@@ -9,7 +9,7 @@
     "generate:bikeshed": "node index.js",
     "build:bikeshed": "npm run generate:bikeshed && bikeshed spec ontologie.bs index.html",
     "watch:bikeshed": "bikeshed watch ontologie.bs",
-    "build:docker": "docker build -t specificatie . && docker run -v ${PWD}:/app specificatie"
+    "build:docker": "npm run start && docker build -t specificatie:latest . && docker run -v .:/app specificatie:latest"
   },
   "dependencies": {
     "n3": "^1.17.3"

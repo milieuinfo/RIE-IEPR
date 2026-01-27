@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { Parser, Store, DataFactory } from "n3";
 
-const { namedNode } = DataFactory;
+const { namedNode, blankNode } = DataFactory;
 
 // RDF predicates
 const rdfType = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
@@ -30,6 +30,7 @@ const skosConceptScheme = namedNode("http://www.w3.org/2004/02/skos/core#Concept
 const skosConcept = namedNode("http://www.w3.org/2004/02/skos/core#Concept");
 const skosBroader = namedNode("http://www.w3.org/2004/02/skos/core#broader");
 const skosPrefLabel = namedNode("http://www.w3.org/2004/02/skos/core#prefLabel");
+const skosExample = namedNode("http://www.w3.org/2004/02/skos/core#example");
 
 const dctTitle = namedNode("http://purl.org/dc/terms/title");
 const dctDescription = namedNode("http://purl.org/dc/terms/description");
@@ -38,6 +39,9 @@ const dctCreator = namedNode("http://purl.org/dc/terms/creator");
 const vannPreferredNamespacePrefix = namedNode("http://purl.org/vocab/vann/preferredNamespacePrefix");
 const vannPreferredNamespaceUri = namedNode("http://purl.org/vocab/vann/preferredNamespaceUri");
 const owlImports = namedNode("http://www.w3.org/2002/07/owl#imports");
+const owlAllValuesFrom = namedNode("http://www.w3.org/2002/07/owl#allValuesFrom");
+const owlCardinality = namedNode("http://www.w3.org/2002/07/owl#cardinality");
+const owlHasValue = namedNode("http://www.w3.org/2002/07/owl#hasValue");
 
 const ontologyPath = resolve(
   process.cwd(),
@@ -80,6 +84,75 @@ function urisFor(store, subject, predicate) {
     .getQuads(asTerm(subject), predicate, null, null)
     .filter((q) => q.object.termType === "NamedNode")
     .map((q) => q.object.value);
+}
+
+function quadToTurtle(quad, prefixes) {
+  const subjectStr = quad.subject.termType === "NamedNode" 
+    ? prefixUri(quad.subject.value)
+    : quad.subject.value;
+  
+  const predicateStr = prefixUri(quad.predicate.value);
+  
+  let objectStr;
+  if (quad.object.termType === "NamedNode") {
+    objectStr = prefixUri(quad.object.value);
+  } else if (quad.object.termType === "Literal") {
+    const escaped = quad.object.value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    if (quad.object.language) {
+      objectStr = `"${escaped}"@${quad.object.language}`;
+    } else if (quad.object.datatype && quad.object.datatype.value !== "http://www.w3.org/2001/XMLSchema#string") {
+      objectStr = `"${escaped}"^^${prefixUri(quad.object.datatype.value)}`;
+    } else {
+      objectStr = `"${escaped}"`;
+    }
+  } else {
+    objectStr = quad.object.value;
+  }
+  
+  return `${subjectStr} ${predicateStr} ${objectStr}`;
+}
+
+function serializeBlankNodeToTurtle(store, blankNodeId) {
+  const blankNodeTerm = blankNode(blankNodeId);
+  const quads = store.getQuads(blankNodeTerm, null, null, null);
+  if (quads.length === 0) return blankNodeId;
+  
+  const visited = new Set();
+  
+  function serializeNode(nodeId, isRoot = true) {
+    if (visited.has(nodeId)) return `[ ]`;
+    visited.add(nodeId);
+    
+    const nodeTerm = blankNode(nodeId);
+    const nodeQuads = store.getQuads(nodeTerm, null, null, null);
+    if (nodeQuads.length === 0) return `[ ]`;
+    
+    const lines = nodeQuads.map(q => {
+      let objectStr;
+      if (q.object.termType === "NamedNode") {
+        objectStr = prefixUri(q.object.value);
+      } else if (q.object.termType === "BlankNode") {
+        // Recursively serialize nested blank nodes
+        objectStr = serializeNode(q.object.value, false);
+      } else if (q.object.termType === "Literal") {
+        const escaped = q.object.value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+        if (q.object.language) {
+          objectStr = `"${escaped}"@${q.object.language}`;
+        } else if (q.object.datatype && q.object.datatype.value !== "http://www.w3.org/2001/XMLSchema#string") {
+          objectStr = `"${escaped}"^^${prefixUri(q.object.datatype.value)}`;
+        } else {
+          objectStr = `"${escaped}"`;
+        }
+      } else {
+        objectStr = q.object.value;
+      }
+      return `${prefixUri(q.predicate.value)} ${objectStr}`;
+    }).join(' ;\n  ');
+    
+    return isRoot ? `[\n  ${lines}\n]` : `[ ${lines} ]`;
+  }
+  
+  return serializeNode(blankNodeId);
 }
 
 function labelFor(store, subject) {
@@ -151,7 +224,59 @@ function collectClasses(store) {
     .filter(uri => uri.includes('riepr'))
     .map((uri) => {
       const superClasses = urisFor(store, uri, rdfsSubClassOf)
-        .filter(sc => !sc.startsWith('_:'));
+        .filter(sc => !sc.startsWith('_:'))
+        .filter(sc => !sc.startsWith('http://www.w3.org/2002/07/owl#Restriction'));
+      
+      const exampleQuads = store.getQuads(namedNode(uri), skosExample, null, null);
+      const examples = exampleQuads.map(q => {
+        if (q.object.termType === "BlankNode") {
+          return serializeBlankNodeToTurtle(store, q.object.value);
+        } else {
+          return q.object.value;
+        }
+      });
+
+      // Extract restrictions from rdfs:subClassOf
+      const restrictionQuads = store.getQuads(namedNode(uri), rdfsSubClassOf, null, null)
+        .filter(q => q.object.termType === "BlankNode");
+      
+      const restrictions = restrictionQuads.map(q => {
+        const restrictionNode = q.object.value;
+        const restrictionBlankNode = blankNode(restrictionNode);
+        
+        const onProperty = store
+          .getQuads(restrictionBlankNode, owlOnProperty, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        const someValues = store
+          .getQuads(restrictionBlankNode, owlSomeValuesFrom, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        const allValues = store
+          .getQuads(restrictionBlankNode, owlAllValuesFrom, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        const minCard = store
+          .getQuads(restrictionBlankNode, owlMinCardinality, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        const maxCard = store
+          .getQuads(restrictionBlankNode, owlMaxCardinality, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        const cardinality = store
+          .getQuads(restrictionBlankNode, owlCardinality, null, null)
+          .map(qr => qr.object.value)[0];
+        
+        return {
+          property: onProperty,
+          someValuesFrom: someValues,
+          allValuesFrom: allValues,
+          minCardinality: minCard,
+          maxCardinality: maxCard,
+          cardinality: cardinality,
+        };
+      }).filter(r => r.property);
 
       return {
         id: uri,
@@ -159,6 +284,8 @@ function collectClasses(store) {
         label: labelFor(store, uri),
         comment: literalFor(store, uri, rdfsComment),
         superClasses,
+        examples,
+        restrictions,
       };
     })
     .sort((a, b) => a.label.localeCompare(b.label));
@@ -211,6 +338,72 @@ function collectConcepts(store) {
       broader: urisFor(store, uri, skosBroader),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function buildClassHierarchy(classes) {
+  // Create a map of class URI to class object for quick lookup
+  const classMap = new Map(classes.map(c => [c.id, c]));
+  
+  // Group classes by their superclass
+  const childrenMap = new Map();
+  const rootClasses = [];
+  
+  classes.forEach(cls => {
+    // A class is a root if it has no superClasses, or if its superClasses are not in the ontology
+    const hasInternalSuperClass = cls.superClasses.some(sc => classMap.has(sc));
+    
+    if (!hasInternalSuperClass) {
+      // Either no superClasses or all superClasses are external
+      rootClasses.push(cls);
+    } else {
+      // Has at least one internal superClass
+      cls.superClasses.forEach(superClass => {
+        if (classMap.has(superClass)) {
+          // Only add if superClass is internal
+          if (!childrenMap.has(superClass)) {
+            childrenMap.set(superClass, []);
+          }
+          childrenMap.get(superClass).push(cls);
+        }
+      });
+    }
+  });
+  
+  // Sort children at each level
+  childrenMap.forEach(children => {
+    children.sort((a, b) => a.label.localeCompare(b.label));
+  });
+  rootClasses.sort((a, b) => a.label.localeCompare(b.label));
+  
+  return { rootClasses, childrenMap, classMap };
+}
+
+function formatRestriction(restriction) {
+  const propLabel = localName(restriction.property);
+  
+  if (restriction.cardinality) {
+    return `exactly ${restriction.cardinality} ${propLabel}`;
+  }
+  
+  const parts = [];
+  if (restriction.minCardinality) {
+    parts.push(`min ${restriction.minCardinality}`);
+  }
+  if (restriction.maxCardinality) {
+    parts.push(`max ${restriction.maxCardinality}`);
+  }
+  
+  let constraint = parts.length > 0 ? parts.join(', ') : '';
+  
+  if (restriction.someValuesFrom) {
+    const valueType = localName(restriction.someValuesFrom);
+    constraint = constraint ? `${constraint} of ${valueType}` : `at least one ${valueType}`;
+  } else if (restriction.allValuesFrom) {
+    const valueType = localName(restriction.allValuesFrom);
+    constraint = constraint ? `${constraint} all ${valueType}` : `all ${valueType}`;
+  }
+  
+  return constraint ? `${propLabel}: ${constraint}` : propLabel;
 }
 
 function generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes) {
@@ -280,21 +473,74 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
 
 `;
 
-  // Generate class sections
-  classes.forEach(cls => {
+  // Build hierarchy
+  const hierarchy = buildClassHierarchy(classes);
+  
+  // Generate hierarchical TOC
+  function generateClassToc(cls, level = 1) {
+    let toc = '';
+    const indent = '  '.repeat(level - 1);
     const anchorId = cls.localName;
-    output += `## ${cls.label} ## {#${anchorId}}\n\n`;
-    output += `**IRI:** \`${prefixUri(cls.id)}\`\n\n`;
+    toc += `${indent}* [${cls.label}](#${anchorId})`;
+    
+    const children = hierarchy.childrenMap.get(cls.id) || [];
+    if (children.length > 0) {
+      toc += '\n';
+      children.forEach(child => {
+        toc += generateClassToc(child, level + 1);
+      });
+    } else {
+      toc += '\n';
+    }
+    return toc;
+  }
+  
+  output += `## Klassenhiërarchie ## {#class-hierarchy}\n\n`;
+  hierarchy.rootClasses.forEach(rootClass => {
+    output += generateClassToc(rootClass);
+  });
+  output += '\n';
+  
+  // Generate class sections recursively
+  function generateClassSection(cls, level = 2) {
+    let section = '';
+    const anchorId = cls.localName;
+    const headingMarks = '#'.repeat(level);
+    section += `${headingMarks} ${cls.label} ${headingMarks} {#${anchorId}}\n\n`;
+    section += `**IRI:** \`${prefixUri(cls.id)}\`\n\n`;
     
     if (cls.comment) {
-      output += `**Definitie:** ${cls.comment}\n\n`;
+      section += `**Definitie:** ${cls.comment}\n\n`;
     }
     
     if (cls.superClasses.length > 0) {
-      output += `**Subklasse van:** ${cls.superClasses.map(sc => `\`${prefixUri(sc)}\``).join(', ')}\n\n`;
+      section += `**Subklasse van:** ${cls.superClasses.map(sc => `\`${prefixUri(sc)}\``).join(', ')}\n\n`;
     }
     
-    output += '\n';
+    if (cls.restrictions && cls.restrictions.length > 0) {
+      section += `**Constraints:** ${cls.restrictions.map(r => formatRestriction(r)).join('; ')}\n\n`;
+    }
+    
+    if (cls.examples && cls.examples.length > 0) {
+      section += `**Voorbeelden:**\n\n`;
+      cls.examples.forEach(example => {
+        section += `\`\`\`turtle\n${example}\n\`\`\`\n\n`;
+      });
+    }
+    
+    section += '\n';
+    
+    // Add child classes
+    const children = hierarchy.childrenMap.get(cls.id) || [];
+    children.forEach(child => {
+      section += generateClassSection(child, level + 1);
+    });
+    
+    return section;
+  }
+  
+  hierarchy.rootClasses.forEach(rootClass => {
+    output += generateClassSection(rootClass);
   });
 
   // Generate properties section if any
@@ -351,10 +597,6 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
 * [Turtle formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.ttl)
 * [RDF/XML formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.rdf)
 * [JSON-LD formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.jsonld)
-
-<div class="note">
-Deze specificatie is automatisch gegenereerd uit de RIE-IEPR ontologie. Voor feedback en suggesties, zie de GitHub repository.
-</div>
 `;
 
   return output;
