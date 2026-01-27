@@ -39,6 +39,12 @@ const riepr = {
     apparaatVerwerkingsProces: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#apparaatVerwerkingsProces'),
 };
 
+const styles = {
+    activiteit: 'fill:#4A90E2,stroke:#2E5C8A,color:#fff',
+    emissiepunt: 'fill:#7ED321,stroke:#5A9E17,color:#fff',
+    installatie: 'fill:#D3D3D3,stroke:#808080,color:#000',
+}
+
 async function parseTTL(filePath) {
     const parser = new N3.Parser({ format: 'Turtle' });
     const store = new N3.Store();
@@ -105,7 +111,7 @@ function constructMermaidGraph(store, steps, nodeMap) {
             mermaid += `    subgraph ${nodeId}["${getLabel(store, stepUri)}"]\n`;
             mermaid += constructMermaidGraph(store, subSteps, nodeMap);
             mermaid += '    end\n';
-            mermaid += `    style ${nodeId} fill:#4A90E2,stroke:#2E5C8A,color:#fff\n`;
+            mermaid += `    style ${nodeId} ${styles.activiteit}\n`;
             continue;
         }
         // If non-transport, add as normal node to flowchart
@@ -130,6 +136,7 @@ function constructMermaidGraph(store, steps, nodeMap) {
             }
         }
         mermaid += `    ${nodeId}["${nodeLabel}"]\n`;
+        mermaid += `    style ${nodeId} ${styles.activiteit}\n`;
     }
     return mermaid;
 }
@@ -181,12 +188,14 @@ async function generateMermaidFlowchart(ontologyPath, examplePath, outputPath) {
                 const emissiepuntId = emissiePunten.findIndex(eq => eq.subject.value === apparaatUri);
                 if (emissiepuntId !== -1) {
                     mermaid += `        ${puntId}${emissiepuntId}\n`;
+                    mermaid += `        style ${puntId}${emissiepuntId} ${styles.emissiepunt}\n`;
                 } else if (nodeId) {
                     mermaid += `        ${nodeId}\n`;
                 }
             }
         }
         mermaid += '    end\n';
+        mermaid += `    style ${installatieLabel} ${styles.installatie}\n`;
     }
 
     mermaid += '\n';
