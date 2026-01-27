@@ -1,0 +1,93 @@
+---
+version: 2
+plan:
+  project-key: DAT
+  key: RIEPR
+  name: RIEPR-Datamodel
+
+triggers:
+  - polling: 130
+
+variables:
+  release_version: patch
+
+stages:
+  - BuildSpecification:
+      jobs:
+        - BuildSpecification
+  - DeploySpecification:
+      manual: true
+      jobs:
+        - DeploySpecification
+
+BuildSpecification:
+  key: BSPEC
+  tasks:
+    - script:
+        interpreter: BINSH_OR_CMDEXE
+        scripts:
+        - |-
+          #!/bin/bash
+          set -e
+          
+          cd documentatie/bin/specificatie
+          
+          # Generate ontologie.bs from TTL
+          node index.js
+          
+          # Build Docker image and generate HTML
+          docker build -t specificatie .
+          docker run -v "${PWD}":/app specificatie
+          
+          # Verify index.html was created
+          if [ ! -f index.html ]; then
+            echo "Error: index.html was not generated"
+            exit 1
+          fi
+          
+          echo "✓ Specification built successfully"
+  requirements:
+    - REMOTE_ONLY
+
+DeploySpecification:
+  key: DSPEC
+  tasks:
+    - script:
+        interpreter: BINSH_OR_CMDEXE
+        scripts:
+        - |-
+          #!/bin/bash
+          set -e
+          
+          # Checkout gh-pages branch
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+          
+          # Copy the generated index.html
+          cp documentatie/bin/specificatie/index.html index.html
+          
+          # Commit and push
+          git add index.html
+          git commit -m "Build specification from ontologie [skip ci]" || true
+          git push origin gh-pages
+          
+          echo "✓ Specification pushed to gh-pages"
+  requirements:
+    - REMOTE_ONLY
+
+---
+version: 2
+plan:
+  key: DAT-RIEPR
+
+plan-permissions:
+  - groups:
+      - bamboo-admin
+      - bamboo-release
+      - developer-admin
+    permissions:
+      - view
+      - edit
+      - build
+      - clone
+      - admin
