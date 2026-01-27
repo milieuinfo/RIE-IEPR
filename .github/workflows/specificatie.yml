@@ -1,0 +1,82 @@
+name: Build and Deploy Specification
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl'
+      - 'documentatie/bin/specification/index.js'
+      - '.github/workflows/specificatie.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd documentatie/bin/specification
+          npm install
+
+      - name: Generate Bikeshed from ontology
+        run: |
+          cd documentatie/bin/specification
+          npm run generate:bikeshed
+
+      - name: Install Bikeshed
+        run: |
+          pip install bikeshed
+          bikeshed update
+
+      - name: Build specification
+        run: |
+          cd documentatie
+          bikeshed spec ontologie.bs ontologie.html
+
+      - name: Copy ontology TTL files
+        run: |
+          mkdir -p documentatie/ns
+          cp src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl documentatie/ns/riepr.ttl || true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'documentatie'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

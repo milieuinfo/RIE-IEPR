@@ -1,0 +1,295 @@
+<pre class='metadata'>
+Title: RIE-IEPR Ontologie
+Shortname: riepr
+Level: 1
+Status: LD
+URL: https://data.riepr.omgeving.vlaanderen.be/ns/riepr
+Markup Shorthands: markdown yes
+Editor: Vlaamse overheid - Departement Omgeving, https://omgeving.vlaanderen.be
+Repository: https://github.com/milieuinfo/RIE-IEPR
+Abstract: De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem.
+</pre>
+
+# Inleiding # {#introduction}
+
+Het RIE-IEPR systeem is ontwikkeld om gegevens over industriële emissies te modelleren binnen de Vlaamse context.
+
+Deze ontologie sluit aan bij internationale standaarden zoals:
+
+* **PROV-O**: voor herkomst en relaties tussen entiteiten
+* **SOSA/SSN**: voor observaties, sensoren en procedures  
+* **P-Plan**: voor plannen en uitvoeringsstappen
+* **GeoSPARQL**: voor geospatiale objecten en relaties
+* **Schema.org**: voor algemene eigenschappen zoals datums
+
+De basis-namespace van de ontologie is `https://data.riepr.omgeving.vlaanderen.be/ns/riepr#` met als voorkeursprefix `riepr`.
+
+
+## Geïmporteerde Ontologieën ## {#imports}
+
+Deze ontologie importeert de volgende externe ontologieën:
+
+* prov:
+* pplan:
+* ogc:
+* sosa:
+* ssn:
+* dbo:
+* org:
+* skos:
+* foaf:
+* schema:
+
+
+# Conformiteit # {#conformance}
+
+Deze specificatie beschrijft een RDF vocabulaire. Conformante toepassingen MOETEN RDF-data produceren en/of consumeren volgens de definities in dit document.
+
+# Namespaces # {#namespaces}
+
+Deze specificatie gebruikt de volgende namespace prefixes:
+
+```turtle
+@prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:     <http://dbpedia.org/ontology/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix ogc:     <http://www.opengis.net/ont/geosparql#> .
+@prefix org:     <http://www.w3.org/ns/org#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix pplan:   <http://purl.org/net/p-plan#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema:  <http://schema.org/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:    <http://www.w3.org/ns/sosa/> .
+@prefix ssn:     <http://www.w3.org/ns/ssn/> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+```
+
+# Overzicht # {#overview}
+
+Deze ontologie definieert 17 klassen en 6 concept instanties.
+
+# Klassen # {#classes}
+
+## Activiteit Stap ## {#ActiviteitStap}
+
+**IRI:** `riepr:ActiviteitStap`
+
+**Definitie:** De activiteit stap is een individuele of meervoudige stap binnen een activiteit.
+
+**Subklasse van:** `pplan:Step`
+
+
+## Apparaat ## {#Apparaat}
+
+**IRI:** `riepr:Apparaat`
+
+**Definitie:** Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.
+
+**Subklasse van:** `ssn:System`, `ogc:SpatialObject`
+
+
+## Emissie Procedure ## {#EmissieProcedure}
+
+**IRI:** `riepr:EmissieProcedure`
+
+**Definitie:** Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.
+
+**Subklasse van:** `sosa:Procedure`
+
+
+## Emissiepunt ## {#Emissiepunt}
+
+**IRI:** `riepr:Emissiepunt`
+
+**Definitie:** Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.
+
+**Subklasse van:** `ogc:SpatialObject`
+
+
+## Exploitant ## {#Exploitant}
+
+**IRI:** `riepr:Exploitant`
+
+**Definitie:** Een exploitant is een entiteit die een milieuimpact heeft.
+
+
+## Exploitatie Locatie ## {#ExploitatieLocatie}
+
+**IRI:** `riepr:ExploitatieLocatie`
+
+**Definitie:** Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert.
+
+**Subklasse van:** `ogc:SpatialObjectCollection`, `prov:Entity`
+
+
+## GPBV Installatie ## {#GPBVInstallatie}
+
+**IRI:** `riepr:GPBVInstallatie`
+
+**Definitie:** Een GPBV installatie is een specifieke type installatie die valt onder de regelgeving van het GPBV (Geïntegreerde preventie en bestrijding van verontreiniging).
+
+**Subklasse van:** `riepr:Installatie`
+
+
+## Grondwaterput ## {#Grondwaterput}
+
+**IRI:** `riepr:Grondwaterput`
+
+**Definitie:** Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater.
+
+**Subklasse van:** `riepr:Emissiepunt`
+
+
+## IEPR Installatie ## {#IEPRInstallatie}
+
+**IRI:** `riepr:IEPRInstallatie`
+
+**Definitie:** Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation).
+
+**Subklasse van:** `riepr:Installatie`
+
+
+## Ingedeelde Inrichting of Activiteit ## {#Activiteit}
+
+**IRI:** `riepr:Activiteit`
+
+**Definitie:** Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven.
+
+**Subklasse van:** `pplan:Plan`, `dbo:Project`
+
+
+## Installatie ## {#Installatie}
+
+**IRI:** `riepr:Installatie`
+
+**Definitie:** Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn.
+
+**Subklasse van:** `ogc:SpatialObjectCollection`, `ssn:System`
+
+
+## Meetpunt ## {#Meetpunt}
+
+**IRI:** `riepr:Meetpunt`
+
+**Definitie:** Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.
+
+**Subklasse van:** `ogc:SpatialObject`
+
+
+## Observatie ## {#Observatie}
+
+**IRI:** `riepr:Observatie`
+
+**Definitie:** Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt.
+
+**Subklasse van:** `sosa:Observation`
+
+
+## Schouw ## {#Schouw}
+
+**IRI:** `riepr:Schouw`
+
+**Definitie:** Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.
+
+**Subklasse van:** `riepr:Emissiepunt`
+
+
+## Transport Procedure ## {#TransportProcedure}
+
+**IRI:** `riepr:TransportProcedure`
+
+**Definitie:** Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit.
+
+**Subklasse van:** `sosa:Procedure`
+
+
+## Verbruiks Procedure ## {#VerbruiksProcedure}
+
+**IRI:** `riepr:VerbruiksProcedure`
+
+**Definitie:** Een verbruiks procedure is een specifieke procedure die betrekking heeft op het verbruik van grondstoffen binnen een activiteit.
+
+**Subklasse van:** `sosa:Procedure`
+
+
+## Verwerkings Procedure ## {#VerwerkingsProcedure}
+
+**IRI:** `riepr:VerwerkingsProcedure`
+
+**Definitie:** Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit.
+
+**Subklasse van:** `sosa:Procedure`
+
+
+# Concept instanties # {#concepts}
+
+Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
+
+## Apparaatverwerkingsproces ## {#concept-apparaatVerwerkingsProces}
+
+**IRI:** `riepr:apparaatVerwerkingsProces`
+
+**Definitie:** Een apparaatverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een apparaat.
+
+**Breder concept:** `riepr:VerwerkingsProcedure`
+
+
+## Elektriciteitsverbruikproces ## {#concept-electriciteitsVerbruikProces}
+
+**IRI:** `riepr:electriciteitsVerbruikProces`
+
+**Definitie:** Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit.
+
+**Breder concept:** `riepr:VerbruiksProcedure`
+
+
+## Lozingsproces ## {#concept-lozingsProces}
+
+**IRI:** `riepr:lozingsProces`
+
+**Definitie:** Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater.
+
+**Breder concept:** `riepr:EmissieProcedure`
+
+
+## Overbrengingsproces ## {#concept-overbrengingsProces}
+
+**IRI:** `riepr:overbrengingsProces`
+
+**Definitie:** Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging.
+
+**Breder concept:** `riepr:TransportProcedure`
+
+
+## Stoomproces ## {#concept-stoomProces}
+
+**IRI:** `riepr:stoomProces`
+
+**Definitie:** Een stoomproces is een specifieke procedure die betrekking heeft op het transport van stoffen via stoom binnen een activiteit.
+
+**Breder concept:** `riepr:TransportProcedure`
+
+
+## Uitstootproces ## {#concept-uitstootProces}
+
+**IRI:** `riepr:uitstootProces`
+
+**Definitie:** Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht.
+
+**Breder concept:** `riepr:EmissieProcedure`
+
+
+# Downloads # {#downloads}
+
+* [Turtle formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.ttl)
+* [RDF/XML formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.rdf)
+* [JSON-LD formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.jsonld)
+
+<div class="note">
+Deze specificatie is automatisch gegenereerd uit de RIE-IEPR ontologie. Voor feedback en suggesties, zie de GitHub repository.
+</div>

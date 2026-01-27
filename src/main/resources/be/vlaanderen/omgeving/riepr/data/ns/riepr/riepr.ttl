@@ -14,6 +14,31 @@
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix schema: <http://schema.org/> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+
+# --------------------------------------- #
+# Ontology definition
+# --------------------------------------- #
+
+<> a owl:Ontology ;
+    dct:title "RIE-IEPR Ontologie"@nl ;
+    dct:title "RIE-IEPR Ontology"@en ;
+    dct:creator "Vlaamse overheid - Departement Omgeving"@nl ;
+    dct:creator "Flemish Government - Department of Environment"@en ;
+    dct:publisher "Vlaamse overheid - Departement Omgeving"@nl ;
+    dct:publisher "Flemish Government - Department of Environment and Spatial Development"@en ;
+    dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem."@nl ;
+    dct:description "The RIE-IEPR ontology defines a data model for describing industrial activities, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
+    dct:license <https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0> ;
+    dct:issued "2026-01-27"^^xsd:date ;
+    dct:modified "2026-01-27"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    vann:preferredNamespacePrefix "riepr" ;
+    vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
+    rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
+    foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf: , schema: .
 
 # --------------------------------------- #
 # Classes
@@ -30,7 +55,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een startdatum hebben
-        owl:onProperty schema:startDate ;
+        owl:onProperty schema:startDate ; ## TODO: DCT
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -127,7 +152,43 @@
 :Emissiepunt a owl:Class ;
     rdfs:label "Emissiepunt"@nl ;
     rdfs:comment "Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten."@nl ;
-    rdfs:subClassOf ogc:SpatialObject .
+    rdfs:subClassOf ogc:SpatialObject ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een emissiepunt moet gekoppeld zijn aan exact één installatie
+        owl:onProperty prov:atLocation ; 
+        owl:someValuesFrom :Installatie ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een emissiepunt moet een benaming hebben
+        owl:onProperty rdfs:label ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Schouw a owl:Class ;
+    rdfs:label "Schouw"@nl ;
+    rdfs:comment "Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen."@nl ;
+    rdfs:subClassOf :Emissiepunt ;
+    # Een schouw heeft een diameter en hoogte
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:diameter ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:height ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Grondwaterput a owl:Class ;
+    rdfs:label "Grondwaterput"@nl ;
+    rdfs:comment "Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater."@nl ;
+    rdfs:subClassOf :Emissiepunt ;
+    # Een grondwaterput heeft een diepte
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:depth ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
 
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
@@ -207,6 +268,11 @@
         owl:someValuesFrom org:Site ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan optioneel beinvloed zijn door aan een org:Site of ander type
+        owl:onProperty prov:wasInfluencedBy ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 # Procedure types as subclasses of sosa:Procedure
@@ -230,7 +296,6 @@
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
-
 
 # --------------------------------------- #
 # Data Properties
