@@ -19,6 +19,7 @@
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 @prefix schema: <http://schema.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 # Staalfabriek (KBO nummer als exploitant ID)
 exploitant:0400123123 a riepr:Exploitant ;
@@ -30,7 +31,7 @@ exploitant:0400123123 a riepr:Exploitant ;
 exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
     rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
     prov:atLocation exploitant:0400123123 ;
-    prov:hadPrimarySource osm:6851234567 ;
+    owl:sameAs osm:6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
     ] .

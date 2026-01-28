@@ -1,7 +1,13 @@
+@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:                <http://dbpedia.org/ontology/> .
 @prefix emissiepunt:        <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix foaf:               <http://xmlns.com/foaf/0.1/> .
 @prefix geosparql:          <http://www.opengis.net/ont/geosparql#> .
+@prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
+@prefix org:                <http://www.w3.org/ns/org#> .
 @prefix owl:                <http://www.w3.org/2002/07/owl#> .
 @prefix p-plan:             <http://purl.org/net/p-plan#> .
 @prefix pplan:              <http://purl.org/net/p-plan#> .
@@ -11,6 +17,7 @@
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix schema:             <http://schema.org/> .
+@prefix skos:               <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa:               <http://www.w3.org/ns/sosa/> .
 @prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
 @prefix ssn:                <http://www.w3.org/ns/ssn/> .
@@ -20,7 +27,7 @@ exploitatielocatie:0408249136_6842345678
         rdf:type  prov:Location .
 
 procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002
-        rdf:type              p-plan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdf:type              p-plan:Step , _:b0 , _:b1 , _:b2 , _:b3 , prov:Activity , riepr:ActiviteitStap , _:b4;
         rdfs:label            "Koekjes bakken"@nl;
         p-plan:isPrecededBy   procedurestap:89031055579_6839805367_ACTIVITEIT_1_0001;
         p-plan:isStepOfPlan   activiteit:89031055579_6839805367_ACTIVITEIT_1;
@@ -28,16 +35,34 @@ procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002
         prov:wasInfluencedBy  emissiepunt:TBD;
         ssn:implements        riepr:uitstootProces .
 
+riepr:uitstootProces  rdf:type  prov:Entity , prov:Plan .
+
 activiteit:89031055579_6839805367_ACTIVITEIT_1
-        rdf:type          p-plan:Plan , p-plan:Entity , prov:Plan , prov:Entity , riepr:Activiteit;
+        rdf:type          riepr:Activiteit , dbo:Project , p-plan:Plan , prov:Entity , p-plan:Entity , prov:Plan;
+        rdf:type          [] ;
+        rdf:type          [] ;
+        rdf:type          [] ;
+        rdf:type          [] ;
         rdfs:label        "Koekjes maken"@nl;
         schema:startDate  "2017-09-29T00:00:00"^^xsd:dateTime;
         prov:atLocation   exploitatielocatie:0408249136_6842345678 .
 
-emissiepunt:TBD  rdf:type  prov:Entity;
+riepr:apparaatVerwerkingsProces
+        rdf:type  prov:Entity , prov:Plan .
+
+riepr:stoomProces  rdf:type  prov:Entity , prov:Plan .
+
+riepr:electriciteitsVerbruikProces
+        rdf:type  prov:Entity , prov:Plan .
+
+emissiepunt:TBD  rdf:type  prov:Entity , geosparql:SpatialObject , riepr:Emissiepunt;
+        rdf:type         [] ;
+        rdf:type         [] ;
+        rdfs:label       "Emissiepunt koekjesoven"@nl;
+        prov:atLocation  exploitatielocatie:0408249136_6842345678;
         prov:influenced  procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002 .
 
 procedurestap:89031055579_6839805367_ACTIVITEIT_1_0001
-        rdf:type             p-plan:Step , riepr:ActiviteitStap;
+        rdf:type             p-plan:Step , _:b0 , _:b3 , _:b1 , _:b2 , _:b4 , riepr:ActiviteitStap;
         rdfs:label           "Koekjesdeeg maken"@nl;
         p-plan:isStepOfPlan  activiteit:89031055579_6839805367_ACTIVITEIT_1 .

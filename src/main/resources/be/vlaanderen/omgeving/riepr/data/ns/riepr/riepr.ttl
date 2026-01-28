@@ -14,30 +14,63 @@
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix schema: <http://schema.org/> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+
+# --------------------------------------- #
+# Ontology definition
+# --------------------------------------- #
+
+<> a owl:Ontology ;
+    dct:title "RIE-IEPR Ontologie"@nl ;
+    dct:title "RIE-IEPR Ontology"@en ;
+    dct:creator "Vlaamse overheid - Departement Omgeving"@nl ;
+    dct:creator "Flemish Government - Department of Environment"@en ;
+    dct:publisher "Vlaamse overheid - Departement Omgeving"@nl ;
+    dct:publisher "Flemish Government - Department of Environment and Spatial Development"@en ;
+    dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem."@nl ;
+    dct:description "The RIE-IEPR ontology defines a data model for describing industrial activities, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
+    dct:license <https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0> ;
+    dct:issued "2026-01-27"^^xsd:date ;
+    dct:modified "2026-01-27"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    vann:preferredNamespacePrefix "riepr" ;
+    vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
+    rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
+    foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf: , schema: .
 
 # --------------------------------------- #
 # Classes
 # --------------------------------------- #
 
 :Activiteit a owl:Class ;
-    rdfs:label "Ingedeelde Inrichting of Activiteit"@nl ;
+    rdfs:label "Activiteit"@nl ;
     rdfs:comment "Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven."@nl ;
+    skos:example [ a :Activiteit ;
+        rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
+        dct:created "2024-01-15T10:00:00"^^xsd:dateTime ;
+        dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
+        prov:atLocation [ a :ExploitatieLocatie ;
+            rdfs:label "Cementfabriek Antwerpen"@nl
+        ]
+    ] ;
     rdfs:subClassOf pplan:Plan, dbo:Project ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit moet een datum hebben waarop het is ingegeven
+        owl:onProperty dct:created ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een startdatum hebben
-        owl:onProperty schema:startDate ;
+        # Een activiteit moet een geldigheid hebben
+        owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit kan een einddatum hebben
-        owl:onProperty schema:endDate ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -51,20 +84,18 @@
 :ActiviteitStap a owl:Class ;
     rdfs:label "Activiteit Stap"@nl ;
     rdfs:comment "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl ;
+    skos:example [ a :ActiviteitStap ;
+        rdfs:label "Verwerking van grondstoffen"@nl ;
+        ssn:implements [ a :VerwerkingsProcedure ]
+    ] ;
     rdfs:subClassOf pplan:Step ;
     owl:equivalentClass [ a owl:Class ;
         # Stap kan een plan op zichzelf zijn (multi step)
         owl:unionOf ( pplan:Step pplan:MultiStep ) 
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een stap kan een startdatum hebben
-        owl:onProperty schema:startDate ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een stap kan een einddatum hebben
-        owl:onProperty schema:endDate ;
+        # Een stap kan een geldigheid hebben
+        owl:onProperty dct:valid ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -88,7 +119,14 @@
     
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
-    rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult. Deze installatie kan al dan niet (GPBV-)vergund zijn."@nl ;
+    rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult."@nl ;
+    skos:example [ a :Installatie ;
+        rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
+        dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
+        prov:atLocation [ a :ExploitatieLocatie ;
+            rdfs:label "Cementfabriek Antwerpen"@nl
+        ]
+    ] ;
     rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet een benaming hebben
@@ -96,15 +134,9 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een installatie moet een startdatum hebben
-        owl:onProperty schema:startDate ;
+        # Een installatie moet een geldigheid hebben
+        owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een installatie kan een einddatum hebben
-        owl:onProperty schema:endDate ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -127,32 +159,125 @@
 :Emissiepunt a owl:Class ;
     rdfs:label "Emissiepunt"@nl ;
     rdfs:comment "Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten."@nl ;
-    rdfs:subClassOf ogc:SpatialObject .
+    rdfs:subClassOf ogc:SpatialObject ;
+    skos:example [ a :Emissiepunt ;
+        rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
+        prov:atLocation [ a :Installatie ;
+            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
+        ] ;
+        ogc:hasGeometry [ a ogc:Geometry ;
+            ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral
+        ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een emissiepunt moet gekoppeld zijn aan exact één installatie of exploitatie locatie
+        owl:onProperty prov:atLocation ; 
+        owl:someValuesFrom ( :Installatie :ExploitatieLocatie ) ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een emissiepunt moet een benaming hebben
+        owl:onProperty rdfs:label ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Schouw a owl:Class ;
+    rdfs:label "Schouw"@nl ;
+    rdfs:comment "Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen."@nl ;
+    skos:example [ a :Schouw ;
+        rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
+        dbo:diameter "2.5"^^xsd:float ;
+        dbo:height "30.0"^^xsd:float ;
+        prov:atLocation [ a :Installatie ;
+            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
+        ] ;
+        ogc:hasGeometry [ a ogc:Geometry ;
+            ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral
+        ]
+    ] ;
+    rdfs:subClassOf :Emissiepunt ;
+    # Een schouw heeft een diameter en hoogte
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:diameter ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:height ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Grondwaterput a owl:Class ;
+    rdfs:label "Grondwaterput"@nl ;
+    rdfs:comment "Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater."@nl ;
+    skos:example [ a :Grondwaterput ;
+        rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
+        dbo:depth "15.0"^^xsd:float ;
+        prov:atLocation [ a :Installatie ;
+            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
+        ] ;
+        ogc:hasGeometry [ a ogc:Geometry ;
+            ogc:asWKT "POINT(4.4020 51.2190)"^^ogc:wktLiteral
+        ]
+    ] ;
+    rdfs:subClassOf :Emissiepunt ;
+    # Een grondwaterput heeft een diepte
+    rdfs:subClassOf [ a owl:Restriction ; 
+        owl:onProperty dbo:depth ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
 
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
+    skos:example [ a :Meetpunt ;
+        rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
+        ogc:hasGeometry [ a ogc:Geometry ;
+            ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral
+        ] ;
+        sosa:isProxyFor [ a :Emissiepunt ;
+            rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl
+        ]
+    ] ;
     rdfs:subClassOf ogc:SpatialObject ;
-    # Een meetpunt kan optioneel een proxy zijn voor een emissiepunt OF een activiteit stap
+    # Een meetpunt moet een proxy zijn voor een emissiepunt OF een activiteit stap
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:isProxyFor ; 
         owl:someValuesFrom ( :Emissiepunt :ActiviteitStap ) ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Apparaat a owl:Class ;
     rdfs:label "Apparaat"@nl ;
     rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
-    rdfs:subClassOf ogc:SpatialObject, ssn:System .
+    skos:example [ a :Apparaat ;
+        rdfs:label "Filterinstallatie Schouw 1"@nl ;
+        prov:atLocation [ a :Installatie ;
+            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
+        ]
+    ] ;
+    rdfs:subClassOf ogc:SpatialObject, ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een apparaat moet gekoppeld zijn aan exact één installatie of exploitatie locatie
+        owl:onProperty prov:atLocation ; 
+        owl:someValuesFrom ( :Installatie :ExploitatieLocatie ) ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een apparaat moet een benaming hebben
+        owl:onProperty rdfs:label ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
 
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
     rdfs:subClassOf sosa:Observation ;
-    # Een observatie moet gekoppeld zijn aan exact één meetpunt
+    # Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:hasFeatureOfInterest ; 
-        owl:someValuesFrom :Meetpunt ; 
+        owl:someValuesFrom ( :Meetpunt :Installatie ) ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -161,14 +286,8 @@
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitant kan een startdatum hebben
-        owl:onProperty schema:startDate ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitant kan een einddatum hebben
-        owl:onProperty schema:endDate ;
+        # Een exploitant kan een geldigheid hebben
+        owl:onProperty dct:valid ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -207,6 +326,11 @@
         owl:someValuesFrom org:Site ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan optioneel beinvloed zijn door aan een org:Site of ander type
+        owl:onProperty prov:wasInfluencedBy ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 # Procedure types as subclasses of sosa:Procedure
@@ -230,7 +354,6 @@
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
-
 
 # --------------------------------------- #
 # Data Properties
@@ -300,3 +423,13 @@
     owl:someValuesFrom :Apparaat
 ] .
 
+# ActiviteitStap met een overbrengingsproces moet stoffen transporteren
+# [ a owl:Class ;
+#     owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+#         owl:onProperty ssn:implements ;
+#         owl:someValuesFrom :overbrengingsProces
+#     ] )
+# ] rdfs:subClassOf [ a owl:Restriction ;
+#     owl:onProperty sosa:observedProperty ;
+#     owl:someValuesFrom TBD:TBD
+# ] .
