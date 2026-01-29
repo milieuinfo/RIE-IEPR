@@ -1,3 +1,4 @@
+PREFIX dbo:       <http://dbpedia.org/ontology/>
 PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
 PREFIX owl:       <http://www.w3.org/2002/07/owl#>
 PREFIX p-plan:    <http://purl.org/net/p-plan#>
@@ -7,427 +8,562 @@ PREFIX sosa:      <http://www.w3.org/ns/sosa/>
 PREFIX sp:        <http://www.w3.org/ns/sosa/prov/>
 PREFIX xsd:       <http://www.w3.org/2001/XMLSchema#>
 
-geosparql:spatialDimension
-        rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:integer .
+#dbo:UnitOfWork  rdfs:subClassOf  owl:Thing .
 
-geosparql:sfWithin  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:ResearchProject  rdfs:subClassOf  dbo:Project .
 
-geosparql:sfTouches  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:Project  rdfs:subClassOf  dbo:UnitOfWork .
 
-geosparql:sfOverlaps  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:LegalCase  rdfs:subClassOf  dbo:Case .
 
-geosparql:sfIntersects
-        rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:Case  rdfs:subClassOf  dbo:UnitOfWork .
 
-geosparql:sfEquals  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:projectType  rdfs:domain  dbo:ResearchProject .
 
-geosparql:sfDisjoint  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:projectStartDate  rdfs:domain  dbo:Project;
+        rdfs:range   xsd:date .
 
-geosparql:sfCrosses  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:projectReferenceID
+        rdfs:domain  dbo:ResearchProject .
 
-geosparql:sfContains  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+dbo:projectParticipant
+        rdfs:domain  dbo:ResearchProject .
 
-prov:unqualifiedForm  rdfs:subPropertyOf
-                rdfs:seeAlso .
+dbo:projectObjective  rdfs:domain  dbo:Project;
+        rdfs:range   xsd:string .
 
-prov:sharesDefinitionWith
-        rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:projectKeyword  rdfs:domain  dbo:Project;
+        rdfs:range   xsd:string .
 
-prov:qualifiedForm  rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:project  rdfs:domain  dbo:Person;
+        rdfs:range   dbo:Project .
 
-prov:n  rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:projectEndDate  rdfs:domain  dbo:Project;
+        rdfs:range   xsd:date .
 
-prov:dm  rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:projectCoordinator
+        rdfs:domain  dbo:ResearchProject .
 
-prov:constraints  rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:projectBudgetTotal
+        rdfs:domain  dbo:ResearchProject .
 
-prov:aq  rdfs:subPropertyOf  rdfs:seeAlso .
+dbo:projectBudgetFunding
+        rdfs:domain  dbo:ResearchProject .
 
-geosparql:Geometry  rdfs:subClassOf  geosparql:SpatialObject .
+dbo:procedure  rdfs:domain  dbo:Case;
+        rdfs:range   xsd:string .
 
-geosparql:Feature  rdfs:subClassOf  geosparql:SpatialObject .
+dbo:fundedBy  rdfs:domain  dbo:ResearchProject .
 
-geosparql:patialDimension
-        rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:integer .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA>
+        rdfs:subClassOf  p-plan:Plan .
 
-geosparql:fWithin  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingsProcedure>
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:fTouches  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerbruiksProcedure>
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:fOverlaps  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure>
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:fIntersects
-        rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Schouw>
+        rdfs:subClassOf  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
 
-geosparql:fEquals  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie>
+        rdfs:subClassOf  sosa:Observation .
 
-geosparql:fDisjoint  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt>
+        rdfs:subClassOf  geosparql:SpatialObject .
 
-geosparql:fCrosses  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie>
+        rdfs:subClassOf  <http://www.w3.org/ns/ssn/System> , geosparql:SpatialObjectCollection .
 
-geosparql:fContains  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IEPRInstallatie>
+        rdfs:subClassOf  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
 
-geosparql:rcc8tppi  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput>
+        rdfs:subClassOf  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
 
-geosparql:rcc8tpp  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#GPBVInstallatie>
+        rdfs:subClassOf  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
 
-geosparql:rcc8po  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie>
+        rdfs:subClassOf  prov:Entity , geosparql:SpatialObjectCollection .
 
-geosparql:rcc8ntppi  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt>
+        rdfs:subClassOf  geosparql:SpatialObject .
 
-geosparql:rcc8ntpp  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure>
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:rcc8eq  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat>
+        rdfs:subClassOf  <http://www.w3.org/ns/ssn/System> , geosparql:SpatialObject .
 
-geosparql:rcc8ec  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap>
+        rdfs:subClassOf  p-plan:Step .
 
-geosparql:rcc8dc  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit>
+        rdfs:subClassOf  p-plan:Plan , dbo:Project .
 
-geosparql:isSimple  rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:boolean .
+sosa:startTime  rdfs:subPropertyOf  prov:startedAtTime .
 
-geosparql:isEmpty  rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:boolean .
+sosa:endTime  rdfs:subPropertyOf  prov:endedAtTime .
 
-geosparql:hasSerialization
-        rdfs:domain  geosparql:Geometry;
-        rdfs:range   rdfs:Literal .
+prov:editorsDefinition
+        rdfs:subPropertyOf  prov:definition .
 
-geosparql:hasGeometry
-        rdfs:domain  geosparql:Feature;
-        rdfs:range   geosparql:Geometry .
+sosa:System  rdfs:subClassOf  prov:Entity , prov:Agent .
 
-geosparql:ehOverlap  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:StatisticalSample
+        rdfs:subClassOf  sosa:Sample .
 
-geosparql:ehMeet  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:SpatialSample  rdfs:subClassOf  sosa:Sample .
 
-geosparql:ehInside  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:Sensor  rdfs:subClassOf  sosa:System .
 
-geosparql:ehEquals  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:SamplingProcedure
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:ehDisjoint  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:Sampling  rdfs:subClassOf  sosa:Execution .
 
-geosparql:ehCovers  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:SamplingCollection
+        rdfs:subClassOf  sosa:ExecutionCollection .
 
-geosparql:ehCoveredBy
-        rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:Sampler  rdfs:subClassOf  sosa:System .
 
-geosparql:ehContains  rdfs:domain  geosparql:SpatialObject;
-        rdfs:range   geosparql:SpatialObject .
+sosa:Sample  rdfs:subClassOf  prov:Entity .
 
-geosparql:dimension  rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:integer .
+sosa:Property  rdfs:subClassOf  prov:Entity .
 
-geosparql:defaultGeometry
-        rdfs:domain         geosparql:Feature;
-        rdfs:range          geosparql:Geometry;
-        rdfs:subPropertyOf  geosparql:hasGeometry .
+sosa:Procedure  rdfs:subClassOf  prov:Plan .
 
-geosparql:coordinateDimension
-        rdfs:domain  geosparql:Geometry;
-        rdfs:range   xsd:integer .
+sosa:Platform  rdfs:subClassOf  prov:Entity .
 
-geosparql:asWKT  rdfs:domain  geosparql:Geometry;
-        rdfs:range          geosparql:wktLiteral;
-        rdfs:subPropertyOf  geosparql:hasSerialization .
+sosa:ObservingProcedure
+        rdfs:subClassOf  sosa:Procedure .
 
-geosparql:asGML  rdfs:domain  geosparql:Geometry;
-        rdfs:range          geosparql:gmlLiteral;
-        rdfs:subPropertyOf  geosparql:hasSerialization .
+sosa:Observation  rdfs:subClassOf  sosa:Execution .
 
-p-plan:correspondsToStep
-        rdfs:domain  p-plan:Activity;
-        rdfs:range   p-plan:Step .
+sosa:ObservationCollection
+        rdfs:subClassOf  sosa:ExecutionCollection .
 
-p-plan:correspondsToVariable
-        rdfs:domain  p-plan:Entity;
-        rdfs:range   p-plan:Variable .
+sosa:MaterialSample  rdfs:subClassOf  sosa:Sample .
 
-p-plan:hasInputVar  rdfs:domain  p-plan:Step;
-        rdfs:range   p-plan:Variable .
+sosa:FeatureOfInterest
+        rdfs:subClassOf  prov:Entity .
 
-p-plan:hasOutputVar  rdfs:domain  p-plan:Step;
-        rdfs:range     p-plan:Variable;
-        owl:inverseOf  p-plan:isOutputVarOf .
+sosa:Execution  rdfs:subClassOf  prov:Activity .
 
-p-plan:isDecomposedAsPlan
-        rdfs:domain  p-plan:MultiStep;
-        rdfs:range   p-plan:Plan .
+sosa:Actuator  rdfs:subClassOf  sosa:System .
 
-p-plan:isInputVarOf  rdfs:domain  p-plan:Variable;
-        rdfs:range     p-plan:Step;
-        owl:inverseOf  p-plan:hasInputVar .
+sosa:Actuation  rdfs:subClassOf  sosa:Execution .
 
-p-plan:isOutputVarOf  rdfs:domain  p-plan:Variable;
-        rdfs:range   p-plan:Step .
+sosa:ActuationCollection
+        rdfs:subClassOf  sosa:ExecutionCollection .
 
-p-plan:isPrecededBy  rdfs:domain  p-plan:Step;
-        rdfs:range   p-plan:Step .
+sosa:ActuatingProcedure
+        rdfs:subClassOf  sosa:Procedure .
 
-p-plan:isStepOfPlan  rdfs:domain  p-plan:Step;
-        rdfs:range   p-plan:Plan .
+prov:Usage  rdfs:subClassOf  prov:InstantaneousEvent , prov:EntityInfluence .
 
-p-plan:isSubPlanOfPlan
-        rdfs:domain         p-plan:Plan;
-        rdfs:range          p-plan:Plan;
-        rdfs:subPropertyOf  owl:topObjectProperty .
+prov:Submit  rdfs:subClassOf  prov:Activity .
 
-p-plan:isVariableOfPlan
-        rdfs:domain  p-plan:Variable;
-        rdfs:range   p-plan:Plan .
+prov:Start  rdfs:subClassOf  prov:InstantaneousEvent , prov:EntityInfluence .
 
-prov:actedOnBehalfOf  rdfs:domain  prov:Agent;
-        rdfs:range          prov:Agent;
+prov:SoftwareAgent  rdfs:subClassOf  prov:Agent . #, owl:Thing .
+
+prov:ServiceDescription
+        rdfs:subClassOf  prov:SoftwareAgent .
+
+prov:RightsHolder  rdfs:subClassOf  prov:Role .
+
+prov:RightsAssignment
+        rdfs:subClassOf  prov:Activity .
+
+prov:Revision  rdfs:subClassOf  prov:Derivation .
+
+prov:Replace  rdfs:subClassOf  prov:Activity .
+
+prov:Removal  rdfs:subClassOf  prov:Derivation .
+
+prov:Quotation  rdfs:subClassOf  prov:Derivation .
+
+prov:Publish  rdfs:subClassOf  prov:Activity .
+
+prov:Publisher  rdfs:subClassOf  prov:Role .
+
+prov:PrimarySource  rdfs:subClassOf  prov:Derivation .
+
+prov:Plan  rdfs:subClassOf  prov:Entity .
+
+prov:Person  rdfs:subClassOf  prov:Agent .
+
+prov:Organization  rdfs:subClassOf  prov:Agent .
+
+prov:Modify  rdfs:subClassOf  prov:Activity .
+
+prov:Invalidation  rdfs:subClassOf  prov:InstantaneousEvent , prov:ActivityInfluence .
+
+prov:Insertion  rdfs:subClassOf  prov:Derivation .
+
+prov:Generation  rdfs:subClassOf  prov:InstantaneousEvent , prov:ActivityInfluence .
+
+prov:EntityInfluence  rdfs:subClassOf  prov:Influence .
+
+prov:End  rdfs:subClassOf  prov:InstantaneousEvent , prov:EntityInfluence .
+
+prov:EmptyDictionary  rdfs:subClassOf  prov:EmptyCollection , prov:Dictionary .
+
+prov:EmptyCollection  rdfs:subClassOf  prov:Collection .
+
+prov:DirectQueryService
+        rdfs:subClassOf  prov:SoftwareAgent .
+
+prov:Derivation  rdfs:subClassOf  prov:EntityInfluence .
+
+prov:Delegation  rdfs:subClassOf  prov:AgentInfluence .
+
+prov:Creator  rdfs:subClassOf  prov:Contributor .
+
+prov:Create  rdfs:subClassOf  prov:Contribute .
+
+prov:Copyright  rdfs:subClassOf  prov:Activity .
+
+prov:Contributor  rdfs:subClassOf  prov:Role .
+
+prov:Contribute  rdfs:subClassOf  prov:Activity .
+
+prov:Communication  rdfs:subClassOf  prov:ActivityInfluence .
+
+prov:Collection  rdfs:subClassOf  prov:Entity .
+
+prov:Bundle  rdfs:subClassOf  prov:Entity .
+
+prov:Attribution  rdfs:subClassOf  prov:AgentInfluence .
+
+prov:Association  rdfs:subClassOf  prov:AgentInfluence .
+
+prov:AgentInfluence  rdfs:subClassOf  prov:Influence .
+
+prov:ActivityInfluence
+        rdfs:subClassOf  prov:Influence .
+
+prov:Accept  rdfs:subClassOf  prov:Activity .
+
+p-plan:Plan  rdfs:subClassOf  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA> , prov:Plan , p-plan:Entity .
+
+p-plan:MultiStep  rdfs:subClassOf  p-plan:Step , p-plan:Plan .
+
+p-plan:Entity  rdfs:subClassOf  prov:Entity .
+
+p-plan:Bundle  rdfs:subClassOf  prov:Bundle , p-plan:Entity .
+
+p-plan:Activity  rdfs:subClassOf  prov:Activity .
+
+sp:hadProcedure  rdfs:range  sosa:Procedure;
+        rdfs:subPropertyOf  prov:hadPlan .
+
+prov:qualifiedInfluence
+        rdfs:range  prov:Influence .
+
+prov:atLocation  rdfs:range  prov:Location .
+
+sosa:wasOriginatedBy  owl:inverseOf  sosa:originated .
+
+sosa:wasObservedBy  owl:inverseOf  sosa:observedProperty .
+
+sosa:wasActedOnBy  owl:inverseOf  sosa:actsOnProperty .
+
+sosa:usedProcedure  owl:inverseOf  sosa:usedForExecution .
+
+sosa:usedForExecution
+        owl:inverseOf  sosa:usedProcedure .
+
+sosa:usedForExecutionHasResult
+        owl:inverseOf  sosa:isResultOfUsedProcedure .
+
+sosa:systemDeployment
+        rdfs:subPropertyOf  sosa:hasDeployment;
+        owl:inverseOf       sosa:deployedSystem .
+
+sosa:resultQuality  owl:inverseOf  sosa:qualityOf .
+
+sosa:relatedObservation
+        owl:inverseOf  sosa:observationRelatedTo .
+
+sosa:qualityOf  owl:inverseOf  sosa:resultQuality .
+
+sosa:propertyFor  owl:inverseOf  sosa:forProperty .
+
+sosa:phenomenonTime  owl:inverseOf  sosa:phenomenonOccurred .
+
+sosa:phenomenonOccurred
+        owl:inverseOf  sosa:phenomenonTime .
+
+sosa:outputFor  owl:inverseOf  sosa:hasOutput .
+
+sosa:originated  owl:inverseOf  sosa:wasOriginatedBy .
+
+sosa:observes  rdfs:subPropertyOf  sosa:forProperty;
+        owl:inverseOf       sosa:isObservedBy .
+
+sosa:observedProperty
+        owl:inverseOf  sosa:wasObservedBy .
+
+sosa:observationRelatedTo
+        owl:inverseOf  sosa:relatedObservation .
+
+sosa:madeSampling  rdfs:subPropertyOf  sosa:madeExecution;
+        owl:inverseOf       sosa:madeBySampler .
+
+sosa:madeSamplingHasResult
+        owl:inverseOf  sosa:isResultOfMadeBySampler .
+
+sosa:madeObservation  rdfs:subPropertyOf
+                sosa:madeExecution;
+        owl:inverseOf       sosa:madeBySensor .
+
+sosa:madeExecution  owl:inverseOf  sosa:madeBySystem .
+
+sosa:madeBySystem  rdfs:subPropertyOf  prov:wasAssociatedWith;
+        owl:inverseOf       sosa:madeExecution .
+
+sosa:madeBySensor  rdfs:subPropertyOf  sosa:madeBySystem;
+        owl:inverseOf       sosa:madeObservation .
+
+sosa:madeBySampler  rdfs:subPropertyOf  sosa:madeBySystem;
+        owl:inverseOf       sosa:madeSampling .
+
+sosa:madeByActuator  rdfs:subPropertyOf
+                sosa:madeBySystem;
+        owl:inverseOf       sosa:madeActuation .
+
+sosa:madeActuation  rdfs:subPropertyOf  sosa:madeExecution;
+        owl:inverseOf       sosa:madeByActuator .
+
+sosa:isUltimateFeatureOfInterestOf
+        owl:inverseOf  sosa:hasUltimateFeatureOfInterest .
+
+sosa:isSubSystemOf  owl:inverseOf  sosa:hasSubSystem .
+
+sosa:isSampleOfUltimateFOI
+        owl:inverseOf  sosa:featureHasUltimateSample .
+
+sosa:isSampleOf  rdfs:subPropertyOf  prov:wasDerivedFrom;
+        owl:inverseOf       sosa:hasSample .
+
+sosa:isResultOfUsedProcedure
+        owl:inverseOf  sosa:usedForExecutionHasResult .
+
+sosa:isResultOfMadeBySampler
+        owl:inverseOf  sosa:madeSamplingHasResult .
+
+sosa:isResultOf  rdfs:subPropertyOf  prov:wasGeneratedBy;
+        owl:inverseOf       sosa:hasResult .
+
+sosa:isProxyFor  owl:inverseOf  sosa:hasProxy .
+
+sosa:isPropertyOf  owl:inverseOf  sosa:hasProperty .
+
+sosa:isProcedureFor  rdfs:subPropertyOf
+                sosa:forProperty;
+        owl:inverseOf       sosa:hasProcedure .
+
+sosa:isOriginalSampleOf
+        owl:inverseOf  sosa:hasOriginalSample .
+
+sosa:isObservedBy  owl:inverseOf  sosa:observes .
+
+sosa:isMemberOf  owl:inverseOf  sosa:hasMember .
+
+sosa:isHostedBy  owl:inverseOf  sosa:hosts .
+
+sosa:isFeatureOfInterestOf
+        owl:inverseOf  sosa:hasFeatureOfInterest .
+
+sosa:isDetectedBy  owl:inverseOf  sosa:detects .
+
+sosa:isActedOnBy  owl:inverseOf  sosa:actsOn .
+
+sosa:inputValueForExecution
+        owl:inverseOf  sosa:hasInputValue .
+
+sosa:inputFor  owl:inverseOf  sosa:hasInput .
+
+sosa:inDeployment  rdfs:subPropertyOf  sosa:hasDeployment;
+        owl:inverseOf       sosa:deployedOnPlatform .
+
+sosa:implements  owl:inverseOf  sosa:implementedBy .
+
+sosa:implementedBy  owl:inverseOf  sosa:implements .
+
+sosa:hosts  owl:inverseOf  sosa:isHostedBy .
+
+sosa:hasSubSystem  owl:inverseOf  sosa:isSubSystemOf .
+
+sosa:hasSample  owl:inverseOf  sosa:isSampleOf .
+
+sosa:hasResult  rdfs:subPropertyOf  prov:generated;
+        owl:inverseOf       sosa:isResultOf .
+
+sosa:hasProxy  owl:inverseOf  sosa:isProxyFor .
+
+sosa:hasProperty  owl:inverseOf  sosa:isPropertyOf .
+
+sosa:hasProcedure  rdfs:subPropertyOf  sosa:propertyFor;
+        owl:inverseOf       sosa:isProcedureFor .
+
+sosa:hasOutput  owl:inverseOf  sosa:outputFor .
+
+sosa:hasOriginalSample
+        owl:inverseOf  sosa:isOriginalSampleOf .
+
+sosa:hasMember  owl:inverseOf  sosa:isMemberOf .
+
+sosa:hasInput  owl:inverseOf  sosa:inputFor .
+
+sosa:hasFeatureOfInterest
+        rdfs:subPropertyOf  prov:used;
+        owl:inverseOf       sosa:isFeatureOfInterestOf .
+
+sosa:hasDeployment  owl:inverseOf  sosa:deployedAsset .
+
+sosa:forProperty  owl:inverseOf  sosa:propertyFor .
+
+sosa:featureHasUltimateSample
+        owl:inverseOf  sosa:isSampleOfUltimateFOI .
+
+sosa:detects  owl:inverseOf  sosa:isDetectedBy .
+
+sosa:deployedSystem  rdfs:subPropertyOf
+                sosa:deployedAsset;
+        owl:inverseOf       sosa:systemDeployment .
+
+sosa:deployedOnPlatform
+        rdfs:subPropertyOf  sosa:deployedAsset;
+        owl:inverseOf       sosa:inDeployment .
+
+sosa:deployedAsset  owl:inverseOf  sosa:hasDeployment .
+
+sosa:actsOnProperty  owl:inverseOf  sosa:wasActedOnBy .
+
+sosa:actsOn  rdfs:subPropertyOf  sosa:forProperty;
+        owl:inverseOf       sosa:isActedOnBy .
+
+prov:wasUsedInDerivation
+        owl:inverseOf  prov:hadUsage .
+
+prov:wasUsedBy  owl:inverseOf  prov:used .
+
+prov:wasRoleIn  owl:inverseOf  prov:hadRole .
+
+prov:wasPrimarySourceOf
+        owl:inverseOf  prov:hadPrimarySource .
+
+prov:wasPlanOf  owl:inverseOf  prov:hadPlan .
+
+prov:wasMemberOf  owl:inverseOf  prov:hadMember .
+
+prov:wasInfluencedBy  owl:inverseOf  prov:influenced .
+
+prov:wasAssociateFor  owl:inverseOf  prov:wasAssociatedWith .
+
+prov:wasActivityOfInfluence
+        owl:inverseOf  prov:hadActivity .
+
+prov:started  owl:inverseOf  prov:wasStartedBy .
+
+prov:revisedEntity  owl:inverseOf  prov:qualifiedRevision .
+
+prov:quotedAs  owl:inverseOf  prov:wasQuotedFrom .
+
+prov:qualifiedUsingActivity
+        owl:inverseOf  prov:qualifiedUsage .
+
+prov:qualifiedStartOf
+        owl:inverseOf  prov:qualifiedStart .
+
+prov:qualifiedSourceOf
+        owl:inverseOf  prov:qualifiedPrimarySource .
+
+prov:qualifiedQuotationOf
+        owl:inverseOf  prov:qualifiedQuotation .
+
+prov:qualifiedInvalidationOf
+        owl:inverseOf  prov:qualifiedInvalidation .
+
+prov:qualifiedInfluenceOf
+        owl:inverseOf  prov:qualifiedInfluence .
+
+prov:qualifiedGenerationOf
+        owl:inverseOf  prov:qualifiedGeneration .
+
+prov:qualifiedEndOf  owl:inverseOf  prov:qualifiedEnd .
+
+prov:qualifiedDerivationOf
+        owl:inverseOf  prov:qualifiedDerivation .
+
+prov:qualifiedDelegationOf
+        owl:inverseOf  prov:qualifiedDelegation .
+
+prov:qualifiedCommunicationOf
+        owl:inverseOf  prov:qualifiedCommunication .
+
+prov:qualifiedAttributionOf
+        owl:inverseOf  prov:qualifiedAttribution .
+
+prov:qualifiedAssociationOf
+        owl:inverseOf  prov:qualifiedAssociation .
+
+prov:locationOf  owl:inverseOf  prov:atLocation .
+
+prov:informed  owl:inverseOf  prov:wasInformedBy .
+
+prov:influenced  owl:inverseOf  prov:wasInfluencedBy .
+
+prov:hadRevision  owl:inverseOf  prov:wasRevisionOf .
+
+prov:hadInfluence  owl:inverseOf  prov:influencer .
+
+prov:hadDerivation  owl:inverseOf  prov:wasDerivedFrom .
+
+prov:hadDelegate  owl:inverseOf  prov:actedOnBehalfOf .
+
+prov:generatedAsDerivation
+        owl:inverseOf  prov:hadGeneration .
+
+prov:generalizationOf
+        owl:inverseOf  prov:specializationOf .
+
+prov:entityOfInfluence
+        owl:inverseOf  prov:entity .
+
+prov:ended  owl:inverseOf  prov:wasEndedBy .
+
+prov:contributed  owl:inverseOf  prov:wasAttributedTo .
+
+prov:agentOfInfluence
+        owl:inverseOf  prov:agent .
+
+prov:activityOfInfluence
+        owl:inverseOf  prov:activity .
+
+sp:executionAssociation
+        rdfs:domain         sosa:Execution;
+        rdfs:subPropertyOf  prov:qualifiedAssociation .
+
+prov:wasStartedBy  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Entity;
         rdfs:subPropertyOf  prov:wasInfluencedBy .
 
-prov:activity  rdfs:domain  prov:ActivityInfluence;
-        rdfs:range          prov:Activity;
-        rdfs:subPropertyOf  prov:influencer .
-
-prov:agent  rdfs:domain     prov:AgentInfluence;
-        rdfs:range          prov:Agent;
-        rdfs:subPropertyOf  prov:influencer .
-
-prov:alternateOf  rdfs:domain  prov:Entity;
-        rdfs:range     prov:Entity;
-        owl:inverseOf  prov:alternateOf .
-
-prov:asInBundle  rdfs:domain  prov:Entity;
-        rdfs:range   prov:Bundle .
-
-prov:atTime  rdfs:domain  prov:InstantaneousEvent;
-        rdfs:range   xsd:dateTime .
-
-prov:derivedByInsertionFrom
-        rdfs:domain         prov:Dictionary;
-        rdfs:range          prov:Dictionary;
+prov:wasRevisionOf  rdfs:domain  prov:Entity;
+        rdfs:range          prov:Entity;
         rdfs:subPropertyOf  prov:wasDerivedFrom .
 
-prov:derivedByRemovalFrom
-        rdfs:domain         prov:Dictionary;
-        rdfs:range          prov:Dictionary;
-        rdfs:subPropertyOf  prov:wasDerivedFrom .
-
-prov:dictionary  rdfs:domain  prov:Insertion , prov:Removal;
-        rdfs:range          prov:Dictionary;
-        rdfs:subPropertyOf  prov:entity .
-
-prov:endedAtTime  rdfs:domain  prov:Activity;
-        rdfs:range   xsd:dateTime .
-
-prov:entity  rdfs:domain    prov:EntityInfluence;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:influencer .
-
-prov:generatedAtTime  rdfs:domain  prov:Entity;
-        rdfs:range   xsd:dateTime .
-
-prov:generated  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:influenced;
-        owl:inverseOf       prov:wasGeneratedBy .
-
-prov:hadActivity  rdfs:domain  prov:Influence;
-        rdfs:range   prov:Activity .
-
-prov:hadDictionaryMember
-        rdfs:domain  prov:Dictionary;
-        rdfs:range   prov:KeyEntityPair .
-
-prov:hadGeneration  rdfs:domain  prov:Derivation;
-        rdfs:range   prov:Generation .
-
-prov:hadMember  rdfs:domain  prov:Collection;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:hadPlan  rdfs:domain  prov:Association;
-        rdfs:range   prov:Plan .
-
-prov:hadPrimarySource
-        rdfs:domain         prov:Entity;
+prov:wasQuotedFrom  rdfs:domain  prov:Entity;
         rdfs:range          prov:Entity;
         rdfs:subPropertyOf  prov:wasDerivedFrom .
-
-prov:hadRole  rdfs:domain  prov:Influence;
-        rdfs:range   prov:Role .
-
-prov:hadUsage  rdfs:domain  prov:Derivation;
-        rdfs:range   prov:Usage .
-
-prov:influencer  rdfs:domain  prov:Influence;
-        rdfs:range   owl:Thing .
-
-prov:insertedKeyEntityPair
-        rdfs:domain  prov:Insertion;
-        rdfs:range   prov:KeyEntityPair .
-
-prov:invalidatedAtTime
-        rdfs:domain  prov:Entity;
-        rdfs:range   xsd:dateTime .
-
-prov:invalidated  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:influenced;
-        owl:inverseOf       prov:wasInvalidatedBy .
-
-prov:mentionOf  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:specializationOf .
-
-prov:pairEntity  rdfs:domain  prov:KeyEntityPair;
-        rdfs:range   prov:Entity .
-
-prov:pairKey  rdfs:domain  prov:KeyEntityPair;
-        rdfs:range   rdfs:Literal .
-
-prov:qualifiedAssociation
-        rdfs:domain         prov:Activity;
-        rdfs:range          prov:Association;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedAttribution
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Attribution;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedCommunication
-        rdfs:domain         prov:Activity;
-        rdfs:range          prov:Communication;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedDelegation
-        rdfs:domain         prov:Agent;
-        rdfs:range          prov:Delegation;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedDerivation
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Derivation;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedEnd  rdfs:domain  prov:Activity;
-        rdfs:range          prov:End;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedGeneration
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Generation;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedInsertion
-        rdfs:domain         prov:Dictionary;
-        rdfs:range          prov:Insertion;
-        rdfs:subPropertyOf  prov:qualifiedDerivation .
-
-prov:qualifiedInvalidation
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Invalidation;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedPrimarySource
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:PrimarySource;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedQuotation
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Quotation;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedRemoval
-        rdfs:domain         prov:Dictionary;
-        rdfs:range          prov:Removal;
-        rdfs:subPropertyOf  prov:qualifiedDerivation .
-
-prov:qualifiedRevision
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Revision;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedStart  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Start;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:qualifiedUsage  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Usage;
-        rdfs:subPropertyOf  prov:qualifiedInfluence .
-
-prov:removedKey  rdfs:domain  prov:Removal;
-        rdfs:range   rdfs:Literal .
-
-prov:specializationOf
-        rdfs:domain         prov:Entity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  owl:topObjectProperty , prov:alternateOf .
-
-prov:startedAtTime  rdfs:domain  prov:Activity;
-        rdfs:range   xsd:dateTime .
-
-prov:used  rdfs:domain      prov:Activity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:value  rdfs:domain  prov:Entity .
-
-prov:wasAssociatedWith
-        rdfs:domain         prov:Activity;
-        rdfs:range          prov:Agent;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:wasAttributedTo  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Agent;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:wasDerivedFrom  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:wasEndedBy  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
-
-prov:wasGeneratedBy  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Activity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy;
-        owl:inverseOf       prov:generated .
-
-prov:wasInformedBy  rdfs:domain  prov:Activity;
-        rdfs:range          prov:Activity;
-        rdfs:subPropertyOf  prov:wasInfluencedBy .
 
 prov:wasInvalidatedBy
         rdfs:domain         prov:Entity;
@@ -435,488 +571,424 @@ prov:wasInvalidatedBy
         rdfs:subPropertyOf  prov:wasInfluencedBy;
         owl:inverseOf       prov:invalidated .
 
-prov:wasQuotedFrom  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasDerivedFrom .
+prov:wasInformedBy  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Activity;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
 
-prov:wasRevisionOf  rdfs:domain  prov:Entity;
-        rdfs:range          prov:Entity;
-        rdfs:subPropertyOf  prov:wasDerivedFrom .
+prov:wasGeneratedBy  rdfs:domain  prov:Entity;
+        rdfs:range          prov:Activity;
+        rdfs:subPropertyOf  prov:wasInfluencedBy;
+        owl:inverseOf       prov:generated .
 
-prov:wasStartedBy  rdfs:domain  prov:Activity;
+prov:wasEndedBy  rdfs:domain  prov:Activity;
         rdfs:range          prov:Entity;
         rdfs:subPropertyOf  prov:wasInfluencedBy .
 
-sp:executionAssociation
-        rdfs:domain         sosa:Execution;
-        rdfs:subPropertyOf  prov:qualifiedAssociation .
+prov:wasDerivedFrom  rdfs:domain  prov:Entity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
+
+prov:wasAttributedTo  rdfs:domain  prov:Entity;
+        rdfs:range          prov:Agent;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
+
+prov:wasAssociatedWith
+        rdfs:domain         prov:Activity;
+        rdfs:range          prov:Agent;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
+
+prov:value  rdfs:domain  prov:Entity .
+
+prov:used  rdfs:domain      prov:Activity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
+
+prov:startedAtTime  rdfs:domain  prov:Activity;
+        rdfs:range   xsd:dateTime .
+
+prov:specializationOf
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:alternateOf , owl:topObjectProperty .
+
+prov:removedKey  rdfs:domain  prov:Removal;
+        rdfs:range   rdfs:Literal .
+
+prov:qualifiedUsage  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Usage;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedStart  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Start;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedRevision
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Revision;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedRemoval
+        rdfs:domain         prov:Dictionary;
+        rdfs:range          prov:Removal;
+        rdfs:subPropertyOf  prov:qualifiedDerivation .
+
+prov:qualifiedQuotation
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Quotation;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedPrimarySource
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:PrimarySource;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedInvalidation
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Invalidation;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedInsertion
+        rdfs:domain         prov:Dictionary;
+        rdfs:range          prov:Insertion;
+        rdfs:subPropertyOf  prov:qualifiedDerivation .
+
+prov:qualifiedGeneration
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Generation;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedEnd  rdfs:domain  prov:Activity;
+        rdfs:range          prov:End;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedDerivation
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Derivation;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedDelegation
+        rdfs:domain         prov:Agent;
+        rdfs:range          prov:Delegation;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedCommunication
+        rdfs:domain         prov:Activity;
+        rdfs:range          prov:Communication;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedAttribution
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Attribution;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
+
+prov:qualifiedAssociation
+        rdfs:domain         prov:Activity;
+        rdfs:range          prov:Association;
+        rdfs:subPropertyOf  prov:qualifiedInfluence .
 
-prov:activityOfInfluence
-        owl:inverseOf  prov:activity .
+prov:pairKey  rdfs:domain  prov:KeyEntityPair;
+        rdfs:range   rdfs:Literal .
 
-prov:agentOfInfluence
-        owl:inverseOf  prov:agent .
+prov:pairEntity  rdfs:domain  prov:KeyEntityPair;
+        rdfs:range   prov:Entity .
 
-prov:contributed  owl:inverseOf  prov:wasAttributedTo .
+prov:mentionOf  rdfs:domain  prov:Entity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:specializationOf .
 
-prov:ended  owl:inverseOf  prov:wasEndedBy .
+prov:invalidated  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:influenced;
+        owl:inverseOf       prov:wasInvalidatedBy .
 
-prov:entityOfInfluence
-        owl:inverseOf  prov:entity .
+prov:invalidatedAtTime
+        rdfs:domain  prov:Entity;
+        rdfs:range   xsd:dateTime .
 
-prov:generalizationOf
-        owl:inverseOf  prov:specializationOf .
+prov:insertedKeyEntityPair
+        rdfs:domain  prov:Insertion;
+        rdfs:range   prov:KeyEntityPair .
 
-prov:generatedAsDerivation
-        owl:inverseOf  prov:hadGeneration .
+prov:influencer  rdfs:domain  prov:Influence;
+ . #       rdfs:range   owl:Thing .
 
-prov:hadDelegate  owl:inverseOf  prov:actedOnBehalfOf .
+prov:hadUsage  rdfs:domain  prov:Derivation;
+        rdfs:range   prov:Usage .
 
-prov:hadDerivation  owl:inverseOf  prov:wasDerivedFrom .
+prov:hadRole  rdfs:domain  prov:Influence;
+        rdfs:range   prov:Role .
 
-prov:hadInfluence  owl:inverseOf  prov:influencer .
+prov:hadPrimarySource
+        rdfs:domain         prov:Entity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:wasDerivedFrom .
 
-prov:hadRevision  owl:inverseOf  prov:wasRevisionOf .
+prov:hadPlan  rdfs:domain  prov:Association;
+        rdfs:range   prov:Plan .
 
-prov:influenced  owl:inverseOf  prov:wasInfluencedBy .
+prov:hadMember  rdfs:domain  prov:Collection;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
 
-prov:informed  owl:inverseOf  prov:wasInformedBy .
+prov:hadGeneration  rdfs:domain  prov:Derivation;
+        rdfs:range   prov:Generation .
 
-prov:locationOf  owl:inverseOf  prov:atLocation .
+prov:hadDictionaryMember
+        rdfs:domain  prov:Dictionary;
+        rdfs:range   prov:KeyEntityPair .
 
-prov:qualifiedAssociationOf
-        owl:inverseOf  prov:qualifiedAssociation .
+prov:hadActivity  rdfs:domain  prov:Influence;
+        rdfs:range   prov:Activity .
 
-prov:qualifiedAttributionOf
-        owl:inverseOf  prov:qualifiedAttribution .
+prov:generated  rdfs:domain  prov:Activity;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:influenced;
+        owl:inverseOf       prov:wasGeneratedBy .
 
-prov:qualifiedCommunicationOf
-        owl:inverseOf  prov:qualifiedCommunication .
+prov:generatedAtTime  rdfs:domain  prov:Entity;
+        rdfs:range   xsd:dateTime .
 
-prov:qualifiedDelegationOf
-        owl:inverseOf  prov:qualifiedDelegation .
+prov:entity  rdfs:domain    prov:EntityInfluence;
+        rdfs:range          prov:Entity;
+        rdfs:subPropertyOf  prov:influencer .
 
-prov:qualifiedDerivationOf
-        owl:inverseOf  prov:qualifiedDerivation .
+prov:endedAtTime  rdfs:domain  prov:Activity;
+        rdfs:range   xsd:dateTime .
 
-prov:qualifiedEndOf  owl:inverseOf  prov:qualifiedEnd .
+prov:dictionary  rdfs:domain  prov:Removal , prov:Insertion;
+        rdfs:range          prov:Dictionary;
+        rdfs:subPropertyOf  prov:entity .
 
-prov:qualifiedGenerationOf
-        owl:inverseOf  prov:qualifiedGeneration .
+prov:derivedByRemovalFrom
+        rdfs:domain         prov:Dictionary;
+        rdfs:range          prov:Dictionary;
+        rdfs:subPropertyOf  prov:wasDerivedFrom .
 
-prov:qualifiedInfluenceOf
-        owl:inverseOf  prov:qualifiedInfluence .
+prov:derivedByInsertionFrom
+        rdfs:domain         prov:Dictionary;
+        rdfs:range          prov:Dictionary;
+        rdfs:subPropertyOf  prov:wasDerivedFrom .
 
-prov:qualifiedInvalidationOf
-        owl:inverseOf  prov:qualifiedInvalidation .
+prov:atTime  rdfs:domain  prov:InstantaneousEvent;
+        rdfs:range   xsd:dateTime .
 
-prov:qualifiedQuotationOf
-        owl:inverseOf  prov:qualifiedQuotation .
+prov:asInBundle  rdfs:domain  prov:Entity;
+        rdfs:range   prov:Bundle .
 
-prov:qualifiedSourceOf
-        owl:inverseOf  prov:qualifiedPrimarySource .
+prov:alternateOf  rdfs:domain  prov:Entity;
+        rdfs:range     prov:Entity;
+        owl:inverseOf  prov:alternateOf .
 
-prov:qualifiedStartOf
-        owl:inverseOf  prov:qualifiedStart .
+prov:agent  rdfs:domain     prov:AgentInfluence;
+        rdfs:range          prov:Agent;
+        rdfs:subPropertyOf  prov:influencer .
 
-prov:qualifiedUsingActivity
-        owl:inverseOf  prov:qualifiedUsage .
+prov:activity  rdfs:domain  prov:ActivityInfluence;
+        rdfs:range          prov:Activity;
+        rdfs:subPropertyOf  prov:influencer .
 
-prov:quotedAs  owl:inverseOf  prov:wasQuotedFrom .
+prov:actedOnBehalfOf  rdfs:domain  prov:Agent;
+        rdfs:range          prov:Agent;
+        rdfs:subPropertyOf  prov:wasInfluencedBy .
 
-prov:revisedEntity  owl:inverseOf  prov:qualifiedRevision .
+p-plan:isVariableOfPlan
+        rdfs:domain  p-plan:Variable;
+        rdfs:range   p-plan:Plan .
 
-prov:started  owl:inverseOf  prov:wasStartedBy .
+p-plan:isSubPlanOfPlan
+        rdfs:domain         p-plan:Plan;
+        rdfs:range          p-plan:Plan;
+        rdfs:subPropertyOf  owl:topObjectProperty .
 
-prov:wasActivityOfInfluence
-        owl:inverseOf  prov:hadActivity .
+p-plan:isStepOfPlan  rdfs:domain  p-plan:Step;
+        rdfs:range   p-plan:Plan .
 
-prov:wasAssociateFor  owl:inverseOf  prov:wasAssociatedWith .
+p-plan:isPrecededBy  rdfs:domain  p-plan:Step;
+        rdfs:range   p-plan:Step .
 
-prov:wasInfluencedBy  owl:inverseOf  prov:influenced .
+p-plan:isOutputVarOf  rdfs:domain  p-plan:Variable;
+        rdfs:range   p-plan:Step .
 
-prov:wasMemberOf  owl:inverseOf  prov:hadMember .
+p-plan:isInputVarOf  rdfs:domain  p-plan:Variable;
+        rdfs:range     p-plan:Step;
+        owl:inverseOf  p-plan:hasInputVar .
 
-prov:wasPlanOf  owl:inverseOf  prov:hadPlan .
+p-plan:isDecomposedAsPlan
+        rdfs:domain  p-plan:MultiStep;
+        rdfs:range   p-plan:Plan .
 
-prov:wasPrimarySourceOf
-        owl:inverseOf  prov:hadPrimarySource .
+p-plan:hasOutputVar  rdfs:domain  p-plan:Step;
+        rdfs:range     p-plan:Variable;
+        owl:inverseOf  p-plan:isOutputVarOf .
 
-prov:wasRoleIn  owl:inverseOf  prov:hadRole .
+p-plan:hasInputVar  rdfs:domain  p-plan:Step;
+        rdfs:range   p-plan:Variable .
 
-prov:wasUsedBy  owl:inverseOf  prov:used .
+p-plan:correspondsToVariable
+        rdfs:domain  p-plan:Entity;
+        rdfs:range   p-plan:Variable .
 
-prov:wasUsedInDerivation
-        owl:inverseOf  prov:hadUsage .
+p-plan:correspondsToStep
+        rdfs:domain  p-plan:Activity;
+        rdfs:range   p-plan:Step .
 
-sosa:actsOn  rdfs:subPropertyOf  sosa:forProperty;
-        owl:inverseOf       sosa:isActedOnBy .
+geosparql:asGML  rdfs:domain  geosparql:Geometry;
+        rdfs:range          geosparql:gmlLiteral;
+        rdfs:subPropertyOf  geosparql:hasSerialization .
 
-sosa:actsOnProperty  owl:inverseOf  sosa:wasActedOnBy .
+geosparql:asWKT  rdfs:domain  geosparql:Geometry;
+        rdfs:range          geosparql:wktLiteral;
+        rdfs:subPropertyOf  geosparql:hasSerialization .
 
-sosa:deployedAsset  owl:inverseOf  sosa:hasDeployment .
+geosparql:coordinateDimension
+        rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:integer .
 
-sosa:deployedOnPlatform
-        rdfs:subPropertyOf  sosa:deployedAsset;
-        owl:inverseOf       sosa:inDeployment .
+geosparql:defaultGeometry
+        rdfs:domain         geosparql:Feature;
+        rdfs:range          geosparql:Geometry;
+        rdfs:subPropertyOf  geosparql:hasGeometry .
 
-sosa:deployedSystem  rdfs:subPropertyOf
-                sosa:deployedAsset;
-        owl:inverseOf       sosa:systemDeployment .
+geosparql:dimension  rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:integer .
 
-sosa:detects  owl:inverseOf  sosa:isDetectedBy .
+geosparql:ehContains  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:featureHasUltimateSample
-        owl:inverseOf  sosa:isSampleOfUltimateFOI .
+geosparql:ehCoveredBy
+        rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:forProperty  owl:inverseOf  sosa:propertyFor .
+geosparql:ehCovers  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasDeployment  owl:inverseOf  sosa:deployedAsset .
+geosparql:ehDisjoint  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasFeatureOfInterest
-        rdfs:subPropertyOf  prov:used;
-        owl:inverseOf       sosa:isFeatureOfInterestOf .
+geosparql:ehEquals  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasInput  owl:inverseOf  sosa:inputFor .
+geosparql:ehInside  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasMember  owl:inverseOf  sosa:isMemberOf .
+geosparql:ehMeet  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasOriginalSample
-        owl:inverseOf  sosa:isOriginalSampleOf .
+geosparql:ehOverlap  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasOutput  owl:inverseOf  sosa:outputFor .
+geosparql:hasGeometry
+        rdfs:domain  geosparql:Feature;
+        rdfs:range   geosparql:Geometry .
 
-sosa:hasProcedure  rdfs:subPropertyOf  sosa:propertyFor;
-        owl:inverseOf       sosa:isProcedureFor .
+geosparql:hasSerialization
+        rdfs:domain  geosparql:Geometry;
+        rdfs:range   rdfs:Literal .
 
-sosa:hasProperty  owl:inverseOf  sosa:isPropertyOf .
+geosparql:isEmpty  rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:boolean .
 
-sosa:hasProxy  owl:inverseOf  sosa:isProxyFor .
+geosparql:isSimple  rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:boolean .
 
-sosa:hasResult  rdfs:subPropertyOf  prov:generated;
-        owl:inverseOf       sosa:isResultOf .
+geosparql:rcc8dc  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasSample  owl:inverseOf  sosa:isSampleOf .
+geosparql:rcc8ec  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hasSubSystem  owl:inverseOf  sosa:isSubSystemOf .
+geosparql:rcc8eq  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:hosts  owl:inverseOf  sosa:isHostedBy .
+geosparql:rcc8ntpp  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:implementedBy  owl:inverseOf  sosa:implements .
+geosparql:rcc8ntppi  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:implements  owl:inverseOf  sosa:implementedBy .
+geosparql:rcc8po  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:inDeployment  rdfs:subPropertyOf  sosa:hasDeployment;
-        owl:inverseOf       sosa:deployedOnPlatform .
+geosparql:rcc8tpp  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:inputFor  owl:inverseOf  sosa:hasInput .
+geosparql:rcc8tppi  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:inputValueForExecution
-        owl:inverseOf  sosa:hasInputValue .
+geosparql:fContains  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isActedOnBy  owl:inverseOf  sosa:actsOn .
+geosparql:fCrosses  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isDetectedBy  owl:inverseOf  sosa:detects .
+geosparql:fDisjoint  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isFeatureOfInterestOf
-        owl:inverseOf  sosa:hasFeatureOfInterest .
+geosparql:fEquals  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isHostedBy  owl:inverseOf  sosa:hosts .
+geosparql:fIntersects
+        rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isMemberOf  owl:inverseOf  sosa:hasMember .
+geosparql:fOverlaps  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isObservedBy  owl:inverseOf  sosa:observes .
+geosparql:fTouches  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isOriginalSampleOf
-        owl:inverseOf  sosa:hasOriginalSample .
+geosparql:fWithin  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:isProcedureFor  rdfs:subPropertyOf
-                sosa:forProperty;
-        owl:inverseOf       sosa:hasProcedure .
+geosparql:patialDimension
+        rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:integer .
 
-sosa:isPropertyOf  owl:inverseOf  sosa:hasProperty .
+geosparql:Feature  rdfs:subClassOf  geosparql:SpatialObject .
 
-sosa:isProxyFor  owl:inverseOf  sosa:hasProxy .
+geosparql:Geometry  rdfs:subClassOf  geosparql:SpatialObject .
 
-sosa:isResultOf  rdfs:subPropertyOf  prov:wasGeneratedBy;
-        owl:inverseOf       sosa:hasResult .
+prov:aq  rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isResultOfMadeBySampler
-        owl:inverseOf  sosa:madeSamplingHasResult .
+prov:constraints  rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isResultOfUsedProcedure
-        owl:inverseOf  sosa:usedForExecutionHasResult .
+prov:dm  rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isSampleOf  rdfs:subPropertyOf  prov:wasDerivedFrom;
-        owl:inverseOf       sosa:hasSample .
+prov:n  rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isSampleOfUltimateFOI
-        owl:inverseOf  sosa:featureHasUltimateSample .
+prov:qualifiedForm  rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isSubSystemOf  owl:inverseOf  sosa:hasSubSystem .
+prov:sharesDefinitionWith
+        rdfs:subPropertyOf  rdfs:seeAlso .
 
-sosa:isUltimateFeatureOfInterestOf
-        owl:inverseOf  sosa:hasUltimateFeatureOfInterest .
+prov:unqualifiedForm  rdfs:subPropertyOf
+                rdfs:seeAlso .
 
-sosa:madeActuation  rdfs:subPropertyOf  sosa:madeExecution;
-        owl:inverseOf       sosa:madeByActuator .
+geosparql:sfContains  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeByActuator  rdfs:subPropertyOf
-                sosa:madeBySystem;
-        owl:inverseOf       sosa:madeActuation .
+geosparql:sfCrosses  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeBySampler  rdfs:subPropertyOf  sosa:madeBySystem;
-        owl:inverseOf       sosa:madeSampling .
+geosparql:sfDisjoint  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeBySensor  rdfs:subPropertyOf  sosa:madeBySystem;
-        owl:inverseOf       sosa:madeObservation .
+geosparql:sfEquals  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeBySystem  rdfs:subPropertyOf  prov:wasAssociatedWith;
-        owl:inverseOf       sosa:madeExecution .
+geosparql:sfIntersects
+        rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeExecution  owl:inverseOf  sosa:madeBySystem .
+geosparql:sfOverlaps  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeObservation  rdfs:subPropertyOf
-                sosa:madeExecution;
-        owl:inverseOf       sosa:madeBySensor .
+geosparql:sfTouches  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeSamplingHasResult
-        owl:inverseOf  sosa:isResultOfMadeBySampler .
+geosparql:sfWithin  rdfs:domain  geosparql:SpatialObject;
+        rdfs:range   geosparql:SpatialObject .
 
-sosa:madeSampling  rdfs:subPropertyOf  sosa:madeExecution;
-        owl:inverseOf       sosa:madeBySampler .
-
-sosa:observationRelatedTo
-        owl:inverseOf  sosa:relatedObservation .
-
-sosa:observedProperty
-        owl:inverseOf  sosa:wasObservedBy .
-
-sosa:observes  rdfs:subPropertyOf  sosa:forProperty;
-        owl:inverseOf       sosa:isObservedBy .
-
-sosa:originated  owl:inverseOf  sosa:wasOriginatedBy .
-
-sosa:outputFor  owl:inverseOf  sosa:hasOutput .
-
-sosa:phenomenonOccurred
-        owl:inverseOf  sosa:phenomenonTime .
-
-sosa:phenomenonTime  owl:inverseOf  sosa:phenomenonOccurred .
-
-sosa:propertyFor  owl:inverseOf  sosa:forProperty .
-
-sosa:qualityOf  owl:inverseOf  sosa:resultQuality .
-
-sosa:relatedObservation
-        owl:inverseOf  sosa:observationRelatedTo .
-
-sosa:resultQuality  owl:inverseOf  sosa:qualityOf .
-
-sosa:systemDeployment
-        rdfs:subPropertyOf  sosa:hasDeployment;
-        owl:inverseOf       sosa:deployedSystem .
-
-sosa:usedForExecutionHasResult
-        owl:inverseOf  sosa:isResultOfUsedProcedure .
-
-sosa:usedForExecution
-        owl:inverseOf  sosa:usedProcedure .
-
-sosa:usedProcedure  owl:inverseOf  sosa:usedForExecution .
-
-sosa:wasActedOnBy  owl:inverseOf  sosa:actsOnProperty .
-
-sosa:wasObservedBy  owl:inverseOf  sosa:observedProperty .
-
-sosa:wasOriginatedBy  owl:inverseOf  sosa:originated .
-
-prov:atLocation  rdfs:range  prov:Location .
-
-prov:qualifiedInfluence
-        rdfs:range  prov:Influence .
-
-sp:hadProcedure  rdfs:range  sosa:Procedure;
-        rdfs:subPropertyOf  prov:hadPlan .
-
-p-plan:Activity  rdfs:subClassOf  prov:Activity .
-
-p-plan:Bundle  rdfs:subClassOf  p-plan:Entity , prov:Bundle .
-
-p-plan:Entity  rdfs:subClassOf  prov:Entity .
-
-p-plan:MultiStep  rdfs:subClassOf  p-plan:Plan , p-plan:Step .
-
-p-plan:Plan  rdfs:subClassOf  p-plan:Entity , prov:Plan .
-
-prov:Accept  rdfs:subClassOf  prov:Activity .
-
-prov:ActivityInfluence
-        rdfs:subClassOf  prov:Influence .
-
-prov:AgentInfluence  rdfs:subClassOf  prov:Influence .
-
-prov:Association  rdfs:subClassOf  prov:AgentInfluence .
-
-prov:Attribution  rdfs:subClassOf  prov:AgentInfluence .
-
-prov:Bundle  rdfs:subClassOf  prov:Entity .
-
-prov:Collection  rdfs:subClassOf  prov:Entity .
-
-prov:Communication  rdfs:subClassOf  prov:ActivityInfluence .
-
-prov:Contribute  rdfs:subClassOf  prov:Activity .
-
-prov:Contributor  rdfs:subClassOf  prov:Role .
-
-prov:Copyright  rdfs:subClassOf  prov:Activity .
-
-prov:Create  rdfs:subClassOf  prov:Contribute .
-
-prov:Creator  rdfs:subClassOf  prov:Contributor .
-
-prov:Delegation  rdfs:subClassOf  prov:AgentInfluence .
-
-prov:Derivation  rdfs:subClassOf  prov:EntityInfluence .
-
-prov:DirectQueryService
-        rdfs:subClassOf  prov:SoftwareAgent .
-
-prov:EmptyCollection  rdfs:subClassOf  prov:Collection .
-
-prov:EmptyDictionary  rdfs:subClassOf  prov:Dictionary , prov:EmptyCollection .
-
-prov:End  rdfs:subClassOf  prov:EntityInfluence , prov:InstantaneousEvent .
-
-prov:EntityInfluence  rdfs:subClassOf  prov:Influence .
-
-prov:Generation  rdfs:subClassOf  prov:ActivityInfluence , prov:InstantaneousEvent .
-
-prov:Insertion  rdfs:subClassOf  prov:Derivation .
-
-prov:Invalidation  rdfs:subClassOf  prov:ActivityInfluence , prov:InstantaneousEvent .
-
-prov:Modify  rdfs:subClassOf  prov:Activity .
-
-prov:Organization  rdfs:subClassOf  prov:Agent .
-
-prov:Person  rdfs:subClassOf  prov:Agent .
-
-prov:Plan  rdfs:subClassOf  prov:Entity .
-
-prov:PrimarySource  rdfs:subClassOf  prov:Derivation .
-
-prov:Publisher  rdfs:subClassOf  prov:Role .
-
-prov:Publish  rdfs:subClassOf  prov:Activity .
-
-prov:Quotation  rdfs:subClassOf  prov:Derivation .
-
-prov:Removal  rdfs:subClassOf  prov:Derivation .
-
-prov:Replace  rdfs:subClassOf  prov:Activity .
-
-prov:Revision  rdfs:subClassOf  prov:Derivation .
-
-prov:RightsAssignment
-        rdfs:subClassOf  prov:Activity .
-
-prov:RightsHolder  rdfs:subClassOf  prov:Role .
-
-prov:ServiceDescription
-        rdfs:subClassOf  prov:SoftwareAgent .
-
-prov:SoftwareAgent  rdfs:subClassOf  owl:Thing , prov:Agent .
-
-prov:Start  rdfs:subClassOf  prov:EntityInfluence , prov:InstantaneousEvent .
-
-prov:Submit  rdfs:subClassOf  prov:Activity .
-
-prov:Usage  rdfs:subClassOf  prov:EntityInfluence , prov:InstantaneousEvent .
-
-sosa:ActuatingProcedure
-        rdfs:subClassOf  sosa:Procedure .
-
-sosa:ActuationCollection
-        rdfs:subClassOf  sosa:ExecutionCollection .
-
-sosa:Actuation  rdfs:subClassOf  sosa:Execution .
-
-sosa:Actuator  rdfs:subClassOf  sosa:System .
-
-sosa:Execution  rdfs:subClassOf  prov:Activity .
-
-sosa:FeatureOfInterest
-        rdfs:subClassOf  prov:Entity .
-
-sosa:MaterialSample  rdfs:subClassOf  sosa:Sample .
-
-sosa:ObservationCollection
-        rdfs:subClassOf  sosa:ExecutionCollection .
-
-sosa:Observation  rdfs:subClassOf  sosa:Execution .
-
-sosa:ObservingProcedure
-        rdfs:subClassOf  sosa:Procedure .
-
-sosa:Platform  rdfs:subClassOf  prov:Entity .
-
-sosa:Procedure  rdfs:subClassOf  prov:Plan .
-
-sosa:Property  rdfs:subClassOf  prov:Entity .
-
-sosa:Sample  rdfs:subClassOf  prov:Entity .
-
-sosa:Sampler  rdfs:subClassOf  sosa:System .
-
-sosa:SamplingCollection
-        rdfs:subClassOf  sosa:ExecutionCollection .
-
-sosa:Sampling  rdfs:subClassOf  sosa:Execution .
-
-sosa:SamplingProcedure
-        rdfs:subClassOf  sosa:Procedure .
-
-sosa:Sensor  rdfs:subClassOf  sosa:System .
-
-sosa:SpatialSample  rdfs:subClassOf  sosa:Sample .
-
-sosa:StatisticalSample
-        rdfs:subClassOf  sosa:Sample .
-
-sosa:System  rdfs:subClassOf  prov:Agent , prov:Entity .
-
-prov:editorsDefinition
-        rdfs:subPropertyOf  prov:definition .
-
-sosa:endTime  rdfs:subPropertyOf  prov:endedAtTime .
-
-sosa:startTime  rdfs:subPropertyOf  prov:startedAtTime .
-
-
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://dbpedia.org/ontology/Project> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/net/p-plan#Plan> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/net/p-plan#Step> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObject> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Procedure> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObject> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObjectCollection> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Entity> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#GPBVInstallatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IEPRInstallatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObjectCollection> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObject> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Observation> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Schouw> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Procedure> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerbruiksProcedure> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Procedure> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingsProcedure> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Procedure> .
-
-
-
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA> rdfs:subClassOf p-plan:Plan .
-p-plan:Plan rdfs:subClassOf <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA>  .
+geosparql:spatialDimension
+        rdfs:domain  geosparql:Geometry;
+        rdfs:range   xsd:integer .

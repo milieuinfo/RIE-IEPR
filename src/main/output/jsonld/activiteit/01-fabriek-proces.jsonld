@@ -123,7 +123,7 @@
   },
   "@graph" : [ {
     "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-    "type" : [ "riepr:Activiteit", "_:b7", "http://dbpedia.org/ontology/Project", "pplan:Plan", "_:b8", "prov:Entity", "_:b9", "pplan:Entity", "prov:Plan", "_:b10" ],
+    "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
     "schema:startDate" : {
       "type" : "xsd:dateTime",
       "@value" : "2017-09-29T00:00:00"
@@ -135,10 +135,10 @@
     }
   }, {
     "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0001",
-    "type" : [ "pplan:Step", "_:b0", "_:b3", "_:b1", "_:b2", "_:b4", "riepr:ActiviteitStap" ],
+    "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
     "isStepOfPlan" : {
       "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-      "type" : [ "riepr:Activiteit", "_:b7", "http://dbpedia.org/ontology/Project", "pplan:Plan", "_:b8", "prov:Entity", "_:b9", "pplan:Entity", "prov:Plan", "_:b10" ],
+      "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
       "schema:startDate" : {
         "type" : "xsd:dateTime",
         "@value" : "2017-09-29T00:00:00"
@@ -152,13 +152,13 @@
     "label" : "Koekjesdeeg maken"
   }, {
     "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0002",
-    "type" : [ "pplan:Step", "_:b0", "_:b1", "_:b2", "_:b3", "prov:Activity", "riepr:ActiviteitStap", "_:b4" ],
+    "type" : [ "pplan:Step", "prov:Activity", "riepr:ActiviteitStap" ],
     "isPrecededBy" : {
       "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0001",
-      "type" : [ "pplan:Step", "_:b0", "_:b3", "_:b1", "_:b2", "_:b4", "riepr:ActiviteitStap" ],
+      "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
       "isStepOfPlan" : {
         "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-        "type" : [ "riepr:Activiteit", "_:b7", "http://dbpedia.org/ontology/Project", "pplan:Plan", "_:b8", "prov:Entity", "_:b9", "pplan:Entity", "prov:Plan", "_:b10" ],
+        "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
         "schema:startDate" : {
           "type" : "xsd:dateTime",
           "@value" : "2017-09-29T00:00:00"
@@ -173,7 +173,7 @@
     },
     "isStepOfPlan" : {
       "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-      "type" : [ "riepr:Activiteit", "_:b7", "http://dbpedia.org/ontology/Project", "pplan:Plan", "_:b8", "prov:Entity", "_:b9", "pplan:Entity", "prov:Plan", "_:b10" ],
+      "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
       "schema:startDate" : {
         "type" : "xsd:dateTime",
         "@value" : "2017-09-29T00:00:00"
@@ -187,7 +187,7 @@
     "label" : "Koekjes bakken",
     "used" : {
       "id" : "emissiepunt:TBD",
-      "type" : [ "prov:Entity", "geo:SpatialObject", "_:b5", "_:b6", "riepr:Emissiepunt" ],
+      "type" : [ "prov:Entity", "geo:SpatialObject", "riepr:Emissiepunt" ],
       "label" : "Emissiepunt koekjesoven",
       "prov:atLocation" : {
         "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
@@ -197,7 +197,7 @@
     },
     "wasInfluencedBy" : {
       "id" : "emissiepunt:TBD",
-      "type" : [ "prov:Entity", "geo:SpatialObject", "_:b5", "_:b6", "riepr:Emissiepunt" ],
+      "type" : [ "prov:Entity", "geo:SpatialObject", "riepr:Emissiepunt" ],
       "label" : "Emissiepunt koekjesoven",
       "prov:atLocation" : {
         "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
@@ -205,9 +205,6 @@
       },
       "influenced" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0002"
     },
-    "implements" : {
-      "id" : "riepr:uitstootProces",
-      "type" : [ "prov:Entity", "prov:Plan" ]
-    }
+    "implements" : "riepr:uitstootProces"
   } ]
 }

@@ -180,9 +180,8 @@ object TurtleTransformer {
   // ------------------------
   def main(args: Array[String]): Unit = {
 
-    val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql.ttl")
+    val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl")
     val rieOntology = loadOntology("src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl")
-
     ontology.add(rieOntology) // rie ontology added
 
     val shaclModel = OwlToShaclGenerator.generate(ontology)
@@ -194,10 +193,10 @@ object TurtleTransformer {
 
     val frame = loadFrame("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json")
     val inferenceOntology = loadOntology("src/main/resources/inference_source.ttl")
-    inferenceOntology.add(rieOntology)  // rie ontology added
+    //inferenceOntology.add(rieOntology)  // rie ontology added
 
     val reasoningOntology = loadOntology("src/main/resources/class-disjointness.ttl")
-    inferenceOntology.add(rieOntology) // rie ontology added
+    //inferenceOntology.add(rieOntology) // rie ontology added
 
     val reasoner = new GenericRuleReasoner(
       Rule.rulesFromURL("src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules")
