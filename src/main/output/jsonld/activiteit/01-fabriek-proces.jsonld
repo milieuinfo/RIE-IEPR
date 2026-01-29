@@ -1,210 +1,145 @@
 {
   "@context" : {
-    "id" : "@id",
+    "uri" : "@id",
     "type" : "@type",
-    "geo" : "http://www.opengis.net/ont/geosparql#",
-    "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
-    "adms" : "http://www.w3.org/ns/adms#",
-    "dct" : "http://purl.org/dc/terms/",
-    "locn" : "http://www.w3.org/ns/locn#",
-    "skos" : "http://www.w3.org/2004/02/skos/core#",
-    "xsd" : "http://www.w3.org/2001/XMLSchema#",
-    "prov" : "http://www.w3.org/ns/prov#",
-    "schema" : "http://schema.org/",
-    "riepr" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#",
-    "meetpunt" : "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/",
-    "emissiepunt" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/",
-    "activiteit" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/",
-    "procedure" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/",
-    "sosa" : "http://www.w3.org/ns/sosa/",
-    "ssn" : "http://www.w3.org/ns/ssn/",
-    "pplan" : "http://purl.org/net/p-plan#",
-    "concept" : "https://data.riepr.omgeving.vlaanderen.be/id/concept/",
-    "installatiefiche" : "https://gpbv.omgeving.vlaanderen.be/installatiefiche/",
-    "apparaat" : "https://data.riepr.omgeving.vlaanderen.be/id/apparaat/",
-    "qudt" : "http://qudt.org/schema/qudt/",
-    "identifier" : {
-      "@id" : "adms:identifier",
-      "@type" : "@id"
-    },
-    "label" : {
-      "@id" : "rdfs:label",
-      "@language" : "nl"
-    },
-    "member" : {
-      "@id" : "rdfs:member",
-      "@type" : "@id"
-    },
-    "seeAlso" : {
-      "@id" : "rdfs:seeAlso",
-      "@type" : "@id"
+    "isPrecededBy" : {
+      "@type" : "@id",
+      "@id" : "http://purl.org/net/p-plan#isPrecededBy"
     },
     "isStepOfPlan" : {
-      "@id" : "pplan:isStepOfPlan",
-      "@type" : "@id"
+      "@type" : "@id",
+      "@id" : "http://purl.org/net/p-plan#isStepOfPlan"
     },
-    "isPrecededBy" : {
-      "@id" : "pplan:isPrecededBy",
-      "@type" : "@id"
+    "asWKT" : {
+      "@type" : "geo:WKTLiteral",
+      "@id" : "http://www.opengis.net/ont/geosparql#asWKT"
+    },
+    "hasGeometry" : {
+      "@type" : "@id",
+      "@id" : "http://www.opengis.net/ont/geosparql#hasGeometry"
+    },
+    "label" : {
+      "@language" : "nl",
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "comment" : {
+      "@language" : "nl",
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment"
+    },
+    "member" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#member"
+    },
+    "seeAlso" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+    },
+    "sameAs" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/2002/07/owl#sameAs"
+    },
+    "notation" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/2004/02/skos/core#notation"
+    },
+    "identifier" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/adms#identifier"
+    },
+    "atLocation" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/prov#atLocation"
+    },
+    "hadPrimarySource" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/prov#hadPrimarySource"
+    },
+    "startDate" : {
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+      "@id" : "http://schema.org/startDate"
+    },
+    "wasAssociatedWith" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/prov#wasAssociatedWith"
+    },
+    "isProxyFor" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/sosa/isProxyFor"
+    },
+    "implements" : {
+      "@type" : "@id",
+      "@id" : "http://www.w3.org/ns/ssn/implements"
     },
     "quantityKind" : {
-      "@id" : "qudt:quantityKind",
+      "@id" : "http://qudt.org/schema/qudt/quantityKind",
       "@type" : "@id"
     },
     "unit" : {
-      "@id" : "qudt:unit",
+      "@id" : "http://qudt.org/schema/qudt/unit",
       "@type" : "@id"
-    },
-    "notation" : {
-      "@id" : "skos:notation"
     },
     "startedAtTime" : {
-      "@id" : "prov:startedAtTime",
-      "@type" : "xsd:dateTime"
-    },
-    "used" : {
-      "@id" : "prov:used",
-      "@type" : "@id"
+      "@id" : "http://www.w3.org/ns/prov#startedAtTime",
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
     },
     "wasInfluencedBy" : {
-      "@id" : "prov:wasInfluencedBy",
-      "@type" : "@id"
-    },
-    "implements" : {
-      "@id" : "ssn:implements",
+      "@id" : "http://www.w3.org/ns/prov#wasInfluencedBy",
       "@type" : "@id"
     },
     "influenced" : {
-      "@id" : "prov:influenced",
-      "@type" : "@id"
-    },
-    "hasGeometry" : {
-      "@id" : "geo:hasGeometry",
-      "@type" : "@id"
-    },
-    "isProxyFor" : {
-      "@id" : "sosa:isProxyFor",
+      "@id" : "http://www.w3.org/ns/prov#influenced",
       "@type" : "@id"
     },
     "hasProxy" : {
-      "@id" : "sosa:hasProxy",
+      "@id" : "http://www.w3.org/ns/sosa/hasProxy",
       "@type" : "@id"
     },
-    "prov:atLocation" : {
+    "wasDerivedFrom" : {
+      "@id" : "http://www.w3.org/ns/prov#wasDerivedFrom",
       "@type" : "@id"
     },
-    "prov:used" : {
-      "@type" : "@id"
-    },
-    "prov:wasInfluencedBy" : {
-      "@type" : "@id"
-    },
-    "pplan:isStepOfPlan" : {
-      "@type" : "@id"
-    },
-    "pplan:isPrecededBy" : {
-      "@type" : "@id"
-    },
-    "ssn:implements" : {
-      "@type" : "@id"
-    },
-    "prov:influenced" : {
-      "@type" : "@id"
-    },
-    "geo:hasGeometry" : {
-      "@type" : "@id"
-    },
-    "sosa:isProxyFor" : {
-      "@type" : "@id"
-    },
-    "sosa:hasProxy" : {
-      "@type" : "@id"
+    "hasSerialization" : {
+      "@id" : "http://www.opengis.net/ont/geosparql#hasSerialization",
+      "@type" : "geo:WKTLiteral"
     }
   },
   "@graph" : [ {
-    "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-    "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
-    "schema:startDate" : {
-      "type" : "xsd:dateTime",
-      "@value" : "2017-09-29T00:00:00"
-    },
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/89031055579_6839805367_ACTIVITEIT_1",
+    "type" : [ "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit", "http://dbpedia.org/ontology/Project", "http://purl.org/net/p-plan#Plan", "http://www.w3.org/ns/prov#Entity", "http://dbpedia.org/ontology/UnitOfWork", "http://purl.org/net/p-plan#Entity", "http://www.w3.org/ns/prov#Plan", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA" ],
+    "startDate" : "2020-07-30T18:00:00.000Z",
     "label" : "Koekjes maken",
-    "prov:atLocation" : {
-      "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-      "type" : "prov:Location"
-    }
+    "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678"
   }, {
-    "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0001",
-    "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
-    "isStepOfPlan" : {
-      "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-      "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
-      "schema:startDate" : {
-        "type" : "xsd:dateTime",
-        "@value" : "2017-09-29T00:00:00"
-      },
-      "label" : "Koekjes maken",
-      "prov:atLocation" : {
-        "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-        "type" : "prov:Location"
-      }
-    },
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+    "type" : [ "http://www.w3.org/ns/prov#Entity", "http://www.opengis.net/ont/geosparql#SpatialObject", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt" ],
+    "label" : "Emissiepunt koekjesoven",
+    "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
+    "influenced" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0002"
+  }, {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
+    "type" : "http://www.w3.org/ns/prov#Location"
+  }, {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0001",
+    "type" : [ "http://purl.org/net/p-plan#Step", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
+    "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/89031055579_6839805367_ACTIVITEIT_1",
     "label" : "Koekjesdeeg maken"
   }, {
-    "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0002",
-    "type" : [ "pplan:Step", "prov:Activity", "riepr:ActiviteitStap" ],
-    "isPrecededBy" : {
-      "id" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0001",
-      "type" : [ "pplan:Step", "riepr:ActiviteitStap" ],
-      "isStepOfPlan" : {
-        "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-        "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
-        "schema:startDate" : {
-          "type" : "xsd:dateTime",
-          "@value" : "2017-09-29T00:00:00"
-        },
-        "label" : "Koekjes maken",
-        "prov:atLocation" : {
-          "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-          "type" : "prov:Location"
-        }
-      },
-      "label" : "Koekjesdeeg maken"
-    },
-    "isStepOfPlan" : {
-      "id" : "activiteit:89031055579_6839805367_ACTIVITEIT_1",
-      "type" : [ "riepr:Activiteit", "http://dbpedia.org/ontology/Project", "pplan:Plan", "prov:Entity", "http://dbpedia.org/ontology/UnitOfWork", "pplan:Entity", "prov:Plan", "riepr:IIOA" ],
-      "schema:startDate" : {
-        "type" : "xsd:dateTime",
-        "@value" : "2017-09-29T00:00:00"
-      },
-      "label" : "Koekjes maken",
-      "prov:atLocation" : {
-        "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-        "type" : "prov:Location"
-      }
-    },
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0002",
+    "type" : [ "http://purl.org/net/p-plan#Step", "http://www.w3.org/ns/prov#Activity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
+    "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0001",
+    "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/89031055579_6839805367_ACTIVITEIT_1",
     "label" : "Koekjes bakken",
-    "used" : {
-      "id" : "emissiepunt:TBD",
-      "type" : [ "prov:Entity", "geo:SpatialObject", "riepr:Emissiepunt" ],
+    "http://www.w3.org/ns/prov#used" : {
+      "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+      "type" : [ "http://www.w3.org/ns/prov#Entity", "http://www.opengis.net/ont/geosparql#SpatialObject", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt" ],
       "label" : "Emissiepunt koekjesoven",
-      "prov:atLocation" : {
-        "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-        "type" : "prov:Location"
+      "atLocation" : {
+        "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
+        "type" : "http://www.w3.org/ns/prov#Location"
       },
-      "influenced" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0002"
+      "influenced" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0002"
     },
-    "wasInfluencedBy" : {
-      "id" : "emissiepunt:TBD",
-      "type" : [ "prov:Entity", "geo:SpatialObject", "riepr:Emissiepunt" ],
-      "label" : "Emissiepunt koekjesoven",
-      "prov:atLocation" : {
-        "id" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678",
-        "type" : "prov:Location"
-      },
-      "influenced" : "procedure:89031055579_6839805367_ACTIVITEIT_1_0002"
-    },
-    "implements" : "riepr:uitstootProces"
+    "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+    "implements" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces"
   } ]
 }
