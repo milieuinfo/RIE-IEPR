@@ -16,6 +16,8 @@
 @prefix schema: <http://schema.org/> .
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix dct:    <http://purl.org/dc/terms/> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -123,11 +125,17 @@
     skos:example [ a :Installatie ;
         rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
         dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
+        oa:motivatedBy :actief ;
         prov:atLocation [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
     rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie heeft externe identificaties (optioneel)
+        owl:onProperty adms:identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet een benaming hebben
         owl:onProperty rdfs:label ;
@@ -145,16 +153,14 @@
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet een enkele status hebben
+        owl:onProperty oa:motivatedBy ;
+        owl:someValuesFrom oa:Motivation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
-
-:IEPRInstallatie a owl:Class ;
-    rdfs:label "IEPR Installatie"@nl ;
-    rdfs:comment "Een IEPR installatie is een specifieke type installatie die valt onder de regelgeving van het IEPR (Industrial Emission Portal Regulation)."@nl ;
-    rdfs:subClassOf :Installatie .
-:GPBVInstallatie a owl:Class ;
-    rdfs:label "GPBV Installatie"@nl ;
-    rdfs:comment "Een GPBV installatie is een specifieke type installatie die valt onder de regelgeving van het GPBV (Geïntegreerde preventie en bestrijding van verontreiniging)."@nl ;
-    rdfs:subClassOf :Installatie .
 
 :Emissiepunt a owl:Class ;
     rdfs:label "Emissiepunt"@nl ;
@@ -180,6 +186,13 @@
         # Een emissiepunt moet een benaming hebben
         owl:onProperty rdfs:label ; 
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt moet een enkele status hebben
+        owl:onProperty oa:motivatedBy ;
+        owl:someValuesFrom oa:Motivation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Schouw a owl:Class ;
@@ -221,8 +234,8 @@
         ]
     ] ;
     rdfs:subClassOf :Emissiepunt ;
-    # Een grondwaterput heeft een diepte
     rdfs:subClassOf [ a owl:Restriction ; 
+        # Een grondwaterput heeft een diepte
         owl:onProperty dbo:depth ; 
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -240,11 +253,29 @@
         ]
     ] ;
     rdfs:subClassOf ogc:SpatialObject ;
-    # Een meetpunt moet een proxy zijn voor een emissiepunt OF een activiteit stap
     rdfs:subClassOf [ a owl:Restriction ; 
+        # Een meetpunt moet een proxy zijn voor een emissiepunt OF een activiteit stap
         owl:onProperty sosa:isProxyFor ; 
         owl:someValuesFrom ( :Emissiepunt :ActiviteitStap ) ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een meetpunt moet een benaming hebben
+        owl:onProperty rdfs:label ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt moet een geldigheid hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt moet een enkele status hebben
+        owl:onProperty oa:motivatedBy ;
+        owl:someValuesFrom oa:Motivation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Apparaat a owl:Class ;
@@ -257,6 +288,12 @@
         ]
     ] ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een apparaat moet een geldigheid hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een apparaat moet gekoppeld zijn aan exact één installatie of exploitatie locatie
         owl:onProperty prov:atLocation ; 
@@ -316,6 +353,11 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie heeft externe identificaties (optioneel)
+        owl:onProperty adms:identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
@@ -338,18 +380,21 @@
     rdfs:label "Transport Procedure"@nl ;
     rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit."@nl ;
     rdfs:subClassOf sosa:Procedure .
-:VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
-    rdfs:label "Verbruiks Procedure"@nl ;
-    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het verbruik van grondstoffen binnen een activiteit."@nl ;
-    rdfs:subClassOf sosa:Procedure .
 :VerwerkingsProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Verwerkings Procedure"@nl ;
     rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit."@nl ;
     rdfs:subClassOf sosa:Procedure .
+
+:VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
+    rdfs:label "Verbruiks Procedure"@nl ;
+    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een activiteit."@nl ;
+    # Verbruiks procedures zijn het transport van stoffen van buiten naar binnen
+    rdfs:subClassOf :TransportProcedure .
 :EmissieProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Emissie Procedure"@nl ;
     rdfs:comment "Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
-    rdfs:subClassOf sosa:Procedure .
+    # Emissie procedures zijn het intern transport van stoffen naar emissiepunten
+    rdfs:subClassOf :TransportProcedure .
 
 # --------------------------------------- #
 # Object Properties
@@ -397,6 +442,24 @@
     rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit."@nl ;
     skos:broader :VerbruiksProcedure ;
     skos:prefLabel "Elektriciteitsverbruikproces"@nl .
+
+# Status concepten voor oa:motivatedBy
+:actief a skos:Concept, oa:Motivation ;
+    rdfs:label "Actief"@nl ;
+    rdfs:comment "De actieve status geeft aan dat een entiteit momenteel in gebruik is."@nl ;
+    skos:prefLabel "Actief"@nl .
+:inactief a skos:Concept, oa:Motivation ;
+    rdfs:label "Inactief"@nl ;
+    rdfs:comment "De inactieve status geeft aan dat een entiteit momenteel niet in gebruik is."@nl ;
+    skos:prefLabel "Inactief"@nl .
+:gesloten a skos:Concept, oa:Motivation ;
+    rdfs:label "Gesloten"@nl ;
+    rdfs:comment "De gesloten status geeft aan dat een entiteit permanent buiten gebruik is gesteld."@nl ;
+    skos:prefLabel "Gesloten"@nl .
+:voorgesteld a skos:Concept, oa:Motivation ;
+    rdfs:label "Voorgesteld"@nl ;
+    rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld maar nog niet bevestigd of in gebruik genomen."@nl ;
+    skos:prefLabel "Voorgesteld"@nl .
 
 # --------------------------------------- #
 # Axioms
