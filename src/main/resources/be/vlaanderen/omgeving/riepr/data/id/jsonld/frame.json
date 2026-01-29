@@ -18,93 +18,71 @@
   "procedure": "https://data.riepr.omgeving.vlaanderen.be/id/procedure/",
   "sosa": "http://www.w3.org/ns/sosa/",
   "ssn": "http://www.w3.org/ns/ssn/",
-  "pplan": "http://purl.org/net/p-plan#",
+  "p-plan": "http://purl.org/net/p-plan#",
   "concept": "https://data.riepr.omgeving.vlaanderen.be/id/concept/",
   "installatiefiche": "https://gpbv.omgeving.vlaanderen.be/installatiefiche/",
   "apparaat": "https://data.riepr.omgeving.vlaanderen.be/id/apparaat/",
   "qudt": "http://qudt.org/schema/qudt/",
 
-  "identifier" : {
-    "@id" : "adms:identifier",
-    "@type": "@id"
-  },
-  "label": {
-    "@id": "rdfs:label",
-    "@language": "nl"
-  },
+  "isPrecededBy": {  "@type": "@id", "@id": "http://purl.org/net/p-plan#isPrecededBy" },
+  "isStepOfPlan": {  "@type": "@id", "@id": "http://purl.org/net/p-plan#isStepOfPlan" },
+  "startDate": {  "@type": "@id", "@id": "http://schema.org/startDate" },
+  "asWKT": {  "@type": "@id", "@id": "http://www.opengis.net/ont/geosparql#asWKT" },
+  "hasGeometry": {  "@type": "@id", "@id": "http://www.opengis.net/ont/geosparql#hasGeometry" },
+  "comment": {  "@type": "@id", "@id": "http://www.w3.org/2000/01/rdf-schema#comment" },
+  "label": { "@language": "nl", "@id": "http://www.w3.org/2000/01/rdf-schema#label" },
+  "member": {  "@type": "@id", "@id": "http://www.w3.org/2000/01/rdf-schema#member" },
+  "seeAlso": {  "@type": "@id", "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso" },
+  "sameAs": {  "@type": "@id", "@id": "http://www.w3.org/2002/07/owl#sameAs" },
+  "notation": {  "@type": "@id", "@id": "http://www.w3.org/2004/02/skos/core#notation" },
+  "identifier": {  "@type": "@id", "@id": "http://www.w3.org/ns/adms#identifier" },
+  "atLocation": {  "@type": "@id", "@id": "http://www.w3.org/ns/prov#atLocation" },
+  "hadPrimarySource": {  "@type": "@id", "@id": "http://www.w3.org/ns/prov#hadPrimarySource" },
+  "used": {  "@type": "@id", "@id": "http://www.w3.org/ns/prov#used" },
+  "wasAssociatedWith": {  "@type": "@id", "@id": "http://www.w3.org/ns/prov#wasAssociatedWith" },
+  "isProxyFor": {  "@type": "@id", "@id": "http://www.w3.org/ns/sosa/isProxyFor" },
+  "implements": {  "@type": "@id", "@id": "http://www.w3.org/ns/ssn/implements" },
 
-  "member": {
-    "@id": "rdfs:member",
-    "@type": "@id"
-  },
-  "seeAlso": {
-    "@id": "rdfs:seeAlso",
-    "@type": "@id"
-  },
-  "isStepOfPlan": {
-    "@id": "pplan:isStepOfPlan",
-    "@type": "@id"
-  },
-  "isPrecededBy": {
-    "@id": "pplan:isPrecededBy",
-    "@type": "@id"
-  },
   "quantityKind": {
-    "@id": "qudt:quantityKind",
+    "@id": "http://qudt.org/schema/qudt/quantityKind",
     "@type": "@id"
   },
   "unit": {
-    "@id": "qudt:unit",
+    "@id": "http://qudt.org/schema/qudt/unit",
     "@type": "@id"
   },
-  "notation": {
-    "@id": "skos:notation"
-  },
+
   "startedAtTime": {
-    "@id": "prov:startedAtTime",
+    "@id": "http://www.w3.org/ns/prov#startedAtTime",
     "@type": "xsd:dateTime"
   },
-  "used" : {
-    "@id" : "prov:used",
-    "@type": "@id"
-  },
+
   "wasInfluencedBy" : {
-    "@id" : "prov:wasInfluencedBy",
+    "@id" : "http://www.w3.org/ns/prov#wasInfluencedBy",
     "@type": "@id"
   },
-  "implements" : {
-    "@id" : "ssn:implements",
-    "@type": "@id"
-  },
+
   "influenced" : {
-    "@id" : "prov:influenced",
+    "@id" : "http://www.w3.org/ns/prov#influenced",
     "@type": "@id"
   },
-  "hasGeometry" : {
-    "@id" : "geo:hasGeometry",
-    "@type": "@id"
-  },
-  "isProxyFor" : {
-    "@id" : "sosa:isProxyFor",
-    "@type": "@id"
-  },
+
   "hasProxy" : {
-    "@id" : "sosa:hasProxy",
+    "@id" : "http://www.w3.org/ns/sosa/hasProxy",
     "@type": "@id"
-  },
-  "prov:atLocation": { "@type": "@id" },
-  "prov:used": { "@type": "@id" },
-  "prov:wasInfluencedBy": { "@type": "@id" },
-  "pplan:isStepOfPlan": { "@type": "@id" },
-  "pplan:isPrecededBy": { "@type": "@id" },
-  "ssn:implements": { "@type": "@id" },
-  "prov:influenced": { "@type": "@id" },
-  "geo:hasGeometry": { "@type": "@id" },
-  "sosa:isProxyFor": { "@type": "@id" },
-  "sosa:hasProxy": { "@type": "@id" }
+  }
 },
 
-  "@type": ["riepr:Activiteit", "riepr:ActiviteitStap", "pplan:Step", "pplan:Plan"],
+  "@type": ["p-plan:Step", "p-plan:Plan",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt"
+  ],
   "@embed": "@always"
 }
 
