@@ -1,0 +1,80 @@
+%% Auto-generated from OWL/SHACL
+classDiagram
+    class Activiteit {
+        string created
+        string label
+        string valid
+    }
+    class ActiviteitStap {
+        string valid
+        enum implements
+        string is_step_of_plan
+    }
+    class Apparaat {
+        string valid
+        string label
+    }
+    class Bron {
+        string label
+        string comment
+    }
+    class Emissiepunt {
+        string label
+        string status
+    }
+    class Exploitant {
+        string valid
+        enum type
+        string label
+    }
+    class ExploitatieLocatie {
+        string exploitatie_locatie_identifiers
+        string label
+        string was_influenced_by
+    }
+    class Grondwaterput {
+        float depth
+    }
+    class Installatie {
+        string installatie_identifiers
+        string label
+        string valid
+        string status
+    }
+    class Meetpunt {
+        string label
+        string valid
+        string status
+    }
+    class Schouw {
+        float diameter
+        float height
+    }
+    class Stof {
+        string label
+    }
+
+    Emissiepunt <|-- Schouw
+    Emissiepunt <|-- Grondwaterput
+    Emissiepunt <|-- Lozingspunt
+    Activiteit --> ExploitatieLocatie : atLocation
+    ExploitatieLocatie --> Exploitant : atLocation
+    ExploitatieLocatie --> ExploitatieLocatie : wasDerivedFrom
+    ActiviteitStap --> Emissiepunt : used
+    ActiviteitStap --> Apparaat : used
+    ActiviteitStap --> Bron : used
+    ActiviteitStap --> Stof : used
+    Emissiepunt --> Installatie : atLocation
+    Emissiepunt --> ExploitatieLocatie : atLocation
+    Apparaat --> Installatie : atLocation
+    Apparaat --> ExploitatieLocatie : atLocation
+    Installatie --> ExploitatieLocatie : atLocation
+    Installatie --> ExploitatieLocatie : wasDerivedFrom
+    Meetpunt --> Emissiepunt : isProxyFor
+    Meetpunt --> ActiviteitStap : isProxyFor
+    Meetpunt --> Emissiepunt : hasProxy
+    Meetpunt --> ActiviteitStap : hasProxy
+    Observatie --> Meetpunt : hasFeatureOfInterest
+    Observatie --> Installatie : hasFeatureOfInterest
+    Observatie --> Meetpunt : isFeatureOfInterestOf
+    Observatie --> Installatie : isFeatureOfInterestOf

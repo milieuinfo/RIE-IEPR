@@ -1,5 +1,5 @@
-import { TurtleBuilder } from './TurtleBuilder.js';
-import { BaseParser } from './BaseParser.js';
+import { TurtleBuilder } from './turtle-builder.js';
+import { BaseParser } from './base-parser.js';
 import { LAMBERT72_CRS } from './constants.js';
 
 export class GrondwaterParser extends BaseParser {
@@ -202,13 +202,14 @@ export class GrondwaterParser extends BaseParser {
         });
     }
 
-    parsePompfilter(filter, parentUri, putId) {
-        const filterNumber = filter[0]?.Filternummer?.[0];
-        const waterLayer = filter[0]?.WatervoerendeLaag?.[0];
+    parsePompfilter(pompfilter, parentUri, putId) {
+        const filterId = pompfilter[0].$.pompfilterID;
+        const filterNumber = pompfilter[0].Filternummer?.[0];
+        const pumpCapacity = pompfilter[0].Pompcapaciteit?.[0];
 
         let filterDesc = `Pompfilter ${filterNumber}`;
-        if (waterLayer) {
-            filterDesc += `, watervoerendeLaag: ${waterLayer}`;
+        if (pumpCapacity) {
+            filterDesc += `, pompcapaciteit: ${pumpCapacity}`;
         }
 
         this.turtle.triple(

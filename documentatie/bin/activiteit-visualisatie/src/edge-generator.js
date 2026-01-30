@@ -198,14 +198,11 @@ export class EdgeGenerator {
                         let nextNodeId = null;
                         for (const nextStepUri of this.nodeMap.keys()) {
                             if (nextStepUri === precedingStepUri) continue;
-                            const nextPrecededByQuads = this.store.getQuads(namedNode(nextStepUri), pplan.isPrecededBy, null);
-                            for (const nextPrecQuad of nextPrecededByQuads) {
-                                if (nextPrecQuad.object.value === stepUri) {
-                                    nextNodeId = this.nodeMap.get(nextStepUri);
-                                    break;
-                                }
+                            const nextPrecededByQuads = this.store.getQuads(namedNode(nextStepUri), pplan.isPrecededBy, namedNode(stepUri));
+                            if (nextPrecededByQuads.length > 0) {
+                                nextNodeId = this.nodeMap.get(nextStepUri);
+                                break;
                             }
-                            if (nextNodeId) break;
                         }
                         
                         if (nextNodeId) {
@@ -218,19 +215,6 @@ export class EdgeGenerator {
                         }
                     }
                 }
-            } else if (procedureUri && this.procedureChecker.isVerwerkingsProcedure(procedureUri)) {
-                // This is a processing step (like zuivering) - add as normal edge
-                const precededByQuads = this.store.getQuads(namedNode(stepUri), pplan.isPrecededBy, null);
-                
-                for (const precededQuad of precededByQuads) {
-                    const precedingStepUri = precededQuad.object.value;
-                    const precedingNodeId = this.nodeMap.get(precedingStepUri);
-                    const processingNodeId = this.nodeMap.get(stepUri);
-                    
-                    if (precedingNodeId && processingNodeId) {
-                        edges.push(`    ${precedingNodeId} --> ${processingNodeId}`);
-                    }
-                }
             }
         }
 
@@ -240,27 +224,22 @@ export class EdgeGenerator {
     generateBronEdges(steps) {
         const edges = [];
 
-        // Generate edges from bronnen to consumption steps
-        for (const [bronUri, bronIdx] of this.bronnenIndex) {
-            const consumptionSteps = this.store.getQuads(null, prov.used, namedNode(bronUri));
-            
-            for (const consumptionQuad of consumptionSteps) {
-                const stepUri = consumptionQuad.subject.value;
-                const procedureUri = this.getProcedureUri(stepUri);
-                const label = this.getStepLabel(stepUri);
+        for (const stepQuad of steps) {
+            const stepUri = stepQuad.subject.value;
+            const procedureUri = this.getProcedureUri(stepUri);
+            if (!procedureUri) continue;
 
-                if (procedureUri && this.procedureChecker.isVerbruiksProcedure(procedureUri)) {
-                    const precedingStepUri = this.findPrecedingStep(stepUri);
-                    if (precedingStepUri) {
-                        const precedingNodeId = this.nodeMap.get(precedingStepUri);
-                        if (precedingNodeId) {
-                            edges.push(`    bron${bronIdx} -->|${label}| ${precedingNodeId}`);
-                        }
-                    }
-                } else {
-                    const nodeId = this.nodeMap.get(stepUri);
-                    if (nodeId) {
-                        edges.push(`    bron${bronIdx} -->|${label}| ${nodeId}`);
+            const label = this.getStepLabel(stepUri);
+            const usedBronnen = this.store.getQuads(namedNode(stepUri), prov.used, null);
+
+            for (const bronQuad of usedBronnen) {
+                const bronUri = bronQuad.object.value;
+                if (this.bronnenIndex.has(bronUri)) {
+                    const idx = this.bronnenIndex.get(bronUri);
+                    if (label) {
+                        edges.push(`    bron${idx} -->|${label}| ${this.nodeMap.get(stepUri)}`);
+                    } else {
+                        edges.push(`    bron${idx} --> ${this.nodeMap.get(stepUri)}`);
                     }
                 }
             }
@@ -271,34 +250,15 @@ export class EdgeGenerator {
 
     generateStofEdges(stofUris) {
         const edges = [];
-        const rdf = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
-        const allSteps = this.store.getQuads(null, rdf, namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap'));
-        
-        for (const stepQuad of allSteps) {
-            const stepUri = stepQuad.subject.value;
-            const procedureUri = this.getProcedureUri(stepUri);
-
-            if (procedureUri && this.procedureChecker.isVerbruiksProcedure(procedureUri)) {
-                const usedStoffen = this.store.getQuads(namedNode(stepUri), prov.used, null);
-                
-                for (const stofQuad of usedStoffen) {
-                    const stofUri = stofQuad.object.value;
-                    if (stofUris.has(stofUri)) {
-                        const stofLabel = this.getStepLabel(stofUri);
-                        const stepLabel = this.getStepLabel(stepUri);
-                        const precedingStepUri = this.findPrecedingStep(stepUri);
-                        
-                        if (precedingStepUri) {
-                            const precedingNodeId = this.nodeMap.get(precedingStepUri);
-                            if (precedingNodeId) {
-                                edges.push(`    stof["${stofLabel}"] -->|${stepLabel}| ${precedingNodeId}`);
-                            }
-                        }
-                    }
+        for (const stofUri of stofUris) {
+            const label = this.getStepLabel(stofUri);
+            for (const stepUri of this.nodeMap.keys()) {
+                const usedStoffen = this.store.getQuads(namedNode(stepUri), prov.used, namedNode(stofUri));
+                if (usedStoffen.length > 0) {
+                    edges.push(`    stof --> ${this.nodeMap.get(stepUri)} : ${label}`);
                 }
             }
         }
-
         return edges;
     }
 }

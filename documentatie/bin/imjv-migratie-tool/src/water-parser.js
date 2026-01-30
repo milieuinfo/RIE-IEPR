@@ -1,5 +1,5 @@
-import { TurtleBuilder } from './TurtleBuilder.js';
-import { BaseParser } from './BaseParser.js';
+import { TurtleBuilder } from './turtle-builder.js';
+import { BaseParser } from './base-parser.js';
 
 export class WaterParser extends BaseParser {
     constructor(xmlData) {

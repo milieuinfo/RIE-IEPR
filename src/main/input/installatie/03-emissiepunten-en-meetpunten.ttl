@@ -23,7 +23,9 @@ exploitatielocatie:EX a riepr:ExploitatieLocatie ;
 
 installatie:GPBV_12345 a riepr:Installatie ;
     rdfs:label "Fictief NV"@nl ;
-    dct:valid "2020-01-01/" ;
+    dct:issued "2020-01-01"^^xsd:date ;
+    dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+    dct:valid "2030-12-31"^^xsd:date ;
     adms:status riepr:Actief ;
     adms:identifier [
         skos:notation "BE.VL.000000001.INSTALLATION" ;
@@ -41,14 +43,18 @@ emissiepunt:EP_001 a riepr:Emissiepunt ;
     rdfs:label "Emissiepunt Schoorsteen 1"@nl ;
     adms:status riepr:Actief ;
     prov:atLocation exploitatielocatie:EX ;
-    dct:valid "2020-01-01/" ;
+    dct:issued "2020-01-01"^^xsd:date ;
+    dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+    dct:valid "2030-12-31"^^xsd:date ;
     ogc:hasGeometry <...> .
 
 meetpunt:MP_001 a riepr:Meetpunt ;
     rdfs:label "Meetpunt Luchtkwaliteit 1"@nl ;
     adms:status riepr:Actief ;
     sosa:isProxyFor emissiepunt:EP_001 ; # optioneel
-    dct:valid "2020-01-01/" ;
+    dct:issued "2020-01-01"^^xsd:date ;
+    dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+    dct:valid "2030-12-31"^^xsd:date ;
     prov:atLocation exploitatielocatie:EX ;
     ogc:hasGeometry <...> .
 
@@ -57,7 +63,9 @@ meetpunt:MP_002 a riepr:Meetpunt ;
     ogc:hasGeometry <...> ;
     adms:status riepr:Actief ;
     prov:atLocation exploitatielocatie:EX ;
-    dct:valid "2020-01-01/" ;
+    dct:issued "2020-01-01"^^xsd:date ;
+    dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+    dct:valid "2030-12-31"^^xsd:date ;
     sosa:isProxyFor [ a riepr:ActiviteitStap ;
         rdfs:label "Waterzuiveringsproces"@nl ;
     ] .

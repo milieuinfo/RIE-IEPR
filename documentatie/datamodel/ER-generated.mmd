@@ -1,0 +1,104 @@
+%% Auto-generated from OWL/SHACL
+erDiagram
+    Activiteit["activiteit"] {
+        string created
+        string label
+        string issued
+        string valid
+        string at_location_id "ExploitatieLocatie"
+    }
+    ActiviteitStap["activiteit_stap"] {
+        string issued
+        string valid
+        string used_id "Emissiepunt, Apparaat, Bron, Stof"
+        enum implements "ActiviteitProcedure, VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure, MeetProcedure"
+        string is_step_of_plan
+    }
+    Apparaat["apparaat"] {
+        string created
+        string issued
+        string valid
+        string at_location_id "Installatie, ExploitatieLocatie"
+        string label
+    }
+    Bron["bron"] {
+        string label
+        string comment
+    }
+    Emissiepunt["emissiepunt"] {
+        string at_location_id "Installatie, ExploitatieLocatie"
+        string label
+        string status
+    }
+    Exploitant["exploitant"] {
+        string created
+        string issued
+        string valid
+        enum type "Organization, Person"
+        string label
+    }
+    ExploitatieLocatie["exploitatie_locatie"] {
+        string at_location_id "Exploitant"
+        string exploitatie_locatie_identifiers
+        string label
+        string was_influenced_by
+        string was_derived_from_id "ExploitatieLocatie"
+    }
+    Grondwaterput["grondwaterput"] {
+        string emissiepunt_id "Emissiepunt"
+        float depth
+    }
+    Installatie["installatie"] {
+        string installatie_identifiers
+        string label
+        string created
+        string issued
+        string valid
+        string at_location_id "ExploitatieLocatie"
+        string status
+        string was_derived_from_id "ExploitatieLocatie"
+    }
+    Lozingspunt["lozingspunt"] {
+        string emissiepunt_id "Emissiepunt"
+    }
+    Meetpunt["meetpunt"] {
+        string is_proxy_for_id "Emissiepunt, ActiviteitStap"
+        string label
+        string created
+        string issued
+        string valid
+        string status
+    }
+    Observatie["observatie"] {
+        string has_feature_of_interest_id "Meetpunt, Installatie"
+    }
+    Schouw["schouw"] {
+        string emissiepunt_id "Emissiepunt"
+        float diameter
+        float height
+    }
+    Stof["stof"] {
+        string label
+    }
+
+    %% Relationships
+    Activiteit many to one ExploitatieLocatie : "atLocation"
+    ExploitatieLocatie many to one Exploitant : "atLocation"
+    ExploitatieLocatie many to many ExploitatieLocatie : "wasDerivedFrom"
+    ActiviteitStap many to many Emissiepunt : "used"
+    ActiviteitStap many to many Apparaat : "used"
+    ActiviteitStap many to many Bron : "used"
+    ActiviteitStap many to many Stof : "used"
+    Emissiepunt many to one Installatie : "atLocation"
+    Emissiepunt many to one ExploitatieLocatie : "atLocation"
+    Apparaat many to one Installatie : "atLocation"
+    Apparaat many to one ExploitatieLocatie : "atLocation"
+    Installatie many to one ExploitatieLocatie : "atLocation"
+    Installatie many to many ExploitatieLocatie : "wasDerivedFrom"
+    Schouw many to one Emissiepunt : "subClassOf"
+    Grondwaterput many to one Emissiepunt : "subClassOf"
+    Lozingspunt many to one Emissiepunt : "subClassOf"
+    Meetpunt many to many Emissiepunt : "isProxyFor"
+    Meetpunt many to many ActiviteitStap : "isProxyFor"
+    Observatie many to one Meetpunt : "hasFeatureOfInterest"
+    Observatie many to one Installatie : "hasFeatureOfInterest"

@@ -32,9 +32,7 @@ export class ShaclValidator {
 
         const violations = [];
         const namedNode = N3.DataFactory.namedNode;
-        const rdf = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         const type = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
-        const sh = namedNode('http://www.w3.org/ns/shacl#');
 
         // Get all NodeShapes
         const shapeQuads = this.shapes.getQuads(
@@ -128,7 +126,6 @@ export class ShaclValidator {
 
     getShapeConstraints(shapeUri) {
         const constraints = [];
-        const sh = N3.DataFactory.namedNode('http://www.w3.org/ns/shacl#');
         
         // Get all sh:property constraints
         const propertyQuads = this.shapes.getQuads(
@@ -197,25 +194,5 @@ export class ShaclValidator {
             message: `✗ ${violations.length} SHACL violations gevonden${dataSource ? ` (${dataSource})` : ''}`,
             violations: violations
         };
-    }
-
-    printReport(report, detailed = false) {
-        console.log(`\n${'='.repeat(70)}`);
-        console.log(report.message);
-        console.log(`${'='.repeat(70)}\n`);
-
-        if (!report.conforms && detailed && report.violations.length > 0) {
-            report.violations.slice(0, 10).forEach((v, idx) => {
-                console.log(`${idx + 1}. ${v.severity}`);
-                console.log(`   Focus Node: ${v.focusNode}`);
-                if (v.resultPath) console.log(`   Path: ${v.resultPath}`);
-                console.log(`   Message: ${v.resultMessage}`);
-                console.log();
-            });
-
-            if (report.violations.length > 10) {
-                console.log(`... en ${report.violations.length - 10} meer violations\n`);
-            }
-        }
     }
 }

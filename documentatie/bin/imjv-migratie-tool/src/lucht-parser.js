@@ -1,5 +1,5 @@
-import { TurtleBuilder } from './TurtleBuilder.js';
-import { BaseParser } from './BaseParser.js';
+import { TurtleBuilder } from './turtle-builder.js';
+import { BaseParser } from './base-parser.js';
 import { LAMBERT72_CRS } from './constants.js';
 
 export class LuchtParser extends BaseParser {
@@ -130,11 +130,27 @@ export class LuchtParser extends BaseParser {
             this.turtle.qname('riepr', 'Actief')
         );
 
+        // Set creation date to today
+        const now = new Date().toISOString();
+        this.turtle.triple(
+            installatieUri,
+            this.turtle.qname('dct', 'created'),
+            this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null)
+        );
+
         if (this.reportYear) {
+            // Start date (issue date)
+            this.turtle.triple(
+                installatieUri,
+                this.turtle.qname('dct', 'issued'),
+                this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null)
+            );
+            // End date (validity date) - using end of next year by default
+            const nextYear = parseInt(this.reportYear) + 1;
             this.turtle.triple(
                 installatieUri,
                 this.turtle.qname('dct', 'valid'),
-                this.turtle.literal(`${this.reportYear}-01-01/`)
+                this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
             );
         }
 
@@ -156,7 +172,11 @@ export class LuchtParser extends BaseParser {
         const now = new Date().toISOString();
         this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'created'), this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null));
         if (this.reportYear) {
-            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${this.reportYear}-01-01/`, null, null));
+            // Start date (issue date)
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'issued'), this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null));
+            // End date (validity date) - using end of next year by default
+            const nextYear = parseInt(this.reportYear) + 1;
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null));
         }
         // Refertes
         if (eenheid.Refertes?.[0]?.Referte) {
@@ -200,7 +220,11 @@ export class LuchtParser extends BaseParser {
         const now = new Date().toISOString();
         this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'created'), this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null));
         if (this.reportYear) {
-            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${this.reportYear}-01-01/`, null, null));
+            // Start date (issue date)
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'issued'), this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null));
+            // End date (validity date) - using end of next year by default
+            const nextYear = parseInt(this.reportYear) + 1;
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null));
         }
         // Refertes
         if (eenheid.Refertes?.[0]?.Referte) {
@@ -249,18 +273,43 @@ export class LuchtParser extends BaseParser {
         }
 
         if (datumIngebruikname) {
+            // Start date from datum ingebruikname
+            this.turtle.triple(
+                apparaatUri,
+                this.turtle.qname('dct', 'issued'),
+                this.turtle.literal(datumIngebruikname, this.turtle.qname('xsd', 'date'), null)
+            );
+            // End date - using end of next year by default
+            const datumYear = parseInt(datumIngebruikname.split('-')[0]);
+            const nextYear = datumYear + 1;
             this.turtle.triple(
                 apparaatUri,
                 this.turtle.qname('dct', 'valid'),
-                `"${datumIngebruikname}/"`
+                this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
             );
         } else if (this.reportYear) {
+            // Start date (issue date)
+            this.turtle.triple(
+                apparaatUri,
+                this.turtle.qname('dct', 'issued'),
+                this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null)
+            );
+            // End date (validity date) - using end of next year by default
+            const nextYear = parseInt(this.reportYear) + 1;
             this.turtle.triple(
                 apparaatUri,
                 this.turtle.qname('dct', 'valid'),
-                `"${this.reportYear}-01-01/"`
+                this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
             );
         }
+
+        // Creation date (today)
+        const now = new Date().toISOString();
+        this.turtle.triple(
+            apparaatUri,
+            this.turtle.qname('dct', 'created'),
+            this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null)
+        );
 
         if (eenheid.Refertes?.[0]?.Referte) {
             this.parseRefertes(eenheid.Refertes[0].Referte, apparaatUri);
@@ -312,7 +361,11 @@ export class LuchtParser extends BaseParser {
         const now = new Date().toISOString();
         this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'created'), this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null));
         if (this.reportYear) {
-            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${this.reportYear}-01-01/`, null, null));
+            // Start date (issue date)
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'issued'), this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null));
+            // End date (validity date) - using end of next year by default
+            const nextYear = parseInt(this.reportYear) + 1;
+            this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null));
         }
 
         const rootStepId = `${this.cbbNumber}_activiteit_step_${activiteitId}`;
@@ -484,18 +537,43 @@ export class LuchtParser extends BaseParser {
             }
             
             if (datum) {
+                // Start date from datum ingebruikname
+                this.turtle.triple(
+                    apparaatUri,
+                    this.turtle.qname('dct', 'issued'),
+                    this.turtle.literal(datum, this.turtle.qname('xsd', 'date'), null)
+                );
+                // End date - using end of next year by default
+                const datumYear = parseInt(datum.split('-')[0]);
+                const nextYear = datumYear + 1;
                 this.turtle.triple(
                     apparaatUri,
                     this.turtle.qname('dct', 'valid'),
-                    `"${datum}/"`
+                    this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
                 );
             } else if (this.reportYear) {
+                // Start date (issue date)
+                this.turtle.triple(
+                    apparaatUri,
+                    this.turtle.qname('dct', 'issued'),
+                    this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null)
+                );
+                // End date (validity date) - using end of next year by default
+                const nextYear = parseInt(this.reportYear) + 1;
                 this.turtle.triple(
                     apparaatUri,
                     this.turtle.qname('dct', 'valid'),
-                    `"${this.reportYear}-01-01/"`
+                    this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
                 );
             }
+
+            // Creation date (today)
+            const creationNow = new Date().toISOString();
+            this.turtle.triple(
+                apparaatUri,
+                this.turtle.qname('dct', 'created'),
+                this.turtle.literal(creationNow, this.turtle.qname('xsd', 'dateTime'), null)
+            );
 
             if (apparaat.Refertes?.[0]?.Referte) {
                 this.parseRefertes(apparaat.Refertes[0].Referte, apparaatUri);

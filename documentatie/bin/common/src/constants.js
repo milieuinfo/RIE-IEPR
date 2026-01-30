@@ -1,4 +1,4 @@
-// Ontology namespace definitions
+// Shared ontology namespace definitions
 export const NAMESPACES = {
     rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -25,7 +25,9 @@ export const NAMESPACES = {
     apparaat: 'https://data.riepr.omgeving.vlaanderen.be/id/apparaat/',
     meetpunt: 'https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/',
     meetprocedure: 'https://data.riepr.omgeving.vlaanderen.be/id/meetprocedure/',
-    stof: 'https://data.riepr.omgeving.vlaanderen.be/id/stof/',    bron: 'https://data.riepr.omgeving.vlaanderen.be/id/bron/',    vkbo: 'https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/',
+    stof: 'https://data.riepr.omgeving.vlaanderen.be/id/stof/',
+    bron: 'https://data.riepr.omgeving.vlaanderen.be/id/bron/',
+    vkbo: 'https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/',
 };
 
 // Lambert72 CRS identifier

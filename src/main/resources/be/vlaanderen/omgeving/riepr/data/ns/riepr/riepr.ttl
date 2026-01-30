@@ -39,7 +39,7 @@
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
     rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
     foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
-    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf: , schema: .
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf: .
 
 # --------------------------------------- #
 # Classes
@@ -51,7 +51,8 @@
     skos:example [ a :Activiteit ;
         rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
         dct:created "2024-01-15T10:00:00"^^xsd:dateTime ;
-        dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
         prov:atLocation [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
@@ -69,7 +70,13 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een geldigheid hebben
+        # Een activiteit moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit moet een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -95,7 +102,13 @@
         owl:unionOf ( pplan:Step pplan:MultiStep ) 
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een stap kan een geldigheid hebben
+        # Een stap kan een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een stap kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -111,6 +124,12 @@
         owl:onProperty ssn:implements ; 
         owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Stap moet deel uitmaken van een activiteit of andere stap
+        owl:onProperty pplan:isStepOfPlan ; 
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
     
 :Installatie a owl:Class ;
@@ -118,7 +137,9 @@
     rdfs:comment "Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult."@nl ;
     skos:example [ a :Installatie ;
         rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
-        dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
+        dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
         adms:status :Actief ;
         prov:atLocation [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
@@ -136,7 +157,19 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een installatie moet een geldigheid hebben
+        # Een installatie moet een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie moet een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -283,6 +316,9 @@
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     skos:example [ a :Meetpunt ;
         rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
+        dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
         ogc:hasGeometry [ a ogc:Geometry ;
             ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral
         ] ;
@@ -303,7 +339,19 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een meetpunt moet een geldigheid hebben
+        # Een meetpunt moet een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt moet een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -320,13 +368,28 @@
     rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
     skos:example [ a :Apparaat ;
         rdfs:label "Filterinstallatie Schouw 1"@nl ;
+        dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
         prov:atLocation [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ]
     ] ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een apparaat moet een geldigheid hebben
+        # Een apparaat moet een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een apparaat moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een apparaat moet een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -360,7 +423,19 @@
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitant kan een geldigheid hebben
+        # Een exploitant kan een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant kan een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger

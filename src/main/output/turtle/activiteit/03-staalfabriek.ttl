@@ -29,7 +29,8 @@ emissiepunt:0400123123_6851234567_0000003
         rdf:type               prov:Entity , geosparql:SpatialObject , riepr:Emissiepunt , geosparql:Feature;
         rdfs:comment           "Afzuiging en ontstoffing van de stroomboogoven"@nl;
         rdfs:label             "Schouw 3"@nl;
-        dct:valid              "2020-07-30/";
+        dct:issued             "2020-07-30"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
         geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
                                  geosparql:asWKT             "POINT(4.3500 51.1995)"^^geosparql:WKTLiteral;
                                  geosparql:hasSerialization  "POINT(4.3500 51.1995)"^^geosparql:WKTLiteral
@@ -42,7 +43,9 @@ installatie:0400123123_6851234567_0000003
         rdf:type         riepr:Installatie , ssn:System , geosparql:SpatialObjectCollection;
         rdfs:label       "VOD-installatie"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0008 , emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0005 , apparaat:0400123123_6851234567_0007;
-        dct:valid        "2020-07-30/";
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -54,9 +57,10 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003
         ssn:implements       riepr:overbrengingsProces .
 
 apparaat:0400123123_6851234567_0005
-        rdf:type         prov:Entity , ssn:System , geosparql:SpatialObject , riepr:Apparaat;
+        rdf:type         ssn:System , prov:Entity , riepr:Apparaat , geosparql:SpatialObject;
         rdfs:label       "Zuiveringsapparaat Toevoeginstallatie"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
@@ -86,7 +90,8 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011
 emissiepunt:0400123123_6851234567_0000004
         rdf:type               riepr:Emissiepunt , geosparql:SpatialObject , prov:Entity , geosparql:Feature;
         rdfs:label             "Schoorsteen Ketels"@nl;
-        dct:valid              "2020-07-30/";
+        dct:issued             "2020-07-30"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
         geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
                                  geosparql:asWKT             "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral;
                                  geosparql:hasSerialization  "POINT(4.3495 51.2000)"^^geosparql:WKTLiteral
@@ -96,10 +101,12 @@ emissiepunt:0400123123_6851234567_0000004
         prov:influenced        activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006 , activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003 .
 
 installatie:0400123123_6851234567_0000004
-        rdf:type         ssn:System , geosparql:SpatialObjectCollection , riepr:Installatie;
+        rdf:type         geosparql:SpatialObjectCollection , riepr:Installatie , ssn:System;
         rdfs:label       "AOD-installatie"@nl;
         rdfs:member      emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0004;
-        dct:valid        "2020-07-30/";
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -114,7 +121,8 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004
 apparaat:0400123123_6851234567_0006
         rdf:type         ssn:System , geosparql:SpatialObject , riepr:Apparaat;
         rdfs:label       "Stoomketel 1"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -137,18 +145,20 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012
         ssn:implements        riepr:uitstootProces .
 
 emissiepunt:0400123123_6851234567_0000005
-        rdf:type         geosparql:SpatialObject , prov:Entity , riepr:Emissiepunt;
+        rdf:type         riepr:Emissiepunt , prov:Entity , geosparql:SpatialObject;
         rdfs:comment     "Onstoffing van gieterij"@nl;
         rdfs:label       "Schouw 5"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 .
 
 apparaat:0400123123_6851234567_0001
-        rdf:type         ssn:System , geosparql:SpatialObject , prov:Entity , riepr:Apparaat;
+        rdf:type         riepr:Apparaat , geosparql:SpatialObject , prov:Entity , ssn:System;
         rdfs:label       "Stroomboogoven"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 .
@@ -170,17 +180,19 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005
         ssn:implements        riepr:uitstootProces .
 
 apparaat:0400123123_6851234567_0007
-        rdf:type         prov:Entity , ssn:System , geosparql:SpatialObject , riepr:Apparaat;
+        rdf:type         riepr:Apparaat , ssn:System , prov:Entity , geosparql:SpatialObject;
         rdfs:label       "Afwerkstand"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
 apparaat:0400123123_6851234567_0002
-        rdf:type         ssn:System , geosparql:SpatialObject , prov:Entity , riepr:Apparaat;
+        rdf:type         riepr:Apparaat , geosparql:SpatialObject , ssn:System , prov:Entity;
         rdfs:label       "Gieterijmachine"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 .
@@ -201,9 +213,10 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006
         ssn:implements       riepr:overbrengingsProces .
 
 apparaat:0400123123_6851234567_0008
-        rdf:type         ssn:System , geosparql:SpatialObject , prov:Entity , riepr:Apparaat;
+        rdf:type         geosparql:SpatialObject , ssn:System , prov:Entity , riepr:Apparaat;
         rdfs:label       "Zuiveringsapparaat Afwerkstand"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
@@ -212,7 +225,8 @@ emissiepunt:0400123123_6851234567_0000001
         rdf:type               prov:Entity , riepr:Emissiepunt , geosparql:SpatialObject , geosparql:Feature;
         rdfs:comment           "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
         rdfs:label             "Schouw 1"@nl;
-        dct:valid              "2020-07-30/";
+        dct:issued             "2020-07-30"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
         geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
                                  geosparql:asWKT             "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral;
                                  geosparql:hasSerialization  "POINT(4.3505 51.2005)"^^geosparql:WKTLiteral
@@ -225,7 +239,9 @@ installatie:0400123123_6851234567_0000001
         rdf:type         riepr:Installatie , geosparql:SpatialObjectCollection , ssn:System;
         rdfs:label       "Stroomboogoven"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000001;
-        dct:valid        "2020-07-30/";
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -235,9 +251,10 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001
         p-plan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
 
 apparaat:0400123123_6851234567_0003
-        rdf:type         ssn:System , geosparql:SpatialObject , prov:Entity , riepr:Apparaat;
+        rdf:type         ssn:System , prov:Entity , riepr:Apparaat , geosparql:SpatialObject;
         rdfs:label       "Toevoeginstallatie VOD"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
@@ -263,7 +280,8 @@ activiteit:0400123123_6851234567_ACTIVITEIT_1
         rdf:type         p-plan:Entity , p-plan:Plan , prov:Plan , prov:Entity , riepr:IIOA , dbo:Project , riepr:Activiteit , dbo:UnitOfWork;
         rdfs:label       "Staalproductieproces"@nl;
         dct:created      "2020-07-30T10:00:00"^^xsd:dateTime;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -271,7 +289,8 @@ emissiepunt:0400123123_6851234567_0000002
         rdf:type               geosparql:Feature , riepr:Emissiepunt , geosparql:SpatialObject , prov:Entity;
         rdfs:comment           "Afzuiging en ontstoffing van de oven"@nl;
         rdfs:label             "Schouw 2"@nl;
-        dct:valid              "2020-07-30/";
+        dct:issued             "2020-07-30"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
         geosparql:hasGeometry  [ rdf:type                    geosparql:Geometry , geosparql:SpatialObject;
                                  geosparql:asWKT             "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral;
                                  geosparql:hasSerialization  "POINT(4.3510 51.2000)"^^geosparql:WKTLiteral
@@ -286,10 +305,12 @@ exploitant:0400123123
         owl:sameAs  vkbo:0400123123 .
 
 installatie:0400123123_6851234567_0000002
-        rdf:type         ssn:System , geosparql:SpatialObjectCollection , riepr:Installatie;
+        rdf:type         geosparql:SpatialObjectCollection , riepr:Installatie , ssn:System;
         rdfs:label       "Gieterij"@nl;
-        rdfs:member      emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002;
-        dct:valid        "2020-07-30/";
+        rdfs:member      apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000005;
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
@@ -310,9 +331,10 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b
         ssn:implements       riepr:overbrengingsProces .
 
 apparaat:0400123123_6851234567_0004
-        rdf:type         ssn:System , geosparql:SpatialObject , prov:Entity , riepr:Apparaat;
+        rdf:type         riepr:Apparaat , geosparql:SpatialObject , ssn:System , prov:Entity;
         rdfs:label       "Argon-zuurstofontkoling"@nl;
-        dct:valid        "2020-07-30/";
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
         prov:influenced  activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .

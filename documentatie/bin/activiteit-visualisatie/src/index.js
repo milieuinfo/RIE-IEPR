@@ -2,14 +2,16 @@ import N3 from 'n3';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ProcedureChecker } from './ProcedureChecker.js';
-import { EdgeGenerator } from './EdgeGenerator.js';
+import { ProcedureChecker } from './procedure-checker.js';
+import { EdgeGenerator } from './edge-generator.js';
+import { parseTurtleFile } from '../../common/src/rdf.js';
+import { resolveProjectPath, PATHS } from '../../common/src/paths.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const basePath = path.join(__dirname, '../../../src');
-const imjvBasePath = path.join(__dirname, '../imjv-migratie-tool');
-const rulesFile = path.join(basePath, 'main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.n3');
-const ontologyFile = path.join(basePath, 'main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl');
+const basePath = resolveProjectPath('src');
+const imjvBasePath = resolveProjectPath('documentatie/bin/imjv-migratie-tool');
+const rulesFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.n3');
+const ontologyFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl');
 const { namedNode } = N3.DataFactory;
 
 const rdf = {
@@ -48,7 +50,7 @@ const styles = {
     emissiepunt: 'fill:#7ED321,stroke:#5A9E17,color:#fff',
     bron: 'fill:#FF9500,stroke:#CC7700,color:#fff',
     installatie: 'fill:#D3D3D3,stroke:#808080,color:#000',
-}
+};
 
 function indentContent(text, spaces = 4) {
     return text
@@ -56,20 +58,6 @@ function indentContent(text, spaces = 4) {
         .filter(Boolean)
         .map(line => `${' '.repeat(spaces)}${line}`)
         .join('\n') + (text.endsWith('\n') ? '\n' : '');
-}
-
-async function parseTTL(filePath) {
-    const parser = new N3.Parser({ format: 'Turtle' });
-    const store = new N3.Store();
-    const ttlContent = fs.readFileSync(filePath, 'utf8');
-
-    return new Promise((resolve, reject) => {
-        parser.parse(ttlContent, (error, quad, prefixes) => {
-            if (error) reject(error);
-            else if (quad) store.addQuad(quad);
-            else resolve({ store, prefixes });
-        });
-    });
 }
 
 function getLabel(store, uri) {
@@ -111,7 +99,6 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
     let mermaid = '';
     for (const stepQuad of steps) {
         const stepUri = stepQuad.subject.value;
-        // If non-transport, add as normal node to flowchart
         const implementsQuads = store.getQuads(namedNode(stepUri), ssn.implements, null);
         const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
         if (procedureUri && (
@@ -150,7 +137,6 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
             nodeLabel += `<br/><i>${comment}</i>`;
         }
         if (procedureChecker && procedureChecker.isApparaatVerwerkingsProcedure(procedureUri)) {
-            // Zorg dat we enkel apparaten tonen en geen andere gebruikte resources
             const gebruikteApparaten = store.getQuads(namedNode(stepUri), prov.used, null).filter(q => {
                 const types = store.getQuads(q.object, rdf.type, null).map(t => t.object.value);
                 return types.includes(riepr.Apparaat.value);
@@ -175,20 +161,18 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
 
 async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePaths) {
     console.log('Parsing ontology and example...');
-    const { store: ontologyStore } = await parseTTL(ontologyPath);
+    const ontologyStore = await parseTurtleFile(ontologyPath);
     const exampleStore = new N3.Store();
     for (const examplePath of examplePaths) {
-        // Skip if file doesn't exist
         if (!fs.existsSync(examplePath)) {
             console.log(`Skipping missing file: ${examplePath}`);
             continue;
         }
-        const { store: exampleStorePart } = await parseTTL(examplePath);
+        const exampleStorePart = await parseTurtleFile(examplePath);
         exampleStore.addQuads(exampleStorePart.getQuads(null, null, null));
     }
 
     const combinedStore = new N3.Store([...ontologyStore, ...exampleStore]);
-    // Add reasoning to extend the store with inferred triples
     const rulesContent = fs.readFileSync(rulesFile, 'utf8');
     const rulesParser = new N3.Parser({ format: 'text/n3' });
     const rulesDataset = new N3.Store();
@@ -213,15 +197,11 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     );
     exampleStore.addQuads(inferredQuads);
 
-    // Collect skos:example nodes so we can filter them out from the visualization
     const exampleNodes = new Set(
         combinedStore.getQuads(null, skos.example, null).map(q => q.object.value)
     );
 
-    // Root activities (all activities)
     const rootActivityUris = getRootActivities(exampleStore);
-
-    // Collect all activity steps of type riepr:ActiviteitStap
     const steps = exampleStore.getQuads(null, rdf.type, riepr.ActiviteitStap);
 
     let mermaid = 'flowchart LR\n';
@@ -230,10 +210,8 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     const subgraphDefs = new Map();
     const parentMap = new Map();
 
-    // Create procedure checker early
     const procedureChecker = new ProcedureChecker(combinedStore);
 
-    // Build graph for all root activities
     for (const rootActivityUri of rootActivityUris) {
         const rootSteps = getActivitySteps(exampleStore, rootActivityUri);
         constructMermaidGraph(combinedStore, rootSteps, nodeMap, parentMap, nodeDefs, subgraphDefs, procedureChecker);
@@ -249,7 +227,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     const bronId = 'bron';
     const bronIndex = new Map(bronnen.map((q, idx) => [q.subject.value, idx]));
 
-    // Collect stoffen (substances) used in consumption steps
     const stofRdf = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
     const allSteps = exampleStore.getQuads(null, stofRdf, riepr.ActiviteitStap);
     const stofUris = new Set();
@@ -343,7 +320,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
-    // Emit any remaining steps or emissiepunten not tied to an installation
     for (const [stepUri, def] of nodeDefs.entries()) {
         if (!emittedSteps.has(stepUri)) {
             mermaid += indent(def);
@@ -366,7 +342,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
-    // Emit bronnen
     const emittedBronnen = new Set();
     for (const [uri, idx] of bronIndex.entries()) {
         const label = escapeMermaidLabel(getLabel(exampleStore, uri));
@@ -374,7 +349,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         emittedBronnen.add(uri);
     }
 
-    // Emit standalone apparatus (not used in any process)
     let standaloneApparatusIdx = 0;
     for (const installatieQuad of installaties) {
         const installatieUri = installatieQuad.subject.value;
@@ -382,16 +356,12 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         
         for (const apparaatQuad of apparatusQuads) {
             const apparaatUri = apparaatQuad.object.value;
-            // Skip if already displayed as emission point
             if (emissiepuntIndex.has(apparaatUri)) continue;
-            // Skip if used in any process
             if (usedApparatusUris.has(apparaatUri)) continue;
             
-            // Skip if it's an Activiteit (ProductieEenheid) - those should not be shown as apparatus
             const types = exampleStore.getQuads(namedNode(apparaatUri), rdf.type, null).map(q => q.object.value);
             if (types.includes(riepr.Activiteit.value)) continue;
             
-            // This is a standalone apparatus
             const label = escapeMermaidLabel(getLabel(exampleStore, apparaatUri));
             const comment = getComment(exampleStore, apparaatUri);
             const apparaatLabel = comment 
@@ -404,7 +374,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
-    // Emit stoffen
     const emittedStoffen = new Set();
     for (const stofUri of stofUris) {
         const label = escapeMermaidLabel(getLabel(exampleStore, stofUri));
@@ -414,7 +383,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
 
     mermaid += '\n';
 
-    // Create edge generator with all needed indices
     const edgeGenerator = new EdgeGenerator(
         exampleStore, 
         procedureChecker, 
@@ -423,15 +391,12 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         bronIndex
     );
 
-    // Generate regular edges between steps
     const normalEdges = edgeGenerator.generateEdges(steps);
     mermaid += normalEdges.join('\n') + (normalEdges.length > 0 ? '\n' : '');
 
-    // Generate bron (source) edges
     const bronEdges = edgeGenerator.generateBronEdges(steps);
     mermaid += bronEdges.join('\n') + (bronEdges.length > 0 ? '\n' : '');
 
-    // Generate stof (substance) edges
     const stofEdges = edgeGenerator.generateStofEdges(stofUris);
     mermaid += stofEdges.join('\n') + (stofEdges.length > 0 ? '\n' : '');
 
@@ -441,31 +406,31 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
 
 generateMermaidFlowchart(
     ontologyFile,
-    path.join(__dirname, 'staalfabriek.mmd'),
-    path.join(basePath, 'main/input/activiteit/03-staalfabriek.ttl'),
+    path.resolve(__dirname, '..', 'staalfabriek.mmd'),
+    path.resolve(basePath, 'main/input/activiteit/03-staalfabriek.ttl'),
 ).catch(err => console.error('Error:', err));
 
 generateMermaidFlowchart(
     ontologyFile,
-    path.join(__dirname, 'fabriek-proces-genest.mmd'),
-    path.join(basePath, 'main/input/activiteit/02-fabriek-proces-genest.ttl'),
+    path.resolve(__dirname, '..', 'fabriek-proces-genest.mmd'),
+    path.resolve(basePath, 'main/input/activiteit/02-fabriek-proces-genest.ttl'),
 ).catch(err => console.error('Error:', err));
 
-const outputDir = path.join(imjvBasePath, 'output');
+const outputDir = path.resolve(imjvBasePath, 'output');
 const directories = fs.readdirSync(outputDir).filter(file => 
-    fs.statSync(path.join(outputDir, file)).isDirectory()
+    fs.statSync(path.resolve(outputDir, file)).isDirectory()
 );
 
 for (const dir of directories) {
-    const dirPath = path.join(outputDir, dir);
+    const dirPath = path.resolve(outputDir, dir);
     const ttlFiles = fs.readdirSync(dirPath)
         .filter(file => file.endsWith('.ttl'))
-        .map(file => path.join(dirPath, file));
+        .map(file => path.resolve(dirPath, file));
     
     if (ttlFiles.length > 0) {
         generateMermaidFlowchart(
             ontologyFile,
-            path.join(__dirname, `imjv_${dir}.mmd`),
+            path.resolve(__dirname, '..', `imjv_${dir}.mmd`),
             ...ttlFiles
         ).catch(err => console.error('Error:', err));
     }
