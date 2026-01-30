@@ -1,6 +1,6 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix procedurestap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix activteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 
@@ -11,23 +11,28 @@
 @prefix pplan: <http://purl.org/net/p-plan#> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix sosa:        <http://www.w3.org/ns/sosa/> .
-@prefix schema: <http://schema.org/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+## ---------------------------------------
 
 activiteit:89031055579_6839805367_ACTIVITEIT_1 a riepr:Activiteit ;
     rdfs:label "Koekjes maken"@nl ;
-    schema:startDate "2020-07-30T18:00:00.000Z"^^xsd:dateTime ;
+    dct:valid "2020-07-30/" ;
+    dct:created "2020-07-30T10:00:00"^^xsd:dateTime ;
+    adms:status riepr:Actief ;
     prov:atLocation exploitatielocatie:0408249136_6842345678 .
 
-procedurestap:89031055579_6839805367_ACTIVITEIT_1_0001 a riepr:ActiviteitStap ;
+activteitstap:89031055579_6839805367_ACTIVITEIT_1_0001 a riepr:ActiviteitStap ;
     rdfs:label "Koekjesdeeg maken"@nl ;
     pplan:isStepOfPlan activiteit:89031055579_6839805367_ACTIVITEIT_1 .
-procedurestap:89031055579_6839805367_ACTIVITEIT_1_0002 a riepr:ActiviteitStap ;
+activteitstap:89031055579_6839805367_ACTIVITEIT_1_0002 a riepr:ActiviteitStap ;
     rdfs:label "Koekjes bakken"@nl ;
     pplan:isStepOfPlan activiteit:89031055579_6839805367_ACTIVITEIT_1 ;
-    pplan:isPrecededBy procedurestap:89031055579_6839805367_ACTIVITEIT_1_0001 ;
+    pplan:isPrecededBy activteitstap:89031055579_6839805367_ACTIVITEIT_1_0001 ;
     ssn:implements riepr:uitstootProces ;
     prov:used emissiepunt:TBD .
 
 emissiepunt:TBD a riepr:Emissiepunt ;
     rdfs:label "Emissiepunt koekjesoven"@nl ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+    prov:atLocation exploitatielocatie:0408249136_6842345678 ;
+    adms:status riepr:Actief ;

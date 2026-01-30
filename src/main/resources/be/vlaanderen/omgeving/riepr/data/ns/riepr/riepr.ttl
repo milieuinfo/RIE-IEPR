@@ -119,7 +119,7 @@
     skos:example [ a :Installatie ;
         rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
         dct:valid "2020-01-01/2030-12-31"^^xsd:string ;
-        adms:status :actief ;
+        adms:status :Actief ;
         prov:atLocation [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
@@ -151,9 +151,15 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet een enkele status hebben
         owl:onProperty adms:status ;
-        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een installatie locatie kan afgeleid zijn van een andere installatie
+        # bijvoorbeeld wanneer een vestiging verkocht is en de locatie hergebruikt wordt
+        owl:onProperty prov:wasDerivedFrom ;
+        owl:someValuesFrom :ExploitatieLocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Emissiepunt a owl:Class ;
@@ -184,7 +190,6 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt moet een enkele status hebben
         owl:onProperty adms:status ;
-        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -267,7 +272,6 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt moet een enkele status hebben
         owl:onProperty adms:status ;
-        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -341,7 +345,7 @@
     rdfs:subClassOf ogc:SpatialObjectCollection, prov:Entity ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
-        owl:onProperty prov:atLocation ;
+        owl:onProperty prov:atLocation ; # TODO niet echt correct
         owl:someValuesFrom :Exploitant ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -360,12 +364,19 @@
         # Een exploitatie locatie kan overeenkomen met één vestigingen
         owl:onProperty prov:hadPrimarySource ;
         owl:someValuesFrom org:Site ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie kan optioneel beinvloed zijn door aan een org:Site of ander type
         owl:onProperty prov:wasInfluencedBy ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan afgeleid zijn van een andere exploitatie locatie
+        # bijvoorbeeld wanneer een vestiging verkocht is en de locatie hergebruikt wordt
+        owl:onProperty prov:wasDerivedFrom ;
+        owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -434,22 +445,22 @@
     skos:prefLabel "Elektriciteitsverbruikproces"@nl .
 
 # Status concepten voor adms:status
-:actief a skos:Concept ;
+:Actief a skos:Concept ;
     rdfs:label "Actief"@nl ;
     rdfs:comment "De actieve status geeft aan dat een entiteit momenteel in gebruik is."@nl ;
     skos:prefLabel "Actief"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Completed> .
-:inactief a skos:Concept ;
+:Inactief a skos:Concept ;
     rdfs:label "Inactief"@nl ;
     rdfs:comment "De inactieve status geeft aan dat een entiteit momenteel niet in gebruik is."@nl ;
     skos:prefLabel "Inactief"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Deprecated> .
-:gesloten a skos:Concept ;
+:Gesloten a skos:Concept ;
     rdfs:label "Gesloten"@nl ;
     rdfs:comment "De gesloten status geeft aan dat een entiteit permanent buiten gebruik is gesteld."@nl ;
     skos:prefLabel "Gesloten"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Withdrawn> .
-:voorgesteld a skos:Concept ;
+:Voorgesteld a skos:Concept ;
     rdfs:label "Voorgesteld"@nl ;
     rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is."@nl ;
     skos:prefLabel "Voorgesteld"@nl ;

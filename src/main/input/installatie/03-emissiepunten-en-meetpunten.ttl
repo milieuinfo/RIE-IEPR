@@ -3,6 +3,7 @@
 @prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix meetpunt: <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
 @prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteitstap/> .
+@prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -10,10 +11,20 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 ## ---------------------------------------
+
+exploitatielocatie:EX a riepr:ExploitatieLocatie ;
+    rdfs:label "Exploitatielocatie Fictief NV"@nl ;
+    ogc:hasGeometry [ 
+        ogc:asWKT "POINT(4.4000 51.2100)"^^ogc:WKTLiteral
+    ] .
 
 installatie:GPBV_12345 a riepr:Installatie ;
     rdfs:label "Fictief NV"@nl ;
+    dct:valid "2020-01-01/" ;
+    adms:status riepr:Actief ;
     adms:identifier [
         skos:notation "BE.VL.000000001.INSTALLATION" ;
         # TODO
@@ -23,18 +34,30 @@ installatie:GPBV_12345 a riepr:Installatie ;
     ] ;
     # TODO: LOD publicatie beschikbaar?
     rdfs:seeAlso <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION> ;
+    prov:atLocation exploitatielocatie:EX ;
     rdfs:member <...>, <...> .
 
 emissiepunt:EP_001 a riepr:Emissiepunt ;
     rdfs:label "Emissiepunt Schoorsteen 1"@nl ;
+    adms:status riepr:Actief ;
+    prov:atLocation exploitatielocatie:EX ;
+    dct:valid "2020-01-01/" ;
     ogc:hasGeometry <...> .
 
 meetpunt:MP_001 a riepr:Meetpunt ;
     rdfs:label "Meetpunt Luchtkwaliteit 1"@nl ;
+    adms:status riepr:Actief ;
     sosa:isProxyFor emissiepunt:EP_001 ; # optioneel
+    dct:valid "2020-01-01/" ;
+    prov:atLocation exploitatielocatie:EX ;
     ogc:hasGeometry <...> .
 
 meetpunt:MP_002 a riepr:Meetpunt ;
     rdfs:label "Meetpunt Waterkwaliteit 1"@nl ;
     ogc:hasGeometry <...> ;
-    sosa:isProxyFor activiteitstap:STAP_001 .
+    adms:status riepr:Actief ;
+    prov:atLocation exploitatielocatie:EX ;
+    dct:valid "2020-01-01/" ;
+    sosa:isProxyFor [ a riepr:ActiviteitStap ;
+        rdfs:label "Waterzuiveringsproces"@nl ;
+    ] .

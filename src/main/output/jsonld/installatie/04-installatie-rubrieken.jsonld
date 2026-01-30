@@ -107,9 +107,24 @@
     }
   },
   "@graph" : [ {
+    "uri" : "_:b1",
+    "type" : [ "http://www.w3.org/ns/prov#Location", "http://www.w3.org/ns/prov#Entity", "http://www.opengis.net/ont/geosparql#SpatialObjectCollection", "http://www.opengis.net/ont/geosparql#Feature", "http://www.opengis.net/ont/geosparql#SpatialObject", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie" ],
+    "hasGeometry" : {
+      "uri" : "_:b0",
+      "type" : [ "http://www.opengis.net/ont/geosparql#Geometry", "http://www.opengis.net/ont/geosparql#SpatialObject" ],
+      "asWKT" : "POINT(4.1234 51.5678)",
+      "hasSerialization" : "POINT(4.1234 51.5678)"
+    },
+    "label" : "Exploitatielocatie MijnInstallatie"
+  }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/installatie/GPBV_12345",
     "type" : [ "http://www.w3.org/ns/ssn/System", "http://www.opengis.net/ont/geosparql#SpatialObjectCollection", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie" ],
+    "http://purl.org/dc/terms/valid" : "2020-01-01/",
     "label" : "MijnInstallatie",
-    "member" : "file:///home/gehau/git/RIE-IEPR/..."
+    "member" : "file:///Users/maximvdw/workspaces/RIE-IEPR/...",
+    "http://www.w3.org/ns/adms#status" : {
+      "uri" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief"
+    },
+    "atLocation" : "_:b1"
   } ]
 }

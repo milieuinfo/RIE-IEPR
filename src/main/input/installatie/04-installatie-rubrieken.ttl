@@ -6,9 +6,19 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+## ---------------------------------------
 
 installatie:GPBV_12345 a riepr:Installatie ;
     rdfs:label "MijnInstallatie"@nl ;
+    dct:valid "2020-01-01/" ;
+    adms:status riepr:Actief ;
+    prov:atLocation [ a riepr:ExploitatieLocatie ;
+        rdfs:label "Exploitatielocatie MijnInstallatie"@nl ;
+        ogc:hasGeometry [ 
+            ogc:asWKT "POINT(4.1234 51.5678)"^^ogc:WKTLiteral
+        ]
+    ] ;
     # TODO VLAREM rubrieken hebben URIs maar nog geen documentatie gevonden
     rdfs:member <...>, <...> .
