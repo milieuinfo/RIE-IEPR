@@ -135,9 +135,7 @@ export class EdgeGenerator {
             }
         }
 
-        // Handle emission steps that are not in nodeMap but implement uitstootProces
-        // These steps use emission points and we need to create edges from the main activity step
-        const pplan_isStepOfPlan = namedNode('http://purl.org/net/p-plan#isStepOfPlan');
+        // Handle emission and transport steps that are not in nodeMap
         const allSteps = this.store.getQuads(null, rdf.type, riepr.ActiviteitStap);
         
         for (const stepQuad of allSteps) {
@@ -150,38 +148,25 @@ export class EdgeGenerator {
             const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
             
             if (procedureUri && this.procedureChecker.isUitstootProcedure(procedureUri)) {
-                // This is an emission step - find which activity it belongs to
-                const activityQuads = this.store.getQuads(namedNode(stepUri), pplan_isStepOfPlan, null);
-                
-                if (activityQuads.length > 0) {
-                    const activityUri = activityQuads[0].object.value;
-                    
-                    // Find the main activity step for this activity (the one in nodeMap)
-                    let mainActivityStepUri = null;
-                    for (const candidateStepUri of this.nodeMap.keys()) {
-                        const candidateActivityQuads = this.store.getQuads(namedNode(candidateStepUri), pplan_isStepOfPlan, namedNode(activityUri));
-                        if (candidateActivityQuads.length > 0) {
-                            mainActivityStepUri = candidateStepUri;
-                            break;
-                        }
-                    }
-                    
-                    if (mainActivityStepUri) {
-                        const mainActivityStepNodeId = this.nodeMap.get(mainActivityStepUri);
-                        // Create edges to emission points
-                        const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.used, null);
-                        const label = this.getStepLabel(stepUri);
-                        
-                        for (const pointQuad of emittedPoints) {
-                            const pointUri = pointQuad.object.value;
-                            if (this.emissiePuntenIndex.has(pointUri)) {
-                                const idx = this.emissiePuntenIndex.get(pointUri);
-                                if (label) {
-                                    edges.push(`    ${mainActivityStepNodeId} -.->|${label}| emissiepunt${idx}`);
-                                } else {
-                                    edges.push(`    ${mainActivityStepNodeId} -.-> emissiepunt${idx}`);
-                                }
-                            }
+                // This is an emission step - connect from the nearest
+                // preceding step that is represented as a node in the graph.
+                const rootStepUri = this.findRootStepInNodeMap(stepUri);
+                if (!rootStepUri) continue;
+
+                const rootNodeId = this.nodeMap.get(rootStepUri);
+                if (!rootNodeId) continue;
+
+                const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.used, null);
+                const label = this.getStepLabel(stepUri);
+
+                for (const pointQuad of emittedPoints) {
+                    const pointUri = pointQuad.object.value;
+                    if (this.emissiePuntenIndex.has(pointUri)) {
+                        const idx = this.emissiePuntenIndex.get(pointUri);
+                        if (label) {
+                            edges.push(`    ${rootNodeId} -.->|${label}| emissiepunt${idx}`);
+                        } else {
+                            edges.push(`    ${rootNodeId} -.-> emissiepunt${idx}`);
                         }
                     }
                 }

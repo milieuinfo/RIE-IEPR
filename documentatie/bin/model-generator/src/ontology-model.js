@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Parser, Store, NamedNode, Quad } from 'n3';
-import { NAMESPACES, PATHS } from './config.js';
+import { NAMESPACES, PATHS, resolveProjectPath } from './config.js';
 
 export class OntologyModel {
   constructor({ ontologyPath = PATHS.ontology, rulesPath = PATHS.rules, shapesPath = PATHS.shapes } = {}) {
@@ -18,16 +18,33 @@ export class OntologyModel {
   }
 
   async loadOntology() {
-    const ttl = fs.readFileSync(this.ontologyPath, 'utf-8');
     const parser = new Parser();
 
-    await new Promise((resolve, reject) => {
-      parser.parse(ttl, (error, quad) => {
-        if (error) reject(error);
-        else if (quad) this.store.addQuad(quad);
-        else resolve();
+    const ontologyFiles = [
+      this.ontologyPath,
+      // Include additional domain/range and subclass information
+      resolveProjectPath('src/main/resources/domain.ttl'),
+      resolveProjectPath('src/main/resources/range.ttl'),
+      resolveProjectPath('src/main/resources/subClassOf.ttl')
+    ];
+
+    for (const filePath of ontologyFiles) {
+      if (!filePath || !fs.existsSync(filePath)) continue;
+
+      const ttl = fs.readFileSync(filePath, 'utf-8');
+
+      // Parse each TTL file into the same store
+      // so reasoning can see all domain/range/subClassOf info.
+      /* eslint-disable no-await-in-loop */
+      await new Promise((resolve, reject) => {
+        parser.parse(ttl, (error, quad) => {
+          if (error) reject(error);
+          else if (quad) this.store.addQuad(quad);
+          else resolve();
+        });
       });
-    });
+      /* eslint-enable no-await-in-loop */
+    }
 
     await this.applyReasoning();
   }
@@ -275,6 +292,27 @@ export class OntologyModel {
       }
     }
 
+    // Fallback: if no explicit range was found on the restriction itself,
+    // derive it from rdfs:range of the property in the ontology.
+    if (restriction.rangeTypes.length === 0 && restriction.propertyIri) {
+      const rangeIris = this.getIrisByProperty(
+        restriction.propertyIri,
+        NAMESPACES.rdfs,
+        'range'
+      );
+
+      rangeIris.forEach(rangeIri => {
+        const typeName = this.extractLocalName(rangeIri);
+        if (typeName && !restriction.rangeTypes.includes(typeName)) {
+          restriction.rangeTypes.push(typeName);
+        }
+      });
+
+      if (restriction.rangeTypes.length > 0 && !restriction.restrictionType) {
+        restriction.restrictionType = 'range';
+      }
+    }
+
     return restriction;
   }
 
@@ -338,6 +376,25 @@ export class OntologyModel {
           const listTypes = this.parseShaclOrList(orQuad.object);
           restriction.rangeTypes.push(...listTypes);
         });
+
+        if (restriction.rangeTypes.length === 0 && restriction.propertyIri) {
+          const rangeIris = this.getIrisByProperty(
+            restriction.propertyIri,
+            NAMESPACES.rdfs,
+            'range'
+          );
+
+          rangeIris.forEach(rangeIri => {
+            const typeName = this.extractLocalName(rangeIri);
+            if (typeName && !restriction.rangeTypes.includes(typeName)) {
+              restriction.rangeTypes.push(typeName);
+            }
+          });
+
+          if (restriction.rangeTypes.length > 0 && !restriction.restrictionType) {
+            restriction.restrictionType = 'range';
+          }
+        }
 
         if (restriction.rangeTypes.length > 0) {
           restrictions.push(restriction);

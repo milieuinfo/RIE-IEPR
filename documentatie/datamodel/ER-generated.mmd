@@ -12,7 +12,7 @@ erDiagram
         string valid
         string used_id "Emissiepunt, Apparaat, Bron, Stof"
         enum implements "ActiviteitProcedure, VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure, MeetProcedure"
-        string is_step_of_plan
+        string is_step_of_plan_id "Activiteit"
     }
     Apparaat["apparaat"] {
         string created
@@ -89,6 +89,7 @@ erDiagram
     ActiviteitStap many to many Apparaat : "used"
     ActiviteitStap many to many Bron : "used"
     ActiviteitStap many to many Stof : "used"
+    ActiviteitStap many to one Activiteit : "isStepOfPlan"
     Emissiepunt many to one Installatie : "atLocation"
     Emissiepunt many to one ExploitatieLocatie : "atLocation"
     Apparaat many to one Installatie : "atLocation"
