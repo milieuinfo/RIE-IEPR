@@ -3,13 +3,12 @@ import path from 'path';
 import { parseStringPromise } from 'xml2js';
 import { fileURLToPath } from 'url';
 import N3 from 'n3';
-import { GrondwaterParser } from './groundwater-parser.js';
+import { GrondwaterParser } from './grondwater-parser.js';
 import { WaterParser } from './water-parser.js';
 import { LuchtParser } from './lucht-parser.js';
-import { TurtleBuilder } from './turtle-builder.js';
 import { ShaclValidator } from './shacl-validator.js';
 import { parseTurtleString } from '../../common/src/rdf.js';
-import { PATHS, resolveProjectPath } from '../../common/src/paths.js';
+import { PATHS } from '../../common/src/paths.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

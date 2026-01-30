@@ -61,6 +61,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een datum hebben waarop het is ingegeven
         owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -72,13 +73,14 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een activiteit moet een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een geldigheid einde hebben
+        # Een activiteit kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -104,6 +106,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een stap kan een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -159,19 +162,21 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet een creatie datum hebben
         owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een installatie moet een geldigheid einde hebben
+        # Een installatie kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -341,19 +346,21 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt moet een creatie datum hebben
         owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt moet een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een meetpunt moet een geldigheid einde hebben
+        # Een meetpunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -379,19 +386,21 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een apparaat moet een creatie datum hebben
         owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een apparaat moet een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een apparaat moet een geldigheid einde hebben
+        # Een apparaat kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
@@ -425,12 +434,14 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant kan een creatie datum hebben
         owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant kan een geldigheid start hebben
         owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -458,6 +469,31 @@
     rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert."@nl ;
     rdfs:subClassOf ogc:SpatialObjectCollection, prov:Entity ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet een datum hebben waarop het is ingegeven
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan een geldigheid einde hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
         owl:onProperty prov:atLocation ; # TODO niet echt correct
         owl:someValuesFrom :Exploitant ;
@@ -470,19 +506,20 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitatie locatie moet een benaming hebben
-        owl:onProperty rdfs:label ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitatie locatie kan overeenkomen met één vestigingen
+        # Een exploitatie locatie kan overeenkomen met één vestiging (VKBO)
         owl:onProperty prov:hadPrimarySource ;
         owl:someValuesFrom org:Site ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
+    skos:example [ a :ExploitatieLocatie ;
+        rdfs:label "Cementfabriek Antwerpen"@nl ;
+        prov:hadPrimarySource [ a org:Site ;
+            rdfs:label "VKBO Vestiging Cementfabriek"@nl
+        ]
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een exploitatie locatie kan optioneel beinvloed zijn door aan een org:Site of ander type
+        # Een exploitatie locatie kan optioneel beïnvloed zijn door aan een org:Site of ander type
         owl:onProperty prov:wasInfluencedBy ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;

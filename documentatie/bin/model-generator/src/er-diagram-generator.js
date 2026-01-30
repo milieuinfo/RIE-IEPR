@@ -87,11 +87,18 @@ export class ERDiagramGenerator {
     classNames.forEach(className => {
       const classInfo = this.ontology.classes.get(className);
       const tableName = this.deriveTableName(className);
-      const attributes = this.deriveAttributes(classInfo, this.enumClasses);
+      const attributes = this.deriveAttributes(classInfo, this.enumClasses, className);
 
       mermaid += `    ${className}["${tableName}"] {\n`;
       attributes.forEach(attr => {
-        const suffix = attr.comment ? ` "${attr.comment}"` : '';
+        const markers = [];
+        if (attr.isPrimaryKey) markers.push('PK');
+        if (attr.isForeignKey) markers.push('FK');
+        const markerText = markers.length > 0 ? `[${markers.join(',')}]` : '';
+        const commentParts = [];
+        if (attr.comment) commentParts.push(attr.comment);
+        if (markerText) commentParts.push(markerText);
+        const suffix = commentParts.length > 0 ? ` "${commentParts.join(' ')}"` : '';
         mermaid += `        ${attr.type} ${attr.name}${suffix}\n`;
       });
       mermaid += `    }\n`;
@@ -108,7 +115,7 @@ export class ERDiagramGenerator {
     return mermaid;
   }
 
-  deriveAttributes(classInfo, enumClasses) {
+  deriveAttributes(classInfo, enumClasses, className) {
     const attributes = new Map();
 
     const superClassNames = this.getSuperClassNames(classInfo);
@@ -120,14 +127,17 @@ export class ERDiagramGenerator {
           attributes.set(fkName, {
             name: fkName,
             type: 'string',
-            comment: name
+            comment: name,
+            isForeignKey: true
           });
         }
       });
 
     classInfo.restrictions.forEach(restriction => {
       if (this.excludedProperties.has(restriction.property)) return;
-      if (restriction.rangeTypes.length > 0 && restriction.restrictionType !== 'datatype') {
+      const isDatatype = this.isDatatypeRange(restriction.rangeTypes);
+
+      if (restriction.rangeTypes.length > 0 && !isDatatype) {
         const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
         const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
         const nonEnumTypes = resolvedRangeTypes
@@ -150,7 +160,8 @@ export class ERDiagramGenerator {
         attributes.set(fkName, {
           name: fkName,
           type: 'string',
-          comment: nonEnumTypes.join(', ')
+          comment: nonEnumTypes.join(', '),
+          isForeignKey: true
         });
       } else {
         const attrName = this.deriveAttributeName(restriction);
@@ -158,13 +169,25 @@ export class ERDiagramGenerator {
 
         attributes.set(attrName, {
           name: attrName,
-          type: this.inferDataType(attrName),
+          type: this.inferDataTypeFromRange(restriction.rangeTypes, attrName),
           comment: restriction.rangeTypes.join(', ')
         });
       }
     });
 
-    return Array.from(attributes.values());
+    // Ensure every entity has a URI column (every individual has a URI)
+    const uriAttrName = 'uri';
+    if (!attributes.has(uriAttrName)) {
+      attributes.set(uriAttrName, {
+        name: uriAttrName,
+        type: 'string',
+        comment: 'URI'
+      });
+    }
+
+    const attrsArray = Array.from(attributes.values());
+    this.applyPrimaryKeyRule(attrsArray, classInfo, className);
+    return attrsArray;
   }
 
   getSuperClassNames(classInfo) {
@@ -222,14 +245,67 @@ export class ERDiagramGenerator {
     return this.camelCaseToSnakeCase(restriction.property);
   }
 
+  isDatatypeRange(rangeTypes) {
+    if (!Array.isArray(rangeTypes) || rangeTypes.length === 0) return false;
+    const known = new Set([
+      'string', 'normalizedString', 'token', 'language', 'Name', 'NCName',
+      'date', 'dateTime', 'time', 'gYear', 'gMonth', 'gDay',
+      'boolean',
+      'decimal', 'float', 'double',
+      'integer', 'nonNegativeInteger', 'positiveInteger', 'nonPositiveInteger', 'negativeInteger',
+      'long', 'int', 'short', 'byte'
+    ]);
+
+    return rangeTypes.every(t => known.has(t));
+  }
+
+  inferDataTypeFromRange(rangeTypes, attrName) {
+    if (Array.isArray(rangeTypes) && rangeTypes.length > 0) {
+      const type = rangeTypes[0];
+      const lower = String(type).toLowerCase();
+
+      if (lower.includes('datetime') || lower === 'time') return 'datetime';
+      if (lower === 'date' || lower.endsWith('date')) return 'date';
+      if (lower === 'boolean') return 'boolean';
+      if (lower === 'decimal' || lower === 'float' || lower === 'double') return 'float';
+      if (lower.includes('int') || lower === 'integer' || lower === 'nonnegativeinteger' || lower === 'positiveinteger') {
+        return 'integer';
+      }
+      if (lower === 'string' || lower === 'normalizedstring' || lower === 'token' || lower === 'literal') {
+        return 'string';
+      }
+    }
+
+    // Fallback to name-based heuristic
+    return this.inferDataType(attrName);
+  }
+
   inferDataType(attrName) {
     const lower = attrName.toLowerCase();
 
+    if (lower === 'issued' || lower === 'valid') return 'date';
     if (lower.includes('date') || lower.includes('time')) return 'date';
     if (lower.includes('count') || lower.includes('number')) return 'integer';
     if (lower.includes('diameter') || lower.includes('height') || lower.includes('depth')) return 'float';
 
     return 'string';
+  }
+
+  applyPrimaryKeyRule(attributes, classInfo, className) {
+    if (!Array.isArray(attributes)) return;
+
+    const baseName = this.camelCaseToSnakeCase(classInfo?.localName || className || 'entity');
+    const identifierAttr = `${baseName}_identifiers`;
+
+    const pkNames = new Set([identifierAttr]);
+    // Business rule (easily adjustable): also include issued/valid when present
+    pkNames.add('uri');
+    pkNames.add('issued');
+    pkNames.add('valid');
+
+    attributes.forEach(attr => {
+      attr.isPrimaryKey = pkNames.has(attr.name);
+    });
   }
 
   humanizePropertyName(prop) {

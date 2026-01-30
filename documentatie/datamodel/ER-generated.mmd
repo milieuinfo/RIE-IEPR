@@ -1,84 +1,106 @@
 %% Auto-generated from OWL/SHACL
 erDiagram
     Activiteit["activiteit"] {
-        string created
+        datetime created "dateTime"
         string label
-        string issued
-        string valid
-        string at_location_id "ExploitatieLocatie"
+        date issued "date [PK]"
+        date valid "[PK]"
+        string at_location_id "ExploitatieLocatie [FK]"
+        string uri "URI [PK]"
+    }
+    ActiviteitProcedure["activiteit_procedure"] {
+        string uri "URI [PK]"
     }
     ActiviteitStap["activiteit_stap"] {
-        string issued
-        string valid
-        string used_id "Emissiepunt, Apparaat, Bron, Stof"
-        enum implements "ActiviteitProcedure, VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure, MeetProcedure"
-        string is_step_of_plan_id "Activiteit"
+        date issued "date [PK]"
+        date valid "[PK]"
+        string used_id "Emissiepunt, Apparaat, Bron, Stof [FK]"
+        string implements_id "ActiviteitProcedure, MeetProcedure [FK]"
+        string is_step_of_plan_id "Activiteit, ActiviteitProcedure, MeetProcedure [FK]"
+        string uri "URI [PK]"
     }
     Apparaat["apparaat"] {
-        string created
-        string issued
-        string valid
-        string at_location_id "Installatie, ExploitatieLocatie"
+        datetime created "dateTime"
+        date issued "date [PK]"
+        date valid "[PK]"
+        string at_location_id "Installatie, ExploitatieLocatie [FK]"
         string label
+        string uri "URI [PK]"
     }
     Bron["bron"] {
         string label
         string comment
+        string uri "URI [PK]"
     }
     Emissiepunt["emissiepunt"] {
-        string at_location_id "Installatie, ExploitatieLocatie"
+        string at_location_id "Installatie, ExploitatieLocatie [FK]"
         string label
         string status
+        string uri "URI [PK]"
     }
     Exploitant["exploitant"] {
-        string created
-        string issued
-        string valid
-        enum type "Organization, Person"
+        datetime created "dateTime"
+        date issued "date [PK]"
+        date valid "[PK]"
         string label
+        string uri "URI [PK]"
     }
     ExploitatieLocatie["exploitatie_locatie"] {
-        string at_location_id "Exploitant"
-        string exploitatie_locatie_identifiers
+        datetime created "dateTime"
         string label
+        date issued "date [PK]"
+        date valid "[PK]"
+        string at_location_id "Exploitant [FK]"
+        string exploitatie_locatie_identifiers "[PK]"
         string was_influenced_by
-        string was_derived_from_id "ExploitatieLocatie"
+        string was_derived_from_id "ExploitatieLocatie [FK]"
+        string uri "URI [PK]"
     }
     Grondwaterput["grondwaterput"] {
-        string emissiepunt_id "Emissiepunt"
+        string emissiepunt_id "Emissiepunt [FK]"
         float depth
+        string uri "URI [PK]"
     }
     Installatie["installatie"] {
-        string installatie_identifiers
+        string installatie_identifiers "[PK]"
         string label
-        string created
-        string issued
-        string valid
-        string at_location_id "ExploitatieLocatie"
+        datetime created "dateTime"
+        date issued "date [PK]"
+        date valid "[PK]"
+        string at_location_id "ExploitatieLocatie [FK]"
         string status
-        string was_derived_from_id "ExploitatieLocatie"
+        string was_derived_from_id "ExploitatieLocatie [FK]"
+        string uri "URI [PK]"
     }
     Lozingspunt["lozingspunt"] {
-        string emissiepunt_id "Emissiepunt"
+        string emissiepunt_id "Emissiepunt [FK]"
+        string uri "URI [PK]"
+    }
+    MeetProcedure["meet_procedure"] {
+        string uri "URI [PK]"
     }
     Meetpunt["meetpunt"] {
-        string is_proxy_for_id "Emissiepunt, ActiviteitStap"
+        string is_proxy_for_id "Emissiepunt, ActiviteitStap [FK]"
         string label
-        string created
-        string issued
-        string valid
+        datetime created "dateTime"
+        date issued "date [PK]"
+        date valid "[PK]"
         string status
+        string uri "URI [PK]"
     }
     Observatie["observatie"] {
-        string has_feature_of_interest_id "Meetpunt, Installatie"
+        string has_feature_of_interest_id "Meetpunt, Installatie [FK]"
+        string uri "URI [PK]"
     }
     Schouw["schouw"] {
-        string emissiepunt_id "Emissiepunt"
+        string emissiepunt_id "Emissiepunt [FK]"
         float diameter
         float height
+        string uri "URI [PK]"
     }
     Stof["stof"] {
         string label
+        string uri "URI [PK]"
     }
 
     %% Relationships
@@ -89,7 +111,12 @@ erDiagram
     ActiviteitStap many to many Apparaat : "used"
     ActiviteitStap many to many Bron : "used"
     ActiviteitStap many to many Stof : "used"
+    ActiviteitStap many to many ActiviteitProcedure : "implements"
+    ActiviteitStap many to many MeetProcedure : "implements"
     ActiviteitStap many to one Activiteit : "isStepOfPlan"
+    ActiviteitStap many to one ActiviteitProcedure : "isStepOfPlan"
+    ActiviteitStap many to one MeetProcedure : "isStepOfPlan"
+    VerwerkingsProcedure many to one ActiviteitProcedure : "subClassOf"
     Emissiepunt many to one Installatie : "atLocation"
     Emissiepunt many to one ExploitatieLocatie : "atLocation"
     Apparaat many to one Installatie : "atLocation"
@@ -103,3 +130,4 @@ erDiagram
     Meetpunt many to many ActiviteitStap : "isProxyFor"
     Observatie many to one Meetpunt : "hasFeatureOfInterest"
     Observatie many to one Installatie : "hasFeatureOfInterest"
+    TransportProcedure many to one ActiviteitProcedure : "subClassOf"

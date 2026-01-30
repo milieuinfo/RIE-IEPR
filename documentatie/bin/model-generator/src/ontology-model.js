@@ -371,6 +371,15 @@ export class OntologyModel {
           restriction.rangeTypes.push(typeName);
         });
 
+        const datatypeQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'datatype'), null);
+        datatypeQuads.forEach(datatypeQuad => {
+          const typeName = this.extractLocalName(datatypeQuad.object.value);
+          if (typeName && !restriction.rangeTypes.includes(typeName)) {
+            restriction.rangeTypes.push(typeName);
+          }
+          restriction.restrictionType = 'datatype';
+        });
+
         const orQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'or'), null);
         orQuads.forEach(orQuad => {
           const listTypes = this.parseShaclOrList(orQuad.object);
