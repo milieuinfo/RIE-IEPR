@@ -1,63 +1,63 @@
-flowchart TD
-    subgraph Stroomboogoven
+flowchart LR
+    subgraph installatie0["Stroomboogoven"]
     emissiepunt0(["Schouw 1"])
     style emissiepunt0 fill:#7ED321,stroke:#5A9E17,color:#fff
     emissiepunt1(["Schouw 2"])
     style emissiepunt1 fill:#7ED321,stroke:#5A9E17,color:#fff
-    step3["(Apparaat: Stroomboogoven)"]
-    style step3 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step1["(Apparaat: Stroomboogoven)"]
+    style step1 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     end
-    style Stroomboogoven fill:#D3D3D3,stroke:#808080,color:#000
-    subgraph Gieterij
+    style installatie0 fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie1["Gieterij"]
     emissiepunt4(["Schouw 5"])
     style emissiepunt4 fill:#7ED321,stroke:#5A9E17,color:#fff
-    step17["(Apparaat: Gieterijmachine)"]
-    style step17 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step8["(Apparaat: Gieterijmachine)"]
+    style step8 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     end
-    style Gieterij fill:#D3D3D3,stroke:#808080,color:#000
-    subgraph VOD-installatie
+    style installatie1 fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie2["VOD-installatie"]
     emissiepunt3(["Schoorsteen Ketels"])
     style emissiepunt3 fill:#7ED321,stroke:#5A9E17,color:#fff
-                    subgraph step9["Decarburisatie"]
-                        step10["(Apparaat: Toevoeginstallatie VOD)"]
-        style step10 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-        step11["(Apparaat: Zuiveringsapparaat Toevoeginstallatie)"]
-        style step11 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-        step13["(Apparaat: Afwerkstand)"]
-        style step13 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-        step14["(Apparaat: Zuiveringsapparaat Afwerkstand)"]
-        style step14 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+                    subgraph step3["Decarburisatie"]
+                        step4["(Apparaat: Toevoeginstallatie VOD)"]
+        style step4 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        step5["(Apparaat: Zuiveringsapparaat Toevoeginstallatie)"]
+        style step5 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        step6["(Apparaat: Afwerkstand)"]
+        style step6 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        step7["(Apparaat: Zuiveringsapparaat Afwerkstand)"]
+        style step7 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     end
-                    style step9 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+                    style step3 fill:#4A90E2,stroke:#2E5C8A,color:#fff
                     end
-    style VOD-installatie fill:#D3D3D3,stroke:#808080,color:#000
-    subgraph AOD-installatie
+    style installatie2 fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie3["AOD-installatie"]
     emissiepunt2(["Schouw 3"])
     style emissiepunt2 fill:#7ED321,stroke:#5A9E17,color:#fff
-    step6["(Apparaat: Argon-zuurstofontkoling)"]
-    style step6 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step2["(Apparaat: Argon-zuurstofontkoling)"]
+    style step2 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     end
-    style AOD-installatie fill:#D3D3D3,stroke:#808080,color:#000
+    style installatie3 fill:#D3D3D3,stroke:#808080,color:#000
     step0["Toevoeging van grondstoffen"]
     style step0 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    step10["(Apparaat: Toevoeginstallatie VOD)"]
-    style step10 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    step11["(Apparaat: Zuiveringsapparaat Toevoeginstallatie)"]
-    style step11 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    step13["(Apparaat: Afwerkstand)"]
-    style step13 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    step14["(Apparaat: Zuiveringsapparaat Afwerkstand)"]
-    style step14 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step4["(Apparaat: Toevoeginstallatie VOD)"]
+    style step4 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step5["(Apparaat: Zuiveringsapparaat Toevoeginstallatie)"]
+    style step5 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step6["(Apparaat: Afwerkstand)"]
+    style step6 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step7["(Apparaat: Zuiveringsapparaat Afwerkstand)"]
+    style step7 fill:#4A90E2,stroke:#2E5C8A,color:#fff
 
+    step4 --> step5
+    step6 --> step7
     step0 -.->|Afgassing| emissiepunt0
-    step0 ==>|Schroot| step3
-    step3 -.->|Afgassing| emissiepunt1
-    step3 ==>|Overbrenging vloeibaar staal| step6
-    step6 -.->|Afgassing| emissiepunt2
-    step6 ==>|Overbrenging naar decarburisatie| step9
-    step10 --> step11
-    step11 -.->|Afgassing| emissiepunt3
-    step13 --> step14
-    step14 -.->|Afgassing| emissiepunt3
-    step9 ==>|Overbrenging naar gietinstallatie| step17
-    step17 -.->|Afgassing| emissiepunt4
+    step0 ==>|Schroot| step1
+    step0 -.->|Afgassing| emissiepunt1
+    step1 ==>|Overbrenging vloeibaar staal| step2
+    step0 -.->|Afgassing| emissiepunt2
+    step2 ==>|Overbrenging naar decarburisatie| step3
+    step4 -.->|Afgassing| emissiepunt3
+    step4 -.->|Afgassing| emissiepunt3
+    step3 ==>|Overbrenging naar gietinstallatie| step8
+    step0 -.->|Afgassing| emissiepunt4

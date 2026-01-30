@@ -1,0 +1,18 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+# domain inference
+{ ?p rdfs:domain ?c. ?x ?p ?y. } => { ?x rdf:type ?c. }.
+
+# range inference
+{ ?p rdfs:range ?c. ?x ?p ?y. } => { ?y rdf:type ?c. }.
+
+# subProperty inference
+{ ?p rdfs:subPropertyOf ?q. ?x ?p ?y. } => { ?x ?q ?y. }.
+
+# subClass inference
+{ ?y rdfs:subClassOf ?z. ?x rdf:type ?y. } => { ?x rdf:type ?z. }.
+
+# inverse property inference
+{ ?p owl:inverseOf ?q. ?x ?p ?y. } => { ?y ?q ?x. }.
