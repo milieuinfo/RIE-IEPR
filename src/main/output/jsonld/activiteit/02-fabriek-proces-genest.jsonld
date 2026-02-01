@@ -1,7 +1,11 @@
 {
   "@context" : {
     "uri" : "@id",
-    "type" : "@type",
+    "type" : {
+      "@type" : "@id",
+      "@id" : "@type",
+      "@container" : "@set"
+    },
     "isPrecededBy" : {
       "@type" : "@id",
       "@id" : "http://purl.org/net/p-plan#isPrecededBy"
@@ -124,7 +128,7 @@
   },
   "@graph" : [ {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/ACTIVITEIT_001",
-    "type" : [ "http://purl.org/net/p-plan#Entity", "http://www.w3.org/ns/prov#Entity", "http://dbpedia.org/ontology/Project", "http://dbpedia.org/ontology/UnitOfWork", "http://purl.org/net/p-plan#Plan", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit", "http://www.w3.org/ns/prov#Plan", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA" ],
+    "type" : [ "http://purl.org/net/p-plan#Entity", "http://www.w3.org/ns/prov#Entity", "http://www.w3.org/2002/07/owl#Thing", "http://dbpedia.org/ontology/Project", "http://dbpedia.org/ontology/UnitOfWork", "http://purl.org/net/p-plan#Plan", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit", "http://www.w3.org/ns/prov#Plan", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA" ],
     "created" : "2020-07-30T10:00:00Z",
     "issued" : "2020-07-30",
     "valid" : "2030-12-31",

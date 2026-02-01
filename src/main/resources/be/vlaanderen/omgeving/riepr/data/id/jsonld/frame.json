@@ -1,8 +1,11 @@
 {
   "@context": {
     "uri": "@id",
-    "type": "@type",
-
+    "type": {
+      "@type": "@id",
+      "@id": "@type",
+      "@container": "@set"
+    },
     "isPrecededBy": {
       "@type": "@id",
       "@id": "http://purl.org/net/p-plan#isPrecededBy"
