@@ -104,6 +104,12 @@ object TurtleTransformer {
         .coalesce(1)
         .write.mode("overwrite")
         .parquet(outputPath)
+      val schemaJson = df.schema.json
+      val writer = new FileWriter(outputPath + "/_schema.json")
+      try writer.write(schemaJson)
+      finally writer.close()
+
+      //Files.write(Paths.get(outputPath + "/_schema.json"), schemaJson.getBytes("UTF-8"))
     }
   }
 
