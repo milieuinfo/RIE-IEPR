@@ -19,10 +19,12 @@
 @prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-meetpunt:MP_001  rdf:type      geosparql:SpatialObject , geosparql:Feature , riepr:Meetpunt;
+meetpunt:MP_001  rdf:type      riepr:Meetpunt , geosparql:SpatialObject , geosparql:Feature;
         rdfs:label             "Meetpunt Luchtkwaliteit 1"@nl;
-        dct:valid              "2020-01-01/";
-        geosparql:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
+        dct:created            "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued             "2020-01-01"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
+        geosparql:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status            riepr:Actief;
         prov:atLocation        exploitatielocatie:EX;
         sosa:isProxyFor        emissiepunt:EP_001 .
@@ -30,16 +32,15 @@ meetpunt:MP_001  rdf:type      geosparql:SpatialObject , geosparql:Feature , rie
 installatie:GPBV_12345
         rdf:type         <http://www.w3.org/ns/ssn/System> , riepr:Installatie , geosparql:SpatialObjectCollection;
         rdfs:label       "Fictief NV"@nl;
-        rdfs:member      <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
+        rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
         rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
-        dct:valid        "2020-01-01/";
-        adms:identifier  [ skos:notation  "BE.VL.000000001.INSTALLATION" ];
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-01-01"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:identifier  [ skos:notation  "20260101-0001" ];
+        adms:identifier  [ skos:notation  "BE.VL.000000001.INSTALLATION" ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX .
-
-<file:///Users/maximvdw/workspaces/RIE-IEPR/...>
-        rdf:type  geosparql:Geometry , geosparql:SpatialObject .
 
 exploitatielocatie:EX
         rdf:type               prov:Location , prov:Entity , geosparql:SpatialObjectCollection , geosparql:Feature , geosparql:SpatialObject , riepr:ExploitatieLocatie;
@@ -49,10 +50,12 @@ exploitatielocatie:EX
                                  geosparql:hasSerialization  "POINT(4.4000 51.2100)"^^geosparql:WKTLiteral
                                ] .
 
-meetpunt:MP_002  rdf:type      geosparql:SpatialObject , geosparql:Feature , riepr:Meetpunt;
+meetpunt:MP_002  rdf:type      riepr:Meetpunt , geosparql:Feature , geosparql:SpatialObject;
         rdfs:label             "Meetpunt Waterkwaliteit 1"@nl;
-        dct:valid              "2020-01-01/";
-        geosparql:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
+        dct:created            "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued             "2020-01-01"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
+        geosparql:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status            riepr:Actief;
         prov:atLocation        exploitatielocatie:EX;
         sosa:isProxyFor        [ rdf:type       p-plan:Step , riepr:ActiviteitStap;
@@ -60,10 +63,15 @@ meetpunt:MP_002  rdf:type      geosparql:SpatialObject , geosparql:Feature , rie
                                  sosa:hasProxy  meetpunt:MP_002
                                ] .
 
-emissiepunt:EP_001  rdf:type   geosparql:SpatialObject , geosparql:Feature , riepr:Emissiepunt;
+emissiepunt:EP_001  rdf:type   geosparql:SpatialObject , riepr:Emissiepunt , geosparql:Feature;
         rdfs:label             "Emissiepunt Schoorsteen 1"@nl;
-        dct:valid              "2020-01-01/";
-        geosparql:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
+        dct:created            "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued             "2020-01-01"^^xsd:date;
+        dct:valid              "2030-12-31"^^xsd:date;
+        geosparql:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status            riepr:Actief;
         prov:atLocation        exploitatielocatie:EX;
         sosa:hasProxy          meetpunt:MP_001 .
+
+<file:///home/gehau/git/RIE-IEPR/...>
+        rdf:type  geosparql:Geometry , geosparql:SpatialObject .

@@ -16,10 +16,12 @@
 @prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
 installatie:GPBV_12345
-        rdf:type         <http://www.w3.org/ns/ssn/System> , geosparql:SpatialObjectCollection , riepr:Installatie;
+        rdf:type         <http://www.w3.org/ns/ssn/System> , riepr:Installatie , geosparql:SpatialObjectCollection;
         rdfs:label       "MijnInstallatie"@nl;
-        rdfs:member      <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
-        dct:valid        "2020-01-01/";
+        rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
+        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued       "2020-01-01"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  [ rdf:type               prov:Location , prov:Entity , geosparql:SpatialObjectCollection , geosparql:Feature , geosparql:SpatialObject , riepr:ExploitatieLocatie;
                            rdfs:label             "Exploitatielocatie MijnInstallatie"@nl;

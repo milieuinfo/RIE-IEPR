@@ -104,6 +104,22 @@
     "hasSerialization" : {
       "@id" : "http://www.opengis.net/ont/geosparql#hasSerialization",
       "@type" : "http://www.opengis.net/ont/geosparql#WKTLiteral"
+    },
+    "status" : {
+      "@id" : "http://www.w3.org/ns/adms#status",
+      "@type" : "@id"
+    },
+    "valid" : {
+      "@id" : "http://purl.org/dc/terms/valid",
+      "@type" : "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "issued" : {
+      "@id" : "http://purl.org/dc/terms/issued",
+      "@type" : "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "created" : {
+      "@id" : "http://purl.org/dc/terms/created",
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
     }
   },
   "@graph" : [ {
@@ -118,13 +134,13 @@
     "label" : "Exploitatielocatie MijnInstallatie"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/installatie/GPBV_12345",
-    "type" : [ "http://www.w3.org/ns/ssn/System", "http://www.opengis.net/ont/geosparql#SpatialObjectCollection", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie" ],
-    "http://purl.org/dc/terms/valid" : "2020-01-01/",
+    "type" : [ "http://www.w3.org/ns/ssn/System", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie", "http://www.opengis.net/ont/geosparql#SpatialObjectCollection" ],
+    "created" : "2020-01-01T00:00:00",
+    "issued" : "2020-01-01",
+    "valid" : "2030-12-31",
     "label" : "MijnInstallatie",
-    "member" : "file:///Users/maximvdw/workspaces/RIE-IEPR/...",
-    "http://www.w3.org/ns/adms#status" : {
-      "uri" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief"
-    },
+    "member" : "file:///home/gehau/git/RIE-IEPR/...",
+    "status" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief",
     "atLocation" : "_:b0"
   } ]
 }
