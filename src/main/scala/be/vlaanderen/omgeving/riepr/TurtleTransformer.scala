@@ -80,15 +80,30 @@ object TurtleTransformer {
   /** JSON → Parquet (Spark) */
   def writeGraphToParquet(graph: JsonNode, inputPath: String, spark: SparkSession): Unit = {
     import spark.implicits._
-    val outputPath = inputPath.replace("/input/", "/output/parquet/").replace(".ttl", "")
-    val outDir = new File(outputPath)
-    ensureParentDir(outDir) // ✅ check / maak folders aan
-    val records = graph.elements().asScala.map(n => mapper.writeValueAsString(n)).toSeq
+    import org.apache.spark.sql.functions._
+
+    val outputPath = inputPath
+      .replace("/input/", "/output/parquet/")
+      .replace(".ttl", "")
+
+    ensureParentDir(new File(outputPath))
+
+    val records = graph.elements().asScala
+      .map(n => mapper.writeValueAsString(n))
+      .toSeq
+
     if (records.nonEmpty) {
-      spark.read.json(spark.createDataset(records))
+      val df = spark.read.json(spark.createDataset(records))
+
+      val preferredCols = Seq("uri", "type", "label")
+      val orderedCols =
+        preferredCols.filter(df.columns.contains) ++
+          df.columns.filterNot(preferredCols.contains)
+
+      df.select(orderedCols.map(col): _*)
         .coalesce(1)
         .write.mode("overwrite")
-        .parquet(inputPath.replace("/input/", "/output/parquet/").replace(".ttl", ""))
+        .parquet(outputPath)
     }
   }
 
@@ -214,6 +229,8 @@ object TurtleTransformer {
   // Main
   // ------------------------
   def main(args: Array[String]): Unit = {
+
+
 
     val ontology = loadOntology("src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl")
     val rieOntology = loadOntology("src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl")
