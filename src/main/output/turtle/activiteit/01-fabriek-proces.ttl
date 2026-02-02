@@ -17,13 +17,15 @@ exploitatielocatie:0408249136_6842345678
         rdf:type  prov:Location .
 
 activteitstap:89031055579_6839805367_ACTIVITEIT_1_0002
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
+        rdf:type              pplan:Step , prov:Entity , riepr:ActiviteitStap;
         rdfs:label            "Koekjes bakken"@nl;
         pplan:isPrecededBy    activteitstap:89031055579_6839805367_ACTIVITEIT_1_0001;
         pplan:isStepOfPlan    activiteit:89031055579_6839805367_ACTIVITEIT_1;
-        prov:used             emissiepunt:TBD;
-        prov:wasInfluencedBy  emissiepunt:TBD;
-        ssn:implements        riepr:uitstootProces .
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  riepr:uitstootProces , emissiepunt:TBD .
+
+riepr:uitstootProces  rdf:type  prov:Entity;
+        prov:influenced  activteitstap:89031055579_6839805367_ACTIVITEIT_1_0002 .
 
 activiteit:89031055579_6839805367_ACTIVITEIT_1
         rdf:type         riepr:Activiteit , <http://dbpedia.org/ontology/Project> , pplan:Plan , prov:Entity , <http://dbpedia.org/ontology/UnitOfWork> , pplan:Entity , riepr:IIOA , prov:Plan , <http://www.w3.org/2002/07/owl#Thing>;
@@ -34,7 +36,7 @@ activiteit:89031055579_6839805367_ACTIVITEIT_1
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0408249136_6842345678 .
 
-emissiepunt:TBD  rdf:type  prov:Entity , <http://www.opengis.net/ont/geosparql#SpatialObject> , riepr:Emissiepunt;
+emissiepunt:TBD  rdf:type  <http://www.opengis.net/ont/geosparql#SpatialObject> , riepr:Emissiepunt;
         rdfs:label       "Emissiepunt koekjesoven"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;

@@ -10,13 +10,13 @@ const pplan = {
     isPrecededBy: namedNode('http://purl.org/net/p-plan#isPrecededBy'),
 };
 
-const ssn = {
-    implements: namedNode('http://www.w3.org/ns/ssn/implements'),
-};
-
 const prov = {
     used: namedNode('http://www.w3.org/ns/prov#used'),
+    wasInfluencedBy: namedNode('http://www.w3.org/ns/prov#wasInfluencedBy'),
+    wasAttributedTo: namedNode('http://www.w3.org/ns/prov#wasAttributedTo'),
 };
+
+prov.wasDerivedFrom = namedNode('http://www.w3.org/ns/prov#wasDerivedFrom');
 
 const rdfs = {
     label: namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
@@ -44,8 +44,8 @@ export class EdgeGenerator {
     }
 
     getProcedureUri(stepUri) {
-        const implementsQuads = this.store.getQuads(namedNode(stepUri), ssn.implements, null);
-        return implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
+        const procedureQuads = this.store.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
+        return procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
     }
 
     findPrecedingStep(stepUri) {
@@ -114,7 +114,8 @@ export class EdgeGenerator {
                     }
                 } else if (this.procedureChecker.isUitstootProcedure(procedureUri)) {
                     // Emission procedure - dotted arrows to emission points
-                    const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.used, null);
+                    // Stappen (prov:Entity) worden beïnvloed door emissiepunten (prov:Entity)
+                    const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
                     for (const pointQuad of emittedPoints) {
                         const pointUri = pointQuad.object.value;
                         if (this.emissiePuntenIndex.has(pointUri)) {
@@ -144,8 +145,7 @@ export class EdgeGenerator {
             // Skip if already in nodeMap (already processed)
             if (this.nodeMap.has(stepUri)) continue;
             
-            const implementsQuads = this.store.getQuads(namedNode(stepUri), ssn.implements, null);
-            const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
+            const procedureUri = this.getProcedureUri(stepUri);
             
             if (procedureUri && this.procedureChecker.isUitstootProcedure(procedureUri)) {
                 // This is an emission step - connect from the nearest
@@ -156,7 +156,7 @@ export class EdgeGenerator {
                 const rootNodeId = this.nodeMap.get(rootStepUri);
                 if (!rootNodeId) continue;
 
-                const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.used, null);
+                const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
                 const label = this.getStepLabel(stepUri);
 
                 for (const pointQuad of emittedPoints) {
@@ -215,7 +215,8 @@ export class EdgeGenerator {
             if (!procedureUri) continue;
 
             const label = this.getStepLabel(stepUri);
-            const usedBronnen = this.store.getQuads(namedNode(stepUri), prov.used, null);
+            // Bronnen (prov:Entity) beïnvloeden de stap (prov:Entity)
+            const usedBronnen = this.store.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
 
             for (const bronQuad of usedBronnen) {
                 const bronUri = bronQuad.object.value;
@@ -238,7 +239,8 @@ export class EdgeGenerator {
         for (const stofUri of stofUris) {
             const label = this.getStepLabel(stofUri);
             for (const stepUri of this.nodeMap.keys()) {
-                const usedStoffen = this.store.getQuads(namedNode(stepUri), prov.used, namedNode(stofUri));
+                // Stoffen (prov:Entity) beïnvloeden de stap (prov:Entity)
+                const usedStoffen = this.store.getQuads(namedNode(stepUri), prov.wasInfluencedBy, namedNode(stofUri));
                 if (usedStoffen.length > 0) {
                     edges.push(`    stof --> ${this.nodeMap.get(stepUri)} : ${label}`);
                 }

@@ -34,6 +34,10 @@ exploitant:0400123123 a riepr:Exploitant ;
 exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
     rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
     prov:atLocation exploitant:0400123123 ;
+    dct:issued "2020-07-30"^^xsd:date ;
+    dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+    dct:valid "2030-12-31"^^xsd:date ;
+    adms:status riepr:Actief ;
     owl:sameAs osm:6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
@@ -58,45 +62,45 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000001 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000001 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:ActiviteitStap ;
     rdfs:label "Schroot"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
-    ssn:implements riepr:overbrengingsProces .
+    prov:wasDerivedFrom riepr:overbrengingsProces .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 ;
-    prov:used apparaat:0400123123_6851234567_0001 .
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0001 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000002 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000002 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:ActiviteitStap ;
     rdfs:label "Overbrenging vloeibaar staal"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
-    ssn:implements riepr:overbrengingsProces .
+    prov:wasDerivedFrom riepr:overbrengingsProces .
 
 ## ONDERDEEL VAN Argon-zuurstofontkoling proces
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0004 ;
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0004 ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000003 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000003 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:ActiviteitStap ;
     rdfs:label "Overbrenging naar decarburisatie"@nl ;
-    ssn:implements riepr:overbrengingsProces ;
+    prov:wasDerivedFrom riepr:overbrengingsProces ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
@@ -106,52 +110,52 @@ activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:ActiviteitStap ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000004 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0007 ; # Afwerkstand
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0007 ; # Afwerkstand
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000004 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
 
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:ActiviteitStap ;
     rdfs:label "Overbrenging naar gietinstallatie"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    ssn:implements riepr:overbrengingsProces .
+    prov:wasDerivedFrom riepr:overbrengingsProces .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:ActiviteitStap ;
-    ssn:implements riepr:apparaatVerwerkingsProces ;
-    prov:used apparaat:0400123123_6851234567_0002 ;
+    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    prov:wasAttributedTo apparaat:0400123123_6851234567_0002 ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 .
 activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:ActiviteitStap ;
     rdfs:label "Afgassing"@nl ;
     pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 ;
-    ssn:implements riepr:uitstootProces ;
-    prov:used emissiepunt:0400123123_6851234567_0000005 .
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000005 .
 
 # Emissiepunten
 emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;

@@ -137,7 +137,7 @@
     "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/0408249136_6842345678"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
-    "type" : [ "http://www.w3.org/ns/prov#Entity", "http://www.opengis.net/ont/geosparql#SpatialObject", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt" ],
+    "type" : [ "http://www.opengis.net/ont/geosparql#SpatialObject", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt" ],
     "created" : "2020-07-30T10:00:00Z",
     "issued" : "2020-07-30",
     "valid" : "2030-12-31",
@@ -155,12 +155,15 @@
     "label" : "Koekjesdeeg maken"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0002",
-    "type" : [ "http://purl.org/net/p-plan#Step", "http://www.w3.org/ns/prov#Activity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
+    "type" : [ "http://purl.org/net/p-plan#Step", "http://www.w3.org/ns/prov#Entity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
     "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0001",
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/89031055579_6839805367_ACTIVITEIT_1",
     "label" : "Koekjes bakken",
-    "used" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
-    "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
-    "implements" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces"
+    "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
+    "wasInfluencedBy" : [ "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces", "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD" ]
+  }, {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
+    "type" : "http://www.w3.org/ns/prov#Entity",
+    "influenced" : "https://data.riepr.omgeving.vlaanderen.be/id/procedure/89031055579_6839805367_ACTIVITEIT_1_0002"
   } ]
 }

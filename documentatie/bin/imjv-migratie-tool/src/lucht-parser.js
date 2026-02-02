@@ -329,7 +329,7 @@ export class LuchtParser extends BaseParser {
             if (rootStepUri) {
                 this.turtle.triple(
                     rootStepUri,
-                    this.turtle.qname('prov', 'used'),
+                    this.turtle.qname('prov', 'wasAttributedTo'),
                     apparaatUri
                 );
             }
@@ -377,7 +377,7 @@ export class LuchtParser extends BaseParser {
         if (apparaatInfo?.apparaatUri) {
             this.turtle.triple(
                 rootStepUri,
-                this.turtle.qname('prov', 'used'),
+                this.turtle.qname('prov', 'wasAttributedTo'),
                 apparaatInfo.apparaatUri
             );
         }
@@ -469,11 +469,14 @@ export class LuchtParser extends BaseParser {
                     const stepUri = this.turtle.qname('activiteitstap', stepId);
                     this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
                     this.turtle.triple(stepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
-                    this.turtle.triple(stepUri, this.turtle.qname('ssn', 'implements'), this.turtle.qname('riepr', 'uitstootProces'));
-                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'used'), emissiepuntUri);
+                    // Uitstootproces als plan afgeleid van generieke emissieprocedure
+                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasDerivedFrom'), this.turtle.qname('riepr', 'uitstootProces'));
+                    // Emissiepunt (prov:Entity) beïnvloedt de uitstootstap (prov:Entity)
+                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasInfluencedBy'), emissiepuntUri);
                     
                     if (apparaatInfo?.apparaatUri) {
-                        this.turtle.triple(stepUri, this.turtle.qname('prov', 'used'), apparaatInfo.apparaatUri);
+                        // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
+                        this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasAttributedTo'), apparaatInfo.apparaatUri);
                     }
                     
                     // Emission step preceded by purification steps (if any), otherwise by root step
@@ -594,7 +597,7 @@ export class LuchtParser extends BaseParser {
                     if (rootStepUri) {
                         this.turtle.triple(
                             rootStepUri,
-                            this.turtle.qname('prov', 'used'),
+                            this.turtle.qname('prov', 'wasAttributedTo'),
                             apparaatUri
                         );
                     }
@@ -615,22 +618,25 @@ export class LuchtParser extends BaseParser {
                         activiteitUri
                     );
 
+                    // Zuiveringsstap als plan afgeleid van apparaatVerwerkingsProces
                     this.turtle.triple(
                         zuiveringStepUri,
-                        this.turtle.qname('ssn', 'implements'),
+                        this.turtle.qname('prov', 'wasDerivedFrom'),
                         this.turtle.qname('riepr', 'apparaatVerwerkingsProces')
                     );
 
+                    // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
                     this.turtle.triple(
                         zuiveringStepUri,
-                        this.turtle.qname('prov', 'used'),
+                        this.turtle.qname('prov', 'wasAttributedTo'),
                         apparaatUri
                     );
 
                     stofUris.forEach((stofUri) => {
+                        // Stoffen (prov:Entity) beïnvloeden de zuiveringsstap (prov:Entity)
                         this.turtle.triple(
                             zuiveringStepUri,
-                            this.turtle.qname('prov', 'used'),
+                            this.turtle.qname('prov', 'wasInfluencedBy'),
                             stofUri
                         );
                     });
@@ -734,14 +740,16 @@ export class LuchtParser extends BaseParser {
                     
                     this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
                     this.turtle.triple(stepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
-                    this.turtle.triple(stepUri, this.turtle.qname('ssn', 'implements'), this.turtle.qname(procedureQName.split(':')[0], procedureQName.split(':')[1]));
+                    // Verbruiksstap als plan afgeleid van generieke verbruiksprocedure
+                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasDerivedFrom'), this.turtle.qname(procedureQName.split(':')[0], procedureQName.split(':')[1]));
                     this.turtle.triple(stepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(label, null, 'nl'));
                     
                     // Link to stof if available
                     if (verbruik.Stof?.[0]?.$.StofID) {
                         const stofId = verbruik.Stof[0].$.StofID;
                         const stofUri = this.turtle.qname('stof', stofId);
-                        this.turtle.triple(stepUri, this.turtle.qname('prov', 'used'), stofUri);
+                        // Stoffen (prov:Entity) beïnvloeden de verbruiksstap (prov:Entity)
+                        this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasInfluencedBy'), stofUri);
                     }
                     
                     // Preceded by root step

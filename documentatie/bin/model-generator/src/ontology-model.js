@@ -1,4 +1,5 @@
 import fs from 'fs';
+import https from 'https';
 import { Parser, Store, NamedNode, Quad } from 'n3';
 import { NAMESPACES, PATHS, resolveProjectPath } from './config.js';
 
@@ -10,6 +11,18 @@ export class OntologyModel {
     this.store = new Store();
     this.shapesStore = new Store();
     this.classes = new Map();
+    // Houd bij welke klassen en predicaten "relevant" zijn omdat ze
+    // effectief voorkomen in de RIE-ontologie, data-voorbeelden of
+    // business-concepten. Deze worden later gebruikt om het ER-/class-
+    // diagram te filteren zodat het niet overspoeld wordt door volledig
+    // generieke PROV/SOSA/GeoSPARQL-klassen.
+    this.usedClassIris = new Set();
+    this.usedPropertyIris = new Set();
+    // Klassen die effectief instantiaties hebben (rdf:type in
+    // ontologie- of data-voorbeelden). Dit gebruiken we om
+    // "technische" abstracte superklassen te onderscheiden van
+    // echt gebruikte domeinklassen.
+    this.instantiatedClassIris = new Set();
   }
 
   async load() {
@@ -17,18 +30,63 @@ export class OntologyModel {
     await this.loadShapes();
   }
 
+  async fetchRemoteTurtle(url) {
+    return new Promise((resolve, reject) => {
+      const req = https.get(url, {
+        headers: {
+          Accept: 'text/turtle, application/x-turtle;q=0.9, */*;q=0.1'
+        }
+      }, res => {
+        if (res.statusCode && res.statusCode >= 400) {
+          reject(new Error(`HTTP ${res.statusCode}`));
+          return;
+        }
+
+        let data = '';
+        res.setEncoding('utf8');
+        res.on('data', chunk => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          const trimmed = (data || '').trim();
+          if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
+            reject(new Error('Geen Turtle-antwoord (HTML ontvangen)'));
+            return;
+          }
+          resolve(data);
+        });
+      });
+
+      req.on('error', err => reject(err));
+      req.end();
+    });
+  }
+
   async loadOntology() {
     const parser = new Parser();
 
+    // Bestanden die de schema/ontologie-informatie leveren
+    // (inclusief externe vocabularia), plus business-concepten.
+    // We laden ze allemaal in dezelfde store voor reasoning, maar
+    // markeren enkel termen uit de RIE-ontologie en concepten als
+    // "gebruikt" voor filtering van het ER-/classmodel.
     const ontologyFiles = [
-      this.ontologyPath,
-      // Include additional domain/range and subclass information
-      resolveProjectPath('src/main/resources/domain.ttl'),
-      resolveProjectPath('src/main/resources/range.ttl'),
-      resolveProjectPath('src/main/resources/subClassOf.ttl')
+      { path: this.ontologyPath, kind: 'core' },
+      // SHACL-shapes voor extra restricties (alleen voor shapesStore,
+      // niet om relevantie te bepalen)
+      { path: resolveProjectPath('src/main/resources/generated-shapes.ttl'), kind: 'shapes' },
+      // Gecombineerde SSN/SOSA/PROV/P-PLAN/GeoSPARQL/DBO ontologie
+      { path: resolveProjectPath('src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl'), kind: 'external' },
+      // Volledige GeoSPARQL vocabulaire (incl. hasGeometry, Feature, Geometry)
+      { path: resolveProjectPath('src/main/resources/net/opengis/www/ont/geosparql/geosparql_vocab_all.ttl'), kind: 'external' },
+      // Business concept alignments (NL aliassen voor predicaten)
+      { path: resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/id/concept/riepr/riepr.ttl'), kind: 'concepts' },
+      // Bestaande externe vocabularia
+      { path: resolveProjectPath('src/main/resources/org/w3/www/ns/ssn-sosa_2023.ttl'), kind: 'external' },
+      { path: resolveProjectPath('src/main/resources/org/w3/www/ns/prov/prov-o.ttl'), kind: 'external' }
     ];
 
-    for (const filePath of ontologyFiles) {
+    for (const { path: filePath, kind } of ontologyFiles) {
       if (!filePath || !fs.existsSync(filePath)) continue;
 
       const ttl = fs.readFileSync(filePath, 'utf-8');
@@ -43,10 +101,124 @@ export class OntologyModel {
           else resolve();
         });
       });
+
+      // Bepaal relevantie enkel op basis van de eigen RIE-ontologie
+      // (core) en business-concepten (concepts). Externe vocabularia
+      // en SHACL-shapes mag je wel gebruiken voor reasoning, maar
+      // ze bepalen niet of een klasse/predicaat in het ER-model komt.
+      if (kind === 'core' || kind === 'concepts') {
+        await this.trackUsageFromTurtle(ttl, kind);
+      }
+      /* eslint-enable no-await-in-loop */
+    }
+
+    // Laad daarnaast automatisch een aantal externe ontologieën
+    const remoteOntologies = [
+      { url: 'https://www.w3.org/ns/legacy_locn.ttl', kind: 'external' },
+      { url: 'https://www.w3.org/ns/legacy_adms.ttl', kind: 'external' }
+    ];
+
+    for (const { url, kind } of remoteOntologies) {
+      try {
+        const ttl = await this.fetchRemoteTurtle(url);
+        if (!ttl) continue;
+
+        /* eslint-disable no-await-in-loop */
+        await new Promise((resolve, reject) => {
+          parser.parse(ttl, (error, quad) => {
+            if (error) reject(error);
+            else if (quad) this.store.addQuad(quad);
+            else resolve();
+          });
+        });
+        /* eslint-enable no-await-in-loop */
+
+        // Externe vocabularia bepalen geen relevantie; ze worden
+        // enkel gebruikt voor domain/range/subClassOf-informatie.
+        if (kind === 'core' || kind === 'concepts') {
+          await this.trackUsageFromTurtle(ttl, kind);
+        }
+      } catch (e) {
+        // Als de externe vocab niet bereikbaar is, gaan we gewoon
+        // verder met de reeds geladen lokale bestanden.
+        // eslint-disable-next-line no-console
+        console.warn(`Kon externe ontologie niet laden van ${url}:`, e.message || e);
+      }
+    }
+
+    // Verwerk daarnaast ook de data-voorbeelden (input/output Turtle)
+    // om enkel klassen/predicaten te tonen die effectief in de
+    // voorbeelden voorkomen.
+    const dataFiles = this.getDataExampleFiles();
+    const dataParser = new Parser();
+    for (const dataPath of dataFiles) {
+      if (!fs.existsSync(dataPath)) continue;
+      const ttl = fs.readFileSync(dataPath, 'utf-8');
+      /* eslint-disable no-await-in-loop */
+      await new Promise((resolve, reject) => {
+        dataParser.parse(ttl, (error, quad) => {
+          if (error) reject(error);
+          else if (quad) this.registerUsageFromQuad(quad, 'data');
+          else resolve();
+        });
+      });
       /* eslint-enable no-await-in-loop */
     }
 
     await this.applyReasoning();
+  }
+
+  /**
+   * Zoek een Nederlandstalig business-label voor een eigenschap (predicaat-IRI)
+   * op basis van SKOS-concepten met skos:exactMatch.
+   */
+  getBusinessLabelForProperty(propertyIri) {
+    if (!propertyIri) return null;
+
+    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
+    const skosPrefLabel = new NamedNode(NAMESPACES.skos + 'prefLabel');
+    const rdfsLabel = new NamedNode(NAMESPACES.rdfs + 'label');
+
+    const propertyNode = new NamedNode(propertyIri);
+    const conceptQuads = this.store.getQuads(null, skosExactMatch, propertyNode);
+    if (conceptQuads.length === 0) return null;
+
+    const concept = conceptQuads[0].subject;
+
+    // Eerst zoeken naar Nederlandstalige skos:prefLabel
+    const prefLabels = this.store.getQuads(concept, skosPrefLabel, null);
+    if (prefLabels.length > 0) {
+      const nlLabelQuad = prefLabels.find(q => q.object.language === 'nl');
+      if (nlLabelQuad) return nlLabelQuad.object.value;
+      return prefLabels[0].object.value;
+    }
+
+    // Fallback: rdfs:label
+    const rdfsLabels = this.store.getQuads(concept, rdfsLabel, null);
+    if (rdfsLabels.length > 0) {
+      const nlLabelQuad = rdfsLabels.find(q => q.object.language === 'nl');
+      if (nlLabelQuad) return nlLabelQuad.object.value;
+      return rdfsLabels[0].object.value;
+    }
+
+    return null;
+  }
+
+  /**
+   * Geef de lokale naam van het businessconcept dat aan een eigenschap is
+   * uitgelijnd (bijv. https://.../id/concept/eenheid -> "eenheid").
+   * Dit is handig om attribuutnamen/FK-namen in ER/class-diagrammen te bepalen.
+   */
+  getBusinessNameForProperty(propertyIri) {
+    if (!propertyIri) return null;
+
+    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
+    const propertyNode = new NamedNode(propertyIri);
+    const conceptQuads = this.store.getQuads(null, skosExactMatch, propertyNode);
+    if (conceptQuads.length === 0) return null;
+
+    const conceptIri = conceptQuads[0].subject.value;
+    return this.extractLocalName(conceptIri);
   }
 
   async loadShapes() {
@@ -150,6 +322,21 @@ export class OntologyModel {
   addExternalClassesFromRestrictions() {
     const additions = new Map();
 
+    // Verzamel alle lokale namen van doelen van business-concepten
+    // (skos:exactMatch). Dit gebruiken we om voor synthetisch
+    // toegevoegde externe klassen (die enkel via localName bekend
+    // zijn, zoals "Address") te markeren dat ze aan een business-
+    // concept zijn uitgelijnd.
+    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
+    const exactMatchQuads = this.store.getQuads(null, skosExactMatch, null);
+    const businessTargetLocalNames = new Set();
+    exactMatchQuads.forEach(q => {
+      if (q.object.termType === 'NamedNode') {
+        const local = this.extractLocalName(q.object.value);
+        if (local) businessTargetLocalNames.add(local);
+      }
+    });
+
     this.classes.forEach(classInfo => {
       classInfo.restrictions.forEach(restriction => {
         restriction.rangeTypes.forEach(rangeType => {
@@ -162,7 +349,13 @@ export class OntologyModel {
             comment: '',
             superClasses: [],
             restrictions: [],
-            external: true
+            external: true,
+            // Synthetische externe klassen hebben geen eigen
+            // RDF-typering, maar als hun localName overeenkomt met
+            // het doel van een skos:exactMatch (bv. locn:Address),
+            // dan weten we dat het een businessconcept-doel is.
+            isConceptScheme: false,
+            isBusinessConceptTarget: businessTargetLocalNames.has(rangeType)
           });
         });
       });
@@ -170,6 +363,70 @@ export class OntologyModel {
 
     additions.forEach((info, name) => {
       this.classes.set(name, info);
+    });
+  }
+
+  /**
+   * Leid extra "restricties" af op basis van rdfs:domain en rdfs:range,
+   * zodat ook eigenschappen zonder expliciete OWL/SHACL-restricties (zoals
+   * geo:hasGeometry op geo:Feature) als relaties in het model verschijnen.
+   *
+   * Voor elke property P met domain D en range R wordt voor elke klasse C
+   * die (transitief) een subklasse is van D een synthetische restrictie
+   * toegevoegd op C:
+   *   C --P--> R  (minCard = 0, maxCard = -1)
+   */
+  addDomainRangeRestrictions() {
+    const domainQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdfs + 'domain'), null);
+
+    domainQuads.forEach(domainQuad => {
+      const property = domainQuad.subject;
+      const domainClass = domainQuad.object;
+
+      if (domainClass.termType !== 'NamedNode') return;
+
+      const propertyIri = property.value;
+      const propertyLocal = this.extractLocalName(propertyIri);
+      const domainLocal = this.extractLocalName(domainClass.value);
+
+      // Bepaal de ranges voor deze property
+      const rangeQuads = this.store.getQuads(property, new NamedNode(NAMESPACES.rdfs + 'range'), null);
+      if (rangeQuads.length === 0) return;
+
+      const rangeTypes = rangeQuads
+        .filter(q => q.object.termType === 'NamedNode')
+        .map(q => this.extractLocalName(q.object.value))
+        .filter(t => !!t);
+      if (rangeTypes.length === 0) return;
+
+      // Voeg restrictie toe aan alle klassen die subklasse zijn van domainClass
+      this.classes.forEach((classInfo, className) => {
+        const classIri = classInfo.iri;
+
+        // Alleen klassen die (transitief) subClassOf domainLocal zijn
+        if (!this.isSubClassOf(classIri, domainLocal) && this.extractLocalName(classIri) !== domainLocal) {
+          return;
+        }
+
+        // Vermijd duplicaten als er al een restrictie voor dezelfde property bestaat
+        const hasExisting = (classInfo.restrictions || []).some(r => r.propertyIri === propertyIri);
+        if (hasExisting) return;
+
+        const restriction = {
+          fromClass: className,
+          property: propertyLocal,
+          propertyIri,
+          minCardinality: 0,
+          maxCardinality: -1,
+          minInclusive: null,
+          maxInclusive: null,
+          rangeTypes: [...new Set(rangeTypes)],
+          rangeValue: null,
+          restrictionType: 'domain-range'
+        };
+
+        classInfo.restrictions.push(restriction);
+      });
     });
   }
 
@@ -185,6 +442,32 @@ export class OntologyModel {
       ...this.extractShaclRestrictions(classIri)
     ];
 
+    // Alles buiten de eigen RIEPR-namespace beschouwen we als
+    // "extern" (PROV, P-PLAN, SSN, GeoSPARQL, DBO, ...).
+    const external = !String(classIri).startsWith(NAMESPACES.riepr);
+
+    // Bepaal of deze klasse ook een SKOS ConceptScheme is (zoals
+    // de procedureklassen TransportProcedure, VerbruiksProcedure,
+    // EmissieProcedure, ...). Zulke conceptenschema's willen we in
+    // de ER- en klassendiagrammen doorgaans niet als aparte tabel
+    // tonen.
+    const isConceptScheme = this.store.getQuads(
+      new NamedNode(classIri),
+      new NamedNode(NAMESPACES.rdf + 'type'),
+      new NamedNode(NAMESPACES.skos + 'ConceptScheme')
+    ).length > 0;
+
+    // Bepaal of deze (mogelijk externe) klasse expliciet het doel is
+    // van een business-concept via skos:exactMatch. Zulke klassen
+    // willen we als volwaardige domeinklassen behandelen, zelfs als
+    // ze zelf weinig of geen attributen hebben (bv. locn:Address als
+    // doel van het concept "Verzendadres").
+    const isBusinessConceptTarget = this.store.getQuads(
+      null,
+      new NamedNode(NAMESPACES.skos + 'exactMatch'),
+      new NamedNode(classIri)
+    ).length > 0;
+
     return {
       iri: classIri,
       localName,
@@ -192,7 +475,10 @@ export class OntologyModel {
       comment: comment || '',
       superClasses,
       restrictions,
-      isEnum
+      isEnum,
+      external,
+      isConceptScheme,
+      isBusinessConceptTarget
     };
   }
 
@@ -554,6 +840,154 @@ export class OntologyModel {
     }
 
     return this.isSubClassOf(classIri, 'Concept');
+  }
+
+  /**
+   * Controleer of een klasse (via local name) in de data of ontologie
+   * effectief als rdf:type voor individuen gebruikt werd.
+   */
+  isInstantiatedClassName(className) {
+    const info = this.classes.get(className);
+    if (!info || !info.iri) return false;
+    return this.instantiatedClassIris.has(info.iri);
+  }
+
+  /**
+   * Bepaal of een klasse (via local name) relevant is voor het
+   * datamodel: enkel tonen als de IRI in de RIE-ontologie, in de
+   * data-voorbeelden of in de business-concepten voorkomt.
+   */
+  isRelevantClassName(className) {
+    const info = this.classes.get(className);
+    if (!info || !info.iri) return false;
+    return this.usedClassIris.has(info.iri);
+  }
+
+  /**
+   * Bepaal of een predicaat (volledige IRI) relevant is.
+   */
+  isRelevantPropertyIri(propertyIri) {
+    if (!propertyIri) return false;
+    return this.usedPropertyIris.has(propertyIri);
+  }
+
+  /**
+   * Registreer gebruik van klassen/predicaten in een TTL-bestand.
+   * Voor de RIE-ontologie (core) en data-voorbeelden (data) gebruiken
+   * we RDF/OWL-patronen (rdf:type, rdfs:subClassOf, domain/range,
+   * owl:onProperty, ...). Voor business-concepten (concepts) volgen
+   * we vooral skos:exactMatch.
+   */
+  async trackUsageFromTurtle(ttl, kind) {
+    const parser = new Parser();
+
+    await new Promise((resolve, reject) => {
+      parser.parse(ttl, (error, quad) => {
+        if (error) reject(error);
+        else if (quad) this.registerUsageFromQuad(quad, kind);
+        else resolve();
+      });
+    });
+  }
+
+  registerUsageFromQuad(quad, kind) {
+    const { subject, predicate, object } = quad;
+
+    const pIri = predicate.value;
+    const rdfType = NAMESPACES.rdf + 'type';
+    const rdfsClass = NAMESPACES.rdfs + 'Class';
+    const owlClass = NAMESPACES.owl + 'Class';
+    const rdfsSubClassOf = NAMESPACES.rdfs + 'subClassOf';
+    const rdfsDomain = NAMESPACES.rdfs + 'domain';
+    const rdfsRange = NAMESPACES.rdfs + 'range';
+    const owlOnProperty = NAMESPACES.owl + 'onProperty';
+    const skosExactMatch = NAMESPACES.skos + 'exactMatch';
+
+    // Business-concepten: skos:exactMatch naar property/klasse-IRIs
+    if (kind === 'concepts' && pIri === skosExactMatch && object.termType === 'NamedNode') {
+      const iri = object.value;
+      // Predicaten worden via hun volledige IRI herkend.
+      this.usedPropertyIris.add(iri);
+      // Klassen kunnen als volledige IRI of enkel via localName
+      // (bij synthetisch toegevoegde externe klassen) voorkomen.
+      this.usedClassIris.add(iri);
+      const local = this.extractLocalName(iri);
+      if (local) {
+        this.usedClassIris.add(local);
+      }
+      return;
+    }
+
+    if (kind === 'core' || kind === 'data') {
+      // rdf:type
+      if (pIri === rdfType && object.termType === 'NamedNode') {
+        const oIri = object.value;
+        if (oIri === owlClass || oIri === rdfsClass) {
+          if (subject.termType === 'NamedNode') {
+            this.usedClassIris.add(subject.value);
+          }
+        } else {
+          // Een instantie met een bepaald type -> type is relevante klasse
+          this.usedClassIris.add(oIri);
+          // En wordt beschouwd als effectief geïnstantieerd.
+          this.instantiatedClassIris.add(oIri);
+        }
+      }
+
+      // rdfs:subClassOf
+      if (pIri === rdfsSubClassOf) {
+        if (subject.termType === 'NamedNode') this.usedClassIris.add(subject.value);
+        if (object.termType === 'NamedNode') this.usedClassIris.add(object.value);
+      }
+
+      // rdfs:domain / rdfs:range
+      if (pIri === rdfsDomain || pIri === rdfsRange) {
+        if (subject.termType === 'NamedNode') this.usedPropertyIris.add(subject.value);
+        if (object.termType === 'NamedNode') this.usedClassIris.add(object.value);
+      }
+
+      // owl:onProperty in OWL-restricties
+      if (pIri === owlOnProperty && object.termType === 'NamedNode') {
+        this.usedPropertyIris.add(object.value);
+      }
+
+      // Als generieke fallback: elk predicaat dat in deze bestanden
+      // voorkomt, telt als "gebruikt". Dit heeft alleen effect als
+      // er elders ook restricties/shapes voor bestaan.
+      if (predicate.termType === 'NamedNode') {
+        this.usedPropertyIris.add(predicate.value);
+      }
+    }
+  }
+
+  /**
+   * Zoek alle Turtle-bestanden die als data-voorbeelden dienen
+   * (input en gegenereerde output).
+   */
+  getDataExampleFiles() {
+    const dirs = [
+      'src/main/input',
+    ];
+
+    const files = [];
+
+    const collect = dir => {
+      const absDir = resolveProjectPath(dir);
+      if (!fs.existsSync(absDir)) return;
+
+      const entries = fs.readdirSync(absDir, { withFileTypes: true });
+      entries.forEach(entry => {
+        const fullPath = `${absDir}/${entry.name}`;
+        if (entry.isDirectory()) {
+          collect(`${dir}/${entry.name}`);
+        } else if (entry.isFile() && entry.name.endsWith('.ttl')) {
+          files.push(fullPath);
+        }
+      });
+    };
+
+    dirs.forEach(dir => collect(dir));
+    return files;
   }
 
   extractLocalName(iri) {

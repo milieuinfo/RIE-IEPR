@@ -17,6 +17,7 @@
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix dct:    <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix locn:   <http://www.w3.org/ns/locn#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -89,6 +90,17 @@
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit moet een enkele status hebben
+        owl:onProperty adms:status ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een activiteit kan externe identificaties hebben (optioneel)
+        owl:onProperty adms:identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :ActiviteitStap a owl:Class ;
@@ -96,7 +108,7 @@
     rdfs:comment "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl ;
     skos:example [ a :ActiviteitStap ;
         rdfs:label "Verwerking van grondstoffen"@nl ;
-        ssn:implements [ a :VerwerkingsProcedure ]
+        prov:wasDerivedFrom [ a :VerwerkingsProcedure ]
     ] ;
     rdfs:subClassOf pplan:Step ;
     owl:equivalentClass [ a owl:Class ;
@@ -117,20 +129,28 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Stap (als superclass van prov:Activiteit) kan gebruikmaken van een emissiepunt, apparaat, bron of stof
-        owl:onProperty prov:used ; 
-        owl:someValuesFrom (:Emissiepunt :Apparaat :Bron :Stof) ; 
+        # Een stap kan worden beïnvloed door een emissiepunt, bron of stof
+        # (prov:Entity -> prov:Entity)
+        owl:onProperty prov:wasInfluencedBy ; 
+        owl:someValuesFrom (:Emissiepunt :Bron :Stof) ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Stap kan een procedure implementeren (optioneel)
-        owl:onProperty ssn:implements ; 
+        # Een stap kan worden toegeschreven aan een apparaat (agent)
+        owl:onProperty prov:wasAttributedTo ; 
+        owl:someValuesFrom :Apparaat ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een stap kan zijn afgeleid van een (generieke) procedure (optioneel)
+        owl:onProperty prov:wasDerivedFrom ; 
         owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Stap moet deel uitmaken van een activiteit of andere stap
+        # Een stap moet deel uitmaken van een activiteit of andere stap
         owl:onProperty pplan:isStepOfPlan ; 
+        owl:someValuesFrom ( :Activiteit :ActiviteitStap ) ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -382,7 +402,7 @@
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ]
     ] ;
-    rdfs:subClassOf ogc:SpatialObject, ssn:System ;
+    rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een apparaat moet een creatie datum hebben
         owl:onProperty dct:created ;
@@ -462,6 +482,12 @@
         # Een exploitant moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant heeft een verzendadres dat kan afwijken van het vestigingsadres
+        owl:onProperty locn:address ;
+        owl:someValuesFrom locn:Address ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :ExploitatieLocatie a owl:Class ;
@@ -572,6 +598,7 @@
     rdfs:label "Meetprocedure"@nl ;
     rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
     rdfs:subClassOf sosa:Procedure .
+
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
@@ -650,32 +677,32 @@
 # --------------------------------------- #
 # Axioms
 # --------------------------------------- #
-# ActiviteitStap met een emissieprocedure moet een emissiepunt gebruiken
+# ActiviteitStap met een emissieprocedure moet worden beïnvloed door een emissiepunt
 [ a owl:Class ;
     owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
-        owl:onProperty ssn:implements ;
+        owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :EmissieProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:used ;
+    owl:onProperty prov:wasInfluencedBy ;
     owl:someValuesFrom :Emissiepunt
 ] .
 
-# ActiviteitStap met een apparaatverwerkingsproces moet een apparaat gebruiken
+# ActiviteitStap met een apparaatverwerkingsproces moet worden toegeschreven aan een apparaat (agent)
 [ a owl:Class ;
     owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
-        owl:onProperty ssn:implements ;
+        owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :apparaatVerwerkingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:used ;
+    owl:onProperty prov:wasAttributedTo ;
     owl:someValuesFrom :Apparaat
 ] .
 
 # ActiviteitStap met een overbrengingsproces moet stoffen transporteren
 [ a owl:Class ;
     owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
-        owl:onProperty ssn:implements ;
+        owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :overbrengingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;

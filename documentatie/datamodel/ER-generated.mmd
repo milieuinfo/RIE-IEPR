@@ -1,133 +1,158 @@
 %% Auto-generated from OWL/SHACL
 erDiagram
     Activiteit["activiteit"] {
-        datetime created "dateTime"
-        string label
-        date issued "date [PK]"
-        date valid "[PK]"
-        string at_location_id "ExploitatieLocatie [FK]"
         string uri "URI [PK]"
+        datetime aangemaakt_op "dateTime"
+        string benaming
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string locatie_id "ExploitatieLocatie [FK]"
+        enum afgeleid_van "VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure"
+        string afgeleid_van_id "Activiteit, ExploitatieLocatie, ActiviteitProcedure, MeetProcedure [FK]"
+        string toegeschreven_aan_id "Apparaat [FK]"
     }
     ActiviteitProcedure["activiteit_procedure"] {
         string uri "URI [PK]"
+        enum afgeleid_van "VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure"
+        string afgeleid_van_id "Activiteit, ExploitatieLocatie, ActiviteitProcedure, MeetProcedure [FK]"
+        string toegeschreven_aan_id "Apparaat [FK]"
     }
     ActiviteitStap["activiteit_stap"] {
-        date issued "date [PK]"
-        date valid "[PK]"
-        string used_id "Emissiepunt, Apparaat, Bron, Stof [FK]"
-        string implements_id "ActiviteitProcedure, MeetProcedure [FK]"
-        string is_step_of_plan_id "Activiteit, ActiviteitProcedure, MeetProcedure [FK]"
         string uri "URI [PK]"
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string beinvloed_door_id_emissiepunt "Emissiepunt [FK]"
+        string beinvloed_door_id_bron "Bron [FK]"
+        string beinvloed_door_id_stof "Stof [FK]"
+        string toegeschreven_aan_id "Apparaat [FK]"
+        enum afgeleid_van "VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure"
+        string afgeleid_van_id "ActiviteitProcedure, MeetProcedure [FK]"
+        string stap_van_activiteit_id_activiteit "Activiteit [FK]"
+        string stap_van_activiteit_id_activiteit_stap "ActiviteitStap [FK]"
+        string gaat_vooraf_aan_id "ActiviteitStap [FK]"
+    }
+    Address["address"] {
+        string uri "URI [PK]"
+        string straat "Literal"
+        string stad "Literal"
+        string postcode "Literal"
     }
     Apparaat["apparaat"] {
-        datetime created "dateTime"
-        date issued "date [PK]"
-        date valid "[PK]"
-        string at_location_id "Installatie, ExploitatieLocatie [FK]"
-        string label
         string uri "URI [PK]"
+        datetime aangemaakt_op "dateTime"
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string locatie_id_installatie "Installatie [FK]"
+        string locatie_id_exploitatie_locatie "ExploitatieLocatie [FK]"
+        string benaming
     }
     Bron["bron"] {
-        string label
-        string comment
         string uri "URI [PK]"
+        string benaming
+        string beschrijving
     }
     Emissiepunt["emissiepunt"] {
-        string at_location_id "Installatie, ExploitatieLocatie [FK]"
-        string label
-        string status
         string uri "URI [PK]"
+        string locatie_id_installatie "Installatie [FK]"
+        string locatie_id_exploitatie_locatie "ExploitatieLocatie [FK]"
+        string benaming
     }
     Exploitant["exploitant"] {
-        datetime created "dateTime"
-        date issued "date [PK]"
-        date valid "[PK]"
-        string label
         string uri "URI [PK]"
+        datetime aangemaakt_op "dateTime"
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string benaming
+        string address_id "Address [FK]"
     }
     ExploitatieLocatie["exploitatie_locatie"] {
-        datetime created "dateTime"
-        string label
-        date issued "date [PK]"
-        date valid "[PK]"
-        string at_location_id "Exploitant [FK]"
-        string exploitatie_locatie_identifiers "[PK]"
-        string was_influenced_by
-        string was_derived_from_id "ExploitatieLocatie [FK]"
         string uri "URI [PK]"
+        datetime aangemaakt_op "dateTime"
+        string benaming
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string locatie_id "Exploitant [FK]"
+        string beinvloed_door
+        string afgeleid_van_id "ExploitatieLocatie [FK]"
+        string toegeschreven_aan_id "Apparaat [FK]"
     }
     Grondwaterput["grondwaterput"] {
-        string emissiepunt_id "Emissiepunt [FK]"
-        float depth
         string uri "URI [PK]"
+        string emissiepunt_id "Emissiepunt [FK]"
+        string depth
     }
     Installatie["installatie"] {
-        string installatie_identifiers "[PK]"
-        string label
-        datetime created "dateTime"
-        date issued "date [PK]"
-        date valid "[PK]"
-        string at_location_id "ExploitatieLocatie [FK]"
-        string status
-        string was_derived_from_id "ExploitatieLocatie [FK]"
         string uri "URI [PK]"
-    }
-    Lozingspunt["lozingspunt"] {
-        string emissiepunt_id "Emissiepunt [FK]"
-        string uri "URI [PK]"
+        string benaming
+        datetime aangemaakt_op "dateTime"
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
+        string locatie_id "ExploitatieLocatie [FK]"
+        string afgeleid_van_id "ExploitatieLocatie [FK]"
     }
     MeetProcedure["meet_procedure"] {
         string uri "URI [PK]"
+        enum afgeleid_van "VerwerkingsProcedure, TransportProcedure, VerbruiksProcedure, EmissieProcedure"
+        string afgeleid_van_id "Activiteit, ExploitatieLocatie, ActiviteitProcedure, MeetProcedure [FK]"
+        string toegeschreven_aan_id "Apparaat [FK]"
     }
     Meetpunt["meetpunt"] {
-        string is_proxy_for_id "Emissiepunt, ActiviteitStap [FK]"
-        string label
-        datetime created "dateTime"
-        date issued "date [PK]"
-        date valid "[PK]"
-        string status
         string uri "URI [PK]"
-    }
-    Observatie["observatie"] {
-        string has_feature_of_interest_id "Meetpunt, Installatie [FK]"
-        string uri "URI [PK]"
+        string is_proxy_for_id_emissiepunt "Emissiepunt [FK]"
+        string is_proxy_for_id_activiteit_stap "ActiviteitStap [FK]"
+        string benaming
+        datetime aangemaakt_op "dateTime"
+        date geldig_van "date [PK]"
+        string geldig_tot "[PK]"
     }
     Schouw["schouw"] {
-        string emissiepunt_id "Emissiepunt [FK]"
-        float diameter
-        float height
         string uri "URI [PK]"
+        string emissiepunt_id "Emissiepunt [FK]"
+        string diameter
+        string hoogte
     }
     Stof["stof"] {
-        string label
         string uri "URI [PK]"
+        string benaming
     }
 
     %% Relationships
-    Activiteit many to one ExploitatieLocatie : "atLocation"
-    ExploitatieLocatie many to one Exploitant : "atLocation"
-    ExploitatieLocatie many to many ExploitatieLocatie : "wasDerivedFrom"
-    ActiviteitStap many to many Emissiepunt : "used"
-    ActiviteitStap many to many Apparaat : "used"
-    ActiviteitStap many to many Bron : "used"
-    ActiviteitStap many to many Stof : "used"
-    ActiviteitStap many to many ActiviteitProcedure : "implements"
-    ActiviteitStap many to many MeetProcedure : "implements"
-    ActiviteitStap many to one Activiteit : "isStepOfPlan"
-    ActiviteitStap many to one ActiviteitProcedure : "isStepOfPlan"
-    ActiviteitStap many to one MeetProcedure : "isStepOfPlan"
-    VerwerkingsProcedure many to one ActiviteitProcedure : "subClassOf"
-    Emissiepunt many to one Installatie : "atLocation"
-    Emissiepunt many to one ExploitatieLocatie : "atLocation"
-    Apparaat many to one Installatie : "atLocation"
-    Apparaat many to one ExploitatieLocatie : "atLocation"
-    Installatie many to one ExploitatieLocatie : "atLocation"
-    Installatie many to many ExploitatieLocatie : "wasDerivedFrom"
+    Activiteit many to one ExploitatieLocatie : "locatie"
+    Activiteit many to many Activiteit : "afgeleid van"
+    Activiteit many to many ExploitatieLocatie : "afgeleid van"
+    Activiteit many to many ActiviteitProcedure : "afgeleid van"
+    Activiteit many to many MeetProcedure : "afgeleid van"
+    Activiteit many to many Apparaat : "toegeschreven aan"
+    ExploitatieLocatie many to one Exploitant : "locatie"
+    ExploitatieLocatie many to many ExploitatieLocatie : "afgeleid van"
+    ExploitatieLocatie many to many Apparaat : "toegeschreven aan"
+    ActiviteitStap many to many Emissiepunt : "beïnvloed door"
+    ActiviteitStap many to many Bron : "beïnvloed door"
+    ActiviteitStap many to many Stof : "beïnvloed door"
+    ActiviteitStap many to many Apparaat : "toegeschreven aan"
+    ActiviteitStap many to many ActiviteitProcedure : "afgeleid van"
+    ActiviteitStap many to many MeetProcedure : "afgeleid van"
+    ActiviteitStap many to one Activiteit : "stap van activiteit"
+    ActiviteitStap many to one ActiviteitStap : "stap van activiteit"
+    ActiviteitStap many to many ActiviteitStap : "gaat vooraf aan"
+    Emissiepunt many to one Installatie : "locatie"
+    Emissiepunt many to one ExploitatieLocatie : "locatie"
+    Apparaat many to one Installatie : "locatie"
+    Apparaat many to one ExploitatieLocatie : "locatie"
+    Installatie many to one ExploitatieLocatie : "locatie"
+    Installatie many to many ExploitatieLocatie : "afgeleid van"
     Schouw many to one Emissiepunt : "subClassOf"
     Grondwaterput many to one Emissiepunt : "subClassOf"
-    Lozingspunt many to one Emissiepunt : "subClassOf"
     Meetpunt many to many Emissiepunt : "isProxyFor"
     Meetpunt many to many ActiviteitStap : "isProxyFor"
-    Observatie many to one Meetpunt : "hasFeatureOfInterest"
-    Observatie many to one Installatie : "hasFeatureOfInterest"
-    TransportProcedure many to one ActiviteitProcedure : "subClassOf"
+    Exploitant many to many Address : "address"
+    ActiviteitProcedure many to many Activiteit : "afgeleid van"
+    ActiviteitProcedure many to many ExploitatieLocatie : "afgeleid van"
+    ActiviteitProcedure many to many ActiviteitProcedure : "afgeleid van"
+    ActiviteitProcedure many to many MeetProcedure : "afgeleid van"
+    ActiviteitProcedure many to many Apparaat : "toegeschreven aan"
+    MeetProcedure many to many Activiteit : "afgeleid van"
+    MeetProcedure many to many ExploitatieLocatie : "afgeleid van"
+    MeetProcedure many to many ActiviteitProcedure : "afgeleid van"
+    MeetProcedure many to many MeetProcedure : "afgeleid van"
+    MeetProcedure many to many Apparaat : "toegeschreven aan"

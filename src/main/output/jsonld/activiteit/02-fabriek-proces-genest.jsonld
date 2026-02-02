@@ -133,7 +133,8 @@
     "issued" : "2020-07-30",
     "valid" : "2030-12-31",
     "label" : "Koekjes maken",
-    "status" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief"
+    "status" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief",
+    "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001",
     "type" : [ "http://purl.org/net/p-plan#Step", "http://purl.org/net/p-plan#Plan", "http://www.w3.org/ns/prov#Plan", "http://purl.org/net/p-plan#Entity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA", "http://www.w3.org/ns/prov#Entity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
@@ -146,11 +147,12 @@
     "label" : "Ingrediënten mengen"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_2",
-    "type" : [ "http://purl.org/net/p-plan#Step", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
+    "type" : [ "http://purl.org/net/p-plan#Step", "http://www.w3.org/ns/prov#Entity", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
     "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_1",
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001",
     "label" : "Overbrenging",
-    "implements" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces"
+    "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces",
+    "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_3",
     "type" : [ "http://purl.org/net/p-plan#Step", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap" ],
@@ -163,5 +165,13 @@
     "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001",
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/ACTIVITEIT_001",
     "label" : "Koekjes bakken"
+  }, {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC",
+    "type" : [ "http://www.w3.org/ns/prov#Entity", "http://www.opengis.net/ont/geosparql#SpatialObjectCollection", "http://www.w3.org/ns/prov#Location", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie" ],
+    "label" : "Locatie ACTIVITEIT_001"
+  }, {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces",
+    "type" : "http://www.w3.org/ns/prov#Entity",
+    "influenced" : "https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_2"
   } ]
 }

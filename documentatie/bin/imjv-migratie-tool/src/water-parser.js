@@ -184,14 +184,14 @@ export class WaterParser extends BaseParser {
                 );
             }
 
-            // Map as waterVerbruikProces via ssn:implements
+            // Map as waterVerbruikProces via prov:wasDerivedFrom (plan afgeleid van generieke procedure)
             this.turtle.triple(
                 stepUri,
-                this.turtle.qname('ssn', 'implements'),
+                this.turtle.qname('prov', 'wasDerivedFrom'),
                 this.turtle.qname('riepr', 'waterVerbruikProces')
             );
 
-            // Add source information as Bron entity with prov:used relation
+            // Add source information as Bron entity; the Bron (prov:Entity) beïnvloedt de stap (prov:Entity)
             const herkomst = gebruik.Herkomst?.[0];
             if (herkomst) {
                 const bronId = this.sanitizeId(herkomst);
@@ -210,10 +210,10 @@ export class WaterParser extends BaseParser {
                     this.turtle.literal(herkomst, null, 'nl')
                 );
 
-                // Link watergebruik step to water source via prov:used
+                // Link watergebruik step to water source via prov:wasInfluencedBy (Entity->Entity)
                 this.turtle.triple(
                     stepUri,
-                    this.turtle.qname('prov', 'used'),
+                    this.turtle.qname('prov', 'wasInfluencedBy'),
                     bronUri
                 );
             }
@@ -323,15 +323,17 @@ export class WaterParser extends BaseParser {
                 );
             }
 
+            // Map uitstootproces via prov:wasDerivedFrom (plan afgeleid van generieke emissieprocedure)
             this.turtle.triple(
                 stepUri,
-                this.turtle.qname('ssn', 'implements'),
+                this.turtle.qname('prov', 'wasDerivedFrom'),
                 this.turtle.qname('riepr', 'uitstootProces')
             );
 
+            // Emissiepunten (prov:Entity) beïnvloeden de uitstootstap (prov:Entity)
             this.turtle.triple(
                 stepUri,
-                this.turtle.qname('prov', 'used'),
+                this.turtle.qname('prov', 'wasInfluencedBy'),
                 parentUri
             );
         });

@@ -1,10 +1,12 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
 @prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
+@prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix pplan: <http://purl.org/net/p-plan#> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -16,7 +18,11 @@ activiteit:ACTIVITEIT_001 a riepr:Activiteit ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:valid "2030-12-31"^^xsd:date ;
     adms:status riepr:Actief ;
-    rdfs:label "Koekjes maken"@nl .
+    rdfs:label "Koekjes maken"@nl ;
+    prov:atLocation exploitatielocatie:ACTIVITEIT_001_LOC .
+
+exploitatielocatie:ACTIVITEIT_001_LOC a riepr:ExploitatieLocatie ;
+    rdfs:label "Locatie ACTIVITEIT_001"@nl .
 
 activiteitstap:STAP_001 a riepr:ActiviteitStap ;
     rdfs:label "Koekjesdeeg maken"@nl ;
@@ -26,7 +32,7 @@ activiteitstap:STAP_001_1 a riepr:ActiviteitStap ;
     pplan:isStepOfPlan activiteitstap:STAP_001 .
 activiteitstap:STAP_001_2 a riepr:ActiviteitStap ;
     rdfs:label "Overbrenging"@nl ;
-    ssn:implements riepr:overbrengingsProces ;
+    prov:wasDerivedFrom riepr:overbrengingsProces ;
     pplan:isStepOfPlan activiteitstap:STAP_001 ;
     pplan:isPrecededBy activiteitstap:STAP_001_1 .
 activiteitstap:STAP_001_3 a riepr:ActiviteitStap ;

@@ -25,14 +25,14 @@ const rdfs = {
 const prov = {
     type: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
     used: namedNode('http://www.w3.org/ns/prov#used'),
+    wasInfluencedBy: namedNode('http://www.w3.org/ns/prov#wasInfluencedBy'),
+    wasAttributedTo: namedNode('http://www.w3.org/ns/prov#wasAttributedTo'),
 };
 const pplan = {
     isPrecededBy: namedNode('http://purl.org/net/p-plan#isPrecededBy'),
     isStepOfPlan: namedNode('http://purl.org/net/p-plan#isStepOfPlan'),
 };
-const ssn = {
-    implements: namedNode('http://www.w3.org/ns/ssn/implements'),
-};
+prov.wasDerivedFrom = namedNode('http://www.w3.org/ns/prov#wasDerivedFrom');
 const skos = {
     example: namedNode('http://www.w3.org/2004/02/skos/core#example'),
 };
@@ -99,8 +99,8 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
     let mermaid = '';
     for (const stepQuad of steps) {
         const stepUri = stepQuad.subject.value;
-        const implementsQuads = store.getQuads(namedNode(stepUri), ssn.implements, null);
-        const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
+        const procedureQuads = store.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
+        const procedureUri = procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
         if (procedureUri && (
             procedureChecker.isTransportProcedure(procedureUri) ||
             procedureChecker.isVerbruiksProcedure(procedureUri) ||
@@ -129,15 +129,16 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
         }
 
         const label = escapeMermaidLabel(getLabel(store, stepUri));
-        let nodeLabel = implementsQuads.length > 0
-            ? `${label}[${escapeMermaidLabel(getLabel(store, implementsQuads[0].object.value))}]`
+        let nodeLabel = procedureQuads.length > 0
+            ? `${label}[${escapeMermaidLabel(getLabel(store, procedureQuads[0].object.value))}]`
             : label;
         const comment = getComment(store, stepUri);
         if (comment) {
             nodeLabel += `<br/><i>${comment}</i>`;
         }
         if (procedureChecker && procedureChecker.isApparaatVerwerkingsProcedure(procedureUri)) {
-            const gebruikteApparaten = store.getQuads(namedNode(stepUri), prov.used, null).filter(q => {
+            // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
+            const gebruikteApparaten = store.getQuads(namedNode(stepUri), prov.wasAttributedTo, null).filter(q => {
                 const types = store.getQuads(q.object, rdf.type, null).map(t => t.object.value);
                 return types.includes(riepr.Apparaat.value);
             });
@@ -233,11 +234,12 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     
     for (const stepQuad of allSteps) {
         const stepUri = stepQuad.subject.value;
-        const implementsQuads = exampleStore.getQuads(namedNode(stepUri), ssn.implements, null);
-        const procedureUri = implementsQuads.length > 0 ? implementsQuads[0].object.value : null;
+        const procedureQuads = exampleStore.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
+        const procedureUri = procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
         
         if (procedureUri && procedureChecker.isVerbruiksProcedure(procedureUri)) {
-            const usedStoffen = exampleStore.getQuads(namedNode(stepUri), prov.used, null);
+            // Stoffen worden als prov:Entity gemodelleerd en beïnvloeden de stap (Entity->Entity)
+            const usedStoffen = exampleStore.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
             for (const stofQuad of usedStoffen) {
                 const stofUri = stofQuad.object.value;
                 const stofTypes = exampleStore.getQuads(namedNode(stofUri), stofRdf, null);
@@ -281,7 +283,8 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
 
         for (const apparaatQuad of apparatusQuads) {
             const apparaatUri = apparaatQuad.object.value;
-            const gebruikteInStappen = exampleStore.getQuads(null, prov.used, namedNode(apparaatUri));
+            // Stappen worden aan apparaten toegeschreven via prov:wasAttributedTo (Agent-relatie)
+            const gebruikteInStappen = exampleStore.getQuads(null, prov.wasAttributedTo, namedNode(apparaatUri));
             for (const gebruikteStapQuad of gebruikteInStappen) {
                 const stepUri = gebruikteStapQuad.subject.value;
                 stapUris.add(stepUri);

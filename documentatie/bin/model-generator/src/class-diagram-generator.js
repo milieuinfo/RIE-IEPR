@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { PATHS } from './config.js';
+import { PATHS, NAMESPACES } from './config.js';
 
 export class ClassDiagramGenerator {
   constructor(ontology, { outputPath = PATHS.dataModels.class } = {}) {
@@ -14,6 +14,7 @@ export class ClassDiagramGenerator {
   generate() {
     this.ontology.extractClasses();
     this.ontology.addExternalClassesFromRestrictions();
+    this.ontology.addDomainRangeRestrictions();
     this.enumClasses = this.computeEnumClasses();
     this.buildRelationships();
     const diagram = this.generateMermaidDiagram();
@@ -25,9 +26,18 @@ export class ClassDiagramGenerator {
     this.inheritance.clear();
 
     this.ontology.classes.forEach((classInfo, classLocalName) => {
+      // Sla volledig generieke klassen (en hun relaties) over
+      // als ze niet relevant zijn of puur technisch/abstract.
+      if (!this.ontology.isRelevantClassName(classLocalName)) return;
+      if (this.isTechnicalClass(classLocalName, classInfo)) return;
+
       const superClassNames = this.getSuperClassNames(classInfo);
       superClassNames
         .filter(name => !this.enumClasses.has(name))
+        .filter(name => {
+          const info = this.ontology.classes.get(name);
+          return !this.isTechnicalClass(name, info);
+        })
         .forEach(name => {
           const info = this.ontology.classes.get(name);
           if (info?.external) return;
@@ -44,17 +54,26 @@ export class ClassDiagramGenerator {
         if (restriction.rangeTypes.length === 0) return;
         if (this.excludedProperties.has(restriction.property)) return;
 
+        // Toon enkel relaties voor predicaten die effectief
+        // voorkomen in ontologie/data/concepten.
+        if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
+
         const resolvedRangeTypes = this.ontology
           .resolveRangeTypes(restriction.rangeTypes, restriction)
           .filter(type => !this.enumClasses.has(type))
-          .filter(type => !this.ontology.classes.get(type)?.external);
+          .filter(type => this.ontology.isRelevantClassName(type))
+          .filter(type => {
+            const info = this.ontology.classes.get(type);
+            return !this.isTechnicalClass(type, info);
+          });
         resolvedRangeTypes.forEach(rangeType => {
           const key = `${classLocalName}|${rangeType}|${restriction.property}`;
           if (!this.relationships.has(key)) {
+            const businessLabel = this.ontology.getBusinessLabelForProperty(restriction.propertyIri);
             this.relationships.set(key, {
               from: classLocalName,
               to: rangeType,
-              label: restriction.property
+              label: businessLabel || restriction.property
             });
           }
         });
@@ -73,9 +92,13 @@ export class ClassDiagramGenerator {
 
     const classNames = Array.from(this.ontology.classes.keys())
       .filter(name => {
-        const info = this.ontology.classes.get(name);
         if (this.enumClasses.has(name)) return false;
-        return info?.external ? usedClasses.has(name) : true;
+        // Toon enkel klassen die effectief voorkomen in
+        // ontologie/data/concepten.
+        if (!this.ontology.isRelevantClassName(name)) return false;
+        const info = this.ontology.classes.get(name);
+        if (this.isTechnicalClass(name, info)) return false;
+        return true;
       })
       .sort((a, b) => a.localeCompare(b));
 
@@ -109,12 +132,17 @@ export class ClassDiagramGenerator {
 
     classInfo.restrictions.forEach(restriction => {
       if (this.excludedProperties.has(restriction.property)) return;
+      if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
       if (restriction.rangeTypes.length > 0 && restriction.restrictionType !== 'datatype') {
         const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
         const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
         const nonEnumTypes = resolvedRangeTypes
           .filter(type => !enumClasses.has(type))
-          .filter(type => !this.ontology.classes.get(type)?.external);
+          .filter(type => this.ontology.isRelevantClassName(type))
+          .filter(type => {
+            const info = this.ontology.classes.get(type);
+            return !this.isTechnicalClass(type, info);
+          });
 
         if (enumTypes.length > 0 && nonEnumTypes.length === 0) {
           const attrName = this.deriveAttributeName(restriction);
@@ -147,7 +175,11 @@ export class ClassDiagramGenerator {
       return `${base}_identifiers`;
     }
 
-    return this.camelCaseToSnakeCase(restriction.property);
+    // Gebruik indien mogelijk de business-naam uit het concepten-URI als
+    // basis voor de attribuutnaam (bijv. "geldigVan", "status").
+    const businessName = this.ontology.getBusinessNameForProperty(restriction.propertyIri);
+    const base = businessName || restriction.property;
+    return this.camelCaseToSnakeCase(base);
   }
 
   inferDataType(attrName) {
@@ -201,5 +233,54 @@ export class ClassDiagramGenerator {
     });
 
     return enumClasses;
+  }
+
+  /**
+   * Bepaal of een klasse in essentie een technische/abstracte
+   * superklasse is: geen eigen betekenisvolle attributen en geen
+   * directe instantiaties in de data of ontologie.
+   */
+  isTechnicalClass(className, classInfo) {
+    if (!className || !classInfo) return false;
+
+    // Alle P-PLAN-klassen (zoals pplan:Step, pplan:Plan, ...)
+    // zijn puur modelleerconstructies en willen we niet als
+    // afzonderlijke klassen in het klassendiagram tonen.
+    if (classInfo.iri && String(classInfo.iri).startsWith(NAMESPACES.pplan)) {
+      return true;
+    }
+
+    // De generieke basis-klasse "Procedure" (sosa:Procedure)
+    // is een puur modelleerconstruct (superklasse voor de
+    // concrete Activiteit-/MeetProcedure) en tonen we niet als
+    // afzonderlijke klasse in het klassendiagram.
+    if (className === 'Procedure') {
+      return true;
+    }
+
+    // SKOS conceptenschema-klassen (zoals de verschillende
+    // *Procedure-varianten die ook ConceptScheme zijn) beschouwen
+    // we altijd als technisch: ze modelleren codelijsten en worden
+    // niet als volwaardige klassen in het klassendiagram getoond.
+    if (classInfo.isConceptScheme) return true;
+
+    // Als een (meestal externe) klasse expliciet het doel is van
+    // een business-concept via skos:exactMatch, dan beschouwen we
+    // die als volwaardige domeinklasse, ook als ze zelf geen eigen
+    // attributen heeft (bv. locn:Address voor "Verzendadres").
+    if (classInfo.external && classInfo.isBusinessConceptTarget) {
+      return false;
+    }
+
+    // Kijk naar de afgeleide attributen en tel enkel die die geen
+    // generieke URI-kolom zijn (class diagram kent geen FK-vlag,
+    // dus we kunnen enkel op naam heuristiek doen).
+    const attrs = this.deriveAttributes(classInfo, this.enumClasses);
+    const meaningful = attrs.filter(attr => attr.name !== 'uri');
+
+    // Net zoals in het ER-diagram: elke klasse (extern of intern)
+    // zonder eigen betekenisvolle attributen wordt als puur
+    // technische/structurele superklasse beschouwd en niet getoond.
+    return meaningful.length === 0;
   }
 }
