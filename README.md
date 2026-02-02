@@ -8,29 +8,31 @@ This Scala application provides a workflow for converting RDF/Turtle data to JSO
 src/main/scala/
 ├── TurtleTransformer.scala          # Main Scala application with all conversion logic
 ├── OwlToShaclGenerator.scala        # Generates SHACL shapes from OWL ontology
-└── ShaclValidator.scala             # Validates RDF models against SHACL shapes
+├── ShaclValidator.scala             # Validates RDF models against SHACL shapes
+└── OntologySorter.scala             # Sorts ontologies and creates structural/disjoint subsets
 
 src/main/resources/
 ├── be/vlaanderen/omgeving/riepr/
-│   └── data/id/jsonld/frame.json    # JSON-LD framing configuration
-├── ssn-sosa-fullprov-o-p-plan-geosparql.ttl         # Combined ontology
-├── ssn-sosa_2023.ttl                # SSN-SOSA ontology
-├── prov-o.ttl                       # PROV-O ontology
-├── p-plan.ttl                       # P-Plan ontology
-├── geosparql_vocab_all.ttl          # GeoSPARQL vocabulary
-├── inference_source.ttl             # Inference ontology
-├── class-disjointness.ttl           # Class disjointness rules
-├── domain.ttl                       # Domain rules
-├── range.ttl                        # Range rules
-├── subClassOf.ttl                   # Subclass relationships
-├── subpropertyOf.ttl                # Subproperty relationships
-├── inverse.ttl                      # Inverse property definitions
-└── be/                              # Additional ontology files
+│   └── data/
+│       ├── id/
+│       │   ├── jsonld/
+│       │   │   ├── frame.json              # JSON-LD framing configuration
+│       │   │   └── context.json            # JSON-LD context configuration
+│       │   └── rule/
+│       │       └── domain-range-subproperty.rules  # Reasoning rules
+│       └── ns/
+│           └── riepr/
+│               ├── riepr.ttl                # RIEPR domain ontology
+│               └── rieprAlignments.ttl      # RIEPR ontology alignments
+├── generated-shapes.ttl                                 # Auto-generated SHACL shapes
+├── logback.xml                                         # Logging configuration
+├── be/                                                  # Additional ontology files
+├── net/                                                 # Network-related ontologies
+└── org/                                                 # Organization-related ontologies
 
 src/main/input/
 ├── activiteit/                      # Activity data
 ├── bedrijf/                        # Company data
-├── codelijsten/                     # Code lists
 ├── exploitant/                     # Operator data
 └── installatie/                     # Installation data
 
@@ -39,33 +41,60 @@ src/main/output/
 ├── jsonld/                          # JSON-LD output
 ├── parquet/                         # Parquet output
 └── turtle/                          # Inferred Turtle output
+
+src/test/scala/
+├── ShaclGenerationTest.scala        # SHACL generation tests
+├── ShaclGenerationAndValidationTest.scala  # Combined SHACL tests
+├── ShaclTestRunner.scala            # SHACL test runner
+├── ShaclGenerationSpec.scala        # SHACL generation specifications
+├── ShaclTestUtil.scala              # SHACL test utilities
+├── ShaclValidatorTest.scala         # SHACL validator tests
+└── TurtleTransformerTest.scala      # Turtle transformer tests
+
 ```
 
 ## Workflow
 
 The application follows this conversion workflow:
 
-1. **Turtle Processing with Reasoning**
-   - Loads ontologies from `.ttl` files in `src/main/resources/`
+1. **Ontology Sorting and Subsetting**
+   - Uses `OntologySorter` to create structural and disjoint subsets from complete ontology
+   - Generates three ontology variants: complete, structural subset, and disjoint subset
+   - Structural subset contains: subPropertyOf, subClassOf, inverseOf, domain, and range relationships
+   - Disjoint subset contains: disjointWith relationships
+
+2. **Turtle Processing with Reasoning**
+   - Loads ontologies from `.ttl` files in `src/main/resources/` including:
+     - Combined ontologies (SSN-SOSA, PROV-O, P-Plan, GeoSPARQL, DBO)
+     - RIEPR domain ontology from `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl`
+     - RIEPR ontology alignments from `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/rieprAlignments.ttl`
    - Loads reasoning rules from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules`
    - Processes turtle files from `src/main/input/` recursively
    - Applies reasoning using Jena's GenericRuleReasoner
    - Writes inferred triples to `src/main/output/turtle/`
 
-2. **JSON-LD Conversion**
+3. **JSON-LD Conversion**
    - Converts inferred RDF to JSON-LD
    - Applies JSON-LD framing using `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json`
+   - Uses JSON-LD context from `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json`
    - Writes JSON-LD files to `src/main/output/jsonld/`
 
-3. **JSON and Parquet Conversion**
+4. **JSON and Parquet Conversion**
    - Extracts `@graph` arrays from JSON-LD files
    - Writes JSON arrays to `src/main/output/json/`
    - Converts JSON arrays to Parquet files in `src/main/output/parquet/`
+   - Generates and saves Parquet schema as `_schema.json` in each output directory
 
-4. **SHACL Validation**
-   - Generates SHACL shapes from OWL ontology
-   - Validates inferred models against generated SHACL shapes
-   - Provides detailed validation reports
+5. **SHACL Validation**
+   - Generates SHACL shapes from OWL ontology using `OwlToShaclGenerator`
+   - Validates inferred models against generated SHACL shapes using `ShaclValidator`
+   - Provides detailed validation reports with error messages
+   - Saves generated SHACL shapes to `src/main/resources/generated-shapes.ttl`
+
+6. **OWL Validation**
+   - Validates models using Jena's OWL Mini Reasoner
+   - Checks logical consistency and class hierarchies
+   - Provides detailed error messages for non-conformant data
 
 
 ## Usage
@@ -101,13 +130,18 @@ The application uses Apache Spark for Parquet conversion. Ensure you have Spark 
 
 The application uses the following key resources:
 
-- **Ontologies**: Located in `src/main/resources/` (SSN-SOSA, PROV-O, P-Plan, GeoSPARQL)
+- **Ontologies**: Located in `src/main/resources/` including:
+  - Combined ontologies: SSN-SOSA, PROV-O, P-Plan, GeoSPARQL, DBO
+  - RIEPR domain ontology: `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl`
+  - RIEPR ontology alignments: `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/rieprAlignments.ttl`
 - **JSON-LD Frame**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/frame.json`
+- **JSON-LD Context**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/jsonld/context.json`
 - **Reasoning Rules**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.rules`
-- **Inference Ontology**: `src/main/resources/inference_source.ttl`
-- **Reasoning Ontology**: `src/main/resources/class-disjointness.ttl`
+- **Generated SHACL Shapes**: `src/main/resources/generated-shapes.ttl`
+- **Logging Configuration**: `src/main/resources/logback.xml`
 - **Input Data**: `src/main/input/` (recursively processes all `.ttl` files)
 - **Output Data**: `src/main/output/` (json, jsonld, parquet, turtle directories)
+- **Ontology Subsets**: Automatically created by `OntologySorter` (complete, structural, disjoint)
 
 ## Dependencies
 
@@ -153,17 +187,20 @@ Parquet Files
 
 ## Key Features
 
-1. **Recursive File Processing**: Automatically finds and processes all `.ttl` files in the input directory and subdirectories
-2. **Reasoning**: Applies Jena reasoning rules to infer additional triples
-3. **JSON-LD Framing**: Uses JSON-LD framing to create structured JSON output
-4. **Parquet Conversion**: Converts JSON data to efficient Parquet format using Spark
-5. **Multiple Output Formats**: Generates Turtle, JSON, JSON-LD, and Parquet outputs
-6. **SHACL Validation**: Generates SHACL shapes from OWL ontology and validates data
-7. **OWL Validation**: Validates models against OWL reasoning
+1. **Ontology Sorting**: Automatically sorts and subsets ontologies for efficient processing
+2. **Recursive File Processing**: Automatically finds and processes all `.ttl` files in the input directory and subdirectories
+3. **Reasoning**: Applies Jena reasoning rules to infer additional triples
+4. **JSON-LD Framing**: Uses JSON-LD framing to create structured JSON output
+5. **Parquet Conversion**: Converts JSON data to efficient Parquet format using Spark with schema preservation
+6. **Multiple Output Formats**: Generates Turtle, JSON, JSON-LD, and Parquet outputs
+7. **SHACL Validation**: Generates SHACL shapes from OWL ontology and validates data
+8. **OWL Validation**: Validates models against OWL reasoning
+9. **Comprehensive Testing**: Includes Scala tests, Java integration tests, and Python utility scripts
+10. **Error Handling**: Graceful handling of empty or invalid inputs with detailed error messages
 
 ## Implementation Details
 
-The application consists of three main Scala files:
+The application consists of four main Scala files:
 
 ### TurtleTransformer.scala
 
@@ -177,10 +214,12 @@ The main application file containing the core conversion logic:
 - `modelToJsonLd()`: Converts RDF models to JSON-LD
 - `frameJsonLd()`: Applies JSON-LD framing
 - `extractGraph()`: Extracts `@graph` arrays from framed JSON-LD
-- `writeGraphToParquet()`: Converts JSON to Parquet using Spark
+- `writeGraphToParquet()`: Converts JSON to Parquet using Spark and saves schema
 - `writeModelToTurtle()`: Writes inferred models to Turtle format
 - `writeJson()`: Writes JSON output files
 - `validateModel()`: Validates models using OWL reasoning
+- `processModel()`: Complete processing pipeline for individual models
+- `main()`: Main entry point with complete workflow
 
 ### OwlToShaclGenerator.scala
 
@@ -199,6 +238,16 @@ Validates RDF models against SHACL shapes:
 - `loadShapes()`: Loads SHACL shapes from file
 - `validate()`: Validates model against SHACL shapes
 - `printReport()`: Prints validation results in readable format
+
+### OntologySorter.scala
+
+Sorts and subsets ontologies for efficient processing:
+
+- `completeOntology`: Loads and combines all ontology files
+- `structuralSubset`: Extracts structural relationships (subPropertyOf, subClassOf, inverseOf, domain, range)
+- `disjointSubset`: Extracts disjointness relationships (disjointWith)
+- `extractStructuralSubset()`: Private method for structural subset extraction
+- `extractDisjointSubset()`: Private method for disjoint subset extraction
 
 ## Validation Process
 
@@ -233,3 +282,6 @@ Both validation processes provide detailed error messages when validation fails,
 - Reasoning includes domain/range inference, subproperty inference, and other rules defined in the rules file
 - The application handles empty or invalid inputs gracefully by returning `None`/`Option` types
 - Validation results are logged with detailed error messages for debugging
+- Parquet files include schema information saved as `_schema.json` in each output directory
+- Ontology sorting improves performance by creating focused subsets for different processing needs
+- The application supports both individual file processing and consolidated processing of all input data
