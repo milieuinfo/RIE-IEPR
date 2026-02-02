@@ -57,6 +57,30 @@ object OwlToShaclGenerator {
     }
   }
 
+  private def isDatatype(res: Resource): Boolean =
+    res.isURIResource &&
+      res.getURI.startsWith("http://www.w3.org/2001/XMLSchema#")
+
+  private def addClassOrDatatype(
+                                  shape: Resource,
+                                  value: Resource,
+                                  shacl: Model
+                                ): Unit = {
+
+    if (isDatatype(value)) {
+      shape.addProperty(
+        shacl.createProperty(SH + "datatype"),
+        shacl.createResource(value.getURI)
+      )
+    } else {
+      shape.addProperty(
+        shacl.createProperty(SH + "class"),
+        shacl.createResource(value.getURI)
+      )
+    }
+  }
+
+
   private def addCardinality(
                               restriction: Resource,
                               propShape: Resource,
@@ -101,11 +125,8 @@ object OwlToShaclGenerator {
 
     val rdfList =
       if (node.canAs(classOf[RDFList])) {
-        // direct ( A B )
         node.as(classOf[RDFList])
-      }
-      else {
-        // _:x owl:unionOf ( A B )
+      } else {
         val listNode = node.getPropertyResourceValue(OWL.unionOf)
         if (listNode == null)
           throw new IllegalArgumentException(
@@ -116,17 +137,15 @@ object OwlToShaclGenerator {
 
     val members = rdfList.iterator().asScala.toSeq
 
-    val shapes = members.map { cls =>
+    val shapes = members.map { m =>
       val b = shacl.createResource()
-      b.addProperty(
-        shacl.createProperty(SH + "class"),
-        shacl.createResource(cls.asResource().getURI)
-      )
+      addClassOrDatatype(b, m.asResource(), shacl)
       b
     }
 
     shacl.createList(shapes.iterator.asJava)
   }
+
 
 
   private def generatePropertyShape(
@@ -175,13 +194,10 @@ object OwlToShaclGenerator {
         )
       }
 
-      // Enkel klasse
       else if (someValuesFrom.isURIResource) {
-        propShape.addProperty(
-          shacl.createProperty(SH + "class"),
-          shacl.createResource(someValuesFrom.getURI)
-        )
+        addClassOrDatatype(propShape, someValuesFrom, shacl)
       }
+
     }
 
     // owl:someValuesFrom ⇒ minCount = 1 (tenzij expliciet overschreven)
@@ -209,10 +225,7 @@ object OwlToShaclGenerator {
         )
       }
       else if (allValuesFrom.isURIResource) {
-        propShape.addProperty(
-          shacl.createProperty(SH + "class"),
-          shacl.createResource(allValuesFrom.getURI)
-        )
+        addClassOrDatatype(propShape, allValuesFrom, shacl)
       }
     }
 
