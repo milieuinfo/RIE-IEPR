@@ -2,12 +2,11 @@ package be.vlaanderen.omgeving.riepr
 
 import org.apache.jena.vocabulary.{OWL, RDFS}
 import org.apache.jena.rdf.model.{Model, ModelFactory, Property}
-
 import be.vlaanderen.omgeving.riepr.TurtleTransformer.{listTurtleFiles, logger, parseTurtle, processModel}
 import org.apache.jena.rdf.model.{Model, ModelFactory}
 import org.slf4j.LoggerFactory
 
-import java.io.File
+import java.io.{File, FileOutputStream}
 
 object OntologySorter {
 
@@ -21,6 +20,9 @@ object OntologySorter {
       logger.info(s"Processing: ${file.getPath}")
       model.add(parseTurtle(file))
     }
+    //val fos = new FileOutputStream("src/main/resources/completeOntology.ttl")
+    //try model.write(fos, "TURTLE")
+    //finally fos.close()
 
     model
   }
