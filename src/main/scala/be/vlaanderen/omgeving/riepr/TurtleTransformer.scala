@@ -21,7 +21,29 @@ case class ValidationResult(
                              messages: Seq[String]
                            )
 
-
+  /**
+   * Main application for converting RDF/Turtle data to JSON-LD and Parquet.
+   *
+   * This application provides an end-to-end processing pipeline for RDF data:
+   *  - ontology loading and preprocessing
+   *  - rule-based and OWL reasoning
+   *  - SHACL validation
+   *  - JSON-LD conversion with framing
+   *  - Parquet generation using Apache Spark
+   *
+   * The application is intended for batch processing of Turtle files
+   * and supports both per-file and consolidated processing.
+   *
+   * @example
+   * {{{
+   * // Run from the command line
+   * java -cp "target/classes:lib/*" be.vlaanderen.omgeving.riepr.TurtleTransformer
+   *
+   * // Or via Maven
+   * mvn compile exec:java
+   * }}}
+   */
+   */
 object TurtleTransformer {
 
   // ------------------------
@@ -39,7 +61,30 @@ object TurtleTransformer {
   // JSON-LD Hulpmethodes
   // ------------------------
 
-  /** Model → JSON-LD als JsonNode */
+    /**
+     * Converts a Jena RDF [[Model]] to JSON-LD.
+     *
+     * The model is serialized using Jena's JSON-LD writer and parsed
+     * into a Jackson [[JsonNode]]. Empty models are ignored.
+     *
+     * @param model RDF model to convert
+     * @return a JSON-LD document wrapped in [[Some]], or [[None]] if the model is empty
+     *
+     * @example
+     * {{{
+     * val model = ModelFactory.createDefaultModel()
+     * model.add(
+     *   model.createResource("http://example.org/subject"),
+     *   model.createProperty("http://example.org/predicate"),
+     *   model.createLiteral("object")
+     * )
+     *
+     * modelToJsonLd(model).foreach { json =>
+     *   println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json))
+     * }
+     * }}}
+     */
+
   def modelToJsonLd(model: Model): Option[JsonNode] = {
     if (model.isEmpty) return None
     val out = new ByteArrayOutputStream()
@@ -48,8 +93,26 @@ object TurtleTransformer {
     Some(mapper.readTree(jsonString))
   }
 
-  /** JSON-LD framen → JsonNode */
-  def frameJsonLd(jsonLd: JsonNode, frame: JsonNode): Option[JsonNode] = {
+    /**
+     * Applies a JSON-LD frame to a JSON-LD document.
+     *
+     * Framing restructures JSON-LD according to a given frame,
+     * allowing projection, grouping, and shaping of the data.
+     *
+     * @param jsonLd the input JSON-LD document
+     * @param frame the JSON-LD frame definition
+     * @return the framed JSON-LD document, or [[None]] if framing fails
+     *
+     * @example
+     * {{{
+     * val framed = frameJsonLd(jsonLd, frame)
+     * framed.foreach { result =>
+     *   println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result))
+     * }
+     * }}}
+     */
+
+    def frameJsonLd(jsonLd: JsonNode, frame: JsonNode): Option[JsonNode] = {
     val options = new JsonLdOptions()
     try {
       val jsonLdObj = JsonUtils.fromString(jsonLd.toString)
@@ -62,9 +125,14 @@ object TurtleTransformer {
     }
   }
 
-  /** Maak een directory indien nodig */
-  /** Zorg dat de directory voor een bestand bestaat */
-  private def ensureParentDir(file: File): Unit = {
+    /**
+     * Ensures that the parent directory of a file exists.
+     *
+     * Creates the directory structure if it does not yet exist.
+     * Throws a [[RuntimeException]] if directory creation fails.
+     */
+
+    private def ensureParentDir(file: File): Unit = {
     val parent = file.getParentFile
     if (!parent.exists()) {
       if (!parent.mkdirs()) {
@@ -73,12 +141,39 @@ object TurtleTransformer {
     }
   }
 
-  /** @graph extraheren als JsonNode */
-  def extractGraph(framed: JsonNode): Option[JsonNode] =
+    /**
+     * Extracts the `@graph` array from a framed JSON-LD document.
+     *
+     * JSON-LD framing typically wraps result data inside an `@graph` array.
+     * This helper extracts that array for downstream processing.
+     *
+     * @param framed the framed JSON-LD document
+     * @return the `@graph` array if present and an array, otherwise [[None]]
+     *
+     * @example
+     * {{{
+     * extractGraph(framed).foreach { graph =>
+     *   println(s"Graph contains ${graph.size()} elements")
+     * }
+     * }}}
+     */
+
+    def extractGraph(framed: JsonNode): Option[JsonNode] =
     Option(framed.get("@graph")).filter(_.isArray)
 
-  /** JSON → Parquet (Spark) */
-  def writeGraphToParquet(graph: JsonNode, inputPath: String, spark: SparkSession): Unit = {
+    /**
+     * Writes a JSON-LD `@graph` array to Parquet using Spark.
+     *
+     * Each graph element is treated as a JSON record and converted
+     * into a Spark DataFrame. Columns are ordered heuristically
+     * before being written to disk.
+     *
+     * @param graph the JSON-LD `@graph` array
+     * @param inputPath original input file path (used for output resolution)
+     * @param spark active Spark session
+     */
+
+    def writeGraphToParquet(graph: JsonNode, inputPath: String, spark: SparkSession): Unit = {
     import spark.implicits._
     import org.apache.spark.sql.functions._
 
@@ -198,8 +293,44 @@ object TurtleTransformer {
     mapper.readTree(jsonString)
   }
 
-  /** process */
-  def processModel(model: Model, inferenceOntology: Model, reasoner: GenericRuleReasoner, owlReasonerWithSchema: Reasoner, shaclShapes: Shapes, frame: JsonNode, spark: SparkSession, file: File) = {
+    /**
+     * Executes the complete processing pipeline for a single RDF model.
+     *
+     * The pipeline consists of:
+     *  - rule-based inference
+     *  - Turtle serialization of inferred data
+     *  - OWL validation
+     *  - SHACL validation
+     *  - JSON-LD conversion and framing
+     *  - extraction of `@graph`
+     *  - Parquet generation
+     *
+     * @param model input RDF model
+     * @param inferenceOntology ontology used for rule-based inference
+     * @param reasoner Jena rule reasoner
+     * @param owlReasonerWithSchema OWL reasoner with bound schema
+     * @param shaclShapes SHACL shapes for validation
+     * @param frame JSON-LD frame definition
+     * @param spark Spark session for Parquet output
+     * @param file original input file (used for output paths)
+     *
+     * @example
+     * {{{
+     * val model = parseTurtle(new File("example.ttl"))
+     * processModel(
+     *   model,
+     *   OntologySorter.structuralSubset,
+     *   reasoner,
+     *   owlReasonerWithSchema,
+     *   shaclShapes,
+     *   frame,
+     *   spark,
+     *   new File("example.ttl")
+     * )
+     * }}}
+     */
+
+    def processModel(model: Model, inferenceOntology: Model, reasoner: GenericRuleReasoner, owlReasonerWithSchema: Reasoner, shaclShapes: Shapes, frame: JsonNode, spark: SparkSession, file: File) = {
     val inferredModel = inferTriples(model, inferenceOntology, reasoner)
 
     // Schrijf Turtle
@@ -231,10 +362,23 @@ object TurtleTransformer {
     }
   }
 
-  // ------------------------
-  // Main
-  // ------------------------
-  def main(args: Array[String]): Unit = {
+    /**
+     * Application entry point.
+     *
+     * Initializes ontologies, reasoners, SHACL shapes, and Spark,
+     * then processes all Turtle files in the input directory.
+     * A consolidated model containing all input data is processed last.
+     *
+     * @param args command-line arguments (currently unused)
+     *
+     * @example
+     * {{{
+     * java -cp "target/classes:lib/*" be.vlaanderen.omgeving.riepr.TurtleTransformer
+     * }}}
+     */
+ */
+
+    def main(args: Array[String]): Unit = {
     val completeOntology = OntologySorter.completeOntology
     val inferenceOntology = OntologySorter.structuralSubset
     val reasoningOntology = OntologySorter.disjointSubset

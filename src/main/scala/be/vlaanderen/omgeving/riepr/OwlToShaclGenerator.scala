@@ -5,6 +5,36 @@ import org.apache.jena.vocabulary.{OWL, RDF, RDFS}
 
 import scala.collection.JavaConverters._
 
+/**
+ * OWL to SHACL converter.
+ * 
+ * Transforms OWL ontologies to SHACL shapes for RDF data validation.
+ * 
+ * ==Features==
+ * - OWL classes → SHACL NodeShapes
+ * - Property restrictions → SHACL property shapes
+ * - Inverse properties → SHACL inversePath
+ * - Union classes → SHACL OR constraints
+ * - Cardinality constraints (minCount, maxCount)
+ * - Class hierarchies and property domains/ranges
+ * 
+ * ==Usage==
+ * {{{
+ * val ontology = ModelFactory.createDefaultModel()
+ * RDFDataMgr.read(ontology, "ontology.ttl", Lang.TURTLE)
+ * 
+ * val shaclModel = OwlToShaclGenerator.generate(ontology)
+ * shaclModel.write(System.out, "TURTLE")
+ * 
+ * // Save to file
+ * val fos = new FileOutputStream("shapes.ttl")
+ * shaclModel.write(fos, "TURTLE")
+ * fos.close()
+ * }}}
+ * 
+ * ==Namespace==
+ * Uses standard SHACL namespace: http://www.w3.org/ns/shacl#
+ */
 object OwlToShaclGenerator {
 
   val SH = "http://www.w3.org/ns/shacl#"
@@ -220,6 +250,40 @@ object OwlToShaclGenerator {
     }
   }
 
+  /**
+   * Generates SHACL shapes from an OWL ontology.
+   * 
+   * This is the main method that converts an entire OWL ontology to SHACL shapes.
+   * It processes all OWL classes and creates corresponding SHACL NodeShapes with property constraints.
+   * 
+   * @param ontology The OWL ontology model to convert
+   * @return A new Jena Model containing the generated SHACL shapes
+   * 
+   * ==Example==
+   * {{{
+   * // Load the RIEPR ontology
+   * val rieprOntology = ModelFactory.createDefaultModel()
+   * RDFDataMgr.read(rieprOntology, "src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl", Lang.TURTLE)
+   * 
+   * // Generate SHACL shapes
+   * val shaclShapes = OwlToShaclGenerator.generate(rieprOntology)
+   * 
+   * // The resulting model contains SHACL shapes that can be used for validation
+   * println(s"Generated ${shaclShapes.size()} SHACL statements")
+   * 
+   * // Save for later use
+   * shaclShapes.write(new FileOutputStream("riepr-shapes.ttl"), "TURTLE")
+   * }}}
+   * 
+   * ==Generated SHACL Structure==
+   * The generated SHACL model includes:
+   * - NodeShapes for each OWL class
+   * - PropertyShapes for each property restriction
+   * - Cardinality constraints (minCount, maxCount)
+   * - Class constraints (sh:class)
+   * - Inverse property handling (sh:inversePath)
+   * - Union class handling (sh:or)
+   */
   def generate(ontology: Model): Model = {
     val shacl = ModelFactory.createDefaultModel()
 
