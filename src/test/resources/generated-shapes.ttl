@@ -4,30 +4,30 @@
 
 <http://www.w3.org/ns/sosa/PropertyShape>
     a               sh:NodeShape;
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
-                    ];
     sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
                                    [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
                                );
                           sh:path  <http://www.w3.org/ns/sosa/wasActedOnBy>
                     ];
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
-                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isProxyFor> ]
-                    ];
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   <http://www.w3.org/ns/sosa/isObservedBy>
-                    ];
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/isPropertyOf>
-                    ];
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
-                          sh:path   <http://www.w3.org/ns/sosa/isActedOnBy>
-                    ];
     sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
                                    [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
                                );
                           sh:path  <http://www.w3.org/ns/sosa/wasObservedBy>
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   <http://www.w3.org/ns/sosa/isObservedBy>
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
+                          sh:path   [ sh:inversePath  <http://www.w3.org/ns/sosa/isProxyFor> ]
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/isPropertyOf>
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   <http://www.w3.org/ns/sosa/isActedOnBy>
                     ];
     sh:targetClass  <http://www.w3.org/ns/sosa/Property> .
 
@@ -41,19 +41,19 @@
 
 <http://www.w3.org/ns/prov#InsertionShape>
     a               sh:NodeShape;
-    sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#insertedKeyEntityPair>
-                    ];
     sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#dictionary>
+                    ];
+    sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#insertedKeyEntityPair>
                     ];
     sh:targetClass  <http://www.w3.org/ns/prov#Insertion> .
 
 <http://www.w3.org/ns/sosa/ExecutionCollectionShape>
     a               sh:NodeShape;
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeBySystem>
                     ];
     sh:property     [ sh:class     <http://www.w3.org/ns/sosa/Procedure>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -63,13 +63,16 @@
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                     ];
-    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeBySystem>
-                    ];
     sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:or        ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
                                            [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
                                        );
+                          sh:or        ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
+                                           [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
+                                       );
                           sh:path      <http://www.w3.org/ns/sosa/hasMember>
+                    ];
+    sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                     ];
     sh:targetClass  <http://www.w3.org/ns/sosa/ExecutionCollection> .

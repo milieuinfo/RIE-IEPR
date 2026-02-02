@@ -6,6 +6,8 @@ import org.apache.jena.shacl.Shapes
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
+import java.io.FileOutputStream
+
 
 class ShaclGenerationSpec extends AnyFunSuite with Matchers {
 
@@ -36,6 +38,9 @@ class ShaclGenerationSpec extends AnyFunSuite with Matchers {
     val expectedShacl = ModelFactory.createDefaultModel()
     RDFDataMgr.read(expectedShacl, expectedShaclPath)
 
+//    val fos = new FileOutputStream("/tmp/completeOntology.ttl")
+//    try generatedShacl.write(fos, "TURTLE")
+//    finally fos.close()
     generatedShacl.isIsomorphicWith(expectedShacl) shouldBe true
   }
 
