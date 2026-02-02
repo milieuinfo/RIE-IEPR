@@ -187,8 +187,13 @@ object OntologySorter {
   lazy val disjointSubset: Model =
     extractDisjointSubset(completeOntology)
 
-  private def extractStructuralSubset(source: Model): Model = {
+  def extractStructuralSubset(source: Model): Model = {
     val subset = ModelFactory.createDefaultModel()
+
+    // Kopieer prefix-mappings van het bronmodel
+    source.getNsPrefixMap.forEach { case (prefix, uri) =>
+      subset.setNsPrefix(prefix, uri)
+    }
 
     val structuralPredicates = Seq(
       RDFS.subPropertyOf,
@@ -225,8 +230,13 @@ object OntologySorter {
   }
 
 
-  private def extractDisjointSubset(source: Model): Model = {
+  def extractDisjointSubset(source: Model): Model = {
     val subset = ModelFactory.createDefaultModel()
+    
+    // Kopieer prefix-mappings van het bronmodel
+    source.getNsPrefixMap.forEach { case (prefix, uri) =>
+      subset.setNsPrefix(prefix, uri)
+    }
 
     source.listStatements(null, OWL.disjointWith, null).forEachRemaining { stmt =>
       val subject = stmt.getSubject

@@ -59,10 +59,12 @@ sosa:ExecutionCollection
                           ];
         rdfs:subClassOf   [ rdf:type           owl:Restriction;
                                     owl:allValuesFrom  sosa:Procedure;
+                                    owl:someValuesFrom  sosa:Procedure;
                                     owl:onProperty     sosa:usedProcedure
                           ];
         rdfs:subClassOf   [ rdf:type           owl:Restriction;
                                     owl:allValuesFrom  sosa:FeatureOfInterest;
+                                    owl:someValuesFrom  sosa:FeatureOfInterest;
                                     owl:onProperty     sosa:hasFeatureOfInterest
                           ];
         rdfs:subClassOf   [ rdf:type           owl:Restriction;
@@ -71,6 +73,8 @@ sosa:ExecutionCollection
                           ];
         rdfs:subClassOf   [ rdf:type           owl:Restriction;
                                     owl:allValuesFrom  [ owl:unionOf  ( sosa:Execution sosa:ExecutionCollection )
+                                                       ];
+                                    owl:someValuesFrom  [ owl:unionOf  ( sosa:Execution sosa:ExecutionCollection )
                                                        ];
                                     owl:onProperty     sosa:hasMember
                           ];

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.github.jsonldjava.core.{JsonLdOptions, JsonLdProcessor}
 import com.github.jsonldjava.utils.JsonUtils
-import org.apache.jena.assembler.assemblers.AssemblerGroup.Frame
 import org.apache.jena.rdf.model.{Model, ModelFactory}
 import org.apache.jena.reasoner.rulesys.{GenericRuleReasoner, Rule}
 import org.apache.jena.reasoner.{Reasoner, ReasonerRegistry}
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory
 
 import java.io._
 import scala.collection.JavaConverters._
+import scala.util.Using
 
 case class ValidationResult(
                              valid: Boolean,
@@ -289,7 +289,10 @@ object TurtleTransformer {
   // JSON Frame laden
   // ------------------------
   def loadFrame(path: String): JsonNode = {
-    val jsonString = scala.io.Source.fromFile(path, "utf-8").getLines().mkString
+    val jsonString: String =
+      Using.resource(scala.io.Source.fromFile(path, "UTF-8")) { source =>
+        source.getLines().mkString
+      }
     mapper.readTree(jsonString)
   }
 
@@ -305,15 +308,14 @@ object TurtleTransformer {
      *  - extraction of `@graph`
      *  - Parquet generation
      *
-     * @param model input RDF model
-     * @param inferenceOntology ontology used for rule-based inference
-     * @param reasoner Jena rule reasoner
+     * @param model                 input RDF model
+     * @param inferenceOntology     ontology used for rule-based inference
+     * @param reasoner              Jena rule reasoner
      * @param owlReasonerWithSchema OWL reasoner with bound schema
-     * @param shaclShapes SHACL shapes for validation
-     * @param frame JSON-LD frame definition
-     * @param spark Spark session for Parquet output
-     * @param file original input file (used for output paths)
-     *
+     * @param shaclShapes           SHACL shapes for validation
+     * @param frame                 JSON-LD frame definition
+     * @param spark                 Spark session for Parquet output
+     * @param file                  original input file (used for output paths)
      * @example
      * {{{
      * val model = parseTurtle(new File("example.ttl"))
@@ -330,37 +332,37 @@ object TurtleTransformer {
      * }}}
      */
 
-    def processModel(model: Model, inferenceOntology: Model, reasoner: GenericRuleReasoner, owlReasonerWithSchema: Reasoner, shaclShapes: Shapes, frame: JsonNode, spark: SparkSession, file: File) = {
-    val inferredModel = inferTriples(model, inferenceOntology, reasoner)
+    def processModel(model: Model, inferenceOntology: Model, reasoner: GenericRuleReasoner, owlReasonerWithSchema: Reasoner, shaclShapes: Shapes, frame: JsonNode, spark: SparkSession, file: File): Unit = {
+      val inferredModel = inferTriples(model, inferenceOntology, reasoner)
 
-    // Schrijf Turtle
-    writeModelToTurtle(inferredModel, file.getPath)
+      // Schrijf Turtle
+      writeModelToTurtle(inferredModel, file.getPath)
 
-    // OWL reasoning
-    val validation = validateModel(inferredModel, owlReasonerWithSchema) // gebruik inferredModel
-    //val validation = validateModel(model, owlReasonerWithSchema) // gebruik model
-    if (!validation.valid) {
-      validation.messages.foreach(m =>
-        logger.warn(s"❌ [MODEL INVALID] ${file.getName}: $m")
-      )
+      // OWL reasoning
+      val validation = validateModel(inferredModel, owlReasonerWithSchema) // gebruik inferredModel
+      //val validation = validateModel(model, owlReasonerWithSchema) // gebruik model
+      if (!validation.valid) {
+        validation.messages.foreach(m =>
+          logger.warn(s"❌ [MODEL INVALID] ${file.getName}: $m")
+        )
+      }
+
+      // Shacl validation
+      val report = ShaclValidator.validate(inferredModel, shaclShapes) // gebruik inferredModel
+      ShaclValidator.printReport(report)
+
+      // JSON-LD verwerking
+      for {
+        jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
+        //jsonLd <- modelToJsonLd(model) // gebruik model
+        framed <- frameJsonLd(jsonLd, frame)
+        graph <- extractGraph(framed)
+      } {
+        writeJson(graph, file.getPath, "json") // alleen @graph
+        writeJson(framed, file.getPath, "jsonld") // volledig framed document
+        writeGraphToParquet(graph, file.getPath, spark)
+      }
     }
-
-    // Shacl validation
-    val report = ShaclValidator.validate(inferredModel, shaclShapes) // gebruik inferredModel
-    ShaclValidator.printReport(report)
-
-    // JSON-LD verwerking
-    for {
-      jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
-      //jsonLd <- modelToJsonLd(model) // gebruik model
-      framed <- frameJsonLd(jsonLd, frame)
-      graph <- extractGraph(framed)
-    } {
-      writeJson(graph, file.getPath, "json")       // alleen @graph
-      writeJson(framed, file.getPath, "jsonld")   // volledig framed document
-      writeGraphToParquet(graph, file.getPath, spark)
-    }
-  }
 
     /**
      * Application entry point.

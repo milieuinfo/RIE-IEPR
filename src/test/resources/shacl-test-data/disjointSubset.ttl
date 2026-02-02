@@ -1,0 +1,69 @@
+@prefix :            <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix adms:        <http://www.w3.org/ns/adms#> .
+@prefix concept:     <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:         <http://dbpedia.org/ontology/> .
+@prefix dc:          <http://purl.org/dc/elements/1.1/> .
+@prefix dct:         <http://purl.org/dc/terms/> .
+@prefix dcterms:     <http://purl.org/dc/terms/> .
+@prefix dqv:         <http://www.w3.org/ns/dqv#> .
+@prefix foaf:        <http://xmlns.com/foaf/0.1/> .
+@prefix geo:         <http://www.opengis.net/ont/geosparql#> .
+@prefix ns5:         <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
+@prefix ns6:         <http://mappings.dbpedia.org/index.php/OntologyClass:> .
+@prefix ogc:         <http://www.opengis.net/ont/geosparql#> .
+@prefix org:         <http://www.w3.org/ns/org#> .
+@prefix owl:         <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:      <http://purl.org/net/p-plan#> .
+@prefix pplan:       <http://purl.org/net/p-plan#> .
+@prefix prov:        <http://www.w3.org/ns/prov#> .
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix schema:      <http://schema.org/> .
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix skos:        <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:        <http://www.w3.org/ns/sosa/> .
+@prefix sosa-act:    <http://www.w3.org/ns/sosa/act/> .
+@prefix sosa-common: <http://www.w3.org/ns/sosa/common/> .
+@prefix sosa-dep:    <http://www.w3.org/ns/sosa/dep/> .
+@prefix sosa-obs:    <http://www.w3.org/ns/sosa/obs/> .
+@prefix sosa-sam:    <http://www.w3.org/ns/sosa/sam/> .
+@prefix sp:          <http://www.w3.org/ns/sosa/prov/> .
+@prefix ssn:         <http://www.w3.org/ns/ssn/> .
+@prefix ssn-act:     <http://www.w3.org/ns/ssn/act/> .
+@prefix ssn-common:  <http://www.w3.org/ns/ssn/common/> .
+@prefix ssn-dep:     <http://www.w3.org/ns/ssn/dep/> .
+@prefix ssn-obs:     <http://www.w3.org/ns/ssn/obs/> .
+@prefix ssn-sam:     <http://www.w3.org/ns/ssn/sam/> .
+@prefix terms:       <http://purl.org/dc/terms/> .
+@prefix time:        <http://www.w3.org/2006/time#> .
+@prefix vann:        <http://purl.org/vocab/vann/> .
+@prefix wikidata:    <http://www.wikidata.org/entity/> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+geo:Geometry  owl:disjointWith  geo:Feature .
+
+prov:Entity  owl:disjointWith  prov:InstantaneousEvent .
+
+sosa:SamplingCollection
+        owl:disjointWith  sosa:SampleCollection , sosa:ActuationCollection , sosa:ObservationCollection .
+
+prov:Activity  owl:disjointWith  prov:Entity .
+
+prov:Agent  owl:disjointWith  prov:InstantaneousEvent .
+
+sosa:SampleCollection
+        owl:disjointWith  sosa:SamplingCollection , sosa:ActuationCollection , sosa:ObservationCollection .
+
+dbo:UnitOfWork  owl:disjointWith  dbo:Person .
+
+prov:ActivityInfluence
+        owl:disjointWith  prov:EntityInfluence .
+
+sosa:ActuationCollection
+        owl:disjointWith  sosa:ObservationCollection , sosa:SampleCollection , sosa:SamplingCollection .
+
+geo:Feature  owl:disjointWith  geo:Geometry .
+
+sosa:ObservationCollection
+        owl:disjointWith  sosa:ActuationCollection , sosa:SampleCollection , sosa:SamplingCollection .
