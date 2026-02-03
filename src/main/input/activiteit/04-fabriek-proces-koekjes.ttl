@@ -1,0 +1,159 @@
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix actuation: <https://data.riepr.omgeving.vlaanderen.be/id/actuation/> .
+@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix activity: <https://data.riepr.omgeving.vlaanderen.be/id/activity/> .
+@prefix activteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
+@prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix variable: <https://data.riepr.omgeving.vlaanderen.be/id/variable/> .
+@prefix observation: <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
+@prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix agent: <https://data.riepr.omgeving.vlaanderen.be/id/agent/> .
+@prefix parameter: <https://data.omgeving.vlaanderen.be/id/concept/parameter/> .
+
+@prefix entity: <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pplan: <http://purl.org/net/p-plan#> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix sosa:        <http://www.w3.org/ns/sosa/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+## ---------------------------------------
+
+activiteit:plan-koekjes-maken a pplan:Plan ;
+    rdfs:label "Koekjes maken"@nl ;
+    dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+    dct:issued "2020-07-30"^^xsd:date ;
+    dct:valid "2030-12-31"^^xsd:date ;
+    adms:status riepr:Actief ;
+    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+
+activteitstap:stap-koekjes-maken_0001 a pplan:Step ;
+    rdfs:label "Koekjesdeeg maken"@nl ;
+        prov:wasAttributedTo agent:deegmaker ;
+    pplan:isStepOfPlan activiteit:plan-koekjes-maken .
+
+
+
+activteitstap:stap-koekjes-maken_0002 a pplan:Step ;
+    rdfs:label "Koekjes bakken"@nl ;
+    pplan:isStepOfPlan activiteit:plan-koekjes-maken ;
+    pplan:isPrecededBy activteitstap:stap-koekjes-maken_0001 ;
+    prov:wasAttributedTo agent:oven ;
+    #prov:wasDerivedFrom riepr:uitstootProces ;
+    #prov:wasInfluencedBy emissiepunt:TBD
+.
+
+activteitstap:emissie a pplan:Step ;
+    rdfs:label "Emissie rookgassenKoekjes"@nl ;
+    pplan:isStepOfPlan activiteit:plan-koekjes-maken ;
+    pplan:isPrecededBy activteitstap:stap-koekjes-maken_0003 ;
+    prov:wasAttributedTo emissiepunt:TBD ;
+#prov:wasDerivedFrom riepr:uitstootProces ;
+#prov:wasInfluencedBy emissiepunt:TBD
+.
+
+emissiepunt:TBD a prov:Agent ;
+    rdfs:label "Emissiepunt koekjesoven"@nl ;
+    dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+    dct:issued "2020-07-30"^^xsd:date ;
+    dct:valid "2030-12-31"^^xsd:date ;
+    prov:atLocation exploitatielocatie:0408249136_6842345678 ;
+    adms:status riepr:Actief ;
+        .
+
+agent:deegmaker a prov:Agent ;.
+
+agent:oven a prov:Agent ;.
+
+variable:bloem a pplan:Variable ;
+    pplan:isInputVarOf activteitstap:stap-koekjes-maken_0001 ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+variable:deeg a pplan:Variable ;
+    pplan:isOutputVarOf activteitstap:stap-koekjes-maken_0001 ;
+    pplan:isInputVarOf activteitstap:stap-koekjes-maken_0002 ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+variable:koekjes a pplan:Variable ;
+    pplan:isOutputVarOf activteitstap:stap-koekjes-maken_0001 ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+variable:koekjes a pplan:Variable ;
+    pplan:isOutputVarOf activteitstap:stap-koekjes-maken_0001 ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+variable:rookgassen a pplan:Variable ;
+    pplan:isOutputVarOf activteitstap:stap-koekjes-maken_0002 ;
+    pplan:isInputVarOf activteitstap:emissie ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+variable:rookgassen2 a pplan:Variable ;
+    pplan:isOutputVarOf activteitstap:emissie ;
+    pplan:isVariableOfPlan activiteit:plan-koekjes-maken .
+
+entity:bloem a prov:Entity ;
+    pplan:correspondsToVariable variable:bloem ;
+.
+
+entity:deeg a prov:Entity ;
+    prov:wasGeneratedBy activity:deegmaken ;
+    pplan:correspondsToVariable variable:deeg ;
+    .
+
+
+entity:koekjes a prov:Entity ;
+    prov:wasGeneratedBy activity:bakken ;
+    pplan:correspondsToVariable variable:koekjes ;
+            .
+
+entity:rookgassen a prov:Entity ;
+    prov:wasGeneratedBy activity:bakken ;
+    pplan:correspondsToVariable variable:rookgassen ;
+.
+
+entity:rookgassen2 a prov:Entity ;
+    prov:wasDerivedFrom entity:rookgassen ;
+    prov:wasGeneratedBy activity:emissie ;
+    pplan:correspondsToVariable variable:rookgassen2 ;
+                .
+
+activity:emissie a prov:Activity ;
+    rdfs:label "Emiteren rookgassen van koekjesoven"@nl ;
+    prov:startedAtTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:endedAtTime "2021-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:used entity:rookgassen ;
+    prov:wasAssociatedWith emissiepunt:TBD ;
+    pplan:correspondsToStep activteitstap:emissie ;
+                    .
+
+activity:deegmaken a prov:Activity ;
+    rdfs:label "Mengen en kneden"@nl ;
+    prov:startedAtTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:endedAtTime "2021-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:wasAssociatedWith agent:deegmaker ;
+    pplan:correspondsToStep activteitstap:stap-koekjes-maken_0001  ;.
+
+activity:bakken a prov:Activity ;
+    rdfs:label "Bakken"@nl ;
+    prov:startedAtTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:endedAtTime "2021-01-01T00:00:00Z"^^xsd:dateTime ;
+    prov:wasAssociatedWith agent:oven ;
+    pplan:correspondsToStep activteitstap:stap-koekjes-maken_0002  ;.
+
+
+
+
+
+observation:vracht_co2_rookgassen2 a sosa:Observation ;
+        sosa:hasFeatureOfInterest entity:rookgassen2 ;
+        sosa:observedProperty parameter:vracht_co2 ;
+        sosa:phenomenonTime [rdf:value "2020"];
+        sosa:hasResult [
+            qudt:unit <ton>;
+            rdf:value 6];
+        .
