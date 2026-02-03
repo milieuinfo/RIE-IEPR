@@ -1,7 +1,7 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
-@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
+@prefix proces: <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix stof: <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -13,35 +13,59 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 ## ---------------------------------------
 
-activiteit:ACTIVITEIT_001 a riepr:Activiteit ;
+proces:ACTIVITEIT_001 a riepr:Proces ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:valid "2030-12-31"^^xsd:date ;
     adms:status riepr:Actief ;
     rdfs:label "Koekjes maken"@nl ;
+    pplan:hasInputVar stof:meel ;
+    pplan:hasOutputVar stof:koekjes ;
     prov:atLocation exploitatielocatie:ACTIVITEIT_001_LOC .
 
 exploitatielocatie:ACTIVITEIT_001_LOC a riepr:ExploitatieLocatie ;
     rdfs:label "Locatie ACTIVITEIT_001"@nl .
 
-activiteitstap:STAP_001 a riepr:ActiviteitStap ;
+proces:STAP_001 a riepr:Proces ;
     rdfs:label "Koekjesdeeg maken"@nl ;
-    pplan:isStepOfPlan activiteit:ACTIVITEIT_001 .
-activiteitstap:STAP_001_1 a riepr:ActiviteitStap ;
+    pplan:hasInputVar stof:meel ;
+    pplan:hasOutputVar stof:deeg ;
+    pplan:isStepOfPlan proces:ACTIVITEIT_001 .
+proces:STAP_001_1 a riepr:Proces ;
     rdfs:label "Ingrediënten mengen"@nl ;
-    pplan:isStepOfPlan activiteitstap:STAP_001 .
-activiteitstap:STAP_001_2 a riepr:ActiviteitStap ;
+    pplan:hasInputVar stof:meel ;
+    pplan:hasOutputVar stof:mengsel ;
+    pplan:isStepOfPlan proces:STAP_001 .
+proces:STAP_001_2 a riepr:Proces ;
     rdfs:label "Overbrenging"@nl ;
     prov:wasDerivedFrom riepr:overbrengingsProces ;
-    pplan:isStepOfPlan activiteitstap:STAP_001 ;
-    pplan:isPrecededBy activiteitstap:STAP_001_1 .
-activiteitstap:STAP_001_3 a riepr:ActiviteitStap ;
+    pplan:hasInputVar stof:mengsel ;
+    pplan:hasOutputVar stof:mengsel ;
+    pplan:isStepOfPlan proces:STAP_001 ;
+    pplan:isPrecededBy proces:STAP_001_1 .
+proces:STAP_001_3 a riepr:Proces ;
     rdfs:label "Deeg laten rusten"@nl ;
-    pplan:isStepOfPlan activiteitstap:STAP_001 ;
-    pplan:isPrecededBy activiteitstap:STAP_001_2 .
+    pplan:hasInputVar stof:mengsel ;
+    pplan:hasOutputVar stof:deeg ;
+    pplan:isStepOfPlan proces:STAP_001 ;
+    pplan:isPrecededBy proces:STAP_001_2 .
 
-activiteitstap:STAP_002 a riepr:ActiviteitStap ;
+proces:STAP_002 a riepr:Proces ;
     rdfs:label "Koekjes bakken"@nl ;
-    pplan:isStepOfPlan activiteit:ACTIVITEIT_001 ;
+    pplan:hasInputVar stof:deeg ;
+    pplan:hasOutputVar stof:koekjes ;
+    pplan:isStepOfPlan proces:ACTIVITEIT_001 ;
     # TODO: deze stap maakt gebruik van emissiepunt X
-    pplan:isPrecededBy activiteitstap:STAP_001 .
+    pplan:isPrecededBy proces:STAP_001 .
+
+stof:meel a riepr:Stof ;
+    rdfs:label "Meel"@nl .
+
+stof:mengsel a riepr:Stof ;
+    rdfs:label "Deegmengsel"@nl .
+
+stof:deeg a riepr:Stof ;
+    rdfs:label "Deeg"@nl .
+
+stof:koekjes a riepr:Stof ;
+    rdfs:label "Koekjes"@nl .

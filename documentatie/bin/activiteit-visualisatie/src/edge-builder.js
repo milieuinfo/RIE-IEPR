@@ -37,9 +37,9 @@ export class EdgeBuilder {
         this.mermaidLines.push(`    ${fromNodeId} -.->|${label}| ${emissionPointId}`);
     }
 
-    // Create edges from sources (bronnen) to consumption steps
-    addBronEdge(bronId, toNodeId, label) {
-        this.mermaidLines.push(`    ${bronId} -->|${label}| ${toNodeId}`);
+    // Create edges from stoffen (input vars) to steps
+    addStofEdge(stofId, toNodeId, label) {
+        this.mermaidLines.push(`    ${stofId} -->|${label}| ${toNodeId}`);
     }
 
     getOutput() {

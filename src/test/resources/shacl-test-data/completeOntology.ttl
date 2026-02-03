@@ -569,7 +569,7 @@ riepr:Meetpunt  rdf:type  owl:Class;
         rdfs:subClassOf  [ rdf:type            owl:Restriction;
                            owl:minCardinality  "1"^^xsd:nonNegativeInteger;
                            owl:onProperty      sosa:isProxyFor;
-                           owl:someValuesFrom  ( riepr:Emissiepunt riepr:ActiviteitStap )
+                           owl:someValuesFrom  ( riepr:Emissiepunt riepr:Proces )
                          ];
         rdfs:subClassOf  [ rdf:type            owl:Restriction;
                            owl:maxCardinality  "1"^^xsd:nonNegativeInteger;
@@ -941,7 +941,7 @@ prov:hadActivity  rdf:type         owl:ObjectProperty;
                         owl:onProperty      prov:used;
                         owl:someValuesFrom  riepr:Emissiepunt
                       ];
-  owl:intersectionOf  ( riepr:ActiviteitStap
+  owl:intersectionOf  ( riepr:Proces
                         [ rdf:type            owl:Restriction;
                           owl:onProperty      ssn:implements;
                           owl:someValuesFrom  riepr:EmissieProcedure
@@ -6099,7 +6099,7 @@ riepr:MeetpuntShape  rdf:type  sh:NodeShape;
                         ];
         sh:property     [ sh:minCount  "1"^^xsd:long;
                           sh:or        ( [ sh:class  riepr:Emissiepunt ]
-                                         [ sh:class  riepr:ActiviteitStap ]
+                                         [ sh:class  riepr:Proces ]
                                        );
                           sh:path      [ sh:inversePath  sosa:hasProxy ]
                         ];
@@ -6187,9 +6187,9 @@ sosa:inDeployment  rdf:type    owl:ObjectProperty;
         skos:definition        "\n  relation from a Platform to a Deployment\n  "@en;
         skos:example           "For example, a relation between a buoy and a deployment of several Sensors."@en .
 
-riepr:ActiviteitStap  rdf:type  owl:Class;
-        rdfs:comment         "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl;
-        rdfs:label           "Activiteit Stap"@nl;
+riepr:Proces  rdf:type  owl:Class;
+  rdfs:comment         "Het proces is een individuele of meervoudige stap binnen een proces."@nl;
+  rdfs:label           "Proces"@nl;
         rdfs:subClassOf      p-plan:Step;
         rdfs:subClassOf      [ rdf:type            owl:Restriction;
                                owl:minCardinality  "0"^^xsd:nonNegativeInteger;
@@ -6220,7 +6220,7 @@ riepr:ActiviteitStap  rdf:type  owl:Class;
         owl:equivalentClass  [ rdf:type     owl:Class;
                                owl:unionOf  ( p-plan:Step p-plan:MultiStep )
                              ];
-        skos:example         [ rdf:type        riepr:ActiviteitStap;
+        skos:example         [ rdf:type        riepr:Proces;
                                rdfs:label      "Verwerking van grondstoffen"@nl;
                                ssn:implements  [ rdf:type  riepr:VerwerkingsProcedure ]
                              ] .
@@ -6341,7 +6341,7 @@ dbo:projectStartDate  rdf:type  rdf:Property , owl:DatatypeProperty;
                         owl:onProperty      p-plan:hasOutputVar;
                         owl:someValuesFrom  riepr:Stof
                       ];
-  owl:intersectionOf  ( riepr:ActiviteitStap
+  owl:intersectionOf  ( riepr:Proces
                         [ rdf:type            owl:Restriction;
                           owl:onProperty      ssn:implements;
                           owl:someValuesFrom  riepr:overbrengingsProces
@@ -7604,7 +7604,7 @@ riepr:Bron  rdf:type     owl:Class;
                            rdfs:label    "Oppervlaktewater (waterlopen/kanalen)"@nl
                          ] .
 
-riepr:ActiviteitStapShape
+riepr:ProcesShape
         rdf:type        sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^xsd:long;
                           sh:minCount  "1"^^xsd:long;
@@ -7631,7 +7631,7 @@ riepr:ActiviteitStapShape
                                        );
                           sh:path      prov:used
                         ];
-        sh:targetClass  riepr:ActiviteitStap .
+        sh:targetClass  riepr:Proces .
 
 prov:CommunicationShape
         rdf:type        sh:NodeShape;
@@ -7884,7 +7884,7 @@ prov:Creator  rdf:type   owl:Class;
                         owl:onProperty      prov:used;
                         owl:someValuesFrom  riepr:Apparaat
                       ];
-  owl:intersectionOf  ( riepr:ActiviteitStap
+  owl:intersectionOf  ( riepr:Proces
                         [ rdf:type            owl:Restriction;
                           owl:onProperty      ssn:implements;
                           owl:someValuesFrom  riepr:apparaatVerwerkingsProces

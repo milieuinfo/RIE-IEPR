@@ -1,17 +1,20 @@
 flowchart LR
-    step1["Ingrediënten mengen"]
-    style step1 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    step2["Deeg laten rusten"]
-    style step2 fill:#4A90E2,stroke:#2E5C8A,color:#fff
     step3["Koekjes bakken"]
-    style step3 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-                    subgraph step0["Koekjesdeeg maken"]
-                        step1["Ingrediënten mengen"]
-        style step1 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-        step2["Deeg laten rusten"]
-        style step2 fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style step3 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    subgraph step0["Koekjesdeeg maken"]
+    step1["Ingrediënten mengen"]
+    style step1 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step2["Deeg laten rusten"]
+    style step2 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
     end
-                    style step0 fill:#4A90E2,stroke:#2E5C8A,color:#fff
-                
+    style step0 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    stof0(["Meel"])
+    style stof0 color:white,fill:#FF9500,stroke:#CC7700,color:#fff
+    stof1(["Koekjes"])
+    style stof1 color:white,fill:#FF9500,stroke:#CC7700,color:#fff
+
+    step1 --> step2
     step0 --> step3
-    step1 ==>|Overbrenging| step2
+    stof0 --> step0
+    stof0 --> step1
+    step3 --> stof1

@@ -1,12 +1,12 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 
-@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix activiteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
+@prefix proces: <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix exploitant: <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
 @prefix apparaat: <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
+@prefix stof: <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -19,7 +19,6 @@
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 @prefix schema: <http://schema.org/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 ## ---------------------------------------
@@ -43,8 +42,10 @@ exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
         ogc:asWKT "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
     ] .
 
-activiteit:0400123123_6851234567_ACTIVITEIT_1 a riepr:Activiteit ;
+proces:0400123123_6851234567_ACTIVITEIT_1 a riepr:Proces ;
     rdfs:label "Staalproductieproces"@nl ;
+    pplan:hasInputVar stof:ijzererts ;
+    pplan:hasOutputVar stof:staalplaat ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
@@ -55,105 +56,143 @@ activiteit:0400123123_6851234567_ACTIVITEIT_1 a riepr:Activiteit ;
 # Procesketen van de staalfabriek
 
 ## ONDERDEEL VAN Stroomboogoven proces
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0001 a riepr:Proces ;
     rdfs:label "Toevoeging van grondstoffen"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:ActiviteitStap ;
+    pplan:hasInputVar stof:ijzererts ;
+    pplan:hasOutputVar stof:grondstoffen_mix ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000001 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:Proces ;
     rdfs:label "Schroot"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0001 ;
+    pplan:hasInputVar stof:schroot ;
+    pplan:hasOutputVar stof:schroot ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
     prov:wasDerivedFrom riepr:overbrengingsProces .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0003 ;
+    pplan:hasInputVar stof:schroot ;
+    pplan:hasOutputVar stof:vloeibaar_staal ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0003 ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0001 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0004 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000002 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:Proces ;
     rdfs:label "Overbrenging vloeibaar staal"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0004 ;
+    pplan:hasInputVar stof:vloeibaar_staal ;
+    pplan:hasOutputVar stof:vloeibaar_staal ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0004 ;
     prov:wasDerivedFrom riepr:overbrengingsProces .
 
 ## ONDERDEEL VAN Argon-zuurstofontkoling proces
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:vloeibaar_staal ;
+    pplan:hasOutputVar stof:geraffineerd_staal ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0004 ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0006 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0006 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0007 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000003 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:Proces ;
     rdfs:label "Overbrenging naar decarburisatie"@nl ;
     prov:wasDerivedFrom riepr:overbrengingsProces ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0007 .
+    pplan:hasInputVar stof:geraffineerd_staal ;
+    pplan:hasOutputVar stof:geraffineerd_staal ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
 ## ONDERDEEL VAN Decarburisatie proces
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:Proces ;
     rdfs:label "Decarburisatie"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0008b .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:ActiviteitStap ;
+    pplan:hasInputVar stof:geraffineerd_staal ;
+    pplan:hasOutputVar stof:gedec_staal ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0008b .
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:geraffineerd_staal ;
+    pplan:hasOutputVar stof:vod_staal ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:vod_staal ;
+    pplan:hasOutputVar stof:gezuiverd_staal ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:gezuiverd_staal ;
+    pplan:hasOutputVar stof:afgewerkt_staal ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0007 ; # Afwerkstand
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:afgewerkt_staal ;
+    pplan:hasOutputVar stof:gedec_staal ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
 
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:Proces ;
     rdfs:label "Overbrenging naar gietinstallatie"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0009 ;
+    pplan:hasInputVar stof:gedec_staal ;
+    pplan:hasOutputVar stof:gedec_staal ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     prov:wasDerivedFrom riepr:overbrengingsProces .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:ActiviteitStap ;
+proces:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    pplan:hasInputVar stof:gedec_staal ;
+    pplan:hasOutputVar stof:staalplaat ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0002 ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0010 .
-activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:ActiviteitStap ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
+proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
-    pplan:isStepOfPlan activiteit:0400123123_6851234567_ACTIVITEIT_1 ;
-    pplan:isPrecededBy activiteitstap:0400123123_6851234567_ACTIVITEIT_1_0011 ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0011 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000005 .
 
@@ -267,6 +306,41 @@ apparaat:0400123123_6851234567_0004 a riepr:Apparaat ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 .
+
+# Stoffen
+stof:ijzererts a riepr:Stof ;
+    rdfs:label "IJzererts"@nl .
+
+stof:grondstoffen_mix a riepr:Stof ;
+    rdfs:label "Grondstoffenmengsel"@nl .
+
+stof:schroot a riepr:Stof ;
+    rdfs:label "Schroot"@nl .
+
+stof:vloeibaar_staal a riepr:Stof ;
+    rdfs:label "Vloeibaar staal"@nl .
+
+stof:geraffineerd_staal a riepr:Stof ;
+    rdfs:label "Geraffineerd staal"@nl .
+
+stof:vod_staal a riepr:Stof ;
+    rdfs:label "VOD-behandeld staal"@nl .
+
+stof:gezuiverd_staal a riepr:Stof ;
+    rdfs:label "Gezuiverd staal"@nl .
+
+stof:afgewerkt_staal a riepr:Stof ;
+    rdfs:label "Afgewerkt staal"@nl .
+
+stof:gedec_staal a riepr:Stof ;
+    rdfs:label "Gedecarburiseerd staal"@nl .
+
+stof:staalplaat a riepr:Stof ;
+    rdfs:label "Staalplaat"@nl .
+
+stof:rookgas a riepr:Stof ;
+    rdfs:label "Rookgas"@nl .
+
 
 # Installaties op de exploitatielocatie
 installatie:0400123123_6851234567_0000001 a riepr:Installatie ;

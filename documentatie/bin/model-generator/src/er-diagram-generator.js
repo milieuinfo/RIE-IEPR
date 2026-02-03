@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { PATHS, NAMESPACES } from './config.js';
+import { isPrimary } from 'cluster';
 
 export class ERDiagramGenerator {
   constructor(ontology, { outputPath = PATHS.dataModels.er } = {}) {
@@ -8,6 +9,7 @@ export class ERDiagramGenerator {
     this.relationships = new Map();
     this.excludedProperties = new Set(['hadPrimarySource']);
     this.enumClasses = new Set();
+    this.identifierRelations = new Map(); // Track which classes have identifiers
   }
 
   generate() {
@@ -22,6 +24,7 @@ export class ERDiagramGenerator {
 
   buildRelationships() {
     this.relationships.clear();
+    this.identifierRelations.clear();
 
     this.ontology.classes.forEach((classInfo, classLocalName) => {
       // Sla volledig generieke klassen (en hun relaties) over
@@ -53,6 +56,14 @@ export class ERDiagramGenerator {
         });
 
       classInfo.restrictions.forEach(restriction => {
+        // Speciale behandeling voor adms:identifier
+        if (restriction.property === 'identifier' && 
+            restriction.propertyIri && 
+            restriction.propertyIri.includes('adms#identifier')) {
+          this.identifierRelations.set(classLocalName, restriction);
+          return; // Skip verdere verwerking als normale relatie
+        }
+
         if (restriction.rangeTypes.length === 0) return;
         if (this.excludedProperties.has(restriction.property)) return;
 
@@ -84,6 +95,22 @@ export class ERDiagramGenerator {
         });
       });
     });
+
+    // Voeg aparte identifier tabellen toe per entiteit
+    this.identifierRelations.forEach((restriction, classLocalName) => {
+      const identifierTableName = `${classLocalName}Identifier`;
+      const key = `${classLocalName}|${identifierTableName}|identifier`;
+      if (!this.relationships.has(key)) {
+        this.relationships.set(key, {
+          from: classLocalName,
+          to: identifierTableName,
+          property: 'identifier',
+          label: 'heeft identificatie',
+          minCard: restriction.minCardinality || 0,
+          maxCard: -1 // one-to-many
+        });
+      }
+    });
   }
 
   generateMermaidDiagram() {
@@ -107,10 +134,27 @@ export class ERDiagramGenerator {
       })
       .sort((a, b) => a.localeCompare(b));
 
+    // Voeg aparte identifier tabellen toe per entiteit
+    this.identifierRelations.forEach((restriction, classLocalName) => {
+      const identifierTableName = `${classLocalName}Identifier`;
+      if (!classNames.includes(identifierTableName)) {
+        classNames.push(identifierTableName);
+      }
+    });
+    classNames.sort((a, b) => a.localeCompare(b));
+
     classNames.forEach(className => {
       const classInfo = this.ontology.classes.get(className);
       const tableName = this.deriveTableName(className);
-      let attributes = this.deriveAttributes(classInfo, this.enumClasses, className);
+      let attributes;
+
+      // Speciale behandeling voor identifier tabellen
+      if (className.endsWith('Identifier') && this.isIdentifierTable(className)) {
+        const parentClass = className.replace('Identifier', '');
+        attributes = this.generateIdentifierAttributesForClass(parentClass);
+      } else {
+        attributes = this.deriveAttributes(classInfo, this.enumClasses, className);
+      }
 
       // Verwijder FK-attributen die enkel verwijzen naar puur
       // technische/abstracte klassen.
@@ -146,8 +190,10 @@ export class ERDiagramGenerator {
     if (this.relationships.size > 0) {
       mermaid += `\n    %% Relationships\n`;
       this.relationships.forEach(rel => {
+        // Bepaal cardinaliteit aan beide kanten
+        const cardFrom = rel.minCard === 1 && rel.maxCard === 1 ? 'one' : 'many';
         const cardTo = rel.maxCard === 1 ? 'one' : 'many';
-        mermaid += `    ${rel.from} many to ${cardTo} ${rel.to} : "${rel.label}"\n`;
+        mermaid += `    ${rel.from} ${cardFrom} to ${cardTo} ${rel.to} : "${rel.label}"\n`;
       });
     }
 
@@ -448,5 +494,40 @@ export class ERDiagramGenerator {
       .replace(/([A-Z])/g, '_$1')
       .toLowerCase()
       .replace(/^_/, '');
+  }
+
+  isIdentifierTable(className) {
+    const parentClass = className.replace('Identifier', '');
+    return this.identifierRelations.has(parentClass);
+  }
+
+  generateIdentifierAttributesForClass(parentClass) {
+    // TODO: Automatisch op basis van adms predicates domain/range
+    return [
+      {
+        name: `${this.camelCaseToSnakeCase(parentClass)}_id`,
+        type: 'string',
+        comment: parentClass,
+        isForeignKey: true,
+        isPrimaryKey: true
+      },
+      {
+        name: 'schema',
+        type: 'string',
+        comment: 'Identificatieschema',
+        isPrimaryKey: true,
+      },
+      {
+        name: 'notation',
+        type: 'string',
+        comment: 'De identifier notatie',
+        isPrimaryKey: true,
+      },
+      {
+        name: 'value',
+        type: 'string',
+        comment: 'De identifier waarde'
+      }
+    ];
   }
 }

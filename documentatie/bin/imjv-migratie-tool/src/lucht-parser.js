@@ -31,7 +31,7 @@ export class LuchtParser extends BaseParser {
         this.createExploitant();
         this.createExploitatieLocatie(null, `Exploitatie locatie ${this.cbbNumber}`);
 
-        // Parse activiteiten (Installatie/ProductieEenheid/EnergieActiviteit)
+        // Parse processen (Installatie/ProductieEenheid/EnergieActiviteit)
         if (luchtData.Activiteiten?.[0]?.Installatie) {
             this.parseInstallaties(luchtData.Activiteiten[0].Installatie);
         }
@@ -80,7 +80,7 @@ export class LuchtParser extends BaseParser {
             const installatieUri = this.ensureInstallatie(installatieKey, installatieLabel);
 
             if (parentActiviteitId) {
-                const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${parentActiviteitId}`);
+                const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${parentActiviteitId}`);
                 this.turtle.triple(
                     installatieUri,
                     this.turtle.qname('rdfs', 'member'),
@@ -161,9 +161,9 @@ export class LuchtParser extends BaseParser {
     parseProductieEenheid(eenheid) {
         const activiteitId = eenheid.$.activiteitID;
         const naam = eenheid.Naam?.[0];
-        const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
+        const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
 
-        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Activiteit'));
+        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         if (naam) {
             this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
         }
@@ -194,10 +194,10 @@ export class LuchtParser extends BaseParser {
             this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
             this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
         }
-        // Activiteit root step
-        const rootStepId = `${this.cbbNumber}_activiteit_step_${activiteitId}`;
-        const rootStepUri = this.turtle.qname('activiteitstap', rootStepId);
-        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
+        // Proces root step
+        const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
+        const rootStepUri = this.turtle.qname('proces', rootStepId);
+        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         this.turtle.triple(rootStepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
         if (naam) {
             this.turtle.triple(rootStepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
@@ -207,11 +207,11 @@ export class LuchtParser extends BaseParser {
     }
 
     parseEnergieActiviteit(eenheid) {
-        // Treated as an Activiteit
+        // Treated as a Proces
         const activiteitId = eenheid.$.activiteitID;
         const naam = eenheid.Naam?.[0];
-        const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
-        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Activiteit'));
+        const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
+        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         if (naam) {
             this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
         }
@@ -234,10 +234,10 @@ export class LuchtParser extends BaseParser {
         if (eenheid.Functie?.[0]) {
             this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(eenheid.Functie[0], null, 'nl'));
         }
-        // Activiteit root step
-        const rootStepId = `${this.cbbNumber}_activiteit_step_${activiteitId}`;
-        const rootStepUri = this.turtle.qname('activiteitstap', rootStepId);
-        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
+        // Proces root step
+        const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
+        const rootStepUri = this.turtle.qname('proces', rootStepId);
+        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         this.turtle.triple(rootStepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
         if (naam) {
             this.turtle.triple(rootStepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
@@ -347,13 +347,13 @@ export class LuchtParser extends BaseParser {
             return;
         }
 
-        const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
+        const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
         
         // Check if this is an apparatus ID - use apparatus name if available
         const apparaatInfo = this.apparaatByActiviteitId.get(activiteitId);
-        const label = apparaatInfo?.apparaatNaam || `Onbekende activiteit ${activiteitId}`;
+        const label = apparaatInfo?.apparaatNaam || `Onbekend proces ${activiteitId}`;
 
-        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Activiteit'));
+        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(label, null, 'nl'));
         this.turtle.triple(activiteitUri, this.turtle.qname('prov', 'atLocation'), this.turtle.qname('exploitatielocatie', this.cbbNumber));
         this.turtle.triple(activiteitUri, this.turtle.qname('adms', 'status'), this.turtle.qname('riepr', 'Actief'));
@@ -368,9 +368,9 @@ export class LuchtParser extends BaseParser {
             this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'valid'), this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null));
         }
 
-        const rootStepId = `${this.cbbNumber}_activiteit_step_${activiteitId}`;
-        const rootStepUri = this.turtle.qname('activiteitstap', rootStepId);
-        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
+        const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
+        const rootStepUri = this.turtle.qname('proces', rootStepId);
+        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
         this.turtle.triple(rootStepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
         this.turtle.triple(rootStepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(label, null, 'nl'));
 
@@ -463,11 +463,11 @@ export class LuchtParser extends BaseParser {
                     // For emission points directly linked to apparatus activities, use the apparatus activity ID
                     // Don't use parent activity ID here - the emission belongs to the apparatus activity itself
                     this.ensureActiviteitExists(activiteitId);
-                    const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
-                    // Create uitstoot ActiviteitStap
+                    const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
+                    // Create uitstoot Proces
                     const stepId = `${this.cbbNumber}_emit_step_${puntId}_${activiteitId}`;
-                    const stepUri = this.turtle.qname('activiteitstap', stepId);
-                    this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
+                    const stepUri = this.turtle.qname('proces', stepId);
+                    this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
                     this.turtle.triple(stepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
                     // Uitstootproces als plan afgeleid van generieke emissieprocedure
                     this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasDerivedFrom'), this.turtle.qname('riepr', 'uitstootProces'));
@@ -484,7 +484,7 @@ export class LuchtParser extends BaseParser {
                         // Preceded by the last purification step of this emission point
                         const lastPurificationId = purificationApparaatIds[purificationApparaatIds.length - 1];
                         const lastPurificationStepId = `${this.cbbNumber}_purification_step_${lastPurificationId}_${activiteitId}`;
-                        const lastPurificationStepUri = this.turtle.qname('activiteitstap', lastPurificationStepId);
+                        const lastPurificationStepUri = this.turtle.qname('proces', lastPurificationStepId);
                         this.turtle.triple(stepUri, this.turtle.qname('pplan', 'isPrecededBy'), lastPurificationStepUri);
                     } else {
                         // Preceded by root step if no purification apparatus
@@ -603,13 +603,13 @@ export class LuchtParser extends BaseParser {
                     }
 
                     const zuiveringStepId = `${this.cbbNumber}_purification_step_${apparaatId}_${activiteitIdToUse}`;
-                    const zuiveringStepUri = this.turtle.qname('activiteitstap', zuiveringStepId);
-                    const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitIdToUse}`);
+                    const zuiveringStepUri = this.turtle.qname('proces', zuiveringStepId);
+                    const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitIdToUse}`);
 
                     this.turtle.triple(
                         zuiveringStepUri,
                         this.turtle.qname('rdf', 'type'),
-                        this.turtle.qname('riepr', 'ActiviteitStap')
+                        this.turtle.qname('riepr', 'Proces')
                     );
 
                     this.turtle.triple(
@@ -735,10 +735,10 @@ export class LuchtParser extends BaseParser {
                     this.ensureActiviteitExists(activiteitId);
                     
                     const stepId = `${this.cbbNumber}_${typePrefix}_step_${verbruik.$.stofHoeveelheidID}_${activiteitId}`;
-                    const stepUri = this.turtle.qname('activiteitstap', stepId);
-                    const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
+                    const stepUri = this.turtle.qname('proces', stepId);
+                    const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
                     
-                    this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ActiviteitStap'));
+                    this.turtle.triple(stepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
                     this.turtle.triple(stepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
                     // Verbruiksstap als plan afgeleid van generieke verbruiksprocedure
                     this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasDerivedFrom'), this.turtle.qname(procedureQName.split(':')[0], procedureQName.split(':')[1]));

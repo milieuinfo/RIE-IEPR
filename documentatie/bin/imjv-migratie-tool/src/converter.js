@@ -279,6 +279,38 @@ async function main() {
             console.log(`Merged Turtle file created: ${mergedOutputFile}`);
         }
     }
+
+    // Merge per company (input subdirectory) into output/<company>/<company>-merged.ttl
+    const companyDirs = fs.readdirSync(inputDir).filter(file =>
+        fs.statSync(path.join(inputDir, file)).isDirectory()
+    );
+
+    for (const company of companyDirs) {
+        const companyInputDir = path.join(inputDir, company);
+        const companyXmlFiles = fs.readdirSync(companyInputDir)
+            .filter(file => file.endsWith('.xml'))
+            .map(file => path.join(companyInputDir, file));
+
+        if (companyXmlFiles.length === 0) continue;
+
+        const companyTtlFiles = companyXmlFiles
+            .map(xmlPath => {
+                const fileName = path.basename(xmlPath, '.xml');
+                return path.join(outputDir, fileName, `${fileName}.ttl`);
+            })
+            .filter(ttlPath => fs.existsSync(ttlPath));
+
+        if (companyTtlFiles.length === 0) continue;
+
+        const companyOutputDir = path.join(outputDir, company);
+        if (!fs.existsSync(companyOutputDir)) {
+            fs.mkdirSync(companyOutputDir, { recursive: true });
+        }
+
+        const companyMergedOutputFile = path.join(companyOutputDir, `${company}-merged.ttl`);
+        await mergeTurtleFiles(companyTtlFiles, companyMergedOutputFile);
+        console.log(`Company merged Turtle file created: ${companyMergedOutputFile}`);
+    }
 }
 
 main().catch(err => {

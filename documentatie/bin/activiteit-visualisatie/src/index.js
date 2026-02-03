@@ -2,6 +2,7 @@ import N3 from 'n3';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 import { ProcedureChecker } from './procedure-checker.js';
 import { EdgeGenerator } from './edge-generator.js';
 import { parseTurtleFile } from '../../common/src/rdf.js';
@@ -13,6 +14,34 @@ const imjvBasePath = resolveProjectPath('documentatie/bin/imjv-migratie-tool');
 const rulesFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/id/rule/domain-range-subproperty.n3');
 const ontologyFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl');
 const { namedNode } = N3.DataFactory;
+
+const MERMAID_SCALE = process.env.MMD_SCALE || '2';
+
+function getMmdcPath() {
+    const binPath = path.resolve(__dirname, '..', 'node_modules', '.bin', 'mmdc');
+    if (fs.existsSync(binPath)) return binPath;
+    const winBinPath = `${binPath}.cmd`;
+    if (fs.existsSync(winBinPath)) return winBinPath;
+    return null;
+}
+
+function exportMermaidAssets(mmdPath) {
+    const mmdcPath = getMmdcPath();
+    if (!mmdcPath) {
+        console.warn('mmdc not found. Skipping PNG/PDF export.');
+        return;
+    }
+
+    const pngPath = mmdPath.replace(/\.mmd$/i, '.png');
+    const pdfPath = mmdPath.replace(/\.mmd$/i, '.pdf');
+
+    try {
+        execFileSync(mmdcPath, ['-i', mmdPath, '-o', pngPath, '--scale', MERMAID_SCALE], { stdio: 'inherit' });
+        execFileSync(mmdcPath, ['-i', mmdPath, '-o', pdfPath, '--scale', MERMAID_SCALE], { stdio: 'inherit' });
+    } catch (err) {
+        console.warn(`Failed to export PNG/PDF for ${mmdPath}:`, err.message);
+    }
+}
 
 const rdf = {
     type: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -31,6 +60,8 @@ const prov = {
 const pplan = {
     isPrecededBy: namedNode('http://purl.org/net/p-plan#isPrecededBy'),
     isStepOfPlan: namedNode('http://purl.org/net/p-plan#isStepOfPlan'),
+    hasInputVar: namedNode('http://purl.org/net/p-plan#hasInputVar'),
+    hasOutputVar: namedNode('http://purl.org/net/p-plan#hasOutputVar'),
 };
 prov.wasDerivedFrom = namedNode('http://www.w3.org/ns/prov#wasDerivedFrom');
 const skos = {
@@ -38,18 +69,16 @@ const skos = {
 };
 const riepr = {
     Apparaat: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat'),
-    Activiteit: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit'),
-    ActiviteitStap: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap'),
+    Proces: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces'),
     Emissiepunt: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt'),
-    Bron: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Bron'),
     Installatie: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie'),
 };
 
 const styles = {
-    activiteit: 'fill:#4A90E2,stroke:#2E5C8A,color:#fff',
-    emissiepunt: 'fill:#7ED321,stroke:#5A9E17,color:#fff',
-    bron: 'fill:#FF9500,stroke:#CC7700,color:#fff',
-    installatie: 'fill:#D3D3D3,stroke:#808080,color:#000',
+    proces: 'color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff',
+    emissiepunt: 'color:white,fill:#7ED321,stroke:#5A9E17,color:#fff',
+    stof: 'color:white,fill:#FF9500,stroke:#CC7700,color:#fff',
+    installatie: 'color:black,fill:#D3D3D3,stroke:#808080,color:#000',
 };
 
 function indentContent(text, spaces = 4) {
@@ -83,12 +112,12 @@ function escapeMermaidLabel(label) {
 }
 
 function getRootActivities(store) {
-    const activities = store.getQuads(null, rdf.type, riepr.Activiteit);
+    const activities = store.getQuads(null, rdf.type, riepr.Proces);
     return activities.map(a => a.subject.value);
 }
 
 function getActivitySteps(store, activityUri) {
-    return store.getQuads(null, rdf.type, riepr.ActiviteitStap)
+    return store.getQuads(null, rdf.type, riepr.Proces)
         .filter(quad => {
             const isPartOfPlanQuads = store.getQuads(quad.subject, pplan.isStepOfPlan, namedNode(activityUri));
             return isPartOfPlanQuads.length > 0;
@@ -99,6 +128,12 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
     let mermaid = '';
     for (const stepQuad of steps) {
         const stepUri = stepQuad.subject.value;
+        
+        // Skip if already processed (prevents duplicate node creation from recursive calls)
+        if (nodeMap.has(stepUri)) {
+            continue;
+        }
+        
         const procedureQuads = store.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
         const procedureUri = procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
         if (procedureUri && (
@@ -106,6 +141,7 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
             procedureChecker.isVerbruiksProcedure(procedureUri) ||
             procedureChecker.isUitstootProcedure(procedureUri)
         )) {
+            // Skip hidden procedures - don't add to nodeMap, don't create nodes
             continue;
         }
 
@@ -118,13 +154,13 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
             for (const sub of subSteps) {
                 parentMap.set(sub.subject.value, stepUri);
             }
-            const definition =`
-                subgraph ${nodeId}["${escapeMermaidLabel(getLabel(store, stepUri))}"]
-                ${indentContent(content)}end
-                style ${nodeId} ${styles.activiteit}
-            `;
-            mermaid += definition;
+            const definition =`subgraph ${nodeId}["${escapeMermaidLabel(getLabel(store, stepUri))}"]
+${indentContent(content, 0)}end
+style ${nodeId} ${styles.proces}
+`;
+            // Store definition and include content in return value
             subgraphDefs.set(stepUri, definition);
+            mermaid += definition;
             continue;
         }
 
@@ -153,7 +189,7 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
                 nodeLabel += ')';
             }
         }
-        const definition = `${nodeId}["${nodeLabel}"]\nstyle ${nodeId} ${styles.activiteit}\n`;
+        const definition = `${nodeId}["${nodeLabel}"]\nstyle ${nodeId} ${styles.proces}\n`;
         nodeDefs.set(stepUri, definition);
         mermaid += definition;
     }
@@ -203,7 +239,7 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     );
 
     const rootActivityUris = getRootActivities(exampleStore);
-    const steps = exampleStore.getQuads(null, rdf.type, riepr.ActiviteitStap);
+    const steps = exampleStore.getQuads(null, rdf.type, riepr.Proces);
 
     let mermaid = 'flowchart LR\n';
     const nodeMap = new Map();
@@ -224,31 +260,46 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     const puntId = 'emissiepunt';
     const emissiepuntIndex = new Map(emissiePunten.map((q, idx) => [q.subject.value, idx]));
 
-    const bronnen = exampleStore.getQuads(null, rdf.type, riepr.Bron);
-    const bronId = 'bron';
-    const bronIndex = new Map(bronnen.map((q, idx) => [q.subject.value, idx]));
-
     const stofRdf = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
-    const allSteps = exampleStore.getQuads(null, stofRdf, riepr.ActiviteitStap);
-    const stofUris = new Set();
+    const stofClass = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof');
+    const allSteps = exampleStore.getQuads(null, stofRdf, riepr.Proces);
     
+    // Verzamel alle input en output stoffen
+    const inputStofUris = new Set();
+    const outputStofUris = new Set();
+
     for (const stepQuad of allSteps) {
         const stepUri = stepQuad.subject.value;
-        const procedureQuads = exampleStore.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
-        const procedureUri = procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
+        const inputVars = exampleStore.getQuads(namedNode(stepUri), pplan.hasInputVar, null);
+        const outputVars = exampleStore.getQuads(namedNode(stepUri), pplan.hasOutputVar, null);
+
+        for (const varQuad of inputVars) {
+            const varUri = varQuad.object.value;
+            const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
+            if (varTypes.some(t => t.object.value === stofClass.value)) {
+                inputStofUris.add(varUri);
+            }
+        }
         
-        if (procedureUri && procedureChecker.isVerbruiksProcedure(procedureUri)) {
-            // Stoffen worden als prov:Entity gemodelleerd en beïnvloeden de stap (Entity->Entity)
-            const usedStoffen = exampleStore.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
-            for (const stofQuad of usedStoffen) {
-                const stofUri = stofQuad.object.value;
-                const stofTypes = exampleStore.getQuads(namedNode(stofUri), stofRdf, null);
-                if (stofTypes.some(t => t.object.value === 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof')) {
-                    stofUris.add(stofUri);
-                }
+        for (const varQuad of outputVars) {
+            const varUri = varQuad.object.value;
+            const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
+            if (varTypes.some(t => t.object.value === stofClass.value)) {
+                outputStofUris.add(varUri);
             }
         }
     }
+
+    // Filter: alleen stoffen die NIET zowel input als output zijn (begin of einde van ketting)
+    const stofUris = new Set([...inputStofUris, ...outputStofUris].filter(uri => {
+        const isInput = inputStofUris.has(uri);
+        const isOutput = outputStofUris.has(uri);
+        // Toon alleen als het NIET beide is (dus alleen input OF alleen output)
+        return !(isInput && isOutput);
+    }));
+
+
+    const stofIndex = new Map([...stofUris].map((uri, idx) => [uri, idx]));
 
     const installaties = exampleStore.getQuads(null, rdf.type, riepr.Installatie);
     const indent = (text, spaces = 4) => text
@@ -323,14 +374,21 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
+    // Add any remaining nodes/subgraphs that weren't emitted yet
+    // (These are top-level steps not part of any installatie)
+    // But ONLY if they're not children of something already emitted
     for (const [stepUri, def] of nodeDefs.entries()) {
-        if (!emittedSteps.has(stepUri)) {
+        // Skip if this step is a child of another step (has a parent)
+        if (parentMap.has(stepUri)) continue;
+        if (!emittedSteps.has(stepUri) && !subgraphDefs.has(stepUri)) {
             mermaid += indent(def);
             emittedSteps.add(stepUri);
         }
     }
 
     for (const [stepUri, def] of subgraphDefs.entries()) {
+        // Skip if this step is a child of another step
+        if (parentMap.has(stepUri)) continue;
         if (!emittedSteps.has(stepUri)) {
             mermaid += indent(def);
             emittedSteps.add(stepUri);
@@ -345,13 +403,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
-    const emittedBronnen = new Set();
-    for (const [uri, idx] of bronIndex.entries()) {
-        const label = escapeMermaidLabel(getLabel(exampleStore, uri));
-        mermaid += indent(`${bronId}${idx}(["${label}"])\nstyle ${bronId}${idx} ${styles.bron}\n`);
-        emittedBronnen.add(uri);
-    }
-
     let standaloneApparatusIdx = 0;
     for (const installatieQuad of installaties) {
         const installatieUri = installatieQuad.subject.value;
@@ -363,7 +414,7 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
             if (usedApparatusUris.has(apparaatUri)) continue;
             
             const types = exampleStore.getQuads(namedNode(apparaatUri), rdf.type, null).map(q => q.object.value);
-            if (types.includes(riepr.Activiteit.value)) continue;
+            if (types.includes(riepr.Proces.value)) continue;
             
             const label = escapeMermaidLabel(getLabel(exampleStore, apparaatUri));
             const comment = getComment(exampleStore, apparaatUri);
@@ -372,15 +423,15 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
                 : `(Apparaat: ${label})`;
             
             const nodeId = `apparatus${standaloneApparatusIdx}`;
-            mermaid += indent(`${nodeId}["${apparaatLabel}"]\nstyle ${nodeId} ${styles.activiteit}\n`);
+            mermaid += indent(`${nodeId}["${apparaatLabel}"]\nstyle ${nodeId} ${styles.proces}\n`);
             standaloneApparatusIdx++;
         }
     }
 
     const emittedStoffen = new Set();
-    for (const stofUri of stofUris) {
+    for (const [stofUri, idx] of stofIndex.entries()) {
         const label = escapeMermaidLabel(getLabel(exampleStore, stofUri));
-        mermaid += indent(`stof(["${label}"])\nstyle stof ${styles.bron}\n`);
+        mermaid += indent(`stof${idx}(["${label}"])\nstyle stof${idx} ${styles.stof}\n`);
         emittedStoffen.add(stofUri);
     }
 
@@ -391,20 +442,20 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         procedureChecker, 
         nodeMap, 
         emissiepuntIndex, 
-        bronIndex
+        stofIndex,
+        inputStofUris,
+        outputStofUris
     );
 
     const normalEdges = edgeGenerator.generateEdges(steps);
     mermaid += normalEdges.join('\n') + (normalEdges.length > 0 ? '\n' : '');
 
-    const bronEdges = edgeGenerator.generateBronEdges(steps);
-    mermaid += bronEdges.join('\n') + (bronEdges.length > 0 ? '\n' : '');
-
-    const stofEdges = edgeGenerator.generateStofEdges(stofUris);
+    const stofEdges = edgeGenerator.generateStofEdges(steps);
     mermaid += stofEdges.join('\n') + (stofEdges.length > 0 ? '\n' : '');
 
     fs.writeFileSync(outputPath, mermaid);
     console.log(`Flowchart generated: ${outputPath}`);
+    exportMermaidAssets(outputPath);
 }
 
 generateMermaidFlowchart(
