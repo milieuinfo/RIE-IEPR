@@ -1,15 +1,17 @@
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
-@prefix actuation: <https://data.riepr.omgeving.vlaanderen.be/id/actuation/> .
-@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix deployment: <https://data.riepr.omgeving.vlaanderen.be/id/deployment/> .
+@prefix t: <https://data.riepr.omgeving.vlaanderen.be/id/time/> .
 @prefix activity: <https://data.riepr.omgeving.vlaanderen.be/id/activity/> .
+@prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
 @prefix activteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix variable: <https://data.riepr.omgeving.vlaanderen.be/id/variable/> .
 @prefix observation: <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
 @prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
-@prefix agent: <https://data.riepr.omgeving.vlaanderen.be/id/agent/> .
+@prefix system: <https://data.riepr.omgeving.vlaanderen.be/id/system/> .
 @prefix parameter: <https://data.omgeving.vlaanderen.be/id/concept/parameter/> .
+@prefix time: <http://www.w3.org/2006/time#> .
 
 @prefix entity: <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
 
@@ -18,7 +20,6 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix pplan: <http://purl.org/net/p-plan#> .
-@prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix sosa:        <http://www.w3.org/ns/sosa/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
@@ -32,20 +33,26 @@ activiteit:plan-koekjes-maken a pplan:Plan ;
     adms:status riepr:Actief ;
     prov:atLocation exploitatielocatie:0408249136_6842345678 .
 
+
+deployment:plan-koekjes-maken a sosa:Deployment ;
+    prov:hadPlan activiteit:plan-koekjes-maken ;
+    rdfs:label "Koekjes maken"@nl ;
+    sosa:deployedAsset emissiepunt:TBD , system:deegbereidingsinstallatie, system:oven;
+    adms:status riepr:Actief ;
+    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+
+
 activteitstap:stap-koekjes-maken_0001 a pplan:Step ;
     rdfs:label "Koekjesdeeg maken"@nl ;
-        prov:wasAttributedTo agent:deegmaker ;
+    prov:wasAttributedTo system:deegbereidingsinstallatie ;
     pplan:isStepOfPlan activiteit:plan-koekjes-maken .
-
 
 
 activteitstap:stap-koekjes-maken_0002 a pplan:Step ;
     rdfs:label "Koekjes bakken"@nl ;
     pplan:isStepOfPlan activiteit:plan-koekjes-maken ;
     pplan:isPrecededBy activteitstap:stap-koekjes-maken_0001 ;
-    prov:wasAttributedTo agent:oven ;
-    #prov:wasDerivedFrom riepr:uitstootProces ;
-    #prov:wasInfluencedBy emissiepunt:TBD
+    prov:wasAttributedTo system:oven ;
 .
 
 activteitstap:emissie a pplan:Step ;
@@ -53,11 +60,9 @@ activteitstap:emissie a pplan:Step ;
     pplan:isStepOfPlan activiteit:plan-koekjes-maken ;
     pplan:isPrecededBy activteitstap:stap-koekjes-maken_0003 ;
     prov:wasAttributedTo emissiepunt:TBD ;
-#prov:wasDerivedFrom riepr:uitstootProces ;
-#prov:wasInfluencedBy emissiepunt:TBD
 .
 
-emissiepunt:TBD a prov:Agent ;
+emissiepunt:TBD a sosa:System ;
     rdfs:label "Emissiepunt koekjesoven"@nl ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
@@ -66,9 +71,9 @@ emissiepunt:TBD a prov:Agent ;
     adms:status riepr:Actief ;
         .
 
-agent:deegmaker a prov:Agent ;.
+system:deegbereidingsinstallatie a sosa:System ;.
 
-agent:oven a prov:Agent ;.
+system:oven a sosa:System ;.
 
 variable:bloem a pplan:Variable ;
     pplan:isInputVarOf activteitstap:stap-koekjes-maken_0001 ;
@@ -135,25 +140,33 @@ activity:deegmaken a prov:Activity ;
     rdfs:label "Mengen en kneden"@nl ;
     prov:startedAtTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
     prov:endedAtTime "2021-01-01T00:00:00Z"^^xsd:dateTime ;
-    prov:wasAssociatedWith agent:deegmaker ;
+    prov:wasAssociatedWith system:deegbereidingsinstallatie ;
     pplan:correspondsToStep activteitstap:stap-koekjes-maken_0001  ;.
 
 activity:bakken a prov:Activity ;
     rdfs:label "Bakken"@nl ;
     prov:startedAtTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
     prov:endedAtTime "2021-01-01T00:00:00Z"^^xsd:dateTime ;
-    prov:wasAssociatedWith agent:oven ;
+    prov:wasAssociatedWith system:oven ;
     pplan:correspondsToStep activteitstap:stap-koekjes-maken_0002  ;.
-
-
-
 
 
 observation:vracht_co2_rookgassen2 a sosa:Observation ;
         sosa:hasFeatureOfInterest entity:rookgassen2 ;
         sosa:observedProperty parameter:vracht_co2 ;
-        sosa:phenomenonTime [rdf:value "2020"];
-        sosa:hasResult [
-            qudt:unit <ton>;
-            rdf:value 6];
-        .
+    sosa:phenomenonTime t:phenomenonTime_2020 .
+
+t:phenomenonTime_2020
+    a time:Interval , time:TemporalEntity ;
+    time:hasBeginning t:t_2020_start ;
+    time:hasEnd       t:t_2020_end ;
+    rdfs:label "Emissiejaar 2020"@nl .
+
+t:t_2020_start
+    a time:Instant ;
+    time:inXSDDateTime "2020-01-01T00:00:00Z"^^xsd:dateTime .
+
+t:t_2020_end
+    a time:Instant ;
+    time:inXSDDateTime "2020-12-31T23:59:59Z"^^xsd:dateTime .
+exploitatielocatie:0408249136_6842345678 a prov:Location .
