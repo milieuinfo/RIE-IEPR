@@ -15,8 +15,8 @@
       "@id": "http://purl.org/net/p-plan#isStepOfPlan"
     },
     "asWKT": {
-      "@type": "http://www.opengis.net/ont/geosparql#WKTLiteral",
-      "@id": "http://www.opengis.net/ont/geosparql#asWKT"
+      "@id": "http://www.opengis.net/ont/geosparql#asWKT",
+      "@type": "http://www.opengis.net/ont/geosparql#wktLiteral"
     },
     "hasGeometry": {
       "@type": "@id",
@@ -85,6 +85,19 @@
       "@id": "http://www.w3.org/ns/prov#startedAtTime",
       "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
     },
+    "endTime": {
+      "@id": "http://www.w3.org/ns/sosa/endTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "startTime": {
+      "@id": "http://www.w3.org/ns/sosa/startTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "endedAtTime": {
+      "@id": "http://www.w3.org/ns/prov#endedAtTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+
     "wasInfluencedBy": {
       "@id": "http://www.w3.org/ns/prov#wasInfluencedBy",
       "@type": "@id"
@@ -143,10 +156,7 @@
       "@type": "@id"
     },
 
-    "endedAtTime": {
-      "@id": "http://www.w3.org/ns/prov#endedAtTime",
-      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
-    },
+
     "value": {
       "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
     },
@@ -154,6 +164,19 @@
       "@id": "http://purl.org/net/p-plan#hasInputVar",
       "@type": "@id"
     },
+    "isInputVarOf": {
+      "@id": "http://purl.org/net/p-plan#isInputVarOf",
+      "@type": "@id"
+    },
+    "isOutputVarOf,": {
+      "@id": "http://purl.org/net/p-plan#isOutputVarOf",
+      "@type": "@id"
+    },
+    "isVariableOfPlan": {
+      "@id": "http://purl.org/net/p-plan#isVariableOfPlan",
+      "@type": "@id"
+    },
+
     "correspondsToVariable": {
       "@id": "http://purl.org/net/p-plan#correspondsToVariable",
       "@type": "@id"
@@ -174,9 +197,30 @@
       "@id": "http://www.w3.org/2006/time#hasBeginning",
       "@type": "@id"
     },
-
-
-
+    "qualifiedAttribution": {
+      "@id": "http://www.w3.org/ns/prov#qualifiedAttribution",
+      "@type": "@id"
+    },
+    "qualifiedInfluence": {
+      "@id": "http://www.w3.org/ns/prov#qualifiedInfluence",
+      "@type": "@id"
+    },
+    "deployedAsset": {
+      "@id": "http://www.w3.org/ns/sosa/deployedAsset",
+      "@type": "@id"
+    },
+    "agent": {
+      "@id": "http://www.w3.org/ns/prov#agent",
+      "@type": "@id"
+    },
+    "hadRole": {
+      "@id": "http://www.w3.org/ns/prov#hadRole",
+      "@type": "@id"
+    },
+    "hadPlan": {
+      "@id": "http://www.w3.org/ns/prov#hadPlan",
+      "@type": "@id"
+    },
     "hasProxy": {
       "@id": "http://www.w3.org/ns/sosa/hasProxy",
       "@type": "@id"
@@ -193,6 +237,10 @@
       "@id": "http://www.w3.org/ns/adms#status",
       "@type": "@id"
     },
+    "deployedOnPlatform": {
+      "@id": "http://www.w3.org/ns/sosa/deployedOnPlatform",
+      "@type": "@id"
+    },
     "valid": {
       "@id": "http://purl.org/dc/terms/valid",
       "@type": "http://www.w3.org/2001/XMLSchema#date"
@@ -207,13 +255,16 @@
     }
   },
   "@type": [
+
+
+    "http://dbpedia.org/ontology/ChemicalSubstance",
     "http://dbpedia.org/ontology/Project",
     "http://dbpedia.org/ontology/UnitOfWork",
+    "http://purl.org/net/p-plan#Activity",
     "http://purl.org/net/p-plan#Entity",
     "http://purl.org/net/p-plan#Plan",
     "http://purl.org/net/p-plan#Step",
-    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit",
-    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap",
+    "http://purl.org/net/p-plan#Variable",
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat",
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant",
@@ -221,14 +272,31 @@
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA",
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie",
     "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
     "http://www.opengis.net/ont/geosparql#Feature",
+    "http://www.opengis.net/ont/geosparql#SpatialObject",
     "http://www.opengis.net/ont/geosparql#SpatialObjectCollection",
+    "http://www.w3.org/2004/02/skos/core#Concept",
+    "http://www.w3.org/2006/time#Instant",
+    "http://www.w3.org/2006/time#Interval",
     "http://www.w3.org/ns/org#Organization",
     "http://www.w3.org/ns/prov#Activity",
     "http://www.w3.org/ns/prov#Agent",
+    "http://www.w3.org/ns/prov#AgentInfluence",
+    "http://www.w3.org/ns/prov#Association",
+    "http://www.w3.org/ns/prov#Attribution",
     "http://www.w3.org/ns/prov#Entity",
+    "http://www.w3.org/ns/prov#Influence",
     "http://www.w3.org/ns/prov#Location",
     "http://www.w3.org/ns/prov#Plan",
+    "http://www.w3.org/ns/prov#Role",
+    "http://www.w3.org/ns/sosa/Deployment",
+    "http://www.w3.org/ns/sosa/Platform",
+    "http://www.w3.org/ns/sosa/Execution",
+    "http://www.w3.org/ns/sosa/Observation",
+    "http://www.w3.org/ns/sosa/Sensor",
+    "http://www.w3.org/ns/sosa/System",
     "http://www.w3.org/ns/ssn/System",
     "http://xmlns.com/foaf/0.1/Person"
   ],
@@ -290,7 +358,7 @@
     "@omitDefault": true
   },
   "phenomenonTime": {
-    "@embed": "@always",
+    "@embed": "@never",
     "@omitDefault": true
   },
   "observedProperty": {
@@ -325,7 +393,6 @@
     "@embed": "@never",
     "@omitDefault": true
   },
-
   "hasInputVar": {
     "@embed": "@never",
     "@omitDefault": true
@@ -348,6 +415,54 @@
   },
   "hasBeginning": {
     "@embed": "@always",
+    "@omitDefault": true
+  },
+  "qualifiedAttribution": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "agent": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hadRole": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hadPlan": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "qualifiedInfluence": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "deployedAsset": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasGeometry": {
+    "@embed": "@always",
+    "@omitDefault": true
+  },
+  "status": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "deployedOnPlatform": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isInputVarOf": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isOutputVarOf,": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isVariableOfPlan": {
+    "@embed": "@never",
     "@omitDefault": true
   }
 }
