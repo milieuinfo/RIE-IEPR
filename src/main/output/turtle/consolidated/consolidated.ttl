@@ -1,61 +1,142 @@
-@prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix activiteitstap:     <https://data.riepr.omgeving.vlaanderen.be/id/activiteitstap/> .
+@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
+@prefix activity:           <https://data.riepr.omgeving.vlaanderen.be/id/activity/> .
 @prefix activteitstap:      <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
 @prefix adms:               <http://www.w3.org/ns/adms#> .
 @prefix apparaat:           <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
+@prefix attribution:        <https://data.riepr.omgeving.vlaanderen.be/id/attribution/> .
+@prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:                <http://dbpedia.org/ontology/> .
+@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
+@prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
+@prefix dcterms:            <http://purl.org/dc/terms/> .
+@prefix deployment:         <https://data.riepr.omgeving.vlaanderen.be/id/deployment/> .
+@prefix dqv:                <http://www.w3.org/ns/dqv#> .
 @prefix emissiepunt:        <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix entity:             <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
 @prefix exploitant:         <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix foaf:               <http://xmlns.com/foaf/0.1/> .
+@prefix geo:                <http://www.opengis.net/ont/geosparql#> .
 @prefix installatie:        <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix locn:               <http://www.w3.org/ns/locn#> .
 @prefix meetpunt:           <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
+@prefix ns5:                <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
+@prefix ns6:                <http://mappings.dbpedia.org/index.php/OntologyClass:> .
+@prefix observation:        <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
 @prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
 @prefix org:                <http://www.w3.org/ns/org#> .
 @prefix osm:                <https://www.openstreetmap.org/node/> .
 @prefix owl:                <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:             <http://purl.org/net/p-plan#> .
+@prefix parameter:          <https://data.omgeving.vlaanderen.be/id/concept/parameter/> .
+@prefix platform:           <https://data.riepr.omgeving.vlaanderen.be/id/concept/platform/> .
 @prefix pplan:              <http://purl.org/net/p-plan#> .
+@prefix proces:             <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix prov:               <http://www.w3.org/ns/prov#> .
+@prefix qudt:               <http://qudt.org/schema/qudt/> .
 @prefix rdf:                <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix role:               <https://data.riepr.omgeving.vlaanderen.be/id/concept/role/> .
 @prefix schema:             <http://schema.org/> .
+@prefix sh:                 <http://www.w3.org/ns/shacl#> .
 @prefix skos:               <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa:               <http://www.w3.org/ns/sosa/> .
+@prefix sosa-act:           <http://www.w3.org/ns/sosa/act/> .
+@prefix sosa-common:        <http://www.w3.org/ns/sosa/common/> .
+@prefix sosa-dep:           <http://www.w3.org/ns/sosa/dep/> .
+@prefix sosa-obs:           <http://www.w3.org/ns/sosa/obs/> .
+@prefix sosa-sam:           <http://www.w3.org/ns/sosa/sam/> .
+@prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
 @prefix ssn:                <http://www.w3.org/ns/ssn/> .
+@prefix ssn-act:            <http://www.w3.org/ns/ssn/act/> .
+@prefix ssn-common:         <http://www.w3.org/ns/ssn/common/> .
+@prefix ssn-dep:            <http://www.w3.org/ns/ssn/dep/> .
+@prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
+@prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
+@prefix status:             <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
+@prefix stof:               <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
+@prefix system:             <https://data.riepr.omgeving.vlaanderen.be/id/system/> .
+@prefix t:                  <https://data.riepr.omgeving.vlaanderen.be/id/time/> .
+@prefix terms:              <http://purl.org/dc/terms/> .
+@prefix time:               <http://www.w3.org/2006/time#> .
+@prefix unit:               <http://qudt.org/vocab/unit/> .
+@prefix vann:               <http://purl.org/vocab/vann/> .
+@prefix variable:           <https://data.riepr.omgeving.vlaanderen.be/id/variable/> .
+@prefix vcard:              <http://www.w3.org/2006/vcard/ns#> .
 @prefix vkbo:               <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
+@prefix voaf:               <http://purl.org/vocommons/voaf#> .
+@prefix wdrs:               <http://www.w3.org/2007/05/powder-s#> .
+@prefix wikidata:           <http://www.wikidata.org/entity/> .
+@prefix xhv:                <http://www.w3.org/1999/xhtml/vocab#> .
+@prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
+activity:bakken  rdf:type        pplan:Activity , prov:Activity;
+        rdfs:label               "Bakken"@nl;
+        pplan:correspondsToStep  activteitstap:stap-koekjes-maken_0002;
+        prov:endedAtTime         "2021-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgassen , entity:koekjes;
+        prov:influenced          entity:rookgassen , entity:koekjes;
+        prov:startedAtTime       "2020-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:wasAssociatedWith   system:oven;
+        prov:wasInfluencedBy     system:oven .
+
 emissiepunt:0400123123_6851234567_0000003
-        rdf:type         prov:Entity , ogc:SpatialObject , riepr:Emissiepunt , ogc:Feature;
+        rdf:type         geo:SpatialObject , riepr:Emissiepunt , geo:Feature;
         rdfs:comment     "Afzuiging en ontstoffing van de stroomboogoven"@nl;
         rdfs:label       "Schouw 3"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.3500 51.1995)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.3500 51.1995)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.3500 51.1995)"^^geo:WKTLiteral
                          ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0008> .
+        prov:influenced  activiteit:0400123123_6851234567_ACTIVITEIT_1_0008 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0001
+        rdf:type            prov:Entity , pplan:Plan , riepr:IIOA , owl:Thing , pplan:Step , riepr:Proces , prov:Plan , dbo:Project , pplan:Entity , dbo:UnitOfWork;
+        rdfs:label          "Toevoeging van grondstoffen"@nl;
+        pplan:hasInputVar   stof:ijzererts;
+        pplan:hasOutputVar  stof:rookgas , stof:grondstoffen_mix;
+        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+
+system:oven  rdf:type         prov:Agent , sosa:System , prov:Entity , geo:Feature , geo:SpatialObject;
+        geo:hasGeometry       [ rdf:type              geo:SpatialObject , geo:Geometry;
+                                geo:asWKT             "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+                                geo:hasSerialization  "POINT(4.34202412 51.16969212)"^^geo:wktLiteral
+                              ];
+        prov:contributed      activteitstap:stap-koekjes-maken_0002;
+        prov:influenced       activity:bakken , activteitstap:stap-koekjes-maken_0002;
+        prov:wasAssociateFor  activity:bakken;
+        sosa:hasDeployment    deployment:plan-koekjes-maken .
 
 exploitatielocatie:EX
-        rdf:type         prov:Location , ogc:Feature , ogc:SpatialObject , prov:Entity , ogc:SpatialObjectCollection , riepr:ExploitatieLocatie;
+        rdf:type         riepr:ExploitatieLocatie , prov:Location , prov:Entity , geo:SpatialObject , geo:Feature , geo:SpatialObjectCollection;
         rdfs:label       "Exploitatielocatie Fictief NV"@nl;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.4000 51.2100)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.4000 51.2100)"^^ogc:WKTLiteral
-                         ] .
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.4000 51.2100)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.4000 51.2100)"^^geo:WKTLiteral
+                         ];
+        prov:locationOf  meetpunt:MP_001 , installatie:GPBV_12345 , meetpunt:MP_002 , emissiepunt:EP_001 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001>
-        rdf:type            pplan:Plan , prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Koekjesdeeg maken"@nl;
-        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+activteitstap:stap-koekjes-maken_0002
+        rdf:type              prov:Entity , pplan:Step;
+        rdfs:label            "Koekjes bakken"@nl;
+        pplan:hasInputVar     variable:deeg;
+        pplan:hasOutputVar    variable:rookgassen;
+        pplan:isPrecededBy    activteitstap:stap-koekjes-maken_0001;
+        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
+        prov:wasAttributedTo  system:oven;
+        prov:wasInfluencedBy  system:oven .
 
 installatie:0400123123_6851234567_0000003
-        rdf:type         riepr:Installatie , ssn:System , ogc:SpatialObjectCollection;
+        rdf:type         riepr:Installatie , ssn:System , geo:SpatialObjectCollection;
         rdfs:label       "VOD-installatie"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0008 , emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0005 , apparaat:0400123123_6851234567_0007;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -64,106 +145,137 @@ installatie:0400123123_6851234567_0000003
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-meetpunt:MP_002  rdf:type  riepr:Meetpunt , ogc:Feature , ogc:SpatialObject;
+activity:deegmaken  rdf:type     prov:Activity , pplan:Activity;
+        rdfs:label               "Mengen en kneden"@nl;
+        pplan:correspondsToStep  activteitstap:stap-koekjes-maken_0001;
+        prov:endedAtTime         "2021-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:deeg;
+        prov:influenced          entity:deeg;
+        prov:startedAtTime       "2020-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:wasAssociatedWith   system:deegbereidingsinstallatie;
+        prov:wasInfluencedBy     system:deegbereidingsinstallatie .
+
+activiteit:STAP_001_1
+        rdf:type            pplan:Entity , dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , owl:Thing , riepr:Proces;
+        rdfs:label          "Ingrediënten mengen"@nl;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:mengsel;
+        pplan:isStepOfPlan  activiteit:STAP_001 .
+
+meetpunt:MP_002  rdf:type  riepr:Meetpunt , prov:Entity , sosa:Sensor , geo:Feature , prov:Agent , sosa:System , geo:SpatialObject;
         rdfs:label       "Meetpunt Waterkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
-        sosa:isProxyFor  [ rdf:type       pplan:Step , riepr:ActiviteitStap;
+        sosa:isProxyFor  [ rdf:type       prov:Plan , owl:Thing , pplan:Plan , riepr:IIOA , dbo:UnitOfWork , pplan:Entity , prov:Entity , riepr:Proces , dbo:Project , pplan:Step;
                            rdfs:label     "Waterzuiveringsproces"@nl;
                            sosa:hasProxy  meetpunt:MP_002
                          ] .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0003>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Schroot"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0001>;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements      riepr:overbrengingsProces .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0007
+        rdf:type              riepr:Proces , dbo:Project , pplan:Step , prov:Plan , riepr:IIOA , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , pplan:Entity;
+        pplan:hasInputVar     stof:vloeibaar_staal;
+        pplan:hasOutputVar    stof:geraffineerd_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0006;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0004;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  riepr:apparaatVerwerkingsProces , apparaat:0400123123_6851234567_0004 .
 
-emissiepunt:TBD  rdf:type  prov:Entity , ogc:SpatialObject , riepr:Emissiepunt;
-        rdfs:label       "Emissiepunt koekjesoven"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0408249136_6842345678;
-        prov:influenced  activteitstap:89031055579_6839805367_ACTIVITEIT_1_0002 .
+emissiepunt:TBD  rdf:type     geo:Feature , sosa:System , prov:Agent , prov:Entity , geo:SpatialObject , riepr:Emissiepunt;
+        rdfs:label            "Emissiepunt koekjesoven"@nl;
+        dct:created           "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued            "2020-07-30"^^xsd:date;
+        dct:valid             "2030-12-31"^^xsd:date;
+        geo:hasGeometry       [ rdf:type              geo:SpatialObject , geo:Geometry;
+                                geo:asWKT             "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+                                geo:hasSerialization  "POINT(4.34202412 51.16969212)"^^geo:wktLiteral
+                              ];
+        adms:status           riepr:Actief , status:actief;
+        prov:atLocation       exploitatielocatie:0408249136_6842345678;
+        prov:contributed      activteitstap:emissie;
+        prov:influenced       activity:emissie , activteitstap:emissie , activiteit:89031055579_6839805367_ACTIVITEIT_1_0002;
+        prov:wasAssociateFor  activity:emissie;
+        sosa:hasDeployment    deployment:plan-koekjes-maken .
 
 apparaat:0400123123_6851234567_0005
-        rdf:type         ssn:System , prov:Entity , riepr:Apparaat , ogc:SpatialObject;
-        rdfs:label       "Zuiveringsapparaat Toevoeginstallatie"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_002> .
+        rdf:type          ssn:System , riepr:Apparaat , geo:SpatialObject , prov:Agent;
+        rdfs:label        "Zuiveringsapparaat Toevoeginstallatie"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
-activiteit:ACTIVITEIT_001
-        rdf:type     pplan:Entity , prov:Entity , owl:Thing , <http://dbpedia.org/ontology/Project> , <http://dbpedia.org/ontology/UnitOfWork> , pplan:Plan , riepr:Activiteit , prov:Plan , riepr:IIOA;
-        rdfs:label   "Koekjes maken"@nl;
-        dct:created  "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued   "2020-07-30"^^xsd:date;
-        dct:valid    "2030-12-31"^^xsd:date;
-        adms:status  riepr:Actief .
+activity:emissie  rdf:type       pplan:Activity , prov:Activity;
+        rdfs:label               "Emiteren rookgassen van koekjesoven"@nl;
+        pplan:correspondsToStep  activteitstap:emissie;
+        prov:endedAtTime         "2021-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgassen2;
+        prov:influenced          entity:rookgassen2;
+        prov:startedAtTime       "2020-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgassen;
+        prov:wasAssociatedWith   emissiepunt:TBD;
+        prov:wasInfluencedBy     emissiepunt:TBD , entity:rookgassen .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_005>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_004>;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             apparaat:0400123123_6851234567_0008;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0008;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
+stof:meel  rdf:type         pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label          "Meel"@nl;
+        pplan:isInputVarOf  activiteit:89031055579_6839805367_ACTIVITEIT_1_0001 , activiteit:89031055579_6839805367_ACTIVITEIT_1 , activiteit:ACTIVITEIT_001 , activiteit:STAP_001 , activiteit:STAP_001_1 .
 
-activiteit:89031055579_6839805367_ACTIVITEIT_1
-        rdf:type         riepr:Activiteit , <http://dbpedia.org/ontology/Project> , pplan:Plan , prov:Entity , <http://dbpedia.org/ontology/UnitOfWork> , pplan:Entity , riepr:IIOA , prov:Plan , owl:Thing;
-        rdfs:label       "Koekjes maken"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0408249136_6842345678 .
+role:exploitant  rdf:type  prov:Role;
+        prov:wasRoleIn  attribution:plan-koekjes-maken_0408249136 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>
-        rdf:type            pplan:Step , riepr:IIOA , pplan:Entity , riepr:ActiviteitStap , pplan:Plan , prov:Entity , prov:Plan;
-        rdfs:label          "Decarburisatie"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0008b>;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+stof:staalplaat  rdf:type    pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Staalplaat"@nl;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0011 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0011>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0010>;
-        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0002;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0002;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006
+        rdf:type              pplan:Step , dbo:Project , riepr:IIOA , riepr:Proces , pplan:Plan , prov:Entity , owl:Thing , prov:Plan , pplan:Entity , dbo:UnitOfWork;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004 , riepr:uitstootProces .
+
+entity:bloem  rdf:type               pplan:Entity , prov:Entity;
+        pplan:correspondsToVariable  variable:bloem .
 
 emissiepunt:0400123123_6851234567_0000004
-        rdf:type         riepr:Emissiepunt , ogc:SpatialObject , prov:Entity , ogc:Feature;
+        rdf:type         geo:SpatialObject , riepr:Emissiepunt , geo:Feature;
         rdfs:label       "Schoorsteen Ketels"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.3495 51.2000)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.3495 51.2000)"^^ogc:WKTLiteral
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.3495 51.2000)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.3495 51.2000)"^^geo:WKTLiteral
                          ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_006> , <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_003> .
+        prov:influenced  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_002>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Koekjes bakken"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001>;
-        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0002
+        rdf:type              riepr:Proces , prov:Plan , dbo:Project , dbo:UnitOfWork , owl:Thing , pplan:Plan , riepr:IIOA , pplan:Entity , prov:Entity , pplan:Step;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0001;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  riepr:uitstootProces , emissiepunt:0400123123_6851234567_0000001 .
+
+activteitstap:stap-koekjes-maken_0003
+        rdf:type  pplan:Step .
 
 installatie:0400123123_6851234567_0000004
-        rdf:type         ogc:SpatialObjectCollection , riepr:Installatie , ssn:System;
+        rdf:type         geo:SpatialObjectCollection , riepr:Installatie , ssn:System;
         rdfs:label       "AOD-installatie"@nl;
         rdfs:member      emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0004;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -172,16 +284,71 @@ installatie:0400123123_6851234567_0000004
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0004>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0003>;
+variable:rookgassen  rdf:type   pplan:Variable;
+        pplan:isInputVarOf      activteitstap:emissie;
+        pplan:isOutputVarOf     activteitstap:stap-koekjes-maken_0002;
+        pplan:isVariableOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken> .
+
+riepr:overbrengingsProces
+        rdf:type            prov:Entity;
+        prov:hadDerivation  activiteit:0400123123_6851234567_ACTIVITEIT_1_0006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b , activiteit:STAP_001_2 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0010 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0003;
+        prov:influenced     activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b , activiteit:STAP_001_2 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0010 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0003 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>
+        rdf:type        pplan:Plan , pplan:Entity , riepr:IIOA , prov:Plan , prov:Entity;
+        rdfs:label      "Koekjes maken"@nl;
+        dct:created     "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued      "2020-07-30"^^xsd:date;
+        dct:valid       "2030-12-31"^^xsd:date;
+        prov:wasPlanOf  attribution:plan-koekjes-maken_0408249136 .
+
+activiteit:STAP_001_2
+        rdf:type              dbo:Project , prov:Entity , pplan:Step , dbo:UnitOfWork , riepr:IIOA , pplan:Plan , owl:Thing , pplan:Entity , prov:Plan , riepr:Proces;
+        rdfs:label            "Overbrenging"@nl;
+        pplan:hasInputVar     stof:mengsel;
+        pplan:hasOutputVar    stof:mengsel;
+        pplan:isPrecededBy    activiteit:STAP_001_1;
+        pplan:isStepOfPlan    activiteit:STAP_001;
+        prov:wasDerivedFrom   riepr:overbrengingsProces;
+        prov:wasInfluencedBy  riepr:overbrengingsProces .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001
+        rdf:type              owl:Thing , pplan:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , prov:Entity , riepr:Proces , dbo:UnitOfWork;
+        pplan:hasInputVar     stof:geraffineerd_staal;
+        pplan:hasOutputVar    stof:vod_staal;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0003;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0003 , riepr:apparaatVerwerkingsProces .
+
+riepr:uitstootProces  rdf:type  prov:Entity;
+        prov:hadDerivation  activiteit:0400123123_6851234567_ACTIVITEIT_1_0008 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0012 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0005 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003 , activiteit:89031055579_6839805367_ACTIVITEIT_1_0002;
+        prov:influenced     activiteit:0400123123_6851234567_ACTIVITEIT_1_0002 , activiteit:89031055579_6839805367_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0005 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0008 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0012 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0008
+        rdf:type              owl:Thing , dbo:Project , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity , dbo:UnitOfWork , pplan:Plan , pplan:Entity;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0007;
         pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0001;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0001;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003 , riepr:uitstootProces .
+
+entity:koekjes  rdf:type             pplan:Entity , prov:Entity;
+        pplan:correspondsToVariable  variable:koekjes;
+        prov:wasGeneratedBy          activity:bakken;
+        prov:wasInfluencedBy         activity:bakken .
+
+riepr:apparaatVerwerkingsProces
+        rdf:type            prov:Entity;
+        prov:hadDerivation  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0011 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0007 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0004;
+        prov:influenced     activiteit:0400123123_6851234567_ACTIVITEIT_1_0004 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0007 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0011 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
+
+status:actief  rdf:type  skos:Concept .
 
 apparaat:0400123123_6851234567_0006
-        rdf:type         ssn:System , ogc:SpatialObject , riepr:Apparaat;
+        rdf:type         geo:SpatialObject , prov:Agent , ssn:System , riepr:Apparaat;
         rdfs:label       "Stoomketel 1"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
@@ -189,46 +356,66 @@ apparaat:0400123123_6851234567_0006
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_006>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_005>;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             emissiepunt:0400123123_6851234567_0000004;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004;
-        ssn:implements        riepr:uitstootProces .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_1>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Ingrediënten mengen"@nl;
-        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001> .
-
-emissiepunt:EP_001  rdf:type  ogc:SpatialObject , riepr:Emissiepunt , ogc:Feature;
+emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Feature;
         rdfs:label       "Emissiepunt Schoorsteen 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
         sosa:hasProxy    meetpunt:MP_001 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0012>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0011>;
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0010
+        rdf:type              owl:Thing , prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , dbo:UnitOfWork , prov:Plan , dbo:Project , riepr:IIOA , pplan:Plan;
+        rdfs:label            "Overbrenging naar gietinstallatie"@nl;
+        pplan:hasInputVar     stof:gedec_staal;
+        pplan:hasOutputVar    stof:gedec_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
         pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000005;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000005;
-        ssn:implements        riepr:uitstootProces .
+        prov:wasDerivedFrom   riepr:overbrengingsProces;
+        prov:wasInfluencedBy  riepr:overbrengingsProces .
+
+activiteit:STAP_001  rdf:type  riepr:IIOA , prov:Plan , pplan:Plan , riepr:Proces , prov:Entity , dbo:UnitOfWork , owl:Thing , pplan:Entity , pplan:Step , dbo:Project;
+        rdfs:label          "Koekjesdeeg maken"@nl;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:deeg;
+        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+
+stof:grondstoffen_mix
+        rdf:type             dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Grondstoffenmengsel"@nl;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
+stof:gezuiverd_staal  rdf:type  pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Gezuiverd staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
 exploitant:0408249136
-        rdf:type      prov:Location , org:Organization , riepr:Exploitant;
-        rdfs:label    "Bedrijf BV"@nl;
-        rdfs:seeAlso  vkbo:0408249136 .
+        rdf:type         prov:Location , org:Organization , riepr:Exploitant;
+        rdfs:label       "Bedrijf BV"@nl;
+        rdfs:seeAlso     vkbo:0408249136;
+        prov:locationOf  exploitatielocatie:0408249136_6842345678 .
+
+activiteit:ACTIVITEIT_001
+        rdf:type            riepr:IIOA , dbo:UnitOfWork , prov:Plan , owl:Thing , dbo:Project , pplan:Plan , riepr:Proces , prov:Entity , pplan:Entity , pplan:Step;
+        rdfs:label          "Koekjes maken"@nl;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued          "2020-07-30"^^xsd:date;
+        dct:valid           "2030-12-31"^^xsd:date;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:koekjes;
+        adms:status         riepr:Actief;
+        prov:atLocation     exploitatielocatie:ACTIVITEIT_001_LOC .
+
+stof:schroot  rdf:type       pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Schroot"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0004 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0003;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0003 .
 
 emissiepunt:0400123123_6851234567_0000005
-        rdf:type         riepr:Emissiepunt , prov:Entity , ogc:SpatialObject;
+        rdf:type         riepr:Emissiepunt , geo:SpatialObject;
         rdfs:comment     "Onstoffing van gieterij"@nl;
         rdfs:label       "Schouw 5"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
@@ -236,127 +423,284 @@ emissiepunt:0400123123_6851234567_0000005
         dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0012> .
+        prov:influenced  activiteit:0400123123_6851234567_ACTIVITEIT_1_0012 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0003
+        rdf:type              prov:Plan , prov:Entity , owl:Thing , riepr:Proces , pplan:Entity , dbo:UnitOfWork , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan;
+        rdfs:label            "Schroot"@nl;
+        pplan:hasInputVar     stof:schroot;
+        pplan:hasOutputVar    stof:schroot;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0001;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:overbrengingsProces;
+        prov:wasInfluencedBy  riepr:overbrengingsProces .
+
+stof:rookgas  rdf:type       pplan:Variable , riepr:Stof , dbo:ChemicalSubstance;
+        rdfs:label           "Rookgas"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0012 , activiteit:89031055579_6839805367_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0008 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0005 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0001 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0012 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0008 , activiteit:89031055579_6839805367_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0002 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0005 .
+
+system:deegbereidingsinstallatie
+        rdf:type              sosa:System , prov:Agent , geo:SpatialObject , prov:Entity , geo:Feature;
+        geo:hasGeometry       [ rdf:type              geo:SpatialObject , geo:Geometry;
+                                geo:asWKT             "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+                                geo:hasSerialization  "POINT(4.34202412 51.16969212)"^^geo:wktLiteral
+                              ];
+        prov:contributed      activteitstap:stap-koekjes-maken_0001;
+        prov:influenced       activity:deegmaken , activteitstap:stap-koekjes-maken_0001;
+        prov:wasAssociateFor  activity:deegmaken;
+        sosa:hasDeployment    deployment:plan-koekjes-maken .
 
 apparaat:0400123123_6851234567_0001
-        rdf:type         riepr:Apparaat , ogc:SpatialObject , prov:Entity , ssn:System;
-        rdfs:label       "Stroomboogoven"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0004> .
+        rdf:type          riepr:Apparaat , prov:Agent , geo:SpatialObject , ssn:System;
+        rdfs:label        "Stroomboogoven"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0004;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0004 .
 
 <file:///home/gehau/git/RIE-IEPR/...>
-        rdf:type  ogc:Geometry , ogc:SpatialObject .
+        rdf:type  geo:Geometry , geo:SpatialObject .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_001>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             apparaat:0400123123_6851234567_0003;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0003;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
+activiteit:STAP_001_3
+        rdf:type            prov:Plan , owl:Thing , riepr:Proces , pplan:Entity , dbo:Project , pplan:Step , dbo:UnitOfWork , riepr:IIOA , pplan:Plan , prov:Entity;
+        rdfs:label          "Deeg laten rusten"@nl;
+        pplan:hasInputVar   stof:mengsel;
+        pplan:hasOutputVar  stof:deeg;
+        pplan:isPrecededBy  activiteit:STAP_001_2;
+        pplan:isStepOfPlan  activiteit:STAP_001 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0005>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0004>;
-        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000002;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000002;
-        ssn:implements        riepr:uitstootProces .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002
+        rdf:type              dbo:UnitOfWork , prov:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , owl:Thing , riepr:Proces , pplan:Entity;
+        pplan:hasInputVar     stof:vod_staal;
+        pplan:hasOutputVar    stof:gezuiverd_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0005;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0005 , riepr:apparaatVerwerkingsProces .
+
+variable:bloem  rdf:type        pplan:Variable;
+        pplan:isInputVarOf      activteitstap:stap-koekjes-maken_0001;
+        pplan:isVariableOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken> .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009
+        rdf:type            dbo:Project , pplan:Entity , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity;
+        rdfs:label          "Decarburisatie"@nl;
+        pplan:hasInputVar   stof:geraffineerd_staal;
+        pplan:hasOutputVar  stof:gedec_staal;
+        pplan:isPrecededBy  activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b;
+        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
 
 apparaat:0400123123_6851234567_0007
-        rdf:type         riepr:Apparaat , ssn:System , prov:Entity , ogc:SpatialObject;
-        rdfs:label       "Afwerkstand"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_004> .
+        rdf:type          prov:Agent , riepr:Apparaat , ssn:System , geo:SpatialObject;
+        rdfs:label        "Afwerkstand"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_2>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Overbrenging"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_1>;
-        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001>;
-        ssn:implements      riepr:overbrengingsProces .
+activiteit:89031055579_6839805367_ACTIVITEIT_1
+        rdf:type            prov:Entity , pplan:Plan , owl:Thing , riepr:Proces , riepr:IIOA , pplan:Entity , dbo:Project , pplan:Step , dbo:UnitOfWork , prov:Plan;
+        rdfs:label          "Koekjes maken"@nl;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued          "2020-07-30"^^xsd:date;
+        dct:valid           "2030-12-31"^^xsd:date;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:koekjes;
+        adms:status         riepr:Actief;
+        prov:atLocation     exploitatielocatie:0408249136_6842345678 .
 
-activteitstap:89031055579_6839805367_ACTIVITEIT_1_0001
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Koekjesdeeg maken"@nl;
-        pplan:isStepOfPlan  activiteit:89031055579_6839805367_ACTIVITEIT_1 .
+entity:deeg  rdf:type                pplan:Entity , prov:Entity;
+        pplan:correspondsToVariable  variable:deeg;
+        prov:wasGeneratedBy          activity:deegmaken;
+        prov:wasInfluencedBy         activity:deegmaken .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0011
+        rdf:type              owl:Thing , prov:Entity , pplan:Entity , pplan:Plan , pplan:Step , riepr:Proces , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
+        pplan:hasInputVar     stof:gedec_staal;
+        pplan:hasOutputVar    stof:staalplaat;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0010;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0002;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0002 , riepr:apparaatVerwerkingsProces .
+
+deployment:plan-koekjes-maken
+        rdf:type                 sosa:Deployment , prov:Activity;
+        rdfs:label               "Koekjes maken"@nl;
+        prov:endedAtTime         "2020-12-31T23:59:59Z"^^xsd:dateTime;
+        prov:startedAtTime       "2020-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:deployedAsset       platform:0408249136_6842345678 , system:deegbereidingsinstallatie , system:oven , emissiepunt:TBD;
+        sosa:deployedOnPlatform  platform:0408249136_6842345678;
+        sosa:endTime             "2020-12-31T23:59:59Z"^^xsd:dateTime;
+        sosa:startTime           "2020-01-01T00:00:00Z"^^xsd:dateTime .
+
+stof:deeg  rdf:type          pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Deeg"@nl;
+        pplan:isInputVarOf   activiteit:STAP_002;
+        pplan:isOutputVarOf  activiteit:89031055579_6839805367_ACTIVITEIT_1_0001 , activiteit:STAP_001_3 , activiteit:STAP_001 .
+
+exploitatielocatie:ACTIVITEIT_001_LOC
+        rdf:type         prov:Entity , geo:SpatialObjectCollection , prov:Location , riepr:ExploitatieLocatie;
+        rdfs:label       "Locatie ACTIVITEIT_001"@nl;
+        prov:locationOf  activiteit:ACTIVITEIT_001 .
+
+activiteit:STAP_002  rdf:type  prov:Entity , pplan:Plan , riepr:Proces , dbo:UnitOfWork , prov:Plan , riepr:IIOA , pplan:Step , pplan:Entity , owl:Thing , dbo:Project;
+        rdfs:label          "Koekjes bakken"@nl;
+        pplan:hasInputVar   stof:deeg;
+        pplan:hasOutputVar  stof:koekjes;
+        pplan:isPrecededBy  activiteit:STAP_001;
+        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+
+vkbo:0408249136  rdf:type      prov:Agent , owl:Thing , org:Organization;
+        prov:agentOfInfluence  attribution:plan-koekjes-maken_0408249136;
+        prov:contributed       platform:0408249136_6842345678;
+        prov:hadInfluence      attribution:plan-koekjes-maken_0408249136;
+        prov:influenced        platform:0408249136_6842345678 .
+
+t:t_2020_end  rdf:type      time:Instant;
+        time:inXSDDateTime  "2020-12-31T23:59:59Z"^^xsd:dateTime .
+
+stof:mengsel  rdf:type       dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Deegmengsel"@nl;
+        pplan:isInputVarOf   activiteit:STAP_001_3 , activiteit:STAP_001_2;
+        pplan:isOutputVarOf  activiteit:STAP_001_2 , activiteit:STAP_001_1 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0004
+        rdf:type              dbo:UnitOfWork , owl:Thing , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan , prov:Plan , pplan:Entity , riepr:Proces , prov:Entity;
+        pplan:hasInputVar     stof:schroot;
+        pplan:hasOutputVar    stof:vloeibaar_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0003;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0001;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  riepr:apparaatVerwerkingsProces , apparaat:0400123123_6851234567_0001 .
 
 apparaat:0400123123_6851234567_0002
-        rdf:type         riepr:Apparaat , ogc:SpatialObject , ssn:System , prov:Entity;
-        rdfs:label       "Gieterijmachine"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0011> .
+        rdf:type          prov:Agent , riepr:Apparaat , geo:SpatialObject , ssn:System;
+        rdfs:label        "Gieterijmachine"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0011;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0011 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_002>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_001>;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             apparaat:0400123123_6851234567_0005;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0005;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
+stof:gedec_staal  rdf:type   pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Gedecarburiseerd staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0011 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0010;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0010 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0006>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Overbrenging vloeibaar staal"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0004>;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements      riepr:overbrengingsProces .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003
+        rdf:type              prov:Plan , riepr:IIOA , owl:Thing , pplan:Entity , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , dbo:Project , dbo:UnitOfWork;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004 , riepr:uitstootProces .
+
+stof:ijzererts  rdf:type    pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label          "IJzererts"@nl;
+        pplan:isInputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
+variable:koekjes  rdf:type      pplan:Variable;
+        pplan:isOutputVarOf     activteitstap:stap-koekjes-maken_0001;
+        pplan:isVariableOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken> .
 
 exploitatielocatie:0408249136_6842345678
-        rdf:type         riepr:ExploitatieLocatie , ogc:Feature , prov:Location , ogc:SpatialObjectCollection , prov:Entity , ogc:SpatialObject;
+        rdf:type         riepr:ExploitatieLocatie , geo:Feature , prov:Location , geo:SpatialObjectCollection , prov:Entity , geo:SpatialObject;
         rdfs:label       "Hoofdzetel Bedrijf BV"@nl;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.4215 51.2080)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.4215 51.2080)"^^ogc:WKTLiteral
-                         ];
-        owl:sameAs       osm:6842345678;
-        prov:atLocation  exploitant:0408249136 .
-
-apparaat:0400123123_6851234567_0008
-        rdf:type         ogc:SpatialObject , ssn:System , prov:Entity , riepr:Apparaat;
-        rdfs:label       "Zuiveringsapparaat Afwerkstand"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.4215 51.2080)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.4215 51.2080)"^^geo:WKTLiteral
+                         ];
+        owl:sameAs       osm:6842345678;
         adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_005> .
+        prov:atLocation  exploitant:0408249136;
+        prov:locationOf  activiteit:89031055579_6839805367_ACTIVITEIT_1 , emissiepunt:TBD .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_3>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Deeg laten rusten"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001_2>;
-        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/STAP_001> .
+apparaat:0400123123_6851234567_0008
+        rdf:type          geo:SpatialObject , prov:Agent , ssn:System , riepr:Apparaat;
+        rdfs:label        "Zuiveringsapparaat Afwerkstand"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0012
+        rdf:type              pplan:Plan , prov:Entity , owl:Thing , pplan:Entity , pplan:Step , riepr:Proces , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0011;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000005 , riepr:uitstootProces .
+
+observation:vracht_co2_rookgassen2
+        rdf:type                   sosa:Observation , sosa:Execution , prov:Activity;
+        prov:generated             _:b0;
+        prov:influenced            _:b0;
+        prov:used                  entity:rookgassen2;
+        prov:wasInfluencedBy       entity:rookgassen2;
+        sosa:hasFeatureOfInterest  entity:rookgassen2;
+        sosa:hasResult             _:b0;
+        sosa:observedProperty      parameter:vracht_co2;
+        sosa:phenomenonTime        t:phenomenonTime_2020 .
+
+riepr:Actief  rdf:type  skos:Concept .
+
+activiteit:89031055579_6839805367_ACTIVITEIT_1_0001
+        rdf:type            pplan:Step , riepr:Proces , owl:Thing , pplan:Plan , riepr:IIOA , dbo:UnitOfWork , prov:Entity , prov:Plan , dbo:Project , pplan:Entity;
+        rdfs:label          "Koekjesdeeg maken"@nl;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:deeg;
+        pplan:isStepOfPlan  activiteit:89031055579_6839805367_ACTIVITEIT_1 .
 
 emissiepunt:0400123123_6851234567_0000001
-        rdf:type         prov:Entity , riepr:Emissiepunt , ogc:SpatialObject , ogc:Feature;
+        rdf:type         riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
         rdfs:comment     "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
         rdfs:label       "Schouw 1"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.3505 51.2005)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.3505 51.2005)"^^ogc:WKTLiteral
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.3505 51.2005)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.3505 51.2005)"^^geo:WKTLiteral
                          ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0002> .
+        prov:influenced  activiteit:0400123123_6851234567_ACTIVITEIT_1_0002 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1
+        rdf:type            riepr:IIOA , prov:Entity , riepr:Proces , pplan:Entity , dbo:Project , dbo:UnitOfWork , pplan:Plan , owl:Thing , prov:Plan , pplan:Step;
+        rdfs:label          "Staalproductieproces"@nl;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued          "2020-07-30"^^xsd:date;
+        dct:valid           "2030-12-31"^^xsd:date;
+        pplan:hasInputVar   stof:ijzererts;
+        pplan:hasOutputVar  stof:staalplaat;
+        adms:status         riepr:Actief;
+        prov:atLocation     exploitatielocatie:0400123123_6851234567 .
 
 installatie:0400123123_6851234567_0000001
-        rdf:type         riepr:Installatie , ogc:SpatialObjectCollection , ssn:System;
+        rdf:type         riepr:Installatie , geo:SpatialObjectCollection , ssn:System;
         rdfs:label       "Stroomboogoven"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000001;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -365,108 +709,198 @@ installatie:0400123123_6851234567_0000001
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0001>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Toevoeging van grondstoffen"@nl;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1 .
+entity:rookgassen2  rdf:type         prov:Entity , pplan:Entity;
+        pplan:correspondsToVariable  variable:rookgassen2;
+        prov:influenced              observation:vracht_co2_rookgassen2;
+        prov:wasDerivedFrom          entity:rookgassen;
+        prov:wasGeneratedBy          activity:emissie;
+        prov:wasInfluencedBy         entity:rookgassen , activity:emissie;
+        prov:wasUsedBy               observation:vracht_co2_rookgassen2;
+        sosa:isFeatureOfInterestOf   observation:vracht_co2_rookgassen2 .
 
-activteitstap:89031055579_6839805367_ACTIVITEIT_1_0002
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Koekjes bakken"@nl;
-        pplan:isPrecededBy    activteitstap:89031055579_6839805367_ACTIVITEIT_1_0001;
-        pplan:isStepOfPlan    activiteit:89031055579_6839805367_ACTIVITEIT_1;
-        prov:used             emissiepunt:TBD;
-        prov:wasInfluencedBy  emissiepunt:TBD;
-        ssn:implements        riepr:uitstootProces .
+stof:vod_staal  rdf:type     dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "VOD-behandeld staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 installatie:GPBV_12345
-        rdf:type         ssn:System , riepr:Installatie , ogc:SpatialObjectCollection;
+        rdf:type         ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
         rdfs:label       "MijnInstallatie"@nl , "Fictief NV"@nl;
         rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
         rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        adms:identifier  [ skos:notation  "BE.VL.000000001.INSTALLATION" ];
-        adms:identifier  [ skos:notation  "20260101-0001" ];
+        adms:identifier  [ rdf:type       adms:Identifier;
+                           skos:notation  "20260101-0001"
+                         ];
+        adms:identifier  [ rdf:type       adms:Identifier;
+                           skos:notation  "BE.VL.000000001.INSTALLATION"
+                         ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
-        prov:atLocation  [ rdf:type         prov:Location , ogc:Feature , ogc:SpatialObject , prov:Entity , ogc:SpatialObjectCollection , riepr:ExploitatieLocatie;
+        prov:atLocation  [ rdf:type         prov:Location , geo:Feature , geo:SpatialObject , prov:Entity , geo:SpatialObjectCollection , riepr:ExploitatieLocatie;
                            rdfs:label       "Exploitatielocatie MijnInstallatie"@nl;
-                           ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                                              ogc:asWKT             "POINT(4.1234 51.5678)"^^ogc:WKTLiteral;
-                                              ogc:hasSerialization  "POINT(4.1234 51.5678)"^^ogc:WKTLiteral
-                                            ]
+                           geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                                              geo:asWKT             "POINT(4.1234 51.5678)"^^geo:WKTLiteral;
+                                              geo:hasSerialization  "POINT(4.1234 51.5678)"^^geo:WKTLiteral
+                                            ];
+                           prov:locationOf  installatie:GPBV_12345
                          ] .
 
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0005
+        rdf:type              pplan:Step , prov:Entity , pplan:Plan , dbo:Project , riepr:Proces , owl:Thing , pplan:Entity , dbo:UnitOfWork , riepr:IIOA , prov:Plan;
+        rdfs:label            "Afgassing"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0004;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000002 , riepr:uitstootProces .
+
 apparaat:0400123123_6851234567_0003
-        rdf:type         ssn:System , prov:Entity , riepr:Apparaat , ogc:SpatialObject;
-        rdfs:label       "Toevoeginstallatie VOD"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_001> .
+        rdf:type          ssn:System , riepr:Apparaat , geo:SpatialObject , prov:Agent;
+        rdfs:label        "Toevoeginstallatie VOD"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 exploitatielocatie:89031055579_6839805367
-        rdf:type         ogc:Feature , ogc:SpatialObject , prov:Entity , ogc:SpatialObjectCollection , riepr:ExploitatieLocatie;
+        rdf:type         geo:SpatialObject , geo:Feature , geo:SpatialObjectCollection , riepr:ExploitatieLocatie , prov:Entity;
         rdfs:label       "Woonplaats natuurlijk persoon"@nl;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.4025 51.2194)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.4025 51.2194)"^^ogc:WKTLiteral
-                         ];
-        owl:sameAs       osm:6839805367;
-        prov:atLocation  exploitant:89031055579 .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_003>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_002>;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             emissiepunt:0400123123_6851234567_0000004;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004;
-        ssn:implements        riepr:uitstootProces .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0007>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0006>;
-        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             apparaat:0400123123_6851234567_0004;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0004;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
-
-activiteit:0400123123_6851234567_ACTIVITEIT_1
-        rdf:type         pplan:Entity , pplan:Plan , prov:Plan , prov:Entity , riepr:IIOA , owl:Thing , <http://dbpedia.org/ontology/Project> , riepr:Activiteit , <http://dbpedia.org/ontology/UnitOfWork>;
-        rdfs:label       "Staalproductieproces"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.4025 51.2194)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.4025 51.2194)"^^geo:WKTLiteral
+                         ];
+        owl:sameAs       osm:6839805367;
         adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567 .
+        prov:atLocation  exploitant:89031055579 .
+
+variable:deeg  rdf:type         pplan:Variable;
+        pplan:isInputVarOf      activteitstap:stap-koekjes-maken_0002;
+        pplan:isOutputVarOf     activteitstap:stap-koekjes-maken_0001;
+        pplan:isVariableOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken> .
+
+stof:koekjes  rdf:type       dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Koekjes"@nl;
+        pplan:isOutputVarOf  activiteit:STAP_002 , activiteit:89031055579_6839805367_ACTIVITEIT_1 , activiteit:ACTIVITEIT_001 .
+
+_:b0    rdf:type              prov:Entity , sosa:Result;
+        rdf:value             6;
+        qudt:unit             unit:TON_Metric;
+        prov:wasGeneratedBy   observation:vracht_co2_rookgassen2;
+        prov:wasInfluencedBy  observation:vracht_co2_rookgassen2;
+        sosa:isResultOf       observation:vracht_co2_rookgassen2 .
+
+activteitstap:emissie
+        rdf:type              prov:Entity , pplan:Step;
+        rdfs:label            "Emissie rookgassenKoekjes"@nl;
+        pplan:hasInputVar     variable:rookgassen;
+        pplan:hasOutputVar    variable:rookgassen2;
+        pplan:isPrecededBy    activteitstap:stap-koekjes-maken_0003;
+        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
+        prov:wasAttributedTo  emissiepunt:TBD;
+        prov:wasInfluencedBy  emissiepunt:TBD .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004
+        rdf:type              owl:Thing , pplan:Entity , dbo:UnitOfWork , prov:Entity , prov:Plan , riepr:IIOA , pplan:Step , pplan:Plan , riepr:Proces , dbo:Project;
+        pplan:hasInputVar     stof:gezuiverd_staal;
+        pplan:hasOutputVar    stof:afgewerkt_staal;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0007;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0007 , riepr:apparaatVerwerkingsProces .
+
+entity:rookgassen  rdf:type          pplan:Entity , prov:Entity;
+        pplan:correspondsToVariable  variable:rookgassen;
+        prov:hadDerivation           entity:rookgassen2;
+        prov:influenced              entity:rookgassen2 , activity:emissie;
+        prov:wasGeneratedBy          activity:bakken;
+        prov:wasInfluencedBy         activity:bakken;
+        prov:wasUsedBy               activity:emissie .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b
+        rdf:type              dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , riepr:Proces , owl:Thing , pplan:Entity;
+        rdfs:label            "Overbrenging naar decarburisatie"@nl;
+        pplan:hasInputVar     stof:geraffineerd_staal;
+        pplan:hasOutputVar    stof:geraffineerd_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0007;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:overbrengingsProces;
+        prov:wasInfluencedBy  riepr:overbrengingsProces .
+
+activiteit:89031055579_6839805367_ACTIVITEIT_1_0002
+        rdf:type              riepr:IIOA , dbo:UnitOfWork , prov:Plan , dbo:Project , pplan:Step , riepr:Proces , pplan:Plan , prov:Entity , pplan:Entity , owl:Thing;
+        rdfs:label            "Koekjes bakken"@nl;
+        pplan:hasInputVar     stof:rookgas;
+        pplan:hasOutputVar    stof:rookgas;
+        pplan:isPrecededBy    activiteit:89031055579_6839805367_ACTIVITEIT_1_0001;
+        pplan:isStepOfPlan    activiteit:89031055579_6839805367_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:TBD , riepr:uitstootProces .
 
 emissiepunt:0400123123_6851234567_0000002
-        rdf:type         ogc:Feature , riepr:Emissiepunt , ogc:SpatialObject , prov:Entity;
+        rdf:type         geo:Feature , riepr:Emissiepunt , geo:SpatialObject;
         rdfs:comment     "Afzuiging en ontstoffing van de oven"@nl;
         rdfs:label       "Schouw 2"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.3510 51.2000)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.3510 51.2000)"^^ogc:WKTLiteral
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.3510 51.2000)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.3510 51.2000)"^^geo:WKTLiteral
                          ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0005> .
+        prov:influenced  activiteit:0400123123_6851234567_ACTIVITEIT_1_0005 .
+
+attribution:plan-koekjes-maken_0408249136
+        rdf:type                     prov:Attribution , prov:Influence , prov:Association , prov:AgentInfluence;
+        prov:agent                   vkbo:0408249136;
+        prov:hadPlan                 <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
+        prov:hadRole                 role:exploitant;
+        prov:influencer              vkbo:0408249136;
+        prov:qualifiedAttributionOf  platform:0408249136_6842345678;
+        prov:qualifiedInfluenceOf    platform:0408249136_6842345678 .
 
 exploitant:0400123123
-        rdf:type    prov:Location , riepr:Exploitant;
-        rdfs:label  "Staalfabriek NV"@nl;
-        owl:sameAs  vkbo:0400123123 .
+        rdf:type         prov:Location , riepr:Exploitant;
+        rdfs:label       "Staalfabriek NV"@nl;
+        owl:sameAs       vkbo:0400123123;
+        prov:locationOf  exploitatielocatie:0400123123_6851234567 .
+
+platform:0408249136_6842345678
+        rdf:type                   prov:Entity , sosa:Platform , geo:Feature , geo:SpatialObject;
+        rdfs:label                 "Exploitatie 0408249136_6842345678"@nl;
+        geo:hasGeometry            [ rdf:type              geo:SpatialObject , geo:Geometry;
+                                     geo:asWKT             "SRID=31370;POLYGON((173124.81775523722 174056.37157891318, 173122.6107152328 174057.03737091273, 173119.7700112313 174057.89452291653, 173118.13948323578 174058.38642691448, 173116.05737122893 174052.42297090963, 173115.78722722828 174051.39077891037, 173114.58658722788 174048.02207490802, 173112.16393122822 174041.22457090393, 173118.59772323072 174038.2458189018, 173121.75548323244 174047.4483149089, 173122.26569123566 174048.93477891013, 173122.4377232343 174049.43602690846, 173123.6904592365 174053.08645891026, 173124.81775523722 174056.37157891318))"^^geo:wktLiteral;
+                                     geo:hasSerialization  "SRID=31370;POLYGON((173124.81775523722 174056.37157891318, 173122.6107152328 174057.03737091273, 173119.7700112313 174057.89452291653, 173118.13948323578 174058.38642691448, 173116.05737122893 174052.42297090963, 173115.78722722828 174051.39077891037, 173114.58658722788 174048.02207490802, 173112.16393122822 174041.22457090393, 173118.59772323072 174038.2458189018, 173121.75548323244 174047.4483149089, 173122.26569123566 174048.93477891013, 173122.4377232343 174049.43602690846, 173123.6904592365 174053.08645891026, 173124.81775523722 174056.37157891318))"^^geo:wktLiteral
+                                   ];
+        prov:qualifiedAttribution  attribution:plan-koekjes-maken_0408249136;
+        prov:qualifiedInfluence    attribution:plan-koekjes-maken_0408249136;
+        prov:wasAttributedTo       vkbo:0408249136;
+        prov:wasInfluencedBy       vkbo:0408249136;
+        sosa:hasDeployment         deployment:plan-koekjes-maken;
+        sosa:inDeployment          deployment:plan-koekjes-maken .
+
+activteitstap:stap-koekjes-maken_0001
+        rdf:type              prov:Entity , pplan:Step;
+        rdfs:label            "Koekjesdeeg maken"@nl;
+        pplan:hasInputVar     variable:bloem;
+        pplan:hasOutputVar    variable:deeg , variable:koekjes;
+        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
+        prov:wasAttributedTo  system:deegbereidingsinstallatie;
+        prov:wasInfluencedBy  system:deegbereidingsinstallatie .
 
 installatie:0400123123_6851234567_0000002
-        rdf:type         ogc:SpatialObjectCollection , riepr:Installatie , ssn:System;
+        rdf:type         geo:SpatialObjectCollection , riepr:Installatie , ssn:System;
         rdfs:label       "Gieterij"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000005;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -475,75 +909,96 @@ installatie:0400123123_6851234567_0000002
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-meetpunt:MP_001  rdf:type  riepr:Meetpunt , ogc:SpatialObject , ogc:Feature;
+variable:rookgassen2  rdf:type  pplan:Variable;
+        pplan:isOutputVarOf     activteitstap:emissie;
+        pplan:isVariableOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken> .
+
+t:t_2020_start  rdf:type    time:Instant;
+        time:inXSDDateTime  "2020-01-01T00:00:00Z"^^xsd:dateTime .
+
+stof:geraffineerd_staal
+        rdf:type             dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Geraffineerd staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b , activiteit:0400123123_6851234567_ACTIVITEIT_1_0007 .
+
+meetpunt:MP_001  rdf:type  riepr:Meetpunt , sosa:Sensor , sosa:System , prov:Entity , geo:SpatialObject , prov:Agent , geo:Feature;
         rdfs:label       "Meetpunt Luchtkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
         sosa:isProxyFor  emissiepunt:EP_001 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0002>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0001>;
-        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000001;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000001;
-        ssn:implements        riepr:uitstootProces .
+parameter:vracht_co2  sosa:wasObservedBy
+                observation:vracht_co2_rookgassen2 .
 
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0008b>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Overbrenging naar decarburisatie"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0007>;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements      riepr:overbrengingsProces .
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0006
+        rdf:type              dbo:UnitOfWork , owl:Thing , riepr:IIOA , prov:Plan , pplan:Step , pplan:Plan , dbo:Project , pplan:Entity , riepr:Proces , prov:Entity;
+        rdfs:label            "Overbrenging vloeibaar staal"@nl;
+        pplan:hasInputVar     stof:vloeibaar_staal;
+        pplan:hasOutputVar    stof:vloeibaar_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0004;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
+        prov:wasDerivedFrom   riepr:overbrengingsProces;
+        prov:wasInfluencedBy  riepr:overbrengingsProces .
 
 apparaat:0400123123_6851234567_0004
-        rdf:type         riepr:Apparaat , ogc:SpatialObject , ssn:System , prov:Entity;
-        rdfs:label       "Argon-zuurstofontkoling"@nl;
+        rdf:type          prov:Agent , riepr:Apparaat , geo:SpatialObject , ssn:System;
+        rdfs:label        "Argon-zuurstofontkoling"@nl;
+        dct:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued        "2020-07-30"^^xsd:date;
+        dct:valid         "2030-12-31"^^xsd:date;
+        adms:status       riepr:Actief;
+        prov:atLocation   exploitatielocatie:0400123123_6851234567;
+        prov:contributed  activiteit:0400123123_6851234567_ACTIVITEIT_1_0007;
+        prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0007 .
+
+stof:afgewerkt_staal  rdf:type  pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Afgewerkt staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+
+activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005
+        rdf:type              pplan:Entity , riepr:Proces , pplan:Plan , prov:Plan , dbo:UnitOfWork , pplan:Step , dbo:Project , prov:Entity , owl:Thing , riepr:IIOA;
+        pplan:hasInputVar     stof:afgewerkt_staal;
+        pplan:hasOutputVar    stof:gedec_staal;
+        pplan:isPrecededBy    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009;
+        prov:wasAttributedTo  apparaat:0400123123_6851234567_0008;
+        prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
+        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0008 , riepr:apparaatVerwerkingsProces .
+
+exploitant:89031055579
+        rdf:type         prov:Location , foaf:Person , riepr:Exploitant;
+        rdfs:label       "Natuurlijk persoon"@nl;
+        prov:locationOf  exploitatielocatie:89031055579_6839805367 .
+
+t:phenomenonTime_2020
+        rdf:type                 time:Interval;
+        rdfs:label               "Emissiejaar 2020"@nl;
+        time:hasBeginning        t:t_2020_start;
+        time:hasEnd              t:t_2020_end;
+        sosa:phenomenonOccurred  observation:vracht_co2_rookgassen2 .
+
+stof:vloeibaar_staal  rdf:type  dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Vloeibaar staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0007;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0006 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0004 .
+
+exploitatielocatie:0400123123_6851234567
+        rdf:type         geo:Feature , geo:SpatialObject , prov:Entity , geo:SpatialObjectCollection , prov:Location , riepr:ExploitatieLocatie;
+        rdfs:label       "Hoofdzetel Staalfabriek NV"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:0400123123_6851234567;
-        prov:influenced  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0007> .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009_004>
-        rdf:type              pplan:Step , prov:Activity , riepr:ActiviteitStap;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        prov:used             apparaat:0400123123_6851234567_0007;
-        prov:wasInfluencedBy  apparaat:0400123123_6851234567_0007;
-        ssn:implements        riepr:apparaatVerwerkingsProces .
-
-exploitant:89031055579
-        rdf:type    prov:Location , foaf:Person , riepr:Exploitant;
-        rdfs:label  "Natuurlijk persoon"@nl .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0008>
-        rdf:type              prov:Activity , pplan:Step , riepr:ActiviteitStap;
-        rdfs:label            "Afgassing"@nl;
-        pplan:isPrecededBy    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0007>;
-        pplan:isStepOfPlan    activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        prov:used             emissiepunt:0400123123_6851234567_0000003;
-        prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003;
-        ssn:implements        riepr:uitstootProces .
-
-exploitatielocatie:0400123123_6851234567
-        rdf:type         ogc:Feature , ogc:SpatialObject , prov:Entity , ogc:SpatialObjectCollection , prov:Location , riepr:ExploitatieLocatie;
-        rdfs:label       "Hoofdzetel Staalfabriek NV"@nl;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.3500 51.2000)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.3500 51.2000)"^^ogc:WKTLiteral
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.3500 51.2000)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.3500 51.2000)"^^geo:WKTLiteral
                          ];
         owl:sameAs       osm:6851234567;
-        prov:atLocation  exploitant:0400123123 .
-
-<https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0010>
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
-        rdfs:label          "Overbrenging naar gietinstallatie"@nl;
-        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/0400123123_6851234567_ACTIVITEIT_1_0009>;
-        pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implements      riepr:overbrengingsProces .
+        adms:status      riepr:Actief;
+        prov:atLocation  exploitant:0400123123;
+        prov:locationOf  apparaat:0400123123_6851234567_0007 , emissiepunt:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0005 , apparaat:0400123123_6851234567_0008 , activiteit:0400123123_6851234567_ACTIVITEIT_1 , installatie:0400123123_6851234567_0000003 , emissiepunt:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0006 , installatie:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0004 , installatie:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002 , apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000004 .

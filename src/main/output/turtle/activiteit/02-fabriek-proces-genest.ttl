@@ -1,59 +1,129 @@
-@prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
-@prefix activiteitstap:     <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/> .
+@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix adms:               <http://www.w3.org/ns/adms#> .
+@prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:                <http://dbpedia.org/ontology/> .
+@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
+@prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
+@prefix dcterms:            <http://purl.org/dc/terms/> .
+@prefix dqv:                <http://www.w3.org/ns/dqv#> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix foaf:               <http://xmlns.com/foaf/0.1/> .
+@prefix geo:                <http://www.opengis.net/ont/geosparql#> .
+@prefix locn:               <http://www.w3.org/ns/locn#> .
+@prefix ns5:                <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
+@prefix ns6:                <http://mappings.dbpedia.org/index.php/OntologyClass:> .
+@prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
+@prefix org:                <http://www.w3.org/ns/org#> .
+@prefix owl:                <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:             <http://purl.org/net/p-plan#> .
 @prefix pplan:              <http://purl.org/net/p-plan#> .
+@prefix proces:             <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix prov:               <http://www.w3.org/ns/prov#> .
+@prefix qudt:               <http://qudt.org/schema/qudt/> .
 @prefix rdf:                <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix schema:             <http://schema.org/> .
+@prefix sh:                 <http://www.w3.org/ns/shacl#> .
+@prefix skos:               <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:               <http://www.w3.org/ns/sosa/> .
+@prefix sosa-act:           <http://www.w3.org/ns/sosa/act/> .
+@prefix sosa-common:        <http://www.w3.org/ns/sosa/common/> .
+@prefix sosa-dep:           <http://www.w3.org/ns/sosa/dep/> .
+@prefix sosa-obs:           <http://www.w3.org/ns/sosa/obs/> .
+@prefix sosa-sam:           <http://www.w3.org/ns/sosa/sam/> .
+@prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
 @prefix ssn:                <http://www.w3.org/ns/ssn/> .
+@prefix ssn-act:            <http://www.w3.org/ns/ssn/act/> .
+@prefix ssn-common:         <http://www.w3.org/ns/ssn/common/> .
+@prefix ssn-dep:            <http://www.w3.org/ns/ssn/dep/> .
+@prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
+@prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
+@prefix stof:               <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
+@prefix terms:              <http://purl.org/dc/terms/> .
+@prefix time:               <http://www.w3.org/2006/time#> .
+@prefix vann:               <http://purl.org/vocab/vann/> .
+@prefix vcard:              <http://www.w3.org/2006/vcard/ns#> .
+@prefix voaf:               <http://purl.org/vocommons/voaf#> .
+@prefix wdrs:               <http://www.w3.org/2007/05/powder-s#> .
+@prefix wikidata:           <http://www.wikidata.org/entity/> .
+@prefix xhv:                <http://www.w3.org/1999/xhtml/vocab#> .
+@prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-activiteit:ACTIVITEIT_001
-        rdf:type         pplan:Entity , prov:Entity , <http://www.w3.org/2002/07/owl#Thing> , <http://dbpedia.org/ontology/Project> , <http://dbpedia.org/ontology/UnitOfWork> , pplan:Plan , riepr:Activiteit , prov:Plan , riepr:IIOA;
-        rdfs:label       "Koekjes maken"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:ACTIVITEIT_001_LOC .
-
-exploitatielocatie:ACTIVITEIT_001_LOC
-        rdf:type    prov:Entity , <http://www.opengis.net/ont/geosparql#SpatialObjectCollection> , prov:Location , riepr:ExploitatieLocatie;
-        rdfs:label  "Locatie ACTIVITEIT_001"@nl .
-
-riepr:overbrengingsProces
-        rdf:type         prov:Entity;
-        prov:influenced  activiteitstap:STAP_001_2 .
-
-activiteitstap:STAP_001_2
-        rdf:type              pplan:Step , prov:Entity , riepr:ActiviteitStap;
+proces:STAP_001_2  rdf:type   dbo:Project , prov:Entity , pplan:Step , dbo:UnitOfWork , riepr:IIOA , pplan:Plan , owl:Thing , pplan:Entity , prov:Plan , riepr:Proces;
         rdfs:label            "Overbrenging"@nl;
-        pplan:isPrecededBy    activiteitstap:STAP_001_1;
-        pplan:isStepOfPlan    activiteitstap:STAP_001;
+        pplan:hasInputVar     stof:mengsel;
+        pplan:hasOutputVar    stof:mengsel;
+        pplan:isPrecededBy    proces:STAP_001_1;
+        pplan:isStepOfPlan    proces:STAP_001;
         prov:wasDerivedFrom   riepr:overbrengingsProces;
         prov:wasInfluencedBy  riepr:overbrengingsProces .
 
-activiteitstap:STAP_002
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
+stof:deeg  rdf:type          pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Deeg"@nl;
+        pplan:isInputVarOf   proces:STAP_002;
+        pplan:isOutputVarOf  proces:STAP_001 , proces:STAP_001_3 .
+
+stof:koekjes  rdf:type       pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "Koekjes"@nl;
+        pplan:isOutputVarOf  proces:ACTIVITEIT_001 , proces:STAP_002 .
+
+riepr:Actief  rdf:type  skos:Concept .
+
+exploitatielocatie:ACTIVITEIT_001_LOC
+        rdf:type         prov:Location , prov:Entity , geo:SpatialObjectCollection , riepr:ExploitatieLocatie;
+        rdfs:label       "Locatie ACTIVITEIT_001"@nl;
+        prov:locationOf  proces:ACTIVITEIT_001 .
+
+riepr:overbrengingsProces
+        rdf:type            prov:Entity;
+        prov:hadDerivation  proces:STAP_001_2;
+        prov:influenced     proces:STAP_001_2 .
+
+proces:STAP_002  rdf:type   prov:Entity , pplan:Plan , riepr:Proces , dbo:UnitOfWork , prov:Plan , riepr:IIOA , pplan:Step , pplan:Entity , owl:Thing , dbo:Project;
         rdfs:label          "Koekjes bakken"@nl;
-        pplan:isPrecededBy  activiteitstap:STAP_001;
-        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+        pplan:hasInputVar   stof:deeg;
+        pplan:hasOutputVar  stof:koekjes;
+        pplan:isPrecededBy  proces:STAP_001;
+        pplan:isStepOfPlan  proces:ACTIVITEIT_001 .
 
-activiteitstap:STAP_001_1
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
+proces:ACTIVITEIT_001
+        rdf:type            riepr:IIOA , dbo:UnitOfWork , prov:Plan , owl:Thing , dbo:Project , pplan:Plan , riepr:Proces , prov:Entity , pplan:Entity , pplan:Step;
+        rdfs:label          "Koekjes maken"@nl;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued          "2020-07-30"^^xsd:date;
+        dct:valid           "2030-12-31"^^xsd:date;
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:koekjes;
+        adms:status         riepr:Actief;
+        prov:atLocation     exploitatielocatie:ACTIVITEIT_001_LOC .
+
+proces:STAP_001_1  rdf:type  pplan:Entity , pplan:Step , dbo:Project , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , owl:Thing , riepr:Proces;
         rdfs:label          "Ingrediënten mengen"@nl;
-        pplan:isStepOfPlan  activiteitstap:STAP_001 .
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:mengsel;
+        pplan:isStepOfPlan  proces:STAP_001 .
 
-activiteitstap:STAP_001_3
-        rdf:type            pplan:Step , riepr:ActiviteitStap;
+proces:STAP_001_3  rdf:type  prov:Plan , owl:Thing , riepr:Proces , pplan:Entity , dbo:Project , pplan:Step , dbo:UnitOfWork , riepr:IIOA , pplan:Plan , prov:Entity;
         rdfs:label          "Deeg laten rusten"@nl;
-        pplan:isPrecededBy  activiteitstap:STAP_001_2;
-        pplan:isStepOfPlan  activiteitstap:STAP_001 .
+        pplan:hasInputVar   stof:mengsel;
+        pplan:hasOutputVar  stof:deeg;
+        pplan:isPrecededBy  proces:STAP_001_2;
+        pplan:isStepOfPlan  proces:STAP_001 .
 
-activiteitstap:STAP_001
-        rdf:type            pplan:Step , pplan:Plan , prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity , riepr:ActiviteitStap;
+proces:STAP_001  rdf:type   riepr:IIOA , prov:Plan , pplan:Plan , riepr:Proces , prov:Entity , dbo:UnitOfWork , owl:Thing , pplan:Entity , pplan:Step , dbo:Project;
         rdfs:label          "Koekjesdeeg maken"@nl;
-        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
+        pplan:hasInputVar   stof:meel;
+        pplan:hasOutputVar  stof:deeg;
+        pplan:isStepOfPlan  proces:ACTIVITEIT_001 .
+
+stof:mengsel  rdf:type       dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label           "Deegmengsel"@nl;
+        pplan:isInputVarOf   proces:STAP_001_3 , proces:STAP_001_2;
+        pplan:isOutputVarOf  proces:STAP_001_1 , proces:STAP_001_2 .
+
+stof:meel  rdf:type         dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdfs:label          "Meel"@nl;
+        pplan:isInputVarOf  proces:STAP_001 , proces:STAP_001_1 , proces:ACTIVITEIT_001 .

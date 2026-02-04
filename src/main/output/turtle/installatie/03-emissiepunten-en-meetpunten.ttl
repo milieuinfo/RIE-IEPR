@@ -1,72 +1,119 @@
-@prefix activiteitstap:     <https://data.riepr.omgeving.vlaanderen.be/id/activiteitstap/> .
+@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix adms:               <http://www.w3.org/ns/adms#> .
+@prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dbo:                <http://dbpedia.org/ontology/> .
+@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
+@prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
+@prefix dcterms:            <http://purl.org/dc/terms/> .
+@prefix dqv:                <http://www.w3.org/ns/dqv#> .
 @prefix emissiepunt:        <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix foaf:               <http://xmlns.com/foaf/0.1/> .
+@prefix geo:                <http://www.opengis.net/ont/geosparql#> .
 @prefix installatie:        <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix locn:               <http://www.w3.org/ns/locn#> .
 @prefix meetpunt:           <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
+@prefix ns5:                <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
+@prefix ns6:                <http://mappings.dbpedia.org/index.php/OntologyClass:> .
 @prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
+@prefix org:                <http://www.w3.org/ns/org#> .
+@prefix owl:                <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:             <http://purl.org/net/p-plan#> .
+@prefix pplan:              <http://purl.org/net/p-plan#> .
 @prefix prov:               <http://www.w3.org/ns/prov#> .
+@prefix qudt:               <http://qudt.org/schema/qudt/> .
 @prefix rdf:                <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix schema:             <http://schema.org/> .
+@prefix sh:                 <http://www.w3.org/ns/shacl#> .
 @prefix skos:               <http://www.w3.org/2004/02/skos/core#> .
 @prefix sosa:               <http://www.w3.org/ns/sosa/> .
+@prefix sosa-act:           <http://www.w3.org/ns/sosa/act/> .
+@prefix sosa-common:        <http://www.w3.org/ns/sosa/common/> .
+@prefix sosa-dep:           <http://www.w3.org/ns/sosa/dep/> .
+@prefix sosa-obs:           <http://www.w3.org/ns/sosa/obs/> .
+@prefix sosa-sam:           <http://www.w3.org/ns/sosa/sam/> .
+@prefix sp:                 <http://www.w3.org/ns/sosa/prov/> .
+@prefix ssn:                <http://www.w3.org/ns/ssn/> .
+@prefix ssn-act:            <http://www.w3.org/ns/ssn/act/> .
+@prefix ssn-common:         <http://www.w3.org/ns/ssn/common/> .
+@prefix ssn-dep:            <http://www.w3.org/ns/ssn/dep/> .
+@prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
+@prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
+@prefix terms:              <http://purl.org/dc/terms/> .
+@prefix time:               <http://www.w3.org/2006/time#> .
+@prefix vann:               <http://purl.org/vocab/vann/> .
+@prefix vcard:              <http://www.w3.org/2006/vcard/ns#> .
+@prefix voaf:               <http://purl.org/vocommons/voaf#> .
+@prefix wdrs:               <http://www.w3.org/2007/05/powder-s#> .
+@prefix wikidata:           <http://www.wikidata.org/entity/> .
+@prefix xhv:                <http://www.w3.org/1999/xhtml/vocab#> .
+@prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-<file:///home/gehau/git/RIE-IEPR/...>
-        rdf:type  ogc:Geometry , ogc:SpatialObject .
-
-meetpunt:MP_001  rdf:type  riepr:Meetpunt , ogc:SpatialObject , ogc:Feature;
+meetpunt:MP_001  rdf:type  riepr:Meetpunt , sosa:Sensor , sosa:System , prov:Entity , geo:SpatialObject , prov:Agent , geo:Feature;
         rdfs:label       "Meetpunt Luchtkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
         sosa:isProxyFor  emissiepunt:EP_001 .
 
+riepr:Actief  rdf:type  skos:Concept .
+
 installatie:GPBV_12345
-        rdf:type         <http://www.w3.org/ns/ssn/System> , riepr:Installatie , ogc:SpatialObjectCollection;
+        rdf:type         ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
         rdfs:label       "Fictief NV"@nl;
         rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
         rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        adms:identifier  [ skos:notation  "BE.VL.000000001.INSTALLATION" ];
-        adms:identifier  [ skos:notation  "20260101-0001" ];
+        adms:identifier  [ rdf:type       adms:Identifier;
+                           skos:notation  "20260101-0001"
+                         ];
+        adms:identifier  [ rdf:type       adms:Identifier;
+                           skos:notation  "BE.VL.000000001.INSTALLATION"
+                         ];
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX .
 
 exploitatielocatie:EX
-        rdf:type         prov:Location , prov:Entity , ogc:SpatialObjectCollection , ogc:Feature , ogc:SpatialObject , riepr:ExploitatieLocatie;
+        rdf:type         riepr:ExploitatieLocatie , prov:Location , prov:Entity , geo:SpatialObject , geo:Feature , geo:SpatialObjectCollection;
         rdfs:label       "Exploitatielocatie Fictief NV"@nl;
-        ogc:hasGeometry  [ rdf:type              ogc:Geometry , ogc:SpatialObject;
-                           ogc:asWKT             "POINT(4.4000 51.2100)"^^ogc:WKTLiteral;
-                           ogc:hasSerialization  "POINT(4.4000 51.2100)"^^ogc:WKTLiteral
-                         ] .
+        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
+                           geo:asWKT             "POINT(4.4000 51.2100)"^^geo:WKTLiteral;
+                           geo:hasSerialization  "POINT(4.4000 51.2100)"^^geo:WKTLiteral
+                         ];
+        prov:locationOf  meetpunt:MP_001 , installatie:GPBV_12345 , meetpunt:MP_002 , emissiepunt:EP_001 .
 
-meetpunt:MP_002  rdf:type  riepr:Meetpunt , ogc:Feature , ogc:SpatialObject;
+meetpunt:MP_002  rdf:type  riepr:Meetpunt , prov:Entity , sosa:Sensor , geo:Feature , prov:Agent , sosa:System , geo:SpatialObject;
         rdfs:label       "Meetpunt Waterkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
-        sosa:isProxyFor  [ rdf:type       <http://purl.org/net/p-plan#Step> , riepr:ActiviteitStap;
+        sosa:isProxyFor  [ rdf:type       prov:Plan , owl:Thing , pplan:Plan , riepr:IIOA , dbo:UnitOfWork , pplan:Entity , prov:Entity , riepr:Proces , dbo:Project , pplan:Step;
                            rdfs:label     "Waterzuiveringsproces"@nl;
                            sosa:hasProxy  meetpunt:MP_002
                          ] .
 
-emissiepunt:EP_001  rdf:type  ogc:SpatialObject , riepr:Emissiepunt , ogc:Feature;
+emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Feature;
         rdfs:label       "Emissiepunt Schoorsteen 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        ogc:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
         sosa:hasProxy    meetpunt:MP_001 .
+
+<file:///home/gehau/git/RIE-IEPR/...>
+        rdf:type  geo:Geometry , geo:SpatialObject .
