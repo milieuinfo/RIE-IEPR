@@ -335,10 +335,10 @@ export class WaterParser extends BaseParser {
                 this.turtle.qname('riepr', 'uitstootProces')
             );
 
-            // Emissiepunten (prov:Entity) beïnvloeden de uitstootstap (prov:Entity)
+            // Emissiepunten (prov:Agent) worden toegeschreven aan de uitstootstap
             this.turtle.triple(
                 stepUri,
-                this.turtle.qname('prov', 'wasInfluencedBy'),
+                this.turtle.qname('prov', 'wasAttributedTo'),
                 parentUri
             );
         });

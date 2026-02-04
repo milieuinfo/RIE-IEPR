@@ -25,6 +25,7 @@ export const NAMESPACES = {
     meetpunt: 'https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/',
     meetprocedure: 'https://data.riepr.omgeving.vlaanderen.be/id/meetprocedure/',
     stof: 'https://data.riepr.omgeving.vlaanderen.be/id/stof/',
+    var: 'https://data.riepr.omgeving.vlaanderen.be/id/var/',
     vkbo: 'https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/',
 };
 

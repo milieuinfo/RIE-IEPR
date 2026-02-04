@@ -8,6 +8,7 @@ import { WaterParser } from './water-parser.js';
 import { LuchtParser } from './lucht-parser.js';
 import { ShaclValidator } from './shacl-validator.js';
 import { parseTurtleString } from '../../common/src/rdf.js';
+import { NAMESPACES } from './constants.js';
 import { PATHS } from '../../common/src/paths.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,58 @@ async function validateTurtle(turtle, shapesPath, dataSource = '') {
     }
 }
 
+function sanitizeId(value) {
+    return value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+}
+
+async function ensureProcessInputOutputVars(turtle) {
+    const store = await parseTurtleString(turtle);
+    const { namedNode, literal } = N3.DataFactory;
+
+    const rdfType = namedNode(`${NAMESPACES.rdf}type`);
+    const rdfsLabel = namedNode(`${NAMESPACES.rdfs}label`);
+    const rieprProces = namedNode(`${NAMESPACES.riepr}Proces`);
+    const rieprVariable = namedNode(`${NAMESPACES.riepr}Variable`);
+    const hasInputVar = namedNode(`${NAMESPACES.pplan}hasInputVar`);
+    const hasOutputVar = namedNode(`${NAMESPACES.pplan}hasOutputVar`);
+
+    const procesSubjects = store.getSubjects(rdfType, rieprProces, null);
+    let fallbackCounter = 0;
+
+    for (const proces of procesSubjects) {
+        const inputVars = store.getObjects(proces, hasInputVar, null);
+        const outputVars = store.getObjects(proces, hasOutputVar, null);
+
+        if (inputVars.length === 0 && outputVars.length === 0) {
+            const procesId = proces.value?.split('/').pop() || `proces_${fallbackCounter++}`;
+            const varId = sanitizeId(`var_${procesId}`) || `var_${fallbackCounter++}`;
+            const varUri = namedNode(`${NAMESPACES.var}${varId}`);
+
+            store.addQuad(varUri, rdfType, rieprVariable);
+            store.addQuad(varUri, rdfsLabel, literal('Onbekende stroom', 'nl'));
+            store.addQuad(proces, hasInputVar, varUri);
+            store.addQuad(proces, hasOutputVar, varUri);
+        } else if (inputVars.length === 0 && outputVars.length > 0) {
+            store.addQuad(proces, hasInputVar, outputVars[0]);
+        } else if (outputVars.length === 0 && inputVars.length > 0) {
+            store.addQuad(proces, hasOutputVar, inputVars[0]);
+        }
+    }
+
+    const writer = new N3.Writer({ format: 'Turtle', prefixes: NAMESPACES });
+    writer.addQuads(store.getQuads(null, null, null));
+
+    return new Promise((resolve, reject) => {
+        writer.end((error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+        });
+    });
+}
+
 /**
  * Main converter function
  */
@@ -46,6 +99,7 @@ async function convertXmlToTurtle(xmlPath) {
             if (grondwaterData) {
                 parser = new GrondwaterParser(grondwaterData);
                 turtle = await parser.parse();
+                turtle = await ensureProcessInputOutputVars(turtle);
             }
 
         } else if (xmlPath.includes('water')) {
@@ -53,12 +107,14 @@ async function convertXmlToTurtle(xmlPath) {
             if (fullWaterData) {
                 parser = new WaterParser(fullWaterData);
                 turtle = await parser.parse();
+                turtle = await ensureProcessInputOutputVars(turtle);
             }
         } else if (xmlPath.includes('lucht')) {
             const fullLuchtData = xmlData['n15:MilieuverslagVasteGegevens'];
             if (fullLuchtData) {
                 parser = new LuchtParser(fullLuchtData);
                 turtle = await parser.parse();
+                turtle = await ensureProcessInputOutputVars(turtle);
             }
         } else {
             console.warn('Unknown file type:', xmlPath);
@@ -271,6 +327,7 @@ async function main() {
         const dirPath = path.join(outputDir, dir);
         const ttlFiles = fs.readdirSync(dirPath)
             .filter(file => file.endsWith('.ttl'))
+            .filter(file => file !== 'merged.ttl' && file !== 'test.ttl')
             .map(file => path.join(dirPath, file));
 
         if (ttlFiles.length > 0) {

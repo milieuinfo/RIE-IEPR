@@ -133,35 +133,40 @@ export class EdgeGenerator {
             }
         }
 
-        // Process ALL steps (including hidden procedures) to generate emission edges
-        const allSteps = this.store.getQuads(null, rdf.type, namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces'));
-        for (const stepQuad of allSteps) {
-            const stepUri = stepQuad.subject.value;
-            const procedureUri = this.getProcedureUri(stepUri);
-            const label = this.getStepLabel(stepUri);
-
-            if (procedureUri && this.procedureChecker.isUitstootProcedure(procedureUri)) {
-                // Emission procedure - dotted arrows to emission points
-                // Find the visible predecessor to start the edge from
-                const visiblePredecessorUri = this.findVisiblePredecessor(stepUri);
-                const sourceNodeId = visiblePredecessorUri ? this.nodeMap.get(visiblePredecessorUri) : null;
+        // Generate edges to emission points from visible steps via hidden emission steps
+        for (const stepUri of this.nodeMap.keys()) {
+            const stepNodeId = this.nodeMap.get(stepUri);
+            
+            // Find all direct successors
+            const successors = this.store.getQuads(null, pplan.isPrecededBy, namedNode(stepUri))
+                .map(q => q.subject.value);
+            
+            for (const successorUri of successors) {
+                const successorProcedureUri = this.getProcedureUri(successorUri);
                 
-                if (sourceNodeId) {
-                    const emittedPoints = this.store.getQuads(namedNode(stepUri), prov.wasInfluencedBy, null);
+                // If successor is an emission procedure, link to emission points
+                if (successorProcedureUri && this.procedureChecker.isUitstootProcedure(successorProcedureUri)) {
+                    // Look for emission points via wasAttributedTo OR wasInfluencedBy (for compatibility)
+                    let emittedPoints = this.store.getQuads(namedNode(successorUri), prov.wasAttributedTo, null);
+                    if (emittedPoints.length === 0) {
+                        emittedPoints = this.store.getQuads(namedNode(successorUri), prov.wasInfluencedBy, null);
+                    }
+                    const emissionLabel = this.getStepLabel(successorUri);
+                    
                     for (const pointQuad of emittedPoints) {
                         const pointUri = pointQuad.object.value;
                         if (this.emissiePuntenIndex.has(pointUri)) {
                             const idx = this.emissiePuntenIndex.get(pointUri);
-                            if (label) {
-                                const edgeKey = `${sourceNodeId}-.->emissiepunt${idx}:${label}`;
+                            if (emissionLabel) {
+                                const edgeKey = `${stepNodeId}-.->emissiepunt${idx}:${emissionLabel}`;
                                 if (!processedEdges.has(edgeKey)) {
-                                    edges.push(`    ${sourceNodeId} -.->|${label}| emissiepunt${idx}`);
+                                    edges.push(`    ${stepNodeId} -.->|${emissionLabel}| emissiepunt${idx}`);
                                     processedEdges.add(edgeKey);
                                 }
                             } else {
-                                const edgeKey = `${sourceNodeId}-.->emissiepunt${idx}`;
+                                const edgeKey = `${stepNodeId}-.->emissiepunt${idx}`;
                                 if (!processedEdges.has(edgeKey)) {
-                                    edges.push(`    ${sourceNodeId} -.-> emissiepunt${idx}`);
+                                    edges.push(`    ${stepNodeId} -.-> emissiepunt${idx}`);
                                     processedEdges.add(edgeKey);
                                 }
                             }
@@ -203,11 +208,27 @@ export class EdgeGenerator {
                     }
                 }
 
-                // Output vars: proces → stof (alleen als stof zichtbaar is)
+                // Output vars: proces → stof (alleen als stof zichtbaar is en NIET door opvolger verbruikt)
                 const outputVars = this.store.getQuads(namedNode(stepUri), pplan.hasOutputVar, null);
+                const successors = this.store.getQuads(null, pplan.isPrecededBy, namedNode(stepUri))
+                    .map(q => q.subject.value);
+                
                 for (const outputQuad of outputVars) {
                     const varUri = outputQuad.object.value;
                     if (this.stofIndex.has(varUri)) {
+                        // Check if a VISIBLE successor exists that consumes this stof
+                        // (Hidden procedures like verbruiks/vervoers will suppress the output)
+                        const consumedByVisibleSuccessor = successors.some(succ => {
+                            // Only suppress if successor is visible (in nodeMap)
+                            if (!this.nodeMap.has(succ)) return false;
+                            
+                            const succInputs = this.store.getQuads(namedNode(succ), pplan.hasInputVar, null);
+                            return succInputs.some(iq => iq.object.value === varUri);
+                        });
+                        
+                        // Only suppress if consumed by a VISIBLE successor
+                        if (consumedByVisibleSuccessor) continue;
+                        
                         // Stof is zichtbaar - toon als node
                         const idx = this.stofIndex.get(varUri);
                         const edgeKey = `${stepNode}-->stof${idx}`;
@@ -221,38 +242,38 @@ export class EdgeGenerator {
                 // Hidden proces: verbind stoffen met zichtbare neighbors
                 const procedureUri = this.getProcedureUri(stepUri);
                 
-                // Voor hidden processen: vind zichtbare predecessor voor output, successor voor input
+                // Voor hidden processen: vind zichtbare predecessor en successor
                 const visiblePred = this.findVisiblePredecessor(stepUri);
                 const visibleSucc = this.findVisibleSuccessor(stepUri);
                 
-                // Output vars van hidden proces → verbind met visible predecessor (als die bestaat)
+                // Input vars van hidden proces → verbind met visible predecessor (bijv. brandstof)
                 if (visiblePred) {
                     const predNode = this.nodeMap.get(visiblePred);
-                    const outputVars = this.store.getQuads(namedNode(stepUri), pplan.hasOutputVar, null);
-                    for (const outputQuad of outputVars) {
-                        const varUri = outputQuad.object.value;
+                    const inputVars = this.store.getQuads(namedNode(stepUri), pplan.hasInputVar, null);
+                    for (const inputQuad of inputVars) {
+                        const varUri = inputQuad.object.value;
                         if (this.stofIndex.has(varUri)) {
                             const idx = this.stofIndex.get(varUri);
-                            const edgeKey = `${predNode}-->stof${idx}`;
+                            const edgeKey = `stof${idx}-->${predNode}`;
                             if (!processedEdges.has(edgeKey)) {
-                                edges.push(`    ${predNode} --> stof${idx}`);
+                                edges.push(`    stof${idx} --> ${predNode}`);
                                 processedEdges.add(edgeKey);
                             }
                         }
                     }
                 }
                 
-                // Input vars van hidden proces → verbind met visible successor (als die bestaat)
+                // Output vars van hidden proces → verbind met visible successor (als die bestaat)
                 if (visibleSucc) {
                     const succNode = this.nodeMap.get(visibleSucc);
-                    const inputVars = this.store.getQuads(namedNode(stepUri), pplan.hasInputVar, null);
-                    for (const inputQuad of inputVars) {
-                        const varUri = inputQuad.object.value;
+                    const outputVars = this.store.getQuads(namedNode(stepUri), pplan.hasOutputVar, null);
+                    for (const outputQuad of outputVars) {
+                        const varUri = outputQuad.object.value;
                         if (this.stofIndex.has(varUri)) {
                             const idx = this.stofIndex.get(varUri);
-                            const edgeKey = `stof${idx}-->${succNode}`;
+                            const edgeKey = `${succNode}-->stof${idx}`;
                             if (!processedEdges.has(edgeKey)) {
-                                edges.push(`    stof${idx} --> ${succNode}`);
+                                edges.push(`    ${succNode} --> stof${idx}`);
                                 processedEdges.add(edgeKey);
                             }
                         }
