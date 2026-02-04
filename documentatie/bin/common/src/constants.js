@@ -16,8 +16,7 @@ export const NAMESPACES = {
     qudt: 'http://qudt.org/schema/qudt/',
     unit: 'http://qudt.org/vocab/unit/',
     riepr: 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#',
-    activiteit: 'https://data.riepr.omgeving.vlaanderen.be/id/activiteit/',
-    activiteitstap: 'https://data.riepr.omgeving.vlaanderen.be/id/activiteit/stap/',
+    proces: 'https://data.riepr.omgeving.vlaanderen.be/id/proces/',
     exploitant: 'https://data.riepr.omgeving.vlaanderen.be/id/exploitant/',
     exploitatielocatie: 'https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/',
     emissiepunt: 'https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/',
@@ -26,7 +25,6 @@ export const NAMESPACES = {
     meetpunt: 'https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/',
     meetprocedure: 'https://data.riepr.omgeving.vlaanderen.be/id/meetprocedure/',
     stof: 'https://data.riepr.omgeving.vlaanderen.be/id/stof/',
-    bron: 'https://data.riepr.omgeving.vlaanderen.be/id/bron/',
     vkbo: 'https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/',
 };
 

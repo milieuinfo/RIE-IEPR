@@ -27,7 +27,7 @@ export class WaterParser extends BaseParser {
         this.createExploitant();
         this.createExploitatieLocatie(null, `Exploitatie locatie ${this.cbbNumber}`);
 
-        // Parse activiteiten (activities)
+        // Parse processen (activities)
         if (waterData.Activiteiten?.[0]?.Activiteit) {
             this.parseActiviteiten(waterData.Activiteiten[0].Activiteit);
         }
@@ -65,12 +65,12 @@ export class WaterParser extends BaseParser {
         const naam = activiteit.Naam?.[0];
         const noseCode = activiteit.NosePCode?.[0];
 
-        const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
+        const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
 
         this.turtle.triple(
             activiteitUri,
             this.turtle.qname('rdf', 'type'),
-            this.turtle.qname('riepr', 'Activiteit')
+            this.turtle.qname('riepr', 'Proces')
         );
 
         if (naam) {
@@ -120,14 +120,14 @@ export class WaterParser extends BaseParser {
             );
         }
 
-        // Create a root activiteitstap with the same name
-        const rootStepId = `${this.cbbNumber}_activiteit_step_${activiteitId}`;
-        const rootStepUri = this.turtle.qname('activiteitstap', rootStepId);
+        // Create a root proces step with the same name
+        const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
+        const rootStepUri = this.turtle.qname('proces', rootStepId);
 
         this.turtle.triple(
             rootStepUri,
             this.turtle.qname('rdf', 'type'),
-            this.turtle.qname('riepr', 'ActiviteitStap')
+            this.turtle.qname('riepr', 'Proces')
         );
 
         this.turtle.triple(
@@ -158,14 +158,14 @@ export class WaterParser extends BaseParser {
         }
 
         gebruikenArray.forEach((gebruik, index) => {
-            // Create ActiviteitStap for watergebruik (waterGebruikProces)
+            // Create Proces for watergebruik (waterGebruikProces)
             const stepId = `${this.cbbNumber}_water_usage_step_${index}`;
-            const stepUri = this.turtle.qname('activiteitstap', stepId);
+            const stepUri = this.turtle.qname('proces', stepId);
 
             this.turtle.triple(
                 stepUri,
                 this.turtle.qname('rdf', 'type'),
-                this.turtle.qname('riepr', 'ActiviteitStap')
+                this.turtle.qname('riepr', 'Proces')
             );
 
             this.turtle.triple(
@@ -191,30 +191,35 @@ export class WaterParser extends BaseParser {
                 this.turtle.qname('riepr', 'waterVerbruikProces')
             );
 
-            // Add source information as Bron entity; the Bron (prov:Entity) beïnvloedt de stap (prov:Entity)
+            // Add source information as Stof entity and link as input/output variables
             const herkomst = gebruik.Herkomst?.[0];
             if (herkomst) {
-                const bronId = this.sanitizeId(herkomst);
-                const bronUri = this.turtle.qname('bron', `${this.cbbNumber}_${bronId}`);
+                const stofId = this.sanitizeId(herkomst);
+                const stofUri = this.turtle.qname('stof', `${this.cbbNumber}_${stofId}`);
 
-                // Create Bron entity
+                // Create Stof entity
                 this.turtle.triple(
-                    bronUri,
+                    stofUri,
                     this.turtle.qname('rdf', 'type'),
-                    this.turtle.qname('riepr', 'Bron')
+                    this.turtle.qname('riepr', 'Stof')
                 );
 
                 this.turtle.triple(
-                    bronUri,
+                    stofUri,
                     this.turtle.qname('rdfs', 'label'),
                     this.turtle.literal(herkomst, null, 'nl')
                 );
 
-                // Link watergebruik step to water source via prov:wasInfluencedBy (Entity->Entity)
+                // Link watergebruik step to input/output variables
                 this.turtle.triple(
                     stepUri,
-                    this.turtle.qname('prov', 'wasInfluencedBy'),
-                    bronUri
+                    this.turtle.qname('pplan', 'hasInputVar'),
+                    stofUri
+                );
+                this.turtle.triple(
+                    stepUri,
+                    this.turtle.qname('pplan', 'hasOutputVar'),
+                    stofUri
                 );
             }
         });
@@ -296,16 +301,16 @@ export class WaterParser extends BaseParser {
 
         activiteitenArray.forEach((act) => {
             const activiteitId = act.$.activiteitID;
-            const activiteitUri = this.turtle.qname('activiteit', `${this.cbbNumber}_${activiteitId}`);
+            const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
 
-            // Create ActiviteitStap that uses this emissiepunt
+            // Create Proces that uses this emissiepunt
             const stepId = `${this.cbbNumber}_emit_step_${activiteitId}`;
-            const stepUri = this.turtle.qname('activiteitstap', stepId);
+            const stepUri = this.turtle.qname('proces', stepId);
 
             this.turtle.triple(
                 stepUri,
                 this.turtle.qname('rdf', 'type'),
-                this.turtle.qname('riepr', 'ActiviteitStap')
+                this.turtle.qname('riepr', 'Proces')
             );
 
             this.turtle.triple(

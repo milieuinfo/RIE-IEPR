@@ -222,7 +222,7 @@
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sampler> .
 
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStapShape>
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesShape>
         a               sh:NodeShape;
         sh:property     [ sh:class     <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -235,8 +235,7 @@
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:or        ( [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Activiteit> ]
-                                         [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap> ]
+                          sh:or        ( [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> ]
                                        );
                           sh:path      <http://purl.org/net/p-plan#isStepOfPlan>
                         ];
@@ -255,7 +254,7 @@
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#wasAttributedTo>
                         ];
-        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap> .
+        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
 
 <http://www.w3.org/ns/prov#StartShape>
         a               sh:NodeShape;
@@ -661,7 +660,7 @@
                         ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:or        ( [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> ]
-                                         [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ActiviteitStap> ]
+                                         [ sh:class  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> ]
                                        );
                           sh:path      [ sh:inversePath  <http://www.w3.org/ns/sosa/hasProxy> ]
                         ];

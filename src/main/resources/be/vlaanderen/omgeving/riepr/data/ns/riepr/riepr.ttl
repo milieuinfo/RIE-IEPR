@@ -30,8 +30,8 @@
     dct:creator "Flemish Government - Department of Environment"@en ;
     dct:publisher "Vlaamse overheid - Departement Omgeving"@nl ;
     dct:publisher "Flemish Government - Department of Environment and Spatial Development"@en ;
-    dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem."@nl ;
-    dct:description "The RIE-IEPR ontology defines a data model for describing industrial activities, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
+    dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem."@nl ;
+    dct:description "The RIE-IEPR ontology defines a data model for describing industrial processes, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
     dct:license <https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0> ;
     dct:issued "2026-01-27"^^xsd:date ;
     dct:modified "2026-01-27"^^xsd:date ;
@@ -46,10 +46,10 @@
 # Classes
 # --------------------------------------- #
 
-:Activiteit a owl:Class ;
-    rdfs:label "Activiteit"@nl ;
-    rdfs:comment "Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven."@nl ;
-    skos:example [ a :Activiteit ;
+:Proces a owl:Class ;
+    rdfs:label "Proces"@nl ;
+    rdfs:comment "Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen."@nl ;
+    skos:example [ a :Proces ;
         rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
         dct:created "2024-01-15T10:00:00"^^xsd:dateTime ;
         dct:issued "2020-01-01"^^xsd:date ;
@@ -58,100 +58,94 @@
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
-    rdfs:subClassOf pplan:Plan, dbo:Project ;
+    skos:example [ a :Proces ;
+        rdfs:label "Verwerking van grondstoffen"@nl ;
+        prov:wasDerivedFrom [ a :VerwerkingsProcedure ]
+    ] ;
+    rdfs:subClassOf pplan:Plan, pplan:Step, dbo:Project ;
+    owl:equivalentClass [ a owl:Class ;
+        # Proces kan een plan op zichzelf zijn (multi step)
+        owl:unionOf ( pplan:Step pplan:MultiStep pplan:Plan ) 
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een datum hebben waarop het is ingegeven
+        # Een proces moet een datum hebben waarop het is ingegeven
         owl:onProperty dct:created ;
         owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een benaming hebben
+        # Een proces moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een geldigheid start hebben
+        # Een proces moet een geldigheid start hebben
         owl:onProperty dct:issued ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit kan een geldigheid einde hebben
+        # Een proces kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit vindt plaats op een enkele exploitatie locatie
+        # Een proces vindt plaats op een enkele exploitatie locatie
         owl:onProperty prov:atLocation ;
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit moet een enkele status hebben
+        # Een proces moet een enkele status hebben
         owl:onProperty adms:status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een activiteit kan externe identificaties hebben (optioneel)
+        # Een proces kan externe identificaties hebben (optioneel)
         owl:onProperty adms:identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] .
-
-:ActiviteitStap a owl:Class ;
-    rdfs:label "Activiteit Stap"@nl ;
-    rdfs:comment "De activiteit stap is een individuele of meervoudige stap binnen een activiteit."@nl ;
-    skos:example [ a :ActiviteitStap ;
-        rdfs:label "Verwerking van grondstoffen"@nl ;
-        prov:wasDerivedFrom [ a :VerwerkingsProcedure ]
-    ] ;
-    rdfs:subClassOf pplan:Step ;
-    owl:equivalentClass [ a owl:Class ;
-        # Stap kan een plan op zichzelf zijn (multi step)
-        owl:unionOf ( pplan:Step pplan:MultiStep ) 
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een stap kan een geldigheid start hebben
-        owl:onProperty dct:issued ;
-        owl:someValuesFrom xsd:date ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een stap kan een geldigheid einde hebben
-        owl:onProperty dct:valid ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een stap kan worden beïnvloed door een emissiepunt, bron of stof
+        # Een proces kan worden beïnvloed door een emissiepunt of stof
         # (prov:Entity -> prov:Entity)
         owl:onProperty prov:wasInfluencedBy ; 
-        owl:someValuesFrom (:Emissiepunt :Bron :Stof) ; 
+        owl:someValuesFrom ( :Emissiepunt :Stof ) ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een stap kan worden toegeschreven aan een apparaat (agent)
+        # Een proces kan worden toegeschreven aan een apparaat (agent)
         owl:onProperty prov:wasAttributedTo ; 
         owl:someValuesFrom :Apparaat ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een stap kan zijn afgeleid van een (generieke) procedure (optioneel)
+        # Een proces kan zijn afgeleid van een (generieke) procedure (optioneel)
         owl:onProperty prov:wasDerivedFrom ; 
         owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces moet minstens één inputvariabele hebben (stof)
+        owl:onProperty pplan:hasInputVar ;
+        owl:someValuesFrom :Stof ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces moet minstens één outputvariabele hebben (stof)
+        owl:onProperty pplan:hasOutputVar ;
+        owl:someValuesFrom :Stof ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een stap moet deel uitmaken van een activiteit of andere stap
+        # Een proces kan deel uitmaken van een ander proces (hiërarchie)
         owl:onProperty pplan:isStepOfPlan ; 
-        owl:someValuesFrom ( :Activiteit :ActiviteitStap ) ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
     
@@ -312,30 +306,6 @@
         ]
     ] .
 
-:Bron a owl:Class ;
-    rdfs:label "Bron"@nl ;
-    rdfs:comment "Een bron is de oorsprong of herkomst van water of andere stoffen die als input worden gebruikt in een activiteit of procedure."@nl ;
-    skos:example [ a :Bron ;
-        rdfs:label "Grondwater"@nl ;
-        rdfs:comment "Grondwater als waterbron voor industriele processen"@nl
-    ] ;
-    skos:example [ a :Bron ;
-        rdfs:label "Oppervlaktewater (waterlopen/kanalen)"@nl ;
-        rdfs:comment "Water uit oppervlaktewaterlopen als bron"@nl
-    ] ;
-    rdfs:subClassOf ssn:Input ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een bron moet een benaming hebben
-        owl:onProperty rdfs:label ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een bron kan een beschrijving/opmerking hebben
-        owl:onProperty rdfs:comment ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
-
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
@@ -351,11 +321,11 @@
             rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl
         ]
     ] ;
-    rdfs:subClassOf ogc:SpatialObject ;
+    rdfs:subClassOf ogc:SpatialObject, sosa:Sensor ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een meetpunt moet een proxy zijn voor een emissiepunt OF een activiteit stap
+        # Een meetpunt moet een proxy zijn voor een emissiepunt OF een proces
         owl:onProperty sosa:isProxyFor ; 
-        owl:someValuesFrom ( :Emissiepunt :ActiviteitStap ) ;
+        owl:someValuesFrom ( :Emissiepunt :Proces ) ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
@@ -492,7 +462,7 @@
 
 :ExploitatieLocatie a owl:Class ;
     rdfs:label "Exploitatie Locatie"@nl ;
-    rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert."@nl ;
+    rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl ;
     rdfs:subClassOf ogc:SpatialObjectCollection, prov:Entity ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet een datum hebben waarop het is ingegeven
@@ -560,7 +530,7 @@
 # TODO: Dit moet uit codelijsten komen
 :Stof a owl:Class ;
     rdfs:label "Stof"@nl ;
-    rdfs:comment "Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een activiteit."@nl ;
+    rdfs:comment "Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een proces."@nl ;
     rdfs:subClassOf dbo:ChemicalSubstance ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een stof moet een benaming hebben
@@ -568,23 +538,23 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-# Activiteit Procedures
-:ActiviteitProcedure a owl:Class ;
-    rdfs:label "Activiteit Procedure"@nl ;
-    rdfs:comment "Een activiteit procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een activiteit."@nl ;
+# Proces Procedures
+:ProcesProcedure a owl:Class ;
+    rdfs:label "Proces Procedure"@nl ;
+    rdfs:comment "Een proces procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een proces."@nl ;
     rdfs:subClassOf sosa:Procedure .
 :TransportProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Transport Procedure"@nl ;
-    rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit."@nl ;
-    rdfs:subClassOf :ActiviteitProcedure .
+    rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces."@nl ;
+    rdfs:subClassOf :ProcesProcedure .
 :VerwerkingsProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Verwerkings Procedure"@nl ;
-    rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit."@nl ;
-    rdfs:subClassOf :ActiviteitProcedure .
+    rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
+    rdfs:subClassOf :ProcesProcedure .
 
 :VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Verbruiks Procedure"@nl ;
-    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een activiteit."@nl ;
+    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
     # Verbruiks procedures zijn het transport van stoffen van buiten naar binnen
     rdfs:subClassOf :TransportProcedure .
 :EmissieProcedure a owl:Class, skos:ConceptScheme ;
@@ -633,22 +603,22 @@
     skos:prefLabel "Uitstootproces"@nl .
 :electriciteitsVerbruikProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Elektriciteitsverbruikproces"@nl ;
-    rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit."@nl ;
+    rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een proces."@nl ;
     skos:broader :VerbruiksProcedure ;
     skos:prefLabel "Elektriciteitsverbruikproces"@nl .
 :waterVerbruikProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Waterverbruikproces"@nl ;
-    rdfs:comment "Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een activiteit."@nl ;
+    rdfs:comment "Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een proces."@nl ;
     skos:broader :VerbruiksProcedure ;
     skos:prefLabel "Waterverbruikproces"@nl .
 :brandstofVerbruikProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Brandstofverbruikproces"@nl ;
-    rdfs:comment "Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een activiteit."@nl ;
+    rdfs:comment "Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een proces."@nl ;
     skos:broader :VerbruiksProcedure ;
     skos:prefLabel "Brandstofverbruikproces"@nl .
 :eindproductProductieProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Eindproduct productieproces"@nl ;
-    rdfs:comment "Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een activiteit."@nl ;
+    rdfs:comment "Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een proces."@nl ;
     skos:broader :VerwerkingsProcedure ;
     skos:prefLabel "Eindproduct productieproces"@nl .
 
@@ -677,9 +647,9 @@
 # --------------------------------------- #
 # Axioms
 # --------------------------------------- #
-# ActiviteitStap met een emissieprocedure moet worden beïnvloed door een emissiepunt
+# Proces met een emissieprocedure moet worden beïnvloed door een emissiepunt
 [ a owl:Class ;
-    owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+    owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :EmissieProcedure
     ] )
@@ -688,9 +658,9 @@
     owl:someValuesFrom :Emissiepunt
 ] .
 
-# ActiviteitStap met een apparaatverwerkingsproces moet worden toegeschreven aan een apparaat (agent)
+# Proces met een apparaatverwerkingsproces moet worden toegeschreven aan een apparaat (agent)
 [ a owl:Class ;
-    owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+    owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :apparaatVerwerkingsProces
     ] )
@@ -699,13 +669,27 @@
     owl:someValuesFrom :Apparaat
 ] .
 
-# ActiviteitStap met een overbrengingsproces moet stoffen transporteren
+# Proces met een overbrengingsproces moet stoffen transporteren
 [ a owl:Class ;
-    owl:intersectionOf ( :ActiviteitStap [ a owl:Restriction ;
+    owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :overbrengingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
+    owl:onProperty pplan:hasOutputVar ;
+    owl:someValuesFrom :Stof
+] .
+
+# Proces met transport/overbrenging/uitstoot: invoer = uitvoer (zelfde stof)
+[ a owl:Class ;
+    owl:intersectionOf ( :Proces [ a owl:Restriction ;
+        owl:onProperty prov:wasDerivedFrom ;
+        owl:someValuesFrom :TransportProcedure
+    ] )
+] rdfs:subClassOf [ a owl:Restriction ;
+    owl:onProperty pplan:hasInputVar ;
+    owl:someValuesFrom :Stof
+], [ a owl:Restriction ;
     owl:onProperty pplan:hasOutputVar ;
     owl:someValuesFrom :Stof
 ] .
