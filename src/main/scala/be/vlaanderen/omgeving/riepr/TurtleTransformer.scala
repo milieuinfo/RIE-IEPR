@@ -353,8 +353,8 @@ object TurtleTransformer {
 
       // JSON-LD verwerking
       for {
-        jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
-        //jsonLd <- modelToJsonLd(model) // gebruik model
+        //jsonLd <- modelToJsonLd(inferredModel) // gebruik inferredModel
+        jsonLd <- modelToJsonLd(model) // gebruik model
         framed <- frameJsonLd(jsonLd, frame)
         graph <- extractGraph(framed)
       } {
