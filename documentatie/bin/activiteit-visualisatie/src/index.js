@@ -15,7 +15,7 @@ const rulesFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/
 const ontologyFile = resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl');
 const { namedNode } = N3.DataFactory;
 
-const MERMAID_SCALE = process.env.MMD_SCALE || '2';
+const MERMAID_SCALE = process.env.MMD_SCALE || '10';
 
 function getMmdcPath() {
     const binPath = path.resolve(__dirname, '..', 'node_modules', '.bin', 'mmdc');
@@ -97,7 +97,15 @@ function getLabel(store, uri) {
 function getComment(store, uri) {
     const quads = store.getQuads(namedNode(uri), rdfs.comment, null);
     if (quads.length > 0) {
-        const commentText = quads[0].object.value.replace(/"/g, '\\"').replace(/\n/g, ' ').substring(0, 100);
+        // First truncate, then escape to avoid breaking escape sequences
+        const commentText = quads[0].object.value
+            .substring(0, 100)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\n/g, ' ')
+            .replace(/\r/g, ' ');
         return commentText;
     }
     return null;
@@ -106,14 +114,25 @@ function getComment(store, uri) {
 function escapeMermaidLabel(label) {
     if (!label) return label;
     return String(label)
-        .replace(/"/g, '\\"')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
         .replace(/\n/g, ' ')
         .replace(/\r/g, ' ');
 }
 
 function getRootActivities(store) {
     const activities = store.getQuads(null, rdf.type, riepr.Proces);
-    return activities.map(a => a.subject.value);
+    // Only return root activities (those that are not steps of another activity)
+    const rootActivities = [];
+    for (const activity of activities) {
+        const isStepQuads = store.getQuads(activity.subject, pplan.isStepOfPlan, null);
+        if (isStepQuads.length === 0) {
+            rootActivities.push(activity.subject.value);
+        }
+    }
+    return rootActivities;
 }
 
 function getActivitySteps(store, activityUri) {
@@ -136,13 +155,20 @@ function constructMermaidGraph(store, steps, nodeMap, parentMap, nodeDefs, subgr
         
         const procedureQuads = store.getQuads(namedNode(stepUri), prov.wasDerivedFrom, null);
         const procedureUri = procedureQuads.length > 0 ? procedureQuads[0].object.value : null;
-        if (procedureUri && (
-            procedureChecker.isTransportProcedure(procedureUri) ||
-            procedureChecker.isVerbruiksProcedure(procedureUri) ||
-            procedureChecker.isUitstootProcedure(procedureUri)
-        )) {
-            // Skip hidden procedures - don't add to nodeMap, don't create nodes
-            continue;
+        
+        // Skip all hidden procedures: transport, consumption (verbruiks), emission (uitstoot), and non-apparatus processing
+        if (procedureUri) {
+            const isProcedureHidden = 
+                procedureChecker.isTransportProcedure(procedureUri) ||
+                procedureChecker.isVerbruiksProcedure(procedureUri) ||
+                procedureChecker.isUitstootProcedure(procedureUri) ||
+                (procedureChecker.isVerwerkingsProcedure(procedureUri) &&
+                    !procedureChecker.isApparaatVerwerkingsProcedure(procedureUri));
+            
+            if (isProcedureHidden) {
+                // Skip hidden procedures - don't add to nodeMap, don't create nodes
+                continue;
+            }
         }
 
         const index = nodeMap.size;
@@ -169,26 +195,41 @@ style ${nodeId} ${styles.proces}
             ? `${label}[${escapeMermaidLabel(getLabel(store, procedureQuads[0].object.value))}]`
             : label;
         const comment = getComment(store, stepUri);
-        if (comment) {
+        
+        // Check if this step is attributed to any apparatus
+        const gebruikteApparaten = store.getQuads(namedNode(stepUri), prov.wasAttributedTo, null).filter(q => {
+            const types = store.getQuads(q.object, rdf.type, null).map(t => t.object.value);
+            return types.includes(riepr.Apparaat.value);
+        });
+        
+        // Check if this is a purification step (derived from apparaatVerwerkingsProces)
+        const apparaatVerwerkingsProcesUri = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#apparaatVerwerkingsProces');
+        const purificationCheck = store.getQuads(namedNode(stepUri), prov.wasDerivedFrom, apparaatVerwerkingsProcesUri);
+        const isPurificationStep = purificationCheck.length > 0;
+        
+        if (gebruikteApparaten.length > 0) {
+            // This step is performed by apparatus(es) - always show as "(Apparaat: ...)"
+            const apparaatUri = gebruikteApparaten[0].object.value;
+            const apparaatLabel = escapeMermaidLabel(getLabel(store, apparaatUri));
+            const apparaatComment = getComment(store, apparaatUri);
+            nodeLabel = `(Apparaat: ${apparaatLabel}`;
+            if (apparaatComment) {
+                nodeLabel += `<br/><i>${apparaatComment}</i>`;
+            } else if (comment) {
+                nodeLabel += `<br/><i>${comment}</i>`;
+            }
+            nodeLabel += ')';
+        } else if (isPurificationStep) {
+            // Purification step - show as "(Apparaat: ...)" with technique/comment
+            nodeLabel = `(Apparaat: ${label}`;
+            if (comment) {
+                nodeLabel += `<br/><i>${comment}</i>`;
+            }
+            nodeLabel += ')';
+        } else if (comment) {
             nodeLabel += `<br/><i>${comment}</i>`;
         }
-        if (procedureChecker && procedureChecker.isApparaatVerwerkingsProcedure(procedureUri)) {
-            // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
-            const gebruikteApparaten = store.getQuads(namedNode(stepUri), prov.wasAttributedTo, null).filter(q => {
-                const types = store.getQuads(q.object, rdf.type, null).map(t => t.object.value);
-                return types.includes(riepr.Apparaat.value);
-            });
-            if (gebruikteApparaten.length > 0) {
-                const apparaatUri = gebruikteApparaten[0].object.value;
-                    const apparaatLabel = escapeMermaidLabel(getLabel(store, apparaatUri));
-                const apparaatComment = getComment(store, apparaatUri);
-                nodeLabel = `(Apparaat: ${apparaatLabel}`;
-                if (apparaatComment) {
-                    nodeLabel += `<br/><i>${apparaatComment}</i>`;
-                }
-                nodeLabel += ')';
-            }
-        }
+        
         const definition = `${nodeId}["${nodeLabel}"]\nstyle ${nodeId} ${styles.proces}\n`;
         nodeDefs.set(stepUri, definition);
         mermaid += definition;
@@ -254,9 +295,9 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         constructMermaidGraph(combinedStore, rootSteps, nodeMap, parentMap, nodeDefs, subgraphDefs, procedureChecker);
     }
 
-    const emissiePunten = exampleStore
+    const emissiePunten = combinedStore
         .getQuads(null, rdf.type, riepr.Emissiepunt)
-        .filter(q => !exampleNodes.has(q.subject.value));
+        .filter(q => !exampleNodes.has(q.subject.value) && q.subject.termType !== 'BlankNode');
     const puntId = 'emissiepunt';
     const emissiepuntIndex = new Map(emissiePunten.map((q, idx) => [q.subject.value, idx]));
 
@@ -264,9 +305,12 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     const stofClass = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof');
     const allSteps = exampleStore.getQuads(null, stofRdf, riepr.Proces);
     
-    // Verzamel alle input en output stoffen
+    // Verzamel alle input/output stoffen per stap
     const inputStofUris = new Set();
     const outputStofUris = new Set();
+    const stofToInputSteps = new Map();
+    const stofToOutputSteps = new Map();
+    const outputStofByStep = new Map();
 
     for (const stepQuad of allSteps) {
         const stepUri = stepQuad.subject.value;
@@ -278,6 +322,8 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
             const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
             if (varTypes.some(t => t.object.value === stofClass.value)) {
                 inputStofUris.add(varUri);
+                if (!stofToInputSteps.has(varUri)) stofToInputSteps.set(varUri, new Set());
+                stofToInputSteps.get(varUri).add(stepUri);
             }
         }
         
@@ -286,22 +332,56 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
             const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
             if (varTypes.some(t => t.object.value === stofClass.value)) {
                 outputStofUris.add(varUri);
+                if (!stofToOutputSteps.has(varUri)) stofToOutputSteps.set(varUri, new Set());
+                stofToOutputSteps.get(varUri).add(stepUri);
+                if (!outputStofByStep.has(stepUri)) outputStofByStep.set(stepUri, new Set());
+                outputStofByStep.get(stepUri).add(varUri);
             }
         }
     }
 
-    // Filter: alleen stoffen die NIET zowel input als output zijn (begin of einde van ketting)
+    // Stoffen die enkel als tussenoutput dienen voor zuiveringsketens verbergen
+    const apparaatVerwerkingsProcesUri = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#apparaatVerwerkingsProces');
+    const intermediateStofUris = new Set();
+    for (const [stepUri, stofSet] of outputStofByStep.entries()) {
+        const purificationSuccessors = exampleStore.getQuads(null, pplan.isPrecededBy, namedNode(stepUri))
+            .map(q => q.subject.value)
+            .filter(succ => exampleStore.getQuads(namedNode(succ), prov.wasDerivedFrom, apparaatVerwerkingsProcesUri).length > 0);
+        if (purificationSuccessors.length > 0) {
+            for (const stofUri of stofSet) {
+                intermediateStofUris.add(stofUri);
+            }
+        }
+    }
+
+    // Filter: toon stoffen enkel als ze NIET rechtstreeks output->input tussen verschillende stappen zijn
     const stofUris = new Set([...inputStofUris, ...outputStofUris].filter(uri => {
-        const isInput = inputStofUris.has(uri);
-        const isOutput = outputStofUris.has(uri);
-        // Toon alleen als het NIET beide is (dus alleen input OF alleen output)
-        return !(isInput && isOutput);
+        const inputSteps = stofToInputSteps.get(uri) || new Set();
+        const outputSteps = stofToOutputSteps.get(uri) || new Set();
+
+        // Verberg tussenoutputs (alleen output van een stap met zuiveringsopvolger)
+        if (intermediateStofUris.has(uri) && inputSteps.size === 0 && outputSteps.size === 1) {
+            return false;
+        }
+
+        // Toon altijd als er geen input of output is
+        if (inputSteps.size === 0 || outputSteps.size === 0) return true;
+
+        // Als ALLE stappen die deze stof gebruiken het ZOWEL als input EN output gebruiken,
+        // dan is het een "verbruiksstof" zoals brandstof - toon wél
+        const allStepsUseBothWays = [...inputSteps].every(step => outputSteps.has(step)) &&
+                                     [...outputSteps].every(step => inputSteps.has(step));
+        if (allStepsUseBothWays) return true;
+
+        // Verberg als output van een stap wordt gebruikt als input in een andere stap
+        return false;
     }));
 
 
     const stofIndex = new Map([...stofUris].map((uri, idx) => [uri, idx]));
 
-    const installaties = exampleStore.getQuads(null, rdf.type, riepr.Installatie);
+
+    const installaties = combinedStore.getQuads(null, rdf.type, riepr.Installatie);
     const indent = (text, spaces = 4) => text
         .split('\n')
         .filter(Boolean)
@@ -310,7 +390,6 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
 
     const emittedSteps = new Set();
     const emittedEmissiepunten = new Set();
-    const usedApparatusUris = new Set();
 
     const getAncestorSteps = (stepUri) => {
         const ancestors = [];
@@ -332,25 +411,160 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         const apparatusQuads = exampleStore.getQuads(namedNode(installatieUri), rdfs.member, null);
         const stapUris = new Set();
 
+        // Collect all apparatus URIs (both direct members and zuiveringsapparaten)
+        const allApparatusInInstallatie = new Set();
+        const stepsUsingApparatusInInstallatie = new Set();
+        
         for (const apparaatQuad of apparatusQuads) {
-            const apparaatUri = apparaatQuad.object.value;
-            // Stappen worden aan apparaten toegeschreven via prov:wasAttributedTo (Agent-relatie)
-            const gebruikteInStappen = exampleStore.getQuads(null, prov.wasAttributedTo, namedNode(apparaatUri));
+            const memberUri = apparaatQuad.object.value;
+            const types = combinedStore.getQuads(namedNode(memberUri), rdf.type, null).map(q => q.object.value);
+            
+            if (types.includes(riepr.Apparaat.value)) {
+                allApparatusInInstallatie.add(memberUri);
+            }
+            
+            if (types.includes(riepr.Proces.value)) {
+                // This is the main activity - find ALL apparatus attributed to steps of this activity
+                // Get all steps that are part of this activity
+                const allActivitySteps = combinedStore.getQuads(null, pplan.isStepOfPlan, namedNode(memberUri));
+                for (const stepQuad of allActivitySteps) {
+                    const stepUri = stepQuad.subject.value;
+                    // Check if this is a purification step
+                    const apparaatVerwerkingsProcesUri = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#apparaatVerwerkingsProces');
+                    const isPurification = combinedStore.getQuads(namedNode(stepUri), prov.wasDerivedFrom, apparaatVerwerkingsProcesUri).length > 0;
+                    if (isPurification) {
+                        // Add purification step directly - it will be labeled as "(Apparaat: NAME)"
+                        stapUris.add(stepUri);
+                    } else {
+                        // Find all apparatus this step is attributed to
+                        const stepApparatus = combinedStore.getQuads(namedNode(stepUri), prov.wasAttributedTo, null);
+                        for (const stepApparaatQuad of stepApparatus) {
+                            const stepApparaatUri = stepApparaatQuad.object.value;
+                            const apparaatTypes = combinedStore.getQuads(namedNode(stepApparaatUri), rdf.type, null).map(q => q.object.value);
+                            if (apparaatTypes.includes(riepr.Apparaat.value)) {
+                                allApparatusInInstallatie.add(stepApparaatUri);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Now add all steps that use any of these apparatus to stapUris
+        for (const apparaatUri of allApparatusInInstallatie) {
+            const gebruikteInStappen = combinedStore.getQuads(null, prov.wasAttributedTo, namedNode(apparaatUri));
             for (const gebruikteStapQuad of gebruikteInStappen) {
                 const stepUri = gebruikteStapQuad.subject.value;
+                stepsUsingApparatusInInstallatie.add(stepUri);
                 stapUris.add(stepUri);
-                usedApparatusUris.add(apparaatUri);
-                getAncestorSteps(stepUri).forEach(ancestor => stapUris.add(ancestor));
+                getAncestorSteps(stepUri).forEach(ancestor => {
+                    stapUris.add(ancestor);
+                });
+            }
+        }
+        
+        // Collect emissiepunten for all apparatus in this installatie
+        const emissiepuntenForInstallatie = new Set();
+        for (const apparaatUri of allApparatusInInstallatie) {
+            // Find proces/activity that uses this apparatus
+            const stepsUsingApparaat = combinedStore.getQuads(null, prov.wasAttributedTo, namedNode(apparaatUri));
+            for (const stepQuad of stepsUsingApparaat) {
+                const stepUri = stepQuad.subject.value;
+                // Check if this step isStepOfPlan for an activity
+                const planQuads = combinedStore.getQuads(namedNode(stepUri), pplan.isStepOfPlan, null);
+                for (const planQuad of planQuads) {
+                    const activityUri = planQuad.object.value;
+                    // Find emission steps for this activity
+                    const emissionSteps = combinedStore.getQuads(null, pplan.isStepOfPlan, namedNode(activityUri));
+                    for (const emissionStepQuad of emissionSteps) {
+                        const emissionStepUri = emissionStepQuad.subject.value;
+                        if (!stepsUsingApparatusInInstallatie.has(emissionStepUri)) continue;
+                        // Check if this is an emission step (attributed to an emissiepunt)
+                        const attributedToQuads = combinedStore.getQuads(namedNode(emissionStepUri), prov.wasAttributedTo, null);
+                        for (const attributedQuad of attributedToQuads) {
+                            const influencerUri = attributedQuad.object.value;
+                            if (emissiepuntIndex.has(influencerUri)) {
+                                emissiepuntenForInstallatie.add(influencerUri);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add all purification steps (steps preceded by root steps, used for emission processing)
+        // These are steps that flow towards an emissiepunt via pplan.isPrecededBy chain
+        for (const eptUri of emissiepuntenForInstallatie) {
+            // Find all emission steps attributed to this emissiepunt
+            const emissionSteps = combinedStore.getQuads(null, prov.wasAttributedTo, namedNode(eptUri));
+            for (const emissionStepQuad of emissionSteps) {
+                const emissionStepUri = emissionStepQuad.subject.value;
+                if (!stepsUsingApparatusInInstallatie.has(emissionStepUri)) continue;
+                stapUris.add(emissionStepUri);
+                // Find all steps that precede this emission step (the purification chain)
+                const precedingSteps = combinedStore.getQuads(namedNode(emissionStepUri), pplan.isPrecededBy, null);
+                for (const precedingQuad of precedingSteps) {
+                    const precedingUri = precedingQuad.object.value;
+                    stapUris.add(precedingUri);
+                    // Recursively add all predecessors in the purification chain
+                    let current = precedingUri;
+                    while (true) {
+                        const nextPreceding = combinedStore.getQuads(namedNode(current), pplan.isPrecededBy, null);
+                        if (nextPreceding.length === 0) break;
+                        const nextUri = nextPreceding[0].object.value;
+                        stapUris.add(nextUri);
+                        current = nextUri;
+                    }
+                    // Also add ancestors via parent relationships
+                    getAncestorSteps(precedingUri).forEach(ancestor => {
+                        stapUris.add(ancestor);
+                    });
+                }
+            }
+        }
+        
+        // Also add Proces members directly to stapUris and collect their emissiepunten
+        for (const apparaatQuad of apparatusQuads) {
+            const apparaatUri = apparaatQuad.object.value;
+            const types = combinedStore.getQuads(namedNode(apparaatUri), rdf.type, null).map(q => q.object.value);
+            
+            if (types.includes(riepr.Proces.value)) {
+                stapUris.add(apparaatUri);
+                
+                // Find emissiepunten linked to this activity and all its sub-activities
+                const allActivitySteps = combinedStore.getQuads(null, pplan.isStepOfPlan, namedNode(apparaatUri));
+                const activityUris = [apparaatUri, ...allActivitySteps.map(q => q.subject.value)];
+                
+                for (const activityUri of activityUris) {
+                    const emissionSteps = combinedStore.getQuads(null, pplan.isStepOfPlan, namedNode(activityUri));
+                    for (const emissionStepQuad of emissionSteps) {
+                        const emissionStepUri = emissionStepQuad.subject.value;
+                        if (!stepsUsingApparatusInInstallatie.has(emissionStepUri)) continue;
+                        // Check if this is an emission step (attributed to an emissiepunt)
+                        const attributedToQuads = combinedStore.getQuads(namedNode(emissionStepUri), prov.wasAttributedTo, null);
+                        for (const attributedQuad of attributedToQuads) {
+                            const influencerUri = attributedQuad.object.value;
+                            if (emissiepuntIndex.has(influencerUri)) {
+                                emissiepuntenForInstallatie.add(influencerUri);
+                            }
+                        }
+                    }
+                }
             }
 
             if (emissiepuntIndex.has(apparaatUri)) {
-                const idx = emissiepuntIndex.get(apparaatUri);
-                const label = escapeMermaidLabel(getLabel(exampleStore, apparaatUri));
+                emissiepuntenForInstallatie.add(apparaatUri);
+            }
+        }
+        
+        // Add all emissiepunten for this installatie to the body
+        for (const eptUri of emissiepuntenForInstallatie) {
+            if (emissiepuntIndex.has(eptUri) && !emittedEmissiepunten.has(eptUri)) {
+                const idx = emissiepuntIndex.get(eptUri);
+                const label = escapeMermaidLabel(getLabel(exampleStore, eptUri));
                 const def = `${puntId}${idx}(["${label}"])\nstyle ${puntId}${idx} ${styles.emissiepunt}\n`;
-                if (!emittedEmissiepunten.has(apparaatUri)) {
-                    body += indent(def);
-                    emittedEmissiepunten.add(apparaatUri);
-                }
+                body += indent(def);
+                emittedEmissiepunten.add(eptUri);
             }
         }
 
@@ -403,29 +617,15 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         }
     }
 
-    let standaloneApparatusIdx = 0;
-    for (const installatieQuad of installaties) {
-        const installatieUri = installatieQuad.subject.value;
-        const apparatusQuads = exampleStore.getQuads(namedNode(installatieUri), rdfs.member, null);
-        
-        for (const apparaatQuad of apparatusQuads) {
-            const apparaatUri = apparaatQuad.object.value;
-            if (emissiepuntIndex.has(apparaatUri)) continue;
-            if (usedApparatusUris.has(apparaatUri)) continue;
-            
-            const types = exampleStore.getQuads(namedNode(apparaatUri), rdf.type, null).map(q => q.object.value);
-            if (types.includes(riepr.Proces.value)) continue;
-            
-            const label = escapeMermaidLabel(getLabel(exampleStore, apparaatUri));
-            const comment = getComment(exampleStore, apparaatUri);
-            const apparaatLabel = comment 
-                ? `(Apparaat: ${label}<br/><i>${comment}</i>)`
-                : `(Apparaat: ${label})`;
-            
-            const nodeId = `apparatus${standaloneApparatusIdx}`;
-            mermaid += indent(`${nodeId}["${apparaatLabel}"]\nstyle ${nodeId} ${styles.proces}\n`);
-            standaloneApparatusIdx++;
-        }
+    // Collect labels of all processes that have been rendered
+    const renderedProcessLabels = new Set();
+    for (const [stepUri, def] of nodeDefs.entries()) {
+        const label = escapeMermaidLabel(getLabel(exampleStore, stepUri));
+        renderedProcessLabels.add(label);
+    }
+    for (const [stepUri, def] of subgraphDefs.entries()) {
+        const label = escapeMermaidLabel(getLabel(exampleStore, stepUri));
+        renderedProcessLabels.add(label);
     }
 
     const emittedStoffen = new Set();
@@ -471,15 +671,16 @@ generateMermaidFlowchart(
 ).catch(err => console.error('Error:', err));
 
 const outputDir = path.resolve(imjvBasePath, 'output');
-const directories = fs.readdirSync(outputDir).filter(file => 
-    fs.statSync(path.resolve(outputDir, file)).isDirectory()
-);
+    const directories = fs.readdirSync(outputDir).filter(file => 
+        fs.statSync(path.resolve(outputDir, file)).isDirectory()
+    );
 
 for (const dir of directories) {
     const dirPath = path.resolve(outputDir, dir);
-    const ttlFiles = fs.readdirSync(dirPath)
-        .filter(file => file.endsWith('.ttl'))
-        .map(file => path.resolve(dirPath, file));
+        const ttlFiles = fs.readdirSync(dirPath)
+            .filter(file => file.endsWith('.ttl'))
+            .filter(file => file !== 'merged.ttl' && file !== 'test.ttl')
+            .map(file => path.resolve(dirPath, file));
     
     if (ttlFiles.length > 0) {
         generateMermaidFlowchart(

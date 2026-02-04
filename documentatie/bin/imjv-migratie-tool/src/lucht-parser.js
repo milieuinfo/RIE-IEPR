@@ -10,6 +10,43 @@ export class LuchtParser extends BaseParser {
         this.activities = new Set();
         this.apparaatByActiviteitId = new Map();
         this.installatieByKey = new Map();
+        this.outputVarByStepUri = new Map();
+    }
+
+    getLocalIdFromQName(qname) {
+        if (!qname) return '';
+        if (qname.includes(':')) return qname.split(':').pop();
+        const lastSlash = qname.lastIndexOf('/');
+        return lastSlash >= 0 ? qname.substring(lastSlash + 1) : qname;
+    }
+
+    ensureOutputVarForStep(stepUri, label = 'Onbekende stroom') {
+        if (this.outputVarByStepUri.has(stepUri)) {
+            return this.outputVarByStepUri.get(stepUri);
+        }
+
+        const stepId = this.getLocalIdFromQName(stepUri);
+        const varId = `var_${stepId}`;
+        const varUri = this.turtle.qname('var', varId);
+
+        this.turtle.triple(
+            varUri,
+            this.turtle.qname('rdf', 'type'),
+            this.turtle.qname('riepr', 'Variable')
+        );
+        this.turtle.triple(
+            varUri,
+            this.turtle.qname('rdfs', 'label'),
+            this.turtle.literal(label, null, 'nl')
+        );
+        this.turtle.triple(
+            stepUri,
+            this.turtle.qname('pplan', 'hasOutputVar'),
+            varUri
+        );
+
+        this.outputVarByStepUri.set(stepUri, varUri);
+        return varUri;
     }
 
     async parse() {
@@ -52,8 +89,14 @@ export class LuchtParser extends BaseParser {
         }
 
         // Parse Milieudruk (fuel, feedstock, end products consumption)
-        if (luchtData.Milieudruk?.[0]?.ProductieEenheid) {
-            this.parseMilieudruk(luchtData.Milieudruk[0].ProductieEenheid);
+        const milieudrukNode = luchtData.Milieudruk?.[0]
+            || luchtData['lucht:Milieudruk']?.[0]
+            || luchtData['Milieudruk']?.[0];
+        const productieEenheden = milieudrukNode?.ProductieEenheid
+            || milieudrukNode?.['lucht:ProductieEenheid'];
+
+        if (productieEenheden) {
+            this.parseMilieudruk(productieEenheden);
         }
 
         return this.turtle.build();
@@ -64,13 +107,12 @@ export class LuchtParser extends BaseParser {
         installatiesArray.forEach((inst, index) => {
             let parentActiviteitId = null;
             let parentActiviteitNaam = null;
+            
             // ProductieEenheid or EnergieActiviteit
             if (inst.ProductieEenheid) {
-                this.parseProductieEenheid(inst.ProductieEenheid[0]);
                 parentActiviteitId = inst.ProductieEenheid[0].$.activiteitID;
                 parentActiviteitNaam = inst.ProductieEenheid[0].Naam?.[0] || null;
             } else if (inst.EnergieActiviteit) {
-                this.parseEnergieActiviteit(inst.EnergieActiviteit[0]);
                 parentActiviteitId = inst.EnergieActiviteit[0].$.activiteitID;
                 parentActiviteitNaam = inst.EnergieActiviteit[0].Naam?.[0] || null;
             }
@@ -78,6 +120,13 @@ export class LuchtParser extends BaseParser {
             const installatieKey = parentActiviteitId || `idx_${index + 1}`;
             const installatieLabel = parentActiviteitNaam || `Installatie ${index + 1}`;
             const installatieUri = this.ensureInstallatie(installatieKey, installatieLabel);
+
+            // Now parse the ProductieEenheid/EnergieActiviteit with the installatieUri
+            if (inst.ProductieEenheid) {
+                this.parseProductieEenheid(inst.ProductieEenheid[0], installatieUri);
+            } else if (inst.EnergieActiviteit) {
+                this.parseEnergieActiviteit(inst.EnergieActiviteit[0], installatieUri);
+            }
 
             if (parentActiviteitId) {
                 const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${parentActiviteitId}`);
@@ -158,7 +207,7 @@ export class LuchtParser extends BaseParser {
         return installatieUri;
     }
 
-    parseProductieEenheid(eenheid) {
+    parseProductieEenheid(eenheid, installatieUri = null) {
         const activiteitId = eenheid.$.activiteitID;
         const naam = eenheid.Naam?.[0];
         const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
@@ -187,13 +236,32 @@ export class LuchtParser extends BaseParser {
             this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(eenheid.Beschrijving[0], null, 'nl'));
         }
         // GeproduceerdeStof
+        let producedStofUri = null;
         if (eenheid.GeproduceerdeStof?.[0]?.Naam) {
             const stofNaam = eenheid.GeproduceerdeStof[0].Naam[0];
             const stofId = this.sanitizeId(stofNaam);
-            const stofUri = this.turtle.qname('stof', stofId);
-            this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
-            this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
+            producedStofUri = this.turtle.qname('stof', stofId);
+            this.turtle.triple(producedStofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
+            this.turtle.triple(producedStofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
         }
+        // Create corresponding Apparaat for this ProductieEenheid
+        const apparaatUri = this.turtle.qname('apparaat', `${this.cbbNumber}_${activiteitId}`);
+        this.turtle.triple(apparaatUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Apparaat'));
+        if (naam) {
+            this.turtle.triple(apparaatUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
+        }
+        this.turtle.triple(apparaatUri, this.turtle.qname('prov', 'atLocation'), this.turtle.qname('exploitatielocatie', this.cbbNumber));
+        if (eenheid.Beschrijving?.[0]) {
+            this.turtle.triple(apparaatUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(eenheid.Beschrijving[0], null, 'nl'));
+        }
+        if (eenheid.DatumIngebruikname?.[0]) {
+            this.turtle.triple(apparaatUri, this.turtle.qname('dct', 'created'), this.turtle.literal(eenheid.DatumIngebruikname[0], this.turtle.qname('xsd', 'date'), null));
+            this.turtle.triple(apparaatUri, this.turtle.qname('dct', 'issued'), this.turtle.literal(eenheid.DatumIngebruikname[0], this.turtle.qname('xsd', 'date'), null));
+        }
+        if (installatieUri) {
+            this.turtle.triple(installatieUri, this.turtle.qname('rdfs', 'member'), apparaatUri);
+        }
+
         // Proces root step
         const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
         const rootStepUri = this.turtle.qname('proces', rootStepId);
@@ -202,11 +270,28 @@ export class LuchtParser extends BaseParser {
         if (naam) {
             this.turtle.triple(rootStepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
         }
+        if (producedStofUri) {
+            this.turtle.triple(
+                rootStepUri,
+                this.turtle.qname('pplan', 'hasOutputVar'),
+                producedStofUri
+            );
+        }
+        // Link root step to the apparatus
+        this.turtle.triple(rootStepUri, this.turtle.qname('prov', 'wasAttributedTo'), apparaatUri);
+        
         this.activityRootSteps.set(activiteitId, rootStepUri);
         this.activities.add(activiteitId);
+        
+        // Register apparatus for this activity
+        this.apparaatByActiviteitId.set(activiteitId, {
+            parentActiviteitId: activiteitId,
+            apparaatUri: apparaatUri,
+            apparaatNaam: naam,
+        });
     }
 
-    parseEnergieActiviteit(eenheid) {
+    parseEnergieActiviteit(eenheid, installatieUri = null) {
         // Treated as a Proces
         const activiteitId = eenheid.$.activiteitID;
         const naam = eenheid.Naam?.[0];
@@ -234,6 +319,18 @@ export class LuchtParser extends BaseParser {
         if (eenheid.Functie?.[0]) {
             this.turtle.triple(activiteitUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(eenheid.Functie[0], null, 'nl'));
         }
+        
+        // Create corresponding Apparaat for this EnergieActiviteit
+        const apparaatUri = this.turtle.qname('apparaat', `${this.cbbNumber}_${activiteitId}`);
+        this.turtle.triple(apparaatUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Apparaat'));
+        if (naam) {
+            this.turtle.triple(apparaatUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
+        }
+        this.turtle.triple(apparaatUri, this.turtle.qname('prov', 'atLocation'), this.turtle.qname('exploitatielocatie', this.cbbNumber));
+        if (eenheid.Functie?.[0]) {
+            this.turtle.triple(apparaatUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(eenheid.Functie[0], null, 'nl'));
+        }
+        
         // Proces root step
         const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
         const rootStepUri = this.turtle.qname('proces', rootStepId);
@@ -242,6 +339,35 @@ export class LuchtParser extends BaseParser {
         if (naam) {
             this.turtle.triple(rootStepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
         }
+        // Link root step to the apparatus
+        this.turtle.triple(rootStepUri, this.turtle.qname('prov', 'wasAttributedTo'), apparaatUri);
+        
+        this.activityRootSteps.set(activiteitId, rootStepUri);
+        this.activities.add(activiteitId);
+        
+        // Register apparatus for this activity
+        this.apparaatByActiviteitId.set(activiteitId, {
+            parentActiviteitId: activiteitId,
+            apparaatUri: apparaatUri,
+            apparaatNaam: naam,
+        });
+    }
+
+    ensureActiviteitExists(activiteitId) {
+        if (this.activities.has(activiteitId)) return;
+
+        const activiteitUri = this.turtle.qname('proces', `${this.cbbNumber}_${activiteitId}`);
+        this.turtle.triple(activiteitUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
+        this.turtle.triple(activiteitUri, this.turtle.qname('prov', 'atLocation'), this.turtle.qname('exploitatielocatie', this.cbbNumber));
+        this.turtle.triple(activiteitUri, this.turtle.qname('adms', 'status'), this.turtle.qname('riepr', 'Actief'));
+        const now = new Date().toISOString();
+        this.turtle.triple(activiteitUri, this.turtle.qname('dct', 'created'), this.turtle.literal(now, this.turtle.qname('xsd', 'dateTime'), null));
+
+        const rootStepId = `${this.cbbNumber}_proces_step_${activiteitId}`;
+        const rootStepUri = this.turtle.qname('proces', rootStepId);
+        this.turtle.triple(rootStepUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Proces'));
+        this.turtle.triple(rootStepUri, this.turtle.qname('pplan', 'isStepOfPlan'), activiteitUri);
+
         this.activityRootSteps.set(activiteitId, rootStepUri);
         this.activities.add(activiteitId);
     }
@@ -440,19 +566,24 @@ export class LuchtParser extends BaseParser {
                 this.parseRefertes(punt.Refertes[0].Referte, emissiepuntUri);
             }
             
-            // Collect purification apparatus IDs for this emission point
+            // Collect purification apparatus IDs for this emission point and parse them with sequence info
             const purificationApparaatIds = [];
             if (punt.Zuiveringsapparatuur?.[0]?.Zuiveringsapparaat) {
                 const zuiveringsArray = Array.isArray(punt.Zuiveringsapparatuur[0].Zuiveringsapparaat) 
                     ? punt.Zuiveringsapparatuur[0].Zuiveringsapparaat 
                     : [punt.Zuiveringsapparatuur[0].Zuiveringsapparaat];
                 
-                zuiveringsArray.forEach(zuivering => {
+                zuiveringsArray.forEach((zuivering, index) => {
                     const apparaatId = zuivering.$.zuiveringsapparaatID;
                     purificationApparaatIds.push(apparaatId);
                 });
                 
-                this.parseZuiveringsapparatuur(punt.Zuiveringsapparatuur[0].Zuiveringsapparaat, emissiepuntUri);
+                // Pass purification sequence: each apparatus position and total count
+                this.parseZuiveringsapparatuur(
+                    punt.Zuiveringsapparatuur[0].Zuiveringsapparaat, 
+                    emissiepuntUri,
+                    purificationApparaatIds  // Pass the list so each can know its position
+                );
             }
             
             // GekoppeldeActiviteiten
@@ -472,7 +603,7 @@ export class LuchtParser extends BaseParser {
                     // Uitstootproces als plan afgeleid van generieke emissieprocedure
                     this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasDerivedFrom'), this.turtle.qname('riepr', 'uitstootProces'));
                     // Emissiepunt (prov:Entity) beïnvloedt de uitstootstap (prov:Entity)
-                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasInfluencedBy'), emissiepuntUri);
+                    this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasAttributedTo'), emissiepuntUri);
                     
                     if (apparaatInfo?.apparaatUri) {
                         // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
@@ -498,109 +629,31 @@ export class LuchtParser extends BaseParser {
         });
     }
 
-    parseZuiveringsapparatuur(zuiveringsArray, emissiepuntUri) {
+    parseZuiveringsapparatuur(zuiveringsArray, emissiepuntUri, purificationApparaatIds = []) {
         if (!Array.isArray(zuiveringsArray)) {
             zuiveringsArray = [zuiveringsArray];
         }
 
-        zuiveringsArray.forEach((apparaat) => {
+        zuiveringsArray.forEach((apparaat, index) => {
             const apparaatId = apparaat.$.zuiveringsapparaatID;
             const naam = apparaat.Naam?.[0];
             const techniek = apparaat.Techniek?.[0];
-            const datum = apparaat.DatumIngebruikname?.[0];
 
-            const apparaatUri = this.turtle.qname('apparaat', `${this.cbbNumber}_zuivering_${apparaatId}`);
-
-            this.turtle.triple(
-                apparaatUri,
-                this.turtle.qname('rdf', 'type'),
-                this.turtle.qname('riepr', 'Apparaat')
-            );
-
-            if (naam) {
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('rdfs', 'label'),
-                    this.turtle.literal(naam, null, 'nl')
-                );
-            }
-
-            this.turtle.triple(
-                apparaatUri,
-                this.turtle.qname('prov', 'atLocation'),
-                this.turtle.qname('exploitatielocatie', this.cbbNumber)
-            );
-
-            if (techniek) {
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('rdfs', 'comment'),
-                    this.turtle.literal(`Techniek: ${techniek}`, null, 'nl')
-                );
-            }
-            
-            if (datum) {
-                // Start date from datum ingebruikname
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('dct', 'issued'),
-                    this.turtle.literal(datum, this.turtle.qname('xsd', 'date'), null)
-                );
-                // End date - using end of next year by default
-                const datumYear = parseInt(datum.split('-')[0]);
-                const nextYear = datumYear + 1;
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('dct', 'valid'),
-                    this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
-                );
-            } else if (this.reportYear) {
-                // Start date (issue date)
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('dct', 'issued'),
-                    this.turtle.literal(`${this.reportYear}-01-01`, this.turtle.qname('xsd', 'date'), null)
-                );
-                // End date (validity date) - using end of next year by default
-                const nextYear = parseInt(this.reportYear) + 1;
-                this.turtle.triple(
-                    apparaatUri,
-                    this.turtle.qname('dct', 'valid'),
-                    this.turtle.literal(`${nextYear}-12-31`, this.turtle.qname('xsd', 'date'), null)
-                );
-            }
-
-            // Creation date (today)
-            const creationNow = new Date().toISOString();
-            this.turtle.triple(
-                apparaatUri,
-                this.turtle.qname('dct', 'created'),
-                this.turtle.literal(creationNow, this.turtle.qname('xsd', 'dateTime'), null)
-            );
-
-            if (apparaat.Refertes?.[0]?.Referte) {
-                this.parseRefertes(apparaat.Refertes[0].Referte, apparaatUri);
-            }
+            // Zuiveringsapparaten are NOT created as separate Apparaat entities
+            // They only serve as purification process steps, not as independent apparatus
+            // However, we do create the purification process steps that use them
 
             let stofUris = [];
             if (apparaat.Zuivering?.[0]?.Verwijdering) {
-                stofUris = this.parseZuivering(apparaat.Zuivering[0].Verwijdering, apparaatUri);
+                stofUris = this.parseZuivering(apparaat.Zuivering[0].Verwijdering, null, naam);
             }
 
             if (apparaat.GekoppeldeActiviteiten?.[0]?.Activiteit) {
                 apparaat.GekoppeldeActiviteiten[0].Activiteit.forEach((act) => {
                     const activiteitId = act.$.activiteitID;
-                    const apparaatInfo = this.apparaatByActiviteitId.get(activiteitId);
-                    const activiteitIdToUse = apparaatInfo?.parentActiviteitId || activiteitId;
+                    const activiteitIdToUse = activiteitId;
                     this.ensureActiviteitExists(activiteitIdToUse);
                     const rootStepUri = this.activityRootSteps.get(activiteitIdToUse);
-                    if (rootStepUri) {
-                        this.turtle.triple(
-                            rootStepUri,
-                            this.turtle.qname('prov', 'wasAttributedTo'),
-                            apparaatUri
-                        );
-                    }
 
                     const zuiveringStepId = `${this.cbbNumber}_purification_step_${apparaatId}_${activiteitIdToUse}`;
                     const zuiveringStepUri = this.turtle.qname('proces', zuiveringStepId);
@@ -625,35 +678,116 @@ export class LuchtParser extends BaseParser {
                         this.turtle.qname('riepr', 'apparaatVerwerkingsProces')
                     );
 
-                    // Apparaten worden als prov:Agent gemodelleerd en gelinkt via prov:wasAttributedTo
-                    this.turtle.triple(
-                        zuiveringStepUri,
-                        this.turtle.qname('prov', 'wasAttributedTo'),
-                        apparaatUri
-                    );
-
-                    stofUris.forEach((stofUri) => {
-                        // Stoffen (prov:Entity) beïnvloeden de zuiveringsstap (prov:Entity)
+                    // Label purification step with the purification apparatus name
+                    if (naam) {
                         this.turtle.triple(
                             zuiveringStepUri,
-                            this.turtle.qname('prov', 'wasInfluencedBy'),
-                            stofUri
+                            this.turtle.qname('rdfs', 'label'),
+                            this.turtle.literal(naam, null, 'nl')
                         );
-                    });
+                    }
 
-                    if (rootStepUri) {
+                    // Add purification technique as comment if available
+                    if (techniek) {
+                        this.turtle.triple(
+                            zuiveringStepUri,
+                            this.turtle.qname('rdfs', 'comment'),
+                            this.turtle.literal(`Techniek: ${techniek}`, null, 'nl')
+                        );
+                    }
+
+                    // Determine what this purification step is preceded by
+                    let previousOutputVarUri = null;
+                    if (index === 0) {
+                        // First purification step is preceded by root step
+                        if (rootStepUri) {
+                            this.turtle.triple(
+                                zuiveringStepUri,
+                                this.turtle.qname('pplan', 'isPrecededBy'),
+                                rootStepUri
+                            );
+                            previousOutputVarUri = this.ensureOutputVarForStep(rootStepUri, 'Onbekende stroom');
+
+                            // Stoffen zijn ZOWEL output van de root step (vervuilde lucht) ALS input van de purification step
+                            stofUris.forEach((stofUri) => {
+                                // Als output van root step (de stoffen in de vervuilde lucht)
+                                this.turtle.triple(
+                                    rootStepUri,
+                                    this.turtle.qname('pplan', 'hasOutputVar'),
+                                    stofUri
+                                );
+                                // Als input van purification step (de stoffen die verwijderd moeten worden)
+                                this.turtle.triple(
+                                    zuiveringStepUri,
+                                    this.turtle.qname('pplan', 'hasInputVar'),
+                                    stofUri
+                                );
+                            });
+                        }
+                    } else {
+                        // Subsequent purification steps are preceded by the previous purification step
+                        const previousApparaatId = purificationApparaatIds[index - 1];
+                        const previousPurificationStepId = `${this.cbbNumber}_purification_step_${previousApparaatId}_${activiteitIdToUse}`;
+                        const previousPurificationStepUri = this.turtle.qname('proces', previousPurificationStepId);
                         this.turtle.triple(
                             zuiveringStepUri,
                             this.turtle.qname('pplan', 'isPrecededBy'),
-                            rootStepUri
+                            previousPurificationStepUri
+                        );
+                        previousOutputVarUri = this.outputVarByStepUri.get(previousPurificationStepUri)
+                            || this.ensureOutputVarForStep(previousPurificationStepUri, 'Gezuiverde lucht');
+                    }
+                    // Add input/output variables for purification step
+                    if (previousOutputVarUri) {
+                        this.turtle.triple(
+                            zuiveringStepUri,
+                            this.turtle.qname('pplan', 'hasInputVar'),
+                            previousOutputVarUri
+                        );
+                    } else {
+                        const inputVarId = `${this.cbbNumber}_var_input_vervuilde_lucht_${apparaatId}`;
+                        const inputVarUri = this.turtle.qname('var', inputVarId);
+                        this.turtle.triple(
+                            inputVarUri,
+                            this.turtle.qname('rdf', 'type'),
+                            this.turtle.qname('riepr', 'Variable')
+                        );
+                        this.turtle.triple(
+                            inputVarUri,
+                            this.turtle.qname('rdfs', 'label'),
+                            this.turtle.literal('Vervuilde lucht', null, 'nl')
+                        );
+                        this.turtle.triple(
+                            zuiveringStepUri,
+                            this.turtle.qname('pplan', 'hasInputVar'),
+                            inputVarUri
                         );
                     }
+
+                    const outputVarId = `${this.cbbNumber}_var_output_gezuiverde_lucht_${apparaatId}`;
+                    const outputVarUri = this.turtle.qname('var', outputVarId);
+                    this.turtle.triple(
+                        outputVarUri,
+                        this.turtle.qname('rdf', 'type'),
+                        this.turtle.qname('riepr', 'Variable')
+                    );
+                    this.turtle.triple(
+                        outputVarUri,
+                        this.turtle.qname('rdfs', 'label'),
+                        this.turtle.literal('Gezuiverde lucht', null, 'nl')
+                    );
+                    this.turtle.triple(
+                        zuiveringStepUri,
+                        this.turtle.qname('pplan', 'hasOutputVar'),
+                        outputVarUri
+                    );
+                    this.outputVarByStepUri.set(zuiveringStepUri, outputVarUri);
                 });
             }
         });
     }
 
-    parseZuivering(verwijderingen, parentUri) {
+    parseZuivering(verwijderingen, parentUri, apparaatNaam = null) {
         const verwijderingenArray = Array.isArray(verwijderingen) ? verwijderingen : [verwijderingen];
         const stofUris = [];
         verwijderingenArray.forEach((verwijdering) => {
@@ -675,11 +809,13 @@ export class LuchtParser extends BaseParser {
                 this.turtle.literal(stofNaam, null, 'nl')
             );
 
-            this.turtle.triple(
-                parentUri,
-                this.turtle.qname('rdfs', 'comment'),
-                this.turtle.literal(`Zuivering van: ${stofNaam}`, null, 'nl')
-            );
+            if (parentUri) {
+                this.turtle.triple(
+                    parentUri,
+                    this.turtle.qname('rdfs', 'comment'),
+                    this.turtle.literal(`Zuivering van: ${stofNaam}`, null, 'nl')
+                );
+            }
 
             stofUris.push(stofUri);
         });
@@ -712,7 +848,8 @@ export class LuchtParser extends BaseParser {
         if (!Array.isArray(milieudrukArray)) milieudrukArray = [milieudrukArray];
         
         milieudrukArray.forEach(productieEenheid => {
-            const verbruiksGegevens = productieEenheid.VerbruiksGegevens?.[0];
+            const verbruiksGegevens = productieEenheid.VerbruiksGegevens?.[0]
+                || productieEenheid.VerbruiksGegevens;
             if (!verbruiksGegevens) return;
 
             // Parse Brandstof (fuel consumption)
@@ -729,8 +866,13 @@ export class LuchtParser extends BaseParser {
         const verbruiksArray = Array.isArray(verbruiksData) ? verbruiksData : [verbruiksData];
         
         verbruiksArray.forEach(verbruik => {
-            if (verbruik.GekoppeldeActiviteiten?.[0]?.Activiteit) {
-                verbruik.GekoppeldeActiviteiten[0].Activiteit.forEach(act => {
+            const gekoppelde = verbruik.GekoppeldeActiviteiten?.[0]?.Activiteit
+                || verbruik.GekoppeldeActiviteiten?.Activiteit
+                || [];
+            const gekoppeldeActiviteiten = Array.isArray(gekoppelde) ? gekoppelde : [gekoppelde];
+
+            if (gekoppeldeActiviteiten.length > 0) {
+                gekoppeldeActiviteiten.forEach(act => {
                     const activiteitId = act.$.activiteitID;
                     this.ensureActiviteitExists(activiteitId);
                     
@@ -745,11 +887,17 @@ export class LuchtParser extends BaseParser {
                     this.turtle.triple(stepUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(label, null, 'nl'));
                     
                     // Link to stof if available
-                    if (verbruik.Stof?.[0]?.$.StofID) {
-                        const stofId = verbruik.Stof[0].$.StofID;
+                    const stofNode = verbruik.Stof?.[0] || verbruik.Stof;
+                    if (stofNode?.$.StofID) {
+                        const stofId = stofNode.$.StofID;
                         const stofUri = this.turtle.qname('stof', stofId);
-                        // Stoffen (prov:Entity) beïnvloeden de verbruiksstap (prov:Entity)
-                        this.turtle.triple(stepUri, this.turtle.qname('prov', 'wasInfluencedBy'), stofUri);
+                        if (typePrefix === 'brandstof') {
+                            // Brandstof is INPUT only (consumed, not produced)
+                            this.turtle.triple(stepUri, this.turtle.qname('pplan', 'hasInputVar'), stofUri);
+                        } else if (typePrefix === 'eindproduct') {
+                            // Eindproducten are OUTPUT only (produced, not consumed)
+                            this.turtle.triple(stepUri, this.turtle.qname('pplan', 'hasOutputVar'), stofUri);
+                        }
                     }
                     
                     // Preceded by root step
