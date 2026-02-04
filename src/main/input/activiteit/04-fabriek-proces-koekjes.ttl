@@ -1,19 +1,28 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix deployment: <https://data.riepr.omgeving.vlaanderen.be/id/deployment/> .
 @prefix t: <https://data.riepr.omgeving.vlaanderen.be/id/time/> .
 @prefix activity: <https://data.riepr.omgeving.vlaanderen.be/id/activity/> .
 @prefix activiteit: <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/> .
+@prefix role: <https://data.riepr.omgeving.vlaanderen.be/id/concept/role/> .
+@prefix platform: <https://data.riepr.omgeving.vlaanderen.be/id/concept/platform/> .
+@prefix status: <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix attribution: <https://data.riepr.omgeving.vlaanderen.be/id/attribution/> .
 @prefix activteitstap: <https://data.riepr.omgeving.vlaanderen.be/id/procedure/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix variable: <https://data.riepr.omgeving.vlaanderen.be/id/variable/> .
 @prefix observation: <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
 @prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix system: <https://data.riepr.omgeving.vlaanderen.be/id/system/> .
+@prefix system: <https://data.riepr.omgeving.vlaanderen.be/id/system/> .
 @prefix parameter: <https://data.omgeving.vlaanderen.be/id/concept/parameter/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 
 @prefix entity: <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
+
+@prefix vkbo: <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -21,6 +30,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix pplan: <http://purl.org/net/p-plan#> .
 @prefix sosa:        <http://www.w3.org/ns/sosa/> .
+@prefix org: <http://www.w3.org/ns/org#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 ## ---------------------------------------
@@ -30,16 +40,43 @@ activiteit:plan-koekjes-maken a pplan:Plan ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:valid "2030-12-31"^^xsd:date ;
-    adms:status riepr:Actief ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+     .
 
+activiteit:plan-koekjes-maken a pplan:Plan ;
+    rdfs:label "Koekjes maken"@nl ;
+    dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+    dct:issued "2020-07-30"^^xsd:date ;
+    dct:valid "2030-12-31"^^xsd:date ;
+     .
+
+vkbo:0408249136 a org:Organization .
+
+attribution:plan-koekjes-maken_0408249136 a prov:Attribution;
+    prov:hadPlan activiteit:plan-koekjes-maken ;
+    prov:agent vkbo:0408249136 ;
+    prov:hadRole role:exploitant .
+
+role:exploitant a prov:Role .
+
+
+
+platform:0408249136_6842345678 a sosa:Platform ;
+    prov:wasAttributedTo vkbo:0408249136;
+    geo:hasGeometry
+        [a  geo:Geometry;
+             geo:asWKT  "SRID=31370;POLYGON((173124.81775523722 174056.37157891318, 173122.6107152328 174057.03737091273, 173119.7700112313 174057.89452291653, 173118.13948323578 174058.38642691448, 173116.05737122893 174052.42297090963, 173115.78722722828 174051.39077891037, 173114.58658722788 174048.02207490802, 173112.16393122822 174041.22457090393, 173118.59772323072 174038.2458189018, 173121.75548323244 174047.4483149089, 173122.26569123566 174048.93477891013, 173122.4377232343 174049.43602690846, 173123.6904592365 174053.08645891026, 173124.81775523722 174056.37157891318))"^^geo:wktLiteral;
+        ];
+    prov:qualifiedAttribution attribution:plan-koekjes-maken_0408249136 ;
+    rdfs:label "Exploitatie 0408249136_6842345678"@nl ;
+     .
 
 deployment:plan-koekjes-maken a sosa:Deployment ;
-    prov:hadPlan activiteit:plan-koekjes-maken ;
+    sosa:startTime "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+    sosa:endTime "2020-12-31T23:59:59Z"^^xsd:dateTime ;
+    sosa:deployedOnPlatform platform:0408249136_6842345678;
     rdfs:label "Koekjes maken"@nl ;
     sosa:deployedAsset emissiepunt:TBD , system:deegbereidingsinstallatie, system:oven;
-    adms:status riepr:Actief ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+     .
 
 
 activteitstap:stap-koekjes-maken_0001 a pplan:Step ;
@@ -67,13 +104,25 @@ emissiepunt:TBD a sosa:System ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 ;
-    adms:status riepr:Actief ;
+     ;
+    geo:hasGeometry
+        [ a  geo:Geometry;
+            geo:asWKT   "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+            ];
+    adms:status status:actief ;
         .
 
-system:deegbereidingsinstallatie a sosa:System ;.
+system:deegbereidingsinstallatie a sosa:System ;
+    geo:hasGeometry
+        [ a  geo:Geometry;
+              geo:asWKT   "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+        ];.
 
-system:oven a sosa:System ;.
+system:oven a sosa:System ;
+    geo:hasGeometry
+        [ a  geo:Geometry;
+              geo:asWKT   "POINT(4.34202412 51.16969212)"^^geo:wktLiteral;
+        ];.
 
 variable:bloem a pplan:Variable ;
     pplan:isInputVarOf activteitstap:stap-koekjes-maken_0001 ;
@@ -157,7 +206,7 @@ observation:vracht_co2_rookgassen2 a sosa:Observation ;
     sosa:phenomenonTime t:phenomenonTime_2020 .
 
 t:phenomenonTime_2020
-    a time:Interval , time:TemporalEntity ;
+    a time:Interval  ;
     time:hasBeginning t:t_2020_start ;
     time:hasEnd       t:t_2020_end ;
     rdfs:label "Emissiejaar 2020"@nl .
@@ -169,4 +218,3 @@ t:t_2020_start
 t:t_2020_end
     a time:Instant ;
     time:inXSDDateTime "2020-12-31T23:59:59Z"^^xsd:dateTime .
-exploitatielocatie:0408249136_6842345678 a prov:Location .
