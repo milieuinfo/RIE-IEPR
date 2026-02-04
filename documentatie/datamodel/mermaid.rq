@@ -28,10 +28,11 @@ WHERE {
         ?subj a ?subjectClass .
         ?obj a ?objectClass .
         FILTER(?subjectClass != ?objectClass)
-        FILTER(isIRI(?obj))
+        #FILTER(isIRI(?obj))
         FILTER(?subjectClass NOT IN (rdf:Property, rdfs:Class, rdfs:Resource, owl:Class, owl:Thing))
         FILTER(?objectClass NOT IN (rdf:Property, rdfs:Class, rdfs:Resource, owl:Class, owl:Thing))
         BIND(?pred as ?predicate)
     }
+
 }
 ORDER BY ?class ?property
