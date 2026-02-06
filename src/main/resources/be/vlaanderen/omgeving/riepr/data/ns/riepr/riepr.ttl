@@ -18,6 +18,7 @@
 @prefix dct:    <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix locn:   <http://www.w3.org/ns/locn#> .
+@prefix qudt:   <http://qudt.org/schema/qudt/> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -62,7 +63,7 @@
         rdfs:label "Verwerking van grondstoffen"@nl ;
         prov:wasDerivedFrom [ a :VerwerkingsProcedure ]
     ] ;
-    rdfs:subClassOf pplan:Plan, pplan:Step, dbo:Project ;
+    rdfs:subClassOf pplan:Plan, pplan:Step, dbo:Project, ssn:System, prov:Agent ;
     owl:equivalentClass [ a owl:Class ;
         # Proces kan een plan op zichzelf zijn (multi step)
         owl:unionOf ( pplan:Step pplan:MultiStep pplan:Plan ) 
@@ -111,35 +112,28 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een proces kan worden beïnvloed door een emissiepunt of stof
-        # (prov:Entity -> prov:Entity)
-        owl:onProperty prov:wasInfluencedBy ; 
-        owl:someValuesFrom ( :Emissiepunt :Stof ) ; 
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        # Een proces kan worden toegeschreven aan een apparaat (agent)
+        # Een proces kan worden toegeschreven aan een agent
         owl:onProperty prov:wasAttributedTo ; 
-        owl:someValuesFrom :Apparaat ; 
+        owl:someValuesFrom prov:Agent ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan zijn afgeleid van een (generieke) procedure (optioneel)
-        owl:onProperty prov:wasDerivedFrom ; 
+        owl:onProperty prov:wasDerivedFrom, dct:type ; 
         owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een proces moet minstens één inputvariabele hebben (stof)
+        # Een proces mag minstens één inputvariabele hebben (stof)
         owl:onProperty pplan:hasInputVar ;
-        owl:someValuesFrom :Stof ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:someValuesFrom pplan:Variable ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een proces moet minstens één outputvariabele hebben (stof)
+        # Een proces mag minstens één outputvariabele hebben (stof)
         owl:onProperty pplan:hasOutputVar ;
-        owl:someValuesFrom :Stof ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:someValuesFrom pplan:Variable ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan deel uitmaken van een ander proces (hiërarchie)
@@ -147,6 +141,37 @@
         owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ProcesVariabele a owl:Class ;
+    rdfs:label "Proces variabele"@nl ;
+    rdfs:comment "Een proces variabele is een stof die als input of output van een proces dient."@nl ;
+    skos:example [ a :ProcesVariabele ;
+        rdfs:label "Meel"@nl ;
+        dct:type [ a prov:Entity ;
+            rdfs:label "Stof"@nl
+        ] ;
+    ] ;
+    rdfs:subClassOf pplan:Variable ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces variabele moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces variabele kan een typering hebben via dct:type
+        owl:onProperty dct:type ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces variabele kan een eenheid hebben
+        owl:onProperty qudt:hasUnit ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een proces variabele kan een waarde hebben
+        owl:onProperty qudt:hasNumericValue ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
     
 :Installatie a owl:Class ;
@@ -162,10 +187,16 @@
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
-    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System ;
+    rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System, prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie heeft externe identificaties (optioneel)
         owl:onProperty adms:identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een installatie kan als systeem meerdere objecten bevatten
+        owl:onProperty ssn:hasSubSystem ; 
+        owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -217,9 +248,11 @@
 :Emissiepunt a owl:Class ;
     rdfs:label "Emissiepunt"@nl ;
     rdfs:comment "Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten."@nl ;
-    rdfs:subClassOf ogc:SpatialObject ;
+    rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
     skos:example [ a :Emissiepunt ;
         rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
         prov:atLocation [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ] ;
@@ -227,21 +260,41 @@
             ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral
         ]
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        # Een emissiepunt moet gekoppeld zijn aan exact één installatie of exploitatie locatie
-        owl:onProperty prov:atLocation ; 
-        owl:someValuesFrom ( :Installatie :ExploitatieLocatie ) ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt kan een typering hebben via dct:type
+        owl:onProperty dct:type ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        # Een emissiepunt moet een benaming hebben
-        owl:onProperty rdfs:label ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt kan een geldigheid einde hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een emissiepunt moet een enkele status hebben
+        # Een emissiepunt moet een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt kan een status hebben
         owl:onProperty adms:status ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een emissiepunt moet gekoppeld zijn aan een exploitatie locatie
+        owl:onProperty prov:atLocation ; 
+        owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -291,7 +344,6 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-# TODO nog te bepalen of nodig, emissiepunt kan voldoen
 :Lozingspunt a owl:Class ;
     rdfs:label "Lozingspunt"@nl ;
     rdfs:comment "Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd."@nl ;
@@ -309,6 +361,7 @@
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
+    rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
     skos:example [ a :Meetpunt ;
         rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
         dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
@@ -316,22 +369,17 @@
         dct:valid "2030-12-31"^^xsd:date ;
         ogc:hasGeometry [ a ogc:Geometry ;
             ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral
-        ] ;
-        sosa:isProxyFor [ a :Emissiepunt ;
-            rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl
         ]
     ] ;
-    rdfs:subClassOf ogc:SpatialObject, sosa:Sensor ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        # Een meetpunt moet een proxy zijn voor een emissiepunt OF een proces
-        owl:onProperty sosa:isProxyFor ; 
-        owl:someValuesFrom ( :Emissiepunt :Proces ) ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt moet een benaming hebben
+        owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        # Een meetpunt moet een benaming hebben
-        owl:onProperty rdfs:label ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt kan een typering hebben via dct:type
+        owl:onProperty dct:type ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt moet een creatie datum hebben
@@ -358,6 +406,11 @@
         owl:onProperty adms:status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt heeft externe identificaties (optioneel)
+        owl:onProperty adms:identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Apparaat a owl:Class ;
@@ -394,9 +447,9 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een apparaat moet gekoppeld zijn aan exact één installatie of exploitatie locatie
+        # Een apparaat moet gekoppeld zijn aan exact één exploitatie locatie
         owl:onProperty prov:atLocation ; 
-        owl:someValuesFrom ( :Installatie :ExploitatieLocatie ) ;
+        owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -413,7 +466,7 @@
     # Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:hasFeatureOfInterest ; 
-        owl:someValuesFrom ( :Meetpunt :Installatie ) ;
+        owl:someValuesFrom :Meetpunt ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -442,7 +495,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        owl:onProperty rdf:type ;
+        owl:onProperty dct:type ;
         # Een exploitant moet een organisatie of persoon zijn
         # maar niet beide tegelijk
         owl:someValuesFrom ( org:Organization foaf:Person ) ;
@@ -458,6 +511,23 @@
         owl:onProperty locn:address ;
         owl:someValuesFrom locn:Address ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] .
+
+:ExploitantContact a owl:Class ;
+    rdfs:label "Exploitant Contactpersoon"@nl ;
+    rdfs:comment "Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
+    rdfs:subClassOf foaf:Person ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon moet gekoppeld zijn aan exact één exploitant
+        owl:onProperty org:memberOf ;
+        owl:someValuesFrom :Exploitant ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :ExploitatieLocatie a owl:Class ;
@@ -527,30 +597,15 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
-# TODO: Dit moet uit codelijsten komen
-:Stof a owl:Class ;
-    rdfs:label "Stof"@nl ;
-    rdfs:comment "Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een proces."@nl ;
-    rdfs:subClassOf dbo:ChemicalSubstance ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # Een stof moet een benaming hebben
-        owl:onProperty rdfs:label ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] .
-
 # Proces Procedures
-:ProcesProcedure a owl:Class ;
-    rdfs:label "Proces Procedure"@nl ;
-    rdfs:comment "Een proces procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een proces."@nl ;
-    rdfs:subClassOf sosa:Procedure .
 :TransportProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Transport Procedure"@nl ;
     rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces."@nl ;
-    rdfs:subClassOf :ProcesProcedure .
+    rdfs:subClassOf sosa:Procedure .
 :VerwerkingsProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Verwerkings Procedure"@nl ;
     rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
-    rdfs:subClassOf :ProcesProcedure .
+    rdfs:subClassOf sosa:Procedure .
 
 :VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
     rdfs:label "Verbruiks Procedure"@nl ;
@@ -572,10 +627,14 @@
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
+# Object properties worden vermeden waar mogelijk
+# Business benamingen worden in concepten vastgelegd
 
 # --------------------------------------- #
 # Data Properties
 # --------------------------------------- #
+# Data properties worden vermeden waar mogelijk
+# Business benamingen worden in concepten vastgelegd
 
 # --------------------------------------- #
 # Individuals
@@ -621,6 +680,11 @@
     rdfs:comment "Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een proces."@nl ;
     skos:broader :VerwerkingsProcedure ;
     skos:prefLabel "Eindproduct productieproces"@nl .
+:meetProces a skos:Concept, sosa:Procedure ;
+    rdfs:label "Meetproces"@nl ;
+    rdfs:comment "Een meetproces is een specifieke procedure die betrekking heeft op het uitvoeren van metingen op meetpunten."@nl ;
+    skos:broader :MeetProcedure ;
+    skos:prefLabel "Meetproces"@nl .
 
 # Status concepten voor adms:status
 :Actief a skos:Concept ;
@@ -647,14 +711,14 @@
 # --------------------------------------- #
 # Axioms
 # --------------------------------------- #
-# Proces met een emissieprocedure moet worden beïnvloed door een emissiepunt
+# Proces met een emissieprocedure moet worden toegeschreven aan een emissiepunt (agent)
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :EmissieProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:wasInfluencedBy ;
+    owl:onProperty prov:wasAttributedTo ;
     owl:someValuesFrom :Emissiepunt
 ] .
 
@@ -677,20 +741,16 @@
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty pplan:hasOutputVar ;
-    owl:someValuesFrom :Stof
+    owl:someValuesFrom pplan:Variable
 ] .
 
-# Proces met transport/overbrenging/uitstoot: invoer = uitvoer (zelfde stof)
+# Proces met meetprocedure moet attributedTo een meetpunt
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty prov:wasDerivedFrom ;
-        owl:someValuesFrom :TransportProcedure
+        owl:someValuesFrom :meetProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty pplan:hasInputVar ;
-    owl:someValuesFrom :Stof
-], [ a owl:Restriction ;
-    owl:onProperty pplan:hasOutputVar ;
-    owl:someValuesFrom :Stof
+    owl:onProperty prov:wasAttributedTo ;
+    owl:someValuesFrom :Meetpunt
 ] .
-

@@ -21,7 +21,8 @@ export const PATHS = {
   shapes: resolveProjectPath('src/main/resources/generated-shapes.ttl'),
   dataModels: {
     er: resolveProjectPath('documentatie/datamodel/ER-generated.mmd'),
-    class: resolveProjectPath('documentatie/datamodel/Class-generated.mmd')
+    class: resolveProjectPath('documentatie/datamodel/Class-generated.mmd'),
+    sql: resolveProjectPath('documentatie/datamodel/schema-generated.sql')
   },
   visualization: {
     activity: resolveProjectPath('documentatie/visualization/activity-generated.mmd')

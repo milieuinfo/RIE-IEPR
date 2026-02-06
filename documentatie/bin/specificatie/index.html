@@ -2015,7 +2015,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p data-fill-with="logo"></p>
    <h1 class="no-ref p-name" id="title">RIE-IEPR Ontologie</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">Living Document,
-    <time class="dt-updated" datetime="2026-01-30">30 January 2026</time></span></h2>
+    <time class="dt-updated" datetime="2026-02-05">5 February 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2030,7 +2030,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 30 January 2026,
+In addition, as of 5 February 2026,
 the editors have made this specification available under the
 <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
@@ -2040,7 +2040,7 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem.</p>
+   <p>De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -2058,35 +2058,33 @@ Parts of this work may be from another specification document.  If so, those par
      <a href="#classes"><span class="secno">5</span> <span class="content">Klassen</span></a>
      <ol class="toc">
       <li><a href="#class-hierarchy"><span class="secno">5.1</span> <span class="content">Klassenhiërarchie</span></a>
-      <li><a href="#Activiteit"><span class="secno">5.2</span> <span class="content">Activiteit</span></a>
+      <li><a href="#Apparaat"><span class="secno">5.2</span> <span class="content">Apparaat</span></a>
       <li>
-       <a href="#ActiviteitProcedure"><span class="secno">5.3</span> <span class="content">Activiteit Procedure</span></a>
+       <a href="#Emissiepunt"><span class="secno">5.3</span> <span class="content">Emissiepunt</span></a>
+       <ol class="toc">
+        <li><a href="#Grondwaterput"><span class="secno">5.3.1</span> <span class="content">Grondwaterput</span></a>
+        <li><a href="#Lozingspunt"><span class="secno">5.3.2</span> <span class="content">Lozingspunt</span></a>
+        <li><a href="#Schouw"><span class="secno">5.3.3</span> <span class="content">Schouw</span></a>
+       </ol>
+      <li><a href="#Exploitant"><span class="secno">5.4</span> <span class="content">Exploitant</span></a>
+      <li><a href="#ExploitatieLocatie"><span class="secno">5.5</span> <span class="content">Exploitatie Locatie</span></a>
+      <li><a href="#Installatie"><span class="secno">5.6</span> <span class="content">Installatie</span></a>
+      <li><a href="#MeetProcedure"><span class="secno">5.7</span> <span class="content">Meetprocedure</span></a>
+      <li><a href="#Meetpunt"><span class="secno">5.8</span> <span class="content">Meetpunt</span></a>
+      <li><a href="#Observatie"><span class="secno">5.9</span> <span class="content">Observatie</span></a>
+      <li><a href="#Proces"><span class="secno">5.10</span> <span class="content">Proces</span></a>
+      <li>
+       <a href="#ProcesProcedure"><span class="secno">5.11</span> <span class="content">Proces Procedure</span></a>
        <ol class="toc">
         <li>
-         <a href="#TransportProcedure"><span class="secno">5.3.1</span> <span class="content">Transport Procedure</span></a>
+         <a href="#TransportProcedure"><span class="secno">5.11.1</span> <span class="content">Transport Procedure</span></a>
          <ol class="toc">
-          <li><a href="#EmissieProcedure"><span class="secno">5.3.1.1</span> <span class="content">Emissie Procedure</span></a>
-          <li><a href="#VerbruiksProcedure"><span class="secno">5.3.1.2</span> <span class="content">Verbruiks Procedure</span></a>
+          <li><a href="#EmissieProcedure"><span class="secno">5.11.1.1</span> <span class="content">Emissie Procedure</span></a>
+          <li><a href="#VerbruiksProcedure"><span class="secno">5.11.1.2</span> <span class="content">Verbruiks Procedure</span></a>
          </ol>
-        <li><a href="#VerwerkingsProcedure"><span class="secno">5.3.2</span> <span class="content">Verwerkings Procedure</span></a>
+        <li><a href="#VerwerkingsProcedure"><span class="secno">5.11.2</span> <span class="content">Verwerkings Procedure</span></a>
        </ol>
-      <li><a href="#ActiviteitStap"><span class="secno">5.4</span> <span class="content">Activiteit Stap</span></a>
-      <li><a href="#Apparaat"><span class="secno">5.5</span> <span class="content">Apparaat</span></a>
-      <li><a href="#Bron"><span class="secno">5.6</span> <span class="content">Bron</span></a>
-      <li>
-       <a href="#Emissiepunt"><span class="secno">5.7</span> <span class="content">Emissiepunt</span></a>
-       <ol class="toc">
-        <li><a href="#Grondwaterput"><span class="secno">5.7.1</span> <span class="content">Grondwaterput</span></a>
-        <li><a href="#Lozingspunt"><span class="secno">5.7.2</span> <span class="content">Lozingspunt</span></a>
-        <li><a href="#Schouw"><span class="secno">5.7.3</span> <span class="content">Schouw</span></a>
-       </ol>
-      <li><a href="#Exploitant"><span class="secno">5.8</span> <span class="content">Exploitant</span></a>
-      <li><a href="#ExploitatieLocatie"><span class="secno">5.9</span> <span class="content">Exploitatie Locatie</span></a>
-      <li><a href="#Installatie"><span class="secno">5.10</span> <span class="content">Installatie</span></a>
-      <li><a href="#MeetProcedure"><span class="secno">5.11</span> <span class="content">Meetprocedure</span></a>
-      <li><a href="#Meetpunt"><span class="secno">5.12</span> <span class="content">Meetpunt</span></a>
-      <li><a href="#Observatie"><span class="secno">5.13</span> <span class="content">Observatie</span></a>
-      <li><a href="#Stof"><span class="secno">5.14</span> <span class="content">Stof</span></a>
+      <li><a href="#Stof"><span class="secno">5.12</span> <span class="content">Stof</span></a>
      </ol>
     <li>
      <a href="#concepts"><span class="secno">6</span> <span class="content">Concept instanties</span></a>
@@ -2152,8 +2150,6 @@ Parts of this work may be from another specification document.  If so, those par
      <p>skos:</p>
     <li data-md>
      <p>foaf:</p>
-    <li data-md>
-     <p>schema:</p>
    </ul>
    <h2 class="heading settled" data-level="2" id="conformance"><span class="secno">2. </span><span class="content">Conformiteit</span><a class="self-link" href="#conformance"></a></h2>
    <p>Deze specificatie beschrijft een RDF vocabulaire. Conformante toepassingen MOETEN RDF-data produceren en/of consumeren volgens de definities in dit document.</p>
@@ -2164,6 +2160,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>dbo:</c->     <c- g>&lt;http://dbpedia.org/ontology/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>dct:</c->     <c- g>&lt;http://purl.org/dc/terms/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>foaf:</c->    <c- g>&lt;http://xmlns.com/foaf/0.1/></c-> <c- p>.</c->
+<c- k>@prefix</c-> <c- nn>locn:</c->    <c- g>&lt;http://www.w3.org/ns/locn#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>ogc:</c->     <c- g>&lt;http://www.opengis.net/ont/geosparql#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>org:</c->     <c- g>&lt;http://www.w3.org/ns/org#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>owl:</c->     <c- g>&lt;http://www.w3.org/2002/07/owl#></c-> <c- p>.</c->
@@ -2179,30 +2176,12 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
 </pre>
    <h2 class="heading settled" data-level="4" id="overview"><span class="secno">4. </span><span class="content">Overzicht</span><a class="self-link" href="#overview"></a></h2>
-   <p>Deze ontologie definieert 20 klassen en 12 concept instanties.</p>
+   <p>Deze ontologie definieert 18 klassen en 12 concept instanties.</p>
    <h2 class="heading settled" data-level="5" id="classes"><span class="secno">5. </span><span class="content">Klassen</span><a class="self-link" href="#classes"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="class-hierarchy"><span class="secno">5.1. </span><span class="content">Klassenhiërarchie</span><a class="self-link" href="#class-hierarchy"></a></h3>
    <ul>
     <li data-md>
-     <p><a href="#Activiteit">Activiteit</a></p>
-    <li data-md>
-     <p><a href="#ActiviteitProcedure">Activiteit Procedure</a></p>
-    <li data-md>
-     <p><a href="#TransportProcedure">Transport Procedure</a></p>
-     <ul>
-      <li data-md>
-       <p><a href="#EmissieProcedure">Emissie Procedure</a></p>
-      <li data-md>
-       <p><a href="#VerbruiksProcedure">Verbruiks Procedure</a></p>
-     </ul>
-    <li data-md>
-     <p><a href="#VerwerkingsProcedure">Verwerkings Procedure</a></p>
-    <li data-md>
-     <p><a href="#ActiviteitStap">Activiteit Stap</a></p>
-    <li data-md>
      <p><a href="#Apparaat">Apparaat</a></p>
-    <li data-md>
-     <p><a href="#Bron">Bron</a></p>
     <li data-md>
      <p><a href="#Emissiepunt">Emissiepunt</a></p>
     <li data-md>
@@ -2224,91 +2203,43 @@ Parts of this work may be from another specification document.  If so, those par
     <li data-md>
      <p><a href="#Observatie">Observatie</a></p>
     <li data-md>
+     <p><a href="#Proces">Proces</a></p>
+    <li data-md>
+     <p><a href="#ProcesProcedure">Proces Procedure</a></p>
+    <li data-md>
+     <p><a href="#TransportProcedure">Transport Procedure</a></p>
+     <ul>
+      <li data-md>
+       <p><a href="#EmissieProcedure">Emissie Procedure</a></p>
+      <li data-md>
+       <p><a href="#VerbruiksProcedure">Verbruiks Procedure</a></p>
+     </ul>
+    <li data-md>
+     <p><a href="#VerwerkingsProcedure">Verwerkings Procedure</a></p>
+    <li data-md>
      <p><a href="#Stof">Stof</a></p>
    </ul>
-   <h3 class="heading settled" data-level="5.2" id="Activiteit"><span class="secno">5.2. </span><span class="content">Activiteit</span><a class="self-link" href="#Activiteit"></a></h3>
-   <p><strong>IRI:</strong> <code>riepr:Activiteit</code></p>
-   <p><strong>Definitie:</strong> Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven.</p>
-   <p><strong>Subklasse van:</strong> <code>pplan:Plan</code>, <code>dbo:Project</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1; label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
-   <p><strong>Voorbeelden:</strong></p>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Activiteit</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Productie van cement in een fabriek te Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2024-01-15T10:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
-  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2020-01-01/2030-12-31"</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
-<c- p>]</c->
-</pre>
-   <h3 class="heading settled" data-level="5.3" id="ActiviteitProcedure"><span class="secno">5.3. </span><span class="content">Activiteit Procedure</span><a class="self-link" href="#ActiviteitProcedure"></a></h3>
-   <p><strong>IRI:</strong> <code>riepr:ActiviteitProcedure</code></p>
-   <p><strong>Definitie:</strong> Een activiteit procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een activiteit.</p>
-   <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
-   <h4 class="heading settled" data-level="5.3.1" id="TransportProcedure"><span class="secno">5.3.1. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h4>
-   <p><strong>IRI:</strong> <code>riepr:TransportProcedure</code></p>
-   <p><strong>Definitie:</strong> Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit.</p>
-   <p><strong>Subklasse van:</strong> <code>riepr:ActiviteitProcedure</code></p>
-   <h5 class="heading settled" data-level="5.3.1.1" id="EmissieProcedure"><span class="secno">5.3.1.1. </span><span class="content">Emissie Procedure</span><a class="self-link" href="#EmissieProcedure"></a></h5>
-   <p><strong>IRI:</strong> <code>riepr:EmissieProcedure</code></p>
-   <p><strong>Definitie:</strong> Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.</p>
-   <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
-   <h5 class="heading settled" data-level="5.3.1.2" id="VerbruiksProcedure"><span class="secno">5.3.1.2. </span><span class="content">Verbruiks Procedure</span><a class="self-link" href="#VerbruiksProcedure"></a></h5>
-   <p><strong>IRI:</strong> <code>riepr:VerbruiksProcedure</code></p>
-   <p><strong>Definitie:</strong> Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een activiteit.</p>
-   <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
-   <h4 class="heading settled" data-level="5.3.2" id="VerwerkingsProcedure"><span class="secno">5.3.2. </span><span class="content">Verwerkings Procedure</span><a class="self-link" href="#VerwerkingsProcedure"></a></h4>
-   <p><strong>IRI:</strong> <code>riepr:VerwerkingsProcedure</code></p>
-   <p><strong>Definitie:</strong> Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit.</p>
-   <p><strong>Subklasse van:</strong> <code>riepr:ActiviteitProcedure</code></p>
-   <h3 class="heading settled" data-level="5.4" id="ActiviteitStap"><span class="secno">5.4. </span><span class="content">Activiteit Stap</span><a class="self-link" href="#ActiviteitStap"></a></h3>
-   <p><strong>IRI:</strong> <code>riepr:ActiviteitStap</code></p>
-   <p><strong>Definitie:</strong> De activiteit stap is een individuele of meervoudige stap binnen een activiteit.</p>
-   <p><strong>Subklasse van:</strong> <code>pplan:Step</code></p>
-   <p><strong>Constraints:</strong> valid: min 0, max 1; used: min 0 of n3-13; implements: min 0 of Procedure</p>
-   <p><strong>Voorbeelden:</strong></p>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ActiviteitStap</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Verwerking van grondstoffen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>ssn</c-><c- p>:</c-><c- f>implements</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>VerwerkingsProcedure</c-> <c- p>]</c->
-<c- p>]</c->
-</pre>
-   <h3 class="heading settled" data-level="5.5" id="Apparaat"><span class="secno">5.5. </span><span class="content">Apparaat</span><a class="self-link" href="#Apparaat"></a></h3>
+   <h3 class="heading settled" data-level="5.2" id="Apparaat"><span class="secno">5.2. </span><span class="content">Apparaat</span><a class="self-link" href="#Apparaat"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Apparaat</code></p>
    <p><strong>Definitie:</strong> Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.</p>
-   <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> valid: min 1, max 1; atLocation: min 1, max 1 of n3-63; label: min 1</p>
+   <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>ogc:SpatialObject</code>, <code>prov:Agent</code></p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of n3-70; label: min 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Apparaat</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Filterinstallatie Schouw 1"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
-   <h3 class="heading settled" data-level="5.6" id="Bron"><span class="secno">5.6. </span><span class="content">Bron</span><a class="self-link" href="#Bron"></a></h3>
-   <p><strong>IRI:</strong> <code>riepr:Bron</code></p>
-   <p><strong>Definitie:</strong> Een bron is de oorsprong of herkomst van water of andere stoffen die als input worden gebruikt in een activiteit of procedure.</p>
-   <p><strong>Subklasse van:</strong> <code>ssn:Input</code></p>
-   <p><strong>Constraints:</strong> label: min 1; comment: min 0, max 1</p>
-   <p><strong>Voorbeelden:</strong></p>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Bron</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Grondwater"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>comment</c-> <c- s>"Grondwater als waterbron voor industriele processen"</c-><c- o>@</c->nl
-<c- p>]</c->
-</pre>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Bron</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Oppervlaktewater (waterlopen/kanalen)"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>comment</c-> <c- s>"Water uit oppervlaktewaterlopen als bron"</c-><c- o>@</c->nl
-<c- p>]</c->
-</pre>
-   <h3 class="heading settled" data-level="5.7" id="Emissiepunt"><span class="secno">5.7. </span><span class="content">Emissiepunt</span><a class="self-link" href="#Emissiepunt"></a></h3>
+   <h3 class="heading settled" data-level="5.3" id="Emissiepunt"><span class="secno">5.3. </span><span class="content">Emissiepunt</span><a class="self-link" href="#Emissiepunt"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Emissiepunt</code></p>
    <p><strong>Definitie:</strong> Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.</p>
    <p><strong>Subklasse van:</strong> <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> atLocation: min 1, max 1 of n3-30; label: min 1; status: min 1, max 1</p>
+   <p><strong>Constraints:</strong> atLocation: min 1, max 1 of n3-37; label: min 1; status: min 1, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
@@ -2319,7 +2250,7 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4025 51.2194)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
-   <h4 class="heading settled" data-level="5.7.1" id="Grondwaterput"><span class="secno">5.7.1. </span><span class="content">Grondwaterput</span><a class="self-link" href="#Grondwaterput"></a></h4>
+   <h4 class="heading settled" data-level="5.3.1" id="Grondwaterput"><span class="secno">5.3.1. </span><span class="content">Grondwaterput</span><a class="self-link" href="#Grondwaterput"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Grondwaterput</code></p>
    <p><strong>Definitie:</strong> Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
@@ -2335,7 +2266,7 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>dbo</c-><c- p>:</c-><c- f>depth</c-> <c- s>"15.0"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>float</c->
 <c- p>]</c->
 </pre>
-   <h4 class="heading settled" data-level="5.7.2" id="Lozingspunt"><span class="secno">5.7.2. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
+   <h4 class="heading settled" data-level="5.3.2" id="Lozingspunt"><span class="secno">5.3.2. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Lozingspunt</code></p>
    <p><strong>Definitie:</strong> Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
@@ -2349,7 +2280,7 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4030 51.2200)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
-   <h4 class="heading settled" data-level="5.7.3" id="Schouw"><span class="secno">5.7.3. </span><span class="content">Schouw</span><a class="self-link" href="#Schouw"></a></h4>
+   <h4 class="heading settled" data-level="5.3.3" id="Schouw"><span class="secno">5.3.3. </span><span class="content">Schouw</span><a class="self-link" href="#Schouw"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Schouw</code></p>
    <p><strong>Definitie:</strong> Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
@@ -2366,57 +2297,112 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>dbo</c-><c- p>:</c-><c- f>height</c-> <c- s>"30.0"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>float</c->
 <c- p>]</c->
 </pre>
-   <h3 class="heading settled" data-level="5.8" id="Exploitant"><span class="secno">5.8. </span><span class="content">Exploitant</span><a class="self-link" href="#Exploitant"></a></h3>
+   <h3 class="heading settled" data-level="5.4" id="Exploitant"><span class="secno">5.4. </span><span class="content">Exploitant</span><a class="self-link" href="#Exploitant"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
-   <p><strong>Constraints:</strong> valid: min 0, max 1; type: min 1 of n3-71; label: min 1</p>
-   <h3 class="heading settled" data-level="5.9" id="ExploitatieLocatie"><span class="secno">5.9. </span><span class="content">Exploitatie Locatie</span><a class="self-link" href="#ExploitatieLocatie"></a></h3>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1; type: min 1 of n3-80; label: min 1; address: min 0 of Address</p>
+   <h3 class="heading settled" data-level="5.5" id="ExploitatieLocatie"><span class="secno">5.5. </span><span class="content">Exploitatie Locatie</span><a class="self-link" href="#ExploitatieLocatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ExploitatieLocatie</code></p>
-   <p><strong>Definitie:</strong> Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert.</p>
+   <p><strong>Definitie:</strong> Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert.</p>
    <p><strong>Subklasse van:</strong> <code>ogc:SpatialObjectCollection</code>, <code>prov:Entity</code></p>
-   <p><strong>Constraints:</strong> atLocation: min 1, max 1 of Exploitant; identifier: min 0; label: min 1; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
-   <h3 class="heading settled" data-level="5.10" id="Installatie"><span class="secno">5.10. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
+   <p><strong>Voorbeelden:</strong></p>
+<pre class="highlight language-turtle"><c- p>[</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- nn>prov</c-><c- p>:</c-><c- f>hadPrimarySource</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>org</c-><c- p>:</c-><c- f>Site</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"VKBO Vestiging Cementfabriek"</c-><c- o>@</c->nl <c- p>]</c->
+<c- p>]</c->
+</pre>
+   <h3 class="heading settled" data-level="5.6" id="Installatie"><span class="secno">5.6. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Installatie</code></p>
    <p><strong>Definitie:</strong> Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
    <p><strong>Subklasse van:</strong> <code>ogc:SpatialObjectCollection</code>, <code>ssn:System</code></p>
-   <p><strong>Constraints:</strong> identifier: min 0; label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> identifier: min 0; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2020-01-01/2030-12-31"</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- g>&lt;http://www.w3.org/ns/adms#status></c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Actief</c->
 <c- p>]</c->
 </pre>
-   <h3 class="heading settled" data-level="5.11" id="MeetProcedure"><span class="secno">5.11. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
+   <h3 class="heading settled" data-level="5.7" id="MeetProcedure"><span class="secno">5.7. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:MeetProcedure</code></p>
    <p><strong>Definitie:</strong> Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
-   <h3 class="heading settled" data-level="5.12" id="Meetpunt"><span class="secno">5.12. </span><span class="content">Meetpunt</span><a class="self-link" href="#Meetpunt"></a></h3>
+   <h3 class="heading settled" data-level="5.8" id="Meetpunt"><span class="secno">5.8. </span><span class="content">Meetpunt</span><a class="self-link" href="#Meetpunt"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Meetpunt</code></p>
    <p><strong>Definitie:</strong> Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.</p>
-   <p><strong>Subklasse van:</strong> <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> isProxyFor: min 1 of n3-54; label: min 1; valid: min 1, max 1; status: min 1, max 1</p>
+   <p><strong>Subklasse van:</strong> <code>ogc:SpatialObject</code>, <code>sosa:Sensor</code></p>
+   <p><strong>Constraints:</strong> isProxyFor: min 1 of n3-57; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; status: min 1, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Meetpunt</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Meetpunt Luchtkwaliteit Schouw 1"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4026 51.2195)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
   <c- nn>sosa</c-><c- p>:</c-><c- f>isProxyFor</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
-   <h3 class="heading settled" data-level="5.13" id="Observatie"><span class="secno">5.13. </span><span class="content">Observatie</span><a class="self-link" href="#Observatie"></a></h3>
+   <h3 class="heading settled" data-level="5.9" id="Observatie"><span class="secno">5.9. </span><span class="content">Observatie</span><a class="self-link" href="#Observatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Observatie</code></p>
    <p><strong>Definitie:</strong> Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Observation</code></p>
-   <p><strong>Constraints:</strong> hasFeatureOfInterest: min 1, max 1 of n3-67</p>
-   <h3 class="heading settled" data-level="5.14" id="Stof"><span class="secno">5.14. </span><span class="content">Stof</span><a class="self-link" href="#Stof"></a></h3>
+   <p><strong>Constraints:</strong> hasFeatureOfInterest: min 1, max 1 of n3-74</p>
+   <h3 class="heading settled" data-level="5.10" id="Proces"><span class="secno">5.10. </span><span class="content">Proces</span><a class="self-link" href="#Proces"></a></h3>
+   <p><strong>IRI:</strong> <code>riepr:Proces</code></p>
+   <p><strong>Definitie:</strong> Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.</p>
+   <p><strong>Subklasse van:</strong> <code>pplan:Plan</code>, <code>pplan:Step</code>, <code>dbo:Project</code></p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasInfluencedBy: min 0 of n3-16; wasAttributedTo: min 0 of Apparaat; wasDerivedFrom: min 0 of Procedure; hasInputVar: min 1 of Stof; hasOutputVar: min 1 of Stof; isStepOfPlan: min 0, max 1 of Proces</p>
+   <p><strong>Voorbeelden:</strong></p>
+<pre class="highlight language-turtle"><c- p>[</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Productie van cement in een fabriek te Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2024-01-15T10:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
+  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
+<c- p>]</c->
+</pre>
+<pre class="highlight language-turtle"><c- p>[</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Verwerking van grondstoffen"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- nn>prov</c-><c- p>:</c-><c- f>wasDerivedFrom</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>VerwerkingsProcedure</c-> <c- p>]</c->
+<c- p>]</c->
+</pre>
+   <h3 class="heading settled" data-level="5.11" id="ProcesProcedure"><span class="secno">5.11. </span><span class="content">Proces Procedure</span><a class="self-link" href="#ProcesProcedure"></a></h3>
+   <p><strong>IRI:</strong> <code>riepr:ProcesProcedure</code></p>
+   <p><strong>Definitie:</strong> Een proces procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een proces.</p>
+   <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
+   <h4 class="heading settled" data-level="5.11.1" id="TransportProcedure"><span class="secno">5.11.1. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h4>
+   <p><strong>IRI:</strong> <code>riepr:TransportProcedure</code></p>
+   <p><strong>Definitie:</strong> Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:ProcesProcedure</code></p>
+   <h5 class="heading settled" data-level="5.11.1.1" id="EmissieProcedure"><span class="secno">5.11.1.1. </span><span class="content">Emissie Procedure</span><a class="self-link" href="#EmissieProcedure"></a></h5>
+   <p><strong>IRI:</strong> <code>riepr:EmissieProcedure</code></p>
+   <p><strong>Definitie:</strong> Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
+   <h5 class="heading settled" data-level="5.11.1.2" id="VerbruiksProcedure"><span class="secno">5.11.1.2. </span><span class="content">Verbruiks Procedure</span><a class="self-link" href="#VerbruiksProcedure"></a></h5>
+   <p><strong>IRI:</strong> <code>riepr:VerbruiksProcedure</code></p>
+   <p><strong>Definitie:</strong> Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
+   <h4 class="heading settled" data-level="5.11.2" id="VerwerkingsProcedure"><span class="secno">5.11.2. </span><span class="content">Verwerkings Procedure</span><a class="self-link" href="#VerwerkingsProcedure"></a></h4>
+   <p><strong>IRI:</strong> <code>riepr:VerwerkingsProcedure</code></p>
+   <p><strong>Definitie:</strong> Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:ProcesProcedure</code></p>
+   <h3 class="heading settled" data-level="5.12" id="Stof"><span class="secno">5.12. </span><span class="content">Stof</span><a class="self-link" href="#Stof"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Stof</code></p>
-   <p><strong>Definitie:</strong> Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een activiteit.</p>
+   <p><strong>Definitie:</strong> Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <code>dbo:ChemicalSubstance</code></p>
    <p><strong>Constraints:</strong> label: min 1</p>
    <h2 class="heading settled" data-level="6" id="concepts"><span class="secno">6. </span><span class="content">Concept instanties</span><a class="self-link" href="#concepts"></a></h2>
@@ -2430,15 +2416,15 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>Breder concept:</strong> <code>riepr:VerwerkingsProcedure</code></p>
    <h3 class="heading settled" data-level="6.3" id="concept-brandstofVerbruikProces"><span class="secno">6.3. </span><span class="content">Brandstofverbruikproces</span><a class="self-link" href="#concept-brandstofVerbruikProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:brandstofVerbruikProces</code></p>
-   <p><strong>Definitie:</strong> Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een activiteit.</p>
+   <p><strong>Definitie:</strong> Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een proces.</p>
    <p><strong>Breder concept:</strong> <code>riepr:VerbruiksProcedure</code></p>
    <h3 class="heading settled" data-level="6.4" id="concept-eindproductProductieProces"><span class="secno">6.4. </span><span class="content">Eindproduct productieproces</span><a class="self-link" href="#concept-eindproductProductieProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:eindproductProductieProces</code></p>
-   <p><strong>Definitie:</strong> Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een activiteit.</p>
+   <p><strong>Definitie:</strong> Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een proces.</p>
    <p><strong>Breder concept:</strong> <code>riepr:VerwerkingsProcedure</code></p>
    <h3 class="heading settled" data-level="6.5" id="concept-electriciteitsVerbruikProces"><span class="secno">6.5. </span><span class="content">Elektriciteitsverbruikproces</span><a class="self-link" href="#concept-electriciteitsVerbruikProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:electriciteitsVerbruikProces</code></p>
-   <p><strong>Definitie:</strong> Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit.</p>
+   <p><strong>Definitie:</strong> Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een proces.</p>
    <p><strong>Breder concept:</strong> <code>riepr:VerbruiksProcedure</code></p>
    <h3 class="heading settled" data-level="6.6" id="concept-Gesloten"><span class="secno">6.6. </span><span class="content">Gesloten</span><a class="self-link" href="#concept-Gesloten"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Gesloten</code></p>
@@ -2463,7 +2449,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>Definitie:</strong> De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is.</p>
    <h3 class="heading settled" data-level="6.12" id="concept-waterVerbruikProces"><span class="secno">6.12. </span><span class="content">Waterverbruikproces</span><a class="self-link" href="#concept-waterVerbruikProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:waterVerbruikProces</code></p>
-   <p><strong>Definitie:</strong> Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een activiteit.</p>
+   <p><strong>Definitie:</strong> Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een proces.</p>
    <p><strong>Breder concept:</strong> <code>riepr:VerbruiksProcedure</code></p>
    <h2 class="heading settled" data-level="7" id="downloads"><span class="secno">7. </span><span class="content">Downloads</span><a class="self-link" href="#downloads"></a></h2>
    <ul>

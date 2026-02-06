@@ -346,7 +346,7 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
     const emissiepuntIndex = new Map(emissiePunten.map((q, idx) => [q.subject.value, idx]));
 
     const stofRdf = namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
-    const stofClass = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof');
+    const procesVariabeleClass = namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele');
     // Get all steps (both riepr:Proces and pplan:Step)
     const allProcesSteps = exampleStore.getQuads(null, stofRdf, riepr.Proces);
     const allPplanSteps = exampleStore.getQuads(null, stofRdf, pplan.Step);
@@ -367,7 +367,7 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         for (const varQuad of inputVars) {
             const varUri = varQuad.object.value;
             const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
-            if (varTypes.some(t => t.object.value === stofClass.value)) {
+            if (varTypes.some(t => t.object.value === procesVariabeleClass.value)) {
                 inputStofUris.add(varUri);
                 if (!stofToInputSteps.has(varUri)) stofToInputSteps.set(varUri, new Set());
                 stofToInputSteps.get(varUri).add(stepUri);
@@ -377,7 +377,7 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         for (const varQuad of outputVars) {
             const varUri = varQuad.object.value;
             const varTypes = exampleStore.getQuads(namedNode(varUri), stofRdf, null);
-            if (varTypes.some(t => t.object.value === stofClass.value)) {
+            if (varTypes.some(t => t.object.value === procesVariabeleClass.value)) {
                 outputStofUris.add(varUri);
                 if (!stofToOutputSteps.has(varUri)) stofToOutputSteps.set(varUri, new Set());
                 stofToOutputSteps.get(varUri).add(stepUri);

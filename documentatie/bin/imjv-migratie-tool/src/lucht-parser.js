@@ -241,7 +241,7 @@ export class LuchtParser extends BaseParser {
             const stofNaam = eenheid.GeproduceerdeStof[0].Naam[0];
             const stofId = this.sanitizeId(stofNaam);
             producedStofUri = this.turtle.qname('stof', stofId);
-            this.turtle.triple(producedStofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
+            this.turtle.triple(producedStofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
             this.turtle.triple(producedStofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
         }
         // Create corresponding Apparaat for this ProductieEenheid
@@ -518,7 +518,7 @@ export class LuchtParser extends BaseParser {
             const stofId = stof.$.stofID;
             const naam = stof.Benaming?.[0];
             const stofUri = this.turtle.qname('stof', stofId);
-            this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
+            this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
             if (naam) {
                 this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
             }
@@ -800,7 +800,7 @@ export class LuchtParser extends BaseParser {
             this.turtle.triple(
                 stofUri,
                 this.turtle.qname('rdf', 'type'),
-                this.turtle.qname('riepr', 'Stof')
+                this.turtle.qname('riepr', 'ProcesVariabele')
             );
 
             this.turtle.triple(
@@ -837,7 +837,7 @@ export class LuchtParser extends BaseParser {
             if (stofNaam) {
                 const stofId = this.sanitizeId(stofNaam);
                 const stofUri = this.turtle.qname('stof', stofId);
-                this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'Stof'));
+                this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
                 this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
                 this.turtle.triple(procedureUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(`Meet ${stofNaam}`, null, 'nl'));
             }

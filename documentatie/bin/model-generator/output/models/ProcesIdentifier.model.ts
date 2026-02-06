@@ -1,0 +1,24 @@
+
+import { jsonObject, jsonMember } from 'typedjson';
+
+@jsonObject
+export class ProcesIdentifier {
+  @jsonMember(String, { name: 'identifier' })
+  identifier!: string;
+
+  @jsonMember(Date, { name: 'issued' })
+  geldigVan!: Date;
+
+  @jsonMember(String, { name: 'inScheme' })
+  inScheme!: string;
+
+  @jsonMember(String, { name: 'notation' })
+  notation!: string;
+
+  @jsonMember(Date, { name: 'valid' })
+  geldigTot?: Date;
+
+  @jsonMember(String, { name: 'value' })
+  value?: string;
+
+}

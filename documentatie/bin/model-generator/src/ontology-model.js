@@ -1,7 +1,7 @@
 import fs from 'fs';
 import https from 'https';
 import { Parser, Store, NamedNode, Quad } from 'n3';
-import { NAMESPACES, PATHS, resolveProjectPath } from './config.js';
+import { NAMESPACES, PATHS, resolveProjectPath, PROPERTY_LABEL_OVERRIDES, PROPERTY_NAME_OVERRIDES, camelCaseToSnakeCase } from './config.js';
 
 export class OntologyModel {
   constructor({ ontologyPath = PATHS.ontology, rulesPath = PATHS.rules, shapesPath = PATHS.shapes } = {}) {
@@ -172,8 +172,11 @@ export class OntologyModel {
    * Zoek een Nederlandstalig business-label voor een eigenschap (predicaat-IRI)
    * op basis van SKOS-concepten met skos:exactMatch.
    */
-  getBusinessLabelForProperty(propertyIri) {
+  getBusinessLabelForProperty(propertyIri, className = null) {
     if (!propertyIri) return null;
+
+    const overrideLabel = this.getPropertyOverride(PROPERTY_LABEL_OVERRIDES, className, propertyIri);
+    if (overrideLabel) return overrideLabel;
 
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
     const skosPrefLabel = new NamedNode(NAMESPACES.skos + 'prefLabel');
@@ -209,12 +212,41 @@ export class OntologyModel {
    * uitgelijnd (bijv. https://.../id/concept/eenheid -> "eenheid").
    * Dit is handig om attribuutnamen/FK-namen in ER/class-diagrammen te bepalen.
    */
-  getBusinessNameForProperty(propertyIri) {
+  getBusinessNameForProperty(propertyIri, className = null) {
     if (!propertyIri) return null;
+
+    const overrideName = this.getPropertyOverride(PROPERTY_NAME_OVERRIDES, className, propertyIri);
+    if (overrideName) return overrideName;
 
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
     const propertyNode = new NamedNode(propertyIri);
     const conceptQuads = this.store.getQuads(null, skosExactMatch, propertyNode);
+    if (conceptQuads.length === 0) return null;
+
+    const conceptIri = conceptQuads[0].subject.value;
+    return this.extractLocalName(conceptIri);
+  }
+
+  /**
+   * Get per-class override for property label or name
+   */
+  getPropertyOverride(overrideMap, className, propertyIri) {
+    if (!className || !propertyIri) return null;
+    const classMap = overrideMap.get(className);
+    if (!classMap) return null;
+    return classMap.get(propertyIri) || null;
+  }
+
+  /**
+   * Geef de lokale naam van het businessconcept dat aan een klasse is
+   * uitgelijnd (bijv. https://.../id/concept/MyBusinessConcept).
+   */
+  getBusinessNameForClass(classIri) {
+    if (!classIri) return null;
+
+    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
+    const classNode = new NamedNode(classIri);
+    const conceptQuads = this.store.getQuads(null, skosExactMatch, classNode);
     if (conceptQuads.length === 0) return null;
 
     const conceptIri = conceptQuads[0].subject.value;
@@ -287,20 +319,10 @@ export class OntologyModel {
       });
     });
 
-    // Inverse property inference
-    const inverseQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.owl + 'inverseOf'), null);
-    inverseQuads.forEach(inverseQuad => {
-      const property = inverseQuad.subject;
-      const inverseProperty = inverseQuad.object;
-      const usageQuads = this.store.getQuads(null, property, null);
-      usageQuads.forEach(usageQuad => {
-        const subject = usageQuad.subject;
-        const object = usageQuad.object;
-        if (object.termType === 'NamedNode') {
-          this.store.addQuad(new Quad(object, inverseProperty, subject));
-        }
-      });
-    });
+    // Note: Inverse properties are NOT automatically generated.
+    // Only explicitly defined inverse properties in the ontology are used.
+    // This prevents implicit inverses like isVariableOfPlan, isInputVarOf, etc.
+    // from being added to the schema.
   }
 
   extractClasses() {
@@ -330,10 +352,15 @@ export class OntologyModel {
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
     const exactMatchQuads = this.store.getQuads(null, skosExactMatch, null);
     const businessTargetLocalNames = new Set();
+    const businessTargetFullIris = new Map(); // Map from localName to fullIri
     exactMatchQuads.forEach(q => {
       if (q.object.termType === 'NamedNode') {
         const local = this.extractLocalName(q.object.value);
-        if (local) businessTargetLocalNames.add(local);
+        const fullIri = q.object.value;
+        if (local) {
+          businessTargetLocalNames.add(local);
+          businessTargetFullIris.set(local, fullIri);
+        }
       }
     });
 
@@ -342,8 +369,14 @@ export class OntologyModel {
         restriction.rangeTypes.forEach(rangeType => {
           if (this.classes.has(rangeType) || additions.has(rangeType)) return;
 
+          // For business concept targets, use the full IRI from the mapping
+          let fullIri = rangeType;
+          if (businessTargetFullIris.has(rangeType)) {
+            fullIri = businessTargetFullIris.get(rangeType);
+          }
+
           additions.set(rangeType, {
-            iri: rangeType,
+            iri: fullIri,  // Store the full IRI if known, otherwise just the local name
             localName: rangeType,
             label: rangeType,
             comment: '',
@@ -843,6 +876,93 @@ export class OntologyModel {
   }
 
   /**
+   * Compute which classes are enums (no meaningful attributes)
+   * Centralized version so other utilities can reuse the same logic.
+   */
+  computeEnumClasses() {
+    const enumClasses = new Set();
+
+    this.classes.forEach((classInfo, className) => {
+      if (classInfo.isConceptScheme) {
+        enumClasses.add(className);
+        return;
+      }
+
+      if (classInfo.superClasses) {
+        const isConceptSubclass = classInfo.superClasses.some(sc =>
+          String(sc).includes('skos:Concept') ||
+          (String(sc).includes('Concept') && String(sc).includes('skos'))
+        );
+        if (isConceptSubclass) {
+          enumClasses.add(className);
+          return;
+        }
+      }
+
+      if (classInfo.restrictions) {
+        const hasInScheme = classInfo.restrictions.some(r =>
+          r.property === 'inScheme' || String(r.property).includes('inScheme')
+        );
+        if (hasInScheme) {
+          enumClasses.add(className);
+        }
+      }
+    });
+
+    return enumClasses;
+  }
+
+  /**
+   * Derive enum members for an enum class (e.g. SKOS concept schemes)
+   * Returns an array of identifier strings (prefer rdfs:label when available,
+   * otherwise the local name of the individual IRI).
+   */
+  deriveEnumMembers(className) {
+    const classInfo = this.classes.get(className);
+    if (!classInfo || !classInfo.iri) return [];
+    const classIri = classInfo.iri;
+    const members = new Set();
+    const quads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdf + 'type'), new NamedNode(classIri));
+    for (const q of quads) {
+      const subject = q.subject;
+      if (!subject) continue;
+      // try rdfs:label first
+      const labels = this.store.getQuads(subject, new NamedNode(NAMESPACES.rdfs + 'label'), null);
+      if (labels && labels.length > 0) {
+        for (const lq of labels) {
+          if (lq.object && lq.object.value) members.add(String(lq.object.value));
+        }
+        continue;
+      }
+      // fallback to local name of the IRI
+      if (subject.termType === 'NamedNode') {
+        const local = this.extractLocalName(subject.value);
+        if (local) members.add(local);
+      }
+    }
+    return Array.from(members);
+  }
+
+  /**
+   * Return local super-class names for a classInfo object, filtering
+   * out technical/external supers unless they are flagged as business
+   * concept targets.
+   */
+  getSuperClassNames(classInfo) {
+    const names = [];
+    (classInfo.superClasses || []).forEach(superIri => {
+      const local = this.extractLocalName(superIri);
+      if (local && this.classes.has(local)) {
+        const info = this.classes.get(local);
+        if (!info?.external || info.isBusinessConceptTarget) {
+          names.push(local);
+        }
+      }
+    });
+    return names;
+  }
+
+  /**
    * Controleer of een klasse (via local name) in de data of ontologie
    * effectief als rdf:type voor individuen gebruikt werd.
    */
@@ -1031,5 +1151,31 @@ export class OntologyModel {
     });
 
     return iris;
+  }
+
+  /**
+   * Derive foreign key column name using business name of the property
+   */
+    deriveFkName(restriction) {
+    const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);
+    const base = businessName || restriction.property;
+    const snake = camelCaseToSnakeCase(base || 'property');
+    return `${snake}_id`;
+  }
+
+  /**
+   * Derive attribute name from restriction using business name overrides
+   */
+    deriveAttributeName(restriction) {
+    const propLower = String(restriction.property || '').toLowerCase();
+
+    if (propLower === 'identifier' || propLower === 'identifiers') {
+      const base = this.extractLocalName(restriction.fromClass || 'entity');
+      return `${base}_identifiers`;
+    }
+
+    const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);
+    const base = businessName || restriction.property;
+    return camelCaseToSnakeCase(base || 'property');
   }
 }
