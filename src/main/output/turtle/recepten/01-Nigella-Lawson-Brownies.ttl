@@ -72,7 +72,7 @@ step:bakken  rdf:type          riepr:IIOA , pplan:Step , pplan:Entity , prov:Pla
         pplan:hasOutputVar     var:brownies;
         pplan:isPrecededBy     step:mengen;
         pplan:isStepOfPlan     plan:nigella-brownies;
-        sosa:implementedBy     inst:oven-nigella , inst:bakvorm-nigella;
+        sosa:implementedBy     inst:oven-nigella;
         sosa:usedForExecution  exec:bakken .
 
 ent:eieren_001  rdf:type  prov:Entity;
@@ -348,7 +348,8 @@ step:beslag_in_bakvorm
         rdf:type            prov:Entity , riepr:IIOA , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity , prov:Plan;
         rdfs:label          "Vul de bakvorm met beslag"@nl;
         pplan:isPrecededBy  step:voorverwarmen;
-        pplan:isStepOfPlan  step:bakken .
+        pplan:isStepOfPlan  step:bakken;
+        sosa:implementedBy  inst:bakvorm-nigella .
 
 inst:smeltsysteem-nigella
         rdf:type              prov:Agent , sosa:System , prov:Entity;
@@ -416,7 +417,7 @@ inst:bakvorm-nigella  rdf:type  prov:Entity , prov:Agent , sosa:System;
         dct:type              attribuut:bakvorm;
         prov:actedOnBehalfOf  agent:nigella-lawson;
         prov:wasInfluencedBy  agent:nigella-lawson;
-        sosa:implements       step:bakken .
+        sosa:implements       step:beslag_in_bakvorm .
 
 attr:plan-koekjes-maken_0408249136
         rdf:type                     prov:AgentInfluence , prov:Influence , prov:Attribution;
