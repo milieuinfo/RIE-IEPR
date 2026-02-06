@@ -273,6 +273,14 @@
       "@id" : "http://purl.org/dc/terms/creator",
       "@type" : "@id"
     },
+    "inputFor" : {
+      "@id" : "http://www.w3.org/ns/sosa/inputFor",
+      "@type" : "@id"
+    },
+    "outputFor" : {
+      "@id" : "http://www.w3.org/ns/sosa/outputFor",
+      "@type" : "@id"
+    },
     "hasSubSystem" : {
       "@id" : "http://www.w3.org/ns/sosa/hasSubSystem",
       "@type" : "@id"
@@ -7090,7 +7098,733 @@
     "isInputVarOf" : "https://example.org/step/haal_bakvorm_uit_oven_en_laat_afkoelen",
     "isOutputVarOf," : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
     "isVariableOfPlan" : "https://example.org/plan/nigella-brownies",
-    "label" : "Kleur"
+    "label" : "Kleur",
+    "inputFor" : {
+      "uri" : "https://example.org/step/haal_bakvorm_uit_oven_en_laat_afkoelen",
+      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+      "isPrecededBy" : {
+        "uri" : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
+        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+        "isPrecededBy" : {
+          "uri" : "https://example.org/step/bakvorm_in_oven",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/beslag_in_bakvorm",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isPrecededBy" : {
+              "uri" : "https://example.org/step/voorverwarmen",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/step/bakken",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/mengen",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/smelten",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isStepOfPlan" : {
+                      "uri" : "https://example.org/plan/nigella-brownies",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                      "creator" : {
+                        "uri" : "https://example.org/agent/nigella-lawson",
+                        "type" : "http://www.w3.org/ns/prov#Agent",
+                        "label" : "Nigella Lawson",
+                        "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                      },
+                      "source" : "https://www.nigella.com/recipes/brownies",
+                      "en_label" : "Nigella Lawson Brownies"
+                    },
+                    "label" : "Smelt boter en chocolade"
+                  },
+                  "isStepOfPlan" : {
+                    "uri" : "https://example.org/plan/nigella-brownies",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                    "creator" : {
+                      "uri" : "https://example.org/agent/nigella-lawson",
+                      "type" : "http://www.w3.org/ns/prov#Agent",
+                      "label" : "Nigella Lawson",
+                      "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                    },
+                    "source" : "https://www.nigella.com/recipes/brownies",
+                    "en_label" : "Nigella Lawson Brownies"
+                  },
+                  "label" : "Meng alle ingrediënten"
+                },
+                "isStepOfPlan" : {
+                  "uri" : "https://example.org/plan/nigella-brownies",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                  "creator" : {
+                    "uri" : "https://example.org/agent/nigella-lawson",
+                    "type" : "http://www.w3.org/ns/prov#Agent",
+                    "label" : "Nigella Lawson",
+                    "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                  },
+                  "source" : "https://www.nigella.com/recipes/brownies",
+                  "en_label" : "Nigella Lawson Brownies"
+                },
+                "label" : "Bak het beslag"
+              },
+              "label" : "Verwarm de oven tot 180 graden"
+            },
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/step/bakken",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/mengen",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/smelten",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isStepOfPlan" : {
+                    "uri" : "https://example.org/plan/nigella-brownies",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                    "creator" : {
+                      "uri" : "https://example.org/agent/nigella-lawson",
+                      "type" : "http://www.w3.org/ns/prov#Agent",
+                      "label" : "Nigella Lawson",
+                      "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                    },
+                    "source" : "https://www.nigella.com/recipes/brownies",
+                    "en_label" : "Nigella Lawson Brownies"
+                  },
+                  "label" : "Smelt boter en chocolade"
+                },
+                "isStepOfPlan" : {
+                  "uri" : "https://example.org/plan/nigella-brownies",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                  "creator" : {
+                    "uri" : "https://example.org/agent/nigella-lawson",
+                    "type" : "http://www.w3.org/ns/prov#Agent",
+                    "label" : "Nigella Lawson",
+                    "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                  },
+                  "source" : "https://www.nigella.com/recipes/brownies",
+                  "en_label" : "Nigella Lawson Brownies"
+                },
+                "label" : "Meng alle ingrediënten"
+              },
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Bak het beslag"
+            },
+            "label" : "Vul de bakvorm met beslag"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/step/bakken",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isPrecededBy" : {
+              "uri" : "https://example.org/step/mengen",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/smelten",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isStepOfPlan" : {
+                  "uri" : "https://example.org/plan/nigella-brownies",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                  "creator" : {
+                    "uri" : "https://example.org/agent/nigella-lawson",
+                    "type" : "http://www.w3.org/ns/prov#Agent",
+                    "label" : "Nigella Lawson",
+                    "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                  },
+                  "source" : "https://www.nigella.com/recipes/brownies",
+                  "en_label" : "Nigella Lawson Brownies"
+                },
+                "label" : "Smelt boter en chocolade"
+              },
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Meng alle ingrediënten"
+            },
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Bak het beslag"
+          },
+          "label" : "Plaats de bakvorm in de oven"
+        },
+        "isStepOfPlan" : {
+          "uri" : "https://example.org/step/bakken",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/mengen",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isPrecededBy" : {
+              "uri" : "https://example.org/step/smelten",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+                    "uri" : "https://example.org/step/bakvorm_in_oven",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/beslag_in_bakvorm",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isPrecededBy" : {
+                        "uri" : "https://example.org/step/voorverwarmen",
+                        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                        "isStepOfPlan" : "https://example.org/step/bakken",
+                        "label" : "Verwarm de oven tot 180 graden"
+                      },
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Vul de bakvorm met beslag"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Plaats de bakvorm in de oven"
+                  } ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Smelt boter en chocolade"
+            },
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+                  "uri" : "https://example.org/step/bakvorm_in_oven",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/beslag_in_bakvorm",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/voorverwarmen",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Verwarm de oven tot 180 graden"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Vul de bakvorm met beslag"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Plaats de bakvorm in de oven"
+                } ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Meng alle ingrediënten"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/plan/nigella-brownies",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+            "creator" : {
+              "uri" : "https://example.org/agent/nigella-lawson",
+              "type" : "http://www.w3.org/ns/prov#Agent",
+              "label" : "Nigella Lawson",
+              "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+                "uri" : "https://example.org/step/bakvorm_in_oven",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/beslag_in_bakvorm",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/voorverwarmen",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Verwarm de oven tot 180 graden"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Vul de bakvorm met beslag"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Plaats de bakvorm in de oven"
+              } ]
+            },
+            "source" : "https://www.nigella.com/recipes/brownies",
+            "en_label" : "Nigella Lawson Brownies"
+          },
+          "label" : "Bak het beslag"
+        },
+        "label" : "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"
+      },
+      "isStepOfPlan" : {
+        "uri" : "https://example.org/step/bakken",
+        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+        "isPrecededBy" : {
+          "uri" : "https://example.org/step/mengen",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/smelten",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ {
+                  "uri" : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/bakvorm_in_oven",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/beslag_in_bakvorm",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isPrecededBy" : {
+                        "uri" : "https://example.org/step/voorverwarmen",
+                        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                        "isStepOfPlan" : "https://example.org/step/bakken",
+                        "label" : "Verwarm de oven tot 180 graden"
+                      },
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Vul de bakvorm met beslag"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Plaats de bakvorm in de oven"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"
+                }, {
+                  "uri" : "https://example.org/step/bakvorm_in_oven",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/beslag_in_bakvorm",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/voorverwarmen",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Verwarm de oven tot 180 graden"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Vul de bakvorm met beslag"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Plaats de bakvorm in de oven"
+                } ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Smelt boter en chocolade"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/plan/nigella-brownies",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+            "creator" : {
+              "uri" : "https://example.org/agent/nigella-lawson",
+              "type" : "http://www.w3.org/ns/prov#Agent",
+              "label" : "Nigella Lawson",
+              "implements" : [ {
+                "uri" : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/bakvorm_in_oven",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/beslag_in_bakvorm",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/voorverwarmen",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Verwarm de oven tot 180 graden"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Vul de bakvorm met beslag"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Plaats de bakvorm in de oven"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"
+              }, {
+                "uri" : "https://example.org/step/bakvorm_in_oven",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/beslag_in_bakvorm",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/voorverwarmen",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Verwarm de oven tot 180 graden"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Vul de bakvorm met beslag"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Plaats de bakvorm in de oven"
+              } ]
+            },
+            "source" : "https://www.nigella.com/recipes/brownies",
+            "en_label" : "Nigella Lawson Brownies"
+          },
+          "label" : "Meng alle ingrediënten"
+        },
+        "isStepOfPlan" : {
+          "uri" : "https://example.org/plan/nigella-brownies",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+          "creator" : {
+            "uri" : "https://example.org/agent/nigella-lawson",
+            "type" : "http://www.w3.org/ns/prov#Agent",
+            "label" : "Nigella Lawson",
+            "implements" : [ {
+              "uri" : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/bakvorm_in_oven",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/beslag_in_bakvorm",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/voorverwarmen",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Verwarm de oven tot 180 graden"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Vul de bakvorm met beslag"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Plaats de bakvorm in de oven"
+              },
+              "isStepOfPlan" : "https://example.org/step/bakken",
+              "label" : "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"
+            }, {
+              "uri" : "https://example.org/step/bakvorm_in_oven",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/beslag_in_bakvorm",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/voorverwarmen",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Verwarm de oven tot 180 graden"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Vul de bakvorm met beslag"
+              },
+              "isStepOfPlan" : "https://example.org/step/bakken",
+              "label" : "Plaats de bakvorm in de oven"
+            } ]
+          },
+          "source" : "https://www.nigella.com/recipes/brownies",
+          "en_label" : "Nigella Lawson Brownies"
+        },
+        "label" : "Bak het beslag"
+      },
+      "label" : "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"
+    },
+    "outputFor" : {
+      "uri" : "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant",
+      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+      "isPrecededBy" : {
+        "uri" : "https://example.org/step/bakvorm_in_oven",
+        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+        "isPrecededBy" : {
+          "uri" : "https://example.org/step/beslag_in_bakvorm",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/voorverwarmen",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/step/bakken",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/mengen",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/smelten",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isStepOfPlan" : {
+                    "uri" : "https://example.org/plan/nigella-brownies",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                    "creator" : {
+                      "uri" : "https://example.org/agent/nigella-lawson",
+                      "type" : "http://www.w3.org/ns/prov#Agent",
+                      "label" : "Nigella Lawson",
+                      "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                    },
+                    "source" : "https://www.nigella.com/recipes/brownies",
+                    "en_label" : "Nigella Lawson Brownies"
+                  },
+                  "label" : "Smelt boter en chocolade"
+                },
+                "isStepOfPlan" : {
+                  "uri" : "https://example.org/plan/nigella-brownies",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                  "creator" : {
+                    "uri" : "https://example.org/agent/nigella-lawson",
+                    "type" : "http://www.w3.org/ns/prov#Agent",
+                    "label" : "Nigella Lawson",
+                    "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                  },
+                  "source" : "https://www.nigella.com/recipes/brownies",
+                  "en_label" : "Nigella Lawson Brownies"
+                },
+                "label" : "Meng alle ingrediënten"
+              },
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Bak het beslag"
+            },
+            "label" : "Verwarm de oven tot 180 graden"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/step/bakken",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isPrecededBy" : {
+              "uri" : "https://example.org/step/mengen",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/smelten",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isStepOfPlan" : {
+                  "uri" : "https://example.org/plan/nigella-brownies",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                  "creator" : {
+                    "uri" : "https://example.org/agent/nigella-lawson",
+                    "type" : "http://www.w3.org/ns/prov#Agent",
+                    "label" : "Nigella Lawson",
+                    "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                  },
+                  "source" : "https://www.nigella.com/recipes/brownies",
+                  "en_label" : "Nigella Lawson Brownies"
+                },
+                "label" : "Smelt boter en chocolade"
+              },
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Meng alle ingrediënten"
+            },
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Bak het beslag"
+          },
+          "label" : "Vul de bakvorm met beslag"
+        },
+        "isStepOfPlan" : {
+          "uri" : "https://example.org/step/bakken",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/mengen",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isPrecededBy" : {
+              "uri" : "https://example.org/step/smelten",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isStepOfPlan" : {
+                "uri" : "https://example.org/plan/nigella-brownies",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+                "creator" : {
+                  "uri" : "https://example.org/agent/nigella-lawson",
+                  "type" : "http://www.w3.org/ns/prov#Agent",
+                  "label" : "Nigella Lawson",
+                  "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+                },
+                "source" : "https://www.nigella.com/recipes/brownies",
+                "en_label" : "Nigella Lawson Brownies"
+              },
+              "label" : "Smelt boter en chocolade"
+            },
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Meng alle ingrediënten"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/plan/nigella-brownies",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+            "creator" : {
+              "uri" : "https://example.org/agent/nigella-lawson",
+              "type" : "http://www.w3.org/ns/prov#Agent",
+              "label" : "Nigella Lawson",
+              "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", "https://example.org/step/bakvorm_in_oven" ]
+            },
+            "source" : "https://www.nigella.com/recipes/brownies",
+            "en_label" : "Nigella Lawson Brownies"
+          },
+          "label" : "Bak het beslag"
+        },
+        "label" : "Plaats de bakvorm in de oven"
+      },
+      "isStepOfPlan" : {
+        "uri" : "https://example.org/step/bakken",
+        "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+        "isPrecededBy" : {
+          "uri" : "https://example.org/step/mengen",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+          "isPrecededBy" : {
+            "uri" : "https://example.org/step/smelten",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+            "isStepOfPlan" : {
+              "uri" : "https://example.org/plan/nigella-brownies",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+              "creator" : {
+                "uri" : "https://example.org/agent/nigella-lawson",
+                "type" : "http://www.w3.org/ns/prov#Agent",
+                "label" : "Nigella Lawson",
+                "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+                  "uri" : "https://example.org/step/bakvorm_in_oven",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/beslag_in_bakvorm",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isPrecededBy" : {
+                      "uri" : "https://example.org/step/voorverwarmen",
+                      "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                      "isStepOfPlan" : "https://example.org/step/bakken",
+                      "label" : "Verwarm de oven tot 180 graden"
+                    },
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Vul de bakvorm met beslag"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Plaats de bakvorm in de oven"
+                } ]
+              },
+              "source" : "https://www.nigella.com/recipes/brownies",
+              "en_label" : "Nigella Lawson Brownies"
+            },
+            "label" : "Smelt boter en chocolade"
+          },
+          "isStepOfPlan" : {
+            "uri" : "https://example.org/plan/nigella-brownies",
+            "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+            "creator" : {
+              "uri" : "https://example.org/agent/nigella-lawson",
+              "type" : "http://www.w3.org/ns/prov#Agent",
+              "label" : "Nigella Lawson",
+              "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+                "uri" : "https://example.org/step/bakvorm_in_oven",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/beslag_in_bakvorm",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isPrecededBy" : {
+                    "uri" : "https://example.org/step/voorverwarmen",
+                    "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                    "isStepOfPlan" : "https://example.org/step/bakken",
+                    "label" : "Verwarm de oven tot 180 graden"
+                  },
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Vul de bakvorm met beslag"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Plaats de bakvorm in de oven"
+              } ]
+            },
+            "source" : "https://www.nigella.com/recipes/brownies",
+            "en_label" : "Nigella Lawson Brownies"
+          },
+          "label" : "Meng alle ingrediënten"
+        },
+        "isStepOfPlan" : {
+          "uri" : "https://example.org/plan/nigella-brownies",
+          "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan" ],
+          "creator" : {
+            "uri" : "https://example.org/agent/nigella-lawson",
+            "type" : "http://www.w3.org/ns/prov#Agent",
+            "label" : "Nigella Lawson",
+            "implements" : [ "https://example.org/step/laat_bakken_tot_lichtbruine_bovenkant", {
+              "uri" : "https://example.org/step/bakvorm_in_oven",
+              "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+              "isPrecededBy" : {
+                "uri" : "https://example.org/step/beslag_in_bakvorm",
+                "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                "isPrecededBy" : {
+                  "uri" : "https://example.org/step/voorverwarmen",
+                  "type" : [ "http://www.w3.org/ns/sosa/Procedure", "http://purl.org/net/p-plan#Plan", "http://purl.org/net/p-plan#Step" ],
+                  "isStepOfPlan" : "https://example.org/step/bakken",
+                  "label" : "Verwarm de oven tot 180 graden"
+                },
+                "isStepOfPlan" : "https://example.org/step/bakken",
+                "label" : "Vul de bakvorm met beslag"
+              },
+              "isStepOfPlan" : "https://example.org/step/bakken",
+              "label" : "Plaats de bakvorm in de oven"
+            } ]
+          },
+          "source" : "https://www.nigella.com/recipes/brownies",
+          "en_label" : "Nigella Lawson Brownies"
+        },
+        "label" : "Bak het beslag"
+      },
+      "label" : "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"
+    }
   }, {
     "uri" : "https://example.org/variable/suiker",
     "type" : "http://purl.org/net/p-plan#Variable",

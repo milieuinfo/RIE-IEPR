@@ -93,6 +93,7 @@ step:laat_bakken_tot_lichtbruine_bovenkant
         pplan:isPrecededBy     step:bakvorm_in_oven;
         pplan:isStepOfPlan     step:bakken;
         sosa:forProperty       parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
+        sosa:hasOutput         var:kleur;
         sosa:implementedBy     agent:nigella-lawson;
         sosa:isProcedureFor    parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
         sosa:usedForExecution  exec:controleer_wanneer_brownies_klaar_zijn .
@@ -481,14 +482,17 @@ var:kleur  rdf:type             pplan:Variable;
         rdfs:label              "Kleur"@nl;
         pplan:isInputVarOf      step:haal_bakvorm_uit_oven_en_laat_afkoelen;
         pplan:isOutputVarOf     step:laat_bakken_tot_lichtbruine_bovenkant;
-        pplan:isVariableOfPlan  plan:nigella-brownies .
+        pplan:isVariableOfPlan  plan:nigella-brownies;
+        sosa:inputFor           step:haal_bakvorm_uit_oven_en_laat_afkoelen;
+        sosa:outputFor          step:laat_bakken_tot_lichtbruine_bovenkant .
 
 step:haal_bakvorm_uit_oven_en_laat_afkoelen
         rdf:type            riepr:IIOA , prov:Entity , prov:Plan , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity;
         rdfs:label          "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl;
         pplan:hasInputVar   var:kleur;
         pplan:isPrecededBy  step:laat_bakken_tot_lichtbruine_bovenkant;
-        pplan:isStepOfPlan  step:bakken .
+        pplan:isStepOfPlan  step:bakken;
+        sosa:hasInput       var:kleur .
 
 parameter:de_kleur_van_de_bovenzijde_va_de_brownie
         rdf:type            prov:Entity , sosa:Property;

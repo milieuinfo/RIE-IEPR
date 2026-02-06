@@ -204,7 +204,7 @@ apparaat:0400123123_6851234567_0001
         prov:influenced   activiteit:0400123123_6851234567_ACTIVITEIT_1_0004 .
 
 platform:0408249136_6842345678
-        rdf:type                   prov:Entity , sosa:Platform , geo:Feature , geo:SpatialObject;
+        rdf:type                   sosa:Platform , geo:Feature , geo:SpatialObject , prov:Entity;
         rdfs:label                 "Exploitatie 0408249136_6842345678"@nl;
         geo:hasGeometry            [ rdf:type              geo:SpatialObject , geo:Geometry;
                                      geo:asWKT             "SRID=31370;POLYGON((173124.81775523722 174056.37157891318, 173122.6107152328 174057.03737091273, 173119.7700112313 174057.89452291653, 173118.13948323578 174058.38642691448, 173116.05737122893 174052.42297090963, 173115.78722722828 174051.39077891037, 173114.58658722788 174048.02207490802, 173112.16393122822 174041.22457090393, 173118.59772323072 174038.2458189018, 173121.75548323244 174047.4483149089, 173122.26569123566 174048.93477891013, 173122.4377232343 174049.43602690846, 173123.6904592365 174053.08645891026, 173124.81775523722 174056.37157891318))"^^geo:wktLiteral;
@@ -225,7 +225,7 @@ meetpunt:MP_002  rdf:type  riepr:Meetpunt , prov:Entity , sosa:Sensor , geo:Feat
         geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
-        sosa:isProxyFor  [ rdf:type       pplan:Entity , riepr:IIOA , riepr:Proces , dbo:UnitOfWork , prov:Plan , dbo:Project , pplan:Step , prov:Entity , pplan:Plan , owl:Thing;
+        sosa:isProxyFor  [ rdf:type       riepr:Proces , pplan:Entity , pplan:Plan , prov:Entity , pplan:Step , owl:Thing , dbo:Project , dbo:UnitOfWork , riepr:IIOA , prov:Plan;
                            rdfs:label     "Waterzuiveringsproces"@nl;
                            sosa:hasProxy  meetpunt:MP_002
                          ] .
@@ -541,6 +541,11 @@ exploitatielocatie:ACTIVITEIT_001_LOC
         rdfs:label       "Locatie ACTIVITEIT_001"@nl;
         prov:locationOf  activiteit:ACTIVITEIT_001 .
 
+stof:vod_staal  rdf:type     pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+        rdfs:label           "VOD-behandeld staal"@nl;
+        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+
 step:bakken  rdf:type          riepr:IIOA , pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity;
         rdfs:label             "Bak het beslag"@nl;
         pplan:hasInputVar      var:beslag;
@@ -549,11 +554,6 @@ step:bakken  rdf:type          riepr:IIOA , pplan:Step , pplan:Entity , prov:Pla
         pplan:isStepOfPlan     plan:nigella-brownies;
         sosa:implementedBy     inst:oven-nigella , inst:bakvorm-nigella;
         sosa:usedForExecution  exec:bakken .
-
-stof:vod_staal  rdf:type     pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
-        rdfs:label           "VOD-behandeld staal"@nl;
-        pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002;
-        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 activiteit:0400123123_6851234567_ACTIVITEIT_1_0008b
         rdf:type              dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , riepr:Proces , owl:Thing , pplan:Entity;
@@ -652,17 +652,6 @@ activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005
         prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0008 , riepr:apparaatVerwerkingsProces .
 
-activteitstap:emissie
-        rdf:type              prov:Entity , pplan:Step;
-        rdfs:label            "Emissie rookgassenKoekjes"@nl;
-        pplan:hasInputVar     variable:rookgassen;
-        pplan:hasOutputVar    variable:rookgassen2;
-        pplan:isPrecededBy    activteitstap:stap-koekjes-maken_0002;
-        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
-        prov:wasAttributedTo  emissiepunt:TBD;
-        prov:wasDerivedFrom   riepr:uitstootProces;
-        prov:wasInfluencedBy  emissiepunt:TBD , riepr:uitstootProces .
-
 activity:emissie  rdf:type       pplan:Activity , prov:Activity;
         rdfs:label               "Emiteren rookgassen van koekjesoven"@nl;
         pplan:correspondsToStep  activteitstap:emissie;
@@ -673,6 +662,17 @@ activity:emissie  rdf:type       pplan:Activity , prov:Activity;
         prov:used                entity:rookgassen;
         prov:wasAssociatedWith   emissiepunt:TBD;
         prov:wasInfluencedBy     emissiepunt:TBD , entity:rookgassen .
+
+activteitstap:emissie
+        rdf:type              prov:Entity , pplan:Step;
+        rdfs:label            "Emissie rookgassenKoekjes"@nl;
+        pplan:hasInputVar     variable:rookgassen;
+        pplan:hasOutputVar    variable:rookgassen2;
+        pplan:isPrecededBy    activteitstap:stap-koekjes-maken_0002;
+        pplan:isStepOfPlan    <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
+        prov:wasAttributedTo  emissiepunt:TBD;
+        prov:wasDerivedFrom   riepr:uitstootProces;
+        prov:wasInfluencedBy  emissiepunt:TBD , riepr:uitstootProces .
 
 riepr:Actief  rdf:type  skos:Concept .
 
@@ -719,7 +719,7 @@ exec:controleer_wanneer_brownies_klaar_zijn
 
 emissiepunt:TBD  rdf:type     geo:Feature , prov:Agent , geo:SpatialObject , riepr:Emissiepunt;
         rdfs:label            "Emissiepunt koekjesoven"@nl;
-        dct:created           "2020-07-30T10:00:00Z"^^xsd:dateTime , "2017-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:created           "2017-07-30T10:00:00Z"^^xsd:dateTime , "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued            "2020-07-30"^^xsd:date , "2018-07-30"^^xsd:date;
         dct:valid             "2030-12-31"^^xsd:date;
         geo:hasGeometry       [ rdf:type              geo:SpatialObject , geo:Geometry;
@@ -830,6 +830,13 @@ inst:keukenrobot-nigella
         sosa:madeActuation    exec:mengen;
         sosa:madeExecution    exec:mengen .
 
+_:b0    rdf:type              prov:Entity , sosa:Result;
+        rdf:value             6;
+        qudt:unit             unit:TON_Metric;
+        prov:wasGeneratedBy   observation:vracht_co2_rookgassen2;
+        prov:wasInfluencedBy  observation:vracht_co2_rookgassen2;
+        sosa:isResultOf       observation:vracht_co2_rookgassen2 .
+
 exec:tv-opname-brownies
         rdf:type                 prov:Activity , sosa:Deployment;
         rdfs:label               "TV-opname brownies bakken"@nl;
@@ -876,7 +883,9 @@ var:kleur  rdf:type             pplan:Variable;
         rdfs:label              "Kleur"@nl;
         pplan:isInputVarOf      step:haal_bakvorm_uit_oven_en_laat_afkoelen;
         pplan:isOutputVarOf     step:laat_bakken_tot_lichtbruine_bovenkant;
-        pplan:isVariableOfPlan  plan:nigella-brownies .
+        pplan:isVariableOfPlan  plan:nigella-brownies;
+        sosa:inputFor           step:haal_bakvorm_uit_oven_en_laat_afkoelen;
+        sosa:outputFor          step:laat_bakken_tot_lichtbruine_bovenkant .
 
 attr:plan-koekjes-maken_0408249136
         rdf:type                     prov:Influence , prov:AgentInfluence , prov:Attribution;
@@ -885,13 +894,6 @@ attr:plan-koekjes-maken_0408249136
         prov:influencer              agent:nigella-lawson;
         prov:qualifiedAttributionOf  kitchen:nigella-keuken;
         prov:qualifiedInfluenceOf    kitchen:nigella-keuken .
-
-_:b0    rdf:type              prov:Entity , sosa:Result;
-        rdf:value             6;
-        qudt:unit             unit:TON_Metric;
-        prov:wasGeneratedBy   observation:vracht_co2_rookgassen2;
-        prov:wasInfluencedBy  observation:vracht_co2_rookgassen2;
-        sosa:isResultOf       observation:vracht_co2_rookgassen2 .
 
 exec:verhitten  sosa:isMemberOf  exec:brownies-bakken-2024 .
 
@@ -1117,7 +1119,8 @@ step:haal_bakvorm_uit_oven_en_laat_afkoelen
         rdfs:label          "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl;
         pplan:hasInputVar   var:kleur;
         pplan:isPrecededBy  step:laat_bakken_tot_lichtbruine_bovenkant;
-        pplan:isStepOfPlan  step:bakken .
+        pplan:isStepOfPlan  step:bakken;
+        sosa:hasInput       var:kleur .
 
 observation:vracht_co2_rookgassen2
         rdf:type                   sosa:Observation , sosa:Execution , prov:Activity;
@@ -1423,6 +1426,7 @@ step:laat_bakken_tot_lichtbruine_bovenkant
         pplan:isPrecededBy     step:bakvorm_in_oven;
         pplan:isStepOfPlan     step:bakken;
         sosa:forProperty       <https://example.org/concept/parameter/de_kleur_van_de_bovenzijde_va_de_brownie>;
+        sosa:hasOutput         var:kleur;
         sosa:implementedBy     agent:nigella-lawson;
         sosa:isProcedureFor    <https://example.org/concept/parameter/de_kleur_van_de_bovenzijde_va_de_brownie>;
         sosa:usedForExecution  exec:controleer_wanneer_brownies_klaar_zijn .
