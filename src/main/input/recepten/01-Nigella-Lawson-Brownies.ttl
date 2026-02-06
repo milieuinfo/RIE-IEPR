@@ -30,7 +30,7 @@
 # *********************************************
 
 plan:nigella-brownies
-    a p-plan:Plan ;
+    a p-plan:Plan, sosa:Procedure ;
     rdfs:label "Nigella Lawson Brownies"@en ;
     dct:source <https://www.nigella.com/recipes/brownies> ;
     dct:creator agent:nigella-lawson .
@@ -41,64 +41,64 @@ plan:nigella-brownies
 # *********************************************
 
 step:smelten
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Smelt boter en chocolade"@nl ;
     p-plan:isStepOfPlan plan:nigella-brownies  .
 
 step:boter_en_chocolade_in_pan
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Doe de boter en de chocolade in een pan"@nl ;
     p-plan:isStepOfPlan step:smelten .
 
 step:verwarm_pan
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Verwarm de pan op het vuur"@nl ;
     p-plan:isPrecededBy step:boter_en_chocolade_in_pan ;
     p-plan:isStepOfPlan step:smelten .
 
 step:roer_tot_homogeen_vloeibaar_mengsel
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Verwarm de pan op het vuur"@nl ;
     p-plan:isPrecededBy step:verwarm_pan ;
     p-plan:isStepOfPlan step:smelten .
 
 step:mengen
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Meng alle ingrediënten"@nl ;
     p-plan:isPrecededBy step:smelten ;
     p-plan:isStepOfPlan plan:nigella-brownies .
 
 step:bakken
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Bak het beslag"@nl ;
     p-plan:isPrecededBy step:mengen ;
     p-plan:isStepOfPlan plan:nigella-brownies .
 
 step:voorverwarmen
-    a p-plan:Step ;
+    a p-plan:Step , p-plan:Plan, sosa:Procedure;
     rdfs:label "Verwarm de oven tot 180 graden"@nl ;
     p-plan:isStepOfPlan step:bakken .
 
 step:beslag_in_bakvorm
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Vul de bakvorm met beslag"@nl ;
     p-plan:isPrecededBy step:voorverwarmen ;
     p-plan:isStepOfPlan step:bakken .
 
 step:bakvorm_in_oven
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Plaats de bakvorm in de oven"@nl ;
     p-plan:isPrecededBy step:beslag_in_bakvorm ;
     p-plan:isStepOfPlan step:bakken .
 
 step:laat_bakken_tot_lichtbruine_bovenkant
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"@nl ;
     p-plan:isPrecededBy step:bakvorm_in_oven;
     p-plan:isStepOfPlan step:bakken .
 
 step:haal_bakvorm_uit_oven_en_laat_afkoelen
-    a p-plan:Step ;
+    a p-plan:Step, p-plan:Plan, sosa:Procedure ;
     rdfs:label "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl ;
     p-plan:isPrecededBy step:laat_bakken_tot_lichtbruine_bovenkant;
     p-plan:isStepOfPlan step:bakken .
@@ -281,14 +281,14 @@ exec:brownies-bakken-2024
     sosa:hasUltimateFeatureOfInterest <>;
     prov:wasAssociatedWith agent:nigella-lawson ;
     sosa:hasMember
-            exec:vasthouden,
+            exec:als-recipient-functioneren,
             exec:verhitten,
             exec:mengen,
             exec:bakken ;
     sosa:startTime "2024-10-12T15:00:00Z"^^xsd:dateTime ;
     sosa:endTime   "2024-10-12T16:30:00Z"^^xsd:dateTime .
 
-exec:vasthouden  a prov:Activity ;
+exec:als-recipient-functioneren  a prov:Activity ;
     rdfs:label "Het uitoefenen van de functie van recipient."@nl ;
     prov:wasAssociatedWith inst:pan-nigella ;
         .
@@ -296,7 +296,7 @@ exec:smelten a sosa:Actuation ;
     rdfs:label "Verhitten"@nl ;
     p-plan:correspondsToStep step:smelten ;
     sosa:usedProcedure step:smelten ;
-    prov:wasInformedBy exec:vasthouden ;
+    prov:wasInformedBy exec:als-recipient-functioneren ;
     prov:used
         ent:boter_001,
         ent:chocolade_001 ;
