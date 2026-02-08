@@ -58,9 +58,10 @@ step:verwarm_pan
 
 step:roer_tot_homogeen_vloeibaar_mengsel
     a p-plan:Step, p-plan:Plan, sosa:Procedure ;
-    rdfs:label "Verwarm de pan op het vuur"@nl ;
+    rdfs:label "Roer tot homogeen mengsel"@nl ;
     p-plan:isPrecededBy step:verwarm_pan ;
     p-plan:isStepOfPlan step:smelten .
+
 
 step:mengen
     a p-plan:Step, p-plan:Plan, sosa:Procedure ;
@@ -116,7 +117,7 @@ step:haal_bakvorm_uit_oven_en_laat_afkoelen
 # *********************************************
 
 # ---------------------------------------------
-# Ingrediënten (input-variabelen)
+# Variablen als outputvariabelen van stappen die door sensoren geimplementeerd worden
 # ---------------------------------------------
 
 var:kleur
@@ -127,6 +128,10 @@ var:kleur
     sosa:inputFor step:haal_bakvorm_uit_oven_en_laat_afkoelen;
     sosa:outputFor step:laat_bakken_tot_lichtbruine_bovenkant;
     p-plan:isVariableOfPlan plan:nigella-brownies .
+
+# ---------------------------------------------
+# Ingrediënten (input-variabelen)
+# ---------------------------------------------
 
 var:boter
     a p-plan:Variable ;
@@ -173,6 +178,7 @@ var:bloem
 
 # ---------------------------------------------
 # Tussen- en eindproducten (output-variabelen)
+#  Variablen als outputvariabelen vaan stappen die door atuators geimplementeerd worden
 # ---------------------------------------------
 
 var:gesmolten-mengsel
@@ -202,6 +208,7 @@ var:brownies
 # *********************************************
 # 4 Installaties (eenmalig opgesteld voor de tv-opname)
 # *********************************************
+
 
 inst:smeltsysteem-nigella
     a sosa:System ;
