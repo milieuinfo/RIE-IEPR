@@ -108,9 +108,10 @@ release-and-publish:
         else
           echo "Warning: no index.html found in build-artifact or workspace"
         fi
-        git add index.html .nojekyll || true
-        git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
-        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
+        git add index.html .nojekyll
+        git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
+        # Push current HEAD to remote gh-pages (use HEAD:gh-pages to avoid missing local ref)
+        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force
 
 verify-release:
   requirements: *requirements
