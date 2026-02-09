@@ -83,7 +83,29 @@ export const MANY_TO_MANY_PROPERTIES = new Set([
  * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
  */
 export const PROPERTY_TYPE_OVERRIDES = new Map([
-
+  // Map prov:wasAttributedTo -> IAgent and drop trailing Id on property names
+  [
+    `${NAMESPACES.prov}wasAttributedTo`,
+    { interface: 'Agent', type: 'IAgent', dropId: true }
+  ],
+  [
+    `${NAMESPACES.prov}wasDerivedFrom`,
+    { type: 'Procedure' }
+  ],
+  [
+    'wasDerivedFrom',
+    { type: 'Procedure' }
+  ],
+  // Explicitly prefer shared System interface for hasSubSystem relations
+  [
+    `${NAMESPACES.ssn}hasSubSystem`,
+    { interface: 'System', type: 'ISystem', dropId: true }
+  ],
+  [
+    'hasSubSystem',
+    { interface: 'System', type: 'ISystem', dropId: true }
+  ],
+  // Default mapping for prov:wasDerivedFrom is left to generator logic
 ]);
 
 /**
@@ -321,7 +343,8 @@ export function inferMermaidDataType(rangeTypes, attrName) {
     if (lower.includes('datetime') || lower === 'time') return 'datetime';
     if (lower === 'date' || lower.endsWith('date')) return 'date';
     if (lower === 'boolean') return 'boolean';
-    if (lower === 'decimal' || lower === 'float' || lower === 'double') return 'float';
+    if (lower === 'decimal' || lower === 'float') return 'float';
+    if (lower === 'double') return 'double';
     if (lower.includes('int') || lower === 'integer' || lower === 'nonnegativeinteger' || lower === 'positiveinteger') {
       return 'integer';
     }

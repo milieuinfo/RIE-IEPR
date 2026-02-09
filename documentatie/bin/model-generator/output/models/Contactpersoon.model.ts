@@ -13,8 +13,8 @@ export class Contactpersoon {
   @jsonMember(Exploitant, { name: 'memberOf' })
   memberOf!: Exploitant;
 
-  @jsonArrayMember(String, { name: 'label' })
-  benaming!: string[];
+  @jsonMember(String, { name: 'label' })
+  benaming!: string;
 
   @jsonArrayMember(String, { name: 'mbox' })
   mbox?: string[];

@@ -2,14 +2,14 @@
 
 import { Emissiepunt } from './Emissiepunt.model';
 
-import { jsonObject, jsonArrayMember } from 'typedjson';
+import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class Schouw extends Emissiepunt {
-  @jsonArrayMember(String, { name: 'diameter' })
-  diameter!: string[];
+  @jsonMember(Number, { name: 'diameter' })
+  diameter!: number;
 
-  @jsonArrayMember(String, { name: 'height' })
-  hoogte!: string[];
+  @jsonMember(Number, { name: 'height' })
+  hoogte!: number;
 
 }

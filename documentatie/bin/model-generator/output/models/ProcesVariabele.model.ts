@@ -1,14 +1,14 @@
 // Auto-generated models
 
-import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
+import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class ProcesVariabele {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
 
-  @jsonArrayMember(String, { name: 'label' })
-  benaming!: string[];
+  @jsonMember(String, { name: 'label' })
+  benaming!: string;
 
   @jsonMember(String, { name: 'type' })
   type?: string;

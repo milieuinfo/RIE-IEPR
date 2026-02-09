@@ -33,17 +33,25 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const joinTableMap = new Map();
     joinTables.forEach(jt => joinTableMap.set(jt.name, jt));
 
+    // Build a quick lookup for property -> resolved target (used to display FK attributes as interfaces)
+    const relPropertyMap = new Map();
+    Array.from(this.relationships.values()).forEach(rel => {
+      const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      const toResolved = sharedIface || rel.to;
+      relPropertyMap.set(`${rel.from}|${rel.property}`, toResolved);
+    });
+
     // render nodes
     classNames.forEach(className => {
       // interface nodes
       if (className.startsWith('I') && className.length > 1 && className[1] === className[1].toUpperCase()) {
         const matched = Array.from(sharedInterfaceNames.entries()).find(([, iface]) => iface === className);
-        mermaid += this._renderInterfaceNode(className, matched, sharedInterfaceNames);
+        mermaid += this._renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers);
         return;
       }
       // skip join table nodes
       if (joinTableMap.has(className)) return;
-      mermaid += this._renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames);
+      mermaid += this._renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap);
     });
 
     // Add identifier relations as explicit relationships so identifier classes are linked
@@ -133,14 +141,14 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return joinTableMap;
   }
 
-  _renderInterfaceNode(className, matched, sharedInterfaceNames) {
+  _renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers) {
     let mermaid = '';
     const displayName = this.getDisplayName(className);
     mermaid += `    class ${displayName} {\n`;
     mermaid += `        <<interface>>\n`;
     if (matched) {
       const superName = matched[0];
-      const { props } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames);
+      const { props } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames, classToSupers);
       if (props && props.length > 0) {
         props.forEach(p => { mermaid += `        ${p.type} ${p.name}\n`; });
       } else {
@@ -151,7 +159,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return mermaid;
   }
 
-  _renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames) {
+  _renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap = new Map()) {
     let mermaid = '';
     const classInfo = this.ontology.classes.get(className);
     const displayName = this.getDisplayName(className, classInfo);
@@ -185,19 +193,28 @@ export class ClassDiagramGenerator extends ClassGenerator {
         if (propMap && propMap.has(attr.propertyIri) && propMap.get(attr.propertyIri) === false) return null;
       }
       // Normalize property rendering for diagrams using centralized helper
-      const resolved = this.applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames);
+      const resolved = this.applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames, classToSupers);
       if (!resolved) return null;
       const { name, type, isArray, isForeignKey } = resolved;
       return { name, type, isForeignKey, isArray };
     });
 
-    mermaid += `    class ${displayName} {\n`;
+    mermaid += `    class ${displayName} {
+`;
     attributes.filter(Boolean).forEach(attr => {
       const displayAttrName = attr.isForeignKey ? `${attr.name} (FK)` : attr.name;
-      mermaid += `        ${attr.type} ${displayAttrName}\n`;
+      // If there is a known relationship mapping for this class+property, prefer that resolved target
+      const mapped = relPropertyMap.get(`${className}|${attr.name}`) || null;
+      let displayType = attr.type;
+      if (mapped) {
+        displayType = mapped + (attr.isArray ? '[]' : '');
+      }
+      mermaid += `        ${displayType} ${displayAttrName}
+`;
     });
-    mermaid += `    }\n`;
+    mermaid += `    }
+  `;
     return mermaid;
-  }
+    }
 
-}
+  }

@@ -1,5 +1,5 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-09T13:52:58.312Z
+-- Generated: 2026-02-09T14:32:33.674Z
 
 -- PostgreSQL DDL
 
@@ -134,7 +134,7 @@ COMMENT ON COLUMN exploitatie_locatie_identifier.value IS 'http://www.w3.org/199
 CREATE TABLE grondwaterput (
     uri TEXT NOT NULL,
     ontrekkingspunt_id TEXT NULL,
-    depth TEXT NOT NULL,
+    depth DOUBLE PRECISION NOT NULL,
     CONSTRAINT pk_grondwaterput PRIMARY KEY (uri)
 );
 COMMENT ON COLUMN grondwaterput.depth IS 'http://dbpedia.org/ontology/depth';
@@ -298,8 +298,8 @@ COMMENT ON TABLE proces_variabele IS 'https://data.riepr.omgeving.vlaanderen.be/
 CREATE TABLE schouw (
     uri TEXT NOT NULL,
     emissiepunt_id TEXT NULL,
-    diameter TEXT NOT NULL,
-    hoogte TEXT NOT NULL,
+    diameter DOUBLE PRECISION NOT NULL,
+    hoogte DOUBLE PRECISION NOT NULL,
     CONSTRAINT pk_schouw PRIMARY KEY (uri)
 );
 COMMENT ON COLUMN schouw.diameter IS 'http://dbpedia.org/ontology/diameter';

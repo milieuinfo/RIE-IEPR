@@ -122,7 +122,10 @@
         # Een proces kan zijn afgeleid van een (generieke) procedure (optioneel)
         owl:onProperty prov:wasDerivedFrom, dct:type ; 
         owl:someValuesFrom sosa:Procedure ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        # Max 1 omdat een proces slechts van 1 procedure afgeleid kan zijn and zou
+        # deze procedure een verzameling van andere procedures moeten zijn
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een proces mag minstens één inputvariabele hebben (stof)
@@ -385,11 +388,13 @@
     # Een schouw heeft een diameter en hoogte
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty dbo:diameter ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty dbo:height ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Grondwaterput a owl:Class ;
@@ -409,7 +414,8 @@
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een grondwaterput heeft een diepte
         owl:onProperty dbo:depth ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Lozingspunt a owl:Class ;

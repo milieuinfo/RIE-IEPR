@@ -1,6 +1,8 @@
 // Auto-generated models
 
-import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
+import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+
+import { jsonObject, jsonMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
 
@@ -15,11 +17,11 @@ export class Apparaat implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonMember(String, { name: 'atLocation' })
-  locatie!: string;
+  @jsonMember(ExploitatieLocatie, { name: 'atLocation' })
+  locatie!: ExploitatieLocatie;
 
-  @jsonArrayMember(String, { name: 'label' })
-  benaming!: string[];
+  @jsonMember(String, { name: 'label' })
+  benaming!: string;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

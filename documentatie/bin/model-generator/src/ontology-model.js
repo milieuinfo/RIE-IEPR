@@ -78,6 +78,8 @@ export class OntologyModel {
       { path: resolveProjectPath('src/main/resources/generated-shapes.ttl'), kind: 'shapes' },
       // Gecombineerde SSN/SOSA/PROV/P-PLAN/GeoSPARQL/DBO ontologie
       { path: resolveProjectPath('src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl'), kind: 'external' },
+      // Local DBpedia ontology (provide xsd:range info like dbo:diameter -> xsd:double)
+      { path: resolveProjectPath('src/main/resources/org/dbpedia/ontology/dbo.ttl'), kind: 'external' },
       // Volledige GeoSPARQL vocabulaire (incl. hasGeometry, Feature, Geometry)
       { path: resolveProjectPath('src/main/resources/net/opengis/www/ont/geosparql/geosparql_vocab_all.ttl'), kind: 'external' },
       // Business concept alignments (NL aliassen voor predicaten)

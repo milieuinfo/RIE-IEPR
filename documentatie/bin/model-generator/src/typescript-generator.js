@@ -206,7 +206,7 @@ export class TypeScriptGenerator extends ClassGenerator {
     return importLines;
   }
 
-  writeSharedInterfaces(sharedSupers, sharedInterfaceNames, usedSharedInterfaces, outputPath) {
+  writeSharedInterfaces(sharedSupers, sharedInterfaceNames, usedSharedInterfaces, outputPath, classToSupers = new Map()) {
     if (!Array.isArray(sharedSupers) || !sharedInterfaceNames) return;
     const pascal = this.pascalCase.bind(this);
     const camel = this.toCamelCase.bind(this);
@@ -219,7 +219,7 @@ export class TypeScriptGenerator extends ClassGenerator {
       if (superInfo && superInfo.iri && this.ontology.isSubClassOf(superInfo.iri, 'Agent')) {
         extendsAgent = true;
       }
-      const { props, imports: ifaceImports } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames);
+      const { props, imports: ifaceImports } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames, classToSupers);
       let ifaceContent = '';
       let importHeader = '';
       if (extendsAgent) importHeader += `import type { IAgent } from './Agent.interface';\n`;
@@ -229,7 +229,10 @@ export class TypeScriptGenerator extends ClassGenerator {
       if (importHeader) ifaceContent += importHeader + '\n';
       ifaceContent += `export interface ${ifaceName}` + (extendsAgent ? ` extends IAgent` : '') + ` {\n`;
       if (props.length > 0) {
-        props.forEach(p => { ifaceContent += `  ${p.name}?: ${p.type};\n`; });
+        props.forEach(p => {
+          const safeName = String(p.name).replace(/_+$/g, '').replace(/Id$/i, '');
+          ifaceContent += `  ${safeName}?: ${p.type};\n`;
+        });
       } else {
         ifaceContent += `  uri?: string;\n`;
       }
@@ -246,10 +249,6 @@ export class TypeScriptGenerator extends ClassGenerator {
     if (attr.type === 'boolean') return 'boolean';
     return 'string';
   }
-
-  // buildRelationships inherited from ClassGenerator/BaseGenerator
-
-  
 
   generate() {
     // Use BaseGenerator lifecycle to prepare ontology and relationships
@@ -302,8 +301,16 @@ export class TypeScriptGenerator extends ClassGenerator {
     // Determine which shared interfaces are actually used (centralized helper)
     const usedSharedInterfaces = this.computeUsedSharedInterfaces(classNames, classToSupers, sharedInterfaceNames);
 
+    // Build quick lookup for relationships -> resolved target (used for FK typing fallback)
+    const relPropertyMap = new Map();
+    Array.from(this.relationships.values()).forEach(rel => {
+      const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      const toResolved = sharedIface || rel.to;
+      relPropertyMap.set(`${rel.from}|${rel.property}`, toResolved);
+    });
+
     // Emit only those shared interfaces that are actually used
-    this.writeSharedInterfaces(sharedSupers, sharedInterfaceNames, usedSharedInterfaces, this.outputPath);
+    this.writeSharedInterfaces(sharedSupers, sharedInterfaceNames, usedSharedInterfaces, this.outputPath, classToSupers);
     // add shared interface exports to the index will happen via writeIndexFile
 
     // helper: for a list of target classes, return a shared interface name if they share a common super
@@ -383,7 +390,7 @@ export class TypeScriptGenerator extends ClassGenerator {
       // determine whether typedjson array import will be needed
       const needsArray = attrs.some(attr => {
         const resolvedTargets = attr.targetClasses || [];
-        const isArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1) || attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey;
+        const isArray = this.isAttributeMultiValued(attr);
         return isArray;
       });
 
@@ -401,6 +408,8 @@ export class TypeScriptGenerator extends ClassGenerator {
           }
         }
       });
+      // Ensure Proces uses Procedure enum
+      if (className === 'Proces') usedEnumNames.add('Procedure');
       const localEnumFiles = enumFiles.filter(e => usedEnumNames.has(e.name));
 
       // build preamble with typedjson + enum + interface imports (only needed enums)
@@ -454,6 +463,14 @@ export class TypeScriptGenerator extends ClassGenerator {
 
         // determine TypeScript type (non-array base)
         baseType = this.tsTypeForAttribute(attr);
+        // Special-case: for Proces.wasDerivedFrom prefer Procedure enum
+        try {
+          const localProp = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : attr.propertyIri;
+          const propIriStr = attr.propertyIri ? String(attr.propertyIri) : '';
+          if ((propIriStr.endsWith('wasDerivedFrom') || localProp === 'wasDerivedFrom' || safeOfficial === 'type') && className === 'Proces') {
+            baseType = 'Procedure';
+          }
+        } catch (e) { /* ignore */ }
         // If this class implements a shared interface, prefer the shared-interface
         // declaration for properties that are defined on the super (prevent incompatible types)
         if (implementsIface) {
@@ -524,11 +541,51 @@ export class TypeScriptGenerator extends ClassGenerator {
         }
 
         // is array?
-        const isArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1) || attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey;
+        const isArray = this.isAttributeMultiValued(attr);
 
         // Special FK typing for known properties
         if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length >= 1) {
+
           const targets = attr.targetClasses.filter(t => classNames.includes(t));
+
+          // Quick check: if relationships map knows a resolved target for this property, prefer it
+          try {
+            const localPropName = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
+            const relMapped = relPropertyMap.get(`${className}|${localPropName}`) || relPropertyMap.get(`${className}|${attr.name}`);
+            if (relMapped) {
+              if (/^I[A-Z]/.test(relMapped)) {
+                baseType = relMapped + (isArray ? '[]' : '');
+                const ifaceLocal = String(relMapped).replace(/^I/, '');
+                interfaceImports.set(ifaceLocal, relMapped);
+                targets.length = 0;
+              } else {
+                // Try to resolve a shared interface for the concrete target name
+                const sharedIfaceForRel = this.findSharedInterfaceForTargets([relMapped], classToSupers, sharedInterfaceNames);
+                if (sharedIfaceForRel) {
+                  baseType = sharedIfaceForRel + (isArray ? '[]' : '');
+                  const ifaceLocal = String(sharedIfaceForRel).replace(/^I/, '');
+                  interfaceImports.set(ifaceLocal, sharedIfaceForRel);
+                  targets.length = 0;
+                } else {
+                  baseType = pascal(relMapped) + (isArray ? '[]' : '');
+                  modelImports.add(relMapped);
+                  targets.length = 0;
+                }
+              }
+            }
+          } catch (e) { /* ignore */ }
+
+          // If no explicit visible targets, try to infer target from relationship map
+          if ((!targets || targets.length === 0) && attr.propertyIri) {
+            try {
+              const localProp = this.ontology.extractLocalName(attr.propertyIri);
+              const mapped = relPropertyMap.get(`${className}|${localProp}`) || relPropertyMap.get(`${className}|${attr.name}`);
+              if (mapped) {
+                if (/^I[A-Z]/.test(mapped)) targets.push(String(mapped).replace(/^I/, ''));
+                else targets.push(mapped);
+              }
+            } catch (e) { /* ignore */ }
+          }
           const sharedIface = this.findSharedInterfaceForTargets(targets, classToSupers, sharedInterfaceNames);
           if (sharedIface) {
               // Only use shared interface type if the corresponding interface file exists
@@ -576,31 +633,43 @@ export class TypeScriptGenerator extends ClassGenerator {
             const explicitTargets = Array.isArray(attr.targetClasses) ? attr.targetClasses.filter(t => classNames.includes(t)) : [];
             const hasInternalTarget = explicitTargets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && !ti.external; });
             if (anyAgent && !hasInternalTarget) {
-              // determine if this attribute is multi-valued
-              const attrIsArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1) || (attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
-              baseType = attrIsArray ? 'IAgent[]' : 'IAgent';
-              interfaceImports.set('Agent', 'IAgent');
-              const agentIfaceFile = path.join(this.outputPath, 'Agent.interface.ts');
-              if (!fs.existsSync(agentIfaceFile)) {
-                const agentContent = `// Auto-generated minimal Agent interface\n\nexport interface IAgent {\n  uri?: string;\n}\n`;
-                fs.writeFileSync(agentIfaceFile, agentContent, 'utf8');
+              // Only fall back to a generic Agent-like interface when no better baseType exists.
+              if (!baseType || baseType === 'string' || baseType === 'object') {
+                // Try to discover the shared interface name for Agent-like supers
+                let agentIfaceName = null;
+                let agentLocal = 'Agent';
+                try {
+                  const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === 'Agent' || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, 'Agent')));
+                  if (agentEntry) {
+                    agentLocal = agentEntry[0];
+                    agentIfaceName = agentEntry[1];
+                  }
+                } catch (e) { /* ignore */ }
+
+                const attrIsArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1) || (attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
+                if (agentIfaceName) {
+                  baseType = attrIsArray ? `${agentIfaceName}[]` : agentIfaceName;
+                  interfaceImports.set(agentLocal, agentIfaceName);
+                } else {
+                  // fallback minimal interface name (avoid hardcoding 'IAgent' where possible)
+                  const ifaceName = `I${agentLocal}`;
+                  baseType = attrIsArray ? `${ifaceName}[]` : ifaceName;
+                  interfaceImports.set(agentLocal, ifaceName);
+                  const agentIfaceFile = path.join(this.outputPath, `${agentLocal}.interface.ts`);
+                  if (!fs.existsSync(agentIfaceFile)) {
+                    const agentContent = `// Auto-generated minimal ${agentLocal} interface\n\nexport interface ${ifaceName} {\n  uri?: string;\n}\n`;
+                    fs.writeFileSync(agentIfaceFile, agentContent, 'utf8');
+                  }
+                }
               }
             }
           } catch (e) { /* ignore */ }
         }
 
-        // If this class implements a shared interface, ensure FK attributes remain primitive ids
-        // to satisfy the interface contract (use string rather than concrete model types; array suffix is applied later)
-        if (implementsIface && attr.isForeignKey) {
-          // Exception: identifier relationships should remain object-typed so
-          // parent classes can expose identifier objects even when they implement
-          // a shared interface. Skip forcing primitive id for adms:identifier.
-          if (attr.propertyIri === `${NAMESPACES.adms}identifier`) {
-            // keep concrete type determined above (e.g. InstallatieIdentifier)
-          } else {
-            baseType = 'string';
-          }
-        }
+        // Note: do not coerce foreign-key attributes to primitive ids here.
+        // Interfaces emitted by writeSharedInterfaces should declare the
+        // desired contract (e.g. IAgent) and the post-processing step will
+        // align generated classes to those interface declarations.
 
         // Consult configured property overrides (or try to infer) for special types
         const propOverrideCls = Config.PROPERTY_TYPE_OVERRIDES.get(attr.propertyIri);
@@ -625,8 +694,15 @@ export class TypeScriptGenerator extends ClassGenerator {
         else if (baseType === 'number') memberCtor = 'Number';
         else if (baseType === 'boolean') memberCtor = 'Boolean';
         else if (/^[A-Z]/.test(String(baseType)) && !/^I[A-Z]/.test(String(baseType))) {
-          // Use model class constructor for concrete model types (e.g. InstallatieIdentifier)
-          memberCtor = baseType;
+          // Distinguish enums vs concrete model classes: enums should be provided
+          // as a lazy constructor function to typedjson: `() => Enum`.
+          const isEnum = Array.isArray(localEnumFiles) && localEnumFiles.some(e => e.name === String(baseType));
+          if (isEnum) {
+            memberCtor = `() => ${baseType}`;
+          } else {
+            // Use model class constructor for concrete model types (e.g. InstallatieIdentifier)
+            memberCtor = baseType;
+          }
         }
         // If the type is an interface (I...), use Object as the runtime constructor
         // (interfaces are type-only; use Object so typedjson deserializes to plain objects)
@@ -643,11 +719,21 @@ export class TypeScriptGenerator extends ClassGenerator {
 
         // Use correct property name for special FKs
         let propName = camel(officialName);
+        // decide decorator constructor text; prefer lazy enum constructors for enums
+        let decoratorCtor = memberCtor;
+        try {
+          const elemType = String(baseType).replace(/\[\]$/, '');
+          const isEnumElem = Array.isArray(localEnumFiles) && localEnumFiles.some(e => e.name === elemType);
+          if (isEnumElem) {
+            decoratorCtor = `() => ${elemType}`;
+          }
+        } catch (e) { /* ignore */ }
+
         if (isArray) {
-          content += `  @jsonArrayMember(${memberCtor}, { name: '${safeJsonName}' })\n`;
+          content += `  @jsonArrayMember(${decoratorCtor}, { name: '${safeJsonName}' })\n`;
           content += `  ${propName}${classMarker}: ${baseType}[];\n\n`;
         } else {
-          content += `  @jsonMember(${memberCtor}, { name: '${safeJsonName}' })\n`;
+          content += `  @jsonMember(${decoratorCtor}, { name: '${safeJsonName}' })\n`;
           content += `  ${propName}${classMarker}: ${baseType};\n\n`;
         }
       });
@@ -693,7 +779,11 @@ export class TypeScriptGenerator extends ClassGenerator {
                     else if (elem === 'Date') ctor = 'Date';
                     else if (elem === 'number') ctor = 'Number';
                     else if (elem === 'boolean') ctor = 'Boolean';
-                    else if (/^[A-Z]/.test(elem)) ctor = elem;
+                    else if (/^[A-Z]/.test(elem)) {
+                      // prefer lazy enum constructor for enums
+                      const isEnumElem = Array.isArray(localEnumFiles) && localEnumFiles.some(e => e.name === elem);
+                      ctor = isEnumElem ? `() => ${elem}` : elem;
+                    }
                     return `@jsonArrayMember(${ctor}, ${opts})\n  ${prop}`;
                   });
                 } else {
@@ -707,7 +797,10 @@ export class TypeScriptGenerator extends ClassGenerator {
                     else if (elem === 'Date') ctor = 'Date';
                     else if (elem === 'number') ctor = 'Number';
                     else if (elem === 'boolean') ctor = 'Boolean';
-                    else if (/^[A-Z]/.test(elem)) ctor = elem;
+                    else if (/^[A-Z]/.test(elem)) {
+                      const isEnumElem = Array.isArray(localEnumFiles) && localEnumFiles.some(e => e.name === elem);
+                      ctor = isEnumElem ? `() => ${elem}` : elem;
+                    }
                     return `@jsonMember(${ctor}, ${opts})\n  ${prop}`;
                   });
                 }
@@ -734,6 +827,17 @@ export class TypeScriptGenerator extends ClassGenerator {
         }
       });
 
+      // Convert direct enum constructor usage to lazy constructors for typedjson
+      try {
+        if (Array.isArray(enumFiles) && enumFiles.length > 0) {
+          enumFiles.forEach(e => {
+            const en = e.name;
+            const re = new RegExp(`@json(Member|ArrayMember)\\(\\s*${en}\\s*,`, 'g');
+            content = content.replace(re, `@json$1(() => ${en},`);
+          });
+        }
+      } catch (e) { /* ignore */ }
+
       // Remove unused imports from the in-memory content before writing
       try { content = this._cleanupImportsInContent(content); } catch (e) { /* ignore */ }
       // Strip leading blank lines
@@ -742,6 +846,19 @@ export class TypeScriptGenerator extends ClassGenerator {
       const header = `// Auto-generated models` + '\n\n';
       content = header + content;
       fs.writeFileSync(fileName, content, 'utf8');
+      // Post-write: convert any direct enum constructor usages to lazy constructors
+      try {
+        if (Array.isArray(enumFiles) && enumFiles.length > 0) {
+          let written = fs.readFileSync(fileName, 'utf8');
+          enumFiles.forEach(e => {
+            const en = e.name;
+            const re = new RegExp(`@json(Member|ArrayMember)\\(\\s*${en}\\s*,`, 'g');
+            written = written.replace(re, `@json$1(() => ${en},`);
+          });
+          fs.writeFileSync(fileName, written, 'utf8');
+        }
+      } catch (e) { /* ignore */ }
+      
       console.log('Wrote TS model ->', fileName);
       indexLines.push(`export * from './${className}.model';`);
     });

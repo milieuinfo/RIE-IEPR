@@ -69,7 +69,7 @@ erDiagram
     Grondwaterput["grondwaterput"] {
         string uri "URI [PK]"
         string ontrekkingspunt_id "Ontrekkingspunt [FK]"
-        string depth "dbo:depth"
+        double depth "dbo:depth"
     }
     Installatie["installatie"] {
         string uri "URI [PK]"
@@ -167,8 +167,8 @@ erDiagram
     Schouw["schouw"] {
         string uri "URI [PK]"
         string emissiepunt_id "Emissiepunt [FK]"
-        string diameter "dbo:diameter"
-        string hoogte "dbo:height"
+        double diameter "dbo:diameter"
+        double hoogte "dbo:height"
     }
 
     %% Relationships
@@ -194,6 +194,10 @@ erDiagram
     Exploitant many to many Adres : "address"
     ExploitantContactpersoon one to one Exploitant : "memberOf"
     ExploitantContactpersoon many to one Adres : "address"
+    Proces many to many ProcesIdentifier : "identifiers"
+    ExploitatieLocatie many to many ExploitatieLocatieIdentifier : "identifiers"
+    Installatie many to many InstallatieIdentifier : "identifiers"
+    Meetpunt many to many MeetpuntIdentifier : "identifiers"
     Proces one to many ProcesToegewezenAan : "toegewezen aan"
     Installatie one to many ProcesToegewezenAan : ""
     Emissiepunt one to many ProcesToegewezenAan : ""
