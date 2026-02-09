@@ -2068,24 +2068,21 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#Exploitant"><span class="secno">5.4</span> <span class="content">Exploitant</span></a>
       <li><a href="#Contactpersoon"><span class="secno">5.5</span> <span class="content">Exploitant Contactpersoon</span></a>
       <li><a href="#ExploitatieLocatie"><span class="secno">5.6</span> <span class="content">Exploitatie Locatie</span></a>
-      <li><a href="#Installatie"><span class="secno">5.7</span> <span class="content">Installatie</span></a>
-      <li><a href="#MeetProcedure"><span class="secno">5.8</span> <span class="content">Meetprocedure</span></a>
-      <li><a href="#Meetpunt"><span class="secno">5.9</span> <span class="content">Meetpunt</span></a>
-      <li><a href="#Observatie"><span class="secno">5.10</span> <span class="content">Observatie</span></a>
+      <li><a href="#Grondwaterput"><span class="secno">5.7</span> <span class="content">Grondwaterput</span></a>
+      <li><a href="#Installatie"><span class="secno">5.8</span> <span class="content">Installatie</span></a>
+      <li><a href="#MeetProcedure"><span class="secno">5.9</span> <span class="content">Meetprocedure</span></a>
+      <li><a href="#Meetpunt"><span class="secno">5.10</span> <span class="content">Meetpunt</span></a>
+      <li><a href="#Observatie"><span class="secno">5.11</span> <span class="content">Observatie</span></a>
+      <li><a href="#Onttrekkingspunt"><span class="secno">5.12</span> <span class="content">Onttrekkingspunt</span></a>
+      <li><a href="#Proces"><span class="secno">5.13</span> <span class="content">Proces</span></a>
+      <li><a href="#ProcesVariabele"><span class="secno">5.14</span> <span class="content">Proces variabele</span></a>
       <li>
-       <a href="#Ontrekkingspunt"><span class="secno">5.11</span> <span class="content">Ontrekkingspunt</span></a>
+       <a href="#TransportProcedure"><span class="secno">5.15</span> <span class="content">Transport Procedure</span></a>
        <ol class="toc">
-        <li><a href="#Grondwaterput"><span class="secno">5.11.1</span> <span class="content">Grondwaterput</span></a>
+        <li><a href="#EmissieProcedure"><span class="secno">5.15.1</span> <span class="content">Emissie Procedure</span></a>
+        <li><a href="#VerbruiksProcedure"><span class="secno">5.15.2</span> <span class="content">Verbruiks Procedure</span></a>
        </ol>
-      <li><a href="#Proces"><span class="secno">5.12</span> <span class="content">Proces</span></a>
-      <li><a href="#ProcesVariabele"><span class="secno">5.13</span> <span class="content">Proces variabele</span></a>
-      <li>
-       <a href="#TransportProcedure"><span class="secno">5.14</span> <span class="content">Transport Procedure</span></a>
-       <ol class="toc">
-        <li><a href="#EmissieProcedure"><span class="secno">5.14.1</span> <span class="content">Emissie Procedure</span></a>
-        <li><a href="#VerbruiksProcedure"><span class="secno">5.14.2</span> <span class="content">Verbruiks Procedure</span></a>
-       </ol>
-      <li><a href="#VerwerkingsProcedure"><span class="secno">5.15</span> <span class="content">Verwerkings Procedure</span></a>
+      <li><a href="#VerwerkingsProcedure"><span class="secno">5.16</span> <span class="content">Verwerkings Procedure</span></a>
      </ol>
     <li>
      <a href="#concepts"><span class="secno">6</span> <span class="content">Concept instanties</span></a>
@@ -2215,15 +2212,12 @@ Parts of this work may be from another specification document.  If so, those par
     <li><a href="#Exploitant">Exploitant</a>
     <li><a href="#Contactpersoon">Exploitant Contactpersoon</a>
     <li><a href="#ExploitatieLocatie">Exploitatie Locatie</a>
+    <li><a href="#Grondwaterput">Grondwaterput</a>
     <li><a href="#Installatie">Installatie</a>
     <li><a href="#MeetProcedure">Meetprocedure</a>
     <li><a href="#Meetpunt">Meetpunt</a>
     <li><a href="#Observatie">Observatie</a>
-    <li>
-     <a href="#Ontrekkingspunt">Ontrekkingspunt</a>
-     <ul>
-      <li><a href="#Grondwaterput">Grondwaterput</a>
-     </ul>
+    <li><a href="#Onttrekkingspunt">Onttrekkingspunt</a>
     <li><a href="#Proces">Proces</a>
     <li><a href="#ProcesVariabele">Proces variabele</a>
     <li>
@@ -2238,7 +2232,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Apparaat</code></p>
    <p><strong>Definitie:</strong> Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; label: min 1</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; label: min 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Apparaat</c-> <c- p>;</c->
@@ -2251,12 +2245,12 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFwcGFyYWF0WyJBcHBhcmFhdCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuQXBwYXJhYXQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuQXBwYXJhYXQgLS0+fGlzc3VlZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFwcGFyYWF0WyJBcHBhcmFhdCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuQXBwYXJhYXQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuQXBwYXJhYXQgLS0+fGlzc3VlZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnx2YWxpZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
    <h3 class="heading settled" data-level="5.3" id="Emissiepunt"><span class="secno">5.3. </span><span class="content">Emissiepunt</span><a class="self-link" href="#Emissiepunt"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Emissiepunt</code></p>
    <p><strong>Definitie:</strong> Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
@@ -2270,7 +2264,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuRW1pc3NpZXB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkVtaXNzaWVwdW50IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuRW1pc3NpZXB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnx2YWxpZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkVtaXNzaWVwdW50IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
    <h4 class="heading settled" data-level="5.3.1" id="Lozingspunt"><span class="secno">5.3.1. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Lozingspunt</code></p>
    <p><strong>Definitie:</strong> Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd.</p>
@@ -2291,7 +2285,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Schouw</code></p>
    <p><strong>Definitie:</strong> Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
-   <p><strong>Constraints:</strong> diameter: min 1; height: min 1</p>
+   <p><strong>Constraints:</strong> diameter: min 1, max 1; height: min 1, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Schouw</c-> <c- p>;</c->
@@ -2310,21 +2304,21 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1; type: min 1 of n3-87; label: min 1; address: min 0 of Address</p>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-90; label: min 1; address: min 0 of Address</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfODdbIm4zLTg3Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx0eXBlfCBubjNfODcKbkV4cGxvaXRhbnQgLS0+fGFkZHJlc3N8IG5BZGRyZXNz"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTBbIm4zLTkwIl0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185MApuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
    <h3 class="heading settled" data-level="5.5" id="Contactpersoon"><span class="secno">5.5. </span><span class="content">Exploitant Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Contactpersoon</code></p>
    <p><strong>Definitie:</strong> Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
    <p><strong>Subklasse van:</strong> <code>foaf:Person</code></p>
-   <p><strong>Constraints:</strong> memberOf: min 1, max 1 of Exploitant; label: min 1; mbox: min 0; phone: min 0; hasRole: min 1; address: min 0 of Address; created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1; name: min 1</p>
+   <p><strong>Constraints:</strong> memberOf: min 1, max 1 of Exploitant; label: min 1; mbox: min 0; phone: min 0; hasRole: min 1; address: min 0, max 1 of Address; created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; name: min 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkNvbnRhY3RwZXJzb29uWyJFeHBsb2l0YW50IENvbnRhY3RwZXJzb29uIl0KbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuQWRkcmVzc1siQWRkcmVzcyJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5Db250YWN0cGVyc29vbiAtLT58bWVtYmVyT2Z8IG5FeHBsb2l0YW50Cm5Db250YWN0cGVyc29vbiAtLT58YWRkcmVzc3wgbkFkZHJlc3MKbkNvbnRhY3RwZXJzb29uIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkNvbnRhY3RwZXJzb29uIC0tPnxpc3N1ZWR8IG5kYXRl"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkNvbnRhY3RwZXJzb29uWyJFeHBsb2l0YW50IENvbnRhY3RwZXJzb29uIl0KbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuQWRkcmVzc1siQWRkcmVzcyJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5Db250YWN0cGVyc29vbiAtLT58bWVtYmVyT2Z8IG5FeHBsb2l0YW50Cm5Db250YWN0cGVyc29vbiAtLT58YWRkcmVzc3wgbkFkZHJlc3MKbkNvbnRhY3RwZXJzb29uIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkNvbnRhY3RwZXJzb29uIC0tPnxpc3N1ZWR8IG5kYXRlCm5Db250YWN0cGVyc29vbiAtLT58dmFsaWR8IG5kYXRl"></div>
    <h3 class="heading settled" data-level="5.6" id="ExploitatieLocatie"><span class="secno">5.6. </span><span class="content">Exploitatie Locatie</span><a class="self-link" href="#ExploitatieLocatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ExploitatieLocatie</code></p>
    <p><strong>Definitie:</strong> Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Entity</code>, <code>ogc:SpatialObjectCollection</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
@@ -2334,12 +2328,28 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YW50WyJFeHBsb2l0YW50Il0KblNpdGVbIlNpdGUiXQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkV4cGxvaXRhdGllTG9jYXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx3YXNBdHRyaWJ1dGVkVG98IG5FeHBsb2l0YW50Cm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fGhhZFByaW1hcnlTb3VyY2V8IG5TaXRlCm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fHdhc0Rlcml2ZWRGcm9tfCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
-   <h3 class="heading settled" data-level="5.7" id="Installatie"><span class="secno">5.7. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YW50WyJFeHBsb2l0YW50Il0KblNpdGVbIlNpdGUiXQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkV4cGxvaXRhdGllTG9jYXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhdGllTG9jYXRpZSAtLT58d2FzQXR0cmlidXRlZFRvfCBuRXhwbG9pdGFudApuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxoYWRQcmltYXJ5U291cmNlfCBuU2l0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx3YXNEZXJpdmVkRnJvbXwgbkV4cGxvaXRhdGllTG9jYXRpZQ=="></div>
+   <h3 class="heading settled" data-level="5.7" id="Grondwaterput"><span class="secno">5.7. </span><span class="content">Grondwaterput</span><a class="self-link" href="#Grondwaterput"></a></h3>
+   <p><strong>IRI:</strong> <code>riepr:Grondwaterput</code></p>
+   <p><strong>Definitie:</strong> Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:Ontrekkingspunt</code></p>
+   <p><strong>Constraints:</strong> depth: min 1, max 1</p>
+   <p><strong>Voorbeelden:</strong></p>
+<pre class="highlight language-turtle"><c- p>[</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Grondwaterput</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Grondwaterput 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
+  <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
+  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4020 51.2190)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
+  <c- nn>dbo</c-><c- p>:</c-><c- f>depth</c-> <c- s>"15.0"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>float</c->
+<c- p>]</c->
+</pre>
+   <h3 class="heading settled" data-level="5.8" id="Installatie"><span class="secno">5.8. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Installatie</code></p>
    <p><strong>Definitie:</strong> Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObjectCollection</code></p>
-   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of Installatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
@@ -2353,16 +2363,16 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuSW5zdGFsbGF0aWUgLS0+fGhhc1N1YlN5c3RlbXwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuSW5zdGFsbGF0aWUgLS0+fGlzc3VlZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGllCm5JbnN0YWxsYXRpZSAtLT58d2FzRGVyaXZlZEZyb218IG5FeHBsb2l0YXRpZUxvY2F0aWU="></div>
-   <h3 class="heading settled" data-level="5.8" id="MeetProcedure"><span class="secno">5.8. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuSW5zdGFsbGF0aWUgLS0+fGhhc1N1YlN5c3RlbXwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuSW5zdGFsbGF0aWUgLS0+fGlzc3VlZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnx2YWxpZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGllCm5JbnN0YWxsYXRpZSAtLT58d2FzRGVyaXZlZEZyb218IG5JbnN0YWxsYXRpZQ=="></div>
+   <h3 class="heading settled" data-level="5.9" id="MeetProcedure"><span class="secno">5.9. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:MeetProcedure</code></p>
    <p><strong>Definitie:</strong> Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
-   <h3 class="heading settled" data-level="5.9" id="Meetpunt"><span class="secno">5.9. </span><span class="content">Meetpunt</span><a class="self-link" href="#Meetpunt"></a></h3>
+   <h3 class="heading settled" data-level="5.10" id="Meetpunt"><span class="secno">5.10. </span><span class="content">Meetpunt</span><a class="self-link" href="#Meetpunt"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Meetpunt</code></p>
    <p><strong>Definitie:</strong> Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; status: min 1, max 1; identifier: min 0</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1; identifier: min 0</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Meetpunt</c-> <c- p>;</c->
@@ -2375,50 +2385,32 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQ=="></div>
-   <h3 class="heading settled" data-level="5.10" id="Observatie"><span class="secno">5.10. </span><span class="content">Observatie</span><a class="self-link" href="#Observatie"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQ=="></div>
+   <h3 class="heading settled" data-level="5.11" id="Observatie"><span class="secno">5.11. </span><span class="content">Observatie</span><a class="self-link" href="#Observatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Observatie</code></p>
    <p><strong>Definitie:</strong> Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Observation</code></p>
    <p><strong>Constraints:</strong> hasFeatureOfInterest: min 1, max 1 of Meetpunt</p>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9ic2VydmF0aWVbIk9ic2VydmF0aWUiXQpuTWVldHB1bnRbIk1lZXRwdW50Il0Kbk9ic2VydmF0aWUgLS0+fGhhc0ZlYXR1cmVPZkludGVyZXN0fCBuTWVldHB1bnQ="></div>
-   <h3 class="heading settled" data-level="5.11" id="Ontrekkingspunt"><span class="secno">5.11. </span><span class="content">Ontrekkingspunt</span><a class="self-link" href="#Ontrekkingspunt"></a></h3>
-   <p><strong>IRI:</strong> <code>riepr:Ontrekkingspunt</code></p>
+   <h3 class="heading settled" data-level="5.12" id="Onttrekkingspunt"><span class="secno">5.12. </span><span class="content">Onttrekkingspunt</span><a class="self-link" href="#Onttrekkingspunt"></a></h3>
+   <p><strong>IRI:</strong> <code>riepr:Onttrekkingspunt</code></p>
    <p><strong>Definitie:</strong> Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking).</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Ontrekkingspunt</c-> <c- p>;</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Onttrekkingspunt</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Onttrekking 1"</c-><c- o>@</c->nl
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHJla2tpbmdzcHVudFsiT250cmVra2luZ3NwdW50Il0KbmRhdGVbImRhdGUiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5PbnRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnRyZWtraW5nc3B1bnQgLS0+fGF0TG9jYXRpb258IG5FeHBsb2l0YXRpZUxvY2F0aWU="></div>
-   <h4 class="heading settled" data-level="5.11.1" id="Grondwaterput"><span class="secno">5.11.1. </span><span class="content">Grondwaterput</span><a class="self-link" href="#Grondwaterput"></a></h4>
-   <p><strong>IRI:</strong> <code>riepr:Grondwaterput</code></p>
-   <p><strong>Definitie:</strong> Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering.</p>
-   <p><strong>Subklasse van:</strong> <code>riepr:Ontrekkingspunt</code></p>
-   <p><strong>Constraints:</strong> depth: min 1</p>
-   <p><strong>Voorbeelden:</strong></p>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Grondwaterput</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Grondwaterput 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
-  <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
-  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4020 51.2190)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
-  <c- nn>dbo</c-><c- p>:</c-><c- f>depth</c-> <c- s>"15.0"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>float</c->
-<c- p>]</c->
-</pre>
-   <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkdyb25kd2F0ZXJwdXRbIkdyb25kd2F0ZXJwdXQiXQpuT250cmVra2luZ3NwdW50WyJPbnRyZWtraW5nc3B1bnQiXQpuR3JvbmR3YXRlcnB1dCAtLT58c3ViQ2xhc3NPZnwgbk9udHJla2tpbmdzcHVudA=="></div>
-   <h3 class="heading settled" data-level="5.12" id="Proces"><span class="secno">5.12. </span><span class="content">Proces</span><a class="self-link" href="#Proces"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuRXhwbG9pdGF0aWVMb2NhdGllWyJFeHBsb2l0YXRpZSBMb2NhdGllIl0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuT250dHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <h3 class="heading settled" data-level="5.13" id="Proces"><span class="secno">5.13. </span><span class="content">Proces</span><a class="self-link" href="#Proces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Proces</code></p>
    <p><strong>Definitie:</strong> Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.</p>
    <p><strong>Subklasse van:</strong> <code>pplan:Plan</code>, <code>pplan:Step</code>, <code>dbo:Project</code>, <code>ssn:System</code>, <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasAttributedTo: min 0 of Agent; wasDerivedFrom: min 0 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasAttributedTo: min 0 of Agent; wasDerivedFrom: min 0, max 1 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
@@ -2437,8 +2429,8 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5BZ2VudFsiQWdlbnQiXQpuUHJvY2VkdXJlWyJQcm9jZWR1cmUiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KblByb2NlcyAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5Qcm9jZXMgLS0+fGlzc3VlZHwgbmRhdGUKblByb2NlcyAtLT58YXRMb2NhdGlvbnwgbkV4cGxvaXRhdGllTG9jYXRpZQpuUHJvY2VzIC0tPnx3YXNBdHRyaWJ1dGVkVG98IG5BZ2VudApuUHJvY2VzIC0tPnx3YXNEZXJpdmVkRnJvbXwgblByb2NlZHVyZQpuUHJvY2VzIC0tPnxoYXNJbnB1dFZhcnwgblZhcmlhYmxlCm5Qcm9jZXMgLS0+fGhhc091dHB1dFZhcnwgblZhcmlhYmxlCm5Qcm9jZXMgLS0+fGlzU3RlcE9mUGxhbnwgblByb2Nlcw=="></div>
-   <h3 class="heading settled" data-level="5.13" id="ProcesVariabele"><span class="secno">5.13. </span><span class="content">Proces variabele</span><a class="self-link" href="#ProcesVariabele"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5BZ2VudFsiQWdlbnQiXQpuUHJvY2VkdXJlWyJQcm9jZWR1cmUiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KblByb2NlcyAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5Qcm9jZXMgLS0+fGlzc3VlZHwgbmRhdGUKblByb2NlcyAtLT58dmFsaWR8IG5kYXRlCm5Qcm9jZXMgLS0+fGF0TG9jYXRpb258IG5FeHBsb2l0YXRpZUxvY2F0aWUKblByb2NlcyAtLT58d2FzQXR0cmlidXRlZFRvfCBuQWdlbnQKblByb2NlcyAtLT58d2FzRGVyaXZlZEZyb218IG5Qcm9jZWR1cmUKblByb2NlcyAtLT58aGFzSW5wdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxoYXNPdXRwdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxpc1N0ZXBPZlBsYW58IG5Qcm9jZXM="></div>
+   <h3 class="heading settled" data-level="5.14" id="ProcesVariabele"><span class="secno">5.14. </span><span class="content">Proces variabele</span><a class="self-link" href="#ProcesVariabele"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ProcesVariabele</code></p>
    <p><strong>Definitie:</strong> Een proces variabele is een stof die als input of output van een proces dient.</p>
    <p><strong>Subklasse van:</strong> <code>pplan:Variable</code></p>
@@ -2451,23 +2443,23 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Stof"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
-   <h3 class="heading settled" data-level="5.14" id="TransportProcedure"><span class="secno">5.14. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h3>
+   <h3 class="heading settled" data-level="5.15" id="TransportProcedure"><span class="secno">5.15. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:TransportProcedure</code></p>
    <p><strong>Definitie:</strong> Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
-   <h4 class="heading settled" data-level="5.14.1" id="EmissieProcedure"><span class="secno">5.14.1. </span><span class="content">Emissie Procedure</span><a class="self-link" href="#EmissieProcedure"></a></h4>
+   <h4 class="heading settled" data-level="5.15.1" id="EmissieProcedure"><span class="secno">5.15.1. </span><span class="content">Emissie Procedure</span><a class="self-link" href="#EmissieProcedure"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:EmissieProcedure</code></p>
    <p><strong>Definitie:</strong> Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVQcm9jZWR1cmVbIkVtaXNzaWUgUHJvY2VkdXJlIl0KblRyYW5zcG9ydFByb2NlZHVyZVsiVHJhbnNwb3J0IFByb2NlZHVyZSJdCm5FbWlzc2llUHJvY2VkdXJlIC0tPnxzdWJDbGFzc09mfCBuVHJhbnNwb3J0UHJvY2VkdXJl"></div>
-   <h4 class="heading settled" data-level="5.14.2" id="VerbruiksProcedure"><span class="secno">5.14.2. </span><span class="content">Verbruiks Procedure</span><a class="self-link" href="#VerbruiksProcedure"></a></h4>
+   <h4 class="heading settled" data-level="5.15.2" id="VerbruiksProcedure"><span class="secno">5.15.2. </span><span class="content">Verbruiks Procedure</span><a class="self-link" href="#VerbruiksProcedure"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:VerbruiksProcedure</code></p>
    <p><strong>Definitie:</strong> Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:TransportProcedure</code></p>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblZlcmJydWlrc1Byb2NlZHVyZVsiVmVyYnJ1aWtzIFByb2NlZHVyZSJdCm5UcmFuc3BvcnRQcm9jZWR1cmVbIlRyYW5zcG9ydCBQcm9jZWR1cmUiXQpuVmVyYnJ1aWtzUHJvY2VkdXJlIC0tPnxzdWJDbGFzc09mfCBuVHJhbnNwb3J0UHJvY2VkdXJl"></div>
-   <h3 class="heading settled" data-level="5.15" id="VerwerkingsProcedure"><span class="secno">5.15. </span><span class="content">Verwerkings Procedure</span><a class="self-link" href="#VerwerkingsProcedure"></a></h3>
+   <h3 class="heading settled" data-level="5.16" id="VerwerkingsProcedure"><span class="secno">5.16. </span><span class="content">Verwerkings Procedure</span><a class="self-link" href="#VerwerkingsProcedure"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:VerwerkingsProcedure</code></p>
    <p><strong>Definitie:</strong> Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <code>sosa:Procedure</code></p>
