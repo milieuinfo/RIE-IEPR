@@ -87,14 +87,21 @@ release-and-publish:
         git config user.name "Bamboo CI"
         git fetch origin
         git checkout -B gh-pages
-        if [ -d build-artifact ]; then cp -r build-artifact/* .; fi
-        if [ -f index.html ]; then cp -f index.html .; fi
-        git add -A
+        # remove all files except the .git directory so the branch only contains what we want
+        find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + || true
+        # ensure minimal files
+        touch .nojekyll
+        if [ -f build-artifact/index.html ]; then
+          cp -f build-artifact/index.html index.html
+        else
+          echo "Warning: build-artifact/index.html not found; index.html will be missing"
+        fi
+        git add index.html .nojekyll || true
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
   artifacts:
     - name: artifact-release
-      location: build
+      location: build-artifact
       pattern: '**/*.*'
 
 verify-release:
@@ -113,5 +120,5 @@ verify-release:
         git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
   artifacts:
     - name: artifact-verify
-      location: build
+      location: build-artifact
       pattern: '**/*.*'
