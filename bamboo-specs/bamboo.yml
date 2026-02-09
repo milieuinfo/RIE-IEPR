@@ -108,8 +108,8 @@ verify-release:
     - script: |
         #!/bin/bash
         set -e
-        export GITHUB_REPO=${bamboo.github_repo}
-        if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set"; exit 1; fi
+        GITHUB_REPO='milieuinfo/RIE-IEPR'
+        export GITHUB_REPO
         git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
   artifacts:
     - name: artifact-verify
