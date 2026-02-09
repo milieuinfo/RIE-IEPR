@@ -53,16 +53,16 @@
 @prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-stof:koekjes  rdf:type       pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:koekjes  rdf:type       pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Koekjes"@nl;
         pplan:isOutputVarOf  proces:89031055579_6839805367_ACTIVITEIT_1 .
 
-stof:deeg  rdf:type          pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:deeg  rdf:type          pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Deeg"@nl;
         pplan:isOutputVarOf  proces:89031055579_6839805367_ACTIVITEIT_1_0001 .
 
 proces:89031055579_6839805367_ACTIVITEIT_1_0001
-        rdf:type            pplan:Step , riepr:Proces , owl:Thing , pplan:Plan , riepr:IIOA , dbo:UnitOfWork , prov:Entity , prov:Plan , dbo:Project , pplan:Entity;
+        rdf:type            pplan:Step , riepr:Proces , owl:Thing , pplan:Plan , prov:Agent , ssn:System , riepr:IIOA , dbo:UnitOfWork , prov:Entity , prov:Plan , dbo:Project , pplan:Entity;
         rdfs:label          "Koekjesdeeg maken"@nl;
         pplan:hasInputVar   stof:meel;
         pplan:hasOutputVar  stof:deeg;
@@ -78,7 +78,7 @@ riepr:uitstootProces  rdf:type  prov:Entity;
         prov:hadDerivation  proces:89031055579_6839805367_ACTIVITEIT_1_0002;
         prov:influenced     proces:89031055579_6839805367_ACTIVITEIT_1_0002 .
 
-emissiepunt:TBD  rdf:type  geo:SpatialObject , riepr:Emissiepunt;
+emissiepunt:TBD  rdf:type  prov:Agent , ssn:System , geo:SpatialObject , riepr:Emissiepunt;
         rdfs:label       "Emissiepunt koekjesoven"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
@@ -88,7 +88,7 @@ emissiepunt:TBD  rdf:type  geo:SpatialObject , riepr:Emissiepunt;
         prov:influenced  proces:89031055579_6839805367_ACTIVITEIT_1_0002 .
 
 proces:89031055579_6839805367_ACTIVITEIT_1_0002
-        rdf:type              riepr:IIOA , dbo:UnitOfWork , prov:Plan , dbo:Project , pplan:Step , riepr:Proces , pplan:Plan , prov:Entity , pplan:Entity , owl:Thing;
+        rdf:type              riepr:IIOA , prov:Agent , ssn:System , dbo:UnitOfWork , prov:Plan , dbo:Project , pplan:Step , riepr:Proces , pplan:Plan , prov:Entity , pplan:Entity , owl:Thing;
         rdfs:label            "Koekjes bakken"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -97,12 +97,12 @@ proces:89031055579_6839805367_ACTIVITEIT_1_0002
         prov:wasDerivedFrom   riepr:uitstootProces;
         prov:wasInfluencedBy  emissiepunt:TBD , riepr:uitstootProces .
 
-stof:meel  rdf:type         pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:meel  rdf:type         pplan:Variable , riepr:ProcesVariabele;
         rdfs:label          "Meel"@nl;
         pplan:isInputVarOf  proces:89031055579_6839805367_ACTIVITEIT_1 , proces:89031055579_6839805367_ACTIVITEIT_1_0001 .
 
 proces:89031055579_6839805367_ACTIVITEIT_1
-        rdf:type            prov:Entity , pplan:Plan , owl:Thing , riepr:Proces , riepr:IIOA , pplan:Entity , dbo:Project , pplan:Step , dbo:UnitOfWork , prov:Plan;
+        rdf:type            prov:Entity , pplan:Plan , owl:Thing , riepr:Proces , riepr:IIOA , pplan:Entity , dbo:Project , prov:Agent , pplan:Step , ssn:System , dbo:UnitOfWork , prov:Plan;
         rdfs:label          "Koekjes maken"@nl;
         dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued          "2020-07-30"^^xsd:date;
@@ -112,7 +112,7 @@ proces:89031055579_6839805367_ACTIVITEIT_1
         adms:status         riepr:Actief;
         prov:atLocation     exploitatielocatie:0408249136_6842345678 .
 
-stof:rookgas  rdf:type       dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+stof:rookgas  rdf:type       pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Rookgas"@nl;
         pplan:isInputVarOf   proces:89031055579_6839805367_ACTIVITEIT_1_0002;
         pplan:isOutputVarOf  proces:89031055579_6839805367_ACTIVITEIT_1_0002 .

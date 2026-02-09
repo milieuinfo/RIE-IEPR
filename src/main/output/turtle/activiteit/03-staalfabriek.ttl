@@ -59,7 +59,7 @@
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
 emissiepunt:0400123123_6851234567_0000003
-        rdf:type         riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
+        rdf:type         ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
         rdfs:comment     "Afzuiging en ontstoffing van de stroomboogoven"@nl;
         rdfs:label       "Schouw 3"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
@@ -74,14 +74,14 @@ emissiepunt:0400123123_6851234567_0000003
         prov:influenced  proces:0400123123_6851234567_ACTIVITEIT_1_0008 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0001
-        rdf:type            prov:Entity , pplan:Plan , riepr:IIOA , owl:Thing , pplan:Step , riepr:Proces , prov:Plan , dbo:Project , pplan:Entity , dbo:UnitOfWork;
+        rdf:type            prov:Entity , pplan:Plan , riepr:IIOA , prov:Agent , owl:Thing , pplan:Step , riepr:Proces , ssn:System , prov:Plan , dbo:Project , pplan:Entity , dbo:UnitOfWork;
         rdfs:label          "Toevoeging van grondstoffen"@nl;
         pplan:hasInputVar   stof:ijzererts;
         pplan:hasOutputVar  stof:rookgas , stof:grondstoffen_mix;
         pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
 
 installatie:0400123123_6851234567_0000003
-        rdf:type         riepr:Installatie , ssn:System , geo:SpatialObjectCollection;
+        rdf:type         riepr:Installatie , prov:Agent , ssn:System , geo:SpatialObjectCollection;
         rdfs:label       "VOD-installatie"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0008 , emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0005 , apparaat:0400123123_6851234567_0007;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -91,7 +91,7 @@ installatie:0400123123_6851234567_0000003
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0007
-        rdf:type              riepr:Proces , dbo:Project , pplan:Step , prov:Plan , riepr:IIOA , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , pplan:Entity;
+        rdf:type              riepr:Proces , dbo:Project , pplan:Step , prov:Plan , riepr:IIOA , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , ssn:System , pplan:Entity , prov:Agent;
         pplan:hasInputVar     stof:vloeibaar_staal;
         pplan:hasOutputVar    stof:geraffineerd_staal;
         pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0006;
@@ -111,12 +111,12 @@ apparaat:0400123123_6851234567_0005
         prov:contributed  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002;
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
-stof:staalplaat  rdf:type    pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:staalplaat  rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Staalplaat"@nl;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_006
-        rdf:type              pplan:Step , dbo:Project , riepr:IIOA , riepr:Proces , pplan:Plan , prov:Entity , owl:Thing , prov:Plan , pplan:Entity , dbo:UnitOfWork;
+        rdf:type              pplan:Step , dbo:Project , riepr:IIOA , ssn:System , riepr:Proces , pplan:Plan , prov:Entity , owl:Thing , prov:Agent , prov:Plan , pplan:Entity , dbo:UnitOfWork;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -126,7 +126,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_006
         prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004 , riepr:uitstootProces .
 
 emissiepunt:0400123123_6851234567_0000004
-        rdf:type         riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
+        rdf:type         ssn:System , riepr:Emissiepunt , geo:SpatialObject , geo:Feature , prov:Agent;
         rdfs:label       "Schoorsteen Ketels"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued       "2020-07-30"^^xsd:date;
@@ -140,7 +140,7 @@ emissiepunt:0400123123_6851234567_0000004
         prov:influenced  proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0002
-        rdf:type              riepr:Proces , prov:Plan , dbo:Project , dbo:UnitOfWork , owl:Thing , pplan:Plan , riepr:IIOA , pplan:Entity , prov:Entity , pplan:Step;
+        rdf:type              riepr:Proces , prov:Agent , prov:Plan , dbo:Project , dbo:UnitOfWork , owl:Thing , ssn:System , pplan:Plan , riepr:IIOA , pplan:Entity , prov:Entity , pplan:Step;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -150,7 +150,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0002
         prov:wasInfluencedBy  riepr:uitstootProces , emissiepunt:0400123123_6851234567_0000001 .
 
 installatie:0400123123_6851234567_0000004
-        rdf:type         geo:SpatialObjectCollection , riepr:Installatie , ssn:System;
+        rdf:type         geo:SpatialObjectCollection , prov:Agent , riepr:Installatie , ssn:System;
         rdfs:label       "AOD-installatie"@nl;
         rdfs:member      emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0004;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -165,7 +165,7 @@ riepr:overbrengingsProces
         prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0003 , proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_001
-        rdf:type              owl:Thing , pplan:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , prov:Entity , riepr:Proces , dbo:UnitOfWork;
+        rdf:type              owl:Thing , pplan:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , prov:Agent , prov:Entity , riepr:Proces , ssn:System , dbo:UnitOfWork;
         pplan:hasInputVar     stof:geraffineerd_staal;
         pplan:hasOutputVar    stof:vod_staal;
         pplan:isStepOfPlan    proces:0400123123_6851234567_ACTIVITEIT_1_0009;
@@ -177,13 +177,8 @@ riepr:uitstootProces  rdf:type  prov:Entity;
         prov:hadDerivation  proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003;
         prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 .
 
-riepr:apparaatVerwerkingsProces
-        rdf:type            prov:Entity;
-        prov:hadDerivation  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 , proces:0400123123_6851234567_ACTIVITEIT_1_0007 , proces:0400123123_6851234567_ACTIVITEIT_1_0004;
-        prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 , proces:0400123123_6851234567_ACTIVITEIT_1_0007 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
-
 proces:0400123123_6851234567_ACTIVITEIT_1_0008
-        rdf:type              owl:Thing , dbo:Project , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity , dbo:UnitOfWork , pplan:Plan , pplan:Entity;
+        rdf:type              owl:Thing , dbo:Project , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity , dbo:UnitOfWork , ssn:System , pplan:Plan , pplan:Entity , prov:Agent;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -191,6 +186,11 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0008
         pplan:isStepOfPlan    proces:0400123123_6851234567_ACTIVITEIT_1;
         prov:wasDerivedFrom   riepr:uitstootProces;
         prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000003 , riepr:uitstootProces .
+
+riepr:apparaatVerwerkingsProces
+        rdf:type            prov:Entity;
+        prov:hadDerivation  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 , proces:0400123123_6851234567_ACTIVITEIT_1_0007 , proces:0400123123_6851234567_ACTIVITEIT_1_0004;
+        prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 , proces:0400123123_6851234567_ACTIVITEIT_1_0007 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
 
 apparaat:0400123123_6851234567_0006
         rdf:type         geo:SpatialObject , prov:Agent , ssn:System , riepr:Apparaat;
@@ -202,7 +202,7 @@ apparaat:0400123123_6851234567_0006
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0010
-        rdf:type              owl:Thing , prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , dbo:UnitOfWork , prov:Plan , dbo:Project , riepr:IIOA , pplan:Plan;
+        rdf:type              prov:Agent , owl:Thing , prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , ssn:System , dbo:UnitOfWork , prov:Plan , dbo:Project , riepr:IIOA , pplan:Plan;
         rdfs:label            "Overbrenging naar gietinstallatie"@nl;
         pplan:hasInputVar     stof:gedec_staal;
         pplan:hasOutputVar    stof:gedec_staal;
@@ -212,22 +212,22 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0010
         prov:wasInfluencedBy  riepr:overbrengingsProces .
 
 stof:grondstoffen_mix
-        rdf:type             dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdf:type             pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Grondstoffenmengsel"@nl;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
 
-stof:gezuiverd_staal  rdf:type  pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:gezuiverd_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Gezuiverd staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
-stof:schroot  rdf:type       pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:schroot  rdf:type       pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Schroot"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0003;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0003 .
 
 emissiepunt:0400123123_6851234567_0000005
-        rdf:type         riepr:Emissiepunt , geo:SpatialObject;
+        rdf:type         riepr:Emissiepunt , prov:Agent , ssn:System , geo:SpatialObject;
         rdfs:comment     "Onstoffing van gieterij"@nl;
         rdfs:label       "Schouw 5"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
@@ -238,7 +238,7 @@ emissiepunt:0400123123_6851234567_0000005
         prov:influenced  proces:0400123123_6851234567_ACTIVITEIT_1_0012 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0003
-        rdf:type              prov:Plan , prov:Entity , owl:Thing , riepr:Proces , pplan:Entity , dbo:UnitOfWork , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan;
+        rdf:type              prov:Plan , prov:Entity , owl:Thing , riepr:Proces , ssn:System , prov:Agent , pplan:Entity , dbo:UnitOfWork , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan;
         rdfs:label            "Schroot"@nl;
         pplan:hasInputVar     stof:schroot;
         pplan:hasOutputVar    stof:schroot;
@@ -247,7 +247,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0003
         prov:wasDerivedFrom   riepr:overbrengingsProces;
         prov:wasInfluencedBy  riepr:overbrengingsProces .
 
-stof:rookgas  rdf:type       pplan:Variable , riepr:Stof , dbo:ChemicalSubstance;
+stof:rookgas  rdf:type       pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Rookgas"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 , proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 .
@@ -264,7 +264,7 @@ apparaat:0400123123_6851234567_0001
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0004 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_002
-        rdf:type              dbo:UnitOfWork , prov:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , owl:Thing , riepr:Proces , pplan:Entity;
+        rdf:type              dbo:UnitOfWork , prov:Agent , prov:Entity , ssn:System , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , owl:Thing , riepr:Proces , pplan:Entity;
         pplan:hasInputVar     stof:vod_staal;
         pplan:hasOutputVar    stof:gezuiverd_staal;
         pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
@@ -274,7 +274,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_002
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0005 , riepr:apparaatVerwerkingsProces .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009
-        rdf:type            dbo:Project , pplan:Entity , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity;
+        rdf:type            dbo:Project , pplan:Entity , prov:Agent , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , ssn:System;
         rdfs:label          "Decarburisatie"@nl;
         pplan:hasInputVar   stof:geraffineerd_staal;
         pplan:hasOutputVar  stof:gedec_staal;
@@ -293,7 +293,7 @@ apparaat:0400123123_6851234567_0007
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0011
-        rdf:type              owl:Thing , prov:Entity , pplan:Entity , pplan:Plan , pplan:Step , riepr:Proces , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
+        rdf:type              owl:Thing , prov:Entity , pplan:Entity , pplan:Plan , ssn:System , pplan:Step , riepr:Proces , prov:Agent , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
         pplan:hasInputVar     stof:gedec_staal;
         pplan:hasOutputVar    stof:staalplaat;
         pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0010;
@@ -303,7 +303,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0011
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0002 , riepr:apparaatVerwerkingsProces .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0004
-        rdf:type              dbo:UnitOfWork , owl:Thing , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan , prov:Plan , pplan:Entity , riepr:Proces , prov:Entity;
+        rdf:type              dbo:UnitOfWork , owl:Thing , pplan:Step , riepr:IIOA , ssn:System , prov:Agent , dbo:Project , pplan:Plan , prov:Plan , pplan:Entity , riepr:Proces , prov:Entity;
         pplan:hasInputVar     stof:schroot;
         pplan:hasOutputVar    stof:vloeibaar_staal;
         pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0003;
@@ -323,13 +323,13 @@ apparaat:0400123123_6851234567_0002
         prov:contributed  proces:0400123123_6851234567_ACTIVITEIT_1_0011;
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0011 .
 
-stof:gedec_staal  rdf:type   pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:gedec_staal  rdf:type   pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Gedecarburiseerd staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0010;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009 , proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_003
-        rdf:type              prov:Plan , riepr:IIOA , owl:Thing , pplan:Entity , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , dbo:Project , dbo:UnitOfWork;
+        rdf:type              prov:Plan , riepr:IIOA , owl:Thing , pplan:Entity , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , dbo:Project , prov:Agent , ssn:System , dbo:UnitOfWork;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -338,7 +338,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_003
         prov:wasDerivedFrom   riepr:uitstootProces;
         prov:wasInfluencedBy  emissiepunt:0400123123_6851234567_0000004 , riepr:uitstootProces .
 
-stof:ijzererts  rdf:type    pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:ijzererts  rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label          "IJzererts"@nl;
         pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
 
@@ -354,7 +354,7 @@ apparaat:0400123123_6851234567_0008
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0012
-        rdf:type              pplan:Plan , prov:Entity , owl:Thing , pplan:Entity , pplan:Step , riepr:Proces , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
+        rdf:type              pplan:Plan , prov:Agent , prov:Entity , owl:Thing , pplan:Entity , pplan:Step , riepr:Proces , ssn:System , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -366,7 +366,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0012
 riepr:Actief  rdf:type  skos:Concept .
 
 emissiepunt:0400123123_6851234567_0000001
-        rdf:type         riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
+        rdf:type         ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
         rdfs:comment     "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
         rdfs:label       "Schouw 1"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
@@ -381,7 +381,7 @@ emissiepunt:0400123123_6851234567_0000001
         prov:influenced  proces:0400123123_6851234567_ACTIVITEIT_1_0002 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1
-        rdf:type            riepr:IIOA , prov:Entity , riepr:Proces , pplan:Entity , dbo:Project , dbo:UnitOfWork , pplan:Plan , owl:Thing , prov:Plan , pplan:Step;
+        rdf:type            riepr:IIOA , prov:Entity , ssn:System , riepr:Proces , prov:Agent , pplan:Entity , dbo:Project , dbo:UnitOfWork , pplan:Plan , prov:Plan , owl:Thing , pplan:Step;
         rdfs:label          "Staalproductieproces"@nl;
         dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued          "2020-07-30"^^xsd:date;
@@ -392,7 +392,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1
         prov:atLocation     exploitatielocatie:0400123123_6851234567 .
 
 installatie:0400123123_6851234567_0000001
-        rdf:type         riepr:Installatie , geo:SpatialObjectCollection , ssn:System;
+        rdf:type         riepr:Installatie , geo:SpatialObjectCollection , ssn:System , prov:Agent;
         rdfs:label       "Stroomboogoven"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000001;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -401,13 +401,13 @@ installatie:0400123123_6851234567_0000001
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
-stof:vod_staal  rdf:type     dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+stof:vod_staal  rdf:type     pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "VOD-behandeld staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_002;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0005
-        rdf:type              pplan:Step , prov:Entity , pplan:Plan , dbo:Project , riepr:Proces , owl:Thing , pplan:Entity , dbo:UnitOfWork , riepr:IIOA , prov:Plan;
+        rdf:type              pplan:Step , prov:Entity , pplan:Plan , dbo:Project , riepr:Proces , owl:Thing , prov:Agent , ssn:System , pplan:Entity , dbo:UnitOfWork , riepr:IIOA , prov:Plan;
         rdfs:label            "Afgassing"@nl;
         pplan:hasInputVar     stof:rookgas;
         pplan:hasOutputVar    stof:rookgas;
@@ -428,7 +428,7 @@ apparaat:0400123123_6851234567_0003
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_004
-        rdf:type              owl:Thing , pplan:Entity , dbo:UnitOfWork , prov:Entity , prov:Plan , riepr:IIOA , pplan:Step , pplan:Plan , riepr:Proces , dbo:Project;
+        rdf:type              owl:Thing , pplan:Entity , dbo:UnitOfWork , prov:Entity , prov:Agent , prov:Plan , riepr:IIOA , ssn:System , pplan:Step , pplan:Plan , riepr:Proces , dbo:Project;
         pplan:hasInputVar     stof:gezuiverd_staal;
         pplan:hasOutputVar    stof:afgewerkt_staal;
         pplan:isStepOfPlan    proces:0400123123_6851234567_ACTIVITEIT_1_0009;
@@ -437,7 +437,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_004
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0007 , riepr:apparaatVerwerkingsProces .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0008b
-        rdf:type              dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , riepr:Proces , owl:Thing , pplan:Entity;
+        rdf:type              dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Agent , prov:Plan , riepr:Proces , owl:Thing , ssn:System , pplan:Entity;
         rdfs:label            "Overbrenging naar decarburisatie"@nl;
         pplan:hasInputVar     stof:geraffineerd_staal;
         pplan:hasOutputVar    stof:geraffineerd_staal;
@@ -447,7 +447,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0008b
         prov:wasInfluencedBy  riepr:overbrengingsProces .
 
 emissiepunt:0400123123_6851234567_0000002
-        rdf:type         geo:Feature , riepr:Emissiepunt , geo:SpatialObject;
+        rdf:type         geo:Feature , ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject;
         rdfs:comment     "Afzuiging en ontstoffing van de oven"@nl;
         rdfs:label       "Schouw 2"@nl;
         dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
@@ -468,7 +468,7 @@ exploitant:0400123123
         prov:locationOf  exploitatielocatie:0400123123_6851234567 .
 
 installatie:0400123123_6851234567_0000002
-        rdf:type         geo:SpatialObjectCollection , riepr:Installatie , ssn:System;
+        rdf:type         geo:SpatialObjectCollection , prov:Agent , riepr:Installatie , ssn:System;
         rdfs:label       "Gieterij"@nl;
         rdfs:member      apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000005;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
@@ -478,13 +478,13 @@ installatie:0400123123_6851234567_0000002
         prov:atLocation  exploitatielocatie:0400123123_6851234567 .
 
 stof:geraffineerd_staal
-        rdf:type             dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+        rdf:type             pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Geraffineerd staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0009 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0006
-        rdf:type              dbo:UnitOfWork , owl:Thing , riepr:IIOA , prov:Plan , pplan:Step , pplan:Plan , dbo:Project , pplan:Entity , riepr:Proces , prov:Entity;
+        rdf:type              dbo:UnitOfWork , owl:Thing , riepr:IIOA , prov:Plan , pplan:Step , prov:Agent , ssn:System , pplan:Plan , dbo:Project , pplan:Entity , riepr:Proces , prov:Entity;
         rdfs:label            "Overbrenging vloeibaar staal"@nl;
         pplan:hasInputVar     stof:vloeibaar_staal;
         pplan:hasOutputVar    stof:vloeibaar_staal;
@@ -504,13 +504,13 @@ apparaat:0400123123_6851234567_0004
         prov:contributed  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
         prov:influenced   proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
-stof:afgewerkt_staal  rdf:type  pplan:Variable , dbo:ChemicalSubstance , riepr:Stof;
+stof:afgewerkt_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Afgewerkt staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_005;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_005
-        rdf:type              pplan:Entity , riepr:Proces , pplan:Plan , prov:Plan , dbo:UnitOfWork , pplan:Step , dbo:Project , prov:Entity , owl:Thing , riepr:IIOA;
+        rdf:type              pplan:Entity , riepr:Proces , pplan:Plan , prov:Plan , ssn:System , dbo:UnitOfWork , pplan:Step , dbo:Project , prov:Entity , owl:Thing , riepr:IIOA , prov:Agent;
         pplan:hasInputVar     stof:afgewerkt_staal;
         pplan:hasOutputVar    stof:gedec_staal;
         pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
@@ -519,7 +519,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_005
         prov:wasDerivedFrom   riepr:apparaatVerwerkingsProces;
         prov:wasInfluencedBy  apparaat:0400123123_6851234567_0008 , riepr:apparaatVerwerkingsProces .
 
-stof:vloeibaar_staal  rdf:type  dbo:ChemicalSubstance , pplan:Variable , riepr:Stof;
+stof:vloeibaar_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Vloeibaar staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0007;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 .

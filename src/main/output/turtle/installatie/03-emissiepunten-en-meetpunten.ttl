@@ -54,7 +54,7 @@
 @prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
-meetpunt:MP_001  rdf:type  riepr:Meetpunt , sosa:Sensor , sosa:System , prov:Entity , geo:SpatialObject , prov:Agent , geo:Feature;
+meetpunt:MP_001  rdf:type  riepr:Meetpunt , geo:SpatialObject , prov:Agent , ssn:System , geo:Feature;
         rdfs:label       "Meetpunt Luchtkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
@@ -67,7 +67,7 @@ meetpunt:MP_001  rdf:type  riepr:Meetpunt , sosa:Sensor , sosa:System , prov:Ent
 riepr:Actief  rdf:type  skos:Concept .
 
 installatie:GPBV_12345
-        rdf:type         ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
+        rdf:type         prov:Agent , ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
         rdfs:label       "Fictief NV"@nl;
         rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
         rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
@@ -92,7 +92,7 @@ exploitatielocatie:EX
                          ];
         prov:locationOf  meetpunt:MP_001 , installatie:GPBV_12345 , meetpunt:MP_002 , emissiepunt:EP_001 .
 
-meetpunt:MP_002  rdf:type  riepr:Meetpunt , prov:Entity , sosa:Sensor , geo:Feature , prov:Agent , sosa:System , geo:SpatialObject;
+meetpunt:MP_002  rdf:type  riepr:Meetpunt , geo:Feature , prov:Agent , ssn:System , geo:SpatialObject;
         rdfs:label       "Meetpunt Waterkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
@@ -100,12 +100,12 @@ meetpunt:MP_002  rdf:type  riepr:Meetpunt , prov:Entity , sosa:Sensor , geo:Feat
         geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
         adms:status      riepr:Actief;
         prov:atLocation  exploitatielocatie:EX;
-        sosa:isProxyFor  [ rdf:type       prov:Plan , dbo:Project , owl:Thing , riepr:IIOA , riepr:Proces , pplan:Plan , pplan:Step , pplan:Entity , dbo:UnitOfWork , prov:Entity;
+        sosa:isProxyFor  [ rdf:type       prov:Plan , pplan:Plan , owl:Thing , prov:Entity , dbo:UnitOfWork , pplan:Entity , riepr:IIOA , riepr:Proces , ssn:System , dbo:Project , prov:Agent , pplan:Step;
                            rdfs:label     "Waterzuiveringsproces"@nl;
                            sosa:hasProxy  meetpunt:MP_002
                          ] .
 
-emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Feature;
+emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Feature , ssn:System , prov:Agent;
         rdfs:label       "Emissiepunt Schoorsteen 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;

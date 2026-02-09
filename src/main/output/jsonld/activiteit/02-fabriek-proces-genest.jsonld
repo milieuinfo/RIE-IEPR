@@ -295,6 +295,10 @@
     }
   },
   "@graph" : [ {
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
+    "label" : "Emissiepunt koekjesoven"
+  }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC",
     "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie",
     "label" : "Locatie ACTIVITEIT_001"
@@ -349,20 +353,14 @@
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
     "label" : "Koekjes bakken"
   }, {
-    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/deeg",
-    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
-    "label" : "Deeg"
-  }, {
-    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/koekjes",
-    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
-    "label" : "Koekjes"
-  }, {
-    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/meel",
-    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
-    "label" : "Meel"
-  }, {
-    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
-    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
-    "label" : "Deegmengsel"
+    "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_003",
+    "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+    "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
+    "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
+    "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_002",
+    "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
+    "label" : "Rookgas afvoeren",
+    "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
+    "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD"
   } ]
 }
