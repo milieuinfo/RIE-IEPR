@@ -116,10 +116,6 @@ release-and-publish:
         git add index.html .nojekyll || true
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
-  artifacts:
-    - name: artifact-specificatie
-      location: build-artifact
-      pattern: '**/*.*'
 
 verify-release:
   requirements: *requirements
