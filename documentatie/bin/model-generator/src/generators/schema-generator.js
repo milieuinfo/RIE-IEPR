@@ -10,6 +10,22 @@ export class SchemaGenerator extends BaseGenerator {
     // Delegate to BaseGenerator implementation and default visibleClasses
     return super.computeJoinTablesFor(relationships, config, visibleClasses || new Set(this.computeVisibleClasses()));
   }
+
+  generateIdentifierAttributesForClass(parentClass) {
+    // Delegate to BaseGenerator implementation
+    return [
+      {
+        name: `${Config.camelCaseToSnakeCase(parentClass)}_uid`,
+        type: 'string',
+        sqlType: 'TEXT',
+        comment: parentClass,
+        isForeignKey: true,
+        isPrimaryKey: true,
+        propertyIri: 'http://www.w3.org/ns/adms#identifier'
+      },
+      ...super.generateIdentifierAttributesForClass(parentClass)
+    ];
+  }
 }
 
 export default SchemaGenerator;

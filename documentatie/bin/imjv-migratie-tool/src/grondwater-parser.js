@@ -10,7 +10,46 @@ export class GrondwaterParser extends BaseParser {
     }
 
     async parse() {
-        const grondwaterData = this.data['grondwater:VasteGegevensAangifteGrondwaterwinning']?.[0];
+        // The converter may pass either the full parsed XML object or an
+        // already-selected root array (xmlData['ns2:VasteGegevensAangifteGrondwater']).
+        // Normalize to the actual object containing the fields we need.
+        let root = Array.isArray(this.data) ? this.data[0] : this.data || {};
+
+        // If the root already contains the typical fields, use it directly
+        let grondwaterData = null;
+        if (root.CBBExploitatieNummer || root.Grondwaterputten) {
+            grondwaterData = root;
+        } else {
+            // try common child keys (with different namespace prefixes or naming)
+            const candidates = [
+                'grondwater:VasteGegevensAangifteGrondwaterwinning',
+                'ns2:VasteGegevensAangifteGrondwater',
+                'VasteGegevensAangifteGrondwater',
+                'VasteGegevensAangifteGrondwaterwinning'
+            ];
+
+            for (const key of candidates) {
+                const val = root[key];
+                if (Array.isArray(val) && val.length > 0) {
+                    grondwaterData = val[0];
+                    break;
+                }
+            }
+
+            // last resort: find any property whose local name matches expected roots
+            if (!grondwaterData) {
+                for (const key of Object.keys(root || {})) {
+                    if (key.endsWith('VasteGegevensAangifteGrondwater') || key.endsWith('VasteGegevensAangifteGrondwaterwinning')) {
+                        const val = root[key];
+                        if (Array.isArray(val) && val.length > 0) {
+                            grondwaterData = val[0];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         if (!grondwaterData) {
             console.warn('No grondwater data found in XML');
             return '';
@@ -57,23 +96,35 @@ export class GrondwaterParser extends BaseParser {
         const coordX = put.LambertcoordinaatX?.[0];
         const coordY = put.LambertcoordinaatY?.[0];
 
-        // Create emissiepunt (emission point) for groundwater
-        const emissiepuntUri = this.turtle.qname('emissiepunt', `${this.cbbNumber}_${putId}`);
+        // Map put type / put number to a more specific RIEPR class when possible
+        let rieprClass = 'Ontrekkingspunt';
+        const putNumberUpper = (putNumber || '').toUpperCase();
+        if (putType === 'GRONDWATERWINNING' || putNumberUpper.includes('POMPPUT')) {
+            rieprClass = 'Grondwaterput';
+        } else if (putType === 'PEIL') {
+            rieprClass = 'Schouw';
+        }
+
+        // Choose subject namespace according to the RIEPR class:
+        // - Grondwaterput / Ontrekkingspunt => use 'ontrekkingspunt'
+        // - others (e.g., Schouw) => keep 'emissiepunt'
+        const subjectPrefix = (rieprClass === 'Grondwaterput' || rieprClass === 'Ontrekkingspunt') ? 'ontrekkingspunt' : 'emissiepunt';
+        const subjectUri = this.turtle.qname(subjectPrefix, `${this.cbbNumber}_${putId}`);
 
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('rdf', 'type'),
-            this.turtle.qname('riepr', 'Ontrekkingspunt')
+            this.turtle.qname('riepr', rieprClass)
         );
 
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('rdfs', 'label'),
             this.turtle.literal(`${putNumber} (${putType})`, null, 'nl')
         );
 
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('adms', 'status'),
             this.turtle.qname('riepr', 'Actief')
         );
@@ -83,7 +134,7 @@ export class GrondwaterParser extends BaseParser {
             const wktWithCRS = `<http://www.opengis.net/gml/srs/epsg.xml#${LAMBERT72_CRS}> POINT(${coordX} ${coordY})`;
             
             this.turtle.triple(
-                emissiepuntUri,
+                subjectUri,
                 this.turtle.qname('ogc', 'hasGeometry'),
                 `[ ${this.turtle.qname('ogc', 'asWKT')} "${wktWithCRS}"^^${this.turtle.qname('ogc', 'WKTLiteral')} ]`
             );
@@ -92,7 +143,7 @@ export class GrondwaterParser extends BaseParser {
         // Add depth information with unit
         if (depth) {
             this.turtle.triple(
-                emissiepuntUri,
+                subjectUri,
                 this.turtle.qname('dbo', 'depth'),
                 `[ ${this.turtle.qname('rdf', 'type')} ${this.turtle.qname('qudt', 'QuantityValue')} ; ${this.turtle.qname('qudt', 'numericValue')} "${depth}"^^${this.turtle.qname('xsd', 'decimal')} ; ${this.turtle.qname('qudt', 'unit')} ${this.turtle.qname('unit', 'M')} ]`
             );
@@ -100,12 +151,12 @@ export class GrondwaterParser extends BaseParser {
 
         // Parse peilfilters (measurement filters) if present
         if (put.Peilfilters?.[0]?.Peilfilter) {
-            this.parsePeilfilters(put.Peilfilters[0].Peilfilter, emissiepuntUri, putId);
+            this.parsePeilfilters(put.Peilfilters[0].Peilfilter, subjectUri, putId);
         }
 
         // Parse pompfilter (pump filter) if present
         if (put.Pompfilter) {
-            this.parsePompfilter(put.Pompfilter, emissiepuntUri, putId);
+            this.parsePompfilter(put.Pompfilter, subjectUri, putId);
         }
 
         // Parse refertes (references) as external identifiers
@@ -116,10 +167,10 @@ export class GrondwaterParser extends BaseParser {
                 this.turtle.triple(
                     installatieUri,
                     this.turtle.qname('rdfs', 'member'),
-                    emissiepuntUri
+                    subjectUri
                 );
             }
-            this.parseRefertes(put.Refertes[0].Referte, emissiepuntUri);
+            this.parseRefertes(put.Refertes[0].Referte, subjectUri);
         }
     }
 

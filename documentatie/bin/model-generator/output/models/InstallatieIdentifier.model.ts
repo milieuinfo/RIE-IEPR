@@ -4,9 +4,6 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class InstallatieIdentifier {
-  @jsonMember(String, { name: 'identifier' })
-  identifier!: string;
-
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 

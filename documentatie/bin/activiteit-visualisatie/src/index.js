@@ -73,6 +73,8 @@ const riepr = {
     Apparaat: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat'),
     Proces: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces'),
     Emissiepunt: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt'),
+    Ontrekkingspunt: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Ontrekkingspunt'),
+    Grondwaterput: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput'),
     Installatie: namedNode('https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie'),
 };
 const sosa = {
@@ -158,7 +160,7 @@ function isApparatusOrSystem(store, uri) {
 
 function isEmissionPoint(store, uri) {
     const types = store.getQuads(namedNode(uri), rdf.type, null).map(q => q.object.value);
-    return types.includes(riepr.Emissiepunt.value);
+    return types.includes(riepr.Emissiepunt.value) || types.includes(riepr.Ontrekkingspunt.value) || types.includes(riepr.Grondwaterput.value);
 }
 
 function isInstallationOrPlatform(store, uri) {
@@ -371,9 +373,17 @@ async function generateMermaidFlowchart(ontologyPath, outputPath, ...examplePath
         constructMermaidGraph(combinedStore, rootSteps, nodeMap, parentMap, nodeDefs, subgraphDefs, procedureChecker);
     }
 
-    const emissiePunten = combinedStore
-        .getQuads(null, rdf.type, riepr.Emissiepunt)
-        .filter(q => !exampleNodes.has(q.subject.value) && q.subject.termType !== 'BlankNode');
+    // Collect emission-like points: riepr:Emissiepunt, riepr:Ontrekkingspunt and riepr:Grondwaterput
+    const emisQuads = [
+        ...combinedStore.getQuads(null, rdf.type, riepr.Emissiepunt),
+        ...combinedStore.getQuads(null, rdf.type, riepr.Ontrekkingspunt),
+        ...combinedStore.getQuads(null, rdf.type, riepr.Grondwaterput),
+    ];
+    const uniqueMap = new Map();
+    for (const q of emisQuads) {
+        if (!uniqueMap.has(q.subject.value)) uniqueMap.set(q.subject.value, q);
+    }
+    const emissiePunten = Array.from(uniqueMap.values()).filter(q => !exampleNodes.has(q.subject.value) && q.subject.termType !== 'BlankNode');
     const puntId = 'emissiepunt';
     const emissiepuntIndex = new Map(emissiePunten.map((q, idx) => [q.subject.value, idx]));
 

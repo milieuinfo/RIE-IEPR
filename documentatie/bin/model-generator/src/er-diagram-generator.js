@@ -37,6 +37,27 @@ export class ERDiagramGenerator extends SchemaGenerator {
     // 1. Verzamel zichtbare klassen
     let classNames = this.computeVisibleClasses();
 
+    // Ensure identifier relations are represented in the global relationships
+    // map so ER rendering will draw links from entity -> Identifier tables.
+    // (mirrors logic in class-diagram-generator)
+    this.identifierRelations.forEach((restriction, parent) => {
+      const idClass = `${parent}Identifier`;
+      const key = `${parent}|${idClass}|identifier`;
+      if (!this.relationships.has(key)) {
+        const label = (this.ontology && typeof this.ontology.deriveAttributeName === 'function')
+          ? this.ontology.deriveAttributeName(restriction)
+          : 'identifiers';
+        this.relationships.set(key, {
+          from: parent,
+          to: idClass,
+          property: 'identifier',
+          label,
+          minCard: restriction?.minCardinality,
+          maxCard: restriction?.maxCardinality
+        });
+      }
+    });
+
     // 2. Gebruik gedeelde helper om join tables + junction info te berekenen
     // Filter relationships to those originating from visible classes so we don't
     // create junction tables for unrelated/external classes.

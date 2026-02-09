@@ -4,7 +4,6 @@ export class BaseGenerator {
   constructor(ontology, options = {}) {
     this.ontology = ontology;
     this.options = options;
-    // Expose generator methods under `this.utils` for backward compatibility
     this.utils = this;
     this.enumClasses = new Set();
     this.relationships = new Map();
@@ -366,6 +365,7 @@ export class BaseGenerator {
     if (!classInfo) {
       classInfo = this.ontology.classes.get(className);
     }
+    // Prefer business name from ontology when available (handled below)
     // Prefer business name (when available), then label, then fallback to className
     let raw = className;
     try {
@@ -680,6 +680,28 @@ export class BaseGenerator {
         return;
       }
 
+      // If there are no explicit rangeTypes, emit a default string
+      // attribute (covers common cases like rdfs:label and other
+      // data properties that lack an explicit range in the OWL
+      // restriction). This ensures optional attributes (minCard = 0)
+      // are still represented in the class diagram.
+      if (!Array.isArray(restriction.rangeTypes) || restriction.rangeTypes.length === 0) {
+        const attrName = this.deriveAttributeName(restriction);
+        if (!attributes.has(attrName)) {
+          attributes.set(attrName, {
+            name: attrName,
+            type: 'string',
+            sqlType: 'TEXT',
+            comment: restriction.propertyIri,
+            isForeignKey: false,
+            propertyIri: restriction.propertyIri,
+            minCardinality: restriction.minCardinality,
+            maxCardinality: restriction.maxCardinality
+          });
+        }
+        return;
+      }
+
       // Special handling for geometry properties - treat as TEXT datatype
       if (Config.isGeometryProperty(restriction.property)) {
         const attrName = this.deriveAttributeName(restriction);
@@ -872,15 +894,6 @@ export class BaseGenerator {
    */
   generateIdentifierAttributesForClass(parentClass) {
     return [
-      {
-        name: `${Config.camelCaseToSnakeCase(parentClass)}_uid`,
-        type: 'string',
-        sqlType: 'TEXT',
-        comment: parentClass,
-        isForeignKey: true,
-        isPrimaryKey: true,
-        propertyIri: 'http://www.w3.org/ns/adms#identifier'
-      },
       {
         name: 'geldig_van',
         type: 'date',

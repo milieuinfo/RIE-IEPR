@@ -241,25 +241,28 @@ export class WaterParser extends BaseParser {
         const meetputType = punt.MeetputType?.[0];
         const lozingsplaats = punt.Lozingsplaats?.[0];
 
-        const emissiepuntUri = this.turtle.qname('emissiepunt', `${this.cbbNumber}_${puntId}`);
 
-        // Determine riepr:Emissiepunt subclass based on lozingsplaats
+        // Determine riepr class and choose subject namespace accordingly
         let emissiepuntType = this.turtle.qname('riepr', 'Emissiepunt');
+        let subjectPrefix = 'emissiepunt';
         if (lozingsplaats?.includes('Oppervlaktewater')) {
             emissiepuntType = this.turtle.qname('riepr', 'Lozingspunt');
         } else if (lozingsplaats?.includes('Grondwater')) {
             emissiepuntType = this.turtle.qname('riepr', 'Grondwaterput');
+            subjectPrefix = 'ontrekkingspunt';
         }
 
+        const subjectUri = this.turtle.qname(subjectPrefix, `${this.cbbNumber}_${puntId}`);
+
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('rdf', 'type'),
             emissiepuntType
         );
 
         if (naam) {
             this.turtle.triple(
-                emissiepuntUri,
+                subjectUri,
                 this.turtle.qname('rdfs', 'label'),
                 this.turtle.literal(naam, null, 'nl')
             );
@@ -268,7 +271,7 @@ export class WaterParser extends BaseParser {
         // Link to exploitatielocatie
         const locatieUri = this.turtle.qname('exploitatielocatie', this.cbbNumber);
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('prov', 'atLocation'),
             locatieUri
         );
@@ -276,21 +279,21 @@ export class WaterParser extends BaseParser {
         // Add comment with lozingsplaats info
         if (lozingsplaats) {
             this.turtle.triple(
-                emissiepuntUri,
+                subjectUri,
                 this.turtle.qname('rdfs', 'comment'),
                 this.turtle.literal(`Lozingsplaats: ${lozingsplaats}`, null, 'nl')
             );
         }
 
         this.turtle.triple(
-            emissiepuntUri,
+            subjectUri,
             this.turtle.qname('adms', 'status'),
             this.turtle.qname('riepr', 'Actief')
         );
 
         // Parse gekoppeldeActiviteiten if present
         if (punt.GekoppeldeActiviteiten?.[0]?.Activiteit) {
-            this.parseGekoppeldeActiviteiten(punt.GekoppeldeActiviteiten[0].Activiteit, emissiepuntUri);
+            this.parseGekoppeldeActiviteiten(punt.GekoppeldeActiviteiten[0].Activiteit, subjectUri);
         }
     }
 

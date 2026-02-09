@@ -90,6 +90,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een proces kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -121,7 +122,10 @@
         # Een proces kan zijn afgeleid van een (generieke) procedure (optioneel)
         owl:onProperty prov:wasDerivedFrom, dct:type ; 
         owl:someValuesFrom sosa:Procedure ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        # Max 1 omdat een proces slechts van 1 procedure afgeleid kan zijn and zou
+        # deze procedure een verzameling van andere procedures moeten zijn
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een proces mag minstens één inputvariabele hebben (stof)
@@ -221,6 +225,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -241,7 +246,7 @@
         # Een installatie locatie kan afgeleid zijn van een andere installatie
         # bijvoorbeeld wanneer een vestiging verkocht is en de locatie hergebruikt wordt
         owl:onProperty prov:wasDerivedFrom ;
-        owl:someValuesFrom :ExploitatieLocatie ;
+        owl:someValuesFrom :Installatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -261,6 +266,15 @@
         ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt is verschillend van een onttrekkingspunt (disjoint)
+        owl:disjointWith :Ontrekkingspunt
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt kan een typering hebben via dct:type
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
@@ -275,6 +289,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -307,6 +322,11 @@
         rdfs:label "Onttrekking 1"@nl
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt moet een benaming hebben
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         # Een ontrekkingspunt is verschillend van een emissiepunt (disjoint)
         owl:disjointWith :Emissiepunt
     ] ;
@@ -325,6 +345,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een ontrekkingspunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -367,11 +388,13 @@
     # Een schouw heeft een diameter en hoogte
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty dbo:diameter ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty dbo:height ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Grondwaterput a owl:Class ;
@@ -391,7 +414,8 @@
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een grondwaterput heeft een diepte
         owl:onProperty dbo:depth ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Lozingspunt a owl:Class ;
@@ -448,6 +472,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -493,6 +518,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een apparaat kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -542,6 +568,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -599,7 +626,8 @@
         # Een exploitant contactpersoon kan een adres hebben
         owl:onProperty locn:address ;
         owl:someValuesFrom locn:Address ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant contactpersoon kan een creatie datum hebben
@@ -618,6 +646,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant contactpersoon kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -653,6 +682,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;

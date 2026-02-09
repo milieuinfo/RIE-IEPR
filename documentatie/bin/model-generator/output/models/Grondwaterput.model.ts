@@ -2,8 +2,11 @@
 
 import { Ontrekkingspunt } from './Ontrekkingspunt.model';
 
-import { jsonObject } from 'typedjson';
+import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class Grondwaterput extends Ontrekkingspunt {
+  @jsonMember(Number, { name: 'depth' })
+  depth!: number;
+
 }

@@ -1,5 +1,7 @@
 // Auto-generated models
 
+import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+
 import { jsonObject, jsonMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
@@ -8,6 +10,9 @@ import type { ISystem } from './System.interface';
 export class Ontrekkingspunt implements ISystem {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
+
+  @jsonMember(String, { name: 'label' })
+  benaming!: string;
 
   @jsonMember(String, { name: 'type' })
   type?: string;
@@ -18,8 +23,8 @@ export class Ontrekkingspunt implements ISystem {
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
 
-  @jsonMember(String, { name: 'atLocation' })
-  locatie!: string;
+  @jsonMember(ExploitatieLocatie, { name: 'atLocation' })
+  locatie!: ExploitatieLocatie;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

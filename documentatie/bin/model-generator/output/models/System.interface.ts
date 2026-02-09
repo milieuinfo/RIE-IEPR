@@ -4,6 +4,6 @@ import type { IAgent } from './Agent.interface';
 
 export interface ISystem extends IAgent {
   uri?: string;
-  afgeleidVan?: string;
-  toegewezenAanId?: string[];
+  afgeleidVan?: ISystem[];
+  toegewezenAan?: IAgent[];
 }

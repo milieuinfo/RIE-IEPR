@@ -1,5 +1,5 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-09T11:03:19.715Z
+-- Generated: 2026-02-09T14:32:33.674Z
 
 -- PostgreSQL DDL
 
@@ -25,12 +25,14 @@ CREATE TABLE apparaat (
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
     locatie_id TEXT NOT NULL,
+    benaming TEXT NOT NULL,
     CONSTRAINT pk_apparaat PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
 COMMENT ON COLUMN apparaat.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN apparaat.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN apparaat.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN apparaat.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
+COMMENT ON COLUMN apparaat.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON TABLE apparaat IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat';
 
 CREATE TABLE contactpersoon (
@@ -39,14 +41,24 @@ CREATE TABLE contactpersoon (
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
     member_of_id TEXT NOT NULL,
+    benaming TEXT NOT NULL,
+    mbox TEXT NULL,
+    phone TEXT NULL,
+    has_role TEXT NOT NULL,
     address_id TEXT NULL,
+    name TEXT NOT NULL,
     CONSTRAINT pk_contactpersoon PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
 COMMENT ON COLUMN contactpersoon.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN contactpersoon.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN contactpersoon.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN contactpersoon.member_of_id IS 'http://www.w3.org/ns/org#memberOf';
+COMMENT ON COLUMN contactpersoon.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN contactpersoon.mbox IS 'http://xmlns.com/foaf/0.1/mbox';
+COMMENT ON COLUMN contactpersoon.phone IS 'http://xmlns.com/foaf/0.1/phone';
+COMMENT ON COLUMN contactpersoon.has_role IS 'http://www.w3.org/ns/org#hasRole';
 COMMENT ON COLUMN contactpersoon.address_id IS 'http://www.w3.org/ns/locn#address';
+COMMENT ON COLUMN contactpersoon.name IS 'http://xmlns.com/foaf/0.1/name';
 COMMENT ON TABLE contactpersoon IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon';
 
 CREATE TABLE emissiepunt (
@@ -54,6 +66,7 @@ CREATE TABLE emissiepunt (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
     type TEXT NULL,
     locatie_id TEXT NOT NULL,
     CONSTRAINT pk_emissiepunt PRIMARY KEY (uri, geldig_van, aangemaakt_op)
@@ -61,6 +74,7 @@ CREATE TABLE emissiepunt (
 COMMENT ON COLUMN emissiepunt.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN emissiepunt.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN emissiepunt.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN emissiepunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN emissiepunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN emissiepunt.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
 COMMENT ON TABLE emissiepunt IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt';
@@ -71,6 +85,7 @@ CREATE TABLE exploitant (
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
     type_id TEXT NOT NULL,
+    benaming TEXT NOT NULL,
     address_id TEXT NULL,
     CONSTRAINT pk_exploitant PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
@@ -78,6 +93,7 @@ COMMENT ON COLUMN exploitant.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN exploitant.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN exploitant.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN exploitant.type_id IS 'http://purl.org/dc/terms/type';
+COMMENT ON COLUMN exploitant.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN exploitant.address_id IS 'http://www.w3.org/ns/locn#address';
 COMMENT ON TABLE exploitant IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant';
 
@@ -86,12 +102,16 @@ CREATE TABLE exploitatie_locatie (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
+    beinvloed_door TEXT NULL,
     afgeleid_van_id TEXT NULL,
     CONSTRAINT pk_exploitatie_locatie PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
 COMMENT ON COLUMN exploitatie_locatie.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN exploitatie_locatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN exploitatie_locatie.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN exploitatie_locatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN exploitatie_locatie.beinvloed_door IS 'http://www.w3.org/ns/prov#wasInfluencedBy';
 COMMENT ON COLUMN exploitatie_locatie.afgeleid_van_id IS 'http://www.w3.org/ns/prov#wasDerivedFrom';
 COMMENT ON TABLE exploitatie_locatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie';
 
@@ -114,8 +134,10 @@ COMMENT ON COLUMN exploitatie_locatie_identifier.value IS 'http://www.w3.org/199
 CREATE TABLE grondwaterput (
     uri TEXT NOT NULL,
     ontrekkingspunt_id TEXT NULL,
+    depth DOUBLE PRECISION NOT NULL,
     CONSTRAINT pk_grondwaterput PRIMARY KEY (uri)
 );
+COMMENT ON COLUMN grondwaterput.depth IS 'http://dbpedia.org/ontology/depth';
 COMMENT ON TABLE grondwaterput IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput';
 
 CREATE TABLE installatie (
@@ -124,6 +146,7 @@ CREATE TABLE installatie (
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
     has_sub_system_id TEXT NULL,
+    benaming TEXT NOT NULL,
     locatie_id TEXT NOT NULL,
     afgeleid_van_id TEXT NULL,
     CONSTRAINT pk_installatie PRIMARY KEY (uri, geldig_van, aangemaakt_op)
@@ -132,6 +155,7 @@ COMMENT ON COLUMN installatie.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN installatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN installatie.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN installatie.has_sub_system_id IS 'http://www.w3.org/ns/ssn/hasSubSystem';
+COMMENT ON COLUMN installatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN installatie.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
 COMMENT ON COLUMN installatie.afgeleid_van_id IS 'http://www.w3.org/ns/prov#wasDerivedFrom';
 COMMENT ON TABLE installatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie';
@@ -164,12 +188,14 @@ CREATE TABLE meetpunt (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
     type TEXT NULL,
     CONSTRAINT pk_meetpunt PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
 COMMENT ON COLUMN meetpunt.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN meetpunt.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN meetpunt.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN meetpunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN meetpunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON TABLE meetpunt IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt';
 
@@ -202,6 +228,7 @@ CREATE TABLE ontrekkingspunt (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
     type TEXT NULL,
     locatie_id TEXT NOT NULL,
     CONSTRAINT pk_ontrekkingspunt PRIMARY KEY (uri, geldig_van, aangemaakt_op)
@@ -209,6 +236,7 @@ CREATE TABLE ontrekkingspunt (
 COMMENT ON COLUMN ontrekkingspunt.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN ontrekkingspunt.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN ontrekkingspunt.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN ontrekkingspunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN ontrekkingspunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN ontrekkingspunt.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
 COMMENT ON TABLE ontrekkingspunt IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Ontrekkingspunt';
@@ -218,6 +246,7 @@ CREATE TABLE proces (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
     locatie_id TEXT NOT NULL,
     onderdeel_van_id TEXT NULL,
     CONSTRAINT pk_proces PRIMARY KEY (uri, geldig_van, aangemaakt_op)
@@ -225,6 +254,7 @@ CREATE TABLE proces (
 COMMENT ON COLUMN proces.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN proces.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN proces.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN proces.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN proces.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
 COMMENT ON COLUMN proces.onderdeel_van_id IS 'http://purl.org/net/p-plan#isStepOfPlan';
 COMMENT ON TABLE proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -250,6 +280,7 @@ CREATE TABLE proces_variabele (
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
+    benaming TEXT NOT NULL,
     type TEXT NULL,
     eenheid TEXT NULL,
     waarde TEXT NULL,
@@ -258,6 +289,7 @@ CREATE TABLE proces_variabele (
 COMMENT ON COLUMN proces_variabele.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN proces_variabele.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN proces_variabele.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN proces_variabele.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN proces_variabele.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN proces_variabele.eenheid IS 'http://qudt.org/schema/qudt/hasUnit';
 COMMENT ON COLUMN proces_variabele.waarde IS 'http://qudt.org/schema/qudt/hasNumericValue';
@@ -266,8 +298,12 @@ COMMENT ON TABLE proces_variabele IS 'https://data.riepr.omgeving.vlaanderen.be/
 CREATE TABLE schouw (
     uri TEXT NOT NULL,
     emissiepunt_id TEXT NULL,
+    diameter DOUBLE PRECISION NOT NULL,
+    hoogte DOUBLE PRECISION NOT NULL,
     CONSTRAINT pk_schouw PRIMARY KEY (uri)
 );
+COMMENT ON COLUMN schouw.diameter IS 'http://dbpedia.org/ontology/diameter';
+COMMENT ON COLUMN schouw.hoogte IS 'http://dbpedia.org/ontology/height';
 COMMENT ON TABLE schouw IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Schouw';
 
 CREATE TABLE proces_toegewezen_aan (
@@ -308,7 +344,7 @@ ALTER TABLE exploitatie_locatie_identifier ADD CONSTRAINT fk_exploitatie_locatie
 ALTER TABLE grondwaterput ADD CONSTRAINT fk_grondwaterput_ontrekkingspunt_id FOREIGN KEY (ontrekkingspunt_id) REFERENCES ontrekkingspunt(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_has_sub_system_id FOREIGN KEY (has_sub_system_id) REFERENCES proces(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE installatie ADD CONSTRAINT fk_installatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES exploitatie_locatie(uri);
+ALTER TABLE installatie ADD CONSTRAINT fk_installatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES installatie(uri);
 ALTER TABLE installatie_identifier ADD CONSTRAINT fk_installatie_identifier_installatie_uid FOREIGN KEY (installatie_uid) REFERENCES installatie(uri);
 ALTER TABLE lozingspunt ADD CONSTRAINT fk_lozingspunt_emissiepunt_id FOREIGN KEY (emissiepunt_id) REFERENCES emissiepunt(uri);
 ALTER TABLE meetpunt_identifier ADD CONSTRAINT fk_meetpunt_identifier_meetpunt_uid FOREIGN KEY (meetpunt_uid) REFERENCES meetpunt(uri);
