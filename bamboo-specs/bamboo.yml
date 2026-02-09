@@ -29,13 +29,12 @@ build-specificatie:
         #!/bin/bash
         set -e
         git config --global init.defaultBranch main || true
-        # If Bamboo prepared the artifact (index.html) before tasks, stash it
-        # into build-artifact so the upcoming checkout won't overwrite it.
-        mkdir -p build-artifact
-        if [ -f index.html ]; then
-          mv -f index.html build-artifact/
-        fi
     - checkout
+    - artifact-download:
+      artifact: artifact-specificatie
+      from-plan: RIEIEP-SPEC
+      from-job: build-specificatie
+      destination: build-artifact
     - script: |
         #!/bin/bash
         set -e
@@ -69,6 +68,7 @@ build-specificatie:
         # ensure artifact folder exists even when generation failed
         mkdir -p build-artifact
         if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
+        echo "Build and package stage completed. index.html copied to build-artifact if it existed."
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
