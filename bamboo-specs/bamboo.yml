@@ -87,12 +87,6 @@ release-and-publish:
         git config user.name "Bamboo CI"
         git fetch origin gh-pages:gh-pages
         git checkout gh-pages
-        # remove all tracked and untracked files so branch only contains what we add
-        # (use git to avoid accidentally deleting .git)
-        git rm -rf . || true
-        git clean -fdx || true
-        # placeholder for minimal site files
-        touch .nojekyll
     - artifact-download:
         source-plan: RIEIEP-SPEC
         artifacts:
