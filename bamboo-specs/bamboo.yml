@@ -81,7 +81,14 @@ release-and-publish:
     - clean
     - script: |
         #!/bin/bash
+        set -e
         git config --global init.defaultBranch main || true
+        # If Bamboo prepared the artifact (index.html) before tasks, stash it
+        # into build-artifact so the upcoming checkout won't overwrite it.
+        mkdir -p build-artifact
+        if [ -f index.html ]; then
+          mv -f index.html build-artifact/
+        fi
     - checkout
     - script: |
         #!/bin/bash
@@ -93,10 +100,11 @@ release-and-publish:
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
         git fetch origin
+        # create / switch to gh-pages branch
         git checkout -B gh-pages
         # remove all files except the .git directory so the branch only contains what we want
         find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + || true
-        # ensure minimal files
+        # minimal site files
         touch .nojekyll
         if [ -f build-artifact/index.html ]; then
           cp -f build-artifact/index.html index.html
@@ -105,7 +113,7 @@ release-and-publish:
         else
           echo "Warning: no index.html found in build-artifact or workspace"
         fi
-        # ensure build-artifact exists so artifact publishing won't fail
+        # ensure build-artifact exists so Bamboo can publish artifact-release
         mkdir -p build-artifact
         if [ -f index.html ]; then cp -f index.html build-artifact/; fi
         git add index.html .nojekyll || true
