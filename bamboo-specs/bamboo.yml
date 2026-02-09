@@ -78,7 +78,11 @@ release-and-publish:
         #!/bin/bash
         set -e
         git config --global init.defaultBranch gh-pages || true
-    - checkout
+    - checkout:
+        force-clean-build: true
+        description: Checkout gh-pages
+        repository: my-repo
+        branch: refs/heads/gh-pages
     - artifact-download:
         source-plan: RIEIEP-SPEC
         artifacts:
