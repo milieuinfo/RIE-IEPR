@@ -1,112 +1,45 @@
+
 version: 2
 
 plan:
-	project-key: RIE
-	key: SPEC
-	name: ci-specificatie
+  project-key: RIE
+  key: SPEC
+  name: Specificatie build & deploy
 
 stages:
-	- Build and Package Stage:
-			jobs:
-				- build-specificatie
-	- Release and Publish Stage:
-			jobs:
-				- release-and-publish
-	- Verify Release Stage:
-			jobs:
-				- verify-release
+  - Stage: Build
+    jobs:
+      - Job: BUILD
+        key: BLD
+        tasks:
+          - checkout: []
+          - script:
+              interpreter: "/bin/bash"
+              scripts:
+                - export NPM_CONFIG_LOGLEVEL=warn
+                - npm ci
+                - npm start
+                - npm run build:docker
 
-build-specificatie:
-	requirements: &requirements
-		- Docker
-		- Git
-		- REMOTE_ONLY
-	tasks:
-		- clean
-		- script: |
-				#!/bin/bash
-				# avoid git warning
-				git config --global init.defaultBranch main
-		- checkout
-		- script: |
-				#!/bin/bash
-				set -e
-				export NPM_CONFIG_LOGLEVEL=warn
-				npm ci
-				# generate the site (same as `npm start` -> generate:bikeshed)
-				npm run generate:bikeshed
-		- script: |
-				#!/bin/bash
-				set -e
-				# optional: build docker image and run to produce artifacts
-				npm run build:docker || true
-		- script: |
-				#!/bin/bash
-				# prepare artifact folder
-				mkdir -p build-artifact
-				if [ -f index.html ]; then cp index.html build-artifact/; fi
-	artifacts:
-		- name: artifact-specificatie
-			location: build-artifact
-			pattern: '**/*.*'
-			shared: true
-
-release-and-publish:
-	requirements: *requirements
-	tasks:
-		- clean
-		- script: |
-				#!/bin/bash
-				# avoid git warning
-				git config --global init.defaultBranch main
-		- checkout
-		- script: |
-				#!/bin/bash
-				set -e
-				# Bamboo variables (set these in plan variables or deployment environment):
-				#  - secret_github_token (secure)
-				#  - github_repo (owner/repo)
-				export SECRET_GITHUB_TOKEN=${bamboo.secret_github_token}
-				export GITHUB_REPO=${bamboo.github_repo}
-				if [ -z "$SECRET_GITHUB_TOKEN" ]; then echo "secret_github_token not set"; exit 1; fi
-				if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set (format: owner/repo)"; exit 1; fi
-				git config user.email "bamboo@ci"
-				git config user.name "Bamboo CI"
-				git fetch origin
-				git checkout -B gh-pages
-				# prefer artifacts if present
-				if [ -d build-artifact ]; then cp -r build-artifact/* .; fi
-				# fallback to index.html in repo root
-				if [ -f index.html ]; then cp -f index.html .; fi
-				git add -A
-				git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
-				git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
-	artifacts:
-		- name: artifact-release
-			location: build
-			pattern: '**/*.*'
-
-verify-release:
-	requirements: *requirements
-	tasks:
-		- clean
-		- script: |
-				#!/bin/bash
-				git config --global init.defaultBranch main
-		- checkout
-		- script: |
-				#!/bin/bash
-				set -e
-				# Quick smoke-check: ensure gh-pages branch exists remotely
-				export GITHUB_REPO=${bamboo.github_repo}
-				if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set"; exit 1; fi
-				git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
-	artifacts:
-		- name: artifact-verify
-			location: build
-			pattern: '**/*.*'
-
-plan-permissions:
-	- groups: developer-admin
-		permissions: build
+  - Stage: Deploy
+    jobs:
+      - Job: DEPLOY
+        key: DEP
+        tasks:
+          - checkout: []
+          - script:
+              interpreter: "/bin/bash"
+              scripts:
+                - set -e
+                - echo "Preparing gh-pages push"
+                - if [ -z "$GITHUB_TOKEN" ]; then echo "GITHUB_TOKEN not set"; exit 1; fi
+                - if [ -z "$GITHUB_REPO" ]; then echo "GITHUB_REPO not set (format: owner/repo)"; exit 1; fi
+                - git config user.email "bamboo@ci"
+                - git config user.name "Bamboo CI"
+                - git fetch origin
+                - git checkout -B gh-pages
+                - cp -f index.html index.html
+                - git add -A
+                - git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
+                - git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
 
