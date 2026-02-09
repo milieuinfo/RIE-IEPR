@@ -24,11 +24,11 @@ build-specificatie:
     - Git
     - REMOTE_ONLY
   tasks:
-    - clean:
+    - clean
     - script: |
         #!/bin/bash
         git config --global init.defaultBranch main || true
-    - checkout:
+    - checkout
     - script: |
         #!/bin/bash
         set -e
@@ -52,11 +52,11 @@ build-specificatie:
 release-and-publish:
   requirements: *requirements
   tasks:
-    - clean:
+    - clean
     - script: |
         #!/bin/bash
         git config --global init.defaultBranch main || true
-    - checkout:
+    - checkout
     - script: |
         #!/bin/bash
         set -e
@@ -81,11 +81,11 @@ release-and-publish:
 verify-release:
   requirements: *requirements
   tasks:
-    - clean:
+    - clean
     - script: |
         #!/bin/bash
         git config --global init.defaultBranch main || true
-    - checkout:
+    - checkout
     - script: |
         #!/bin/bash
         set -e
