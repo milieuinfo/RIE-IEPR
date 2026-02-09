@@ -1,10 +1,9 @@
-import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+// Auto-generated models
+
 import { ProcesIdentifier } from './ProcesIdentifier.model';
-import { ProcesVariabele } from './ProcesVariabele.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
-import type { IAgent } from './Agent.interface';
 import type { ISystem } from './System.interface';
 
 @jsonObject
@@ -21,8 +20,8 @@ export class Proces implements ISystem {
   @jsonMember(String, { name: 'atLocation' })
   locatie!: string;
 
-  @jsonArrayMember(Object, { name: 'wasAttributedTo' })
-  toegewezenAan!: IAgent[];
+  @jsonArrayMember(String, { name: 'wasAttributedTo' })
+  toegewezenAan?: string[];
 
   @jsonMember(String, { name: 'wasDerivedFrom' })
   type?: string;
@@ -42,7 +41,7 @@ export class Proces implements ISystem {
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 
-  @jsonArrayMember(String, { name: 'identifier' })
-  identifier?: string[];
+  @jsonArrayMember(ProcesIdentifier, { name: 'identifier' })
+  identifier?: ProcesIdentifier[];
 
 }

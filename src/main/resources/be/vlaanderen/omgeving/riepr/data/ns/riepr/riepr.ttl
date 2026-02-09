@@ -299,6 +299,56 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
+:Ontrekkingspunt a owl:Class ;
+    rdfs:label "Ontrekkingspunt"@nl ;
+    rdfs:comment "Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking)."@nl ;
+    rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
+    skos:example [ a :Ontrekkingspunt ;
+        rdfs:label "Onttrekking 1"@nl
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt is verschillend van een emissiepunt (disjoint)
+        owl:disjointWith :Emissiepunt
+    ] ;
+        rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt kan een typering hebben via dct:type
+        owl:onProperty dct:type ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt moet een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt kan een geldigheid einde hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt moet een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een ontrekkingspunt kan een status hebben
+        owl:onProperty adms:status ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een ontrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
+        owl:onProperty prov:atLocation ; 
+        owl:someValuesFrom :ExploitatieLocatie ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+    
 :Schouw a owl:Class ;
     rdfs:label "Schouw"@nl ;
     rdfs:comment "Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen."@nl ;
@@ -326,8 +376,8 @@
 
 :Grondwaterput a owl:Class ;
     rdfs:label "Grondwaterput"@nl ;
-    rdfs:comment "Een grondwaterput is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van stoffen in het grondwater."@nl ;
-    rdfs:subClassOf :Emissiepunt ;
+    rdfs:comment "Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering."@nl ;
+    rdfs:subClassOf :Ontrekkingspunt ;
     skos:example [ a :Grondwaterput ;
         rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
         dbo:depth "15.0"^^xsd:float ;
@@ -474,6 +524,7 @@
 :Exploitant a owl:Class ;
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
+    rdfs:subClassOf prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant kan een creatie datum hebben
         owl:onProperty dct:created ;
@@ -513,7 +564,7 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
-:ExploitantContact a owl:Class ;
+:Contactpersoon a owl:Class ;
     rdfs:label "Exploitant Contactpersoon"@nl ;
     rdfs:comment "Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
     rdfs:subClassOf foaf:Person ;
@@ -527,6 +578,52 @@
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant contactpersoon moet een benaming hebben
         owl:onProperty rdfs:label ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een e-mailadres hebben
+        owl:onProperty foaf:mbox ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een telefoonnummer hebben
+        owl:onProperty foaf:phone ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon moet een functie hebben binnen de organisatie
+        owl:onProperty org:hasRole ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een adres hebben
+        owl:onProperty locn:address ;
+        owl:someValuesFrom locn:Address ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een creatie datum hebben
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een geldigheid start hebben
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon kan een geldigheid einde hebben
+        owl:onProperty dct:valid ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitant contactpersoon moet een naam hebben
+        owl:onProperty foaf:name ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
@@ -561,7 +658,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
-        owl:onProperty prov:atLocation ; # TODO niet echt correct
+        owl:onProperty prov:wasAttributedTo ;
         owl:someValuesFrom :Exploitant ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger

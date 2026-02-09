@@ -83,10 +83,8 @@ export const MANY_TO_MANY_PROPERTIES = new Set([
  * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
  */
 export const PROPERTY_TYPE_OVERRIDES = new Map([
-  [
-    `${NAMESPACES.prov}wasAttributedTo`,
-    { interface: 'Agent', type: 'IAgent', dropId: true }
-  ]
+  // Intentionally left empty; per-property interface overrides can be
+  // added here if needed but default behavior prefers concrete targets.
 ]);
 
 /**

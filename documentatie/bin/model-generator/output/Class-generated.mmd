@@ -1,131 +1,133 @@
 %% Auto-generated from OWL/SHACL
 classDiagram
-    class Address {
-        string null
+    class Adres {
+        string uri
         string straat
         string stad
         string postcode
     }
     class Apparaat {
-        string null
+        string uri
         Date aangemaaktOp
         Date geldigVan
         ExploitatieLocatie locatie (FK)
         Date geldigTot
     }
+    class ExploitantContactpersoon {
+        string uri
+        Exploitant memberOf (FK)
+        Address[] address (FK)
+        Date aangemaaktOp
+        Date geldigVan
+        Date geldigTot
+    }
     class Emissiepunt {
-        string null
-        string null
+        string uri
+        string type
         Date geldigVan
         Date aangemaaktOp
         ExploitatieLocatie locatie (FK)
         Date geldigTot
     }
     class Exploitant {
-        string null
+        string uri
         Date aangemaaktOp
         Date geldigVan
-        ExploitantContact[] null (FK)
-        Address[] null (FK)
+        Contactpersoon[] type (FK)
+        Address[] address (FK)
         Date geldigTot
     }
-    class Exploitant Contactpersoon {
-        string null
-        Exploitant null (FK)
-    }
-    class Exploitatie Locatie {
-        string null
+    class ExploitatieLocatie {
+        string uri
         Date aangemaaktOp
         Date geldigVan
-        Exploitant locatie (FK)
         ExploitatieLocatie[] afgeleidVan (FK)
         Date geldigTot
-        string[] null (FK)
+        ExploitatieLocatieIdentifier[] identifiers (FK)
     }
     class ExploitatieLocatieIdentifier {
-        string null (FK)
+        string exploitatieLocatieUid (FK)
         Date geldigVan
-        string null
-        string null
+        string schema
+        string notation
         Date geldigTot
-        string null
+        string value
     }
     class Grondwaterput {
-        string null
-        string null (FK)
     }
     class Installatie {
-        string null
-        object[] null (FK)
+        string uri
+        object[] hasSubSystem (FK)
         Date aangemaaktOp
         Date geldigVan
         ExploitatieLocatie locatie (FK)
         ExploitatieLocatie[] afgeleidVan (FK)
         Date geldigTot
-        string[] null (FK)
+        InstallatieIdentifier[] identifiers (FK)
     }
     class InstallatieIdentifier {
-        string null (FK)
+        string installatieUid (FK)
         Date geldigVan
-        string null
-        string null
+        string schema
+        string notation
         Date geldigTot
-        string null
+        string value
     }
     class Lozingspunt {
-        string null
-        string null (FK)
     }
     class Meetpunt {
-        string null
-        string null
+        string uri
+        string type
         Date aangemaaktOp
         Date geldigVan
         Date geldigTot
-        string[] null (FK)
+        MeetpuntIdentifier[] identifiers (FK)
     }
     class MeetpuntIdentifier {
-        string null (FK)
+        string meetpuntUid (FK)
         Date geldigVan
-        string null
-        string null
+        string schema
+        string notation
         Date geldigTot
-        string null
+        string value
     }
     class Observatie {
-        string null
-        Meetpunt null (FK)
-        enum null
-        object[] null (FK)
-        Date null
-        Date null
-        Proces[] null (FK)
+        string uri
+        Meetpunt hasFeatureOfInterest (FK)
+    }
+    class Ontrekkingspunt {
+        string uri
+        string type
+        Date geldigVan
+        Date aangemaaktOp
+        ExploitatieLocatie locatie (FK)
+        Date geldigTot
     }
     class Proces {
-        string null
+        string uri
         Date aangemaaktOp
         Date geldigVan
         ExploitatieLocatie locatie (FK)
-        IAgent[] toegewezenAan (FK)
+        object[] toegewezenAan (FK)
         enum type
-        ProcesVariabele[] null (FK)
-        ProcesVariabele[] null (FK)
+        ProcesVariabele[] hasInputVar (FK)
+        ProcesVariabele[] hasOutputVar (FK)
         Proces onderdeelVan (FK)
         Proces[] gaatVoorafAan (FK)
         Date geldigTot
-        string[] null (FK)
+        ProcesIdentifier[] identifiers (FK)
     }
     class ProcesIdentifier {
-        string null (FK)
+        string procesUid (FK)
         Date geldigVan
-        string null
-        string null
+        string schema
+        string notation
         Date geldigTot
-        string null
+        string value
     }
-    class Proces variabele {
-        string null
-        string null
+    class ProcesVariabele {
+        string uri
+        string type
         string eenheid
         string waarde
         Date geldigVan
@@ -133,14 +135,12 @@ classDiagram
         Date geldigTot
     }
     class Schouw {
-        string null
-        string null (FK)
     }
     class ISystem {
         <<interface>>
         string uri
         string afgeleidVan
-        IAgent[] toegewezenAan
+        string[] toegewezenAanId
     }
     class IAgent {
         <<interface>>
@@ -152,63 +152,61 @@ classDiagram
     }
 
     Emissiepunt <|-- Schouw
-    Emissiepunt <|-- Grondwaterput
+    Ontrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
     ISystem <|.. Apparaat
     ISystem <|.. Emissiepunt
     ISystem <|.. Installatie
     ISystem <|.. Meetpunt
+    ISystem <|.. Ontrekkingspunt
     ISystem <|.. Proces
     IAgent <|.. Apparaat
     IAgent <|.. Emissiepunt
+    IAgent <|.. Exploitant
     IAgent <|.. Installatie
     IAgent <|.. Meetpunt
+    IAgent <|.. Ontrekkingspunt
     IAgent <|.. Proces
     ISpatialObject <|.. Apparaat
     ISpatialObject <|.. Emissiepunt
     ISpatialObject <|.. Meetpunt
-    Proces --> Exploitatie Locatie : locatie
+    ISpatialObject <|.. Ontrekkingspunt
+    Proces --> ExploitatieLocatie : locatie
     Proces --> Installatie : toegewezen aan
     Proces --> Emissiepunt : toegewezen aan
+    Proces --> Ontrekkingspunt : toegewezen aan
     Proces --> Schouw : toegewezen aan
     Proces --> Grondwaterput : toegewezen aan
     Proces --> Lozingspunt : toegewezen aan
     Proces --> Meetpunt : toegewezen aan
     Proces --> Apparaat : toegewezen aan
-    Proces --> Proces variabele : hasInputVar
-    Proces --> Proces variabele : hasOutputVar
+    Proces --> Exploitant : toegewezen aan
+    Proces --> ProcesVariabele : hasInputVar
+    Proces --> ProcesVariabele : hasOutputVar
     Proces --> Proces : onderdeel van
     Proces --> Proces : gaat vooraf aan
-    Exploitatie Locatie --> Exploitant : locatie
-    Exploitatie Locatie --> Exploitatie Locatie : afgeleid van
-    Exploitatie Locatie --> Proces : toegewezen aan
-    Exploitatie Locatie --> Installatie : toegewezen aan
-    Exploitatie Locatie --> Emissiepunt : toegewezen aan
-    Exploitatie Locatie --> Schouw : toegewezen aan
-    Exploitatie Locatie --> Grondwaterput : toegewezen aan
-    Exploitatie Locatie --> Lozingspunt : toegewezen aan
-    Exploitatie Locatie --> Meetpunt : toegewezen aan
-    Exploitatie Locatie --> Apparaat : toegewezen aan
+    ExploitatieLocatie --> Exploitant : toegewezen aan
+    ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
     Installatie --> Proces : hasSubSystem
     Installatie --> Installatie : hasSubSystem
     Installatie --> Emissiepunt : hasSubSystem
+    Installatie --> Ontrekkingspunt : hasSubSystem
     Installatie --> Schouw : hasSubSystem
     Installatie --> Grondwaterput : hasSubSystem
     Installatie --> Lozingspunt : hasSubSystem
     Installatie --> Meetpunt : hasSubSystem
     Installatie --> Apparaat : hasSubSystem
-    Installatie --> Exploitatie Locatie : locatie
-    Installatie --> Exploitatie Locatie : afgeleid van
-    Emissiepunt --> Exploitatie Locatie : locatie
-    Apparaat --> Exploitatie Locatie : locatie
+    Installatie --> ExploitatieLocatie : locatie
+    Installatie --> ExploitatieLocatie : afgeleid van
+    Emissiepunt --> ExploitatieLocatie : locatie
+    Ontrekkingspunt --> ExploitatieLocatie : locatie
+    Apparaat --> ExploitatieLocatie : locatie
     Observatie --> Meetpunt : hasFeatureOfInterest
-    Observatie --> Proces : used
-    Observatie --> Exploitatie Locatie : used
-    Observatie --> Proces : correspondsToStep
-    Exploitant --> Exploitant Contactpersoon : type
-    Exploitant --> Address : address
-    Exploitant Contactpersoon --> Exploitant : memberOf
-    Proces --> ProcesIdentifier : proces_identifiers
-    Exploitatie Locatie --> ExploitatieLocatieIdentifier : exploitatie_locatie_identifiers
-    Installatie --> InstallatieIdentifier : installatie_identifiers
-    Meetpunt --> MeetpuntIdentifier : meetpunt_identifiers
+    Exploitant --> ExploitantContactpersoon : type
+    Exploitant --> Adres : address
+    ExploitantContactpersoon --> Exploitant : memberOf
+    ExploitantContactpersoon --> Adres : address
+    Proces --> ProcesIdentifier : identifiers
+    ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
+    Installatie --> InstallatieIdentifier : identifiers
+    Meetpunt --> MeetpuntIdentifier : identifiers

@@ -31,8 +31,9 @@ export class GrondwaterParser extends BaseParser {
         this.createExploitatieLocatie(null, `Exploitatie locatie ${this.cbbNumber}`);
 
         // Parse grondwaterputten (groundwater wells)
-        if (this.data.Grondwaterputten?.[0]?.Grondwaterput) {
-            this.parseGrondwaterputten(this.data.Grondwaterputten[0].Grondwaterput);
+        // Parse grondwaterputten (groundwater wells) from the found root
+        if (grondwaterData.Grondwaterputten?.[0]?.Grondwaterput) {
+            this.parseGrondwaterputten(grondwaterData.Grondwaterputten[0].Grondwaterput);
         }
 
         return this.turtle.build();
@@ -62,7 +63,7 @@ export class GrondwaterParser extends BaseParser {
         this.turtle.triple(
             emissiepuntUri,
             this.turtle.qname('rdf', 'type'),
-            this.turtle.qname('riepr', 'Grondwaterput')
+            this.turtle.qname('riepr', 'Ontrekkingspunt')
         );
 
         this.turtle.triple(
