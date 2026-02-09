@@ -93,9 +93,14 @@ release-and-publish:
         touch .nojekyll
         if [ -f build-artifact/index.html ]; then
           cp -f build-artifact/index.html index.html
+        elif [ -f index.html ]; then
+          echo "Found index.html in workspace root; using that"
         else
-          echo "Warning: build-artifact/index.html not found; index.html will be missing"
+          echo "Warning: no index.html found in build-artifact or workspace"
         fi
+        # ensure build-artifact exists so artifact publishing won't fail
+        mkdir -p build-artifact
+        if [ -f index.html ]; then cp -f index.html build-artifact/; fi
         git add index.html .nojekyll || true
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
