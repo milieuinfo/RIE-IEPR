@@ -197,11 +197,11 @@ export class WaterParser extends BaseParser {
                 const stofId = this.sanitizeId(herkomst);
                 const stofUri = this.turtle.qname('stof', `${this.cbbNumber}_${stofId}`);
 
-                // Create Stof entity
+                // Create ProcesVariabele entity
                 this.turtle.triple(
                     stofUri,
                     this.turtle.qname('rdf', 'type'),
-                    this.turtle.qname('riepr', 'Stof')
+                    this.turtle.qname('riepr', 'ProcesVariabele')
                 );
 
                 this.turtle.triple(
@@ -456,14 +456,14 @@ export class WaterParser extends BaseParser {
             
             if (!stofNaam) return;
             
-            // Create riepr:Stof instance
+            // Create riepr:ProcesVariabele instance
             const stofId = this.sanitizeId(stofNaam);
             const stofUri = this.turtle.qname('stof', stofId);
 
             this.turtle.triple(
                 stofUri,
                 this.turtle.qname('rdf', 'type'),
-                this.turtle.qname('riepr', 'Stof')
+                this.turtle.qname('riepr', 'ProcesVariabele')
             );
 
             this.turtle.triple(
@@ -522,7 +522,7 @@ export class WaterParser extends BaseParser {
                 this.turtle.triple(
                     stofUri,
                     this.turtle.qname('rdf', 'type'),
-                    this.turtle.qname('riepr', 'Stof')
+                    this.turtle.qname('riepr', 'ProcesVariabele')
                 );
 
                 this.turtle.triple(

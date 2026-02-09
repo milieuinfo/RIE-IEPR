@@ -1,6 +1,7 @@
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix proces: <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix emissiepunt: <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix stof: <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -55,17 +56,28 @@ proces:STAP_002 a riepr:Proces ;
     pplan:hasInputVar stof:deeg ;
     pplan:hasOutputVar stof:koekjes ;
     pplan:isStepOfPlan proces:ACTIVITEIT_001 ;
-    # TODO: deze stap maakt gebruik van emissiepunt X
     pplan:isPrecededBy proces:STAP_001 .
 
-stof:meel a riepr:Stof ;
+proces:STAP_003 a riepr:Proces ;
+    rdfs:label "Rookgas afvoeren"@nl ;
+    pplan:hasInputVar stof:rookgas ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:ACTIVITEIT_001 ;
+    pplan:isPrecededBy proces:STAP_002 ;
+    prov:wasDerivedFrom riepr:uitstootProces ;
+    prov:wasInfluencedBy emissiepunt:TBD .
+
+emissiepunt:TBD a riepr:Emissiepunt ;
+    rdfs:label "Emissiepunt koekjesoven"@nl .
+
+stof:meel a riepr:ProcesVariabele ;
     rdfs:label "Meel"@nl .
 
-stof:mengsel a riepr:Stof ;
+stof:mengsel a riepr:ProcesVariabele ;
     rdfs:label "Deegmengsel"@nl .
 
-stof:deeg a riepr:Stof ;
+stof:deeg a riepr:ProcesVariabele ;
     rdfs:label "Deeg"@nl .
 
-stof:koekjes a riepr:Stof ;
+stof:koekjes a riepr:ProcesVariabele ;
     rdfs:label "Koekjes"@nl .

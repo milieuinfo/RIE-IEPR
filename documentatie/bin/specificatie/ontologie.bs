@@ -7,7 +7,7 @@ URL: https://data.riepr.omgeving.vlaanderen.be/ns/riepr
 Markup Shorthands: markdown yes
 Editor: Vlaamse overheid - Departement Omgeving, https://omgeving.vlaanderen.be
 Repository: https://github.com/milieuinfo/RIE-IEPR
-Abstract: De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele activiteiten, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem.
+Abstract: De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatie locaties binnen het kader van het RIE-IEPR systeem.
 </pre>
 
 # Inleiding # {#introduction}
@@ -38,7 +38,6 @@ Deze ontologie importeert de volgende externe ontologieën:
 * org:
 * skos:
 * foaf:
-* schema:
 
 
 # Conformiteit # {#conformance}
@@ -55,6 +54,7 @@ Deze specificatie gebruikt de volgende namespace prefixes:
 @prefix dbo:     <http://dbpedia.org/ontology/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix locn:    <http://www.w3.org/ns/locn#> .
 @prefix ogc:     <http://www.opengis.net/ont/geosparql#> .
 @prefix org:     <http://www.w3.org/ns/org#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
@@ -72,21 +72,13 @@ Deze specificatie gebruikt de volgende namespace prefixes:
 
 # Overzicht # {#overview}
 
-Deze ontologie definieert 20 klassen en 12 concept instanties.
+Deze ontologie definieert 18 klassen en 12 concept instanties.
 
 # Klassen # {#classes}
 
 ## Klassenhiërarchie ## {#class-hierarchy}
 
-* [Activiteit](#Activiteit)
-* [Activiteit Procedure](#ActiviteitProcedure)
-  * [Transport Procedure](#TransportProcedure)
-    * [Emissie Procedure](#EmissieProcedure)
-    * [Verbruiks Procedure](#VerbruiksProcedure)
-  * [Verwerkings Procedure](#VerwerkingsProcedure)
-* [Activiteit Stap](#ActiviteitStap)
 * [Apparaat](#Apparaat)
-* [Bron](#Bron)
 * [Emissiepunt](#Emissiepunt)
   * [Grondwaterput](#Grondwaterput)
   * [Lozingspunt](#Lozingspunt)
@@ -97,97 +89,13 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 * [Meetprocedure](#MeetProcedure)
 * [Meetpunt](#Meetpunt)
 * [Observatie](#Observatie)
+* [Proces](#Proces)
+* [Proces Procedure](#ProcesProcedure)
+  * [Transport Procedure](#TransportProcedure)
+    * [Emissie Procedure](#EmissieProcedure)
+    * [Verbruiks Procedure](#VerbruiksProcedure)
+  * [Verwerkings Procedure](#VerwerkingsProcedure)
 * [Stof](#Stof)
-
-## Activiteit ## {#Activiteit}
-
-**IRI:** `riepr:Activiteit`
-
-**Definitie:** Een (milieu)activiteit is een door de gebruiker in te vullen industriele activiteit op een bepaalde locatie bestaande uit meerdere procedurestappen die de industriele activiteit beschrijven.
-
-**Subklasse van:** `pplan:Plan`, `dbo:Project`
-
-**Constraints:** created: min 1, max 1; label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie
-
-**Voorbeelden:**
-
-```turtle
-[
-  rdf:type riepr:Activiteit ;
-  rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
-  <http://purl.org/dc/terms/created> "2024-01-15T10:00:00"^^xsd:dateTime ;
-  <http://purl.org/dc/terms/valid> "2020-01-01/2030-12-31" ;
-  prov:atLocation [ rdf:type riepr:ExploitatieLocatie ;
-  rdfs:label "Cementfabriek Antwerpen"@nl ]
-]
-```
-
-
-## Activiteit Procedure ## {#ActiviteitProcedure}
-
-**IRI:** `riepr:ActiviteitProcedure`
-
-**Definitie:** Een activiteit procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een activiteit.
-
-**Subklasse van:** `sosa:Procedure`
-
-
-### Transport Procedure ### {#TransportProcedure}
-
-**IRI:** `riepr:TransportProcedure`
-
-**Definitie:** Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een activiteit.
-
-**Subklasse van:** `riepr:ActiviteitProcedure`
-
-
-#### Emissie Procedure #### {#EmissieProcedure}
-
-**IRI:** `riepr:EmissieProcedure`
-
-**Definitie:** Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.
-
-**Subklasse van:** `riepr:TransportProcedure`
-
-
-#### Verbruiks Procedure #### {#VerbruiksProcedure}
-
-**IRI:** `riepr:VerbruiksProcedure`
-
-**Definitie:** Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een activiteit.
-
-**Subklasse van:** `riepr:TransportProcedure`
-
-
-### Verwerkings Procedure ### {#VerwerkingsProcedure}
-
-**IRI:** `riepr:VerwerkingsProcedure`
-
-**Definitie:** Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een activiteit.
-
-**Subklasse van:** `riepr:ActiviteitProcedure`
-
-
-## Activiteit Stap ## {#ActiviteitStap}
-
-**IRI:** `riepr:ActiviteitStap`
-
-**Definitie:** De activiteit stap is een individuele of meervoudige stap binnen een activiteit.
-
-**Subklasse van:** `pplan:Step`
-
-**Constraints:** valid: min 0, max 1; used: min 0 of n3-13; implements: min 0 of Procedure
-
-**Voorbeelden:**
-
-```turtle
-[
-  rdf:type riepr:ActiviteitStap ;
-  rdfs:label "Verwerking van grondstoffen"@nl ;
-  ssn:implements [ rdf:type riepr:VerwerkingsProcedure ]
-]
-```
-
 
 ## Apparaat ## {#Apparaat}
 
@@ -195,47 +103,21 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Definitie:** Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.
 
-**Subklasse van:** `ssn:System`, `ogc:SpatialObject`
+**Subklasse van:** `ssn:System`, `ogc:SpatialObject`, `prov:Agent`
 
-**Constraints:** valid: min 1, max 1; atLocation: min 1, max 1 of n3-63; label: min 1
+**Constraints:** created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of n3-70; label: min 1
 
 **Voorbeelden:**
 
 ```turtle
 [
   rdf:type riepr:Apparaat ;
+  <http://purl.org/dc/terms/issued> "2020-01-01"^^xsd:date ;
   rdfs:label "Filterinstallatie Schouw 1"@nl ;
+  <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^xsd:dateTime ;
+  <http://purl.org/dc/terms/valid> "2030-12-31"^^xsd:date ;
   prov:atLocation [ rdf:type riepr:Installatie ;
   rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ]
-]
-```
-
-
-## Bron ## {#Bron}
-
-**IRI:** `riepr:Bron`
-
-**Definitie:** Een bron is de oorsprong of herkomst van water of andere stoffen die als input worden gebruikt in een activiteit of procedure.
-
-**Subklasse van:** `ssn:Input`
-
-**Constraints:** label: min 1; comment: min 0, max 1
-
-**Voorbeelden:**
-
-```turtle
-[
-  rdf:type riepr:Bron ;
-  rdfs:label "Grondwater"@nl ;
-  rdfs:comment "Grondwater als waterbron voor industriele processen"@nl
-]
-```
-
-```turtle
-[
-  rdf:type riepr:Bron ;
-  rdfs:label "Oppervlaktewater (waterlopen/kanalen)"@nl ;
-  rdfs:comment "Water uit oppervlaktewaterlopen als bron"@nl
 ]
 ```
 
@@ -248,7 +130,7 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Subklasse van:** `ogc:SpatialObject`
 
-**Constraints:** atLocation: min 1, max 1 of n3-30; label: min 1; status: min 1, max 1
+**Constraints:** atLocation: min 1, max 1 of n3-37; label: min 1; status: min 1, max 1
 
 **Voorbeelden:**
 
@@ -343,18 +225,29 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Definitie:** Een exploitant is een entiteit die een milieuimpact heeft.
 
-**Constraints:** valid: min 0, max 1; type: min 1 of n3-71; label: min 1
+**Constraints:** created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1; type: min 1 of n3-80; label: min 1; address: min 0 of Address
 
 
 ## Exploitatie Locatie ## {#ExploitatieLocatie}
 
 **IRI:** `riepr:ExploitatieLocatie`
 
-**Definitie:** Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn activiteiten uitvoert.
+**Definitie:** Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert.
 
 **Subklasse van:** `ogc:SpatialObjectCollection`, `prov:Entity`
 
-**Constraints:** atLocation: min 1, max 1 of Exploitant; identifier: min 0; label: min 1; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie
+**Constraints:** created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:ExploitatieLocatie ;
+  rdfs:label "Cementfabriek Antwerpen"@nl ;
+  prov:hadPrimarySource [ rdf:type org:Site ;
+  rdfs:label "VKBO Vestiging Cementfabriek"@nl ]
+]
+```
 
 
 ## Installatie ## {#Installatie}
@@ -365,15 +258,17 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Subklasse van:** `ogc:SpatialObjectCollection`, `ssn:System`
 
-**Constraints:** identifier: min 0; label: min 1; valid: min 1, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of ExploitatieLocatie
+**Constraints:** identifier: min 0; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of ExploitatieLocatie
 
 **Voorbeelden:**
 
 ```turtle
 [
   rdf:type riepr:Installatie ;
+  <http://purl.org/dc/terms/issued> "2020-01-01"^^xsd:date ;
   rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl ;
-  <http://purl.org/dc/terms/valid> "2020-01-01/2030-12-31" ;
+  <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^xsd:dateTime ;
+  <http://purl.org/dc/terms/valid> "2030-12-31"^^xsd:date ;
   prov:atLocation [ rdf:type riepr:ExploitatieLocatie ;
   rdfs:label "Cementfabriek Antwerpen"@nl ] ;
   <http://www.w3.org/ns/adms#status> riepr:Actief
@@ -396,16 +291,19 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Definitie:** Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.
 
-**Subklasse van:** `ogc:SpatialObject`
+**Subklasse van:** `ogc:SpatialObject`, `sosa:Sensor`
 
-**Constraints:** isProxyFor: min 1 of n3-54; label: min 1; valid: min 1, max 1; status: min 1, max 1
+**Constraints:** isProxyFor: min 1 of n3-57; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1; status: min 1, max 1
 
 **Voorbeelden:**
 
 ```turtle
 [
   rdf:type riepr:Meetpunt ;
+  <http://purl.org/dc/terms/issued> "2020-01-01"^^xsd:date ;
   rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
+  <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^xsd:dateTime ;
+  <http://purl.org/dc/terms/valid> "2030-12-31"^^xsd:date ;
   ogc:hasGeometry [ rdf:type ogc:Geometry ;
   ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral ] ;
   sosa:isProxyFor [ rdf:type riepr:Emissiepunt ;
@@ -422,14 +320,92 @@ Deze ontologie definieert 20 klassen en 12 concept instanties.
 
 **Subklasse van:** `sosa:Observation`
 
-**Constraints:** hasFeatureOfInterest: min 1, max 1 of n3-67
+**Constraints:** hasFeatureOfInterest: min 1, max 1 of n3-74
+
+
+## Proces ## {#Proces}
+
+**IRI:** `riepr:Proces`
+
+**Definitie:** Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.
+
+**Subklasse van:** `pplan:Plan`, `pplan:Step`, `dbo:Project`
+
+**Constraints:** created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasInfluencedBy: min 0 of n3-16; wasAttributedTo: min 0 of Apparaat; wasDerivedFrom: min 0 of Procedure; hasInputVar: min 1 of Stof; hasOutputVar: min 1 of Stof; isStepOfPlan: min 0, max 1 of Proces
+
+**Voorbeelden:**
+
+```turtle
+[
+  rdf:type riepr:Proces ;
+  <http://purl.org/dc/terms/issued> "2020-01-01"^^xsd:date ;
+  rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
+  <http://purl.org/dc/terms/created> "2024-01-15T10:00:00"^^xsd:dateTime ;
+  <http://purl.org/dc/terms/valid> "2030-12-31"^^xsd:date ;
+  prov:atLocation [ rdf:type riepr:ExploitatieLocatie ;
+  rdfs:label "Cementfabriek Antwerpen"@nl ]
+]
+```
+
+```turtle
+[
+  rdf:type riepr:Proces ;
+  rdfs:label "Verwerking van grondstoffen"@nl ;
+  prov:wasDerivedFrom [ rdf:type riepr:VerwerkingsProcedure ]
+]
+```
+
+
+## Proces Procedure ## {#ProcesProcedure}
+
+**IRI:** `riepr:ProcesProcedure`
+
+**Definitie:** Een proces procedure is een specifieke procedure die betrekking heeft op de algemene uitvoering van een proces.
+
+**Subklasse van:** `sosa:Procedure`
+
+
+### Transport Procedure ### {#TransportProcedure}
+
+**IRI:** `riepr:TransportProcedure`
+
+**Definitie:** Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.
+
+**Subklasse van:** `riepr:ProcesProcedure`
+
+
+#### Emissie Procedure #### {#EmissieProcedure}
+
+**IRI:** `riepr:EmissieProcedure`
+
+**Definitie:** Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.
+
+**Subklasse van:** `riepr:TransportProcedure`
+
+
+#### Verbruiks Procedure #### {#VerbruiksProcedure}
+
+**IRI:** `riepr:VerbruiksProcedure`
+
+**Definitie:** Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces.
+
+**Subklasse van:** `riepr:TransportProcedure`
+
+
+### Verwerkings Procedure ### {#VerwerkingsProcedure}
+
+**IRI:** `riepr:VerwerkingsProcedure`
+
+**Definitie:** Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.
+
+**Subklasse van:** `riepr:ProcesProcedure`
 
 
 ## Stof ## {#Stof}
 
 **IRI:** `riepr:Stof`
 
-**Definitie:** Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een activiteit.
+**Definitie:** Een stof is een chemische substantie die wordt gebruikt, verwerkt, getransporteerd of uitgestoten binnen een proces.
 
 **Subklasse van:** `dbo:ChemicalSubstance`
 
@@ -460,7 +436,7 @@ Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
 
 **IRI:** `riepr:brandstofVerbruikProces`
 
-**Definitie:** Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een activiteit.
+**Definitie:** Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een proces.
 
 **Breder concept:** `riepr:VerbruiksProcedure`
 
@@ -469,7 +445,7 @@ Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
 
 **IRI:** `riepr:eindproductProductieProces`
 
-**Definitie:** Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een activiteit.
+**Definitie:** Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een proces.
 
 **Breder concept:** `riepr:VerwerkingsProcedure`
 
@@ -478,7 +454,7 @@ Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
 
 **IRI:** `riepr:electriciteitsVerbruikProces`
 
-**Definitie:** Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een activiteit.
+**Definitie:** Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een proces.
 
 **Breder concept:** `riepr:VerbruiksProcedure`
 
@@ -535,7 +511,7 @@ Deze sectie beschrijft de voorgedefinieerde concept instanties in de ontologie.
 
 **IRI:** `riepr:waterVerbruikProces`
 
-**Definitie:** Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een activiteit.
+**Definitie:** Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een proces.
 
 **Breder concept:** `riepr:VerbruiksProcedure`
 

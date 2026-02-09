@@ -9,17 +9,30 @@
 @prefix pplan:  <http://purl.org/net/p-plan#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix locn:   <http://www.w3.org/ns/locn#> .
+@prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 
 <> a skos:ConceptScheme ;
 	dct:title "RIE-IEPR concepten"@nl ;
 	dct:description "Nederlandstalige benamingen die aligneren met (technische) predicaten in de RIE-IEPR ontologie en geïmporteerde vocabularia."@nl ;
 	dct:creator "Vlaamse overheid - Departement Omgeving"@nl .
 
+:geometrie a skos:Concept ;
+    skos:prefLabel "geometrie"@nl ;
+    skos:definition "De ruimtelijke geometrie van een object, uitgedrukt in WKT (Well-Known Text) formaat."@nl ;
+    skos:exactMatch ogc:hasGeometry ;
+    skos:inScheme <> .
+
 :eenheid a skos:Concept ;
 	skos:prefLabel "eenheid"@nl ;
     skos:definition "De eigenschap die de eenheid van een meetwaarde beschrijft."@nl ;
 	skos:exactMatch qudt:unit, qudt:hasUnit ;
 	skos:inScheme <> .
+
+:waarde a skos:Concept ;
+    skos:prefLabel "waarde"@nl ;
+    skos:definition "De eigenschap die de waarde van een meetwaarde beschrijft."@nl ;
+    skos:exactMatch qudt:numericValue, qudt:hasNumericValue ;
+    skos:inScheme <> .
 
 :hoogte a skos:Concept ;
 	skos:prefLabel "hoogte"@nl ;
@@ -70,21 +83,28 @@
     skos:exactMatch prov:wasDerivedFrom ;
     skos:inScheme <> .
 
+:procesType a skos:Concept ;
+    skos:prefLabel "type proces"@nl ;
+    skos:definition "De eigenschap die het type van een proces beschrijft door verwijzing naar een procedurespecificatie."@nl ;
+    skos:exactMatch prov:wasDerivedFrom ;
+    skos:scopeNote "Dit concept is specifiek bedoeld voor de Proces entiteit."@nl ;
+    skos:inScheme <> .
+
 :beinvloedDoor a skos:Concept ;
     skos:prefLabel "beïnvloed door"@nl ;
     skos:definition "De eigenschap die de invloed van een entiteit op een andere entiteit beschrijft."@nl ;
     skos:exactMatch prov:wasInfluencedBy ;
     skos:inScheme <> .
 
-:toegeschrevenAan a skos:Concept ;
-    skos:prefLabel "toegeschreven aan"@nl ;
+:toegewezenAan a skos:Concept ;
+    skos:prefLabel "toegewezen aan"@nl ;
     skos:definition "De eigenschap die een stap of entiteit toeschrijft aan een verantwoordelijke agent (bijvoorbeeld een apparaat)."@nl ;
     skos:exactMatch prov:wasAttributedTo ;
     skos:inScheme <> .
 
-:stapVanActiviteit a skos:Concept ;
-    skos:prefLabel "stap van activiteit"@nl ;
-    skos:definition "De eigenschap die aangeeft van welk plan of welke activiteit een stap deel uitmaakt."@nl ;
+:onderdeelVan a skos:Concept ;
+    skos:prefLabel "onderdeel van"@nl ;
+    skos:definition "De eigenschap die aangeeft van welk plan of welk proces een stap deel uitmaakt."@nl ;
     skos:exactMatch pplan:isStepOfPlan ;
     skos:inScheme <> .
 
@@ -111,6 +131,7 @@
     skos:definition "Het verzendadres van een entiteit."@nl ;
     skos:exactMatch locn:Address ;
     skos:inScheme <> .
+    
 
 :straat a skos:Concept ;
     skos:prefLabel "straat"@nl ;
