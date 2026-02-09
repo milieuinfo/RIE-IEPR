@@ -1,0 +1,125 @@
+---
+version: 2
+
+plan:
+  project-key: RIEIEP
+  key: SPEC
+  name: RIE-IEPR Datamodel Specificatie
+
+stages:
+  - Build and Package Stage:
+      jobs:
+        - build-specificatie
+  - Release and Publish Stage:
+      jobs:
+        - release-and-publish
+  - Verify Release Stage:
+      jobs:
+        - verify-release
+
+# Job definitions
+build-specificatie:
+  requirements: &requirements
+    - Docker
+    - Git
+    - REMOTE_ONLY
+  tasks:
+    - clean
+    - script: |
+        #!/bin/bash
+        git config --global init.defaultBranch main || true
+    - checkout
+    - script: |
+        #!/bin/bash
+        set -e
+        export NPM_CONFIG_LOGLEVEL=warn
+        # ensure artifact folder exists even when generation failed
+        mkdir -p build-artifact
+        # Docker is required for npm steps in this plan
+        if ! command -v docker >/dev/null 2>&1; then
+          echo "docker is required on the agent for this job"; exit 1
+        fi
+        # run in the specificatie subfolder where package.json lives
+        docker run --rm -v "$PWD":/app -w /app/documentatie/bin/specificatie node:24-alpine sh -c '
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund || exit 1
+          else
+            npm install --no-audit --no-fund --no-optional || exit 1
+          fi
+          npm run generate:bikeshed
+        '
+    - script: |
+        #!/bin/bash
+        set -e
+        # build:docker expects Docker on the host; ensure it's present
+        if ! command -v docker >/dev/null 2>&1; then
+          echo "docker is required on the agent for building the docker image"; exit 1
+        fi
+        # run build:docker from the specificatie folder
+        (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
+    - script: |
+        #!/bin/bash
+        # ensure artifact folder exists even when generation failed
+        mkdir -p build-artifact
+        if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
+  artifacts:
+    - name: artifact-specificatie
+      location: build-artifact
+      pattern: '**/*.*'
+      shared: true
+
+release-and-publish:
+  requirements: *requirements
+  tasks:
+    - clean
+    - script: |
+        #!/bin/bash
+        git config --global init.defaultBranch main || true
+    - checkout
+    - script: |
+        #!/bin/bash
+        set -e
+        # Read Bamboo variables safely (use quotes so shell doesn't try to expand a non-substituted placeholder)
+        SECRET_GITHUB_TOKEN='${bamboo.secret_github_token}'
+        GITHUB_REPO='${bamboo.github_repo}'
+        # If Bamboo didn't substitute the placeholders they will still contain '${bamboo'
+        if echo "$SECRET_GITHUB_TOKEN" | grep -q "\${bamboo" || [ -z "$SECRET_GITHUB_TOKEN" ]; then
+          echo "ERROR: Bamboo plan variable 'secret_github_token' is not set or not available to this job"; exit 1
+        fi
+        if echo "$GITHUB_REPO" | grep -q "\${bamboo" || [ -z "$GITHUB_REPO" ]; then
+          echo "ERROR: Bamboo plan variable 'github_repo' is not set or not available to this job (expected owner/repo)"; exit 1
+        fi
+        export SECRET_GITHUB_TOKEN
+        export GITHUB_REPO
+        git config user.email "bamboo@ci"
+        git config user.name "Bamboo CI"
+        git fetch origin
+        git checkout -B gh-pages
+        if [ -d build-artifact ]; then cp -r build-artifact/* .; fi
+        if [ -f index.html ]; then cp -f index.html .; fi
+        git add -A
+        git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
+        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
+  artifacts:
+    - name: artifact-release
+      location: build
+      pattern: '**/*.*'
+
+verify-release:
+  requirements: *requirements
+  tasks:
+    - clean
+    - script: |
+        #!/bin/bash
+        git config --global init.defaultBranch main || true
+    - checkout
+    - script: |
+        #!/bin/bash
+        set -e
+        export GITHUB_REPO=${bamboo.github_repo}
+        if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set"; exit 1; fi
+        git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
+  artifacts:
+    - name: artifact-verify
+      location: build
+      pattern: '**/*.*'
