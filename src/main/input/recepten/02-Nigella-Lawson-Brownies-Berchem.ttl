@@ -416,6 +416,13 @@ ent:chocolade_001
     qudt:unit unit:GM ;
     p-plan:correspondsToVariable var:donkere-chocolade .
 
+ent:suiker_001
+    a prov:Entity ;
+    rdf:value 500 ;
+    qudt:unit unit:GM ;
+    dct:type ingredient:suiker ;
+    p-plan:correspondsToVariable var:suiker  .
+
 ent:bloem_001
     a prov:Entity ;
     dct:type ingredient:bloem ;
@@ -445,18 +452,21 @@ ent:gesmolten-mengsel_001
     a prov:Entity ;
     rdfs:label "Gesmolten boter-chocolade"@nl ;
     dct:type tussenproduct:gesmolten-mengsel ;
+    prov:wasDerivedFrom ent:boter_001, ent:chocolade_001;
     p-plan:correspondsToVariable var:gesmolten-mengsel .
 
 ent:gehakte-walnoten_001
     a prov:Entity ;
     rdfs:label "Gehakte walnoten"@nl ;
     dct:type tussenproduct:gehakte-walnoten ;
+    prov:wasDerivedFrom ent:walnoten_001 ;
     p-plan:correspondsToVariable var:gehakte-walnoten .
 
 ent:beslag_001
     a prov:Entity ;
     rdfs:label "Browniebeslag"@nl ;
     dct:type tussenproduct:beslag ;
+    prov:wasDerivedFrom ent:gesmolten-mengsel_001, ent:gehakte-walnoten_001, ent:suiker_001, ent:eieren_001, ent:bloem_001 ;
     p-plan:correspondsToVariable var:beslag .
 
 
@@ -470,6 +480,7 @@ ent:brownies_001
     dct:type eindproduct:brownies ;
     rdf:value 150 ;
     qudt:unit unit:GM ;
+    prov:wasDerivedFrom ent:beslag_001 ;
     p-plan:correspondsToVariable var:brownies .
 
 ent:kleur_001
