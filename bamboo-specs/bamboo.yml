@@ -136,8 +136,3 @@ verify-release:
         GITHUB_REPO='milieuinfo/RIE-IEPR'
         export GITHUB_REPO
         git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
-  artifacts:
-    - name: artifact-verify
-      location: build-artifact
-      pattern: '**/*.*'
-      shared: true
