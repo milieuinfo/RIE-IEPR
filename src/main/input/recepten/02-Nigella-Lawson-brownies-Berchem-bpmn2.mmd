@@ -1,0 +1,119 @@
+flowchart LR
+
+%% =====================================================
+%% PLAN LANE (P-PLAN / SOSA:Procedure)
+%% =====================================================
+subgraph PLAN["PLAN — Recept (p-plan:Plan / sosa:Procedure)"]
+    P["Nigella Brownies<br/>(p-plan:Plan)"]
+
+    S_smelt["Step: Smelten"]
+    S_hak["Step: Hakken"]
+    S_meng["Step: Mengen"]
+    S_bak["Step: Bakken"]
+    S_kleur["Step: Controleer lichtbruine kleur"]
+
+    P --> S_smelt --> S_hak --> S_meng --> S_bak --> S_kleur
+end
+
+%% =====================================================
+%% DEPLOYMENT & SYSTEMS LANE
+%% =====================================================
+subgraph DEPLOYMENT["DEPLOYMENT — Keuken van Geert"]
+    D["Deployment: Brownies bakken voor demo"]
+
+    SYS_smelt["Smeltsysteem<br/>(pan+gas+garde)"]
+    SYS_hak["Haksysteem<br/>(mes+snijplank)"]
+    SYS_robot["Keukenrobot"]
+    SYS_oven["Oven"]
+    AG_geert["Geert<br/>(Sensor)"]
+
+    D --> SYS_smelt
+    D --> SYS_hak
+    D --> SYS_robot
+    D --> SYS_oven
+    D --> AG_geert
+
+    SYS_smelt -.implements.-> S_smelt
+    SYS_hak -.implements.-> S_hak
+    SYS_robot -.implements.-> S_meng
+    SYS_oven -.implements.-> S_bak
+    AG_geert -.implements.-> S_kleur
+end
+
+%% =====================================================
+%% EXECUTION LANE
+%% =====================================================
+subgraph EXECUTION["EXECUTION — Concrete uitvoering 2026-02-10"]
+    E_smelt["Actuation: Smelten"]
+    E_hak["Actuation: Hakken"]
+    E_meng["Actuation: Mengen"]
+    E_bak["Actuation: Bakken"]
+    E_obs["Observation: Kleur check"]
+
+    E_smelt --> E_hak --> E_meng --> E_bak --> E_obs
+
+    E_smelt -.correspondsToStep.-> S_smelt
+    E_hak   -.correspondsToStep.-> S_hak
+    E_meng  -.correspondsToStep.-> S_meng
+    E_bak   -.correspondsToStep.-> S_bak
+    E_obs   -.correspondsToStep.-> S_kleur
+
+    E_smelt -.madeByActuator.-> SYS_smelt
+    E_hak   -.madeByActuator.-> SYS_hak
+    E_meng  -.madeByActuator.-> SYS_robot
+    E_bak   -.madeByActuator.-> SYS_oven
+    E_obs   -.madeBySensor.-> AG_geert
+end
+
+%% =====================================================
+%% PROV ENTITY / DATA VIEW
+%% =====================================================
+subgraph ENTITIES["PROV ENTITIES — Ingrediënten, Tussenproducten, Resultaat"]
+    I_boter["Boter"]
+    I_choc["Chocolade"]
+    I_wal["Walnoten"]
+    I_suiker["Suiker"]
+    I_eieren["Eieren"]
+    I_bloem["Bloem"]
+
+    T_smelt["Gesmolten mengsel"]
+    T_hak["Gehakte walnoten"]
+    T_beslag["Beslag"]
+
+    R_brownies["Brownies"]
+    O_kleur["Kleur: lichtbruin"]
+end
+
+%% Usage (prov:used)
+E_smelt -->|prov:used| I_boter
+E_smelt -->|prov:used| I_choc
+E_hak   -->|prov:used| I_wal
+E_meng  -->|prov:used| T_smelt
+E_meng  -->|prov:used| T_hak
+E_meng  -->|prov:used| I_suiker
+E_meng  -->|prov:used| I_eieren
+E_meng  -->|prov:used| I_bloem
+E_bak   -->|prov:used| T_beslag
+
+%% Results
+E_smelt -->|sosa:hasResult| T_smelt
+E_hak   -->|sosa:hasResult| T_hak
+E_meng  -->|sosa:hasResult| T_beslag
+E_bak   -->|sosa:hasResult| R_brownies
+E_obs   -->|sosa:hasResult| O_kleur
+
+%% =====================================================
+%% PROV DERIVATION VIEW (KEY ADDITION)
+%% =====================================================
+T_smelt -.prov:wasDerivedFrom.-> I_boter
+T_smelt -.prov:wasDerivedFrom.-> I_choc
+
+T_hak   -.prov:wasDerivedFrom.-> I_wal
+
+T_beslag -.prov:wasDerivedFrom.-> T_smelt
+T_beslag -.prov:wasDerivedFrom.-> T_hak
+T_beslag -.prov:wasDerivedFrom.-> I_suiker
+T_beslag -.prov:wasDerivedFrom.-> I_eieren
+T_beslag -.prov:wasDerivedFrom.-> I_bloem
+
+R_brownies -.prov:wasDerivedFrom.-> T_beslag
