@@ -101,14 +101,7 @@ release-and-publish:
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
         git fetch origin
-        # create / switch to gh-pages branch; prefer remote gh-pages if it exists
-        if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
-          # ensure we have the remote branch locally
-          git fetch origin gh-pages:gh-pages
-          git checkout gh-pages
-        else
-          git checkout -B gh-pages
-        fi
+        git checkout gh-pages
         # remove all files except the .git directory so the branch only contains what we want
         find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + || true
         # minimal site files
@@ -120,16 +113,14 @@ release-and-publish:
         else
           echo "Warning: no index.html found in build-artifact or workspace"
         fi
-        # ensure build-artifact exists so Bamboo can publish artifact-release
-        mkdir -p build-artifact
-        if [ -f index.html ]; then cp -f index.html build-artifact/; fi
         git add index.html .nojekyll || true
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
   artifacts:
-    - name: artifact-release
+    - name: artifact-specificatie
       location: build-artifact
       pattern: '**/*.*'
+      shared: true
 
 verify-release:
   requirements: *requirements
