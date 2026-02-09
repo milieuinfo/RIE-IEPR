@@ -87,6 +87,7 @@ release-and-publish:
         # into build-artifact so the upcoming checkout won't overwrite it.
         mkdir -p build-artifact
         if [ -f index.html ]; then
+          echo "Found index.html in workspace root; moving to build-artifact for safekeeping"
           mv -f index.html build-artifact/
         fi
     - checkout
