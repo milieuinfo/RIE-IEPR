@@ -85,13 +85,8 @@ release-and-publish:
         # prepare gh-pages branch and clean working tree so it will only contain what we add
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
-        git fetch origin
-        if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
-          git fetch origin gh-pages:gh-pages
-          git checkout gh-pages
-        else
-          git checkout --orphan gh-pages || git checkout -B gh-pages
-        fi
+        git fetch origin gh-pages:gh-pages
+        git checkout gh-pages
         # remove all tracked and untracked files so branch only contains what we add
         # (use git to avoid accidentally deleting .git)
         git rm -rf . || true
@@ -114,6 +109,7 @@ release-and-publish:
         export GITHUB_REPO
         # minimal site files: copy artifact into index.html or fail
         if [ -f build-artifact/index.html ]; then
+          echo "Found index.html in build-artifact; copying to workspace root"
           cp -f build-artifact/index.html index.html
         elif [ -f index.html ]; then
           echo "Found index.html in workspace root; using that"
@@ -122,8 +118,9 @@ release-and-publish:
           exit 1
         fi
         git add index.html .nojekyll
+        echo "Committing and pushing to gh-pages branch of ${GITHUB_REPO}"
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
-        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force
+        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" origin/gh-pages --force
 
 verify-release:
   requirements: *requirements
