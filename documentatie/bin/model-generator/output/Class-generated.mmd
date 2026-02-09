@@ -11,18 +11,25 @@ classDiagram
         Date aangemaaktOp
         Date geldigVan
         ExploitatieLocatie locatie (FK)
+        string benaming
         Date geldigTot
     }
     class ExploitantContactpersoon {
         string uri
         Exploitant memberOf (FK)
-        Address[] address (FK)
+        string benaming
+        string mbox
+        string phone
+        string hasRole
+        Address address (FK)
         Date aangemaaktOp
         Date geldigVan
+        string name
         Date geldigTot
     }
     class Emissiepunt {
         string uri
+        string benaming
         string type
         Date geldigVan
         Date aangemaaktOp
@@ -34,19 +41,22 @@ classDiagram
         Date aangemaaktOp
         Date geldigVan
         Contactpersoon[] type (FK)
+        string benaming
         Address[] address (FK)
         Date geldigTot
     }
     class ExploitatieLocatie {
         string uri
         Date aangemaaktOp
+        string benaming
         Date geldigVan
+        Exploitant toegewezenAan (FK)
+        string beinvloedDoor
         ExploitatieLocatie[] afgeleidVan (FK)
         Date geldigTot
         ExploitatieLocatieIdentifier[] identifiers (FK)
     }
     class ExploitatieLocatieIdentifier {
-        string exploitatieLocatieUid (FK)
         Date geldigVan
         string schema
         string notation
@@ -54,19 +64,20 @@ classDiagram
         string value
     }
     class Grondwaterput {
+        string depth
     }
     class Installatie {
         string uri
         object[] hasSubSystem (FK)
+        string benaming
         Date aangemaaktOp
         Date geldigVan
         ExploitatieLocatie locatie (FK)
-        ExploitatieLocatie[] afgeleidVan (FK)
+        Installatie[] afgeleidVan (FK)
         Date geldigTot
         InstallatieIdentifier[] identifiers (FK)
     }
     class InstallatieIdentifier {
-        string installatieUid (FK)
         Date geldigVan
         string schema
         string notation
@@ -77,6 +88,7 @@ classDiagram
     }
     class Meetpunt {
         string uri
+        string benaming
         string type
         Date aangemaaktOp
         Date geldigVan
@@ -84,7 +96,6 @@ classDiagram
         MeetpuntIdentifier[] identifiers (FK)
     }
     class MeetpuntIdentifier {
-        string meetpuntUid (FK)
         Date geldigVan
         string schema
         string notation
@@ -97,6 +108,7 @@ classDiagram
     }
     class Ontrekkingspunt {
         string uri
+        string benaming
         string type
         Date geldigVan
         Date aangemaaktOp
@@ -106,6 +118,7 @@ classDiagram
     class Proces {
         string uri
         Date aangemaaktOp
+        string benaming
         Date geldigVan
         ExploitatieLocatie locatie (FK)
         object[] toegewezenAan (FK)
@@ -118,7 +131,6 @@ classDiagram
         ProcesIdentifier[] identifiers (FK)
     }
     class ProcesIdentifier {
-        string procesUid (FK)
         Date geldigVan
         string schema
         string notation
@@ -127,6 +139,7 @@ classDiagram
     }
     class ProcesVariabele {
         string uri
+        string benaming
         string type
         string eenheid
         string waarde
@@ -135,6 +148,8 @@ classDiagram
         Date geldigTot
     }
     class Schouw {
+        string diameter
+        string hoogte
     }
     class ISystem {
         <<interface>>
@@ -197,7 +212,7 @@ classDiagram
     Installatie --> Meetpunt : hasSubSystem
     Installatie --> Apparaat : hasSubSystem
     Installatie --> ExploitatieLocatie : locatie
-    Installatie --> ExploitatieLocatie : afgeleid van
+    Installatie --> Installatie : afgeleid van
     Emissiepunt --> ExploitatieLocatie : locatie
     Ontrekkingspunt --> ExploitatieLocatie : locatie
     Apparaat --> ExploitatieLocatie : locatie

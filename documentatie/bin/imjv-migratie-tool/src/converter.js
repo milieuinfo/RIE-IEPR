@@ -100,6 +100,9 @@ async function convertXmlToTurtle(xmlPath) {
                 parser = new GrondwaterParser(grondwaterData);
                 turtle = await parser.parse();
                 turtle = await ensureProcessInputOutputVars(turtle);
+                // Normalize subjects: any resource that is typed as riepr:Ontrekkingspunt
+                // or riepr:Grondwaterput should use the 'ontrekkingspunt' namespace
+                turtle = await normalizeOntrekkingspuntSubjects(turtle);
             }
 
         } else if (xmlPath.includes('water')) {
@@ -127,6 +130,64 @@ async function convertXmlToTurtle(xmlPath) {
         console.error(error.stack);
         return null;
     }
+}
+
+/**
+ * Replace subjects that are currently under the 'emissiepunt' namespace
+ * but typed as Ontrekkingspunt/Grondwaterput to use 'ontrekkingspunt'.
+ */
+async function normalizeOntrekkingspuntSubjects(turtle) {
+    const { namedNode } = N3.DataFactory;
+    const store = await parseTurtleString(turtle);
+
+    const rdfType = namedNode(`${NAMESPACES.rdf}type`);
+    const rieprOntrekkings = namedNode(`${NAMESPACES.riepr}Ontrekkingspunt`);
+    const rieprGrondwater = namedNode(`${NAMESPACES.riepr}Grondwaterput`);
+
+    const subjectsToReplace = new Map();
+
+    const subjects = Array.from(new Set(store.getQuads(null, null, null).map(q => q.subject.value)));
+    for (const s of subjects) {
+        if (s.startsWith(NAMESPACES.emissiepunt)) {
+            const subj = namedNode(s);
+            const types = store.getObjects(subj, rdfType, null);
+            for (const t of types) {
+                if (t.equals(rieprOntrekkings) || t.equals(rieprGrondwater)) {
+                    const local = s.substring(NAMESPACES.emissiepunt.length);
+                    const newUri = `${NAMESPACES.ontrekkingspunt}${local}`;
+                    subjectsToReplace.set(s, newUri);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (subjectsToReplace.size === 0) return turtle;
+
+    // Build new store with replacements
+    const newStore = new N3.Store();
+    const quads = store.getQuads(null, null, null);
+    for (const q of quads) {
+        let subj = q.subject;
+        let obj = q.object;
+
+        if (subj.termType === 'NamedNode' && subjectsToReplace.has(subj.value)) {
+            subj = namedNode(subjectsToReplace.get(subj.value));
+        }
+
+        if (obj.termType === 'NamedNode' && subjectsToReplace.has(obj.value)) {
+            obj = namedNode(subjectsToReplace.get(obj.value));
+        }
+
+        newStore.addQuad(subj, q.predicate, obj);
+    }
+
+    // Serialize back to Turtle with namespaces
+    return new Promise((resolve, reject) => {
+        const writer = new N3.Writer({ prefixes: NAMESPACES });
+        writer.addQuads(newStore.getQuads(null, null, null));
+        writer.end((err, res) => err ? reject(err) : resolve(res));
+    });
 }
 
 /**

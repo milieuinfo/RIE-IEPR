@@ -2,6 +2,7 @@ import fs from 'fs';
 import https from 'https';
 import { Parser, Store, NamedNode, Quad } from 'n3';
 import { NAMESPACES, PATHS, resolveProjectPath, PROPERTY_LABEL_OVERRIDES, PROPERTY_NAME_OVERRIDES, camelCaseToSnakeCase } from './config.js';
+import path from 'path';
 
 export class OntologyModel {
   constructor({ ontologyPath = PATHS.ontology, rulesPath = PATHS.rules, shapesPath = PATHS.shapes } = {}) {
@@ -115,7 +116,8 @@ export class OntologyModel {
     // Laad daarnaast automatisch een aantal externe ontologieën
     const remoteOntologies = [
       { url: 'https://www.w3.org/ns/legacy_locn.ttl', kind: 'external' },
-      { url: 'https://www.w3.org/ns/legacy_adms.ttl', kind: 'external' }
+      { url: 'https://www.w3.org/ns/legacy_adms.ttl', kind: 'external' },
+      { url: 'http://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt', kind: 'external' }
     ];
 
     for (const { url, kind } of remoteOntologies) {

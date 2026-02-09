@@ -14,6 +14,9 @@ export class Installatie implements ISystem {
   @jsonArrayMember(String, { name: 'hasSubSystem' })
   hasSubSystem?: string[];
 
+  @jsonArrayMember(String, { name: 'label' })
+  benaming!: string[];
+
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
 

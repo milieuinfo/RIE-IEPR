@@ -11,6 +11,10 @@ export class TurtleBuilder {
         for (const [key, value] of Object.entries(NAMESPACES)) {
             this.prefixes.set(key, value);
         }
+        // Ensure onttrekkingspunt prefix exists (used for Grondwaterput subjects)
+        if (!this.prefixes.has('ontrekkingspunt')) {
+            this.prefixes.set('ontrekkingspunt', 'https://data.riepr.omgeving.vlaanderen.be/id/ontrekkingspunt/');
+        }
     }
 
     triple(subject, predicate, object) {

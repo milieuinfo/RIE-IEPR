@@ -12,6 +12,7 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string locatie_id "prov:atLocation [FK]"
+        string benaming "rdfs:label"
     }
     ExploitantContactpersoon["contactpersoon"] {
         string uri "URI [PK]"
@@ -19,13 +20,19 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string member_of_id "http://www.w3.org/ns/org#memberOf [FK]"
+        string benaming "rdfs:label"
+        string mbox "http://xmlns.com/foaf/0.1/mbox"
+        string phone "http://xmlns.com/foaf/0.1/phone"
+        string has_role "http://www.w3.org/ns/org#hasRole"
         string address_id "http://www.w3.org/ns/locn#address [FK]"
+        string name "http://xmlns.com/foaf/0.1/name"
     }
     Emissiepunt["emissiepunt"] {
         string uri "URI [PK]"
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
         string type "dct:type"
         string locatie_id "prov:atLocation [FK]"
     }
@@ -35,6 +42,7 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string type_id "dct:type [FK]"
+        string benaming "rdfs:label"
         string address_id "http://www.w3.org/ns/locn#address [FK]"
     }
     ExploitatieLocatieToegewezenAanExploitant["exploitatie_locatie_toegewezen_aan_exploitant"] {
@@ -46,6 +54,8 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
+        string beinvloed_door "prov:wasInfluencedBy"
         string afgeleid_van_id "prov:wasDerivedFrom [FK]"
     }
     ExploitatieLocatieIdentifier["exploitatie_locatie_identifier"] {
@@ -59,6 +69,7 @@ erDiagram
     Grondwaterput["grondwaterput"] {
         string uri "URI [PK]"
         string ontrekkingspunt_id "Ontrekkingspunt [FK]"
+        string depth "dbo:depth"
     }
     Installatie["installatie"] {
         string uri "URI [PK]"
@@ -66,6 +77,7 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string has_sub_system_id "ssn:hasSubSystem [FK]"
+        string benaming "rdfs:label"
         string locatie_id "prov:atLocation [FK]"
         string afgeleid_van_id "prov:wasDerivedFrom [FK]"
     }
@@ -86,6 +98,7 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
         string type "dct:type"
     }
     MeetpuntIdentifier["meetpunt_identifier"] {
@@ -105,6 +118,7 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
         string type "dct:type"
         string locatie_id "prov:atLocation [FK]"
     }
@@ -113,6 +127,7 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
         string locatie_id "prov:atLocation [FK]"
         enum type "prov:wasDerivedFrom"
         string onderdeel_van_id "pplan:isStepOfPlan [FK]"
@@ -144,6 +159,7 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
+        string benaming "rdfs:label"
         string type "dct:type"
         string eenheid "qudt:hasUnit"
         string waarde "qudt:hasNumericValue"
@@ -151,6 +167,8 @@ erDiagram
     Schouw["schouw"] {
         string uri "URI [PK]"
         string emissiepunt_id "Emissiepunt [FK]"
+        string diameter "dbo:diameter"
+        string hoogte "dbo:height"
     }
 
     %% Relationships
@@ -167,7 +185,7 @@ erDiagram
     Installatie many to many Meetpunt : "hasSubSystem"
     Installatie many to many Apparaat : "hasSubSystem"
     Installatie one to one ExploitatieLocatie : "locatie"
-    Installatie many to many ExploitatieLocatie : "afgeleid van"
+    Installatie many to many Installatie : "afgeleid van"
     Emissiepunt one to one ExploitatieLocatie : "locatie"
     Ontrekkingspunt one to one ExploitatieLocatie : "locatie"
     Apparaat one to one ExploitatieLocatie : "locatie"
@@ -175,7 +193,7 @@ erDiagram
     Exploitant many to many ExploitantContactpersoon : "type"
     Exploitant many to many Adres : "address"
     ExploitantContactpersoon one to one Exploitant : "memberOf"
-    ExploitantContactpersoon many to many Adres : "address"
+    ExploitantContactpersoon many to one Adres : "address"
     Proces one to many ProcesToegewezenAan : "toegewezen aan"
     Installatie one to many ProcesToegewezenAan : ""
     Emissiepunt one to many ProcesToegewezenAan : ""

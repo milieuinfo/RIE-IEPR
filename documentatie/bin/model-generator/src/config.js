@@ -4,9 +4,9 @@
  * If set to false, the property will not be rendered for that class.
  */
 export const PROPERTY_RENDER_OVERRIDES = new Map([
-  ['ExploitatieLocatie', new Map([
-    [`${NAMESPACES.prov}wasAttributedTo`, false]
-  ])]
+  // Per-class render overrides (empty by default). Avoid disabling
+  // rendering of domain relationships here; use targeted overrides
+  // only when necessary.
 ]);
 import { NAMESPACES } from '../../common/src/constants.js';
 
@@ -83,8 +83,7 @@ export const MANY_TO_MANY_PROPERTIES = new Set([
  * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
  */
 export const PROPERTY_TYPE_OVERRIDES = new Map([
-  // Intentionally left empty; per-property interface overrides can be
-  // added here if needed but default behavior prefers concrete targets.
+
 ]);
 
 /**

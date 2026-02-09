@@ -14,6 +14,9 @@ export class Proces implements ISystem {
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
 
+  @jsonArrayMember(String, { name: 'label' })
+  benaming!: string[];
+
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 

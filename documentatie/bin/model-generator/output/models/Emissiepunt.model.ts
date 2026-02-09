@@ -1,6 +1,6 @@
 // Auto-generated models
 
-import { jsonObject, jsonMember } from 'typedjson';
+import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
 
@@ -8,6 +8,9 @@ import type { ISystem } from './System.interface';
 export class Emissiepunt implements ISystem {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
+
+  @jsonArrayMember(String, { name: 'label' })
+  benaming!: string[];
 
   @jsonMember(String, { name: 'type' })
   type?: string;
