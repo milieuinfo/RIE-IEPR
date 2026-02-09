@@ -79,16 +79,8 @@ release-and-publish:
     - script: |
         #!/bin/bash
         set -e
-        # Read Bamboo variables safely (use quotes so shell doesn't try to expand a non-substituted placeholder)
         SECRET_GITHUB_TOKEN='${bamboo.github_secret_access_token}'
-        GITHUB_REPO='${bamboo.github_repo}'
-        # If Bamboo didn't substitute the placeholders they will still contain '${bamboo'
-        if echo "$SECRET_GITHUB_TOKEN" | grep -q "\${bamboo" || [ -z "$SECRET_GITHUB_TOKEN" ]; then
-          echo "ERROR: Bamboo plan variable 'secret_github_token' is not set or not available to this job"; exit 1
-        fi
-        if echo "$GITHUB_REPO" | grep -q "\${bamboo" || [ -z "$GITHUB_REPO" ]; then
-          echo "ERROR: Bamboo plan variable 'github_repo' is not set or not available to this job (expected owner/repo)"; exit 1
-        fi
+        GITHUB_REPO='milieuinfo/RIE-IEPR'
         export SECRET_GITHUB_TOKEN
         export GITHUB_REPO
         git config user.email "bamboo@ci"
