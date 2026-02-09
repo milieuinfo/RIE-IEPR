@@ -100,8 +100,14 @@ release-and-publish:
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
         git fetch origin
-        # create / switch to gh-pages branch
-        git checkout -B gh-pages
+        # create / switch to gh-pages branch; prefer remote gh-pages if it exists
+        if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+          # ensure we have the remote branch locally
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+        else
+          git checkout -B gh-pages
+        fi
         # remove all files except the .git directory so the branch only contains what we want
         find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + || true
         # minimal site files
