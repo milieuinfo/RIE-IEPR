@@ -1,0 +1,211 @@
+%% Auto-generated from OWL/SHACL
+classDiagram
+    class Adres {
+        string uri
+        string straat
+        string stad
+        string postcode
+    }
+      class Apparaat {
+        string uri
+        Date aangemaaktOp
+        Date geldigVan
+        ExploitatieLocatie locatie (FK)
+        string benaming
+        Date geldigTot
+    }
+      class ExploitantContactpersoon {
+        string uri
+        IAgent memberOf (FK)
+        string benaming
+        string mbox
+        string phone
+        string hasRole
+        Address address (FK)
+        Date aangemaaktOp
+        Date geldigVan
+        string name
+        Date geldigTot
+    }
+      class Emissiepunt {
+        string uri
+        string benaming
+        string type
+        Date geldigVan
+        Date aangemaaktOp
+        ExploitatieLocatie locatie (FK)
+        Date geldigTot
+    }
+      class Exploitant {
+        string uri
+        Date aangemaaktOp
+        Date geldigVan
+        Contactpersoon[] type (FK)
+        string benaming
+        Address[] address (FK)
+        Date geldigTot
+    }
+      class ExploitatieLocatie {
+        string uri
+        Date aangemaaktOp
+        string benaming
+        Date geldigVan
+        IAgent toegewezenAan (FK)
+        string beinvloedDoor
+        ExploitatieLocatie[] afgeleidVan (FK)
+        Date geldigTot
+        ExploitatieLocatieIdentifier[] identifiers (FK)
+    }
+      class ExploitatieLocatieIdentifier {
+        Date geldigVan
+        string schema
+        string notation
+        Date geldigTot
+        string value
+    }
+      class Grondwaterput {
+        string uri
+        double depth
+    }
+      class Installatie {
+        string uri
+        ISystem[] hasSubSystem (FK)
+        string benaming
+        Date aangemaaktOp
+        Date geldigVan
+        ExploitatieLocatie locatie (FK)
+        ISystem[] afgeleidVan (FK)
+        Date geldigTot
+        InstallatieIdentifier[] identifiers (FK)
+    }
+      class InstallatieIdentifier {
+        Date geldigVan
+        string schema
+        string notation
+        Date geldigTot
+        string value
+    }
+      class Lozingspunt {
+    }
+      class Meetpunt {
+        string uri
+        string benaming
+        string type
+        Date aangemaaktOp
+        Date geldigVan
+        Date geldigTot
+        MeetpuntIdentifier[] identifiers (FK)
+    }
+      class MeetpuntIdentifier {
+        Date geldigVan
+        string schema
+        string notation
+        Date geldigTot
+        string value
+    }
+      class Observatie {
+        string uri
+        ISystem hasFeatureOfInterest (FK)
+    }
+      class Onttrekkingspunt {
+        string uri
+        string benaming
+        string type
+        Date geldigVan
+        Date aangemaaktOp
+        ExploitatieLocatie locatie (FK)
+        Date geldigTot
+    }
+      class Proces {
+        string uri
+        Date aangemaaktOp
+        string benaming
+        Date geldigVan
+        ExploitatieLocatie locatie (FK)
+        IAgent[] toegewezenAan (FK)
+        Type type
+        ProcesVariabele[] hasInputVar (FK)
+        ProcesVariabele[] hasOutputVar (FK)
+        ISystem onderdeelVan (FK)
+        ISystem[] gaatVoorafAan (FK)
+        Date geldigTot
+        ProcesIdentifier[] identifiers (FK)
+    }
+      class ProcesIdentifier {
+        Date geldigVan
+        string schema
+        string notation
+        Date geldigTot
+        string value
+    }
+      class ProcesVariabele {
+        string uri
+        string benaming
+        string type
+        string eenheid
+        string waarde
+        Date geldigVan
+        Date aangemaaktOp
+        Date geldigTot
+    }
+      class Schouw {
+        double diameter
+        double hoogte
+    }
+      class ISystem {
+        <<interface>>
+        string uri
+        ISystem[] afgeleidVan
+        IAgent[] toegewezenAan
+    }
+    class IAgent {
+        <<interface>>
+        string uri
+    }
+    class ISpatialObject {
+        <<interface>>
+        string uri
+    }
+
+    Emissiepunt <|-- Schouw
+    Emissiepunt <|-- Lozingspunt
+    ISystem <|.. Apparaat
+    ISystem <|.. Emissiepunt
+    ISystem <|.. Installatie
+    ISystem <|.. Meetpunt
+    ISystem <|.. Onttrekkingspunt
+    ISystem <|.. Proces
+    IAgent <|.. Apparaat
+    IAgent <|.. Emissiepunt
+    IAgent <|.. Exploitant
+    IAgent <|.. Installatie
+    IAgent <|.. Meetpunt
+    IAgent <|.. Onttrekkingspunt
+    IAgent <|.. Proces
+    ISpatialObject <|.. Apparaat
+    ISpatialObject <|.. Emissiepunt
+    ISpatialObject <|.. Meetpunt
+    ISpatialObject <|.. Onttrekkingspunt
+    Proces --> ExploitatieLocatie : locatie
+    Proces --> ISystem : toegewezen aan
+    Proces --> ProcesVariabele : hasInputVar
+    Proces --> ProcesVariabele : hasOutputVar
+    Proces --> ISystem : onderdeel van
+    Proces --> ISystem : gaat vooraf aan
+    ExploitatieLocatie --> IAgent : toegewezen aan
+    ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
+    Installatie --> ISystem : hasSubSystem
+    Installatie --> ExploitatieLocatie : locatie
+    Installatie --> ISystem : afgeleid van
+    Emissiepunt --> ExploitatieLocatie : locatie
+    Onttrekkingspunt --> ExploitatieLocatie : locatie
+    Apparaat --> ExploitatieLocatie : locatie
+    Observatie --> ISystem : hasFeatureOfInterest
+    Exploitant --> ExploitantContactpersoon : type
+    Exploitant --> Adres : address
+    ExploitantContactpersoon --> IAgent : memberOf
+    ExploitantContactpersoon --> Adres : address
+    Proces --> ProcesIdentifier : identifiers
+    ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
+    Installatie --> InstallatieIdentifier : identifiers
+    Meetpunt --> MeetpuntIdentifier : identifiers

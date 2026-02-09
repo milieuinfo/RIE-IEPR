@@ -1,0 +1,33 @@
+@prefix ex:   <http://example.org/min/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+ex:p
+    rdf:type sosa:Property ;
+    sosa:isPropertyOf ex:foi ;
+    sosa:isObservedBy ex:sensor ;
+    sosa:wasObservedBy ex:obs ;
+    sosa:hasProcedure ex:proc ;
+    sosa:isActedOnBy ex:act ;
+    sosa:wasActedOnBy ex:actuation .
+
+ex:foi rdf:type sosa:FeatureOfInterest .
+ex:sensor rdf:type sosa:Sensor .
+ex:obs rdf:type sosa:Observation .
+ex:proc rdf:type sosa:Procedure .
+ex:act rdf:type sosa:Actuator .
+ex:actuation rdf:type sosa:Actuation .
+
+ex:ec
+    rdf:type sosa:ExecutionCollection ;
+    sosa:usedProcedure ex:proc ;
+    sosa:hasFeatureOfInterest ex:foi ;
+    sosa:hasUltimateFeatureOfInterest ex:foi ;
+    sosa:madeBySystem ex:sys ;
+    sosa:hasMember ex:exec .
+
+ex:exec rdf:type sosa:Execution .
+ex:sys rdf:type sosa:System .

@@ -1,0 +1,28 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+
+# Minimale LOCN-stub voor het RIE-IEPR datamodel.
+# We definiëren enkel de Address-klasse en een aantal
+# veelgebruikte eigenschappen met domein/range zodat
+# ze als kolommen op de Address-tabel kunnen verschijnen.
+
+locn:Address a owl:Class ;
+    rdfs:label "Address"@en .
+
+locn:thoroughfare a rdf:Property ;
+    rdfs:label "thoroughfare"@en ;
+    rdfs:domain locn:Address ;
+    rdfs:range xsd:string .
+
+locn:postName a rdf:Property ;
+    rdfs:label "post name"@en ;
+    rdfs:domain locn:Address ;
+    rdfs:range xsd:string .
+
+locn:postCode a rdf:Property ;
+    rdfs:label "post code"@en ;
+    rdfs:domain locn:Address ;
+    rdfs:range xsd:string .

@@ -1,0 +1,69 @@
+[ {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
+  "label" : "Emissiepunt koekjesoven"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie",
+  "label" : "Locatie ACTIVITEIT_001"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "created" : "2020-07-30T10:00:00Z",
+  "issued" : "2020-07-30",
+  "valid" : "2030-12-31",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/meel",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/koekjes",
+  "label" : "Koekjes maken",
+  "status" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief",
+  "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/meel",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/deeg",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
+  "label" : "Koekjesdeeg maken"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_1",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/meel",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
+  "label" : "Ingrediënten mengen"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_2",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
+  "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_1",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
+  "label" : "Overbrenging",
+  "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_3",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/deeg",
+  "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_2",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
+  "label" : "Deeg laten rusten"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_002",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/deeg",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/koekjes",
+  "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
+  "label" : "Koekjes bakken"
+}, {
+  "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_003",
+  "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+  "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
+  "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
+  "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_002",
+  "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
+  "label" : "Rookgas afvoeren",
+  "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
+  "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD"
+} ]

@@ -1,0 +1,64 @@
+flowchart LR
+    subgraph installatie6["Stroomboogoven"]
+    emissiepunt0(["Schouw 1"])
+    style emissiepunt0 color:white,fill:#7ED321,stroke:#5A9E17,color:#fff
+    emissiepunt1(["Schouw 2"])
+    style emissiepunt1 color:white,fill:#7ED321,stroke:#5A9E17,color:#fff
+    step1["Stroomboogoven (Apparaat: Stroomboogoven)"]
+    style step1 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    end
+    style installatie6 color:black,fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie7["Gieterij"]
+    emissiepunt4(["Schouw 5"])
+    style emissiepunt4 color:white,fill:#7ED321,stroke:#5A9E17,color:#fff
+    step8["Gieterijmachine (Apparaat: Gieterijmachine)"]
+    style step8 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    end
+    style installatie7 color:black,fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie8["VOD-installatie"]
+    emissiepunt3(["Schoorsteen Ketels"])
+    style emissiepunt3 color:white,fill:#7ED321,stroke:#5A9E17,color:#fff
+    subgraph step3["Decarburisatie"]
+    step4["Toevoeginstallatie VOD (Apparaat: Toevoeginstallatie VOD)"]
+    style step4 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step5["Zuiveringsapparaat Toevoeginstallatie (Apparaat: Zuiveringsapparaat Toevoeginstallatie)"]
+    style step5 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step6["Afwerkstand (Apparaat: Afwerkstand)"]
+    style step6 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    step7["Zuiveringsapparaat Afwerkstand (Apparaat: Zuiveringsapparaat Afwerkstand)"]
+    style step7 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    end
+    style step3 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    end
+    style installatie8 color:black,fill:#D3D3D3,stroke:#808080,color:#000
+    subgraph installatie9["AOD-installatie"]
+    emissiepunt2(["Schouw 3"])
+    style emissiepunt2 color:white,fill:#7ED321,stroke:#5A9E17,color:#fff
+    step2["Argon-zuurstofontkoling (Apparaat: Argon-zuurstofontkoling)"]
+    style step2 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    end
+    style installatie9 color:black,fill:#D3D3D3,stroke:#808080,color:#000
+    step0["Toevoeging van grondstoffen"]
+    style step0 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    stof0(["IJzererts"])
+    style stof0 color:white,fill:#FF9500,stroke:#CC7700,color:#fff
+    stof1(["Staalplaat"])
+    style stof1 color:white,fill:#FF9500,stroke:#CC7700,color:#fff
+    stof2(["Grondstoffenmengsel"])
+    style stof2 color:white,fill:#FF9500,stroke:#CC7700,color:#fff
+
+    step0 --> step1
+    step1 --> step2
+    step2 --> step3
+    step4 --> step5
+    step6 --> step7
+    step3 --> step8
+    step0 -.->|Afgassing| emissiepunt0
+    step1 -.->|Afgassing| emissiepunt1
+    step2 -.->|Afgassing| emissiepunt2
+    step5 -.->|Afgassing| emissiepunt3
+    step7 -.->|Afgassing| emissiepunt3
+    step8 -.->|Afgassing| emissiepunt4
+    stof0 --> step0
+    step0 --> stof2
+    step8 --> stof1

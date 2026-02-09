@@ -1,0 +1,17 @@
+{
+  "name": "@riepr/specificatie",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run generate:bikeshed",
+    "generate:bikeshed": "node index.js",
+    "build:bikeshed": "npm run generate:bikeshed && bikeshed spec ontologie.bs index.html",
+    "watch:bikeshed": "bikeshed watch ontologie.bs",
+    "build:docker": "npm run start && docker build -t specificatie:latest . && docker run -v .:/app specificatie:latest"
+  },
+  "dependencies": {
+    "n3": "^1.17.3"
+  }
+}

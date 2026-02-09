@@ -1,0 +1,25 @@
+@prefix apparaat:    <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
+@prefix geosparql:   <http://www.opengis.net/ont/geosparql#> .
+@prefix installatie: <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix ogc:         <http://www.opengis.net/ont/geosparql#> .
+@prefix owl:         <http://www.w3.org/2002/07/owl#> .
+@prefix p-plan:      <http://purl.org/net/p-plan#> .
+@prefix prov:        <http://www.w3.org/ns/prov#> .
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix sosa:        <http://www.w3.org/ns/sosa/> .
+@prefix sp:          <http://www.w3.org/ns/sosa/prov/> .
+@prefix ssn:         <http://www.w3.org/ns/ssn/> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+apparaat:AP_001  rdf:type      geosparql:Feature , geosparql:SpatialObject , riepr:Apparaat;
+        rdfs:label             "Zuiveringsapparaat 1"@nl;
+        geosparql:hasGeometry  <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...> .
+
+<file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...>
+        rdf:type  geosparql:Geometry , geosparql:SpatialObject .
+
+installatie:GPBV_12345
+        rdf:type     riepr:Installatie;
+        rdfs:member  apparaat:AP_001 , <file:///Users/maximvdw/Library/CloudStorage/OneDrive-Vlaamseoverheid-Office365/Projects/RIE-IEPR/Analyse%20-%20Datamodel/RIE-IEPR/...> .

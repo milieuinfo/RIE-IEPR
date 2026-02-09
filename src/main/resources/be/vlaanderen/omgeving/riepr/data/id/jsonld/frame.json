@@ -1,0 +1,514 @@
+{
+  "@context": {
+    "uri": "@id",
+    "type": {
+      "@type": "@id",
+      "@id": "@type",
+      "@container": "@set"
+    },
+    "isPrecededBy": {
+      "@type": "@id",
+      "@id": "http://purl.org/net/p-plan#isPrecededBy"
+    },
+    "isStepOfPlan": {
+      "@type": "@id",
+      "@id": "http://purl.org/net/p-plan#isStepOfPlan"
+    },
+    "asWKT": {
+      "@id": "http://www.opengis.net/ont/geosparql#asWKT",
+      "@type": "http://www.opengis.net/ont/geosparql#wktLiteral"
+    },
+    "hasGeometry": {
+      "@type": "@id",
+      "@id": "http://www.opengis.net/ont/geosparql#hasGeometry"
+    },
+    "label": {
+      "@language": "nl",
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "en_label": {
+      "@language": "en",
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "comment": {
+      "@language": "nl",
+      "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
+    },
+    "member": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/2000/01/rdf-schema#member"
+    },
+    "seeAlso": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+    },
+    "sameAs": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/2002/07/owl#sameAs"
+    },
+    "notation": {
+      "@id": "http://www.w3.org/2004/02/skos/core#notation"
+    },
+    "identifier": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/adms#identifier"
+    },
+    "atLocation": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/prov#atLocation"
+    },
+    "hadPrimarySource": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/prov#hadPrimarySource"
+    },
+    "startDate" : {
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+      "@id" : "http://schema.org/startDate"
+    },
+    "wasAssociatedWith": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/prov#wasAssociatedWith"
+    },
+    "isProxyFor": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/sosa/isProxyFor"
+    },
+    "ssn-implements": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/ssn/implements"
+    },
+    "implements": {
+      "@type": "@id",
+      "@id": "http://www.w3.org/ns/sosa/implements"
+    },
+    "quantityKind": {
+      "@id": "http://qudt.org/schema/qudt/quantityKind",
+      "@type": "@id"
+    },
+    "unit": {
+      "@id": "http://qudt.org/schema/qudt/unit",
+      "@type": "@id"
+    },
+    "startedAtTime": {
+      "@id": "http://www.w3.org/ns/prov#startedAtTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "endTime": {
+      "@id": "http://www.w3.org/ns/sosa/endTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "startTime": {
+      "@id": "http://www.w3.org/ns/sosa/startTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "endedAtTime": {
+      "@id": "http://www.w3.org/ns/prov#endedAtTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+
+    "wasInfluencedBy": {
+      "@id": "http://www.w3.org/ns/prov#wasInfluencedBy",
+      "@type": "@id"
+    },
+    "influenced": {
+      "@id": "http://www.w3.org/ns/prov#influenced",
+      "@type": "@id"
+    },
+    "used": {
+      "@id": "http://www.w3.org/ns/prov#used",
+      "@type": "@id"
+    },
+    "wasAttributedTo": {
+      "@id": "http://www.w3.org/ns/prov#wasAttributedTo",
+      "@type": "@id"
+    },
+
+    "hasOutputVar ": {
+      "@id": "http://purl.org/net/p-plan#hasOutputVar",
+      "@type": "@id"
+    },
+    "phenomenonTime": {
+      "@id": "http://www.w3.org/ns/sosa/phenomenonTime",
+      "@type": "@id"
+    },
+    "observedProperty": {
+      "@id": "http://www.w3.org/ns/sosa/observedProperty",
+      "@type": "@id"
+    },
+    "isResultOf": {
+      "@id": "http://www.w3.org/ns/sosa/isResultOf",
+      "@type": "@id"
+    },
+    "isFeatureOfInterestOf": {
+      "@id": "http://www.w3.org/ns/sosa/isFeatureOfInterestOf",
+      "@type": "@id"
+    },
+    "hasResult": {
+      "@id": "http://www.w3.org/ns/sosa/hasResult",
+      "@type": "@id"
+    },
+    "hasFeatureOfInterest": {
+      "@id": "http://www.w3.org/ns/sosa/hasFeatureOfInterest",
+      "@type": "@id"
+    },
+    "wasGeneratedBy": {
+      "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
+      "@type": "@id"
+    },
+    "generated": {
+      "@id": "http://www.w3.org/ns/prov#generated",
+      "@type": "@id"
+    },
+    "hasDeployment": {
+      "@id": "http://www.w3.org/ns/sosa/hasDeployment",
+      "@type": "@id"
+    },
+
+
+    "value": {
+      "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+    },
+    "hasInputVar": {
+      "@id": "http://purl.org/net/p-plan#hasInputVar",
+      "@type": "@id"
+    },
+    "isInputVarOf": {
+      "@id": "http://purl.org/net/p-plan#isInputVarOf",
+      "@type": "@id"
+    },
+    "isOutputVarOf,": {
+      "@id": "http://purl.org/net/p-plan#isOutputVarOf",
+      "@type": "@id"
+    },
+    "isVariableOfPlan": {
+      "@id": "http://purl.org/net/p-plan#isVariableOfPlan",
+      "@type": "@id"
+    },
+
+    "correspondsToVariable": {
+      "@id": "http://purl.org/net/p-plan#correspondsToVariable",
+      "@type": "@id"
+    },
+    "correspondsToStep": {
+      "@id": "http://purl.org/net/p-plan#correspondsToStep",
+      "@type": "@id"
+    },
+    "inXSDDateTime": {
+      "@id": "http://www.w3.org/2006/time#inXSDDateTime",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "hasEnd": {
+      "@id": "http://www.w3.org/2006/time#hasEnd",
+      "@type": "@id"
+    },
+    "hasBeginning": {
+      "@id": "http://www.w3.org/2006/time#hasBeginning",
+      "@type": "@id"
+    },
+    "qualifiedAttribution": {
+      "@id": "http://www.w3.org/ns/prov#qualifiedAttribution",
+      "@type": "@id"
+    },
+    "qualifiedInfluence": {
+      "@id": "http://www.w3.org/ns/prov#qualifiedInfluence",
+      "@type": "@id"
+    },
+    "deployedAsset": {
+      "@id": "http://www.w3.org/ns/sosa/deployedAsset",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "agent": {
+      "@id": "http://www.w3.org/ns/prov#agent",
+      "@type": "@id"
+    },
+    "hadRole": {
+      "@id": "http://www.w3.org/ns/prov#hadRole",
+      "@type": "@id"
+    },
+    "hadPlan": {
+      "@id": "http://www.w3.org/ns/prov#hadPlan",
+      "@type": "@id"
+    },
+    "hasProxy": {
+      "@id": "http://www.w3.org/ns/sosa/hasProxy",
+      "@type": "@id"
+    },
+    "wasDerivedFrom": {
+      "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
+      "@type": "@id"
+    },
+    "hasSerialization": {
+      "@id": "http://www.opengis.net/ont/geosparql#hasSerialization",
+      "@type": "http://www.opengis.net/ont/geosparql#WKTLiteral"
+    },
+    "status": {
+      "@id": "http://www.w3.org/ns/adms#status",
+      "@type": "@id"
+    },
+    "deployedOnPlatform": {
+      "@id": "http://www.w3.org/ns/sosa/deployedOnPlatform",
+      "@type": "@id"
+    },
+    "valid": {
+      "@id": "http://purl.org/dc/terms/valid",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "issued": {
+      "@id": "http://purl.org/dc/terms/issued",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "created": {
+      "@id": "http://purl.org/dc/terms/created",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "madeBySensor": {
+      "@id": "http://www.w3.org/ns/sosa/madeBySensor",
+      "@type": "@id"
+    },
+    "dct_type": {
+      "@id": "http://purl.org/dc/terms/type",
+      "@type": "@id"
+    },
+    "source": {
+      "@id": "http://purl.org/dc/terms/source",
+      "@type": "@id"
+    },
+    "creator": {
+      "@id": "http://purl.org/dc/terms/creator",
+      "@type": "@id"
+    },
+    "inputFor": {
+      "@id": "http://www.w3.org/ns/sosa/inputFor",
+      "@type": "@id"
+    },
+    "outputFor": {
+      "@id": "http://www.w3.org/ns/sosa/outputFor",
+      "@type": "@id"
+    },
+    "hasSubSystem": {
+      "@id": "http://www.w3.org/ns/sosa/hasSubSystem",
+      "@type": "@id"
+    },
+    "actedOnBehalfOf": {
+      "@id": "http://www.w3.org/ns/prov#actedOnBehalfOf",
+      "@type": "@id"
+    },
+    "usedProcedure": {
+      "@id": "http://www.w3.org/ns/sosa/usedProcedure",
+      "@type": "@id"
+    }
+  },
+  "@type": [
+
+
+    "http://dbpedia.org/ontology/ChemicalSubstance",
+    "http://dbpedia.org/ontology/Project",
+    "http://dbpedia.org/ontology/UnitOfWork",
+    "http://purl.org/net/p-plan#Activity",
+    "http://purl.org/net/p-plan#Entity",
+    "http://purl.org/net/p-plan#Plan",
+    "http://purl.org/net/p-plan#Step",
+    "http://purl.org/net/p-plan#Variable",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Apparaat",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#IIOA",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+    "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Stof",
+    "http://www.opengis.net/ont/geosparql#Feature",
+    "http://www.opengis.net/ont/geosparql#SpatialObject",
+    "http://www.opengis.net/ont/geosparql#SpatialObjectCollection",
+    "http://www.w3.org/2004/02/skos/core#Concept",
+    "http://www.w3.org/2006/time#Instant",
+    "http://www.w3.org/2006/time#Interval",
+    "http://www.w3.org/ns/org#Organization",
+    "http://www.w3.org/ns/prov#Activity",
+    "http://www.w3.org/ns/prov#Agent",
+    "http://www.w3.org/ns/prov#AgentInfluence",
+    "http://www.w3.org/ns/prov#Association",
+    "http://www.w3.org/ns/prov#Attribution",
+    "http://www.w3.org/ns/prov#Entity",
+    "http://www.w3.org/ns/prov#Influence",
+    "http://www.w3.org/ns/prov#Location",
+    "http://www.w3.org/ns/prov#Plan",
+    "http://www.w3.org/ns/prov#Role",
+    "http://www.w3.org/ns/sosa/Deployment",
+    "http://www.w3.org/ns/sosa/Platform",
+    "http://www.w3.org/ns/sosa/Execution",
+    "http://www.w3.org/ns/sosa/Observation",
+    "http://www.w3.org/ns/sosa/Sensor",
+    "http://www.w3.org/ns/sosa/System",
+    "http://www.w3.org/ns/ssn/System",
+    "http://xmlns.com/foaf/0.1/Person"
+  ],
+  "@embed": "@always",
+  "atLocation": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isStepOfPlan": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hadPrimarySource": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "wasInfluencedBy": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "wasAttributedTo": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "wasDerivedFrom": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isPrecededBy": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "used": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "influenced": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasProxy": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "wasAssociatedWith": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "member": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isProxyFor": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasOutputVar ": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "phenomenonTime": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "observedProperty": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isResultOf": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isFeatureOfInterestOf": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasResult": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasFeatureOfInterest": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "wasGeneratedBy": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "generated": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "endedAtTime": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasInputVar": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "correspondsToVariable": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "correspondsToStep": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasDeployment": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasEnd": {
+    "@embed": "@always",
+    "@omitDefault": true
+  },
+  "hasBeginning": {
+    "@embed": "@always",
+    "@omitDefault": true
+  },
+  "qualifiedAttribution": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "agent": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hadRole": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hadPlan": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "qualifiedInfluence": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "deployedAsset": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "hasGeometry": {
+    "@embed": "@always",
+    "@omitDefault": true
+  },
+  "status": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "deployedOnPlatform": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isInputVarOf": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isOutputVarOf,": {
+    "@embed": "@never",
+    "@omitDefault": true
+  },
+  "isVariableOfPlan": {
+    "@embed": "@never",
+    "@omitDefault": true
+  }
+}
+

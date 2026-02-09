@@ -1,0 +1,111 @@
+---
+config:
+    layout: elk
+    theme: default
+---
+flowchart LR
+    %% Styles
+    classDef mainClasses fill:green,stroke:white,stroke-width:2px,color:white;
+    classDef instance fill:lightgreen,stroke:white,stroke-width:2px,color:darkgreen;
+ 
+    %% sosa
+    SOSA_OBSERVATION([sosa:Observation])
+    SOSA_SENSOR([sosa:Sensor])
+    SOSA_OBSERVABLE_PROPERTY([sosa:ObservableProperty])
+    SOSA_PROCEDURE([sosa:Procedure])
+    SOSA_SYSTEM([sosa:System])
+    %% prov-o
+    PROV_ACTIVITY([prov:Activity])
+    PROV_AGENT([prov:Agent])
+    PROV_ENTITY([prov:Entity])
+    %% p-plan
+    PPLAN_PLAN([p-plan:Plan])
+    PPLAN_STEP([p-plan:Step])
+    PPLAN_STEP -. rdfs:subClassOf .-> PROV_ACTIVITY
+    PPLAN_PLAN -. rdfs:subClassOf .-> PROV_ENTITY
+    %% geosparql
+    GEO_GEOMETRY([geo:Geometry])
+    GEO_SPATIAL_OBJECT([geo:SpatialObject])
+    GEO_SPATIAL_OBJECT_COLLECTION([geo:SpatialObjectCollection])
+    %% schema.org
+    SCHEMA_PLACE([schema:Place])
+    %% lloc
+    LLOC_LOCATION([lloc:Location])
+ 
+    BEDRIJF([Bedrijf])
+    VESTIGING([Vestiging])
+    OBSERVATIE([Observatie])
+    EMISSIEPUNT([Emissiepunt])
+    MEETPUNT([Meetpunt])
+    VERBRUIK([Verbruik])
+    INSTALLATIE([Installatie])
+    APPARAAT([Apparaat])
+    LOCATIE([Locatie])
+    EMISSIE([Emissie])
+    LUCHTEMISSIEPUNT([Luchtemissiepunt])
+    WATEREMISSIEPUNT([Wateremissiepunt])
+    GRONDWATEREMISSIEPUNT([Grondwateremissiepunt])
+     
+    %% Class hierarchie
+    %% LUCHTEMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
+    %% WATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIE
+    %% GRONDWATEREMISSIEPUNT -. rdfs:subClassOf .-> EMISSIEPUNT
+    %% VERBRUIK -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
+    %% EMISSIE -. rdfs:subClassOf .-> SOSA_OBSERVABLE_PROPERTY
+    %% INSTALLATIE -. rdfs:subClassOf .-> SOSA_SYSTEM
+    %% INSTALLATIE -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT_COLLECTION
+    %% BEDRIJF -. rdfs:subClassOf .-> PROV_AGENT
+    %% VESTIGING -. rdfs:subClassOf .-> PROV_AGENT
+    %% ACTIVITEIT -. rdfs:subClassOf .-> PPLAN_PLAN
+    %% PROCEDURE -. rdfs:subClassOf .-> SOSA_PROCEDURE
+    %% APPARAAT -. rdfs:subClassOf .-> SOSA_SYSTEM
+    %% APPARAAT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% LOCATIE -. rdfs:subClassOf .-> SCHEMA_PLACE
+    %% LOCATIE -. rdfs:subClassOf .-> GEO_GEOMETRY
+    %% PPLAN_STEP -. rdfs:subClassOf .-> PPLAN_STEP
+    %% OBSERVATIE -. rdfs:subClassOf .-> SOSA_OBSERVATION
+    %% EMISSIEPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% MEETPUNT -. rdfs:subClassOf .-> GEO_SPATIAL_OBJECT
+    %% MEETPUNT -. rdfs:subClassOf .-> SOSA_SENSOR
+    
+    %% -- Activiteit
+    ACTIVITEIT([Activiteit])
+    ACTIVITEIT -->|prov:wasAssociatedWith| VESTIGING
+    ACTIVITEIT -->|prov:wasAssociatedWith| BEDRIJF
+    ACTIVITEIT -->|prov:hadPlan| PROCEDURE
+    class ACTIVITEIT mainClasses;
+    %% -- Procedures
+    PROCEDURE([Procedure])
+    VERWERKINGS_PROCEDURE([Verwerkingsprocedure])
+    EMISSIE_PROCEDURE([Emissieprocedure])
+    VERBRUIKS_PROCEDURE([Verbruiksprocedure])
+    METINGS_PROCEDURE([Metingsprocedure])
+    STROOM_PROCEDURE([StroomProcedure])
+    PROCEDURE -->|rdf:type| PPLAN_PLAN
+    VERWERKINGS_PROCEDURE -->|rdf:type| PROCEDURE
+    METINGS_PROCEDURE -->|rdf:type| PROCEDURE
+    VERBRUIKS_PROCEDURE -->|rdf:type|PROCEDURE
+    EMISSIE_PROCEDURE -->|rdf:type| PROCEDURE
+    STROOM_PROCEDURE -->|rdf:type| PROCEDURE
+    class VERWERKINGS_PROCEDURE,METINGS_PROCEDURE,VERBRUIKS_PROCEDURE,EMISSIE_PROCEDURE,STROOM_PROCEDURE instance;
+    PPLAN_STEP -->|p-plan:isStepOfPlan| ACTIVITEIT
+    PPLAN_STEP -->|p-plan:isPrecededBy| PPLAN_STEP
+    class PROCEDURE,PPLAN_STEP mainClasses;
+ 
+    MEETPUNT -->|sosa:isProxyFor| EMISSIEPUNT
+    OBSERVATIE -->|sosa:observedProperty| SOSA_OBSERVABLE_PROPERTY
+    OBSERVATIE -->|sosa:madeBySensor| MEETPUNT
+    OBSERVATIE -->|prov:wasGeneratedBy| PPLAN_STEP
+    VESTIGING -->|geo:sfContains| INSTALLATIE
+    INSTALLATIE -->|rdfs:member| GEO_SPATIAL_OBJECT
+    INSTALLATIE -->|geo:sfContains| APPARAAT
+    EMISSIEPUNT -->|geo:hasGeometry| LOCATIE
+    MEETPUNT -->|geo:hasGeometry| LOCATIE
+    VESTIGING -->|geo:hasGeometry| LOCATIE
+    VESTIGING -->|prov:qualifiedAssociation| BEDRIJF
+ 
+    class VESTIGING,OBSERVATIE,EMISSIEPUNT,MEETPUNT mainClasses;
+    class BEDRIJF,LOCATIE mainClasses;
+    class APPARAAT,INSTALLATIE mainClasses;
+    class VERBRUIK,EMISSIE mainClasses;
+    class LUCHTEMISSIEPUNT,WATEREMISSIEPUNT,GRONDWATEREMISSIEPUNT mainClasses;

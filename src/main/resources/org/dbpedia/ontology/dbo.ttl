@@ -1,0 +1,130 @@
+PREFIX dbo:      <http://dbpedia.org/ontology/>
+PREFIX ns5:      <http://mappings.dbpedia.org/index.php/OntologyProperty:>
+PREFIX ns6:      <http://mappings.dbpedia.org/index.php/OntologyClass:>
+PREFIX owl:      <http://www.w3.org/2002/07/owl#>
+PREFIX prov:     <http://www.w3.org/ns/prov#>
+PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wikidata: <http://www.wikidata.org/entity/>
+PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
+
+dbo:fundedBy  rdfs:domain  dbo:ResearchProject .
+
+dbo:projectType  rdfs:domain  dbo:ResearchProject .
+
+dbo:projectReferenceID
+        rdfs:domain  dbo:ResearchProject .
+
+dbo:projectBudgetTotal
+        rdfs:domain  dbo:ResearchProject .
+
+dbo:projectBudgetFunding
+        rdfs:domain  dbo:ResearchProject .
+
+dbo:projectParticipant
+        rdfs:domain  dbo:ResearchProject .
+
+dbo:projectCoordinator
+        rdfs:domain  dbo:ResearchProject .
+
+dbo:LegalCase  rdfs:subClassOf  dbo:Case .
+
+dbo:Case  rdf:type       owl:Class;
+        rdfs:comment     "A case is the total of work done to prepare for an administrative or business decision. As a rule, a case is reflected in a set of documents."@en , "Een zaak is het geheel aan werk gedaan om tot een bestuurlijke of zakelijke beslissing te komen. Een zaak slaat doorgaans neer in een verzameling documenten."@nl;
+        rdfs:label       "zaak"@nl , "case"@en;
+        rdfs:subClassOf  dbo:UnitOfWork .
+
+dbo:procedure  rdf:type      owl:DatatypeProperty , rdf:Property;
+        rdfs:comment         "De naam die verwijst naar de formele definitie van een verzameling stappen die in de juiste volgorde leiden tot de afronding van de zaak"@nl , "The name designating a formal collection of steps to be taken to complete the case"@en;
+        rdfs:domain          dbo:Case;
+        rdfs:label           "procedure"@en , "Verfahren"@de , "procedure"@nl;
+        rdfs:range           xsd:string;
+        owl:sameAs           dbo:procedure;
+        prov:wasDerivedFrom  ns5:procedure .
+
+dbo:Project  rdf:type    owl:Class;
+        rdfs:comment     "A project is a temporary endeavor undertaken to achieve defined objectives."@en;
+        rdfs:label       "project"@nl , "project"@en;
+        rdfs:subClassOf  dbo:UnitOfWork .
+
+dbo:ResearchProject  rdf:type  owl:Class;
+        rdfs:comment         "A research project is a scientific investigation, usually using scientific methods, to achieve defined objectives."@en ;
+        rdfs:label           "research project"@en , "Forschungsprojekt"@de , "onderzoeksproject"@nl ;
+        rdfs:subClassOf      dbo:Project;
+        owl:equivalentClass  wikidata:Q1298668;
+        owl:sameAs           dbo:ResearchProject;
+        prov:wasDerivedFrom  ns6:ResearchProject .
+
+dbo:projectKeyword  rdf:type  rdf:Property , owl:DatatypeProperty;
+        rdfs:comment         "A key word of the project."@en;
+        rdfs:domain          dbo:Project;
+        rdfs:label           "project keyword"@en;
+        rdfs:range           xsd:string;
+        owl:sameAs           dbo:projectKeyword;
+        prov:wasDerivedFrom  ns5:projectKeyword .
+
+dbo:projectObjective  rdf:type  owl:DatatypeProperty , rdf:Property;
+        rdfs:comment         "A defined objective of the project."@en;
+        rdfs:domain          dbo:Project;
+        rdfs:label           "project objective"@en , "Projektziel"@de;
+        rdfs:range           xsd:string;
+        owl:sameAs           dbo:projectObjective;
+        prov:wasDerivedFrom  ns5:projectObjective .
+
+dbo:project  rdf:type        owl:ObjectProperty , rdf:Property;
+        rdfs:domain          dbo:Person;
+        rdfs:label           "Projekt"@de , "projet"@fr , "project"@en;
+        rdfs:range           dbo:Project;
+        owl:sameAs           dbo:project;
+        prov:wasDerivedFrom  ns5:project .
+
+dbo:projectEndDate  rdf:type  rdf:Property , owl:DatatypeProperty;
+        rdfs:comment         "The end date of the project."@en;
+        rdfs:domain          dbo:Project;
+        rdfs:label           "Projektende"@de , "project end date"@en;
+        rdfs:range           xsd:date;
+        owl:sameAs           dbo:projectEndDate;
+        prov:wasDerivedFrom  ns5:projectEndDate .
+
+dbo:projectStartDate  rdf:type  owl:DatatypeProperty , rdf:Property;
+        rdfs:comment         "The start date of the project."@en;
+        rdfs:domain          dbo:Project;
+        rdfs:label           "project start date"@en , "Projektstart"@de;
+        rdfs:range           xsd:date;
+        owl:sameAs           dbo:projectStartDate;
+        prov:wasDerivedFrom  ns5:projectStartDate .
+
+dbo:UnitOfWork  rdf:type  owl:Class;
+        rdfs:comment      "Deze klasse is bedoeld om het concept van een hoeveelheid uit te voeren werk weer te geven. Ze verschilt van Activity doordat ze een duidelijk eindpunt heeft en meetbaar is."@nl , "This class is meant to convey the notion of an amount work to be done. It is different from Activity in that it has a definite end and is being measured."@en;
+        rdfs:label        "unit of work"@en , "werkeenheid"@nl;
+        rdfs:subClassOf   owl:Thing;
+        owl:disjointWith  dbo:Person .
+
+dbo:depth	rdfs:range	xsd:double ;
+	rdfs:comment	"Is a measure of the distance between a reference height and a point underneath. The exact meaning for a place is unclear. If possible, use  or  to be unambiguous."@en ;
+	owl:sameAs	dbo:depth ;
+	rdfs:label	"\u03B2\u03AC\u03B8\u03BF\u03C2 (\u03BC)"@el ,
+		"diepte (\u03BC)"@nl ,
+		"depth (\u03BC)"@en ,
+		"Tiefe (\u03BC)"@de ,
+		"profondeur (\u03BC)"@fr .
+
+dbo:diameter	rdfs:range	xsd:double ;
+	owl:sameAs	dbo:diameter ;
+	rdfs:label	"\u03B4\u03B9\u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2 (\u03BC)"@el ,
+		"diameter (\u03BC)"@nl ,
+		"diameter (\u03BC)"@en ,
+		"Durchmesser (\u03BC)"@de ,
+		"diam\u00E8tre (\u03BC)"@fr .
+
+dbo:height	rdfs:range	xsd:double ;
+	owl:sameAs	dbo:height ;
+	rdfs:label	"h\u00F8jde (\u03BC)"@da ,
+		"hoogte (\u03BC)"@nl ,
+		"height (\u03BC)"@en ,
+		"vi\u0161ina (\u03BC)"@sl ,
+		"altura (\u03BC)"@pt ,
+		"\u8EAB\u9577 (\u03BC)"@ja ,
+		"H\u00F6he (\u03BC)"@de ,
+		"\u03CD\u03C8\u03BF\u03C2 (\u03BC)"@el ,
+		"hauteur (\u03BC)"@fr .

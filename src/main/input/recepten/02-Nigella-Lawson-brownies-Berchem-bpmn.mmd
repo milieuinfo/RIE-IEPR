@@ -1,0 +1,92 @@
+flowchart LR
+
+%% =====================================================
+%% Pool: Brownies bakken
+%% =====================================================
+
+subgraph Pool["Proces: Brownies bakken (Nigella-recept)"]
+direction LR
+
+%% -----------------------------------------------------
+%% Lane: Plan
+%% -----------------------------------------------------
+    subgraph LanePlan["Lane: Plan (p-plan:Step / sosa:Procedure)"]
+        direction TB
+
+        S1["Stap: smelten\n(p-plan:Step)"]
+        S2["Stap: hakken"]
+        S3["Stap: mengen"]
+        S4["Stap: bakken"]
+
+        S1 --- S2 --- S3 --- S4
+    end
+
+%% -----------------------------------------------------
+%% Lane: Executie
+%% -----------------------------------------------------
+    subgraph LaneExec["Lane: Executie (prov:Activity / sosa)"]
+        direction TB
+
+        E0((Start))
+
+        E1["Actuation: smelten"]
+        E2["Actuation: hakken"]
+        E3["Actuation: mengen"]
+        E4["Actuation: bakken"]
+
+        E5["Observation: kleur meten"]
+
+        E6((Einde))
+
+        E0 --> E1 --> E2 --> E3 --> E4 --> E5 --> E6
+    end
+
+
+
+%% -----------------------------------------------------
+%% Lane: Installaties
+%% -----------------------------------------------------
+    subgraph LaneSystems["Lane: Deployment, Installaties (sosa:System / prov:Agent)"]
+        direction TB
+
+        I1["Smeltsysteem"]
+        I2["Haksysteem"]
+        I3["Keukenrobot"]
+        I4["Oven"]
+        I5["Mens (sensor)"]
+
+        I1 --- I2 --- I3 --- I4 --- I5
+    end
+
+%% -----------------------------------------------------
+%% Correcte semantische relaties
+%% -----------------------------------------------------
+
+%% Execution -> Step
+    E1 -. "p-plan:correspondsToStep" .-> S1
+    E2 -. "p-plan:correspondsToStep" .-> S2
+    E3 -. "p-plan:correspondsToStep" .-> S3
+    E4 -. "p-plan:correspondsToStep" .-> S4
+    E5 -. "p-plan:correspondsToStep" .-> S4
+
+%% Execution -> System
+    E1 -->|sosa:madeByActuator| I1
+    E2 -->|sosa:madeByActuator| I2
+    E3 -->|sosa:madeByActuator| I3
+    E4 -->|sosa:madeByActuator| I4
+    E5 -->|sosa:madeBySensor| I5
+
+%% -----------------------------------------------------
+%% Subprocess visual hint
+%% -----------------------------------------------------
+    subgraph SubSmelten["Subproces: smelten (plan)"]
+        direction TB
+        SS1["Boter & chocolade in pan"]
+        SS2["Verwarmen"]
+        SS3["Roeren"]
+        SS1 --- SS2 --- SS3 --- S3
+    end
+
+    S1 --- SS1
+%%S1 --- SubSmelten
+end

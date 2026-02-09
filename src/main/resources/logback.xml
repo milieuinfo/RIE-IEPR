@@ -1,0 +1,30 @@
+<configuration>
+    <!-- Console appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Tijd, thread, loglevel, loggernaam en bericht -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger: standaard INFO voor eigen code -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Specifieke loglevels voor externe libraries -->
+    <!-- Spark logt minder details om console schoon te houden -->
+    <logger name="org.apache.spark" level="WARN"/>
+    <logger name="org.sparkproject.jetty" level="WARN"/>
+
+    <!-- Hadoop en native libraries: alleen waarschuwingen -->
+    <logger name="org.apache.hadoop" level="WARN"/>
+    <logger name="org.apache.hadoop.util.NativeCodeLoader" level="WARN"/>
+
+    <!-- Jena en JSON-LD, handig voor eigen logs -->
+    <logger name="org.apache.jena" level="INFO"/>
+    <logger name="com.github.jsonldjava" level="INFO"/>
+
+    <!-- Optioneel: je eigen package loggen op DEBUG tijdens development -->
+    <!-- <logger name="com.mijnbedrijf" level="DEBUG"/> -->
+</configuration>

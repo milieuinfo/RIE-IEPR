@@ -1,0 +1,95 @@
+---
+config:
+    layout: default
+    theme: default
+---
+classDiagram
+    class Apparaat {
+        string uri
+        Date aangemaaktOp
+        string benaming
+    }
+    class Emissiepunt {
+        string uri
+        string benaming
+        string type
+        Date aangemaaktOp
+    }
+    class Grondwaterput {
+        number depth
+    }
+    class Installatie {
+        string uri
+        ISystem[] hasSubSystem (FK)
+        string benaming
+        Date aangemaaktOp
+    }
+    class Lozingspunt {
+    }
+    class Meetpunt {
+        string uri
+        string benaming
+        string type
+        Date aangemaaktOp
+    }
+    class Onttrekkingspunt {
+        string uri
+        string benaming
+        string type
+        Date aangemaaktOp
+    }
+    class Proces {
+        string uri
+        Date aangemaaktOp
+        string benaming
+        IAgent[] toegewezenAan (FK)
+        enum type
+        ProcesVariabele[] hasInputVar (FK)
+        ProcesVariabele[] hasOutputVar (FK)
+        Proces onderdeelVan (FK)
+        Proces[] gaatVoorafAan (FK)
+    }
+    class ProcesVariabele {
+        string uri
+        string benaming
+        string type
+        string eenheid
+        string waarde
+        Date aangemaaktOp
+    }
+    class Schouw {
+        number diameter
+        number hoogte
+    }
+    class ISystem {
+        <<interface>>
+        string uri
+        string afgeleidVan
+        IAgent[] toegewezenAan
+    }
+    class IAgent {
+        <<interface>>
+        string uri
+    }
+
+    Emissiepunt <|-- Schouw
+    Onttrekkingspunt <|-- Grondwaterput
+    Emissiepunt <|-- Lozingspunt
+    ISystem <|.. Apparaat
+    ISystem <|.. Emissiepunt
+    ISystem <|.. Installatie
+    ISystem <|.. Meetpunt
+    ISystem <|.. Onttrekkingspunt
+    ISystem <|.. Proces
+    IAgent <|.. Apparaat
+    IAgent <|.. Emissiepunt
+    IAgent <|.. Installatie
+    IAgent <|.. Meetpunt
+    IAgent <|.. Onttrekkingspunt
+    IAgent <|.. Proces
+    Proces --> IAgent : toegewezen aan
+    Proces --> ProcesVariabele : hasInputVar
+    Proces --> ProcesVariabele : hasOutputVar
+    Proces --> Proces : onderdeel van
+    Proces --> Proces : gaat vooraf aan
+    Installatie --> ISystem : hasSubSystem
