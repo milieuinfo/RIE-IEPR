@@ -267,7 +267,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt is verschillend van een onttrekkingspunt (disjoint)
-        owl:disjointWith :Ontrekkingspunt
+        owl:disjointWith :Onttrekkingspunt
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt moet een benaming hebben
@@ -314,56 +314,56 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-:Ontrekkingspunt a owl:Class ;
-    rdfs:label "Ontrekkingspunt"@nl ;
+:Onttrekkingspunt a owl:Class ;
+    rdfs:label "Onttrekkingspunt"@nl ;
     rdfs:comment "Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking)."@nl ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
-    skos:example [ a :Ontrekkingspunt ;
+    skos:example [ a :Onttrekkingspunt ;
         rdfs:label "Onttrekking 1"@nl
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een benaming hebben
+        # Een Onttrekkingspunt moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt is verschillend van een emissiepunt (disjoint)
+        # Een onttrekkingspunt is verschillend van een emissiepunt (disjoint)
         owl:disjointWith :Emissiepunt
     ] ;
         rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een typering hebben via dct:type
+        # Een onttrekkingspunt kan een typering hebben via dct:type
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een geldigheid start hebben
+        # Een onttrekkingspunt moet een geldigheid start hebben
         owl:onProperty dct:issued ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een geldigheid einde hebben
+        # Een onttrekkingspunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een creatie datum hebben
+        # Een onttrekkingspunt moet een creatie datum hebben
         owl:onProperty dct:created ;
         owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een status hebben
+        # Een onttrekkingspunt kan een status hebben
         owl:onProperty adms:status ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een ontrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
+        # Een onttrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
         owl:onProperty prov:atLocation ; 
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;

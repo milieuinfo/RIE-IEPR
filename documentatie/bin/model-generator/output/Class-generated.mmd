@@ -64,6 +64,7 @@ classDiagram
         string value
     }
       class Grondwaterput {
+        string uri
         double depth
     }
       class Installatie {
@@ -106,7 +107,7 @@ classDiagram
         string uri
         ISystem hasFeatureOfInterest (FK)
     }
-      class Ontrekkingspunt {
+      class Onttrekkingspunt {
         string uri
         string benaming
         string type
@@ -167,31 +168,26 @@ classDiagram
     }
 
     Emissiepunt <|-- Schouw
-    Ontrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
     ISystem <|.. Apparaat
     ISystem <|.. Emissiepunt
     ISystem <|.. Installatie
     ISystem <|.. Meetpunt
-    ISystem <|.. Ontrekkingspunt
+    ISystem <|.. Onttrekkingspunt
     ISystem <|.. Proces
     IAgent <|.. Apparaat
     IAgent <|.. Emissiepunt
     IAgent <|.. Exploitant
     IAgent <|.. Installatie
     IAgent <|.. Meetpunt
-    IAgent <|.. Ontrekkingspunt
+    IAgent <|.. Onttrekkingspunt
     IAgent <|.. Proces
     ISpatialObject <|.. Apparaat
     ISpatialObject <|.. Emissiepunt
     ISpatialObject <|.. Meetpunt
-    ISpatialObject <|.. Ontrekkingspunt
+    ISpatialObject <|.. Onttrekkingspunt
     Proces --> ExploitatieLocatie : locatie
     Proces --> ISystem : toegewezen aan
-    Proces --> Schouw : toegewezen aan
-    Proces --> Grondwaterput : toegewezen aan
-    Proces --> Lozingspunt : toegewezen aan
-    Proces --> IAgent : toegewezen aan
     Proces --> ProcesVariabele : hasInputVar
     Proces --> ProcesVariabele : hasOutputVar
     Proces --> ISystem : onderdeel van
@@ -199,13 +195,10 @@ classDiagram
     ExploitatieLocatie --> IAgent : toegewezen aan
     ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
     Installatie --> ISystem : hasSubSystem
-    Installatie --> Schouw : hasSubSystem
-    Installatie --> Grondwaterput : hasSubSystem
-    Installatie --> Lozingspunt : hasSubSystem
     Installatie --> ExploitatieLocatie : locatie
     Installatie --> ISystem : afgeleid van
     Emissiepunt --> ExploitatieLocatie : locatie
-    Ontrekkingspunt --> ExploitatieLocatie : locatie
+    Onttrekkingspunt --> ExploitatieLocatie : locatie
     Apparaat --> ExploitatieLocatie : locatie
     Observatie --> ISystem : hasFeatureOfInterest
     Exploitant --> ExploitantContactpersoon : type

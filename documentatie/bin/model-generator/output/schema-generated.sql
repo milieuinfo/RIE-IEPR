@@ -1,10 +1,10 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-09T14:32:33.674Z
+-- Generated: 2026-02-09T15:24:09.624Z
 
 -- PostgreSQL DDL
 
 -- Enum types
-CREATE TYPE proces_toegewezen_aan_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ONTREKKINGSPUNT', 'SCHOUW', 'GRONDWATERPUT', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT', 'EXPLOITANT');
+CREATE TYPE proces_toegewezen_aan_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ONTTREKKINGSPUNT', 'SCHOUW', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT', 'EXPLOITANT');
 CREATE TYPE proces_variabele_relatie_relationship_type_enum AS ENUM ('INPUT_VAR', 'OUTPUT_VAR');
 
 CREATE TABLE adres (
@@ -133,7 +133,6 @@ COMMENT ON COLUMN exploitatie_locatie_identifier.value IS 'http://www.w3.org/199
 
 CREATE TABLE grondwaterput (
     uri TEXT NOT NULL,
-    ontrekkingspunt_id TEXT NULL,
     depth DOUBLE PRECISION NOT NULL,
     CONSTRAINT pk_grondwaterput PRIMARY KEY (uri)
 );
@@ -223,7 +222,7 @@ CREATE TABLE observatie (
 COMMENT ON COLUMN observatie.has_feature_of_interest_id IS 'http://www.w3.org/ns/sosa/hasFeatureOfInterest';
 COMMENT ON TABLE observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie';
 
-CREATE TABLE ontrekkingspunt (
+CREATE TABLE onttrekkingspunt (
     uri TEXT NOT NULL,
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
@@ -231,15 +230,15 @@ CREATE TABLE ontrekkingspunt (
     benaming TEXT NOT NULL,
     type TEXT NULL,
     locatie_id TEXT NOT NULL,
-    CONSTRAINT pk_ontrekkingspunt PRIMARY KEY (uri, geldig_van, aangemaakt_op)
+    CONSTRAINT pk_onttrekkingspunt PRIMARY KEY (uri, geldig_van, aangemaakt_op)
 );
-COMMENT ON COLUMN ontrekkingspunt.geldig_van IS 'http://purl.org/dc/terms/issued';
-COMMENT ON COLUMN ontrekkingspunt.aangemaakt_op IS 'http://purl.org/dc/terms/created';
-COMMENT ON COLUMN ontrekkingspunt.geldig_tot IS 'http://purl.org/dc/terms/valid';
-COMMENT ON COLUMN ontrekkingspunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
-COMMENT ON COLUMN ontrekkingspunt.type IS 'http://purl.org/dc/terms/type';
-COMMENT ON COLUMN ontrekkingspunt.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
-COMMENT ON TABLE ontrekkingspunt IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Ontrekkingspunt';
+COMMENT ON COLUMN onttrekkingspunt.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN onttrekkingspunt.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN onttrekkingspunt.geldig_tot IS 'http://purl.org/dc/terms/valid';
+COMMENT ON COLUMN onttrekkingspunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN onttrekkingspunt.type IS 'http://purl.org/dc/terms/type';
+COMMENT ON COLUMN onttrekkingspunt.locatie_id IS 'http://www.w3.org/ns/prov#atLocation';
+COMMENT ON TABLE onttrekkingspunt IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt';
 
 CREATE TABLE proces (
     uri TEXT NOT NULL,
@@ -341,7 +340,6 @@ ALTER TABLE exploitant ADD CONSTRAINT fk_exploitant_type_id FOREIGN KEY (type_id
 ALTER TABLE exploitant ADD CONSTRAINT fk_exploitant_address_id FOREIGN KEY (address_id) REFERENCES adres(uri);
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE exploitatie_locatie_identifier ADD CONSTRAINT fk_exploitatie_locatie_identifier_exploitatie_locatie_uid FOREIGN KEY (exploitatie_locatie_uid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE grondwaterput ADD CONSTRAINT fk_grondwaterput_ontrekkingspunt_id FOREIGN KEY (ontrekkingspunt_id) REFERENCES ontrekkingspunt(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_has_sub_system_id FOREIGN KEY (has_sub_system_id) REFERENCES proces(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES installatie(uri);
@@ -349,7 +347,7 @@ ALTER TABLE installatie_identifier ADD CONSTRAINT fk_installatie_identifier_inst
 ALTER TABLE lozingspunt ADD CONSTRAINT fk_lozingspunt_emissiepunt_id FOREIGN KEY (emissiepunt_id) REFERENCES emissiepunt(uri);
 ALTER TABLE meetpunt_identifier ADD CONSTRAINT fk_meetpunt_identifier_meetpunt_uid FOREIGN KEY (meetpunt_uid) REFERENCES meetpunt(uri);
 ALTER TABLE observatie ADD CONSTRAINT fk_observatie_has_feature_of_interest_id FOREIGN KEY (has_feature_of_interest_id) REFERENCES meetpunt(uri);
-ALTER TABLE ontrekkingspunt ADD CONSTRAINT fk_ontrekkingspunt_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
+ALTER TABLE onttrekkingspunt ADD CONSTRAINT fk_onttrekkingspunt_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_onderdeel_van_id FOREIGN KEY (onderdeel_van_id) REFERENCES proces(uri);
 ALTER TABLE proces_identifier ADD CONSTRAINT fk_proces_identifier_proces_uid FOREIGN KEY (proces_uid) REFERENCES proces(uri);
@@ -371,7 +369,6 @@ CREATE INDEX idx_exploitant_type_id ON exploitant(type_id);
 CREATE INDEX idx_exploitant_address_id ON exploitant(address_id);
 CREATE INDEX idx_exploitatie_locatie_afgeleid_van_id ON exploitatie_locatie(afgeleid_van_id);
 CREATE INDEX idx_exploitatie_locatie_identifiers ON exploitatie_locatie(identifiers);
-CREATE INDEX idx_grondwaterput_ontrekkingspunt_id ON grondwaterput(ontrekkingspunt_id);
 CREATE INDEX idx_installatie_has_sub_system_id ON installatie(has_sub_system_id);
 CREATE INDEX idx_installatie_locatie_id ON installatie(locatie_id);
 CREATE INDEX idx_installatie_afgeleid_van_id ON installatie(afgeleid_van_id);
@@ -379,7 +376,7 @@ CREATE INDEX idx_installatie_identifiers ON installatie(identifiers);
 CREATE INDEX idx_lozingspunt_emissiepunt_id ON lozingspunt(emissiepunt_id);
 CREATE INDEX idx_meetpunt_identifiers ON meetpunt(identifiers);
 CREATE INDEX idx_observatie_has_feature_of_interest_id ON observatie(has_feature_of_interest_id);
-CREATE INDEX idx_ontrekkingspunt_locatie_id ON ontrekkingspunt(locatie_id);
+CREATE INDEX idx_onttrekkingspunt_locatie_id ON onttrekkingspunt(locatie_id);
 CREATE INDEX idx_proces_locatie_id ON proces(locatie_id);
 CREATE INDEX idx_proces_onderdeel_van_id ON proces(onderdeel_van_id);
 CREATE INDEX idx_proces_identifiers ON proces(identifiers);

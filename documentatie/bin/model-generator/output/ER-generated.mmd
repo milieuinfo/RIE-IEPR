@@ -68,7 +68,6 @@ erDiagram
     }
     Grondwaterput["grondwaterput"] {
         string uri "URI [PK]"
-        string ontrekkingspunt_id "Ontrekkingspunt [FK]"
         double depth "dbo:depth"
     }
     Installatie["installatie"] {
@@ -113,7 +112,7 @@ erDiagram
         string uri "URI [PK]"
         string has_feature_of_interest_id "sosa:hasFeatureOfInterest [FK]"
     }
-    Ontrekkingspunt["ontrekkingspunt"] {
+    Onttrekkingspunt["onttrekkingspunt"] {
         string uri "URI [PK]"
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
@@ -138,8 +137,8 @@ erDiagram
     }
     ProcesToegewezenAan["proces_toegewezen_aan"] {
         string proces_uri "[PK,FK]"
-        string target_uri "Installatie,Emissiepunt,Ontrekkingspunt,Schouw,Grondwaterput,Lozingspunt,Meetpunt,Apparaat,Exploitant [PK]"
-        string target_type "Installatie,Emissiepunt,Ontrekkingspunt,Schouw,Grondwaterput,Lozingspunt,Meetpunt,Apparaat,Exploitant"
+        string target_uri "Installatie,Emissiepunt,Onttrekkingspunt,Schouw,Lozingspunt,Meetpunt,Apparaat,Exploitant [PK]"
+        string target_type "Installatie,Emissiepunt,Onttrekkingspunt,Schouw,Lozingspunt,Meetpunt,Apparaat,Exploitant"
     }
     ProcesVariabeleRelatie["proces_variabele_relatie"] {
         string proces_uri "[PK,FK]"
@@ -178,16 +177,15 @@ erDiagram
     Installatie many to many Proces : "hasSubSystem"
     Installatie many to many Installatie : "hasSubSystem"
     Installatie many to many Emissiepunt : "hasSubSystem"
-    Installatie many to many Ontrekkingspunt : "hasSubSystem"
+    Installatie many to many Onttrekkingspunt : "hasSubSystem"
     Installatie many to many Schouw : "hasSubSystem"
-    Installatie many to many Grondwaterput : "hasSubSystem"
     Installatie many to many Lozingspunt : "hasSubSystem"
     Installatie many to many Meetpunt : "hasSubSystem"
     Installatie many to many Apparaat : "hasSubSystem"
     Installatie one to one ExploitatieLocatie : "locatie"
     Installatie many to many Installatie : "afgeleid van"
     Emissiepunt one to one ExploitatieLocatie : "locatie"
-    Ontrekkingspunt one to one ExploitatieLocatie : "locatie"
+    Onttrekkingspunt one to one ExploitatieLocatie : "locatie"
     Apparaat one to one ExploitatieLocatie : "locatie"
     Observatie one to one Meetpunt : "hasFeatureOfInterest"
     Exploitant many to many ExploitantContactpersoon : "type"
@@ -201,9 +199,8 @@ erDiagram
     Proces one to many ProcesToegewezenAan : "toegewezen aan"
     Installatie one to many ProcesToegewezenAan : ""
     Emissiepunt one to many ProcesToegewezenAan : ""
-    Ontrekkingspunt one to many ProcesToegewezenAan : ""
+    Onttrekkingspunt one to many ProcesToegewezenAan : ""
     Schouw one to many ProcesToegewezenAan : ""
-    Grondwaterput one to many ProcesToegewezenAan : ""
     Lozingspunt one to many ProcesToegewezenAan : ""
     Meetpunt one to many ProcesToegewezenAan : ""
     Apparaat one to many ProcesToegewezenAan : ""
