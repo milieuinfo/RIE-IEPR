@@ -1,6 +1,8 @@
+// Auto-generated models
+
 import { Emissiepunt } from './Emissiepunt.model';
 
-import { jsonObject, jsonMember } from 'typedjson';
+import { jsonObject } from 'typedjson';
 
 @jsonObject
 export class Schouw extends Emissiepunt {

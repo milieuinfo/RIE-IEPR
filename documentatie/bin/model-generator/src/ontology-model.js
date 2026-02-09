@@ -1088,7 +1088,12 @@ export class OntologyModel {
     const dirs = [
       'src/main/input',
     ];
-
+    // Except voorbeelden Geert
+    const exceptions = [
+      'src/main/input/bedrijf',
+      'src/main/input/recepten',
+    ];
+    
     const files = [];
 
     const collect = dir => {
@@ -1098,7 +1103,7 @@ export class OntologyModel {
       const entries = fs.readdirSync(absDir, { withFileTypes: true });
       entries.forEach(entry => {
         const fullPath = `${absDir}/${entry.name}`;
-        if (entry.isDirectory()) {
+        if (entry.isDirectory() && !exceptions.includes(`${dir}/${entry.name}`)) {
           collect(`${dir}/${entry.name}`);
         } else if (entry.isFile() && entry.name.endsWith('.ttl')) {
           files.push(fullPath);
@@ -1170,8 +1175,9 @@ export class OntologyModel {
     const propLower = String(restriction.property || '').toLowerCase();
 
     if (propLower === 'identifier' || propLower === 'identifiers') {
-      const base = this.extractLocalName(restriction.fromClass || 'entity');
-      return `${base}_identifiers`;
+      // Use a generic plural name for identifier collections rather
+      // than prefixing with the class name (e.g. use `identifiers`)
+      return 'identifiers';
     }
 
     const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);

@@ -53,11 +53,14 @@ export class ClassDiagramGenerator extends ClassGenerator {
       const idClass = `${parent}Identifier`;
       const key = `${parent}|${idClass}|identifier`;
       if (!this.relationships.has(key)) {
+        const label = (this.ontology && typeof this.ontology.deriveAttributeName === 'function')
+          ? this.ontology.deriveAttributeName(restriction)
+          : 'identifiers';
         this.relationships.set(key, {
           from: parent,
           to: idClass,
           property: 'identifier',
-          label: this.utils.deriveAttributeName ? this.utils.deriveAttributeName(restriction) : 'identifiers',
+          label,
           minCard: restriction?.minCardinality,
           maxCard: restriction?.maxCardinality
         });
@@ -89,10 +92,22 @@ export class ClassDiagramGenerator extends ClassGenerator {
     });
 
     // render object relationships
+    // Collapse relationships that target a shared interface (e.g., multiple Agent subtypes -> IAgent)
+    const renderRelMap = new Map();
     Array.from(this.relationships.values()).forEach(rel => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
+        // Ask ClassGenerator helper whether these targets share a common interface
+        const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+        const toResolved = sharedIface || rel.to;
+      const key = `${rel.from}|${toResolved}|${rel.property}`;
+      if (!renderRelMap.has(key)) {
+        renderRelMap.set(key, Object.assign({}, rel, { toResolved }));
+      }
+    });
+
+    Array.from(renderRelMap.values()).forEach(rel => {
       const fromDisplay = this.getDisplayName(rel.from);
-      const toDisplay = this.getDisplayName(rel.to);
+      const toDisplay = this.getDisplayName(rel.toResolved || rel.to);
       const label = (rel.label || '').replace(/\n|\r|\r\n/g, ' ').replace(/\s+/g, ' ').trim();
       mermaid += `    ${fromDisplay} --> ${toDisplay} : ${label}\n`;
     });
@@ -120,7 +135,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
   _renderInterfaceNode(className, matched, sharedInterfaceNames) {
     let mermaid = '';
-    const displayName = className;
+    const displayName = this.getDisplayName(className);
     mermaid += `    class ${displayName} {\n`;
     mermaid += `        <<interface>>\n`;
     if (matched) {
@@ -140,8 +155,21 @@ export class ClassDiagramGenerator extends ClassGenerator {
     let mermaid = '';
     const classInfo = this.ontology.classes.get(className);
     const displayName = this.getDisplayName(className, classInfo);
+    // Determine a direct internal superclass (if any) so computeAttributesForClass
+    // can filter out attributes inherited from that superclass (avoid duplicate FKs)
+    let extendsSuperName = null;
+    try {
+      const supers = classToSupers.get(className) || [];
+      for (const s of supers) {
+        const info = this.ontology.classes.get(s);
+        if (info && !info.external && classNames.includes(s)) { extendsSuperName = s; break; }
+      }
+    } catch (e) {
+      extendsSuperName = null;
+    }
+
     // Use centralized attribute computation (handles identifier relations and superclass filtering)
-    let attrsRaw = this.computeAttributesForClass(className, classNames, null) || [];
+    let attrsRaw = this.computeAttributesForClass(className, classNames, extendsSuperName) || [];
     // Merge any CODE_ADDED_ATTRIBUTES while avoiding duplicates
     let extraAttrs = [];
     if (Config.CODE_ADDED_ATTRIBUTES && Config.CODE_ADDED_ATTRIBUTES.has(className)) {
@@ -172,12 +200,4 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return mermaid;
   }
 
-  getDisplayName(className, classInfo = null) {
-    if (!classInfo) {
-      classInfo = this.ontology.classes.get(className);
-    }
-    // Use business label or class name as display name
-    if (classInfo && classInfo.label) return classInfo.label;
-    return className;
-  }
 }

@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node converter.js",
     "convert": "node converter.js",
+    "clean:models": "shx rm -f ./output/models/**/*.model.ts ./output/models/**/*.interface.ts ./output/models/**/*.enum.ts || true",
+    "prebuild": "npm run clean:models",
     "sql": "MODEL=sql node converter.js",
     "er": "MODEL=er node converter.js",
     "class": "MODEL=class node converter.js"
@@ -19,6 +21,7 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "shx": "^0.3.4"
   }
 }

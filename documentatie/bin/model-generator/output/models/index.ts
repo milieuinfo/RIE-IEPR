@@ -1,9 +1,9 @@
 // Auto-generated models
 export * from './Address.model';
 export * from './Apparaat.model';
+export * from './Contactpersoon.model';
 export * from './Emissiepunt.model';
 export * from './Exploitant.model';
-export * from './ExploitantContact.model';
 export * from './ExploitatieLocatie.model';
 export * from './ExploitatieLocatieIdentifier.model';
 export * from './Grondwaterput.model';
@@ -13,6 +13,7 @@ export * from './Lozingspunt.model';
 export * from './Meetpunt.model';
 export * from './MeetpuntIdentifier.model';
 export * from './Observatie.model';
+export * from './Ontrekkingspunt.model';
 export * from './Proces.model';
 export * from './ProcesIdentifier.model';
 export * from './ProcesVariabele.model';

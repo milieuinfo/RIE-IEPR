@@ -112,6 +112,89 @@ export class TypeScriptGenerator extends ClassGenerator {
     });
   }
 
+  cleanupUnusedImports(outputPath) {
+    if (!fs.existsSync(outputPath)) return;
+    const modelFiles = fs.readdirSync(outputPath).filter(f => f.endsWith('.model.ts'));
+    modelFiles.forEach(mf => {
+      const p = path.join(outputPath, mf);
+      try {
+        const c = fs.readFileSync(p, 'utf8');
+        const lines = c.split(/\r?\n/);
+        // Identify import lines (only those that import named specifiers)
+        const importLineRegex = /^\s*import(?:\s+type)?\s*\{([^}]+)\}\s*from\s*['"][^'"]+['"];?\s*$/;
+        const importLines = [];
+        lines.forEach((ln, idx) => {
+          const m = ln.match(importLineRegex);
+          if (m) importLines.push({ line: ln, spec: m[1], idx });
+        });
+        if (importLines.length === 0) return;
+        // Build content without import lines for searching usages
+        const contentWithoutImports = lines.filter((_, i) => !importLines.some(il => il.idx === i)).join('\n');
+        let modified = false;
+        importLines.reverse().forEach(il => {
+          const names = il.spec.split(',').map(s => s.trim()).filter(Boolean);
+          const used = names.filter(n => {
+            const re = new RegExp('\\b' + n.replace(/[$()*+.?[\\\]^{}|]/g, '\\$&') + '\\b', 'g');
+            return re.test(contentWithoutImports);
+          });
+          if (used.length === 0) {
+            // remove the import line
+            lines.splice(il.idx, 1);
+            modified = true;
+          } else if (used.length < names.length) {
+            // replace specifier list
+            const newLine = il.line.replace(il.spec, ' ' + used.join(', ') + ' ');
+            lines.splice(il.idx, 1, newLine);
+            modified = true;
+          }
+        });
+        if (modified) {
+          const out = lines.join('\n').replace(/\n{3,}/g, '\n\n');
+          fs.writeFileSync(p, out, 'utf8');
+        }
+      } catch (e) { /* ignore */ }
+    });
+  }
+
+  _cleanupImportsInContent(content) {
+    if (!content || typeof content !== 'string') return content;
+    // more permissive regex that matches imports even when spacing/linebreaks are odd
+    // Simple pass: for each import line, remove it if none of the imported names
+    // are referenced elsewhere in the file (outside the import lines).
+    const lineImportRegex = /^.*import(?:\s+type)?\s*\{([^}]+)\}.*;.*$/gm;
+    const importLines = [];
+    while ((m = lineImportRegex.exec(content)) !== null) {
+      importLines.push({ full: m[0], spec: m[1], index: m.index });
+    }
+    if (importLines.length === 0) return content;
+    // Build content without import lines for searching usages
+    let withoutImports = content;
+    importLines.forEach(il => { withoutImports = withoutImports.replace(il.full, ''); });
+    let out = content;
+    importLines.reverse().forEach(il => {
+      const names = il.spec.split(',').map(s => s.trim()).filter(Boolean);
+      const anyUsed = names.some(n => {
+        const re = new RegExp('\\b' + n.replace(/[$()*+.?[\\\]^{}|]/g, '\\$&') + '\\b', 'g');
+        return re.test(withoutImports);
+      });
+      if (!anyUsed) {
+        out = out.slice(0, il.index) + out.slice(il.index + il.full.length);
+      } else if (names.length > 1) {
+        // prune unused specifiers from the list
+        const used = names.filter(n => {
+          const re = new RegExp('\\b' + n.replace(/[$()*+.?[\\\]^{}|]/g, '\\$&') + '\\b', 'g');
+          return re.test(withoutImports);
+        });
+        if (used.length < names.length) {
+          const replacement = il.full.replace(il.spec, ' ' + used.join(', ') + ' ');
+          out = out.slice(0, il.index) + replacement + out.slice(il.index + il.full.length);
+        }
+      }
+    });
+    out = out.replace(/\n{3,}/g, '\n\n');
+    return out;
+  }
+
   buildModelImports(modelImportsSet, currentClassName) {
     if (!modelImportsSet || modelImportsSet.size === 0) return '';
     const names = Array.from(modelImportsSet).filter(n => n && n !== currentClassName).sort();
@@ -141,8 +224,9 @@ export class TypeScriptGenerator extends ClassGenerator {
       let importHeader = '';
       if (extendsAgent) importHeader += `import type { IAgent } from './Agent.interface';\n`;
       ifaceImports.forEach(n => { if (n !== 'Agent') importHeader += `import type { I${n} } from './${n}.interface';\n`; });
-      if (importHeader) ifaceContent += importHeader + '\n';
+      // Header first, then imports so the auto-generated comment is the first line
       ifaceContent += `// Auto-generated shared interface for ${superName}\n\n`;
+      if (importHeader) ifaceContent += importHeader + '\n';
       ifaceContent += `export interface ${ifaceName}` + (extendsAgent ? ` extends IAgent` : '') + ` {\n`;
       if (props.length > 0) {
         props.forEach(p => { ifaceContent += `  ${p.name}?: ${p.type};\n`; });
@@ -335,8 +419,13 @@ export class TypeScriptGenerator extends ClassGenerator {
 
       attrs.forEach(attr => {
         // official name
-        // compute JSON property local name early (used for decorators)
-        const jsonName = attr.propertyIri ? (this.ontology.extractLocalName(attr.propertyIri) || attr.name) : attr.name;
+        // compute JSON property name early (used for decorators)
+        // Use the predicate's local name when available (e.g. hasFeatureOfInterest)
+        // so decorators reflect the original predicate names rather than
+        // derived snake_case column names.
+        const jsonName = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function')
+          ? this.ontology.extractLocalName(attr.propertyIri)
+          : ((attr.name && String(attr.name).length > 0) ? attr.name : attr.propertyIri || '');
         const safeJsonName = String(jsonName).replace(/'/g, "\\'");
         let mapped = this.mapForeignKeyAttribute(attr, className);
         let officialName, baseType;
@@ -468,11 +557,25 @@ export class TypeScriptGenerator extends ClassGenerator {
 
           // If any of the concrete targets are a subclass of Agent, prefer the IAgent interface type
           try {
+            // Respect explicit inline comments (display types) which often contain
+            // the concrete target class names. If those indicate a single internal
+            // target class, prefer that concrete class instead of collapsing to IAgent.
+            const explicitFromComment = (attr.comment || '').split(',').map(s => s.trim()).filter(Boolean).filter(tn => classNames.includes(tn));
+            if (explicitFromComment.length === 1) {
+              const concrete = explicitFromComment[0];
+              baseType = pascal(concrete);
+              modelImports.add(concrete);
+            }
             const anyAgent = Array.isArray(targets) && targets.some(tn => {
               const ti = this.ontology.classes.get(tn);
               return ti && ti.iri && this.ontology.isSubClassOf(ti.iri, 'Agent');
             });
-            if (anyAgent) {
+            // Only prefer the generic IAgent interface when there are no explicit
+            // internal (non-external) concrete target classes. If the restriction
+            // explicitly targets an internal class like `Exploitant`, keep that.
+            const explicitTargets = Array.isArray(attr.targetClasses) ? attr.targetClasses.filter(t => classNames.includes(t)) : [];
+            const hasInternalTarget = explicitTargets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && !ti.external; });
+            if (anyAgent && !hasInternalTarget) {
               // determine if this attribute is multi-valued
               const attrIsArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1) || (attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
               baseType = attrIsArray ? 'IAgent[]' : 'IAgent';
@@ -631,6 +734,13 @@ export class TypeScriptGenerator extends ClassGenerator {
         }
       });
 
+      // Remove unused imports from the in-memory content before writing
+      try { content = this._cleanupImportsInContent(content); } catch (e) { /* ignore */ }
+      // Strip leading blank lines
+      content = content.replace(/^[\s\n\r]+/, '');
+      // Prepend auto-generated comment like interfaces
+      const header = `// Auto-generated models` + '\n\n';
+      content = header + content;
       fs.writeFileSync(fileName, content, 'utf8');
       console.log('Wrote TS model ->', fileName);
       indexLines.push(`export * from './${className}.model';`);
@@ -638,6 +748,11 @@ export class TypeScriptGenerator extends ClassGenerator {
 
     // Normalize import spacing in generated model files
     this.fixModelImportSpacing(this.outputPath);
+    // Remove unused imports from generated model files
+    this.cleanupUnusedImports(this.outputPath);
+
+    // Ensure each generated model file has a standard header and no leading blanks
+    this.ensureModelHeaders(this.outputPath);
 
     // also export enums
     enumFiles.forEach(e => {
@@ -654,6 +769,24 @@ export class TypeScriptGenerator extends ClassGenerator {
 
     // Write index
     this.writeIndexFile(this.outputPath, enumFiles);
+  }
+
+  ensureModelHeaders(outputPath) {
+    if (!fs.existsSync(outputPath)) return;
+    const modelFiles = fs.readdirSync(outputPath).filter(f => f.endsWith('.model.ts'));
+    modelFiles.forEach(mf => {
+      const p = path.join(outputPath, mf);
+      try {
+        let c = fs.readFileSync(p, 'utf8');
+        // Strip leading whitespace/newlines
+        c = c.replace(/^[\s\r\n]+/, '');
+        // If header missing, prepend it
+        if (!c.startsWith('// Auto-generated')) {
+          c = `// Auto-generated models\n\n` + c;
+        }
+        fs.writeFileSync(p, c, 'utf8');
+      } catch (e) { /* ignore */ }
+    });
   }
 }
 

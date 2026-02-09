@@ -1,3 +1,5 @@
+// Auto-generated models
+
 import { MeetpuntIdentifier } from './MeetpuntIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -21,7 +23,7 @@ export class Meetpunt implements ISystem {
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 
-  @jsonArrayMember(String, { name: 'identifier' })
-  identifier?: string[];
+  @jsonArrayMember(MeetpuntIdentifier, { name: 'identifier' })
+  identifier?: MeetpuntIdentifier[];
 
 }

@@ -1,4 +1,4 @@
-import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+// Auto-generated models
 
 import { jsonObject, jsonMember } from 'typedjson';
 

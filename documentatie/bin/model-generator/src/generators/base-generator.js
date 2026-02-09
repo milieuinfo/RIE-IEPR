@@ -12,7 +12,6 @@ export class BaseGenerator {
     this.inheritance = new Map();
   }
 
-  // Prepare ontology before generation (default behavior)
   prepareOntology() {
     if (typeof this.ontology.extractClasses === 'function') this.ontology.extractClasses();
     if (typeof this.ontology.addExternalClassesFromRestrictions === 'function') this.ontology.addExternalClassesFromRestrictions();
@@ -304,16 +303,19 @@ export class BaseGenerator {
     }
 
     // Add virtual identifier attribute when identifier relations exist
-    if (this.identifierRelations && this.identifierRelations.has(className)) {
+      if (this.identifierRelations && this.identifierRelations.has(className)) {
       const identClass = `${className}Identifier`;
       if (Array.isArray(classNames) && classNames.includes(identClass)) {
         const restriction = this.identifierRelations.get(className);
-        const derivedName = this.deriveAttributeName ? this.deriveAttributeName(restriction) : `${camel(className)}Identifiers`;
+        const derivedName = (this.ontology && typeof this.ontology.deriveAttributeName === 'function')
+          ? this.ontology.deriveAttributeName(restriction)
+          : `${camel(className)}Identifiers`;
         attrs.push({
           name: derivedName,
           type: 'string',
+          sqlType: 'TEXT',
           isForeignKey: true,
-          propertyIri: `${this.ontology.NAMESPACES?.adms || ''}identifier`,
+          propertyIri: `${Config.NAMESPACES.adms}identifier`,
           targetClasses: [identClass],
           minCardinality: 0,
           maxCardinality: undefined
@@ -340,6 +342,9 @@ export class BaseGenerator {
         if (this.enumClasses.has(name)) return false;
         if (!this.ontology.isRelevantClassName(name)) return false;
         const info = this.ontology.classes.get(name);
+        // Exclude external vocabulary classes (SOSA/PROV/GeoSPARQL/etc.)
+        // unless they are explicitly a business concept target in the RIE mappings.
+        if (info && info.external && !info.isBusinessConceptTarget) return false;
         if (this.utils.isTechnicalClass(name, info)) return false;
         return true;
       })
@@ -355,6 +360,30 @@ export class BaseGenerator {
     classNames.sort((a, b) => a.localeCompare(b));
 
     return classNames;
+  }
+
+  getDisplayName(className, classInfo = null) {
+    if (!classInfo) {
+      classInfo = this.ontology.classes.get(className);
+    }
+    // Prefer business name (when available), then label, then fallback to className
+    let raw = className;
+    try {
+      if (classInfo && classInfo.iri && this.ontology.getBusinessNameForClass) {
+        const bn = this.ontology.getBusinessNameForClass(classInfo.iri);
+        if (bn) raw = bn;
+        else if (classInfo.label) raw = classInfo.label;
+      } else if (classInfo && classInfo.label) {
+        raw = classInfo.label;
+      }
+    } catch (e) {
+      raw = className;
+    }
+    // normalize to a safe mermaid identifier: replace non-alnum/underscore with underscore
+    const cleaned = String(raw).replace(/[^A-Za-z0-9_]+/g, '_');
+    // Try to use pascalCase helper if available
+    if (typeof this.pascalCase === 'function') return this.pascalCase(cleaned);
+    return cleaned.replace(/(^.|_.)/g, s => s.replace(/_/g, '').toUpperCase());
   }
 
   // Compute join/junction tables from relationships. Default visibleClasses to computed set.
@@ -574,6 +603,10 @@ export class BaseGenerator {
 
     // Handle property restrictions
     classInfo.restrictions.forEach(restriction => {
+      // Skip identifier restrictions here; identifier relations are handled
+      // separately via `identifierRelations` to produce a single plural
+      // identifiers attribute and a linked Identifier class.
+      if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
       if (Config.isExcludedProperty(restriction.property)) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
 
@@ -840,7 +873,7 @@ export class BaseGenerator {
   generateIdentifierAttributesForClass(parentClass) {
     return [
       {
-        name: `${Config.camelCaseToSnakeCase(parentClass)}_id`,
+        name: `${Config.camelCaseToSnakeCase(parentClass)}_uid`,
         type: 'string',
         sqlType: 'TEXT',
         comment: parentClass,

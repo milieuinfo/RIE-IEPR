@@ -1,9 +1,9 @@
-import type { IAgent } from './Agent.interface';
-
 // Auto-generated shared interface for System
+
+import type { IAgent } from './Agent.interface';
 
 export interface ISystem extends IAgent {
   uri?: string;
   afgeleidVan?: string;
-  toegewezenAan?: IAgent[];
+  toegewezenAanId?: string[];
 }

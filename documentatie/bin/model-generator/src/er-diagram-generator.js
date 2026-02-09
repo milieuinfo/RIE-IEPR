@@ -52,7 +52,13 @@ export class ERDiagramGenerator extends SchemaGenerator {
     const usedClassSet = new Set();
     classNames.forEach(className => {
       const classInfo = this.ontology.classes.get(className);
-      if (!classInfo) return;
+      if (!classInfo) {
+        // Include identifier tables even when no explicit class info exists
+        if (String(className).endsWith('Identifier') && this.utils.isIdentifierTable(className)) {
+          usedClassSet.add(className);
+        }
+        return;
+      }
       const attrs = this.utils.deriveAttributes(classInfo, this.enumClasses, className);
       if (attrs && attrs.length > 0) usedClassSet.add(className);
     });
@@ -134,6 +140,15 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
       // Verwijder attributen die via many-to-many relaties worden gemodelleerd
       attributes = attributes.filter(attr => !Config.isManyToManyProperty(attr.propertyIri, attr.name));
+
+      // Remove virtual identifier attribute from main entity rendering; identifiers
+      // are displayed as separate identifier tables instead.
+      if (!className.endsWith('Identifier')) {
+        attributes = attributes.filter(attr => {
+          if (!attr.propertyIri) return true;
+          return !String(attr.propertyIri).includes('adms#identifier');
+        });
+      }
 
       // Verwijder FK-attributen die enkel verwijzen naar puur
       // technische/abstracte klassen.
@@ -217,7 +232,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
       // Add junction table relationships (explicit table links)
       junctionTableInfo.forEach((info, junctionName) => {
-        const junctionDisplay = junctionName;
+        const junctionDisplay = this.getDisplayName(junctionName);
         const fromDisplay = this.getDisplayName(info.from);
         const relationLabel = info.label ? info.label.replace(/"/g, "'") : '';
         mermaid += `    ${fromDisplay} one to many ${junctionDisplay} : "${relationLabel}"\n`;
@@ -235,22 +250,6 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
     return mermaid;
   }
-
-  getDisplayName(className, classInfo = null) {
-    if (!classInfo) {
-      classInfo = this.ontology.classes.get(className);
-    }
-    if (!classInfo) return className;
-    
-    // Use business name if available
-    if (classInfo.iri) {
-      const businessName = this.ontology.getBusinessNameForClass(classInfo.iri);
-      if (businessName) return businessName;
-    }
-    return className;
-  }
-
-  
 
   humanizePropertyName(prop) {
     return prop;

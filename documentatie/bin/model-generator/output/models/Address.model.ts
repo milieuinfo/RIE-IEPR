@@ -1,3 +1,4 @@
+// Auto-generated models
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 

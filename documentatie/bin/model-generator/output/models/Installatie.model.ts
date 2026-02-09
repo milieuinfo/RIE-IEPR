@@ -1,4 +1,5 @@
-import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+// Auto-generated models
+
 import { InstallatieIdentifier } from './InstallatieIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -28,7 +29,7 @@ export class Installatie implements ISystem {
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 
-  @jsonArrayMember(String, { name: 'identifier' })
-  identifier?: string[];
+  @jsonArrayMember(InstallatieIdentifier, { name: 'identifier' })
+  identifier?: InstallatieIdentifier[];
 
 }

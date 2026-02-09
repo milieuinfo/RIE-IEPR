@@ -6,7 +6,6 @@ export class ClassGenerator extends BaseGenerator {
     super(ontology, options);
   }
 
-  // Small helpers provided as methods to avoid top-level functions
   pascalCase(name) {
     if (!name || typeof name !== 'string') return name;
     return name.replace(/(^.|_.)/g, s => s.replace(/_/g, '').toUpperCase());
@@ -24,22 +23,44 @@ export class ClassGenerator extends BaseGenerator {
     return this.identifierRelations && this.identifierRelations.has(parentClass);
   }
 
-  // lightweight mapping for special FK property overrides. Returns { name, type } or null
   mapForeignKeyAttribute(attr, className) {
     if (!attr || !attr.propertyIri) return null;
     const override = Config.PROPERTY_TYPE_OVERRIDES.get(attr.propertyIri);
     if (override) {
+      // If the attribute explicitly targets an internal (non-external)
+      // concrete class, prefer the concrete target and skip the override
+      // which typically maps to a generic interface (e.g. IAgent).
+      if (Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
+        for (const t of attr.targetClasses) {
+          const ti = this.ontology.classes.get(t);
+          if (ti && !ti.external) return null;
+        }
+      }
+      // If no targetClasses were provided on the derived attribute, attempt
+      // to inspect the original class definition's restrictions to see if
+      // it explicitly targets an internal class; if so, skip the override.
+      try {
+        if ((!attr.targetClasses || attr.targetClasses.length === 0) && className) {
+          const classInfo = this.ontology.classes.get(className);
+          if (classInfo && Array.isArray(classInfo.restrictions)) {
+            const matching = classInfo.restrictions.find(r => r.propertyIri === attr.propertyIri);
+            if (matching) {
+              const resolved = (typeof this.ontology.resolveRangeTypes === 'function') ? this.ontology.resolveRangeTypes(matching.rangeTypes || [], matching) : (matching.rangeTypes || []);
+              for (const t of resolved) {
+                const ti = this.ontology.classes.get(t);
+                if (ti && !ti.external) return null;
+              }
+            }
+          }
+        }
+      } catch (e) { /* ignore */ }
       const biz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, className) : null;
-      const name = override.name || (biz || attr.name);
+      const fallback = (attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null);
+      const name = override.name || biz || fallback || '';
       const type = override.type || 'object';
       return { name, type };
     }
     return null;
-  }
-
-  computeSharedSupers(classNames, forceExternal = []) {
-    // Delegated to BaseGenerator
-    return super.computeSharedSupers(classNames, forceExternal);
   }
 
   renderSharedInterfaceProps(superName, sharedInterfaceNames) {
@@ -64,7 +85,8 @@ export class ClassGenerator extends BaseGenerator {
 
       const isArray = (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1)
         || (attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
-      let propName = this.toCamelCase(attr.name);
+      const rawName = (attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null);
+      let propName = this.toCamelCase(rawName);
       const base = propName.replace(/Id$/i, '');
       if (override && override.dropId) propName = base;
 
@@ -96,20 +118,6 @@ export class ClassGenerator extends BaseGenerator {
   }
 
   /**
-   * Determine which shared interfaces are actually used by the visible classes
-   * or referenced by foreign key targets. Returns a Set of interface node names.
-   */
-  computeUsedSharedInterfaces(classNames, classToSupers, sharedInterfaceNames) {
-    // Delegate to BaseGenerator implementation
-    return super.computeUsedSharedInterfaces(classNames, classToSupers, sharedInterfaceNames);
-  }
-
-  /**
-   * Collect Procedure subclasses to build a Procedure enum
-   */
-  
-
-  /**
    * Normalize rendering information for a property for diagram-style outputs.
    * Returns { name, type, isArray, isForeignKey } or null to drop the property.
    */
@@ -126,7 +134,9 @@ export class ClassGenerator extends BaseGenerator {
     if (mapped) {
       name = mapped.name; type = mapped.type;
     } else {
-      name = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, className) : this.toCamelCase(attr.name);
+      const biz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, className) : null;
+      const rawName = biz || ((attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null));
+      name = (typeof rawName === 'string' && rawName.length > 0) ? this.toCamelCase(rawName) : (rawName || '');
       if (attr.propertyIri === 'rdfs:label' || attr.propertyIri === `${Config.NAMESPACES.rdfs}label`) type = 'string';
       else if (attr.type === 'enum') type = 'enum';
       else if (attr.type === 'date' || attr.type === 'datetime') type = 'Date';
@@ -156,7 +166,10 @@ export class ClassGenerator extends BaseGenerator {
     }
 
     if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
-      const targets = attr.targetClasses.filter(t => this.ontology.isRelevantClassName ? this.ontology.isRelevantClassName(t) : classNames.includes(t));
+      const targets = attr.targetClasses.filter(t => {
+        const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
+        return isRelevant || classNames.includes(t);
+      });
       if (targets.length === 1) {
         const target = targets[0];
         type = this.pascalCase(target);
@@ -185,6 +198,12 @@ export class ClassGenerator extends BaseGenerator {
 
   findSharedInterfaceForTargets(targets, classToSupers, sharedInterfaceNames) {
     if (!Array.isArray(targets) || targets.length === 0) return null;
+    // If any of the concrete targets is an internal (non-external) class,
+    // prefer the concrete target rather than collapsing to a shared interface.
+    for (const t of targets) {
+      const tinfo = this.ontology.classes.get(t);
+      if (tinfo && !tinfo.external) return null;
+    }
     // collect supers for each target
     const supersList = targets.map(t => {
       const list = (classToSupers.get(t) || []).slice();
@@ -204,6 +223,7 @@ export class ClassGenerator extends BaseGenerator {
     }
     return null;
   }
+  
 }
 
 export default ClassGenerator;

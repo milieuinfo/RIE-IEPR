@@ -93,6 +93,15 @@ export class SqlGenerator extends SchemaGenerator {
     // Filter out enum attributes (only needed for ER diagrams, not SQL)
     attributes = attributes.filter(attr => attr.type !== 'enum');
 
+    // Remove virtual identifier attributes from main (non-Identifier) tables; identifiers
+    // are represented in separate Identifier tables (e.g. exploitatie_locatie_identifier)
+    if (!className.endsWith('Identifier')) {
+      attributes = attributes.filter(attr => {
+        if (!attr.propertyIri) return true;
+        return !String(attr.propertyIri).includes('adms#identifier');
+      });
+    }
+
     // Filter out attributes for many-to-many properties (handled via junction tables)
     attributes = attributes.filter(attr => !Config.isManyToManyProperty(attr.propertyIri, attr.name));
 
