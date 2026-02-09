@@ -56,7 +56,7 @@ build-specificatie:
           echo "docker is required on the agent for building the docker image"; exit 1
         fi
         # run build:docker from the specificatie folder
-        (cd documentatie/bin/specificatie && npm run build:docker) || true
+        (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
     - script: |
         #!/bin/bash
         # ensure artifact folder exists even when generation failed
@@ -79,10 +79,18 @@ release-and-publish:
     - script: |
         #!/bin/bash
         set -e
-        export SECRET_GITHUB_TOKEN=${bamboo.secret_github_token}
-        export GITHUB_REPO=${bamboo.github_repo}
-        if [ -z "$SECRET_GITHUB_TOKEN" ]; then echo "secret_github_token not set"; exit 1; fi
-        if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set (format: owner/repo)"; exit 1; fi
+        # Read Bamboo variables safely (use quotes so shell doesn't try to expand a non-substituted placeholder)
+        SECRET_GITHUB_TOKEN='${bamboo.secret_github_token}'
+        GITHUB_REPO='${bamboo.github_repo}'
+        # If Bamboo didn't substitute the placeholders they will still contain '${bamboo'
+        if echo "$SECRET_GITHUB_TOKEN" | grep -q "\${bamboo" || [ -z "$SECRET_GITHUB_TOKEN" ]; then
+          echo "ERROR: Bamboo plan variable 'secret_github_token' is not set or not available to this job"; exit 1
+        fi
+        if echo "$GITHUB_REPO" | grep -q "\${bamboo" || [ -z "$GITHUB_REPO" ]; then
+          echo "ERROR: Bamboo plan variable 'github_repo' is not set or not available to this job (expected owner/repo)"; exit 1
+        fi
+        export SECRET_GITHUB_TOKEN
+        export GITHUB_REPO
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
         git fetch origin
