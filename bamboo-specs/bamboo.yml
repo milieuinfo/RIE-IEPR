@@ -39,7 +39,8 @@ build-specificatie:
         if ! command -v docker >/dev/null 2>&1; then
           echo "docker is required on the agent for this job"; exit 1
         fi
-        docker run --rm -v "$PWD":/app -w /app node:24-alpine sh -c '
+        # run in the specificatie subfolder where package.json lives
+        docker run --rm -v "$PWD":/app -w /app/documentatie/bin/specificatie node:24-alpine sh -c '
           if [ -f package-lock.json ]; then
             npm ci --no-audit --no-fund || exit 1
           else
@@ -54,12 +55,13 @@ build-specificatie:
         if ! command -v docker >/dev/null 2>&1; then
           echo "docker is required on the agent for building the docker image"; exit 1
         fi
-        npm run build:docker || true
+        # run build:docker from the specificatie folder
+        (cd documentatie/bin/specificatie && npm run build:docker) || true
     - script: |
         #!/bin/bash
         # ensure artifact folder exists even when generation failed
         mkdir -p build-artifact
-        if [ -f index.html ]; then cp -f index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
+        if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
