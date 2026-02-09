@@ -83,13 +83,8 @@ release-and-publish:
         #!/bin/bash
         set -e
         git config --global init.defaultBranch main || true
-        # If Bamboo prepared the artifact (index.html) before tasks, stash it
-        # into build-artifact so the upcoming checkout won't overwrite it.
+        # ensure artifact folder exists
         mkdir -p build-artifact
-        if [ -f index.html ]; then
-          echo "Found index.html in workspace root; moving to build-artifact for safekeeping"
-          mv -f index.html build-artifact/
-        fi
     - checkout
     - script: |
         #!/bin/bash
