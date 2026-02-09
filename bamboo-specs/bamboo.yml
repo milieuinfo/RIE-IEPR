@@ -108,8 +108,10 @@ release-and-publish:
         else
           git checkout --orphan gh-pages || git checkout -B gh-pages
         fi
-        # remove all files except the .git directory so the branch only contains what we want
-        find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + || true
+        # remove all tracked and untracked files so branch only contains what we add
+        # (use git to avoid accidentally deleting .git)
+        git rm -rf . || true
+        git clean -fdx || true
         # minimal site files
         touch .nojekyll
         if [ -f build-artifact/index.html ]; then
@@ -122,6 +124,10 @@ release-and-publish:
         git add index.html .nojekyll || true
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
+  artifacts:
+    - name: artifact-release-and-publish
+      location: build-artifact
+      pattern: '**/*.*'
 
 verify-release:
   requirements: *requirements
