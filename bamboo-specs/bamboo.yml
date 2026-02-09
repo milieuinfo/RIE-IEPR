@@ -33,28 +33,16 @@ build-specificatie:
         #!/bin/bash
         set -e
         export NPM_CONFIG_LOGLEVEL=warn
-        # Run npm inside an official Node container so host agent doesn't need node/npm installed
-        if command -v docker >/dev/null 2>&1; then
-          docker run --rm -v "$PWD":/app -w /app node:18-alpine sh -c "npm ci && npm run generate:bikeshed"
-        else
-          echo "docker not available on agent; attempting to run npm if present"
-          npm ci
-          npm run generate:bikeshed
-        fi
+        docker run --rm -v "$PWD":/app -w /app node:18-alpine sh -c "npm ci && npm run generate:bikeshed"
     - script: |
         #!/bin/bash
         set -e
-        # Try host `npm run build:docker` if docker is available on the host; skip otherwise
-        if command -v docker >/dev/null 2>&1; then
-          npm run build:docker || true
-        else
-          echo "Host docker not available; skipping build:docker"
-        fi
+        npm run build:docker || true
     - script: |
-      #!/bin/bash
-      # ensure artifact folder exists even when generation failed
-      mkdir -p build-artifact
-      if [ -f index.html ]; then cp -f index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
+        #!/bin/bash
+        # ensure artifact folder exists even when generation failed
+        mkdir -p build-artifact
+        if [ -f index.html ]; then cp -f index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
