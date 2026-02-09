@@ -98,7 +98,23 @@ function indentContent(text, spaces = 4) {
 
 function getLabel(store, uri) {
     const quads = store.getQuads(namedNode(uri), rdfs.label, null);
-    return quads.length > 0 ? quads[0].object.value : uri.split(/[/#]/).pop();
+    if (quads.length > 0) {
+        return quads[0].object.value;
+    }
+    // Fallback: try to find a label for a subject whose URI ends with the provided identifier
+    try {
+        const labels = store.getQuads(null, rdfs.label, null);
+        const last = String(uri).split(/[/#]/).pop();
+        for (const q of labels) {
+            if (q.subject && q.subject.value) {
+                const s = String(q.subject.value);
+                if (s.endsWith(last) || s === String(uri)) {
+                    return q.object.value;
+                }
+            }
+        }
+    } catch (e) { /* ignore */ }
+    return uri.split(/[/#]/).pop();
 }
 
 function getComment(store, uri) {
@@ -232,7 +248,9 @@ style ${nodeId} ${styles.proces}
             continue;
         }
 
-        const label = escapeMermaidLabel(getLabel(store, stepUri));
+        const rawLabel = getLabel(store, stepUri);
+        const label = escapeMermaidLabel(rawLabel);
+        const hasExplicitLabel = rawLabel !== String(stepUri).split(/[/#]/).pop();
         let nodeLabel = procedureQuads.length > 0
             ? `${label}[${escapeMermaidLabel(getLabel(store, procedureQuads[0].object.value))}]`
             : label;
@@ -253,20 +271,34 @@ style ${nodeId} ${styles.proces}
             const apparaatUri = gebruikteApparaten[0].object.value;
             const apparaatLabel = escapeMermaidLabel(getLabel(store, apparaatUri));
             const apparaatComment = getComment(store, apparaatUri);
-            nodeLabel = `${label} (Apparaat: ${apparaatLabel}`;
-            if (apparaatComment) {
-                nodeLabel += `<br/><i>${apparaatComment}</i>`;
-            } else if (comment) {
-                nodeLabel += `<br/><i>${comment}</i>`;
+            if (!hasExplicitLabel) {
+                // Prefer apparatus label when the step has no explicit label,
+                // but still show the "(Apparaat: ...)" suffix to indicate provenance.
+                nodeLabel = `${apparaatLabel} (Apparaat: ${apparaatLabel}`;
+                if (apparaatComment) nodeLabel += `<br/><i>${apparaatComment}</i>`;
+                else if (comment) nodeLabel += `<br/><i>${comment}</i>`;
+                nodeLabel += ')';
+            } else {
+                nodeLabel = `${label} (Apparaat: ${apparaatLabel}`;
+                if (apparaatComment) {
+                    nodeLabel += `<br/><i>${apparaatComment}</i>`;
+                } else if (comment) {
+                    nodeLabel += `<br/><i>${comment}</i>`;
+                }
+                nodeLabel += ')';
             }
-            nodeLabel += ')';
         } else if (isPurificationStep) {
             // Purification step - show as "(Apparaat: ...)" with technique/comment
-            nodeLabel = `${label} (Apparaat: ${label}`;
-            if (comment) {
-                nodeLabel += `<br/><i>${comment}</i>`;
+            if (!hasExplicitLabel) {
+                nodeLabel = `${label}`;
+                if (comment) nodeLabel += `<br/><i>${comment}</i>`;
+            } else {
+                nodeLabel = `${label} (Apparaat: ${label}`;
+                if (comment) {
+                    nodeLabel += `<br/><i>${comment}</i>`;
+                }
+                nodeLabel += ')';
             }
-            nodeLabel += ')';
         } else if (comment) {
             nodeLabel += `<br/><i>${comment}</i>`;
         }
