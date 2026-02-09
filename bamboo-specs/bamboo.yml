@@ -27,7 +27,14 @@ build-specificatie:
     - clean
     - script: |
         #!/bin/bash
+        set -e
         git config --global init.defaultBranch main || true
+        # If Bamboo prepared the artifact (index.html) before tasks, stash it
+        # into build-artifact so the upcoming checkout won't overwrite it.
+        mkdir -p build-artifact
+        if [ -f index.html ]; then
+          mv -f index.html build-artifact/
+        fi
     - checkout
     - script: |
         #!/bin/bash
