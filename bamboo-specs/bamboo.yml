@@ -80,8 +80,10 @@ release-and-publish:
         git config --global init.defaultBranch main || true
     - checkout
     - artifact-download:
-        destination: /
-        required: true
+        source-plan: RIEIEP-SPEC
+        artifacts:
+          - name: artifact-specificatie
+            destination: build-artifact
     - script: |
         #!/bin/bash
         echo "Starting release and publish stage. Contents of build-artifact:"
