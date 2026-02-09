@@ -83,6 +83,8 @@ release-and-publish:
         destination: /
     - script: |
         #!/bin/bash
+        echo "Starting release and publish stage. Contents of build-artifact:"
+        ls -la build-artifact
         set -e
         SECRET_GITHUB_TOKEN='${bamboo.github_secret_access_token}'
         GITHUB_REPO='milieuinfo/RIE-IEPR'
