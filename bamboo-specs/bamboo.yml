@@ -78,11 +78,26 @@ release-and-publish:
         #!/bin/bash
         set -e
         git config --global init.defaultBranch gh-pages || true
-    - checkout:
-        force-clean-build: true
-        description: Checkout gh-pages
-        repository: my-repo
-        branch: refs/heads/gh-pages
+    - checkout
+    - script: |
+        #!/bin/bash
+        set -e
+        # prepare gh-pages branch and clean working tree so it will only contain what we add
+        git config user.email "bamboo@ci"
+        git config user.name "Bamboo CI"
+        git fetch origin
+        if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+        else
+          git checkout --orphan gh-pages || git checkout -B gh-pages
+        fi
+        # remove all tracked and untracked files so branch only contains what we add
+        # (use git to avoid accidentally deleting .git)
+        git rm -rf . || true
+        git clean -fdx || true
+        # placeholder for minimal site files
+        touch .nojekyll
     - artifact-download:
         source-plan: RIEIEP-SPEC
         artifacts:
@@ -91,30 +106,23 @@ release-and-publish:
     - script: |
         #!/bin/bash
         echo "Starting release and publish stage. Contents of build-artifact:"
-        ls -la build-artifact
+        ls -la build-artifact || true
         set -e
         SECRET_GITHUB_TOKEN='${bamboo.github_secret_access_token}'
         GITHUB_REPO='milieuinfo/RIE-IEPR'
         export SECRET_GITHUB_TOKEN
         export GITHUB_REPO
-        git config user.email "bamboo@ci"
-        git config user.name "Bamboo CI"
-        # remove all tracked and untracked files so branch only contains what we add
-        # (use git to avoid accidentally deleting .git)
-        git rm -rf . || true
-        git clean -fdx || true
-        # minimal site files
-        touch .nojekyll
+        # minimal site files: copy artifact into index.html or fail
         if [ -f build-artifact/index.html ]; then
           cp -f build-artifact/index.html index.html
         elif [ -f index.html ]; then
           echo "Found index.html in workspace root; using that"
         else
-          echo "Warning: no index.html found in build-artifact or workspace"
+          echo "Required artifact missing: build-artifact/index.html"
+          exit 1
         fi
         git add index.html .nojekyll
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
-        # Push current HEAD to remote gh-pages (use HEAD:gh-pages to avoid missing local ref)
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force
 
 verify-release:
