@@ -47,7 +47,6 @@ proces:0400123123_6851234567_ACTIVITEIT_1 a riepr:Proces ;
     pplan:hasInputVar stof:ijzererts ;
     pplan:hasOutputVar stof:staalplaat ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
-    dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
@@ -185,6 +184,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:Proces ;
     prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:gedec_staal ;
     pplan:hasOutputVar stof:staalplaat ;
+    pplan:hasOutputVar stof:rookgas ;
     prov:wasAttributedTo apparaat:0400123123_6851234567_0002 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
@@ -196,6 +196,29 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0011 ;
     prov:wasDerivedFrom riepr:uitstootProces ;
     prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000005 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0012_METING a riepr:Proces ;
+    rdfs:label "Meting van rookgas en blah"@nl ;
+    pplan:hasInputVar var:1234123123_input ;
+    pplan:hasOutputVar stof:rookgas ;
+    pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
+    dct:type riepr:meetProces ;
+    sosa:implementedBy meetpunt:X .
+
+var:1234123123_input a pplan:Variable ;
+    dct:type stof:rookgas ;
+    rdf:value 123123 .
+
+ent:123123123123123 a prov:Entity ;
+    pplan:correspondsToVariable var:1234123123_input .
+
+observatie:test a sosa:Observation ;
+    rdfs:label "Testobservatie"@nl ;
+    sosa:hasObservableProperty stof:rookgas ;
+    sosa:hasFeatureOfInterest ent:123123123123123 ;
+    sosa:hasResult [
+        qudt:numericValue "123.45"^^xsd:decimal ;
+    ] .
 
 # Emissiepunten
 emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;

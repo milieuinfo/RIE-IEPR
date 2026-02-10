@@ -181,34 +181,9 @@ export class OntologyModel {
 
     const overrideLabel = this.getPropertyOverride(PROPERTY_LABEL_OVERRIDES, className, propertyIri);
     if (overrideLabel) return overrideLabel;
-
-    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
-    const skosPrefLabel = new NamedNode(NAMESPACES.skos + 'prefLabel');
-    const rdfsLabel = new NamedNode(NAMESPACES.rdfs + 'label');
-
-    const propertyNode = new NamedNode(propertyIri);
-    const conceptQuads = this.store.getQuads(null, skosExactMatch, propertyNode);
-    if (conceptQuads.length === 0) return null;
-
-    const concept = conceptQuads[0].subject;
-
-    // Eerst zoeken naar Nederlandstalige skos:prefLabel
-    const prefLabels = this.store.getQuads(concept, skosPrefLabel, null);
-    if (prefLabels.length > 0) {
-      const nlLabelQuad = prefLabels.find(q => q.object.language === 'nl');
-      if (nlLabelQuad) return nlLabelQuad.object.value;
-      return prefLabels[0].object.value;
-    }
-
-    // Fallback: rdfs:label
-    const rdfsLabels = this.store.getQuads(concept, rdfsLabel, null);
-    if (rdfsLabels.length > 0) {
-      const nlLabelQuad = rdfsLabels.find(q => q.object.language === 'nl');
-      if (nlLabelQuad) return nlLabelQuad.object.value;
-      return rdfsLabels[0].object.value;
-    }
-
-    return null;
+    const concept = this.findBusinessConcept(propertyIri);
+    if (!concept) return null;
+    return this.getBusinessLabelForConcept(concept);
   }
 
   /**
@@ -221,14 +196,9 @@ export class OntologyModel {
 
     const overrideName = this.getPropertyOverride(PROPERTY_NAME_OVERRIDES, className, propertyIri);
     if (overrideName) return overrideName;
-
-    const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
-    const propertyNode = new NamedNode(propertyIri);
-    const conceptQuads = this.store.getQuads(null, skosExactMatch, propertyNode);
-    if (conceptQuads.length === 0) return null;
-
-    const conceptIri = conceptQuads[0].subject.value;
-    return this.extractLocalName(conceptIri);
+    const concept = this.findBusinessConcept(propertyIri);
+    if (!concept) return null;
+    return this.extractLocalName(concept.value);
   }
 
   /**
@@ -247,14 +217,51 @@ export class OntologyModel {
    */
   getBusinessNameForClass(classIri) {
     if (!classIri) return null;
+    const concept = this.findBusinessConcept(classIri);
+    if (!concept) return null;
+    return this.extractLocalName(concept.value);
+  }
 
+  /**
+   * Zoek het business concept (skos:Concept) dat exactMatch / equivalentProperty
+   * wijst naar de gegeven term-IRI. Geeft een NamedNode of null terug.
+   */
+  findBusinessConcept(termIri) {
+    if (!termIri) return null;
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
-    const classNode = new NamedNode(classIri);
-    const conceptQuads = this.store.getQuads(null, skosExactMatch, classNode);
+    const owlEquivalentProperty = new NamedNode(NAMESPACES.owl + 'equivalentProperty');
+    const node = new NamedNode(termIri);
+    let conceptQuads = this.store.getQuads(null, skosExactMatch, node);
+    if (conceptQuads.length === 0) {
+      conceptQuads = this.store.getQuads(null, owlEquivalentProperty, node);
+    }
     if (conceptQuads.length === 0) return null;
+    return conceptQuads[0].subject;
+  }
 
-    const conceptIri = conceptQuads[0].subject.value;
-    return this.extractLocalName(conceptIri);
+  /**
+   * Haal de best beschikbare labeltekst op voor een gevonden business concept.
+   */
+  getBusinessLabelForConcept(concept) {
+    if (!concept) return null;
+    const skosPrefLabel = new NamedNode(NAMESPACES.skos + 'prefLabel');
+    const rdfsLabel = new NamedNode(NAMESPACES.rdfs + 'label');
+
+    const prefLabels = this.store.getQuads(concept, skosPrefLabel, null);
+    if (prefLabels.length > 0) {
+      const nlLabelQuad = prefLabels.find(q => q.object.language === 'nl');
+      if (nlLabelQuad) return nlLabelQuad.object.value;
+      return prefLabels[0].object.value;
+    }
+
+    const rdfsLabels = this.store.getQuads(concept, rdfsLabel, null);
+    if (rdfsLabels.length > 0) {
+      const nlLabelQuad = rdfsLabels.find(q => q.object.language === 'nl');
+      if (nlLabelQuad) return nlLabelQuad.object.value;
+      return rdfsLabels[0].object.value;
+    }
+
+    return null;
   }
 
   async loadShapes() {

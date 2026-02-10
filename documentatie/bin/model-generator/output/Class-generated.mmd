@@ -10,10 +10,8 @@ classDiagram
         string uri
         Date aangemaaktOp
         Date geldigVan
-        ExploitatieLocatie locatie (FK)
         string benaming
         string geometrie
-        object[] inNaamVan (FK)
         Date geldigTot
     }
       class ExploitantContactpersoon {
@@ -35,9 +33,7 @@ classDiagram
         string type
         Date geldigVan
         Date aangemaaktOp
-        ExploitatieLocatie locatie (FK)
         string geometrie
-        object[] inNaamVan (FK)
         Date geldigTot
     }
       class Exploitant {
@@ -47,7 +43,6 @@ classDiagram
         Contactpersoon[] type (FK)
         string benaming
         Address[] address (FK)
-        object[] inNaamVan (FK)
         Date geldigTot
     }
       class ExploitatieLocatie {
@@ -79,9 +74,7 @@ classDiagram
         string benaming
         Date aangemaaktOp
         Date geldigVan
-        ExploitatieLocatie locatie (FK)
         ISystem[] afgeleidVan (FK)
-        object[] inNaamVan (FK)
         Date geldigTot
         InstallatieIdentifier[] identifiers (FK)
     }
@@ -96,7 +89,6 @@ classDiagram
     }
       class Meetpunt {
         string uri
-        object inNaamVan (FK)
         string benaming
         string type
         Date aangemaaktOp
@@ -122,9 +114,7 @@ classDiagram
         string type
         Date geldigVan
         Date aangemaaktOp
-        ExploitatieLocatie locatie (FK)
         string geometrie
-        object[] inNaamVan (FK)
         Date geldigTot
     }
       class Proces {
@@ -132,14 +122,14 @@ classDiagram
         Date aangemaaktOp
         string benaming
         Date geldigVan
-        ExploitatieLocatie locatie (FK)
-        IAgent[] toegewezenAan (FK)
-        Type type
+        object[] geimplenteerdDoor (FK)
+        VerwerkingsProcedure type
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
         ISystem onderdeelVan (FK)
         ISystem[] gaatVoorafAan (FK)
-        object[] inNaamVan (FK)
+        object[] type (FK)
+        IAgent[] toegewezenAan (FK)
         Date geldigTot
         ProcesIdentifier[] identifiers (FK)
     }
@@ -167,14 +157,12 @@ classDiagram
       class ISystem {
         <<interface>>
         string uri
-        string[] inNaamVanId
         ISystem[] afgeleidVan
         IAgent[] toegewezenAan
     }
     class IAgent {
         <<interface>>
         string uri
-        string[] inNaamVanId
     }
     class ISpatialObject {
         <<interface>>
@@ -201,34 +189,21 @@ classDiagram
     ISpatialObject <|.. Emissiepunt
     ISpatialObject <|.. Meetpunt
     ISpatialObject <|.. Onttrekkingspunt
-    Proces --> ExploitatieLocatie : locatie
-    Proces --> ISystem : toegewezen aan
+    Proces --> ISystem : geïmplementeerd door
     Proces --> ProcesVariabele : heeft invoer
     Proces --> ProcesVariabele : heeft uitvoer
     Proces --> ISystem : onderdeel van
     Proces --> ISystem : gaat vooraf aan
-    Proces --> ISystem : in naam van
+    Proces --> ISystem : type
+    Proces --> ISystem : toegewezen aan
     ExploitatieLocatie --> IAgent : toegewezen aan
     ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
     ExploitatieLocatie --> Adres : address
     Installatie --> ISystem : hasSubSystem
-    Installatie --> ExploitatieLocatie : locatie
     Installatie --> ISystem : afgeleid van
-    Installatie --> ISystem : in naam van
-    Emissiepunt --> ExploitatieLocatie : locatie
-    Emissiepunt --> ISystem : in naam van
-    Onttrekkingspunt --> ExploitatieLocatie : locatie
-    Onttrekkingspunt --> ISystem : in naam van
-    Schouw --> ISystem : in naam van
-    Grondwaterput --> ISystem : in naam van
-    Lozingspunt --> ISystem : in naam van
-    Meetpunt --> ISystem : in naam van
-    Apparaat --> ExploitatieLocatie : locatie
-    Apparaat --> ISystem : in naam van
     Observatie --> ISystem : hasFeatureOfInterest
     Exploitant --> ExploitantContactpersoon : type
     Exploitant --> Adres : address
-    Exploitant --> ISystem : in naam van
     ExploitantContactpersoon --> IAgent : memberOf
     ExploitantContactpersoon --> Adres : address
     Proces --> ProcesIdentifier : identifiers

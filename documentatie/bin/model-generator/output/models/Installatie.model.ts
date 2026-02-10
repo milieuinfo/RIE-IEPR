@@ -1,6 +1,5 @@
 // Auto-generated models
 
-import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 import { InstallatieIdentifier } from './InstallatieIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -24,14 +23,8 @@ export class Installatie implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonMember(ExploitatieLocatie, { name: 'atLocation' })
-  locatie!: ExploitatieLocatie;
-
   @jsonArrayMember(Object, { name: 'wasDerivedFrom' })
   afgeleidVan?: ISystem[];
-
-  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
-  inNaamVan?: string[];
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

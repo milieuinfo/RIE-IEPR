@@ -11,9 +11,6 @@ export class Meetpunt implements ISystem {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
 
-  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
-  inNaamVan!: string[];
-
   @jsonMember(String, { name: 'label' })
   benaming!: string;
 
