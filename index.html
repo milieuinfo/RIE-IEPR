@@ -2238,7 +2238,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Apparaat</code></p>
    <p><strong>Definitie:</strong> Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; label: min 1; hasGeometry: min 0, max 1</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; label: min 1; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Apparaat</c-> <c- p>;</c->
@@ -2246,31 +2246,31 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Filterinstallatie Schouw 1"</c-><c- o>@</c->nl <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFwcGFyYWF0WyJBcHBhcmFhdCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuQXBwYXJhYXQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuQXBwYXJhYXQgLS0+fGlzc3VlZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnx2YWxpZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFwcGFyYWF0WyJBcHBhcmFhdCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuQXBwYXJhYXQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuQXBwYXJhYXQgLS0+fGlzc3VlZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnx2YWxpZHwgbmRhdGUKbkFwcGFyYWF0IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
    <h3 class="heading settled" data-level="5.3" id="Emissiepunt"><span class="secno">5.3. </span><span class="content">Emissiepunt</span><a class="self-link" href="#Emissiepunt"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Emissiepunt</code></p>
    <p><strong>Definitie:</strong> Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; isHostedBy: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4025 51.2194)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuRW1pc3NpZXB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnx2YWxpZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkVtaXNzaWVwdW50IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuRW1pc3NpZXB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnx2YWxpZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkVtaXNzaWVwdW50IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
    <h4 class="heading settled" data-level="5.3.1" id="Lozingspunt"><span class="secno">5.3.1. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Lozingspunt</code></p>
    <p><strong>Definitie:</strong> Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd.</p>
@@ -2279,7 +2279,7 @@ Parts of this work may be from another specification document.  If so, those par
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Lozingspunt</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Lozingspunt 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4030 51.2200)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
@@ -2296,7 +2296,7 @@ Parts of this work may be from another specification document.  If so, those par
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Schouw</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4025 51.2194)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
@@ -2310,9 +2310,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-97; label: min 1; address: min 0 of Address</p>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-96; label: min 1; address: min 0 of Address</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTdbIm4zLTk3Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185NwpuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTZbIm4zLTk2Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185NgpuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
    <h3 class="heading settled" data-level="5.5" id="Contactpersoon"><span class="secno">5.5. </span><span class="content">Exploitant Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Contactpersoon</code></p>
    <p><strong>Definitie:</strong> Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
@@ -2339,7 +2339,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Installatie</code></p>
    <p><strong>Definitie:</strong> Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObjectCollection</code></p>
-   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of Installatie</p>
+   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of Installatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
@@ -2347,13 +2347,13 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- g>&lt;http://www.w3.org/ns/adms#status></c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Actief</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuSW5zdGFsbGF0aWUgLS0+fGhhc1N1YlN5c3RlbXwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuSW5zdGFsbGF0aWUgLS0+fGlzc3VlZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnx2YWxpZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGllCm5JbnN0YWxsYXRpZSAtLT58d2FzRGVyaXZlZEZyb218IG5JbnN0YWxsYXRpZQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuSW5zdGFsbGF0aWUgLS0+fGhhc1N1YlN5c3RlbXwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuSW5zdGFsbGF0aWUgLS0+fGlzc3VlZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnx2YWxpZHwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVMb2NhdGllCm5JbnN0YWxsYXRpZSAtLT58d2FzRGVyaXZlZEZyb218IG5JbnN0YWxsYXRpZQ=="></div>
    <h3 class="heading settled" data-level="5.8" id="MeetProcedure"><span class="secno">5.8. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:MeetProcedure</code></p>
    <p><strong>Definitie:</strong> Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten.</p>
@@ -2371,9 +2371,7 @@ Parts of this work may be from another specification document.  If so, those par
   <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
-  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4026 51.2195)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>actedOnBehalfOf</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
+  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4026 51.2195)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
@@ -2389,7 +2387,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Onttrekkingspunt</code></p>
    <p><strong>Definitie:</strong> Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking).</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; isHostedBy: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Onttrekkingspunt</c-> <c- p>;</c->
@@ -2397,7 +2395,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuRXhwbG9pdGF0aWVMb2NhdGllWyJFeHBsb2l0YXRpZSBMb2NhdGllIl0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuT250dHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxhdExvY2F0aW9ufCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuRXhwbG9pdGF0aWVMb2NhdGllWyJFeHBsb2l0YXRpZSBMb2NhdGllIl0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuT250dHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
    <h4 class="heading settled" data-level="5.11.1" id="Grondwaterput"><span class="secno">5.11.1. </span><span class="content">Grondwaterput</span><a class="self-link" href="#Grondwaterput"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Grondwaterput</code></p>
    <p><strong>Definitie:</strong> Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering.</p>
@@ -2407,7 +2405,7 @@ Parts of this work may be from another specification document.  If so, those par
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Grondwaterput</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Grondwaterput 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4020 51.2190)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
@@ -2420,7 +2418,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Proces</code></p>
    <p><strong>Definitie:</strong> Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.</p>
    <p><strong>Subklasse van:</strong> <code>pplan:Plan</code>, <code>pplan:Step</code>, <code>dbo:Project</code>, <code>ssn:System</code>, <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasAttributedTo: min 0 of Agent; wasDerivedFrom: min 0, max 1 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; wasImplementedBy: min 0 of Agent; type: min 0, max 1 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
@@ -2428,18 +2426,18 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Productie van cement in een fabriek te Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2024-01-15T10:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>atLocation</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Verwerking van grondstoffen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>prov</c-><c- p>:</c-><c- f>wasDerivedFrom</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>VerwerkingsProcedure</c-> <c- p>]</c->
+  <c- g>&lt;http://purl.org/dc/terms/type></c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>VerwerkingsProcedure</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5BZ2VudFsiQWdlbnQiXQpuUHJvY2VkdXJlWyJQcm9jZWR1cmUiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KblByb2NlcyAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5Qcm9jZXMgLS0+fGlzc3VlZHwgbmRhdGUKblByb2NlcyAtLT58dmFsaWR8IG5kYXRlCm5Qcm9jZXMgLS0+fGF0TG9jYXRpb258IG5FeHBsb2l0YXRpZUxvY2F0aWUKblByb2NlcyAtLT58d2FzQXR0cmlidXRlZFRvfCBuQWdlbnQKblByb2NlcyAtLT58d2FzRGVyaXZlZEZyb218IG5Qcm9jZWR1cmUKblByb2NlcyAtLT58aGFzSW5wdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxoYXNPdXRwdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxpc1N0ZXBPZlBsYW58IG5Qcm9jZXM="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5BZ2VudFsiQWdlbnQiXQpuUHJvY2VkdXJlWyJQcm9jZWR1cmUiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KblByb2NlcyAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5Qcm9jZXMgLS0+fGlzc3VlZHwgbmRhdGUKblByb2NlcyAtLT58dmFsaWR8IG5kYXRlCm5Qcm9jZXMgLS0+fGlzSG9zdGVkQnl8IG5FeHBsb2l0YXRpZUxvY2F0aWUKblByb2NlcyAtLT58d2FzSW1wbGVtZW50ZWRCeXwgbkFnZW50Cm5Qcm9jZXMgLS0+fHR5cGV8IG5Qcm9jZWR1cmUKblByb2NlcyAtLT58aGFzSW5wdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxoYXNPdXRwdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxpc1N0ZXBPZlBsYW58IG5Qcm9jZXM="></div>
    <h3 class="heading settled" data-level="5.13" id="ProcesVariabele"><span class="secno">5.13. </span><span class="content">Proces variabele</span><a class="self-link" href="#ProcesVariabele"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ProcesVariabele</code></p>
    <p><strong>Definitie:</strong> Een proces variabele is een stof die als input of output van een proces dient.</p>
