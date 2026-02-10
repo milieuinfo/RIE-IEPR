@@ -2238,7 +2238,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Apparaat</code></p>
    <p><strong>Definitie:</strong> Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; label: min 1</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; atLocation: min 1, max 1 of ExploitatieLocatie; label: min 1; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Apparaat</c-> <c- p>;</c->
@@ -2256,7 +2256,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Emissiepunt</code></p>
    <p><strong>Definitie:</strong> Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
@@ -2310,9 +2310,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-90; label: min 1; address: min 0 of Address</p>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-98; label: min 1; address: min 0 of Address</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTBbIm4zLTkwIl0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185MApuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOThbIm4zLTk4Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185OApuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
    <h3 class="heading settled" data-level="5.5" id="Contactpersoon"><span class="secno">5.5. </span><span class="content">Exploitant Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Contactpersoon</code></p>
    <p><strong>Definitie:</strong> Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
@@ -2323,8 +2323,8 @@ Parts of this work may be from another specification document.  If so, those par
    <h3 class="heading settled" data-level="5.6" id="ExploitatieLocatie"><span class="secno">5.6. </span><span class="content">Exploitatie Locatie</span><a class="self-link" href="#ExploitatieLocatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ExploitatieLocatie</code></p>
    <p><strong>Definitie:</strong> Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert.</p>
-   <p><strong>Subklasse van:</strong> <code>prov:Entity</code>, <code>ogc:SpatialObjectCollection</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie</p>
+   <p><strong>Subklasse van:</strong> <code>prov:Entity</code>, <code>ogc:Feature</code>, <code>sosa:Platform</code></p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie; hasGeometry: min 1, max 1; address: min 0, max 1 of Address</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
@@ -2334,7 +2334,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YW50WyJFeHBsb2l0YW50Il0KblNpdGVbIlNpdGUiXQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkV4cGxvaXRhdGllTG9jYXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhdGllTG9jYXRpZSAtLT58d2FzQXR0cmlidXRlZFRvfCBuRXhwbG9pdGFudApuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxoYWRQcmltYXJ5U291cmNlfCBuU2l0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx3YXNEZXJpdmVkRnJvbXwgbkV4cGxvaXRhdGllTG9jYXRpZQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YW50WyJFeHBsb2l0YW50Il0KblNpdGVbIlNpdGUiXQpuQWRkcmVzc1siQWRkcmVzcyJdCm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fHZhbGlkfCBuZGF0ZQpuRXhwbG9pdGF0aWVMb2NhdGllIC0tPnx3YXNBdHRyaWJ1dGVkVG98IG5FeHBsb2l0YW50Cm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fGhhZFByaW1hcnlTb3VyY2V8IG5TaXRlCm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fHdhc0Rlcml2ZWRGcm9tfCBuRXhwbG9pdGF0aWVMb2NhdGllCm5FeHBsb2l0YXRpZUxvY2F0aWUgLS0+fGFkZHJlc3N8IG5BZGRyZXNz"></div>
    <h3 class="heading settled" data-level="5.7" id="Installatie"><span class="secno">5.7. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Installatie</code></p>
    <p><strong>Definitie:</strong> Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
@@ -2362,7 +2362,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Meetpunt</code></p>
    <p><strong>Definitie:</strong> Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1; identifier: min 0</p>
+   <p><strong>Constraints:</strong> actedOnBehalfOf: min 1, max 1 of Agent; label: min 1; type: min 0; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1; identifier: min 0; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Meetpunt</c-> <c- p>;</c->
@@ -2371,11 +2371,13 @@ Parts of this work may be from another specification document.  If so, those par
   <c- g>&lt;http://purl.org/dc/terms/created></c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
-  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4026 51.2195)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
+  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4026 51.2195)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
+  <c- nn>prov</c-><c- p>:</c-><c- f>actedOnBehalfOf</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissiepunt</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5BZ2VudFsiQWdlbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpuTWVldHB1bnQgLS0+fGFjdGVkT25CZWhhbGZPZnwgbkFnZW50Cm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQ=="></div>
    <h3 class="heading settled" data-level="5.10" id="Observatie"><span class="secno">5.10. </span><span class="content">Observatie</span><a class="self-link" href="#Observatie"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Observatie</code></p>
    <p><strong>Definitie:</strong> Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt.</p>
@@ -2387,7 +2389,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Onttrekkingspunt</code></p>
    <p><strong>Definitie:</strong> Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking).</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObject</code></p>
-   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie</p>
+   <p><strong>Constraints:</strong> label: min 1; type: min 0; issued: min 1, max 1 of date; valid: min 0, max 1 of date; created: min 1, max 1 of dateTime; status: min 0, max 1; atLocation: min 1, max 1 of ExploitatieLocatie; hasGeometry: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Onttrekkingspunt</c-> <c- p>;</c->
