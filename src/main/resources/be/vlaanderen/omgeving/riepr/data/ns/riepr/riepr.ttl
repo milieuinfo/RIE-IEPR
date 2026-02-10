@@ -55,13 +55,13 @@
         dct:created "2024-01-15T10:00:00"^^xsd:dateTime ;
         dct:issued "2020-01-01"^^xsd:date ;
         dct:valid "2030-12-31"^^xsd:date ;
-        prov:atLocation [ a :ExploitatieLocatie ;
+        sosa:isHostedBy [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
     skos:example [ a :Proces ;
         rdfs:label "Verwerking van grondstoffen"@nl ;
-        prov:wasDerivedFrom [ a :VerwerkingsProcedure ]
+        dct:type [ a :VerwerkingsProcedure ]
     ] ;
     rdfs:subClassOf pplan:Plan, pplan:Step, dbo:Project, ssn:System, prov:Agent ;
     owl:equivalentClass [ a owl:Class ;
@@ -96,7 +96,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een proces vindt plaats op een enkele exploitatie locatie
-        owl:onProperty prov:atLocation ;
+        owl:onProperty sosa:isHostedBy ;
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -113,14 +113,14 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een proces kan worden toegeschreven aan een agent
-        owl:onProperty prov:wasAttributedTo ; 
+        # Een proces kan worden geïmplementeerd door een agent
+        owl:onProperty sosa:wasImplementedBy ; 
         owl:someValuesFrom prov:Agent ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan zijn afgeleid van een (generieke) procedure (optioneel)
-        owl:onProperty prov:wasDerivedFrom, dct:type ; 
+        owl:onProperty dct:type ; 
         owl:someValuesFrom sosa:Procedure ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         # Max 1 omdat een proces slechts van 1 procedure afgeleid kan zijn and zou
@@ -187,7 +187,7 @@
         dct:issued "2020-01-01"^^xsd:date ;
         dct:valid "2030-12-31"^^xsd:date ;
         adms:status :Actief ;
-        prov:atLocation [ a :ExploitatieLocatie ;
+        sosa:isHostedBy [ a :ExploitatieLocatie ;
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
@@ -231,7 +231,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie moet onderdeel van een locatie zijn
-        owl:onProperty prov:atLocation ;
+        owl:onProperty sosa:isHostedBy ;
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -258,7 +258,7 @@
         rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
         dct:issued "2020-01-01"^^xsd:date ;
         dct:valid "2030-12-31"^^xsd:date ;
-        prov:atLocation [ a :Installatie ;
+        sosa:isHostedBy [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ] ;
         ogc:hasGeometry [ a ogc:Geometry ;
@@ -308,7 +308,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een emissiepunt moet gekoppeld zijn aan een exploitatie locatie
-        owl:onProperty prov:atLocation ; 
+        owl:onProperty sosa:isHostedBy ; 
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -370,7 +370,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een onttrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
-        owl:onProperty prov:atLocation ; 
+        owl:onProperty sosa:isHostedBy ; 
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -389,7 +389,7 @@
         rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
         dbo:diameter "2.5"^^xsd:float ;
         dbo:height "30.0"^^xsd:float ;
-        prov:atLocation [ a :Installatie ;
+        sosa:isHostedBy [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ] ;
         ogc:hasGeometry [ a ogc:Geometry ;
@@ -416,7 +416,7 @@
     skos:example [ a :Grondwaterput ;
         rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
         dbo:depth "15.0"^^xsd:float ;
-        prov:atLocation [ a :Installatie ;
+        sosa:isHostedBy [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ] ;
         ogc:hasGeometry [ a ogc:Geometry ;
@@ -436,7 +436,7 @@
     rdfs:subClassOf :Emissiepunt ;
     skos:example [ a :Lozingspunt ;
         rdfs:label "Lozingspunt 1 Cementfabriek Antwerpen"@nl ;
-        prov:atLocation [ a :Installatie ;
+        sosa:isHostedBy [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ] ;
         ogc:hasGeometry [ a ogc:Geometry ;
@@ -455,10 +455,7 @@
         dct:valid "2030-12-31"^^xsd:date ;
         ogc:hasGeometry [ a ogc:Geometry ;
             ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral
-        ] ;
-        prov:actedOnBehalfOf [ a :Emissiepunt ;
-            rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl
-        ]
+        ] 
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt is verschillend van een emissiepunt (disjoint)
@@ -526,7 +523,7 @@
         dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
         dct:issued "2020-01-01"^^xsd:date ;
         dct:valid "2030-12-31"^^xsd:date ;
-        prov:atLocation [ a :Installatie ;
+        sosa:isHostedBy [ a :Installatie ;
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ]
     ] ;
@@ -554,7 +551,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een apparaat moet gekoppeld zijn aan exact één exploitatie locatie
-        owl:onProperty prov:atLocation ; 
+        owl:onProperty sosa:isHostedBy ; 
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -890,7 +887,7 @@
 # Proces met een emissieprocedure moet worden toegeschreven aan een emissiepunt (agent)
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:onProperty prov:wasDerivedFrom ;
+        owl:onProperty dct:type ;
         owl:someValuesFrom :EmissieProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
@@ -901,7 +898,7 @@
 # Proces met een apparaatverwerkingsproces moet worden toegeschreven aan een apparaat (agent)
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:onProperty prov:wasDerivedFrom ;
+        owl:onProperty dct:type ;
         owl:someValuesFrom :apparaatVerwerkingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
@@ -912,7 +909,7 @@
 # Proces met een overbrengingsproces moet stoffen transporteren
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:onProperty prov:wasDerivedFrom ;
+        owl:onProperty dct:type ;
         owl:someValuesFrom :overbrengingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
@@ -923,7 +920,7 @@
 # Proces met meetprocedure moet attributedTo een meetpunt
 [ a owl:Class ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:onProperty prov:wasDerivedFrom ;
+        owl:onProperty dct:type ;
         owl:someValuesFrom :meetProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
