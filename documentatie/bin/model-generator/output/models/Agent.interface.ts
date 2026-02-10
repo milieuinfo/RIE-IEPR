@@ -2,4 +2,5 @@
 
 export interface IAgent {
   uri?: string;
+  inNaamVan?: string[];
 }

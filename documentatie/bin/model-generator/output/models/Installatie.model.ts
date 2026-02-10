@@ -30,6 +30,9 @@ export class Installatie implements ISystem {
   @jsonArrayMember(Object, { name: 'wasDerivedFrom' })
   afgeleidVan?: ISystem[];
 
+  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
+  inNaamVan?: string[];
+
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 

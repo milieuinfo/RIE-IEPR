@@ -126,8 +126,8 @@ procesHoofd.benaming = 'Staalproductieproces';
 procesHoofd.aangemaaktOp = D('2020-07-30T10:00:00Z');
 procesHoofd.geldigVan = D('2020-07-30');
 procesHoofd.locatie = hoofdZetel;
-procesHoofd.hasInputVar = [ijzererts];
-procesHoofd.hasOutputVar = [staalplaat];
+procesHoofd.heeftInvoer = [ijzererts];
+procesHoofd.heeftUitvoer = [staalplaat];
 
 const grondstoffenMix = new ProcesVariabele();
 grondstoffenMix.uri = baseStof + 'grondstoffenMix';
@@ -142,8 +142,8 @@ proces1.benaming = 'Toevoeging van grondstoffen';
 proces1.aangemaaktOp = D('2020-07-30T10:00:00Z');
 proces1.geldigVan = D('2020-07-30');
 proces1.locatie = hoofdZetel;
-proces1.hasInputVar = [ijzererts];
-proces1.hasOutputVar = [grondstoffenMix];
+proces1.heeftInvoer = [ijzererts];
+proces1.heeftUitvoer = [grondstoffenMix];
 proces1.onderdeelVan = procesHoofd;
 
 export const processen = [procesHoofd, proces1];

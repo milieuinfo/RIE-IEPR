@@ -7,32 +7,22 @@ classDiagram
     class Apparaat {
         string uri
         Date aangemaaktOp
-        Date geldigVan
-        ExploitatieLocatie locatie (FK)
         string benaming
-        Date geldigTot
     }
     class Emissiepunt {
         string uri
         string benaming
         string type
-        Date geldigVan
         Date aangemaaktOp
-        ExploitatieLocatie locatie (FK)
-        Date geldigTot
     }
     class Grondwaterput {
-        number depth
+        number diepte
     }
     class Installatie {
         string uri
-        object[] hasSubSystem (FK)
+        ISystem[] heeftSubSysteem (FK)
         string benaming
         Date aangemaaktOp
-        Date geldigVan
-        ExploitatieLocatie locatie (FK)
-        Installatie[] afgeleidVan (FK)
-        Date geldigTot
     }
     class Lozingspunt {
     }
@@ -41,30 +31,23 @@ classDiagram
         string benaming
         string type
         Date aangemaaktOp
-        Date geldigVan
-        Date geldigTot
     }
-    class Ontrekkingspunt {
+    class Onttrekkingspunt {
         string uri
         string benaming
         string type
-        Date geldigVan
         Date aangemaaktOp
-        Date geldigTot
     }
     class Proces {
         string uri
         Date aangemaaktOp
         string benaming
-        Date geldigVan
-        ExploitatieLocatie locatie (FK)
-        object[] toegewezenAan (FK)
+        IAgent[] toegewezenAan (FK)
         enum type
-        ProcesVariabele[] hasInputVar (FK)
-        ProcesVariabele[] hasOutputVar (FK)
+        ProcesVariabele[] heeftInvoer (FK)
+        ProcesVariabele[] heeftUitvoer (FK)
         Proces onderdeelVan (FK)
         Proces[] gaatVoorafAan (FK)
-        Date geldigTot
     }
     class ProcesVariabele {
         string uri
@@ -72,9 +55,7 @@ classDiagram
         string type
         string eenheid
         string waarde
-        Date geldigVan
         Date aangemaaktOp
-        Date geldigTot
     }
     class Schouw {
         number diameter
@@ -90,53 +71,25 @@ classDiagram
         <<interface>>
         string uri
     }
-    class ISpatialObject {
-        <<interface>>
-        string uri
-    }
 
     Emissiepunt <|-- Schouw
-    Ontrekkingspunt <|-- Grondwaterput
+    Onttrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
     ISystem <|.. Apparaat
     ISystem <|.. Emissiepunt
     ISystem <|.. Installatie
     ISystem <|.. Meetpunt
-    ISystem <|.. Ontrekkingspunt
+    ISystem <|.. Onttrekkingspunt
     ISystem <|.. Proces
     IAgent <|.. Apparaat
     IAgent <|.. Emissiepunt
     IAgent <|.. Installatie
     IAgent <|.. Meetpunt
-    IAgent <|.. Ontrekkingspunt
+    IAgent <|.. Onttrekkingspunt
     IAgent <|.. Proces
-    ISpatialObject <|.. Apparaat
-    ISpatialObject <|.. Emissiepunt
-    ISpatialObject <|.. Meetpunt
-    ISpatialObject <|.. Ontrekkingspunt
-    Proces --> Installatie : toegewezen aan
-    Proces --> Emissiepunt : toegewezen aan
-    Proces --> Ontrekkingspunt : toegewezen aan
-    Proces --> Schouw : toegewezen aan
-    Proces --> Grondwaterput : toegewezen aan
-    Proces --> Lozingspunt : toegewezen aan
-    Proces --> Meetpunt : toegewezen aan
-    Proces --> Apparaat : toegewezen aan
-    Proces --> ProcesVariabele : hasInputVar
-    Proces --> ProcesVariabele : hasOutputVar
+    Proces --> IAgent : toegewezen aan
+    Proces --> ProcesVariabele : heeft invoer
+    Proces --> ProcesVariabele : heeft uitvoer
     Proces --> Proces : onderdeel van
     Proces --> Proces : gaat vooraf aan
-    Installatie --> Proces : hasSubSystem
-    Installatie --> Installatie : hasSubSystem
-    Installatie --> Emissiepunt : hasSubSystem
-    Installatie --> Ontrekkingspunt : hasSubSystem
-    Installatie --> Schouw : hasSubSystem
-    Installatie --> Grondwaterput : hasSubSystem
-    Installatie --> Lozingspunt : hasSubSystem
-    Installatie --> Meetpunt : hasSubSystem
-    Installatie --> Apparaat : hasSubSystem
-    Installatie --> ExploitatieLocatie : locatie
-    Installatie --> Installatie : afgeleid van
-    Emissiepunt --> ExploitatieLocatie : locatie
-    Ontrekkingspunt --> ExploitatieLocatie : locatie
-    Apparaat --> ExploitatieLocatie : locatie
+    Installatie --> ISystem : heeft sub systeem

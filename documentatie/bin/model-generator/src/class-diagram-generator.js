@@ -102,11 +102,46 @@ export class ClassDiagramGenerator extends ClassGenerator {
     // render object relationships
     // Collapse relationships that target a shared interface (e.g., multiple Agent subtypes -> IAgent)
     const renderRelMap = new Map();
+
+    // If there exists an explicit relationship from the same source+property
+    // that targets an interface, prefer that interface and drop concrete
+    // target relations (avoids duplicate edges like ``Proces -> ISystem`` and
+    // ``Proces -> Schouw`` when Schouw implements ISystem).
+    // Build groups by (from, label/property) so we can decide per-group
+    // whether any target resolves to a shared interface. If so, prefer
+    // that interface for the entire group.
+    const groupMap = new Map();
     Array.from(this.relationships.values()).forEach(rel => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
-        // Ask ClassGenerator helper whether these targets share a common interface
-        const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
-        const toResolved = sharedIface || rel.to;
+      const labelKey = `${rel.from}|${rel.label || rel.property}`;
+      if (!groupMap.has(labelKey)) groupMap.set(labelKey, []);
+      groupMap.get(labelKey).push(rel);
+    });
+
+    const interfaceTargetMap = new Map();
+    groupMap.forEach((rels, labelKey) => {
+      for (const r of rels) {
+        const sharedIface = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames);
+        if (sharedIface) { interfaceTargetMap.set(labelKey, sharedIface); break; }
+      }
+    });
+
+    Array.from(this.relationships.values()).forEach(rel => {
+      if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
+      // If we have an interface target for this (from,property), always use it
+      const ifaceKey = `${rel.from}|${rel.label || rel.property}`;
+      const forcedIface = interfaceTargetMap.get(ifaceKey);
+      if (forcedIface) {
+        const key = `${rel.from}|${forcedIface}|${rel.property}`;
+        if (!renderRelMap.has(key)) {
+          renderRelMap.set(key, Object.assign({}, rel, { toResolved: forcedIface }));
+        }
+        return; // skip concrete target
+      }
+
+      // Ask ClassGenerator helper whether these targets share a common interface
+      const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      const toResolved = sharedIface || rel.to;
       const key = `${rel.from}|${toResolved}|${rel.property}`;
       if (!renderRelMap.has(key)) {
         renderRelMap.set(key, Object.assign({}, rel, { toResolved }));

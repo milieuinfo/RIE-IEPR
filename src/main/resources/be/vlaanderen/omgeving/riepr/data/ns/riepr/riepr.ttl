@@ -267,7 +267,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt is verschillend van een onttrekkingspunt (disjoint)
-        owl:disjointWith :Ontrekkingspunt
+        owl:disjointWith :Onttrekkingspunt
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een emissiepunt moet een benaming hebben
@@ -312,61 +312,73 @@
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een emissiepunt mag max 1 geometrie hebben
+        owl:onProperty ogc:hasGeometry ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-:Ontrekkingspunt a owl:Class ;
-    rdfs:label "Ontrekkingspunt"@nl ;
+:Onttrekkingspunt a owl:Class ;
+    rdfs:label "Onttrekkingspunt"@nl ;
     rdfs:comment "Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking)."@nl ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
-    skos:example [ a :Ontrekkingspunt ;
+    skos:example [ a :Onttrekkingspunt ;
         rdfs:label "Onttrekking 1"@nl
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een benaming hebben
+        # Een Onttrekkingspunt moet een benaming hebben
         owl:onProperty rdfs:label ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt is verschillend van een emissiepunt (disjoint)
+        # Een onttrekkingspunt is verschillend van een emissiepunt (disjoint)
         owl:disjointWith :Emissiepunt
     ] ;
         rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een typering hebben via dct:type
+        # Een onttrekkingspunt kan een typering hebben via dct:type
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een geldigheid start hebben
+        # Een onttrekkingspunt moet een geldigheid start hebben
         owl:onProperty dct:issued ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een geldigheid einde hebben
+        # Een onttrekkingspunt kan een geldigheid einde hebben
         owl:onProperty dct:valid ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt moet een creatie datum hebben
+        # Een onttrekkingspunt moet een creatie datum hebben
         owl:onProperty dct:created ;
         owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # Een ontrekkingspunt kan een status hebben
+        # Een onttrekkingspunt kan een status hebben
         owl:onProperty adms:status ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        # Een ontrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
+        # Een onttrekkingspunt moet gekoppeld zijn aan een exploitatie locatie
         owl:onProperty prov:atLocation ; 
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een onttrekkingspunt mag max 1 geometrie hebben
+        owl:onProperty ogc:hasGeometry ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
     
@@ -400,7 +412,7 @@
 :Grondwaterput a owl:Class ;
     rdfs:label "Grondwaterput"@nl ;
     rdfs:comment "Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering."@nl ;
-    rdfs:subClassOf :Ontrekkingspunt ;
+    rdfs:subClassOf :Onttrekkingspunt ;
     skos:example [ a :Grondwaterput ;
         rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
         dbo:depth "15.0"^^xsd:float ;
@@ -443,7 +455,18 @@
         dct:valid "2030-12-31"^^xsd:date ;
         ogc:hasGeometry [ a ogc:Geometry ;
             ogc:asWKT "POINT(4.4026 51.2195)"^^ogc:wktLiteral
+        ] ;
+        prov:actedOnBehalfOf [ a :Emissiepunt ;
+            rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl
         ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt is verschillend van een emissiepunt (disjoint)
+        owl:disjointWith :Emissiepunt
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt is verschillend van een onttrekkingspunt (disjoint)
+        owl:disjointWith :Onttrekkingspunt
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een meetpunt moet een benaming hebben
@@ -486,6 +509,13 @@
         # Een meetpunt heeft externe identificaties (optioneel)
         owl:onProperty adms:identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een meetpunt mag max 1 geometrie hebben
+        # TODO MOGELIJK VERPLICHT
+        owl:onProperty ogc:hasGeometry ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Apparaat a owl:Class ;
@@ -533,6 +563,12 @@
         # Een apparaat moet een benaming hebben
         owl:onProperty rdfs:label ; 
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een apparaat mag max 1 geometrie hebben
+        owl:onProperty ogc:hasGeometry ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Observatie a owl:Class ;
@@ -659,7 +695,7 @@
 :ExploitatieLocatie a owl:Class ;
     rdfs:label "Exploitatie Locatie"@nl ;
     rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl ;
-    rdfs:subClassOf ogc:SpatialObjectCollection, prov:Entity ;
+    rdfs:subClassOf ogc:Feature, prov:Entity, sosa:Platform ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet een datum hebben waarop het is ingegeven
         owl:onProperty dct:created ;
@@ -722,6 +758,19 @@
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :ExploitatieLocatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie moet exact 1 geometrie hebben
+        owl:onProperty ogc:hasGeometry ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # Een exploitatie locatie kan een adres hebben
+        owl:onProperty locn:address ;
+        owl:someValuesFrom locn:Address ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 # Proces Procedures

@@ -27,6 +27,7 @@ build-specificatie:
     - clean
     - script: |
         #!/bin/bash
+        set -e
         git config --global init.defaultBranch main || true
     - checkout
     - script: |
@@ -62,6 +63,7 @@ build-specificatie:
         # ensure artifact folder exists even when generation failed
         mkdir -p build-artifact
         if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
+        echo "Build and package stage completed. index.html copied to build-artifact if it existed."
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
@@ -74,36 +76,45 @@ release-and-publish:
     - clean
     - script: |
         #!/bin/bash
-        git config --global init.defaultBranch main || true
+        set -e
+        git config --global init.defaultBranch gh-pages || true
     - checkout
     - script: |
         #!/bin/bash
         set -e
-        # Read Bamboo variables safely (use quotes so shell doesn't try to expand a non-substituted placeholder)
-        SECRET_GITHUB_TOKEN='${bamboo.github_secret_access_token}'
-        GITHUB_REPO='${bamboo.github_repo}'
-        # If Bamboo didn't substitute the placeholders they will still contain '${bamboo'
-        if echo "$SECRET_GITHUB_TOKEN" | grep -q "\${bamboo" || [ -z "$SECRET_GITHUB_TOKEN" ]; then
-          echo "ERROR: Bamboo plan variable 'secret_github_token' is not set or not available to this job"; exit 1
-        fi
-        if echo "$GITHUB_REPO" | grep -q "\${bamboo" || [ -z "$GITHUB_REPO" ]; then
-          echo "ERROR: Bamboo plan variable 'github_repo' is not set or not available to this job (expected owner/repo)"; exit 1
-        fi
-        export SECRET_GITHUB_TOKEN
-        export GITHUB_REPO
+        # prepare gh-pages branch and clean working tree so it will only contain what we add
         git config user.email "bamboo@ci"
         git config user.name "Bamboo CI"
-        git fetch origin
-        git checkout -B gh-pages
-        if [ -d build-artifact ]; then cp -r build-artifact/* .; fi
-        if [ -f index.html ]; then cp -f index.html .; fi
-        git add -A
-        git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}" || true
-        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" gh-pages --force
-  artifacts:
-    - name: artifact-release
-      location: build
-      pattern: '**/*.*'
+        git fetch origin gh-pages:gh-pages
+        git checkout gh-pages
+    - artifact-download:
+        source-plan: RIEIEP-SPEC
+        artifacts:
+          - name: artifact-specificatie
+            destination: build-artifact
+    - script: |
+        #!/bin/bash
+        echo "Starting release and publish stage. Contents of build-artifact:"
+        ls -la build-artifact || true
+        set -e
+        SECRET_GITHUB_TOKEN='${bamboo.github_secret_access_token}'
+        GITHUB_REPO='milieuinfo/RIE-IEPR'
+        export SECRET_GITHUB_TOKEN
+        export GITHUB_REPO
+        # minimal site files: copy artifact into index.html or fail
+        if [ -f build-artifact/index.html ]; then
+          echo "Found index.html in build-artifact; copying to workspace root"
+          cp -f build-artifact/index.html index.html
+        elif [ -f index.html ]; then
+          echo "Found index.html in workspace root; using that"
+        else
+          echo "Required artifact missing: build-artifact/index.html"
+          exit 1
+        fi
+        git add index.html .nojekyll
+        echo "Committing and pushing to gh-pages branch of ${GITHUB_REPO}"
+        git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
+        git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force
 
 verify-release:
   requirements: *requirements
@@ -116,10 +127,6 @@ verify-release:
     - script: |
         #!/bin/bash
         set -e
-        export GITHUB_REPO=${bamboo.github_repo}
-        if [ -z "$GITHUB_REPO" ]; then echo "github_repo not set"; exit 1; fi
+        GITHUB_REPO='milieuinfo/RIE-IEPR'
+        export GITHUB_REPO
         git ls-remote --heads "https://github.com/${GITHUB_REPO}.git" gh-pages | grep refs/heads/gh-pages || (echo "gh-pages branch missing"; exit 1)
-  artifacts:
-    - name: artifact-verify
-      location: build
-      pattern: '**/*.*'
