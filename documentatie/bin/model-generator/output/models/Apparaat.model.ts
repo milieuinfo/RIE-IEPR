@@ -2,7 +2,7 @@
 
 import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 
-import { jsonObject, jsonMember } from 'typedjson';
+import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
 
@@ -22,6 +22,12 @@ export class Apparaat implements ISystem {
 
   @jsonMember(String, { name: 'label' })
   benaming!: string;
+
+  @jsonMember(String, { name: 'hasGeometry' })
+  geometrie?: string;
+
+  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
+  inNaamVan?: string[];
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

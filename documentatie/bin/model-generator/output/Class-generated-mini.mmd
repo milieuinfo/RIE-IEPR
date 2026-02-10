@@ -16,11 +16,11 @@ classDiagram
         Date aangemaaktOp
     }
     class Grondwaterput {
-        number depth
+        number diepte
     }
     class Installatie {
         string uri
-        ISystem[] hasSubSystem (FK)
+        ISystem[] heeftSubSysteem (FK)
         string benaming
         Date aangemaaktOp
     }
@@ -31,6 +31,7 @@ classDiagram
         string benaming
         string type
         Date aangemaaktOp
+        IAgent inNaamVan (FK)
     }
     class Onttrekkingspunt {
         string uri
@@ -44,8 +45,8 @@ classDiagram
         string benaming
         IAgent[] toegewezenAan (FK)
         enum type
-        ProcesVariabele[] hasInputVar (FK)
-        ProcesVariabele[] hasOutputVar (FK)
+        ProcesVariabele[] heeftInvoer (FK)
+        ProcesVariabele[] heeftUitvoer (FK)
         Proces onderdeelVan (FK)
         Proces[] gaatVoorafAan (FK)
     }
@@ -88,8 +89,9 @@ classDiagram
     IAgent <|.. Onttrekkingspunt
     IAgent <|.. Proces
     Proces --> IAgent : toegewezen aan
-    Proces --> ProcesVariabele : hasInputVar
-    Proces --> ProcesVariabele : hasOutputVar
+    Proces --> ProcesVariabele : heeft invoer
+    Proces --> ProcesVariabele : heeft uitvoer
     Proces --> Proces : onderdeel van
     Proces --> Proces : gaat vooraf aan
-    Installatie --> ISystem : hasSubSystem
+    Installatie --> ISystem : heeft sub systeem
+    Meetpunt --> IAgent : in naam van

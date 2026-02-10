@@ -1,13 +1,12 @@
 // Auto-generated models
 
+import { Onttrekkingspunt } from './Onttrekkingspunt.model';
+
 import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
-export class Grondwaterput {
-  @jsonMember(String, { name: 'uri' })
-  uri!: string;
-
+export class Grondwaterput extends Onttrekkingspunt {
   @jsonMember(Number, { name: 'depth' })
-  depth!: number;
+  diepte!: number;
 
 }

@@ -33,16 +33,19 @@ export class Proces implements ISystem {
   type?: string;
 
   @jsonArrayMember(ProcesVariabele, { name: 'hasInputVar' })
-  hasInputVar?: ProcesVariabele[];
+  heeftInvoer?: ProcesVariabele[];
 
   @jsonArrayMember(ProcesVariabele, { name: 'hasOutputVar' })
-  hasOutputVar?: ProcesVariabele[];
+  heeftUitvoer?: ProcesVariabele[];
 
   @jsonMember(Proces, { name: 'isStepOfPlan' })
   onderdeelVan?: Proces;
 
   @jsonArrayMember(Proces, { name: 'isPrecededBy' })
   gaatVoorafAan?: Proces[];
+
+  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
+  inNaamVan?: string[];
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

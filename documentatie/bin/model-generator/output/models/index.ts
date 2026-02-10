@@ -13,7 +13,6 @@ export * from './Lozingspunt.model';
 export * from './Meetpunt.model';
 export * from './MeetpuntIdentifier.model';
 export * from './Observatie.model';
-export * from './Ontrekkingspunt.model';
 export * from './Onttrekkingspunt.model';
 export * from './Proces.model';
 export * from './ProcesIdentifier.model';

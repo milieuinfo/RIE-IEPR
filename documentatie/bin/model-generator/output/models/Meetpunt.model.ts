@@ -11,6 +11,9 @@ export class Meetpunt implements ISystem {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
 
+  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
+  inNaamVan!: string[];
+
   @jsonMember(String, { name: 'label' })
   benaming!: string;
 
@@ -22,6 +25,9 @@ export class Meetpunt implements ISystem {
 
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
+
+  @jsonMember(String, { name: 'hasGeometry' })
+  geometrie?: string;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

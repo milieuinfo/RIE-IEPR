@@ -2,7 +2,7 @@
 
 import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 
-import { jsonObject, jsonMember } from 'typedjson';
+import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
 
@@ -25,6 +25,12 @@ export class Onttrekkingspunt implements ISystem {
 
   @jsonMember(ExploitatieLocatie, { name: 'atLocation' })
   locatie!: ExploitatieLocatie;
+
+  @jsonMember(String, { name: 'hasGeometry' })
+  geometrie?: string;
+
+  @jsonArrayMember(String, { name: 'actedOnBehalfOf' })
+  inNaamVan?: string[];
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
