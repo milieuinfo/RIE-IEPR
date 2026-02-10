@@ -19,13 +19,21 @@ erDiagram
         date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
-        string member_of_id "http://www.w3.org/ns/org#memberOf [FK]"
+        string exploitant_id "http://www.w3.org/ns/org#memberOf [FK]"
         string benaming "rdfs:label"
         string mbox "http://xmlns.com/foaf/0.1/mbox"
         string phone "http://xmlns.com/foaf/0.1/phone"
         string has_role "http://www.w3.org/ns/org#hasRole"
         string address_id "http://www.w3.org/ns/locn#address [FK]"
         string name "http://xmlns.com/foaf/0.1/name"
+    }
+    ContactpersoonAddressAdres["contactpersoon_address_adres"] {
+        string contactpersoon_uri "Contactpersoon [PK,FK]"
+        string adres_uri "Address [PK,FK]"
+    }
+    ContactpersoonExploitantExploitant["contactpersoon_exploitant_exploitant"] {
+        string contactpersoon_uri "Contactpersoon [PK,FK]"
+        string exploitant_uri "Exploitant [PK,FK]"
     }
     Emissiepunt["emissiepunt"] {
         string uri "URI [PK]"
@@ -45,9 +53,29 @@ erDiagram
         string benaming "rdfs:label"
         string address_id "http://www.w3.org/ns/locn#address [FK]"
     }
+    ExploitantAddressAdres["exploitant_address_adres"] {
+        string exploitant_uri "Exploitant [PK,FK]"
+        string adres_uri "Address [PK,FK]"
+    }
+    ExploitantTypeContactpersoon["exploitant_type_contactpersoon"] {
+        string exploitant_uri "Exploitant [PK,FK]"
+        string contactpersoon_uri "Contactpersoon [PK,FK]"
+    }
+    ExploitatieLocatieAddressAdres["exploitatie_locatie_address_adres"] {
+        string exploitatie_locatie_uri "ExploitatieLocatie [PK,FK]"
+        string adres_uri "Address [PK,FK]"
+    }
+    ExploitatieLocatieAfgeleidVanExploitatieLocatie["exploitatie_locatie_afgeleid_van_exploitatie_locatie"] {
+        string exploitatie_locatie_uri_from "ExploitatieLocatie [PK,FK]"
+        string exploitatie_locatie_uri_to "ExploitatieLocatie [PK,FK]"
+    }
+    ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier["exploitatie_locatie_identifiers_exploitatie_locatie_identifier"] {
+        string exploitatie_locatie_uri "ExploitatieLocatie [PK,FK]"
+        string exploitatie_locatie_identifier_uri "ExploitatieLocatieIdentifier [PK,FK]"
+    }
     ExploitatieLocatieToegewezenAanExploitant["exploitatie_locatie_toegewezen_aan_exploitant"] {
-        string exploitatie_uri "[PK,FK]"
-        string exploitant_uri "[PK,FK]"
+        string exploitatie_locatie_uri "ExploitatieLocatie [PK,FK]"
+        string exploitant_uri "Exploitant [PK,FK]"
     }
     ExploitatieLocatie["exploitatie_locatie"] {
         string uri "URI [PK]"
@@ -55,6 +83,7 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string benaming "rdfs:label"
+        string toegewezen_aan_id "prov:wasAttributedTo [FK]"
         string beinvloed_door "prov:wasInfluencedBy"
         string afgeleid_van_id "prov:wasDerivedFrom [FK]"
         string geometrie "ogc:hasGeometry"
@@ -82,6 +111,22 @@ erDiagram
         string benaming "rdfs:label"
         string afgeleid_van_id "prov:wasDerivedFrom [FK]"
     }
+    InstallatieAfgeleidVanInstallatie["installatie_afgeleid_van_installatie"] {
+        string installatie_uri_from "Installatie [PK,FK]"
+        string installatie_uri_to "Installatie [PK,FK]"
+    }
+    InstallatieHasSubSystem["installatie_has_sub_system"] {
+        string installatie_uri "Installatie [PK,FK]"
+        string target_uri "Proces, Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
+        enum target_type "Proces, Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
+        date geldig_van
+        datetime aangemaakt_op
+        date geldig_tot
+    }
+    InstallatieIdentifiersInstallatieIdentifier["installatie_identifiers_installatie_identifier"] {
+        string installatie_uri "Installatie [PK,FK]"
+        string installatie_identifier_uri "InstallatieIdentifier [PK,FK]"
+    }
     InstallatieIdentifier["installatie_identifier"] {
         date geldig_van "dct:issued [PK]"
         date geldig_tot "dct:valid"
@@ -103,6 +148,10 @@ erDiagram
         string type "dct:type"
         string geometrie "ogc:hasGeometry"
     }
+    MeetpuntIdentifiersMeetpuntIdentifier["meetpunt_identifiers_meetpunt_identifier"] {
+        string meetpunt_uri "Meetpunt [PK,FK]"
+        string meetpunt_identifier_uri "MeetpuntIdentifier [PK,FK]"
+    }
     MeetpuntIdentifier["meetpunt_identifier"] {
         date geldig_van "dct:issued [PK]"
         date geldig_tot "dct:valid"
@@ -114,6 +163,10 @@ erDiagram
     Observatie["observatie"] {
         string uri "URI [PK]"
         string has_feature_of_interest_id "sosa:hasFeatureOfInterest [FK]"
+    }
+    ObservatieHasFeatureOfInterestMeetpunt["observatie_has_feature_of_interest_meetpunt"] {
+        string observatie_uri "Observatie [PK,FK]"
+        string meetpunt_uri "Meetpunt [PK,FK]"
     }
     Onttrekkingspunt["onttrekkingspunt"] {
         string uri "URI [PK]"
@@ -130,19 +183,42 @@ erDiagram
         datetime aangemaakt_op "dct:created [PK]"
         date geldig_tot "dct:valid"
         string benaming "rdfs:label"
-        string geimplenteerd_door_id "sosa:wasImplementedBy [FK]"
+        string geimplenteerd_door_id "sosa:implementedBy [FK]"
         enum type "dct:type"
+        string heeft_invoer_id "pplan:hasInputVar [FK]"
+        string heeft_uitvoer_id "pplan:hasOutputVar [FK]"
         string onderdeel_van_id "pplan:isStepOfPlan [FK]"
-        string type_id "prov:wasDerivedFrom [FK]"
+        string gaat_vooraf_aan_id "pplan:isPrecededBy [FK]"
+        enum afgeleid_van "prov:wasDerivedFrom"
+        string afgeleid_van_id "prov:wasDerivedFrom [FK]"
+        string toegewezen_aan_id "prov:wasAttributedTo [FK]"
+    }
+    ProcesAfgeleidVan["proces_afgeleid_van"] {
+        string proces_uri "Proces [PK,FK]"
+        string target_uri "Proces, ExploitatieLocatie, Procedure [PK]"
+        enum target_type "Proces, ExploitatieLocatie, Procedure"
     }
     ProcesGaatVoorafAanProces["proces_gaat_vooraf_aan_proces"] {
-        string proces_uri_from "[PK,FK]"
-        string proces_uri_to "[PK,FK]"
+        string proces_uri_from "Proces [PK,FK]"
+        string proces_uri_to "Proces [PK,FK]"
+    }
+    ProcesGeimplementeerdDoor["proces_geimplementeerd_door"] {
+        string proces_uri "Proces [PK,FK]"
+        string target_uri "Proces, Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat, Exploitant [PK]"
+        enum target_type "Proces, Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat, Exploitant"
+    }
+    ProcesIdentifiersProcesIdentifier["proces_identifiers_proces_identifier"] {
+        string proces_uri "Proces [PK,FK]"
+        string proces_identifier_uri "ProcesIdentifier [PK,FK]"
+    }
+    ProcesOnderdeelVanProces["proces_onderdeel_van_proces"] {
+        string proces_uri_from "Proces [PK,FK]"
+        string proces_uri_to "Proces [PK,FK]"
     }
     ProcesToegewezenAan["proces_toegewezen_aan"] {
-        string proces_uri "[PK,FK]"
-        string target_uri "Installatie,Emissiepunt,Onttrekkingspunt,Schouw,Grondwaterput,Lozingspunt,Meetpunt,Apparaat,Exploitant [PK]"
-        string target_type "Installatie,Emissiepunt,Onttrekkingspunt,Schouw,Grondwaterput,Lozingspunt,Meetpunt,Apparaat,Exploitant"
+        string proces_uri "Proces [PK,FK]"
+        string target_uri "Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat, Exploitant [PK]"
+        enum target_type "Installatie, Emissiepunt, Onttrekkingspunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat, Exploitant"
     }
     ProcesVariabeleRelatie["proces_variabele_relatie"] {
         string proces_uri "[PK,FK]"
@@ -185,43 +261,83 @@ erDiagram
     Proces many to many Meetpunt : "geïmplementeerd door"
     Proces many to many Apparaat : "geïmplementeerd door"
     Proces many to many Exploitant : "geïmplementeerd door"
+    Proces many to many ProcesVariabele : "heeft invoer"
+    Proces many to many ProcesVariabele : "heeft uitvoer"
     Proces many to one Proces : "onderdeel van"
-    Proces many to many Proces : "type"
-    Proces many to many ExploitatieLocatie : "type"
+    Proces many to many Proces : "gaat vooraf aan"
+    Proces many to many Proces : "afgeleid van"
+    Proces many to many ExploitatieLocatie : "afgeleid van"
+    Proces many to many Installatie : "toegewezen aan"
+    Proces many to many Emissiepunt : "toegewezen aan"
+    Proces many to many Onttrekkingspunt : "toegewezen aan"
+    Proces many to many Schouw : "toegewezen aan"
+    Proces many to many Grondwaterput : "toegewezen aan"
+    Proces many to many Lozingspunt : "toegewezen aan"
+    Proces many to many Meetpunt : "toegewezen aan"
+    Proces many to many Apparaat : "toegewezen aan"
+    Proces many to many Exploitant : "toegewezen aan"
+    ExploitatieLocatie one to one Exploitant : "toegewezen aan"
     ExploitatieLocatie many to many ExploitatieLocatie : "afgeleid van"
     ExploitatieLocatie many to one Adres : "address"
-    Installatie many to many Proces : "hasSubSystem"
-    Installatie many to many Installatie : "hasSubSystem"
-    Installatie many to many Emissiepunt : "hasSubSystem"
-    Installatie many to many Onttrekkingspunt : "hasSubSystem"
-    Installatie many to many Schouw : "hasSubSystem"
-    Installatie many to many Grondwaterput : "hasSubSystem"
-    Installatie many to many Lozingspunt : "hasSubSystem"
-    Installatie many to many Meetpunt : "hasSubSystem"
-    Installatie many to many Apparaat : "hasSubSystem"
-    Installatie many to many Installatie : "afgeleid van"
     Observatie one to one Meetpunt : "hasFeatureOfInterest"
     Exploitant many to many ExploitantContactpersoon : "type"
     Exploitant many to many Adres : "address"
-    ExploitantContactpersoon one to one Exploitant : "memberOf"
+    ExploitantContactpersoon one to one Exploitant : "exploitant"
     ExploitantContactpersoon many to one Adres : "address"
     Proces many to many ProcesIdentifier : "identifiers"
     ExploitatieLocatie many to many ExploitatieLocatieIdentifier : "identifiers"
     Installatie many to many InstallatieIdentifier : "identifiers"
     Meetpunt many to many MeetpuntIdentifier : "identifiers"
+    Proces one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Installatie one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Emissiepunt one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Onttrekkingspunt one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Schouw one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Grondwaterput one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Lozingspunt one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Meetpunt one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Apparaat one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Exploitant one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    Proces one to many ProcesOnderdeelVanProces : "onderdeel van"
     Proces one to many ProcesGaatVoorafAanProces : "gaat vooraf aan"
-    Proces one to many ProcesGaatVoorafAanProces : ""
+    Proces one to many ProcesAfgeleidVan : "afgeleid van"
+    ExploitatieLocatie one to many ProcesAfgeleidVan : "afgeleid van"
+    Procedure one to many ProcesAfgeleidVan : "afgeleid van"
     Proces one to many ProcesToegewezenAan : "toegewezen aan"
-    Installatie one to many ProcesToegewezenAan : ""
-    Emissiepunt one to many ProcesToegewezenAan : ""
-    Onttrekkingspunt one to many ProcesToegewezenAan : ""
-    Schouw one to many ProcesToegewezenAan : ""
-    Grondwaterput one to many ProcesToegewezenAan : ""
-    Lozingspunt one to many ProcesToegewezenAan : ""
-    Meetpunt one to many ProcesToegewezenAan : ""
-    Apparaat one to many ProcesToegewezenAan : ""
-    Exploitant one to many ProcesToegewezenAan : ""
+    Installatie one to many ProcesToegewezenAan : "toegewezen aan"
+    Emissiepunt one to many ProcesToegewezenAan : "toegewezen aan"
+    Onttrekkingspunt one to many ProcesToegewezenAan : "toegewezen aan"
+    Schouw one to many ProcesToegewezenAan : "toegewezen aan"
+    Grondwaterput one to many ProcesToegewezenAan : "toegewezen aan"
+    Lozingspunt one to many ProcesToegewezenAan : "toegewezen aan"
+    Meetpunt one to many ProcesToegewezenAan : "toegewezen aan"
+    Apparaat one to many ProcesToegewezenAan : "toegewezen aan"
+    Exploitant one to many ProcesToegewezenAan : "toegewezen aan"
     ExploitatieLocatie one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
-    Exploitant one to many ExploitatieLocatieToegewezenAanExploitant : ""
+    Exploitant one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
+    ExploitatieLocatie one to many ExploitatieLocatieAfgeleidVanExploitatieLocatie : "afgeleid van"
+    ExploitatieLocatie one to many ExploitatieLocatieAddressAdres : "address"
+    Adres one to many ExploitatieLocatieAddressAdres : "address"
+    Installatie one to many InstallatieHasSubSystem : "hasSubSystem"
+    System one to many InstallatieHasSubSystem : "hasSubSystem"
+    Installatie one to many InstallatieAfgeleidVanInstallatie : "afgeleid van"
+    Observatie one to many ObservatieHasFeatureOfInterestMeetpunt : "hasFeatureOfInterest"
+    Meetpunt one to many ObservatieHasFeatureOfInterestMeetpunt : "hasFeatureOfInterest"
+    Exploitant one to many ExploitantTypeContactpersoon : "type"
+    ExploitantContactpersoon one to many ExploitantTypeContactpersoon : "type"
+    Exploitant one to many ExploitantAddressAdres : "address"
+    Adres one to many ExploitantAddressAdres : "address"
+    ExploitantContactpersoon one to many ContactpersoonExploitantExploitant : "exploitant"
+    Exploitant one to many ContactpersoonExploitantExploitant : "exploitant"
+    ExploitantContactpersoon one to many ContactpersoonAddressAdres : "address"
+    Adres one to many ContactpersoonAddressAdres : "address"
+    Proces one to many ProcesIdentifiersProcesIdentifier : "identifiers"
+    ProcesIdentifier one to many ProcesIdentifiersProcesIdentifier : "identifiers"
+    ExploitatieLocatie one to many ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier : "identifiers"
+    ExploitatieLocatieIdentifier one to many ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier : "identifiers"
+    Installatie one to many InstallatieIdentifiersInstallatieIdentifier : "identifiers"
+    InstallatieIdentifier one to many InstallatieIdentifiersInstallatieIdentifier : "identifiers"
+    Meetpunt one to many MeetpuntIdentifiersMeetpuntIdentifier : "identifiers"
+    MeetpuntIdentifier one to many MeetpuntIdentifiersMeetpuntIdentifier : "identifiers"
     Proces one to many ProcesVariabeleRelatie : "hasInputVar/hasOutputVar"
-    ProcesVariabele one to many ProcesVariabeleRelatie : ""
+    ProcesVariabele one to many ProcesVariabeleRelatie : "hasInputVar/hasOutputVar"

@@ -12,6 +12,7 @@
 @prefix locn:   <http://www.w3.org/ns/locn#> .
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix org:    <http://www.w3.org/ns/org#> .
 
 <> a skos:ConceptScheme ;
 	dct:title "RIE-IEPR concepten"@nl ;
@@ -21,7 +22,7 @@
 :geimplenteerdDoor a skos:Concept ;
     skos:prefLabel "geïmplementeerd door"@nl ;
     skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
-    skos:exactMatch sosa:wasImplementedBy ;
+    skos:exactMatch sosa:implementedBy ;
     skos:inScheme <> .
 
 :geometrie a skos:Concept ;
@@ -205,3 +206,9 @@
     skos:exactMatch dbo:hasSubSystem ;
     owl:equivalentProperty dbo:hasSubSystem ;
     skos:inScheme <> .
+
+:exploitant a skos:Concept ;
+    skos:prefLabel "exploitant"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een natuurlijk persoon en haar exploitant beschrijft."@nl ;
+    owl:equivalentProperty org:memberOf ;
+    skos:inScheme <> . 

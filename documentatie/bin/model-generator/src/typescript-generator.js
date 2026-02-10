@@ -12,28 +12,39 @@ export class TypeScriptGenerator extends ClassGenerator {
   }
 
   // TypeScript-specific helpers (moved here so they're not in shared ClassGenerator)
-  collectProcedureClasses() {
-    const procedureClasses = [];
-    this.ontology.classes.forEach((info, name) => {
-      if (info?.iri && this.ontology.isSubClassOf(info.iri, 'Procedure')) {
-        procedureClasses.push(name);
-      }
-    });
-    return procedureClasses;
+  // Collect mappings of configured interface-like local names to enum class lists
+  collectInterfaceClasses() {
+    const mappings = [];
+    try {
+      // Prefer explicit ENUMERABLE_CLASSES for enum synthesis; fall back to
+      // INTERFACE_CLASSES for backward compatibility.
+      const enumCandidates = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set)
+        ? Array.from(Config.ENUMERABLE_CLASSES)
+        : (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) ? Array.from(Config.INTERFACE_CLASSES) : [];
+      enumCandidates.forEach(localName => {
+        const matched = Array.from(this.enumClasses || []).filter(ec => {
+          try {
+            const info = this.ontology.classes.get(ec);
+            return info && info.iri && this.ontology.isSubClassOf(info.iri, localName);
+          } catch (e) { return false; }
+        });
+        if (matched.length > 0) mappings.push({ localName, enumClasses: matched, tsName: (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName });
+      });
+    } catch (e) { /* ignore */ }
+    return mappings;
   }
 
-  buildProcedureEnumContent(procedureClasses) {
-    const procName = 'Procedure';
-    let procContent = `// Auto-generated Procedure enum (based on sosa:Procedure)\n\n`;
-    procContent += `export enum ${procName} {\n`;
-    procedureClasses.forEach(cn => {
-      let base = cn.replace(/Procedure$/, '');
-      if (base.endsWith('s')) base = base.slice(0, -1);
-      const member = base.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toUpperCase();
-      procContent += `  ${member} = '${cn}',\n`;
-    });
-    procContent += `}\n`;
-    return { name: procName, content: procContent };
+  buildEnumFromClassList(localName, classList) {
+    const enumName = (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName;
+    // Delegate member derivation to ClassGenerator helper so diagram and
+    // TypeScript generation share the same formatting logic.
+    const members = new Set(this.collectEnumerableMembers(localName || '') || []);
+    if (members.size === 0) members.add('VALUE');
+    let content = `// Auto-generated ${enumName} enum\n\n`;
+    content += `export enum ${enumName} {\n`;
+    Array.from(members).forEach(m => { content += `  ${m} = '${m}',\n`; });
+    content += `}\n`;
+    return { name: enumName, content };
   }
 
   buildEnumForClass(ec) {
@@ -80,7 +91,7 @@ export class TypeScriptGenerator extends ClassGenerator {
     if (!fs.existsSync(outputPath)) return;
     const existing = fs.readdirSync(outputPath).filter(f => f.endsWith('.ts'));
     existing.forEach(f => {
-      if (!f.endsWith('.model.ts') && !f.endsWith('.enum.ts') && !f.endsWith('.interface.ts') && f !== 'index.ts' && f !== 'tsconfig.json' && f !== 'package.json' && f !== 'procedure.enum.ts') {
+      if (!f.endsWith('.model.ts') && !f.endsWith('.enum.ts') && !f.endsWith('.interface.ts') && f !== 'index.ts' && f !== 'tsconfig.json' && f !== 'package.json') {
         try { fs.unlinkSync(path.join(outputPath, f)); } catch (e) { /* ignore */ }
       }
     });
@@ -201,6 +212,13 @@ export class TypeScriptGenerator extends ClassGenerator {
     if (names.length === 0) return '';
     let importLines = '';
     names.forEach(mn => {
+      // If an enum file exists for this name, avoid importing a model class
+      // with the same identifier to prevent name collisions (enums are
+      // imported separately by the preamble).
+      try {
+        const enumFile = path.join(this.outputPath, `${mn}.enum.ts`);
+        if (fs.existsSync(enumFile)) return;
+      } catch (e) { /* ignore */ }
       importLines += `import { ${this.pascalCase(mn)} } from './${mn}.model';\n`;
     });
     return importLines;
@@ -216,18 +234,25 @@ export class TypeScriptGenerator extends ClassGenerator {
       const superInfo = this.ontology.classes.get(superName);
       const ifaceFile = path.join(outputPath, `${superName}.interface.ts`);
       let extendsAgent = false;
-      if (superInfo && superInfo.iri && this.ontology.isSubClassOf(superInfo.iri, 'Agent')) {
-        extendsAgent = true;
-      }
+      let agentLocal = 'Agent';
+      try {
+        if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+          const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k));
+          if (found) agentLocal = found;
+        }
+        if (superInfo && superInfo.iri && this.ontology.isSubClassOf(superInfo.iri, agentLocal)) {
+          extendsAgent = true;
+        }
+      } catch (e) { /* ignore */ }
       const { props, imports: ifaceImports } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames, classToSupers);
       let ifaceContent = '';
       let importHeader = '';
-      if (extendsAgent) importHeader += `import type { IAgent } from './Agent.interface';\n`;
-      ifaceImports.forEach(n => { if (n !== 'Agent') importHeader += `import type { I${n} } from './${n}.interface';\n`; });
+      if (extendsAgent) importHeader += `import type { I${agentLocal} } from './${agentLocal}.interface';\n`;
+      ifaceImports.forEach(n => { if (n !== agentLocal) importHeader += `import type { I${n} } from './${n}.interface';\n`; });
       // Header first, then imports so the auto-generated comment is the first line
       ifaceContent += `// Auto-generated shared interface for ${superName}\n\n`;
       if (importHeader) ifaceContent += importHeader + '\n';
-      ifaceContent += `export interface ${ifaceName}` + (extendsAgent ? ` extends IAgent` : '') + ` {\n`;
+      ifaceContent += `export interface ${ifaceName}` + (extendsAgent ? ` extends I${agentLocal}` : '') + ` {\n`;
       if (props.length > 0) {
         props.forEach(p => {
           const safeName = String(p.name).replace(/_+$/g, '').replace(/Id$/i, '');
@@ -266,17 +291,19 @@ export class TypeScriptGenerator extends ClassGenerator {
     // Compute classes to emit using BaseGenerator helper
     const classNames = this.computeVisibleClasses();
 
-    // Prepare enums using ClassGenerator helpers
+    // Prepare enums using ClassGenerator helpers and configured INTERFACE_CLASSES
     const enumFiles = [];
-    const procedureClasses = this.collectProcedureClasses();
-    if (procedureClasses.length > 0) {
-      const proc = this.buildProcedureEnumContent(procedureClasses);
-      const procEnumFile = path.join(this.outputPath, 'procedure.enum.ts');
-      fs.writeFileSync(procEnumFile, proc.content, 'utf8');
-      enumFiles.push({ file: procEnumFile, name: proc.name });
-    }
+    const interfaceEnumMappings = this.collectInterfaceClasses();
+    const mappedEnumClasses = new Set();
+    interfaceEnumMappings.forEach(m => {
+      const built = this.buildEnumFromClassList(m.localName, m.enumClasses);
+      const enumFile = path.join(this.outputPath, `${m.tsName.toLowerCase()}.enum.ts`);
+      fs.writeFileSync(enumFile, built.content, 'utf8');
+      enumFiles.push({ file: enumFile, name: built.name });
+      m.enumClasses.forEach(ec => mappedEnumClasses.add(ec));
+    });
 
-    const otherEnumClasses = Array.from(this.enumClasses).filter(ec => !procedureClasses.includes(ec));
+    const otherEnumClasses = Array.from(this.enumClasses).filter(ec => !mappedEnumClasses.has(ec));
     otherEnumClasses.sort().forEach(ec => {
       const built = this.buildEnumForClass(ec);
       const enumFile = path.join(this.outputPath, `${ec}.enum.ts`);
@@ -287,12 +314,11 @@ export class TypeScriptGenerator extends ClassGenerator {
     const indexLines = [`// Auto-generated models`];
     // Build shared supers using generic helper (force SpatialObject when present)
     const forced = [];
-    this.ontology.classes.forEach((ci) => {
-      (ci.superClasses || []).forEach(si => {
-        const local = this.ontology.extractLocalName(si);
-        if (local === 'SpatialObject' && !forced.includes(local)) forced.push(local);
-      });
-    });
+    try {
+      if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+        Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
+      }
+    } catch (e) { /* ignore */ }
     const { classToSupers, sharedSupers, sharedInterfaceNames } = this.computeSharedSupers(classNames, forced);
     // small shorthands for string helpers
     const pascal = this.pascalCase.bind(this);
@@ -396,20 +422,25 @@ export class TypeScriptGenerator extends ClassGenerator {
 
       // Determine which enums are actually used by this class and only import those
       const usedEnumNames = new Set();
+      // Build quick lookup for configured interface enum mappings
+      const interfaceEnumMap = new Map();
+      interfaceEnumMappings.forEach(m => interfaceEnumMap.set(m.localName, m.tsName));
       attrs.forEach(attr => {
         if (!attr) return;
         if (attr.type === 'enum') {
-          // Always map dct:type with sosa:Procedure to Procedure enum
-          if (attr.propertyIri === `${Config.NAMESPACES.dct}type` && (attr.comment === 'Procedure' || attr.comment === 'sosa:Procedure')) {
-            usedEnumNames.add('Procedure');
+          if (attr.propertyIri === `${Config.NAMESPACES.dct}type`) {
+            // attribute.comment may reference the local configured name
+            if (attr.comment) {
+              Array.from(interfaceEnumMap.entries()).forEach(([local, ts]) => {
+                if (attr.comment === local || attr.comment === ts) usedEnumNames.add(ts);
+              });
+            }
           } else {
             const enumClass = otherEnumClasses.find(ec => ec === attr.comment || ec === attr.propertyIri || pascal(ec) === pascal(attr.name));
             if (enumClass) usedEnumNames.add(pascal(enumClass));
           }
         }
       });
-      // Ensure Proces uses Procedure enum
-      if (className === 'Proces') usedEnumNames.add('Procedure');
       const localEnumFiles = enumFiles.filter(e => usedEnumNames.has(e.name));
 
       // build preamble with typedjson + enum + interface imports (only needed enums)
@@ -467,9 +498,7 @@ export class TypeScriptGenerator extends ClassGenerator {
         try {
           const localProp = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : attr.propertyIri;
           const propIriStr = attr.propertyIri ? String(attr.propertyIri) : '';
-          if ((propIriStr.endsWith('wasDerivedFrom') || localProp === 'wasDerivedFrom' || safeOfficial === 'type') && className === 'Proces') {
-            baseType = 'Procedure';
-          }
+          // No hard-coded special-casing here; enum mapping happens below based on configured INTERFACE_CLASSES
         } catch (e) { /* ignore */ }
         // If this class implements a shared interface, prefer the shared-interface
         // declaration for properties that are defined on the super (prevent incompatible types)
@@ -529,11 +558,16 @@ export class TypeScriptGenerator extends ClassGenerator {
           }
         }
         const resolvedTargets = attr.targetClasses || [];
-        const hasProcedureTarget = resolvedTargets.some(tn => procedureClasses && procedureClasses.includes(tn));
+        const hasMappedEnumTarget = resolvedTargets.some(tn => mappedEnumClasses && mappedEnumClasses.has(tn));
         if (attr.type === 'enum') {
-          // Always map dct:type with sosa:Procedure to Procedure enum
-          if (attr.propertyIri === `${Config.NAMESPACES.dct}type` && (attr.comment === 'Procedure' || attr.comment === 'sosa:Procedure')) {
-            baseType = 'Procedure';
+          if (attr.propertyIri === `${Config.NAMESPACES.dct}type` && attr.comment) {
+            // map dct:type to configured interface enum (if any)
+            for (const m of interfaceEnumMappings) {
+              if (attr.comment === m.localName || attr.comment === m.tsName) {
+                baseType = m.tsName;
+                break;
+              }
+            }
           } else {
             const enumClass = otherEnumClasses.find(ec => ec === attr.comment || ec === attr.propertyIri || pascal(ec) === pascal(attr.name));
             if (enumClass) baseType = pascal(enumClass);
@@ -623,9 +657,16 @@ export class TypeScriptGenerator extends ClassGenerator {
               baseType = pascal(concrete);
               modelImports.add(concrete);
             }
+            let agentLocal = 'Agent';
+            try {
+              if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+                const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k));
+                if (found) agentLocal = found;
+              }
+            } catch (e) { /* ignore */ }
             const anyAgent = Array.isArray(targets) && targets.some(tn => {
               const ti = this.ontology.classes.get(tn);
-              return ti && ti.iri && this.ontology.isSubClassOf(ti.iri, 'Agent');
+              return ti && ti.iri && this.ontology.isSubClassOf(ti.iri, agentLocal);
             });
             // Only prefer the generic IAgent interface when there are no explicit
             // internal (non-external) concrete target classes. If the restriction
@@ -637,12 +678,14 @@ export class TypeScriptGenerator extends ClassGenerator {
               if (!baseType || baseType === 'string' || baseType === 'object') {
                 // Try to discover the shared interface name for Agent-like supers
                 let agentIfaceName = null;
-                let agentLocal = 'Agent';
                 try {
-                  const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === 'Agent' || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, 'Agent')));
+                  const agentEntryLocal = (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set)
+                    ? Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k)) || 'Agent'
+                    : 'Agent';
+                  const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === agentEntryLocal || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, agentEntryLocal)));
                   if (agentEntry) {
-                    agentLocal = agentEntry[0];
                     agentIfaceName = agentEntry[1];
+                    agentLocal = agentEntry[0];
                   }
                 } catch (e) { /* ignore */ }
 
@@ -737,6 +780,14 @@ export class TypeScriptGenerator extends ClassGenerator {
           content += `  ${propName}${classMarker}: ${baseType};\n\n`;
         }
       });
+
+      // Rebuild preamble now that per-attribute processing may have added
+      // interface imports (interfaceImports may have been populated above).
+      try {
+        const updatedPreamble = this.buildModelPreamble(localEnumFiles, interfaceImports, needsArray) + '\n';
+        const idx = content.indexOf('@jsonObject');
+        if (idx >= 0) content = updatedPreamble + content.slice(idx);
+      } catch (e) { /* ignore */ }
 
       // Always close the class
       if (!content.trim().endsWith('}')) {

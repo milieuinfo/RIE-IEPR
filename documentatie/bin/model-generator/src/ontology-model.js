@@ -1,8 +1,7 @@
 import fs from 'fs';
 import https from 'https';
 import { Parser, Store, NamedNode, Quad } from 'n3';
-import { NAMESPACES, PATHS, resolveProjectPath, PROPERTY_LABEL_OVERRIDES, PROPERTY_NAME_OVERRIDES, camelCaseToSnakeCase } from './config.js';
-import path from 'path';
+import { NAMESPACES, PATHS, resolveProjectPath, camelCaseToSnakeCase } from './config.js';
 
 export class OntologyModel {
   constructor({ ontologyPath = PATHS.ontology, rulesPath = PATHS.rules, shapesPath = PATHS.shapes } = {}) {
@@ -13,7 +12,7 @@ export class OntologyModel {
     this.shapesStore = new Store();
     this.classes = new Map();
     // Houd bij welke klassen en predicaten "relevant" zijn omdat ze
-    // effectief voorkomen in de RIE-ontologie, data-voorbeelden of
+    // effectief voorkomen in de ontologie, data-voorbeelden of
     // business-concepten. Deze worden later gebruikt om het ER-/class-
     // diagram te filteren zodat het niet overspoeld wordt door volledig
     // generieke PROV/SOSA/GeoSPARQL-klassen.
@@ -150,25 +149,6 @@ export class OntologyModel {
       }
     }
 
-    // Verwerk daarnaast ook de data-voorbeelden (input/output Turtle)
-    // om enkel klassen/predicaten te tonen die effectief in de
-    // voorbeelden voorkomen.
-    const dataFiles = this.getDataExampleFiles();
-    const dataParser = new Parser();
-    for (const dataPath of dataFiles) {
-      if (!fs.existsSync(dataPath)) continue;
-      const ttl = fs.readFileSync(dataPath, 'utf-8');
-      /* eslint-disable no-await-in-loop */
-      await new Promise((resolve, reject) => {
-        dataParser.parse(ttl, (error, quad) => {
-          if (error) reject(error);
-          else if (quad) this.registerUsageFromQuad(quad, 'data');
-          else resolve();
-        });
-      });
-      /* eslint-enable no-await-in-loop */
-    }
-
     await this.applyReasoning();
   }
 
@@ -179,8 +159,6 @@ export class OntologyModel {
   getBusinessLabelForProperty(propertyIri, className = null) {
     if (!propertyIri) return null;
 
-    const overrideLabel = this.getPropertyOverride(PROPERTY_LABEL_OVERRIDES, className, propertyIri);
-    if (overrideLabel) return overrideLabel;
     const concept = this.findBusinessConcept(propertyIri);
     if (!concept) return null;
     return this.getBusinessLabelForConcept(concept);
@@ -193,9 +171,6 @@ export class OntologyModel {
    */
   getBusinessNameForProperty(propertyIri, className = null) {
     if (!propertyIri) return null;
-
-    const overrideName = this.getPropertyOverride(PROPERTY_NAME_OVERRIDES, className, propertyIri);
-    if (overrideName) return overrideName;
     const concept = this.findBusinessConcept(propertyIri);
     if (!concept) return null;
     return this.extractLocalName(concept.value);
@@ -822,16 +797,9 @@ export class OntologyModel {
   mapExternalTypeToLocal(rangeType, restriction) {
     const mapped = new Set();
 
-    if (restriction?.property === 'implements' && restriction?.fromClass) {
-      const baseName = restriction.fromClass.replace(/Stap$/i, '');
-      const candidate = `${baseName}Procedure`;
-      if (this.classes.has(candidate)) {
-        mapped.add(candidate);
-      } else if (this.classes.has('ActiviteitProcedure')) {
-        mapped.add('ActiviteitProcedure');
-      }
-    }
-
+    // Generic mapping: include any local class whose IRI is a subclass
+    // of the external rangeType. Avoid project-specific special-cases
+    // here so generators remain driven by configuration.
     this.classes.forEach((classInfo, className) => {
       if (this.isSubClassOf(classInfo.iri, rangeType)) {
         mapped.add(className);
@@ -1104,7 +1072,7 @@ export class OntologyModel {
       'src/main/input/bedrijf',
       'src/main/input/recepten',
     ];
-    
+
     const files = [];
 
     const collect = dir => {
@@ -1172,7 +1140,7 @@ export class OntologyModel {
   /**
    * Derive foreign key column name using business name of the property
    */
-    deriveFkName(restriction) {
+  deriveFkName(restriction) {
     const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);
     const base = businessName || restriction.property;
     const snake = camelCaseToSnakeCase(base || 'property');
@@ -1182,7 +1150,7 @@ export class OntologyModel {
   /**
    * Derive attribute name from restriction using business name overrides
    */
-    deriveAttributeName(restriction) {
+  deriveAttributeName(restriction) {
     const propLower = String(restriction.property || '').toLowerCase();
 
     if (propLower === 'identifier' || propLower === 'identifiers') {

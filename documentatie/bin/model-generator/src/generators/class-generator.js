@@ -112,25 +112,33 @@ export class ClassGenerator extends BaseGenerator {
       }
 
       if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
-        // Prefer interface types for foreign-key properties on shared interfaces
+        // Prefer a single explicit internal concrete target when present.
         const targets = attr.targetClasses.slice();
-        const sharedIface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
-        if (sharedIface) {
-          t = sharedIface;
-          const localName = String(sharedIface).replace(/^I/, '');
-          imports.add(localName);
-        } else if (attr.propertyIri === `${Config.NAMESPACES.prov}wasDerivedFrom` && superName === 'System') {
-          // special-case: afgeleidVan on System should reference ISystem
-          t = 'ISystem';
-          // ensure property name does not keep trailing 'Id'
-          if (attr.name && typeof attr.name === 'string') attr.name = String(attr.name).replace(/Id$/i, '');
-        } else if (targets.length === 1) {
-          // Single concrete target -> prefer its interface (I<Class>) if available
-          const single = targets[0];
-          t = `I${this.pascalCase(single)}`;
-          imports.add(this.pascalCase(single));
+        const explicitInternal = targets.filter(tn => {
+          try {
+            const ti = this.ontology.classes.get(tn);
+            return ti && !ti.external;
+          } catch (e) { return false; }
+        });
+        if (explicitInternal.length === 1) {
+          const single = explicitInternal[0];
+          t = this.pascalCase(single);
+          imports.add(single);
         } else {
-          t = 'string';
+          // Prefer interface types for foreign-key properties on shared interfaces
+          const sharedIface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
+          if (sharedIface) {
+            t = sharedIface;
+            const localName = String(sharedIface).replace(/^I/, '');
+            imports.add(localName);
+          } else if (targets.length === 1) {
+            // Single concrete target -> prefer its interface (I<Class>) if available
+            const single = targets[0];
+            t = `I${this.pascalCase(single)}`;
+            imports.add(this.pascalCase(single));
+          } else {
+            t = 'string';
+          }
         }
       }
 
@@ -191,11 +199,6 @@ export class ClassGenerator extends BaseGenerator {
    */
   applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames = [], classToSupers = null) {
     if (!attr) return null;
-    // honor explicit render overrides (allow caller to have filtered earlier)
-    if (Config.PROPERTY_RENDER_OVERRIDES && Config.PROPERTY_RENDER_OVERRIDES.has(className)) {
-      const propMap = Config.PROPERTY_RENDER_OVERRIDES.get(className);
-      if (propMap && propMap.has(attr.propertyIri) && propMap.get(attr.propertyIri) === false) return null;
-    }
 
     const mapped = this.mapForeignKeyAttribute(attr, className);
     let name, type;
@@ -233,7 +236,14 @@ export class ClassGenerator extends BaseGenerator {
         let ifaceName = null;
         if (override && override.interface) ifaceName = `I${override.interface}`;
         if (!ifaceName) {
-          const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === 'Agent' || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, 'Agent')));
+          let provAgentLocal = 'Agent';
+          try {
+            if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+              const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k));
+              if (found) provAgentLocal = found;
+            }
+          } catch (e) { /* ignore */ }
+          const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === provAgentLocal || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, provAgentLocal)));
           if (agentEntry) ifaceName = agentEntry[1];
         }
         type = ifaceName || 'object';
@@ -243,22 +253,31 @@ export class ClassGenerator extends BaseGenerator {
     }
 
       if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
-        const targets = attr.targetClasses.filter(t => {
-          const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
-          return isRelevant || classNames.includes(t);
+        // Prefer explicit internal concrete targets regardless of visible class list
+        const explicitInternal = (attr.targetClasses || []).filter(tn => {
+          try { const ti = this.ontology.classes.get(tn); return ti && !ti.external; } catch (e) { return false; }
         });
-        if (!targets || targets.length === 0) {
-          type = 'string';
+        if (explicitInternal.length === 1) {
+          const target = explicitInternal[0];
+          type = this.pascalCase(target);
         } else {
-          // Prefer collapsing to a shared interface when possible (also for internal classes)
-          const iface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
-          if (iface) {
-              type = iface;
-          } else if (targets.length === 1) {
-            const target = targets[0];
-            type = this.pascalCase(target);
+          const targets = attr.targetClasses.filter(t => {
+            const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
+            return isRelevant || classNames.includes(t);
+          });
+          if (!targets || targets.length === 0) {
+            type = 'string';
           } else {
-            type = 'object';
+            // Prefer collapsing to a shared interface when possible (also for internal classes)
+            const iface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
+            if (iface) {
+              type = iface;
+            } else if (targets.length === 1) {
+              const target = targets[0];
+              type = this.pascalCase(target);
+            } else {
+              type = 'object';
+            }
           }
         }
         name = String(name).replace(/Id$/i, '');
@@ -267,6 +286,67 @@ export class ClassGenerator extends BaseGenerator {
       }
 
     return { name, type, isArray, isForeignKey: !!attr.isForeignKey };
+  }
+
+  /**
+   * Collect enumerable members for a configured local enumerable name.
+   * Scans known enumClasses for subclasses of `localName` and derives
+   * members using ontology hints (deriveEnumMembers, SKOS labels) and
+   * falls back to formatted local class names. Returns an array of
+   * unique UPPER_SNAKE_CASE member names.
+   */
+  collectEnumerableMembers(localName) {
+    const members = new Set();
+    try {
+      const candidates = Array.from(this.enumClasses || []).filter(ec => {
+        try {
+          const info = this.ontology.classes.get(ec);
+          return info && info.iri && this.ontology.isSubClassOf(info.iri, localName);
+        } catch (e) { return false; }
+      });
+      candidates.forEach(ec => {
+        let vals = this.ontology.deriveEnumMembers ? (this.ontology.deriveEnumMembers(ec) || []) : [];
+        if (!vals || vals.length === 0) {
+          // formatted fallback: strip common suffixes and convert to snake
+          let formatted = String(ec).replace(/Procedure$/i, '');
+          if (formatted.endsWith('s')) formatted = formatted.slice(0, -1);
+          const snake = formatted.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/[^0-9A-Za-z_]/g, '_');
+          vals = [snake.toUpperCase()];
+        }
+        if ((!vals || vals.length === 0) && this.ontology && this.ontology.store && this.ontology.classes) {
+          const info = this.ontology.classes.get(ec);
+          if (info && info.iri) {
+            const iri = info.iri;
+            const quads = this.ontology.store.getQuads(null, null, null) || [];
+            const subjects = new Set();
+            quads.forEach(q => {
+              try {
+                if (q.object && q.object.value === iri) {
+                  const pred = String(q.predicate && q.predicate.value || '').toLowerCase();
+                  if (pred.includes('broader') || pred.includes('inscheme')) subjects.add(q.subject);
+                }
+              } catch (e) { /* ignore */ }
+            });
+            if (subjects.size > 0) {
+              vals = [];
+              subjects.forEach(s => {
+                const labelQuad = (this.ontology.store.getQuads(s, null, null) || []).find(lq => String(lq.predicate && lq.predicate.value || '').toLowerCase().includes('label'));
+                if (labelQuad && labelQuad.object && labelQuad.object.value) vals.push(labelQuad.object.value);
+                else if (s && s.termType === 'NamedNode') {
+                  const local = this.ontology.extractLocalName ? this.ontology.extractLocalName(s.value) : (s.value.split(/[#\\/]/).pop());
+                  if (local) vals.push(local);
+                }
+              });
+            }
+          }
+        }
+        (vals || []).forEach(v => {
+          const id = String(v).replace(/[^0-9A-Za-z_]/g, '_').replace(/^_+|_+$/g, '');
+          if (id) members.add(id.toUpperCase());
+        });
+      });
+    } catch (e) { /* ignore */ }
+    return Array.from(members);
   }
 
   tsTypeForAttribute(attr) {
@@ -284,6 +364,9 @@ export class ClassGenerator extends BaseGenerator {
     // collect supers for each target
     const supersList = targets.map(t => {
       const list = (classToSupers.get(t) || []).slice();
+      // include the target's own local name so a class that *is* the shared
+      // super (e.g. Agent) will still resolve to the shared interface.
+      if (!list.includes(t)) list.push(t);
       const tinfo = this.ontology.classes.get(t);
       if (tinfo && Array.isArray(tinfo.superClasses)) {
         tinfo.superClasses.forEach(si => {

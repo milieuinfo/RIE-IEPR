@@ -54,6 +54,37 @@ export class ClassDiagramGenerator extends ClassGenerator {
       mermaid += this._renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap);
     });
 
+    // Synthesize enumerated classes from configured ENUMERABLE_CLASSES
+    try {
+      if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
+        Array.from(Config.ENUMERABLE_CLASSES).forEach(localName => {
+          try {
+            const memberList = this.collectEnumerableMembers(localName) || [];
+            if (memberList.length === 0) return;
+            const members = new Set(memberList);
+            if (members.size > 0) {
+              const enumClassName = (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName;
+              mermaid += `    class ${enumClassName} {\n`;
+              mermaid += `        <<enumerable>>\n`;
+              Array.from(members).forEach(m => { mermaid += `        ${m}\n`; });
+              mermaid += `    }\n`;
+              // Link any classes that have an enum attribute referring to this enumerable
+              Array.from(classNames || []).forEach(cn => {
+                try {
+                  const ci = this.ontology.classes.get(cn);
+                  const attrs = this.deriveAttributes(ci, this.enumClasses, cn) || [];
+                  const hasEnumAttr = attrs.some(a => a && a.type === 'enum' && (a.comment === localName || (a.propertyIri && this.ontology.extractLocalName && this.ontology.extractLocalName(a.propertyIri) === 'type')));
+                  if (hasEnumAttr) {
+                    mermaid += `    ${this.getDisplayName(cn)} --> ${enumClassName} : type\n`;
+                  }
+                } catch (e) { /* ignore */ }
+              });
+            }
+          } catch (e) { /* ignore */ }
+        });
+      }
+    } catch (e) { /* ignore */ }
+
     // Add identifier relations as explicit relationships so identifier classes are linked
     // to their parent classes in the class diagram. identifierRelations map keys are
     // parent class local names -> restriction objects.
@@ -160,12 +191,11 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
   _computeShared(classNames) {
     const forced = [];
-    this.ontology.classes.forEach((ci) => {
-      (ci.superClasses || []).forEach(si => {
-        const local = this.ontology.extractLocalName(si);
-        if (local === 'SpatialObject' && !forced.includes(local)) forced.push(local);
-      });
-    });
+    try {
+      if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+        Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
+      }
+    } catch (e) { /* ignore */ }
     return this.computeSharedSupers(classNames, forced);
   }
 
@@ -223,10 +253,6 @@ export class ClassDiagramGenerator extends ClassGenerator {
     extraAttrs.forEach(a => { if (!seen.has(a.propertyIri || a.name)) attrsRaw.push(a); });
 
     const attributes = attrsRaw.map(attr => {
-      if (Config.PROPERTY_RENDER_OVERRIDES.has(className)) {
-        const propMap = Config.PROPERTY_RENDER_OVERRIDES.get(className);
-        if (propMap && propMap.has(attr.propertyIri) && propMap.get(attr.propertyIri) === false) return null;
-      }
       // Normalize property rendering for diagrams using centralized helper
       const resolved = this.applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames, classToSupers);
       if (!resolved) return null;
@@ -234,9 +260,21 @@ export class ClassDiagramGenerator extends ClassGenerator {
       return { name, type, isForeignKey, isArray };
     });
 
+    // Deduplicate attributes by name: prefer interface or concrete types over generic 'object'/'string' entries
+    const attrByName = new Map();
+    attributes.filter(Boolean).forEach(a => {
+      const n = a.name || '';
+      if (!attrByName.has(n)) { attrByName.set(n, a); return; }
+      const existing = attrByName.get(n);
+      const isPreferred = t => (typeof t === 'string' && (/^I[A-Z]/.test(t) || /^[A-Z][a-zA-Z0-9]/.test(t)));
+      if (isPreferred(a.type) && !isPreferred(existing.type)) attrByName.set(n, a);
+      else if (a.type && existing.type === 'object') attrByName.set(n, a);
+    });
+    const finalAttributes = Array.from(attrByName.values());
+
     mermaid += `    class ${displayName} {
 `;
-    attributes.filter(Boolean).forEach(attr => {
+    finalAttributes.forEach(attr => {
       const displayAttrName = attr.isForeignKey ? `${attr.name} (FK)` : attr.name;
       // If there is a known relationship mapping for this class+property, prefer that resolved target
       const mapped = relPropertyMap.get(`${className}|${attr.name}`) || null;

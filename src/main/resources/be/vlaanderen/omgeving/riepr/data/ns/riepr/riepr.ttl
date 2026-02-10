@@ -114,7 +114,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan worden geïmplementeerd door een agent
-        owl:onProperty sosa:wasImplementedBy ; 
+        owl:onProperty sosa:implementedBy ; 
         owl:someValuesFrom prov:Agent ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
@@ -721,7 +721,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
-        owl:onProperty prov:wasAttributedTo ;
+        owl:onProperty prov:wasAttributedTo ; # TODO
         owl:someValuesFrom :Exploitant ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -891,7 +891,7 @@
         owl:someValuesFrom :EmissieProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:wasAttributedTo ;
+    owl:onProperty sosa:implementedBy ;
     owl:someValuesFrom :Emissiepunt
 ] .
 
@@ -902,7 +902,7 @@
         owl:someValuesFrom :apparaatVerwerkingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:wasAttributedTo ;
+    owl:onProperty sosa:implementedBy ;
     owl:someValuesFrom :Apparaat
 ] .
 
@@ -924,6 +924,6 @@
         owl:someValuesFrom :meetProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty prov:wasAttributedTo ;
+    owl:onProperty sosa:implementedBy ;
     owl:someValuesFrom :Meetpunt
 ] .

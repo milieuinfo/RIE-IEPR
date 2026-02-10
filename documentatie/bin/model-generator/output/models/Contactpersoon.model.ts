@@ -11,7 +11,7 @@ export class Contactpersoon {
   uri!: string;
 
   @jsonMember(Exploitant, { name: 'memberOf' })
-  memberOf!: Exploitant;
+  exploitant!: Exploitant;
 
   @jsonMember(String, { name: 'label' })
   benaming!: string;

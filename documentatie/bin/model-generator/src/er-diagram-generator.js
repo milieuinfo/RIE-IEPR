@@ -21,6 +21,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
     const junctionTableNames = new Set();
     const junctionTableInfo = new Map();
+    const joinTableMap = new Map();
 
     // Helper: try to abbreviate full IRIs using known namespace prefixes
     const abbreviateIri = (iri) => {
@@ -66,6 +67,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
     joinTables.forEach(jt => {
       junctionTableNames.add(jt.name);
       classNames.push(jt.name);
+      joinTableMap.set(jt.name, jt);
     });
     computedJunctionInfo.forEach((v, k) => junctionTableInfo.set(k, v));
 
@@ -114,29 +116,34 @@ export class ERDiagramGenerator extends SchemaGenerator {
             { name: `${relatedClass}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
             { name: 'relationship_type', type: 'enum', isForeignKey: false, isPrimaryKey: true, comment: 'INPUT_VAR, OUTPUT_VAR' }
           ];
-        }
-        else if (Array.isArray(info.to)) {
-          // Consolidated junction table for multiple target types (e.g. toegeschreven aan)
-          const fromTable = this.utils.deriveTableName(info.from);
-          attributes = [
-            { name: `${fromTable}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
-            { name: 'target_uri', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
-            { name: 'target_type', type: 'string', isForeignKey: false, isPrimaryKey: false, comment: (info.to || []).join(',') }
-          ];
         } else {
-          // Regular many-to-many junction table with single target
-          const parts = className.split('_');
-          const lastPart = parts[parts.length - 1];
-          let leftCol = `${parts[0]}_uri`;
-          let rightCol = `${lastPart}_uri`;
-          if (leftCol === rightCol) {
-            leftCol = `${parts[0]}_uri_from`;
-            rightCol = `${lastPart}_uri_to`;
+          // Prefer using computed join table attributes when available
+          const jt = joinTableMap.get(className);
+          if (jt && Array.isArray(jt.attributes) && jt.attributes.length > 0) {
+            attributes = jt.attributes.slice();
+          } else if (Array.isArray(info.to)) {
+            // Consolidated junction table for multiple target types (e.g. toegeschreven aan)
+            const fromTable = this.utils.deriveTableName(info.from);
+            attributes = [
+              { name: `${fromTable}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+              { name: 'target_uri', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
+              { name: 'target_type', type: 'string', isForeignKey: false, isPrimaryKey: false, comment: (info.to || []).join(',') }
+            ];
+          } else {
+            // Regular many-to-many junction table with single target
+            const parts = className.split('_');
+            const lastPart = parts[parts.length - 1];
+            let leftCol = `${parts[0]}_uri`;
+            let rightCol = `${lastPart}_uri`;
+            if (leftCol === rightCol) {
+              leftCol = `${parts[0]}_uri_from`;
+              rightCol = `${lastPart}_uri_to`;
+            }
+            attributes = [
+              { name: leftCol, type: 'string', isForeignKey: true, isPrimaryKey: true },
+              { name: rightCol, type: 'string', isForeignKey: true, isPrimaryKey: true }
+            ];
           }
-          attributes = [
-            { name: leftCol, type: 'string', isForeignKey: true, isPrimaryKey: true },
-            { name: rightCol, type: 'string', isForeignKey: true, isPrimaryKey: true }
-          ];
         }
 
         mermaid += `    ${displayName}["${tableName}"] {\n`;
@@ -158,9 +165,6 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
       // Compute attributes using centralized helper (handles identifiers and superclass filtering)
       attributes = this.computeAttributesForClass(className, classNames, null);
-
-      // Verwijder attributen die via many-to-many relaties worden gemodelleerd
-      attributes = attributes.filter(attr => !Config.isManyToManyProperty(attr.propertyIri, attr.name));
 
       // Remove virtual identifier attribute from main entity rendering; identifiers
       // are displayed as separate identifier tables instead.
@@ -225,8 +229,6 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
     // Generalized relationship filtering (like SQL generator)
     function shouldShowRelationship(rel, utils, ontology) {
-      // Skip many-to-many (junctions get their own tables)
-      if (Config.isManyToManyProperty(rel.propertyIri || '', rel.property)) return false;
       // Skip if target is only technical/abstract class
       const toInfo = ontology.classes.get(rel.to);
       if (utils.isTechnicalClass(rel.to, toInfo)) return false;
@@ -240,32 +242,57 @@ export class ERDiagramGenerator extends SchemaGenerator {
       mermaid += `\n    %% Relationships\n`;
       // Render only relationships where both endpoints are part of the visible class set
       const visibleSet = new Set(classNames);
+      const emittedRelKeys = new Set();
       Array.from(this.relationships.values()).forEach(rel => {
         if (!shouldShowRelationship(rel, this.utils, this.ontology)) return;
         if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
+        // Avoid duplicating junction-table relationships; those are emitted from junctionTableInfo
+        if (junctionTableNames.has(rel.to) || junctionTableNames.has(rel.from)) return;
+        // If a junction table was configured to collapse multiple concrete
+        // targets into a single interface-backed join, skip emitting the
+        // individual relationship lines for those concrete targets.
+        let coveredByCollapsed = false;
+        for (const [jtName, info] of junctionTableInfo.entries()) {
+          if (info && info.from === rel.from && Array.isArray(info.concreteTargets) && info.concreteTargets.includes(rel.to)) {
+            coveredByCollapsed = true;
+            break;
+          }
+        }
+        if (coveredByCollapsed) return;
         const fromDisplay = this.getDisplayName(rel.from);
         const toDisplay = this.getDisplayName(rel.to);
         // Bepaal cardinaliteit aan beide kanten
         const cardFrom = rel.minCard === 1 && rel.maxCard === 1 ? 'one' : 'many';
         const cardTo = rel.maxCard === 1 ? 'one' : 'many';
-        mermaid += `    ${fromDisplay} ${cardFrom} to ${cardTo} ${toDisplay} : "${rel.label}"\n`;
+          const relLabel = (rel.label && String(rel.label).trim().length > 0) ? String(rel.label).replace(/"/g, "'") : null;
+          const labelSegment = relLabel ? ` : "${relLabel}"` : '';
+          const relKey = `${fromDisplay}|${toDisplay}|${labelSegment}`;
+          if (!emittedRelKeys.has(relKey)) {
+            emittedRelKeys.add(relKey);
+            mermaid += `    ${fromDisplay} ${cardFrom} to ${cardTo} ${toDisplay}${labelSegment}\n`;
+          }
       });
 
       // Add junction table relationships (explicit table links)
       junctionTableInfo.forEach((info, junctionName) => {
         const junctionDisplay = this.getDisplayName(junctionName);
         const fromDisplay = this.getDisplayName(info.from);
-        const relationLabel = info.label ? info.label.replace(/"/g, "'") : '';
-        mermaid += `    ${fromDisplay} one to many ${junctionDisplay} : "${relationLabel}"\n`;
-        if (Array.isArray(info.to)) {
-          info.to.forEach(t => {
-            const toDisplay = this.getDisplayName(t);
-            mermaid += `    ${toDisplay} one to many ${junctionDisplay} : ""\n`;
-          });
-        } else {
-          const toDisplay = this.getDisplayName(info.to);
-          mermaid += `    ${toDisplay} one to many ${junctionDisplay} : ""\n`;
-        }
+          const relationLabel = info.label ? String(info.label).replace(/"/g, "'") : null;
+          const relationLabelSeg = relationLabel ? ` : "${relationLabel}"` : '';
+          const fromKey = `${fromDisplay}|${junctionDisplay}|${relationLabelSeg}`;
+          if (!emittedRelKeys.has(fromKey)) { emittedRelKeys.add(fromKey); mermaid += `    ${fromDisplay} one to many ${junctionDisplay}${relationLabelSeg}\n`; }
+          if (Array.isArray(info.to)) {
+            info.to.forEach(t => {
+              const toDisplay = this.getDisplayName(t);
+              const toKey = `${toDisplay}|${junctionDisplay}|${relationLabelSeg}`;
+              if (!emittedRelKeys.has(toKey)) { emittedRelKeys.add(toKey); mermaid += `    ${toDisplay} one to many ${junctionDisplay}${relationLabelSeg}\n`; }
+            });
+          } else {
+            const toDisplay = this.getDisplayName(info.to);
+            const toKey = `${toDisplay}|${junctionDisplay}|${relationLabelSeg}`;
+            if (!emittedRelKeys.has(toKey)) { emittedRelKeys.add(toKey); mermaid += `    ${toDisplay} one to many ${junctionDisplay}${relationLabelSeg}\n`; }
+          }
+
       });
     }
 

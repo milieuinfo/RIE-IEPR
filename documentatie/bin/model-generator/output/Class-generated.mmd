@@ -16,7 +16,7 @@ classDiagram
     }
       class ExploitantContactpersoon {
         string uri
-        IAgent memberOf (FK)
+        Exploitant exploitant (FK)
         string benaming
         string mbox
         string phone
@@ -50,7 +50,7 @@ classDiagram
         Date aangemaaktOp
         string benaming
         Date geldigVan
-        IAgent toegewezenAan (FK)
+        Exploitant toegewezenAan (FK)
         string beinvloedDoor
         ExploitatieLocatie[] afgeleidVan (FK)
         string geometrie
@@ -74,7 +74,7 @@ classDiagram
         string benaming
         Date aangemaaktOp
         Date geldigVan
-        ISystem[] afgeleidVan (FK)
+        Installatie[] afgeleidVan (FK)
         Date geldigTot
         InstallatieIdentifier[] identifiers (FK)
     }
@@ -123,13 +123,13 @@ classDiagram
         string benaming
         Date geldigVan
         object[] geimplenteerdDoor (FK)
-        VerwerkingsProcedure type
+        Procedure type
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
-        ISystem onderdeelVan (FK)
-        ISystem[] gaatVoorafAan (FK)
-        object[] type (FK)
-        IAgent[] toegewezenAan (FK)
+        Proces onderdeelVan (FK)
+        Proces[] gaatVoorafAan (FK)
+        AfgeleidVan afgeleidVan
+        object[] toegewezenAan (FK)
         Date geldigTot
         ProcesIdentifier[] identifiers (FK)
     }
@@ -157,8 +157,8 @@ classDiagram
       class ISystem {
         <<interface>>
         string uri
-        ISystem[] afgeleidVan
-        IAgent[] toegewezenAan
+        AfgeleidVan afgeleidVan
+        string[] toegewezenAanId
     }
     class IAgent {
         <<interface>>
@@ -168,6 +168,14 @@ classDiagram
         <<interface>>
         string uri
     }
+    class Procedure {
+        <<enumerable>>
+        VERWERKING
+        TRANSPORT
+        VERBRUIK
+        EMISSIE
+    }
+    Proces --> Procedure : type
 
     Emissiepunt <|-- Schouw
     Onttrekkingspunt <|-- Grondwaterput
@@ -194,7 +202,7 @@ classDiagram
     Proces --> ProcesVariabele : heeft uitvoer
     Proces --> ISystem : onderdeel van
     Proces --> ISystem : gaat vooraf aan
-    Proces --> ISystem : type
+    Proces --> ISystem : afgeleid van
     Proces --> ISystem : toegewezen aan
     ExploitatieLocatie --> IAgent : toegewezen aan
     ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
@@ -204,7 +212,7 @@ classDiagram
     Observatie --> ISystem : hasFeatureOfInterest
     Exploitant --> ExploitantContactpersoon : type
     Exploitant --> Adres : address
-    ExploitantContactpersoon --> IAgent : memberOf
+    ExploitantContactpersoon --> IAgent : exploitant
     ExploitantContactpersoon --> Adres : address
     Proces --> ProcesIdentifier : identifiers
     ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers

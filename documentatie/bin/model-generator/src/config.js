@@ -1,47 +1,45 @@
-/**
- * Per-class/property render overrides for diagram/model generation.
- * Example: { 'ExploitatieLocatie': { 'prov:wasAttributedTo': false } }
- * If set to false, the property will not be rendered for that class.
- */
-export const PROPERTY_RENDER_OVERRIDES = new Map([
-  // Per-class render overrides (empty by default). Avoid disabling
-  // rendering of domain relationships here; use targeted overrides
-  // only when necessary.
-]);
 import { NAMESPACES } from '../../common/src/constants.js';
-
-/**
- * Local configuration for model-generator module
- * Imports shared configuration from common module
- */
 export { PATHS, resolveProjectPath, PROJECT_ROOT } from '../../common/src/paths.js';
 export { NAMESPACES };
-
-/**
- * Schema generation business rules and configuration
- */
 
 /**
  * Classes that should be excluded from schema generation
  * These are considered technical/abstract base classes or generic vocabulary classes
  */
 export const EXCLUDED_TECHNICAL_CLASSES = new Set([
-  'System',
   'Sensor', 
   'MeetProcedure',
   'ProcesProcedure',
-  'Procedure',
   'Observation',
   'Platform',
-  // Generic vocabulary classes (PROV, SOSA, GeoSPARQL) - not RIEPR domain entities
-  'Agent',
   'Attribution',
   'Deployment',
   'Geometry',
   'Project',
   'Result',
   'Role',
-  'SpatialObject' // External GeoSPARQL base class
+]);
+
+/**
+ * Interface-like classes and technical classes that should be emitted
+ * as shared interfaces (e.g. IAgent, ISpatialObject) or as enums
+ * (e.g. Procedure). Populate this with local class names for your
+ * project to avoid hard-coded checks inside generators.
+ */
+export const INTERFACE_CLASSES = new Set([
+  'Agent',
+  'SpatialObject',
+  'System'
+]);
+
+/**
+ * Classes that should be treated as enumerables when used as dct:type
+ * (e.g. Procedure). Populate with local class names so generators
+ * synthesize a single enumerated class with members derived from
+ * SKOS/SOSA-like subclasses.
+ */
+export const ENUMERABLE_CLASSES = new Set([
+  'Procedure'
 ]);
 
 /**
@@ -49,7 +47,6 @@ export const EXCLUDED_TECHNICAL_CLASSES = new Set([
  */
 export const EXCLUDED_PROPERTIES = new Set([
   'hadPrimarySource',
-  // Exclude problematic inverse properties
   'wasGeneratedBy',
   'isFeatureOfInterestOf',
   'wasAssociatedWith',
@@ -64,17 +61,6 @@ export const TEMPORAL_CLASSES = new Set([
 ]);
 
 /**
- * Properties that should be modeled as many-to-many (junction tables)
- */
-export const MANY_TO_MANY_PROPERTIES = new Set([
-  `${NAMESPACES.pplan}isPrecededBy`,
-  `${NAMESPACES.pplan}hasInputVar`,
-  `${NAMESPACES.pplan}hasOutputVar`
-  ,
-  `${NAMESPACES.prov}wasAttributedTo`
-]);
-
-/**
  * Property type overrides allow mapping a property IRI to a preferred
  * TypeScript/interface type and some generation hints (e.g. drop trailing
  * "Id" from generated property names). Keep config here so generators
@@ -83,20 +69,6 @@ export const MANY_TO_MANY_PROPERTIES = new Set([
  * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
  */
 export const PROPERTY_TYPE_OVERRIDES = new Map([
-  // Map prov:wasAttributedTo -> IAgent and drop trailing Id on property names
-  [
-    `${NAMESPACES.prov}wasAttributedTo`,
-    { interface: 'Agent', type: 'IAgent', dropId: true }
-  ],
-  [
-    `${NAMESPACES.prov}wasDerivedFrom`,
-    { type: 'Procedure' }
-  ],
-  [
-    'wasDerivedFrom',
-    { type: 'Procedure' }
-  ],
-  // Explicitly prefer shared System interface for hasSubSystem relations
   [
     `${NAMESPACES.ssn}hasSubSystem`,
     { interface: 'System', type: 'ISystem', dropId: true }
@@ -105,25 +77,6 @@ export const PROPERTY_TYPE_OVERRIDES = new Map([
     'hasSubSystem',
     { interface: 'System', type: 'ISystem', dropId: true }
   ],
-  // Default mapping for prov:wasDerivedFrom is left to generator logic
-]);
-
-/**
- * Per-class overrides for business labels (diagram labels)
- */
-export const PROPERTY_LABEL_OVERRIDES = new Map([
-  ['Proces', new Map([
-    [`${NAMESPACES.prov}wasDerivedFrom`, 'type']
-  ])]
-]);
-
-/**
- * Per-class overrides for business names (attribute/FK names)
- */
-export const PROPERTY_NAME_OVERRIDES = new Map([
-  ['Proces', new Map([
-    [`${NAMESPACES.prov}wasDerivedFrom`, 'type']
-  ])]
 ]);
 
 /**
@@ -182,18 +135,6 @@ export const SQL_TYPE_MAPPINGS = {
   'normalizedString': 'TEXT',
   'token': 'TEXT',
   'literal': 'TEXT'
-};
-
-/**
- * Mermaid ER diagram type mappings
- */
-export const MERMAID_TYPE_MAPPINGS = {
-  'datetime': 'datetime',
-  'date': 'date',
-  'boolean': 'boolean',
-  'float': 'float',
-  'integer': 'integer',
-  'string': 'string'
 };
 
 /**
@@ -272,20 +213,6 @@ export function isExcludedProperty(propertyName) {
  */
 export function isTemporalClass(className) {
   return TEMPORAL_CLASSES.has(className);
-}
-
-/**
- * Check if a property should be modeled as many-to-many
- */
-export function isManyToManyProperty(propertyIri, propertyName) {
-  if (propertyIri && MANY_TO_MANY_PROPERTIES.has(propertyIri)) return true;
-  if (!propertyName) return false;
-
-  const local = String(propertyName);
-  for (const iri of MANY_TO_MANY_PROPERTIES) {
-    if (iri.endsWith(`#${local}`) || iri.endsWith(`/${local}`)) return true;
-  }
-  return false;
 }
 
 /**

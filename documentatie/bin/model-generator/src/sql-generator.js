@@ -102,9 +102,6 @@ export class SqlGenerator extends SchemaGenerator {
       });
     }
 
-    // Filter out attributes for many-to-many properties (handled via junction tables)
-    attributes = attributes.filter(attr => !Config.isManyToManyProperty(attr.propertyIri, attr.name));
-
     // Filter out FK attributes to purely technical classes
     attributes = attributes.filter(attr => {
       if (!attr.isForeignKey || !attr.comment) return true;
@@ -246,8 +243,7 @@ export class SqlGenerator extends SchemaGenerator {
     if (!classInfo) return '';
 
     const tableName = this.utils.deriveTableName(className);
-    const attributes = this.computeAttributesForClass(className, this.computeVisibleClasses(), null)
-      .filter(attr => !Config.isManyToManyProperty(attr.propertyIri, attr.name));
+    const attributes = this.computeAttributesForClass(className, this.computeVisibleClasses(), null);
 
     return this.generateIndexesForAttributes(tableName, attributes);
   }

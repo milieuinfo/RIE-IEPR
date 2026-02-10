@@ -1,15 +1,13 @@
 // Auto-generated models
 
-import { Agent } from './Agent.model';
-import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 import { ProcesIdentifier } from './ProcesIdentifier.model';
 import { ProcesVariabele } from './ProcesVariabele.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 import { Procedure } from './procedure.enum';
 
-import type { IAgent } from './Agent.interface';
 import type { ISystem } from './System.interface';
+import type { IAgent } from './Agent.interface';
 
 @jsonObject
 export class Proces implements ISystem {
@@ -25,8 +23,8 @@ export class Proces implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonArrayMember(Agent, { name: 'wasImplementedBy' })
-  geimplenteerdDoor?: Agent[];
+  @jsonArrayMember(Object, { name: 'implementedBy' })
+  geimplenteerdDoor?: IAgent[];
 
   @jsonMember(() => Procedure, { name: 'type' })
   type?: Procedure;
@@ -43,11 +41,14 @@ export class Proces implements ISystem {
   @jsonArrayMember(Proces, { name: 'isPrecededBy' })
   gaatVoorafAan?: Proces[];
 
-  @jsonArrayMember(ExploitatieLocatie, { name: 'wasDerivedFrom' })
-  type?: ExploitatieLocatie[];
+  @jsonMember(AfgeleidVan, { name: 'wasDerivedFrom' })
+  afgeleidVan?: AfgeleidVan;
 
-  @jsonArrayMember(Object, { name: 'wasAttributedTo' })
-  toegewezenAan?: IAgent[];
+  @jsonArrayMember(() => Procedure, { name: 'wasDerivedFrom' })
+  afgeleidVan?: AfgeleidVan;
+
+  @jsonArrayMember(String, { name: 'wasAttributedTo' })
+  toegewezenAan?: string[];
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

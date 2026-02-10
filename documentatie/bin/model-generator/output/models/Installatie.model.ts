@@ -23,8 +23,8 @@ export class Installatie implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonArrayMember(Object, { name: 'wasDerivedFrom' })
-  afgeleidVan?: ISystem[];
+  @jsonMember(AfgeleidVan, { name: 'wasDerivedFrom' })
+  afgeleidVan?: AfgeleidVan;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

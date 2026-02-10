@@ -211,7 +211,6 @@ export class BaseGenerator {
     (classInfo.restrictions || []).forEach(restriction => {
       if (Config.isExcludedProperty(restriction.property)) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
-      if (Config.isManyToManyProperty(restriction.propertyIri, restriction.property)) return;
 
       // Handle dct:type with no explicit range as a simple string attribute
       if (restriction.propertyIri === `${Config.NAMESPACES.dct}type` && restriction.rangeTypes.length === 0) {
@@ -399,7 +398,6 @@ export class BaseGenerator {
     const groups = new Map();
     const visibleSet = visibleClasses ? new Set(visibleClasses) : null;
     relationships.forEach(rel => {
-      if (!config.isManyToManyProperty(rel.propertyIri, rel.property)) return;
       if (visibleSet && !visibleSet.has(rel.from)) return;
       if (rel.property === 'hasInputVar' || rel.property === 'hasOutputVar') {
         const key = `${rel.from}_variabele_relatie`;
@@ -435,7 +433,7 @@ export class BaseGenerator {
       const propSource = rel0.label || businessLabel || businessName || rel0.property;
       const propBase = makePropBase(propSource);
 
-      if (rels.length > 1) {
+        if (rels.length > 1) {
         const joinTableName = `${fromTable}_${propBase}`;
         if (seen.has(joinTableName)) return;
         seen.add(joinTableName);
@@ -453,14 +451,34 @@ export class BaseGenerator {
           enumDefinitions.set(enumName, enumValues);
         }
 
+        // Check for a configured override that maps this property to an
+        // interface type (collapse multiple concrete targets into one
+        // interface-backed join table). We support lookup both by full
+        // property IRI and by short property name.
+        let override = null;
+        try {
+          override = config.PROPERTY_TYPE_OVERRIDES.get(rel0.propertyIri) || config.PROPERTY_TYPE_OVERRIDES.get(rel0.property);
+        } catch (e) { override = null; }
+
         const attributes = [
           { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: rel0.from, isForeignKey: true, isPrimaryKey: true },
           { name: `target_uri`, type: 'string', sqlType: 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: true },
           { name: `target_type`, type: 'enum', sqlType: enumValues.length > 0 ? enumName : 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: false }
         ];
 
-        joinTables.push({ name: joinTableName, attributes });
-        junctionTableInfo.set(joinTableName, { from: rel0.from, to: targetTypes, label: businessLabel || rel0.label || '' });
+        if (override && override.interface && config.INTERFACE_CLASSES && config.INTERFACE_CLASSES.has(override.interface)) {
+          // Collapse to the configured interface and remember concrete targets
+          // so calling generators can avoid emitting concrete per-type relations
+          joinTables.push({ name: joinTableName, attributes });
+          junctionTableInfo.set(joinTableName, { from: rel0.from, to: override.interface, concreteTargets: targetTypes, addsTemporal: true, label: businessLabel || rel0.label || '' });
+          // Add temporal fields to the join table (not primary keys)
+          attributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
+          attributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: false });
+          attributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
+        } else {
+          joinTables.push({ name: joinTableName, attributes });
+          junctionTableInfo.set(joinTableName, { from: rel0.from, to: targetTypes, label: businessLabel || rel0.label || '' });
+        }
       } else {
         const rel = rels[0];
         const toTable = this.utils.deriveTableName(rel.to);
@@ -614,21 +632,38 @@ export class BaseGenerator {
       if (restriction.propertyIri === `${Config.NAMESPACES.dct}type`) {
         const attrName = this.deriveAttributeName(restriction);
         const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
-        // Always treat sosa:Procedure as Procedure enum for dct:type
-        const isSosaProcedure = resolvedRangeTypes.includes('Procedure') || resolvedRangeTypes.includes('sosa:Procedure');
-        if (isSosaProcedure) {
-          if (!attributes.has(attrName)) {
-            attributes.set(attrName, {
-              name: attrName,
-              type: 'enum',
-              sqlType: 'TEXT',
-              comment: 'Procedure',
-              isForeignKey: false,
-              propertyIri: restriction.propertyIri
-            });
+        // If any resolved range type is a subclass/instance of a configured
+        // ENUMERABLE_CLASSES entry, treat this attribute as a single enum.
+        try {
+          if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
+            let matched = null;
+            for (const candidate of Array.from(Config.ENUMERABLE_CLASSES)) {
+              const isMatch = resolvedRangeTypes.some(rt => {
+                if (!rt) return false;
+                if (rt === candidate) return true;
+                try {
+                  const info = this.ontology.classes.get(rt);
+                  if (info && info.iri) return this.ontology.isSubClassOf(info.iri, candidate);
+                } catch (e) { /* ignore */ }
+                return false;
+              });
+              if (isMatch) { matched = candidate; break; }
+            }
+            if (matched) {
+              if (!attributes.has(attrName)) {
+                attributes.set(attrName, {
+                  name: attrName,
+                  type: 'enum',
+                  sqlType: 'TEXT',
+                  comment: matched,
+                  isForeignKey: false,
+                  propertyIri: restriction.propertyIri
+                });
+              }
+              return;
+            }
           }
-          return;
-        }
+        } catch (e) { /* ignore */ }
         // If rangeTypes includes an enum class, treat as enum
         const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
         if (enumTypes.length > 0) {
