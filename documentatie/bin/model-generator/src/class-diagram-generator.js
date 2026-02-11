@@ -24,10 +24,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
     // ensure interface nodes are present in classNames so they get rendered
     Array.from(sharedInterfaceNames.values()).forEach(ifaceNode => { if (!classNames.includes(ifaceNode)) classNames.push(ifaceNode); });
 
-    const relsForJoin = Array.from(this.relationships.values()).filter(rel => classNames.includes(rel.from) || classNames.includes(rel.to));
-    const { joinTables } = this.computeJoinTablesFor(relsForJoin, Config, new Set(classNames));
-    const joinTableMap = new Map();
-    joinTables.forEach(jt => joinTableMap.set(jt.name, jt));
+    // join table detection removed: not needed for class diagrams
 
     // Build a quick lookup for property -> resolved target (used to display FK attributes as interfaces)
     // Add multiple keys (raw property, camel-cased property, camel-cased label, id-stripped variants)
@@ -78,9 +75,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
         mermaid += this._renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers);
         return;
       }
-      // skip join table nodes
-      if (joinTableMap.has(className)) return;
-      mermaid += this._renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap);
+      mermaid += this._renderClassNode(className, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap);
     });
 
     // Synthesize enumerated classes from configured ENUMERABLE_CLASSES
@@ -230,12 +225,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return this.computeSharedSupers(classNames, forced);
   }
 
-  _buildJoinTableMap(relsForJoin, classNames) {
-    const { joinTables } = this.computeJoinTablesFor(relsForJoin, Config, new Set(classNames));
-    const joinTableMap = new Map();
-    joinTables.forEach(jt => joinTableMap.set(jt.name, jt));
-    return joinTableMap;
-  }
+  // join table helper removed — join tables are not needed in class diagrams
 
   _renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers) {
     let mermaid = '';
@@ -255,7 +245,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return mermaid;
   }
 
-  _renderClassNode(className, joinTableMap, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap = new Map()) {
+  _renderClassNode(className, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap = new Map()) {
     let mermaid = '';
     const classInfo = this.ontology.classes.get(className);
     const displayName = this.getDisplayName(className, classInfo);

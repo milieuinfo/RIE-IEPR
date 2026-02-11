@@ -458,6 +458,12 @@
         ogc:hasGeometry [ a ogc:Geometry ;
             ogc:asWKT "POINT(4.4030 51.2200)"^^ogc:wktLiteral
         ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # Een lozingspunt kan een diepte hebben
+        owl:onProperty dbo:depth ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Meetpunt a owl:Class ;
@@ -637,7 +643,8 @@
         # Een exploitant heeft een verzendadres dat kan afwijken van het vestigingsadres
         owl:onProperty locn:address ;
         owl:someValuesFrom locn:Address ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Contactpersoon a owl:Class ;

@@ -23,9 +23,6 @@ export class Meetpunt implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonMember(String, { name: 'hasGeometry' })
-  geometrie?: string;
-
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 

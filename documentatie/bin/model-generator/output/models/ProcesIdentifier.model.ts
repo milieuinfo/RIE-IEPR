@@ -4,11 +4,11 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class ProcesIdentifier {
-  @jsonMember(Date, { name: 'issued' })
-  geldigVan!: Date;
+  @jsonMember(String, { name: 'uri' })
+  uri!: string;
 
   @jsonMember(String, { name: 'inScheme' })
-  inScheme!: string;
+  inScheme?: string;
 
   @jsonMember(String, { name: 'notation' })
   notation!: string;

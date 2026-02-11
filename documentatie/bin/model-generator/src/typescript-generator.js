@@ -3,6 +3,7 @@ import path from 'path';
 import { PATHS, NAMESPACES } from './config.js';
 import * as Config from './config.js';
 import { ClassGenerator } from './generators/class-generator.js';
+import { info } from './utils/log.js';
 
 
 export class TypeScriptGenerator extends ClassGenerator {
@@ -257,6 +258,14 @@ export class TypeScriptGenerator extends ClassGenerator {
     });
   }
 
+  tsTypeForAttribute(attr) {
+    if (attr.type === 'enum') return attr.enumName || 'string';
+    if (attr.type === 'date' || attr.type === 'datetime') return 'Date';
+    if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') return 'number';
+    if (attr.type === 'boolean') return 'boolean';
+    return 'string';
+  }
+
   generate() {
     // Orchestrate smaller steps implemented as helpers below.
     this.prepareOntology();
@@ -335,7 +344,20 @@ export class TypeScriptGenerator extends ClassGenerator {
       // Reuse original per-class generation logic by delegating to the existing
       // implementation inside generate; keep the body minimal here by calling
       // a small inline function that captures the original behaviour.
-      const classInfo = this.ontology.classes.get(className);
+      let classInfo = this.ontology.classes.get(className);
+      // If className is a business name (not the ontology local name),
+      // find the original local name to compute attributes from.
+      let sourceLocalName = className;
+      if (!classInfo) {
+        for (const [ln, info] of this.ontology.classes) {
+          try {
+            const bn = this.getBusinessNameForClass(info.iri);
+            if (bn === className) { classInfo = info; sourceLocalName = ln; break; }
+          } catch (e) { /* ignore */ }
+        }
+      } else {
+        sourceLocalName = className;
+      }
       const classTsName = pascal(className);
       const fileName = path.join(this.outputPath, `${className}.model.ts`);
 
@@ -352,7 +374,7 @@ export class TypeScriptGenerator extends ClassGenerator {
         for (const s of supers) { if (sharedInterfaceNames.has(s)) { implementsIface = sharedInterfaceNames.get(s); break; } }
       }
 
-      const attrs = this.computeAttributesForClass(className, classNames, extendsSuperName);
+      const attrs = this.computeAttributesForClass(sourceLocalName, classNames, extendsSuperName);
       
       const modelImports = new Set();
       const interfaceImports = new Map();
@@ -620,7 +642,28 @@ export class TypeScriptGenerator extends ClassGenerator {
       const header = `// Auto-generated models` + '\n\n'; content = header + content;
       fs.writeFileSync(fileName, content, 'utf8');
       try { if (Array.isArray(enumFiles) && enumFiles.length > 0) { let written = fs.readFileSync(fileName, 'utf8'); enumFiles.forEach(e => { const en = e.name; const re = new RegExp(`@json(Member|ArrayMember)\\(\\s*${en}\\s*,`, 'g'); written = written.replace(re, `@json$1(() => ${en},`); }); fs.writeFileSync(fileName, written, 'utf8'); } } catch (e) { }
-      console.log('Wrote TS model ->', fileName);
+      info('Wrote TS model ->', fileName);
+        // If there exist original ontology local names that map to this
+        // business class name, generate small alias model files so both
+        // the business-local and original local names have model entries.
+        try {
+          for (const [localName, info] of this.ontology.classes) {
+            try {
+              const bn = this.getBusinessNameForClass(info.iri);
+              if (bn === className && localName !== className) {
+                const aliasFile = path.join(this.outputPath, `${localName}.model.ts`);
+                if (!fs.existsSync(aliasFile)) {
+                  const aliasTs = this.pascalCase(localName);
+                  const targetTs = this.pascalCase(className);
+                  const aliasContent = `// Auto-generated alias for ${localName}\n\nexport { ${targetTs} as ${aliasTs} } from './${className}.model';\n`;
+                  fs.writeFileSync(aliasFile, aliasContent, 'utf8');
+                  info('Wrote TS alias model ->', aliasFile);
+                  indexEntries.push(`export * from './${localName}.model';`);
+                }
+              }
+            } catch (e) { /* ignore per-class alias errors */ }
+          }
+        } catch (e) { /* ignore alias generation errors */ }
       indexEntries.push(`export * from './${className}.model';`);
     });
     return indexEntries;

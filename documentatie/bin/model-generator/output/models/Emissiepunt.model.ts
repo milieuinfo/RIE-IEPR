@@ -26,9 +26,6 @@ export class Emissiepunt implements ISystem {
   @jsonMember(ExploitatieLocatie, { name: 'isHostedBy' })
   locatie!: ExploitatieLocatie;
 
-  @jsonMember(String, { name: 'hasGeometry' })
-  geometrie?: string;
-
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 

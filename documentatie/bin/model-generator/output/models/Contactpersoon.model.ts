@@ -1,5 +1,6 @@
 // Auto-generated models
 
+import { Adres } from './Adres.model';
 import { Exploitant } from './Exploitant.model';
 
 import { jsonObject, jsonMember } from 'typedjson';
@@ -23,6 +24,9 @@ export class Contactpersoon {
 
   @jsonMember(String, { name: 'hasRole' })
   hasRole!: string;
+
+  @jsonMember(Adres, { name: 'address' })
+  adres?: Adres;
 
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;

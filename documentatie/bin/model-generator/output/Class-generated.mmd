@@ -1,6 +1,16 @@
 %% Auto-generated from OWL/SHACL
 classDiagram
     class AbstractEmissiepunt {
+        string uri
+    }
+      class Adres {
+        Date geldigVan
+        Date aangemaaktOp
+        string uri
+        string straat
+        string stad
+        string postcode
+        Date geldigTot
     }
       class Apparaat {
         string uri
@@ -8,7 +18,6 @@ classDiagram
         Date geldigVan
         ExploitatieLocatie locatie (FK)
         string benaming
-        string geometrie
         Date geldigTot
     }
       class ExploitantContactpersoon {
@@ -18,6 +27,7 @@ classDiagram
         string email
         string telefoonnummer
         string hasRole
+        Address adres (FK)
         Date aangemaaktOp
         Date geldigVan
         string name
@@ -30,7 +40,6 @@ classDiagram
         Date geldigVan
         Date aangemaaktOp
         ExploitatieLocatie locatie (FK)
-        string geometrie
         Date geldigTot
     }
       class Exploitant {
@@ -39,6 +48,7 @@ classDiagram
         Date geldigVan
         Contactpersoon type (FK)
         string benaming
+        Address adres (FK)
         Date geldigTot
     }
       class ExploitatieLocatie {
@@ -49,18 +59,19 @@ classDiagram
         IAgent toegewezenAan (FK)
         string beinvloedDoor
         ExploitatieLocatie afgeleidVan (FK)
-        string geometrie
+        Address adres (FK)
         Date geldigTot
         ExploitatieLocatieIdentifier[] identifiers (FK)
     }
       class ExploitatieLocatieIdentifier {
-        Date geldigVan
-        string schema
+        string uri
+        string inScheme
         string notation
         Date geldigTot
         string value
     }
       class Grondwaterput {
+        string uri
         double diepte
     }
       class Installatie {
@@ -75,13 +86,15 @@ classDiagram
         InstallatieIdentifier[] identifiers (FK)
     }
       class InstallatieIdentifier {
-        Date geldigVan
-        string schema
+        string uri
+        string inScheme
         string notation
         Date geldigTot
         string value
     }
       class Lozingspunt {
+        string uri
+        double diepte
     }
       class Meetpunt {
         string uri
@@ -89,13 +102,12 @@ classDiagram
         string type
         Date aangemaaktOp
         Date geldigVan
-        string geometrie
         Date geldigTot
         MeetpuntIdentifier[] identifiers (FK)
     }
       class MeetpuntIdentifier {
-        Date geldigVan
-        string schema
+        string uri
+        string inScheme
         string notation
         Date geldigTot
         string value
@@ -111,7 +123,6 @@ classDiagram
         Date geldigVan
         Date aangemaaktOp
         ExploitatieLocatie locatie (FK)
-        string geometrie
         Date geldigTot
     }
       class Proces {
@@ -129,8 +140,8 @@ classDiagram
         ProcesIdentifier[] identifiers (FK)
     }
       class ProcesIdentifier {
-        Date geldigVan
-        string schema
+        string uri
+        string inScheme
         string notation
         Date geldigTot
         string value
@@ -139,13 +150,14 @@ classDiagram
         string uri
         string benaming
         string type
-        string eenheid
-        string waarde
+        number eenheid
+        number waarde
         Date geldigVan
         Date aangemaaktOp
         Date geldigTot
     }
       class Schouw {
+        string uri
         double diameter
         double hoogte
     }

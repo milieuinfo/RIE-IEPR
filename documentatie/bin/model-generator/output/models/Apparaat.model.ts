@@ -23,9 +23,6 @@ export class Apparaat implements ISystem {
   @jsonMember(String, { name: 'label' })
   benaming!: string;
 
-  @jsonMember(String, { name: 'hasGeometry' })
-  geometrie?: string;
-
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;
 

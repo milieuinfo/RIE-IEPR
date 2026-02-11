@@ -12,10 +12,35 @@ export class BaseGenerator {
   }
 
   prepareOntology() {
-    if (typeof this.ontology.extractClasses === 'function') this.ontology.extractClasses();
-    if (typeof this.ontology.addExternalClassesFromRestrictions === 'function') this.ontology.addExternalClassesFromRestrictions();
-    if (typeof this.ontology.addDomainRangeRestrictions === 'function') this.ontology.addDomainRangeRestrictions();
+    this.ontology.extractClasses();
+    this.ontology.addExternalClassesFromRestrictions();
+    this.ontology.addDomainRangeRestrictions();
     this.enumClasses = this.utils.computeEnumClasses();
+  }
+
+  /**
+   * Generic check for `OVERRIDE_PROPERTIES` membership.
+   * Supports checking by `restriction.property` (local name) and `restriction.propertyIri` (full IRI).
+   * @param {Restriction} restriction - property restriction object
+   * @param {string} key - override key (e.g. 'qudt'|'geometry')
+   * @returns {boolean|Object} - `false` if not overridden, `true` if present in a Set, or the spec object when configured as a Map
+   */
+  _isOverriddenProperty(restriction, key) {
+    try {
+      const set = Config.OVERRIDE_PROPERTIES && Config.OVERRIDE_PROPERTIES[key];
+      if (!set || set.size === 0) return false;
+      const prop = String(restriction.property || '');
+      const propLower = prop.toLowerCase();
+      const propIri = String(restriction.propertyIri || '');
+      // If configured as a Map (property -> spec), return the spec when found
+      if (typeof set.get === 'function') {
+        const spec = set.get(prop) || set.get(propLower) || set.get(propIri);
+        if (spec) return spec;
+      }
+      // Fallback: Set semantics (boolean override)
+      if (set.has(prop) || set.has(propLower) || set.has(propIri)) return true;
+    } catch (e) { /* ignore */ }
+    return false;
   }
 
   buildRelationships(includeIdentifierRelations = true) {
@@ -197,8 +222,13 @@ export class BaseGenerator {
   }
 
   /**
-   * Internal method for deriving attributes without enum checking
-   * Used by computeEnumClasses to avoid circular dependencies
+   * Internal method for deriving attributes without enum checking.
+   * Used by `computeEnumClasses` to avoid circular dependencies.
+   * @param {ClassInfo} classInfo
+   * @param {Set<string>} enumClasses
+   * @param {string} className
+   * @param {boolean} [skipForeignKeys=false]
+   * @returns {Array<Attribute>}
    */
   deriveAttributesInternal(classInfo, enumClasses, className, skipForeignKeys) {
     const attributes = [];
@@ -217,25 +247,33 @@ export class BaseGenerator {
         return;
       }
 
-      // Handle QUDT properties without explicit range
-      if ((restriction.propertyIri === `${Config.NAMESPACES.qudt}hasUnit` ||
-           restriction.propertyIri === `${Config.NAMESPACES.qudt}hasNumericValue`) &&
-          restriction.rangeTypes.length === 0) {
-        const attrName = this.deriveAttributeName(restriction);
-        if (seen.has(attrName)) return;
-        seen.add(attrName);
-        attributes.push({ name: attrName, type: 'string', sqlType: 'TEXT', isForeignKey: false });
-        return;
-      }
+      // Handle QUDT properties without explicit range (configurable via OVERRIDE_PROPERTIES.qudt)
+      try {
+        const qudtSpec = this._isOverriddenProperty(restriction, 'qudt');
+        if (qudtSpec && restriction.rangeTypes.length === 0) {
+          const attrName = this.deriveAttributeName(restriction);
+          if (seen.has(attrName)) return;
+          seen.add(attrName);
+          const t = (typeof qudtSpec === 'object' && qudtSpec.type) ? qudtSpec.type : 'string';
+          const sql = (typeof qudtSpec === 'object' && qudtSpec.sqlType) ? qudtSpec.sqlType : 'TEXT';
+          attributes.push({ name: attrName, type: t, sqlType: sql, isForeignKey: false });
+          return;
+        }
+      } catch (e) { /* ignore */ }
 
       // Special handling for geometry properties - treat as TEXT datatype
-      if (Config.isGeometryProperty(restriction.property)) {
-        const attrName = this.deriveAttributeName(restriction);
-        if (seen.has(attrName)) return;
-        seen.add(attrName);
-        attributes.push({ name: attrName, type: 'string', sqlType: 'TEXT', isForeignKey: false });
-        return;
-      }
+      try {
+        const geomSpec = this._isOverriddenProperty(restriction, 'geometry');
+        if (geomSpec) {
+          const attrName = this.deriveAttributeName(restriction);
+          if (seen.has(attrName)) return;
+          seen.add(attrName);
+          const t = (typeof geomSpec === 'object' && geomSpec.type) ? geomSpec.type : 'string';
+          const sql = (typeof geomSpec === 'object' && geomSpec.sqlType) ? geomSpec.sqlType : 'TEXT';
+          attributes.push({ name: attrName, type: t, sqlType: sql, isForeignKey: false });
+          return;
+        }
+      } catch (e) { /* ignore */ }
 
       const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
       const isDatatype = Config.isDatatypeRange(restriction.rangeTypes);
@@ -265,6 +303,10 @@ export class BaseGenerator {
    * Compute attributes for a class, handling identifier relations and
    * filtering out attributes that belong to a direct superclass when
    * extending that superclass.
+   * @param {string} className
+   * @param {Array<string>} [classNames]
+   * @param {string|null} [extendsSuperName]
+   * @returns {Array<Attribute>}
    */
   computeAttributesForClass(className, classNames = [], extendsSuperName = null) {
     const camel = (s) => Config.camelCaseToSnakeCase ? Config.camelCaseToSnakeCase(s) : String(s);
@@ -276,9 +318,28 @@ export class BaseGenerator {
         attrs = this.generateIdentifierAttributesForClass(parentClass) || [];
       } else {
         attrs = [];
+        try {
+          // Attempt to infer attributes for business-only classes (no classInfo)
+          const inferred = new Map();
+          this._inferBusinessConceptAttributes(inferred, null, className);
+          if (inferred.size > 0) {
+            inferred.forEach(v => attrs.push(v));
+          }
+        } catch (e) { /* ignore inference errors */ }
       }
     } else {
       attrs = this.deriveAttributes(classInfo, this.enumClasses, className) || [];
+    }
+
+    // If we derived no attributes from classInfo, still attempt inference
+    if ((!attrs || attrs.length === 0) && classInfo) {
+      const inferred = new Map();
+      this._inferBusinessConceptAttributes(inferred, classInfo, className);
+      if (inferred.size > 0) {
+        // merge inferred attributes avoiding duplicates
+        const existing = new Set((attrs || []).map(a => a && a.name));
+        inferred.forEach(v => { if (!existing.has(v.name)) attrs.push(v); });
+      }
     }
 
     if (extendsSuperName) {
@@ -297,7 +358,7 @@ export class BaseGenerator {
     }
 
     // Add virtual identifier attribute when identifier relations exist
-      if (this.identifierRelations && this.identifierRelations.has(className)) {
+    if (this.identifierRelations && this.identifierRelations.has(className)) {
       const identClass = `${className}Identifier`;
       if (Array.isArray(classNames) && classNames.includes(identClass)) {
         const restriction = this.identifierRelations.get(className);
@@ -316,6 +377,9 @@ export class BaseGenerator {
         });
       }
     }
+
+    this.ensureUri(attrs);
+    this.ensureTemporal(attrs, className);
 
     return attrs;
   }
@@ -342,6 +406,7 @@ export class BaseGenerator {
         if (this.utils.isTechnicalClass(name, info)) return false;
         return true;
       })
+      .map(name => this.getBusinessClassName(name) || name)
       .sort((a, b) => a.localeCompare(b));
 
     // Add identifier tables
@@ -361,7 +426,6 @@ export class BaseGenerator {
       classInfo = this.ontology.classes.get(className);
     }
     // Prefer business name from ontology when available (handled below)
-    // Prefer business name (when available), then label, then fallback to className
     let raw = className;
     try {
       if (classInfo && classInfo.iri && this.ontology.getBusinessNameForClass) {
@@ -379,145 +443,6 @@ export class BaseGenerator {
     // Try to use pascalCase helper if available
     if (typeof this.pascalCase === 'function') return this.pascalCase(cleaned);
     return cleaned.replace(/(^.|_.)/g, s => s.replace(/_/g, '').toUpperCase());
-  }
-
-  // Compute join/junction tables from relationships. Default visibleClasses to computed set.
-  computeJoinTablesFor(relationships, config = Config, visibleClasses = null) {
-    // copy of previous computeJoinTablesLocal logic, adapted to use this.utils/this.ontology
-    const joinTables = [];
-    const junctionTableInfo = new Map();
-    const seen = new Set();
-
-    const variableRelationships = new Map();
-    const enumDefinitions = new Map();
-
-    const groups = new Map();
-    const visibleSet = visibleClasses ? new Set(visibleClasses) : null;
-    relationships.forEach(rel => {
-      if (visibleSet && !visibleSet.has(rel.from)) return;
-      if (rel.property === 'hasInputVar' || rel.property === 'hasOutputVar') {
-        const key = `${rel.from}_variabele_relatie`;
-        if (!variableRelationships.has(key)) {
-          variableRelationships.set(key, { fromTable: this.utils.deriveTableName(rel.from), toTable: this.utils.deriveTableName(rel.to), fromClass: rel.from, toClass: rel.to, relationships: [] });
-        }
-        variableRelationships.get(key).relationships.push(rel.property);
-        return;
-      }
-
-      const groupKey = `${rel.from}|${rel.propertyIri || rel.property}`;
-      if (!groups.has(groupKey)) groups.set(groupKey, []);
-      groups.get(groupKey).push(rel);
-    });
-
-    function makePropBase(propSource) {
-      if (/[A-Z]/.test(String(propSource))) {
-        return Config.camelCaseToSnakeCase(String(propSource));
-      }
-      return String(propSource)
-        .normalize('NFD')
-        .replace(/\p{Diacritic}/gu, '')
-        .replace(/[^0-9A-Za-z]+/g, '_')
-        .replace(/^_+|_+$/g, '')
-        .toLowerCase();
-    }
-
-    groups.forEach((rels) => {
-      const rel0 = rels[0];
-      const fromTable = this.utils.deriveTableName(rel0.from);
-      const businessName = this.ontology.getBusinessNameForProperty(rel0.propertyIri, rel0.from);
-      const businessLabel = this.ontology.getBusinessLabelForProperty(rel0.propertyIri, rel0.from);
-      const propSource = rel0.label || businessLabel || businessName || rel0.property;
-      const propBase = makePropBase(propSource);
-
-        if (rels.length > 1) {
-        const joinTableName = `${fromTable}_${propBase}`;
-        if (seen.has(joinTableName)) return;
-        seen.add(joinTableName);
-
-        const targetTypes = rels.map(r => r.to);
-        if (visibleSet) {
-          const hasVisibleTarget = targetTypes.some(t => visibleSet.has(t));
-          if (!hasVisibleTarget) return;
-        }
-        const enumName = `${joinTableName}_target_type_enum`;
-        const enumValues = targetTypes
-          .map(t => String(t).toUpperCase().replace(/[^A-Z0-9_]/g, '_'))
-          .filter((v, i, a) => v && a.indexOf(v) === i);
-        if (enumValues.length > 0) {
-          enumDefinitions.set(enumName, enumValues);
-        }
-
-        // Check for a configured override that maps this property to an
-        // interface type (collapse multiple concrete targets into one
-        // interface-backed join table). We support lookup both by full
-        // property IRI and by short property name.
-        let override = null;
-        const attributes = [
-          { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: rel0.from, isForeignKey: true, isPrimaryKey: true },
-          { name: `target_uri`, type: 'string', sqlType: 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: true },
-          { name: `target_type`, type: 'enum', sqlType: enumValues.length > 0 ? enumName : 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: false }
-        ];
-
-        if (override && override.interface && config.INTERFACE_CLASSES && config.INTERFACE_CLASSES.has(override.interface)) {
-          // Collapse to the configured interface and remember concrete targets
-          // so calling generators can avoid emitting concrete per-type relations
-          joinTables.push({ name: joinTableName, attributes });
-          junctionTableInfo.set(joinTableName, { from: rel0.from, to: override.interface, concreteTargets: targetTypes, addsTemporal: true, label: businessLabel || rel0.label || '' });
-          // Add temporal fields to the join table (not primary keys)
-          attributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
-          attributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: false });
-          attributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
-        } else {
-          joinTables.push({ name: joinTableName, attributes });
-          junctionTableInfo.set(joinTableName, { from: rel0.from, to: targetTypes, label: businessLabel || rel0.label || '' });
-        }
-      } else {
-        const rel = rels[0];
-        const toTable = this.utils.deriveTableName(rel.to);
-        const joinTableName = `${fromTable}_${propBase}_${toTable}`;
-        if (seen.has(joinTableName)) return;
-        if (visibleSet && (!visibleSet.has(rel.from) || !visibleSet.has(rel.to))) return;
-        seen.add(joinTableName);
-
-        let fromColumn = `${fromTable}_uri`;
-        let toColumn = `${toTable}_uri`;
-        if (fromColumn === toColumn) {
-          fromColumn = `${fromTable}_uri_from`;
-          toColumn = `${toTable}_uri_to`;
-        }
-
-        const attributes = [
-          { name: fromColumn, type: 'string', sqlType: 'TEXT', comment: rel.from, isForeignKey: true, isPrimaryKey: true },
-          { name: toColumn, type: 'string', sqlType: 'TEXT', comment: rel.to, isForeignKey: true, isPrimaryKey: true }
-        ];
-
-        joinTables.push({ name: joinTableName, attributes });
-        junctionTableInfo.set(joinTableName, { from: rel.from, to: rel.to, label: businessLabel || rel.label || '' });
-      }
-    });
-
-    variableRelationships.forEach((config, key) => {
-      const fromTable = config.fromTable;
-      const toTable = config.toTable;
-      const joinTableName = `${fromTable}_variabele_relatie`;
-      if (seen.has(joinTableName)) return;
-      seen.add(joinTableName);
-
-      const relEnumName = `${joinTableName}_relationship_type_enum`;
-      const relEnumValues = ['INPUT_VAR', 'OUTPUT_VAR'];
-      enumDefinitions.set(relEnumName, relEnumValues);
-
-      const attributes = [
-        { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: config.fromClass, isForeignKey: true, isPrimaryKey: true },
-        { name: `${toTable}_uri`, type: 'string', sqlType: 'TEXT', comment: config.toClass, isForeignKey: true, isPrimaryKey: true },
-        { name: 'relationship_type', type: 'enum', sqlType: relEnumName, comment: relEnumValues.join(', '), isForeignKey: false, isPrimaryKey: true }
-      ];
-
-      joinTables.push({ name: joinTableName, attributes });
-      junctionTableInfo.set(joinTableName, { from: config.fromClass, to: config.toClass, label: 'hasInputVar/hasOutputVar' });
-    });
-
-    return { joinTables, junctionTableInfo, enumDefinitions };
   }
 
   /**
@@ -571,7 +496,10 @@ export class BaseGenerator {
   }
 
   /**
-   * Apply primary key rules to attributes
+    * Apply primary key rules to attributes
+    * @param {Array<Attribute>} attributes
+    * @param {ClassInfo} classInfo
+    * @param {string} className
    */
   applyPrimaryKeyRule(attributes, classInfo, className) {
     if (!Array.isArray(attributes)) return;
@@ -582,319 +510,119 @@ export class BaseGenerator {
   }
 
   /**
-   * Derive attributes for a class (full ER-compatible implementation)
+    * Ensure `uri` attribute exists. Accepts either a Map (attributes map)
+    * or an Array (attributes list) and inserts a canonical `uri` attribute
+    * if missing.
+    * @param {Map<string,Attribute>|Array<Attribute>} attributes
    */
-  deriveAttributes(classInfo, enumClasses, className, skipTechnicalFilters = false) {
-    const attributes = new Map();
-
-    // Handle superclass FKs first
-    const superClassNames = this.ontology.getSuperClassNames(classInfo);
-    superClassNames
-      .filter(name => !enumClasses.has(name))
-      .filter(name => {
-        if (skipTechnicalFilters) return true;
-        const info = this.ontology.classes.get(name);
-        return !this.isTechnicalClass(name, info);
-      })
-      .forEach(name => {
-        const displayName = this.getBusinessClassName(name);
-        const fkName = `${Config.camelCaseToSnakeCase(displayName)}_id`;
-        if (!attributes.has(fkName)) {
-          attributes.set(fkName, {
-            name: fkName,
-            type: 'string',
-            sqlType: 'TEXT',
-            comment: displayName,
-            isForeignKey: true,
-            propertyIri: null
-          });
-        }
-      });
-
-    // Handle property restrictions
-    classInfo.restrictions.forEach(restriction => {
-      if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
-      if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
-
-      // Special handling for dct:type
-      if (restriction.propertyIri === `${Config.NAMESPACES.dct}type`) {
-        const attrName = this.deriveAttributeName(restriction);
-        const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
-        // If any resolved range type is a subclass/instance of a configured
-        // ENUMERABLE_CLASSES entry, treat this attribute as a single enum.
-        try {
-          if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
-            let matched = null;
-            for (const candidate of Array.from(Config.ENUMERABLE_CLASSES)) {
-              const isMatch = resolvedRangeTypes.some(rt => {
-                if (!rt) return false;
-                if (rt === candidate) return true;
-                try {
-                  const info = this.ontology.classes.get(rt);
-                  if (info && info.iri) return this.ontology.isSubClassOf(info.iri, candidate);
-                } catch (e) { /* ignore */ }
-                return false;
-              });
-              if (isMatch) { matched = candidate; break; }
-            }
-            if (matched) {
-              if (!attributes.has(attrName)) {
-                attributes.set(attrName, {
-                  name: attrName,
-                  type: 'enum',
-                  sqlType: 'TEXT',
-                  comment: matched,
-                  isForeignKey: false,
-                  propertyIri: restriction.propertyIri
-                });
-              }
-              return;
-            }
-          }
-        } catch (e) { /* ignore */ }
-        // If rangeTypes includes an enum class, treat as enum
-        const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
-        if (enumTypes.length > 0) {
-          if (!attributes.has(attrName)) {
-            attributes.set(attrName, {
-              name: attrName,
-              type: 'enum',
-              sqlType: 'TEXT',
-              comment: enumTypes[0],
-              isForeignKey: false,
-              propertyIri: restriction.propertyIri
-            });
-          }
-          return;
-        }
-        // If no enum, but no explicit range, treat as string
-        if (restriction.rangeTypes.length === 0) {
-          if (!attributes.has(attrName)) {
-            attributes.set(attrName, {
-              name: attrName,
-              type: 'string',
-              sqlType: 'TEXT',
-              comment: restriction.propertyIri,
-              isForeignKey: false,
-              propertyIri: restriction.propertyIri
-            });
-          }
-          return;
-        }
-      }
-
-      // Special handling for QUDT properties without explicit range
-      if ((restriction.propertyIri === `${Config.NAMESPACES.qudt}hasUnit` ||
-           restriction.propertyIri === `${Config.NAMESPACES.qudt}hasNumericValue`) &&
-          restriction.rangeTypes.length === 0) {
-        const attrName = this.deriveAttributeName(restriction);
-        if (!attributes.has(attrName)) {
-          attributes.set(attrName, {
-            name: attrName,
-            type: 'string',
-            sqlType: 'TEXT',
-            comment: restriction.propertyIri,
-            isForeignKey: false,
-            propertyIri: restriction.propertyIri
-          });
-        }
-        return;
-      }
-
-      // If there are no explicit rangeTypes, emit a default string attribute (except for dct:type which is handled above)
-      if (!Array.isArray(restriction.rangeTypes) || restriction.rangeTypes.length === 0) {
-        const attrName = this.deriveAttributeName(restriction);
-        if (!attributes.has(attrName)) {
-          attributes.set(attrName, {
-            name: attrName,
-            type: 'string',
-            sqlType: 'TEXT',
-            comment: restriction.propertyIri,
-            isForeignKey: false,
-            propertyIri: restriction.propertyIri,
-            minCardinality: restriction.minCardinality,
-            maxCardinality: restriction.maxCardinality
-          });
-        }
-        return;
-      }
-
-      // Special handling for geometry properties - treat as TEXT datatype
-      if (Config.isGeometryProperty(restriction.property)) {
-        const attrName = this.deriveAttributeName(restriction);
-        if (!attributes.has(attrName)) {
-          attributes.set(attrName, {
-            name: attrName,
-            type: 'string',
-            sqlType: 'TEXT',
-            comment: 'WKT (Well-Known Text) geometry representation',
-            isForeignKey: false,
-            propertyIri: restriction.propertyIri
-          });
-        }
-        return; // Skip further processing for geometry
-      }
-
-      const isDatatype = Config.isDatatypeRange(restriction.rangeTypes);
-
-      if (restriction.rangeTypes.length > 0 && !isDatatype) {
-        const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
-        const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
-        const nonEnumTypes = resolvedRangeTypes
-          .filter(type => !enumClasses.has(type))
-          .filter(type => this.ontology.isRelevantClassName(type))
-          .filter(type => {
-            if (skipTechnicalFilters) return true;
-            const info = this.ontology.classes.get(type);
-            return !this.isTechnicalClass(type, info);
-          });
-
-        // Add enum attribute if there are enum types (already handled for dct:type above)
-        if (enumTypes.length > 0 && restriction.propertyIri !== `${Config.NAMESPACES.dct}type`) {
-          if (nonEnumTypes.length === 0) {
-            const attrName = this.ontology.deriveAttributeName(restriction);
-            if (!attributes.has(attrName)) {
-              // Format enum values to UPPER_SNAKE_CASE
-              const formattedEnumValues = enumTypes
-                .map(type => Config.formatEnumValue(type))
-                .join(', ');
-              attributes.set(attrName, {
-                name: attrName,
-                type: 'enum',
-                sqlType: 'TEXT',
-                comment: formattedEnumValues,
-                isForeignKey: false,
-                propertyIri: restriction.propertyIri
-              });
-            }
-          }
-        }
-
-        if (nonEnumTypes.length === 0) return;
-
-        const isUnionLike = restriction.restrictionType === 'union' || restriction.restrictionType === 'list';
-
-        if (!isUnionLike || nonEnumTypes.length === 1) {
-          // Single target type OR union with single non-enum: use simple FK column name
-          const fkName = this.deriveFkName(restriction);
-          const displayTypes = nonEnumTypes.map(type => this.getBusinessClassName(type));
-          if (!attributes.has(fkName)) {
-            attributes.set(fkName, {
-              name: fkName,
-              type: 'string',
-              sqlType: 'TEXT',
-              comment: displayTypes.join(', '),
-              isForeignKey: true,
-              propertyIri: restriction.propertyIri,
-              targetClasses: nonEnumTypes,
-              minCardinality: restriction.minCardinality,
-              maxCardinality: restriction.maxCardinality
-            });
-          } else {
-            // If an attribute already exists (from a superclass), prefer the
-            // stricter single-valued restriction when the current restriction
-            // declares maxCardinality === 1. This avoids emitting arrays when a
-            // subclass tightens cardinality to a single value.
-            const existing = attributes.get(fkName);
-            if (typeof restriction.maxCardinality === 'number' && restriction.maxCardinality === 1 && existing && existing.maxCardinality !== 1) {
-              existing.maxCardinality = 1;
-              existing.minCardinality = restriction.minCardinality;
-              // update comment/targetClasses to reflect the more specific restriction
-              existing.comment = displayTypes.join(', ');
-              existing.targetClasses = nonEnumTypes;
-              attributes.set(fkName, existing);
-            }
-          }
-        } else {
-          // Union/list with multiple non-enum types: separate FK column per type
-          nonEnumTypes.forEach(targetType => {
-            const fkName = `${this.deriveFkName(restriction)}_${Config.camelCaseToSnakeCase(this.getBusinessClassName(targetType))}`;
-            const comment = this.getBusinessClassName(targetType);
-            if (!attributes.has(fkName)) {
-              attributes.set(fkName, {
-                name: fkName,
-                type: 'string',
-                sqlType: 'TEXT',
-                comment,
-                isForeignKey: true,
-                propertyIri: restriction.propertyIri,
-                targetClasses: [targetType],
-                minCardinality: restriction.minCardinality,
-                maxCardinality: restriction.maxCardinality
-              });
-            } else {
-              const existing = attributes.get(fkName);
-              if (typeof restriction.maxCardinality === 'number' && restriction.maxCardinality === 1 && existing && existing.maxCardinality !== 1) {
-                existing.maxCardinality = 1;
-                existing.minCardinality = restriction.minCardinality;
-                existing.comment = comment;
-                attributes.set(fkName, existing);
-              }
-            }
-          });
-        }
-      } else if (isDatatype) {
-        // Datatype property
-        const attrName = this.ontology.deriveAttributeName(restriction);
-        if (attributes.has(attrName)) return;
-
-        const mermaidType = Config.inferMermaidDataType(restriction.rangeTypes, attrName);
-        const sqlType = Config.inferSqlDataType(restriction.rangeTypes, attrName);
-
-        attributes.set(attrName, {
-          name: attrName,
-          type: mermaidType,
-          sqlType: sqlType,
-          comment: restriction.rangeTypes.join(', '),
-          isForeignKey: false,
-          propertyIri: restriction.propertyIri,
-          minCardinality: restriction.minCardinality,
-          maxCardinality: restriction.maxCardinality
-        });
-      }
-    });
-
-    // Always add URI
-    const uriAttrName = 'uri';
-    if (!attributes.has(uriAttrName)) {
-      attributes.set(uriAttrName, {
-        name: uriAttrName,
+  ensureUri(attributes) {
+    try {
+      const uriObj = {
+        name: 'uri',
         type: 'string',
         sqlType: 'TEXT',
         comment: 'URI',
         isForeignKey: false,
         propertyIri: null,
         isPrimaryKey: true
-      });
-    }
+      };
+      if (!attributes) return;
+      if (attributes instanceof Map) {
+        if (!attributes.has('uri')) attributes.set('uri', uriObj);
+        return;
+      }
+      if (Array.isArray(attributes)) {
+        const hasUri = attributes.some(a => a && a.name === 'uri');
+        if (!hasUri) attributes.unshift(uriObj);
+      }
+    } catch (e) { /* ignore */ }
+  }
 
-    // Ensure temporal attributes for configured temporal classes
-    if (Config.isTemporalClass(className)) {
-      if (!attributes.has('geldig_van')) {
-        attributes.set('geldig_van', {
-          name: 'geldig_van',
-          type: 'date',
-          sqlType: 'DATE',
-          comment: 'http://purl.org/dc/terms/issued',
-          isForeignKey: false,
-          propertyIri: 'http://purl.org/dc/terms/issued',
-          minCardinality: 1,
-          maxCardinality: 1
-        });
+  /**
+   * Ensure temporal attributes exist for classes configured as temporal.
+   * Accepts either a Map (attributes map) or Array (attributes list) and
+   * inserts canonical temporal attributes when missing.
+   * @param {Map<string,Attribute>|Array<Attribute>} attributes
+   * @param {string} className
+   */
+  ensureTemporal(attributes, className) {
+    try {
+      const biz = this.getBusinessClassName ? this.getBusinessClassName(className) : className;
+      if (!Config.isTemporalClass(className) && !Config.isTemporalClass(biz)) return;
+
+      const van = {
+        name: 'geldig_van',
+        type: 'date',
+        sqlType: 'DATE',
+        comment: 'http://purl.org/dc/terms/issued',
+        isForeignKey: false,
+        propertyIri: 'http://purl.org/dc/terms/issued',
+        minCardinality: 1,
+        maxCardinality: 1
+      };
+      const aangemaakt = {
+        name: 'aangemaakt_op',
+        type: 'datetime',
+        sqlType: 'TIMESTAMP',
+        comment: 'http://purl.org/dc/terms/created',
+        isForeignKey: false,
+        propertyIri: 'http://purl.org/dc/terms/created',
+        minCardinality: 1,
+        maxCardinality: 1
+      };
+      const tot = {
+        name: 'geldig_tot',
+        type: 'date',
+        sqlType: 'DATE',
+        comment: 'http://purl.org/dc/terms/valid',
+        isForeignKey: false,
+        propertyIri: 'http://purl.org/dc/terms/valid',
+        minCardinality: 0,
+        maxCardinality: 1
+      };
+
+      if (!attributes) return;
+      if (attributes instanceof Map) {
+        if (!attributes.has('geldig_van')) attributes.set('geldig_van', van);
+        if (!attributes.has('aangemaakt_op')) attributes.set('aangemaakt_op', aangemaakt);
+        if (!attributes.has('geldig_tot')) attributes.set('geldig_tot', tot);
+        return;
       }
-      if (!attributes.has('aangemaakt_op')) {
-        attributes.set('aangemaakt_op', {
-          name: 'aangemaakt_op',
-          type: 'datetime',
-          sqlType: 'TIMESTAMP',
-          comment: 'http://purl.org/dc/terms/created',
-          isForeignKey: false,
-          propertyIri: 'http://purl.org/dc/terms/created',
-          minCardinality: 1,
-          maxCardinality: 1
-        });
+
+      if (Array.isArray(attributes)) {
+        const names = new Set(attributes.map(a => a && a.name));
+        if (!names.has('aangemaakt_op')) attributes.unshift(aangemaakt);
+        if (!names.has('geldig_van')) attributes.unshift(van);
+        if (!names.has('geldig_tot')) attributes.push(tot);
       }
-    }
+    } catch (e) { /* ignore */ }
+  }
+
+  /**
+   * Derive attributes for a classInfo.
+   * @param {ClassInfo|null} classInfo
+   * @param {Set<string>} enumClasses
+   * @param {string} className
+   * @param {boolean} [skipTechnicalFilters=false]
+   * @returns {Array<Attribute>}
+   */
+  deriveAttributes(classInfo, enumClasses, className, skipTechnicalFilters = false) {
+    const attributes = new Map();
+    // Handle superclass FKs first (extracted to helper)
+    this._addSuperclassForeignKeys(attributes, classInfo, enumClasses, skipTechnicalFilters);
+
+    // Handle property restrictions (extracted to helper)
+    this._processPropertyRestrictions(classInfo, attributes, enumClasses, className, skipTechnicalFilters);
+
+    // Always attempt to infer additional business-concept attributes
+    // (merge with any derived attributes).
+    this._inferBusinessConceptAttributes(attributes, classInfo, className);
+
+    // Always add URI
+    this.ensureUri(attributes);
+
+    // Ensure temporal attributes for configured temporal classes.
+    this.ensureTemporal(attributes, className);
 
     // If class has geldig_van (dct:issued), auto-add geldig_tot (dct:valid) if not already present
     if (attributes.has('geldig_van') && !attributes.has('geldig_tot')) {
@@ -911,6 +639,7 @@ export class BaseGenerator {
     }
 
     // Ensure 'uri' is first, 'geldig_van'/'geldig_tot' are in correct order
+    const uriAttrName = 'uri';
     const attrsArray = Array.from(attributes.values()).sort((a, b) => {
       if (a.name === uriAttrName && b.name !== uriAttrName) return -1;
       if (b.name === uriAttrName && a.name !== uriAttrName) return 1;
@@ -924,10 +653,383 @@ export class BaseGenerator {
   }
 
   /**
+ * Add foreign key attributes for direct superclasses.
+ * @param {Map<string,Attribute>} attributes
+ * @param {ClassInfo|null} classInfo
+ * @param {Set<string>} enumClasses
+ * @param {boolean} skipTechnicalFilters
+ */
+  _addSuperclassForeignKeys(attributes, classInfo, enumClasses, skipTechnicalFilters) {
+    try {
+      const superClassNames = this.ontology.getSuperClassNames(classInfo);
+      superClassNames
+        .filter(name => !enumClasses.has(name))
+        .filter(name => {
+          if (skipTechnicalFilters) return true;
+          const info = this.ontology.classes.get(name);
+          return !this.isTechnicalClass(name, info);
+        })
+        .forEach(name => {
+          const displayName = this.getBusinessClassName(name);
+          const fkName = `${Config.camelCaseToSnakeCase(displayName)}_id`;
+          if (!attributes.has(fkName)) {
+            attributes.set(fkName, {
+              name: fkName,
+              type: 'string',
+              sqlType: 'TEXT',
+              comment: displayName,
+              isForeignKey: true,
+              propertyIri: null
+            });
+          }
+        });
+    } catch (e) { /* ignore */ }
+  }
+
+  /**
+ * Process property restrictions from `classInfo` and populate `attributes`.
+ * @param {ClassInfo|null} classInfo
+ * @param {Map<string,Attribute>} attributes
+ * @param {Set<string>} enumClasses
+ * @param {string} className
+ * @param {boolean} skipTechnicalFilters
+ */
+  _processPropertyRestrictions(classInfo, attributes, enumClasses, className, skipTechnicalFilters) {
+    if (!classInfo || !Array.isArray(classInfo.restrictions)) return;
+    classInfo.restrictions.forEach(restriction => {
+      try {
+        if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
+        if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
+
+        // Special handling for dct:type
+        if (restriction.propertyIri === `${Config.NAMESPACES.dct}type`) {
+          const attrName = this.deriveAttributeName(restriction);
+          const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
+          // If any resolved range type is a subclass/instance of a configured
+          // ENUMERABLE_CLASSES entry, treat this attribute as a single enum.
+          try {
+            if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
+              let matched = null;
+              for (const candidate of Array.from(Config.ENUMERABLE_CLASSES)) {
+                const isMatch = resolvedRangeTypes.some(rt => {
+                  if (!rt) return false;
+                  if (rt === candidate) return true;
+                  try {
+                    const info = this.ontology.classes.get(rt);
+                    if (info && info.iri) return this.ontology.isSubClassOf(info.iri, candidate);
+                  } catch (e) { /* ignore */ }
+                  return false;
+                });
+                if (isMatch) { matched = candidate; break; }
+              }
+              if (matched) {
+                if (!attributes.has(attrName)) {
+                  attributes.set(attrName, {
+                    name: attrName,
+                    type: 'enum',
+                    sqlType: 'TEXT',
+                    comment: matched,
+                    isForeignKey: false,
+                    propertyIri: restriction.propertyIri
+                  });
+                }
+                return;
+              }
+            }
+          } catch (e) { /* ignore */ }
+          // If rangeTypes includes an enum class, treat as enum
+          const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
+          if (enumTypes.length > 0) {
+            if (!attributes.has(attrName)) {
+              attributes.set(attrName, {
+                name: attrName,
+                type: 'enum',
+                sqlType: 'TEXT',
+                comment: enumTypes[0],
+                isForeignKey: false,
+                propertyIri: restriction.propertyIri
+              });
+            }
+            return;
+          }
+          // If no enum, but no explicit range, treat as string
+          if (restriction.rangeTypes.length === 0) {
+            if (!attributes.has(attrName)) {
+              attributes.set(attrName, {
+                name: attrName,
+                type: 'string',
+                sqlType: 'TEXT',
+                comment: restriction.propertyIri,
+                isForeignKey: false,
+                propertyIri: restriction.propertyIri
+              });
+            }
+            return;
+          }
+        }
+
+        // Special handling for QUDT properties without explicit range (configurable via OVERRIDE_PROPERTIES.qudt)
+        try {
+          const qudtSpec = this._isOverriddenProperty(restriction, 'qudt');
+          if (qudtSpec && restriction.rangeTypes.length === 0) {
+            const attrName = this.deriveAttributeName(restriction);
+            if (!attributes.has(attrName)) {
+              const t = (typeof qudtSpec === 'object' && qudtSpec.type) ? qudtSpec.type : 'string';
+              const sql = (typeof qudtSpec === 'object' && qudtSpec.sqlType) ? qudtSpec.sqlType : 'TEXT';
+              const comment = (typeof qudtSpec === 'object' && qudtSpec.comment) ? qudtSpec.comment : restriction.propertyIri;
+              attributes.set(attrName, {
+                name: attrName,
+                type: t,
+                sqlType: sql,
+                comment: comment,
+                isForeignKey: false,
+                propertyIri: restriction.propertyIri
+              });
+            }
+            return;
+          }
+        } catch (e) { /* ignore */ }
+
+        // If there are no explicit rangeTypes, emit a default string attribute (except for dct:type which is handled above)
+        if (!Array.isArray(restriction.rangeTypes) || restriction.rangeTypes.length === 0) {
+          const attrName = this.deriveAttributeName(restriction);
+          if (!attributes.has(attrName)) {
+            attributes.set(attrName, {
+              name: attrName,
+              type: 'string',
+              sqlType: 'TEXT',
+              comment: restriction.propertyIri,
+              isForeignKey: false,
+              propertyIri: restriction.propertyIri,
+              minCardinality: restriction.minCardinality,
+              maxCardinality: restriction.maxCardinality
+            });
+          }
+          return;
+        }
+
+        // Special handling for geometry properties - treat as TEXT datatype
+        try {
+          const geomSpec = this._isOverriddenProperty(restriction, 'geometry');
+          if (geomSpec) {
+            const attrName = this.deriveAttributeName(restriction);
+            if (!attributes.has(attrName)) {
+              const t = (typeof geomSpec === 'object' && geomSpec.type) ? geomSpec.type : 'string';
+              const sql = (typeof geomSpec === 'object' && geomSpec.sqlType) ? geomSpec.sqlType : 'TEXT';
+              const comment = (typeof geomSpec === 'object' && geomSpec.comment) ? geomSpec.comment : 'WKT (Well-Known Text) geometry representation';
+              attributes.set(attrName, {
+                name: attrName,
+                type: t,
+                sqlType: sql,
+                comment: comment,
+                isForeignKey: false,
+                propertyIri: restriction.propertyIri
+              });
+            }
+            return; // Skip further processing for geometry
+          }
+        } catch (e) { /* ignore */ }
+
+        const isDatatype = Config.isDatatypeRange(restriction.rangeTypes);
+
+        if (restriction.rangeTypes.length > 0 && !isDatatype) {
+          const resolvedRangeTypes = this.ontology.resolveRangeTypes(restriction.rangeTypes, restriction);
+          const enumTypes = resolvedRangeTypes.filter(type => enumClasses.has(type));
+          const nonEnumTypes = resolvedRangeTypes
+            .filter(type => !enumClasses.has(type))
+            .filter(type => this.ontology.isRelevantClassName(type))
+            .filter(type => {
+              if (skipTechnicalFilters) return true;
+              const info = this.ontology.classes.get(type);
+              return !this.isTechnicalClass(type, info);
+            });
+
+          // Add enum attribute if there are enum types (already handled for dct:type above)
+          if (enumTypes.length > 0 && restriction.propertyIri !== `${Config.NAMESPACES.dct}type`) {
+            if (nonEnumTypes.length === 0) {
+              const attrName = this.ontology.deriveAttributeName(restriction);
+              if (!attributes.has(attrName)) {
+                // Format enum values to UPPER_SNAKE_CASE
+                const formattedEnumValues = enumTypes
+                  .map(type => Config.formatEnumValue(type))
+                  .join(', ');
+                attributes.set(attrName, {
+                  name: attrName,
+                  type: 'enum',
+                  sqlType: 'TEXT',
+                  comment: formattedEnumValues,
+                  isForeignKey: false,
+                  propertyIri: restriction.propertyIri
+                });
+              }
+            }
+          }
+
+          if (nonEnumTypes.length === 0) return;
+
+          const isUnionLike = restriction.restrictionType === 'union' || restriction.restrictionType === 'list';
+
+          if (!isUnionLike || nonEnumTypes.length === 1) {
+            // Single target type OR union with single non-enum: use simple FK column name
+            const fkName = this.deriveFkName(restriction);
+            if (!attributes.has(fkName)) {
+              const displayTypes = nonEnumTypes.map(type => this.getBusinessClassName(type));
+              attributes.set(fkName, {
+                name: fkName,
+                type: 'string',
+                sqlType: 'TEXT',
+                comment: displayTypes.join(', '),
+                isForeignKey: true,
+                propertyIri: restriction.propertyIri,
+                targetClasses: nonEnumTypes,
+                minCardinality: restriction.minCardinality,
+                maxCardinality: restriction.maxCardinality
+              });
+            }
+          } else {
+            // Union/list with multiple non-enum types: separate FK column per type
+            nonEnumTypes.forEach(targetType => {
+              const fkName = `${this.deriveFkName(restriction)}_${Config.camelCaseToSnakeCase(this.getBusinessClassName(targetType))}`;
+              if (!attributes.has(fkName)) {
+                attributes.set(fkName, {
+                  name: fkName,
+                  type: 'string',
+                  sqlType: 'TEXT',
+                  comment: this.getBusinessClassName(targetType),
+                  isForeignKey: true,
+                  propertyIri: restriction.propertyIri,
+                  targetClasses: [targetType],
+                  minCardinality: restriction.minCardinality,
+                  maxCardinality: restriction.maxCardinality
+                });
+              }
+            });
+          }
+        } else if (isDatatype) {
+          // Datatype property
+          const attrName = this.ontology.deriveAttributeName(restriction);
+          if (attributes.has(attrName)) return;
+
+          const mermaidType = Config.inferMermaidDataType(restriction.rangeTypes, attrName);
+          const sqlType = Config.inferSqlDataType(restriction.rangeTypes, attrName);
+
+          attributes.set(attrName, {
+            name: attrName,
+            type: mermaidType,
+            sqlType: sqlType,
+            comment: restriction.rangeTypes.join(', '),
+            isForeignKey: false,
+            propertyIri: restriction.propertyIri,
+            minCardinality: restriction.minCardinality,
+            maxCardinality: restriction.maxCardinality
+          });
+        }
+      } catch (e) { /* ignore per-restriction errors */ }
+    });
+  }
+
+  /**
+ * Infer business-concept attributes for classes that lack explicit classInfo.
+ * Populates the provided `attributes` Map with Attribute objects where appropriate.
+ * @param {Map<string,Attribute>} attributes - map to populate
+ * @param {ClassInfo|null} classInfo
+ * @param {string} className
+ * @returns {void}
+ */
+  _inferBusinessConceptAttributes(attributes, classInfo, className) {
+    try {
+      const store = this.ontology && this.ontology.store;
+      if (!store || typeof store.getQuads !== 'function') return;
+
+      // Resolve a candidate class IRI: prefer classInfo.iri, otherwise try
+      // to find a skos:Concept or any subject whose local name matches
+      // the provided className.
+      let classIri = classInfo && classInfo.iri ? classInfo.iri : null;
+      if (!classIri && className) {
+        const allQuads = store.getQuads(null, null, null) || [];
+        for (const q of allQuads) {
+          try {
+            if (!q.subject || !q.subject.value) continue;
+            const subj = String(q.subject.value);
+            const local = subj.split(/[\\/#!]/).pop();
+            if (local && local.toLowerCase() === String(className).toLowerCase()) { classIri = subj; break; }
+          } catch (e) { /* ignore */ }
+        }
+      }
+      if (!classIri) return;
+
+      const domainPred = `${Config.NAMESPACES.rdfs}domain`;
+      const eqPropPred = `${Config.NAMESPACES.owl}equivalentProperty`;
+
+      const quads = store.getQuads(null, null, null) || [];
+      const domainProps = new Set();
+      const targetClassIris = new Set([classIri]);
+      // include classes equivalent to this business concept (e.g. locn:Address)
+      quads.forEach(q => {
+        try {
+          if (q.predicate && q.predicate.value === `${Config.NAMESPACES.owl}equivalentClass`) {
+            if (q.subject && q.subject.value === classIri && q.object && q.object.value) targetClassIris.add(q.object.value);
+            else if (q.object && q.object.value === classIri && q.subject && q.subject.value) targetClassIris.add(q.subject.value);
+          }
+        } catch (e) { /* ignore per-quad errors */ }
+      });
+      quads.forEach(q => {
+        try {
+          if (q.predicate && q.predicate.value === domainPred && q.object && q.object.value && targetClassIris.has(q.object.value)) {
+            if (q.subject && q.subject.value) domainProps.add(q.subject.value);
+          }
+        } catch (e) { /* ignore per-quad errors */ }
+      });
+      if (domainProps.size === 0) return;
+
+      const businessProps = new Set();
+      // find business properties that are equivalentProperty -> domainProp
+      quads.forEach(q => {
+        try {
+          if (q.predicate && q.predicate.value === eqPropPred && q.object && domainProps.has(q.object.value)) {
+            if (q.subject && q.subject.value) businessProps.add(q.subject.value);
+          }
+        } catch (e) { /* ignore */ }
+      });
+
+      // Keep only business-mapped properties:
+      // - properties that are subjects of `owl:equivalentProperty` pointing to the domain prop
+      // - OR domain properties that themselves have an associated business concept
+      const filteredBusinessProps = new Set();
+      businessProps.forEach(p => { try { filteredBusinessProps.add(p); } catch (e) { /* ignore */ } });
+      domainProps.forEach(dp => {
+        try {
+          const bn = (this.ontology && typeof this.ontology.getBusinessNameForProperty === 'function') ? this.ontology.getBusinessNameForProperty(dp, className) : null;
+          if (bn) filteredBusinessProps.add(dp);
+        } catch (e) { /* ignore */ }
+      });
+
+      if (filteredBusinessProps.size === 0) return;
+      filteredBusinessProps.forEach(propIri => {
+        try {
+          const propLocal = this.ontology.extractLocalName ? this.ontology.extractLocalName(propIri) : null;
+          const bn = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(propIri, className) : null;
+          const base = bn || propLocal || String(propIri).split(/[\/#!]/).pop();
+          const attrName = Config.camelCaseToSnakeCase ? Config.camelCaseToSnakeCase(base) : String(base);
+          if (!attributes.has(attrName)) {
+            attributes.set(attrName, {
+              name: attrName,
+              type: 'string',
+              sqlType: 'TEXT',
+              comment: propIri,
+              isForeignKey: false,
+              propertyIri: propIri
+            });
+          }
+        } catch (e) { /* ignore per-property errors */ }
+      });
+    } catch (e) { /* ignore overall inference errors */ }
+  }
+
+  /**
    * Get superclass names for a class
    */
   getSuperClassNames(classInfo) {
-    // Deprecated: delegate to ontology model
     return this.ontology.getSuperClassNames(classInfo);
   }
 
@@ -937,19 +1039,10 @@ export class BaseGenerator {
   generateIdentifierAttributesForClass(parentClass) {
     return [
       {
-        name: 'geldig_van',
-        type: 'date',
-        sqlType: 'DATE',
-        comment: 'Begindatum geldigheid',
-        isPrimaryKey: true,
-        propertyIri: 'http://purl.org/dc/terms/issued'
-      },
-      {
-        name: 'schema',
+        name: 'in_scheme',
         type: 'string',
         sqlType: 'TEXT',
-        comment: 'Identificatieschema',
-        isPrimaryKey: true,
+        comment: 'inScheme',
         propertyIri: 'http://www.w3.org/2004/02/skos/core#inScheme'
       },
       {

@@ -11,7 +11,6 @@ erDiagram
         date geldig_tot "dct:valid"
         string locatie_id "sosa:isHostedBy [FK]"
         string benaming "rdfs:label"
-        string geometrie "ogc:hasGeometry"
     }
     ApparaatLocatieExploitatieLocatie["apparaat_locatie_exploitatie_locatie"] {
         string apparaat_uri "Apparaat [PK,FK]"
@@ -27,6 +26,7 @@ erDiagram
         string email "http://xmlns.com/foaf/0.1/mbox"
         string telefoonnummer "http://xmlns.com/foaf/0.1/phone"
         string has_role "http://www.w3.org/ns/org#hasRole"
+        string adres_id "http://www.w3.org/ns/locn#address [FK]"
         string name "http://xmlns.com/foaf/0.1/name"
     }
     ContactpersoonExploitantExploitant["contactpersoon_exploitant_exploitant"] {
@@ -41,7 +41,6 @@ erDiagram
         string benaming "rdfs:label"
         string type "dct:type"
         string locatie_id "sosa:isHostedBy [FK]"
-        string geometrie "ogc:hasGeometry"
     }
     EmissiepuntLocatieExploitatieLocatie["emissiepunt_locatie_exploitatie_locatie"] {
         string emissiepunt_uri "Emissiepunt [PK,FK]"
@@ -54,6 +53,7 @@ erDiagram
         date geldig_tot "dct:valid"
         string type_id "dct:type [FK]"
         string benaming "rdfs:label"
+        string adres_id "http://www.w3.org/ns/locn#address [FK]"
     }
     ExploitantTypeContactpersoon["exploitant_type_contactpersoon"] {
         string exploitant_uri "Exploitant [PK,FK]"
@@ -80,13 +80,13 @@ erDiagram
         string toegewezen_aan_id "prov:wasAttributedTo [FK]"
         string beinvloed_door "prov:wasInfluencedBy"
         string afgeleid_van_id "prov:wasDerivedFrom [FK]"
-        string geometrie "ogc:hasGeometry"
+        string adres_id "http://www.w3.org/ns/locn#address [FK]"
     }
     ExploitatieLocatieIdentifier["exploitatie_locatie_identifier"] {
-        date geldig_van "dct:issued [PK]"
+        string uri "URI [PK]"
         date geldig_tot "dct:valid"
         string exploitatie_locatie_uid "adms:identifier [PK,FK]"
-        string schema "skos:inScheme [PK]"
+        string in_scheme "skos:inScheme"
         string notation "skos:notation [PK]"
         string value "rdf:value"
     }
@@ -123,16 +123,17 @@ erDiagram
         string exploitatie_locatie_uri "ExploitatieLocatie [PK,FK]"
     }
     InstallatieIdentifier["installatie_identifier"] {
-        date geldig_van "dct:issued [PK]"
+        string uri "URI [PK]"
         date geldig_tot "dct:valid"
         string installatie_uid "adms:identifier [PK,FK]"
-        string schema "skos:inScheme [PK]"
+        string in_scheme "skos:inScheme"
         string notation "skos:notation [PK]"
         string value "rdf:value"
     }
     Lozingspunt["lozingspunt"] {
         string uri "URI [PK]"
         string emissiepunt_id "Emissiepunt [FK]"
+        double diepte "dbo:depth"
     }
     Meetpunt["meetpunt"] {
         string uri "URI [PK]"
@@ -141,17 +142,16 @@ erDiagram
         date geldig_tot "dct:valid"
         string benaming "rdfs:label"
         string type "dct:type"
-        string geometrie "ogc:hasGeometry"
     }
     MeetpuntIdentifiersMeetpuntIdentifier["meetpunt_identifiers_meetpunt_identifier"] {
         string meetpunt_uri "Meetpunt [PK,FK]"
         string meetpunt_identifier_uri "MeetpuntIdentifier [PK,FK]"
     }
     MeetpuntIdentifier["meetpunt_identifier"] {
-        date geldig_van "dct:issued [PK]"
+        string uri "URI [PK]"
         date geldig_tot "dct:valid"
         string meetpunt_uid "adms:identifier [PK,FK]"
-        string schema "skos:inScheme [PK]"
+        string in_scheme "skos:inScheme"
         string notation "skos:notation [PK]"
         string value "rdf:value"
     }
@@ -171,7 +171,6 @@ erDiagram
         string benaming "rdfs:label"
         string type "dct:type"
         string locatie_id "sosa:isHostedBy [FK]"
-        string geometrie "ogc:hasGeometry"
     }
     OnttrekkingspuntLocatieExploitatieLocatie["onttrekkingspunt_locatie_exploitatie_locatie"] {
         string onttrekkingspunt_uri "Onttrekkingspunt [PK,FK]"
@@ -213,10 +212,10 @@ erDiagram
         enum relationship_type "INPUT_VAR, OUTPUT_VAR [PK]"
     }
     ProcesIdentifier["proces_identifier"] {
-        date geldig_van "dct:issued [PK]"
+        string uri "URI [PK]"
         date geldig_tot "dct:valid"
         string proces_uid "adms:identifier [PK,FK]"
-        string schema "skos:inScheme [PK]"
+        string in_scheme "skos:inScheme"
         string notation "skos:notation [PK]"
         string value "rdf:value"
     }
@@ -227,8 +226,8 @@ erDiagram
         date geldig_tot "dct:valid"
         string benaming "rdfs:label"
         string type "dct:type"
-        string eenheid "qudt:hasUnit"
-        string waarde "qudt:hasNumericValue"
+        number eenheid "qudt:hasUnit"
+        number waarde "qudt:hasNumericValue"
     }
     Schouw["schouw"] {
         string uri "URI [PK]"

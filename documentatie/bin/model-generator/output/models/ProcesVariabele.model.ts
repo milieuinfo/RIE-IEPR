@@ -13,11 +13,11 @@ export class ProcesVariabele {
   @jsonMember(String, { name: 'type' })
   type?: string;
 
-  @jsonMember(String, { name: 'hasUnit' })
-  eenheid?: string;
+  @jsonMember(Number, { name: 'hasUnit' })
+  eenheid?: number;
 
-  @jsonMember(String, { name: 'hasNumericValue' })
-  waarde?: string;
+  @jsonMember(Number, { name: 'hasNumericValue' })
+  waarde?: number;
 
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;

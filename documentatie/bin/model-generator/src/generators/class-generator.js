@@ -58,8 +58,8 @@ export class ClassGenerator extends BaseGenerator {
     const superAttrs = this.utils.deriveAttributes(superInfo, this.enumClasses, superName) || [];
     superAttrs.forEach(attr => {
       let t = 'string';
-      if (attr.type === 'date' || attr.type === 'datetime') t = 'Date';
-      else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') t = 'number';
+        if (attr.type === 'date' || attr.type === 'datetime') t = 'Date';
+        else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') t = 'number';
       else if (attr.type === 'boolean') t = 'boolean';
       else if (attr.type === 'enum') {
         // Resolve enum class name (prefer explicit enum class, fallback to business name)
@@ -219,7 +219,7 @@ export class ClassGenerator extends BaseGenerator {
         type = enumName || 'enum';
       }
       else if (attr.type === 'date' || attr.type === 'datetime') type = 'Date';
-      else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') type = attr.type;
+      else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') type = attr.type;
       else if (attr.type === 'boolean') type = 'boolean';
       else type = 'string';
     }
@@ -321,18 +321,6 @@ export class ClassGenerator extends BaseGenerator {
       });
     } catch (e) { /* ignore */ }
     return Array.from(members);
-  }
-
-  tsTypeForAttribute(attr) {
-    // TypeScript typing moved to TypeScriptHelper
-    // For shared interfaces prefer conservative single-valued properties
-    // so implementing classes' own cardinality can take precedence.
-    const isArray = false;
-    if (attr.type === 'enum') return attr.enumName || 'string';
-    if (attr.type === 'date' || attr.type === 'datetime') return 'Date';
-    if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') return 'number';
-    if (attr.type === 'boolean') return 'boolean';
-    return 'string';
   }
 
   findSharedInterfaceForTargets(targets, classToSupers, sharedInterfaceNames) {

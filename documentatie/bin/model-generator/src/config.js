@@ -46,7 +46,8 @@ export const ENUMERABLE_CLASSES = new Set([
  * Classes that should always include temporal validity attributes
  */
 export const TEMPORAL_CLASSES = new Set([
-  'ProcesVariabele'
+  'ProcesVariabele',
+  'Adres'
 ]);
 
 /**
@@ -115,57 +116,30 @@ export function getTechnicalNamespacePrefixes() {
 }
 
 /**
- * Check if a property is a geometry property (should be treated as text/spatial type)
+ * Override property groups to customize generator behavior without
+ * changing code. Keys are optional and can include:
+ *  - `qudt`: Map or Set of QUDT property IRIs. When a Map is provided
+ *            entries can map to a spec object `{ type, sqlType, comment }`.
+ *  - `geometry`: Map or Set of property local names or IRIs treated as geometry.
+ *
+ * Examples below use Maps to demonstrate how to provide per-property specs.
  */
-export function isGeometryProperty(propertyName) {
-  const name = String(propertyName).toLowerCase();
-  return name.includes('geometry') || name.includes('geom');
-}
-
-/**
- * Check if a property is likely an inverse property based on naming patterns
- * Inverse properties typically follow patterns like:
- * - hasX -> isXOf (hasInputVar -> isInputVarOf)
- * - hasX -> isXOfPlan (hasInputVar -> isVariableOfPlan)
- * - hasX -> isXBy (hasAgent -> isAgentBy)
- * - hasPart -> isPartOf (mereological relationships)
- */
-function isLikelyInverseProperty(propertyName) {
-  const name = String(propertyName);
-  // Exceptions: these properties look like inverses by naming
-  // convention but should be treated as normal forward properties
-  // in the ER/schema (e.g. pplan:isStepOfPlan links a Step to its
-  // parent Plan and should be shown as a relationship).
-  const INVERSE_PROPERTY_EXCEPTIONS = new Set([
-    'isStepOfPlan',
-    'isPrecededBy',
-    'isHostedBy'
-  ]);
-
-  if (INVERSE_PROPERTY_EXCEPTIONS.has(name)) return false;
-  
-  // Check for "is*Of" pattern (inverse of "has*")
-  if (name.match(/^is.+Of$/i)) {
-    return true;
-  }
-  
-  // Check for "is*OfPlan" or "is*OfStep" pattern (inverse relationships for plans/steps)
-  if (name.match(/^is.+(OfPlan|OfStep)$/i)) {
-    return true;
-  }
-  
-  // Check for "is*By" pattern (inverse of "has*")
-  if (name.match(/^is.+By$/i)) {
-    return true;
-  }
-  
-  // Check for other common inverse patterns
-  if (name.match(/^.+ForObject$/i) || name.match(/^.+ForSubject$/i)) {
-    return true;
-  }
-  
-  return false;
-}
+export const OVERRIDE_PROPERTIES = {
+  qudt: new Map([
+    [
+      `${NAMESPACES.qudt}hasUnit`,
+      { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasUnit` }
+    ],
+    [
+      `${NAMESPACES.qudt}hasNumericValue`,
+      { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasNumericValue` }
+    ]
+  ]),
+  geometry: new Map([
+    ['geometry', { type: 'string', sqlType: 'TEXT', comment: 'WKT (Well-Known Text) geometry representation' }],
+    ['geom', { type: 'string', sqlType: 'TEXT', comment: 'WKT (Well-Known Text) geometry representation' }]
+  ])
+};
 
 /**
  * Check if a class should always include temporal attributes
