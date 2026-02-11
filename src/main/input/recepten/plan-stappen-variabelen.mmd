@@ -1,4 +1,4 @@
-flowchart LR
+flowchart RL
 
 
 
@@ -6,14 +6,18 @@ flowchart LR
     style nigella-brownies color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
     hakken["Stap: Hak de noten"]
     style hakken color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
+    smelten["Stap: Smelt boter en chocolade"]
+    style smelten color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
     walnoten(["Variabele: Walnoten"])
     style walnoten color:white,fill:#FF9500,stroke:#CC7700,color:#fff
     gehaktewalnoten(["Variabele: Gehakte Walnoten"])
     style gehaktewalnoten color:white,fill:#FF9500,stroke:#CC7700,color:#fff
 
+    hakken -.->|isPrecededBy| smelten
     hakken -.->|isStepOfPlan| nigella-brownies
+    smelten -.->|isStepOfPlan| nigella-brownies
     walnoten -.->|isInputVarOf| hakken
-    hakken -.->|hasOutputVar| gehaktewalnoten
+    gehaktewalnoten -.->|isOutputVarOf| hakken
 
 
 
