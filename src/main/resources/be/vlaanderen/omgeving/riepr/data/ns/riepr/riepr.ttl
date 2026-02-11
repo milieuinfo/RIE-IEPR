@@ -7,6 +7,7 @@
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
+@prefix hydra:  <http://www.w3.org/ns/hydra/core#> .
 @prefix dbo:    <http://dbpedia.org/ontology/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 @prefix org:    <http://www.w3.org/ns/org#> .
@@ -50,6 +51,7 @@
 :Proces a owl:Class ;
     rdfs:label "Proces"@nl ;
     rdfs:comment "Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen."@nl ;
+    hydra:search :ProcesTemplate ;
     skos:example [ a :Proces ;
         rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
         dct:created "2024-01-15T10:00:00"^^xsd:dateTime ;
@@ -156,6 +158,7 @@
             rdfs:label "Stof"@nl
         ] ;
     ] ;
+    hydra:search :ProcesVariabeleTemplate ;
     rdfs:subClassOf pplan:Variable ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een proces variabele moet een benaming hebben
@@ -191,6 +194,7 @@
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
+    hydra:search :InstallatieTemplate ;
     rdfs:subClassOf ogc:SpatialObjectCollection, ssn:System, prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een installatie heeft externe identificaties (optioneel)
@@ -309,6 +313,7 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
+    hydra:search :EmissiepuntTemplate ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een emissiepunt moet gekoppeld zijn aan een exploitatie locatie
         owl:onProperty sosa:isHostedBy ; 
@@ -330,6 +335,7 @@
     skos:example [ a :Onttrekkingspunt ;
         rdfs:label "Onttrekking 1"@nl
     ] ;
+    hydra:search :OnttrekkingspuntTemplate ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een Onttrekkingspunt moet een benaming hebben
         owl:onProperty rdfs:label ;
@@ -396,6 +402,7 @@
             rdfs:label "Cementfabriek Antwerpen"@nl
         ]
     ] ;
+    hydra:search :AbstractEmissiepuntTemplate ;
     rdfs:subClassOf :Emissiepunt .
     
 :Schouw a owl:Class ;
@@ -412,6 +419,7 @@
             ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral
         ]
     ] ;
+    hydra:search :SchouwTemplate ;
     rdfs:subClassOf :Emissiepunt ;
     # Een schouw heeft een diameter en hoogte
     rdfs:subClassOf [ a owl:Restriction ; 
@@ -428,6 +436,7 @@
 :Grondwaterput a owl:Class ;
     rdfs:label "Grondwaterput"@nl ;
     rdfs:comment "Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering."@nl ;
+    hydra:search :GrondwaterputTemplate ;
     rdfs:subClassOf :Onttrekkingspunt ;
     skos:example [ a :Grondwaterput ;
         rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
@@ -450,6 +459,7 @@
     rdfs:label "Lozingspunt"@nl ;
     rdfs:comment "Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd."@nl ;
     rdfs:subClassOf :Emissiepunt ;
+    hydra:search :LozingspuntTemplate ;
     skos:example [ a :Lozingspunt ;
         rdfs:label "Lozingspunt 1 Cementfabriek Antwerpen"@nl ;
         sosa:isHostedBy [ a :Installatie ;
@@ -470,6 +480,7 @@
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
+    hydra:search :MeetpuntTemplate ;
     skos:example [ a :Meetpunt ;
         rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
         dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
@@ -549,6 +560,7 @@
             rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
         ]
     ] ;
+    hydra:search :ApparaatTemplate ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System, prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een apparaat moet een creatie datum hebben
@@ -594,6 +606,7 @@
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
     rdfs:subClassOf sosa:Observation ;
+    hydra:search :ObservatieTemplate ;
     # Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie
     rdfs:subClassOf [ a owl:Restriction ; 
         owl:onProperty sosa:hasFeatureOfInterest ; 
@@ -605,6 +618,7 @@
 :Exploitant a owl:Class ;
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
+    hydra:search :ExploitantTemplate ;
     rdfs:subClassOf prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant kan een creatie datum hebben
@@ -651,6 +665,7 @@
     rdfs:label "Exploitant Contactpersoon"@nl ;
     rdfs:comment "Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
     rdfs:subClassOf foaf:Person ;
+    hydra:search :ContactpersoonTemplate ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitant contactpersoon moet gekoppeld zijn aan exact één exploitant
         owl:onProperty org:memberOf ;
@@ -715,6 +730,7 @@
 :ExploitatieLocatie a owl:Class ;
     rdfs:label "Exploitatie Locatie"@nl ;
     rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl ;
+    hydra:search :ExploitatieLocatieTemplate ;
     rdfs:subClassOf ogc:Feature, prov:Entity, sosa:Platform ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet een datum hebben waarop het is ingegeven
@@ -956,3 +972,72 @@
     owl:onProperty ssn:implementedBy ;
     owl:someValuesFrom :Meetpunt
 ] .
+
+# ----------------------------------------------- #
+# IRI Templates
+# ----------------------------------------------- #
+:GrondwaterputTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/grondwaterput/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ExploitantTemplate a hydra:IriTemplate ;
+    # Exploitant URIs use an identifying number (KBO or rijksregisternummer).
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitant/{scheme}/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "scheme" ; hydra:property dct:type ; hydra:required true ] ,
+                  [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ExploitatieLocatieTemplate a hydra:IriTemplate ;
+    # ExploitatieLocatie URIs can be based on a geographic reference (OSM node id or other geo-identifier).
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/{source}/{geoId}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "source" ; hydra:property dct:source ; hydra:required true ] ,
+                  [ hydra:variable "geoId" ; hydra:property owl:sameAs ; hydra:required true ] .
+
+:ProcesTemplate a hydra:IriTemplate ;
+    # Proces URIs are constructed from the hosting exploitatielocatie plus a local process identifier.
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/proces/{exploitatielocatie}/{localId}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "exploitatielocatie" ; hydra:property adms:identifier ; hydra:required true ] ,
+                  [ hydra:variable "localId" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ProcesVariabeleTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:InstallatieTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/installatie/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:EmissiepuntTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:OnttrekkingspuntTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:AbstractEmissiepuntTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/abstractemissiepunt/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:SchouwTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/schouw/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:LozingspuntTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/lozingspunt/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:MeetpuntTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ApparaatTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/apparaat/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ObservatieTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/observatie/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .
+
+:ContactpersoonTemplate a hydra:IriTemplate ;
+    hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/{id}"^^hydra:Rfc6570Template ;
+    hydra:mapping [ hydra:variable "id" ; hydra:property adms:identifier ; hydra:required true ] .

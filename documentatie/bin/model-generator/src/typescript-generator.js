@@ -14,22 +14,20 @@ export class TypeScriptGenerator extends ClassGenerator {
 
   collectInterfaceClasses() {
     const mappings = [];
-    try {
-      // Prefer explicit ENUMERABLE_CLASSES for enum synthesis; fall back to
-      // INTERFACE_CLASSES for backward compatibility.
-      const enumCandidates = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set)
-        ? Array.from(Config.ENUMERABLE_CLASSES)
-        : (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) ? Array.from(Config.INTERFACE_CLASSES) : [];
-      enumCandidates.forEach(localName => {
-        const matched = Array.from(this.enumClasses || []).filter(ec => {
-          try {
-            const info = this.ontology.classes.get(ec);
-            return info && info.iri && this.ontology.isSubClassOf(info.iri, localName);
-          } catch (e) { return false; }
-        });
-        if (matched.length > 0) mappings.push({ localName, enumClasses: matched, tsName: (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName });
+    // Prefer explicit ENUMERABLE_CLASSES for enum synthesis; fall back to
+    // INTERFACE_CLASSES for backward compatibility.
+    const enumCandidates = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set)
+      ? Array.from(Config.ENUMERABLE_CLASSES)
+      : (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) ? Array.from(Config.INTERFACE_CLASSES) : [];
+    enumCandidates.forEach(localName => {
+      const matched = Array.from(this.enumClasses || []).filter(ec => {
+        const info = this.ontology.classes.get(ec);
+        if (!info || !info.iri) return false;
+        if (typeof this.ontology.isSubClassOf === 'function') return this.ontology.isSubClassOf(info.iri, localName);
+        return false;
       });
-    } catch (e) { /* ignore */ }
+      if (matched.length > 0) mappings.push({ localName, enumClasses: matched, tsName: (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName });
+    });
     return mappings;
   }
 
@@ -91,7 +89,7 @@ export class TypeScriptGenerator extends ClassGenerator {
     const existing = fs.readdirSync(outputPath).filter(f => f.endsWith('.ts'));
     existing.forEach(f => {
       if (!f.endsWith('.model.ts') && !f.endsWith('.enum.ts') && !f.endsWith('.interface.ts') && f !== 'index.ts' && f !== 'tsconfig.json' && f !== 'package.json') {
-        try { fs.unlinkSync(path.join(outputPath, f)); } catch (e) { /* ignore */ }
+        fs.unlinkSync(path.join(outputPath, f));
       }
     });
   }
@@ -214,10 +212,8 @@ export class TypeScriptGenerator extends ClassGenerator {
       // If an enum file exists for this name, avoid importing a model class
       // with the same identifier to prevent name collisions (enums are
       // imported separately by the preamble).
-      try {
-        const enumFile = path.join(this.outputPath, `${mn}.enum.ts`);
-        if (fs.existsSync(enumFile)) return;
-      } catch (e) { /* ignore */ }
+      const enumFile = path.join(this.outputPath, `${mn}.enum.ts`);
+      if (fs.existsSync(enumFile)) return;
       importLines += `import { ${this.pascalCase(mn)} } from './${mn}.model';\n`;
     });
     return importLines;
@@ -319,11 +315,9 @@ export class TypeScriptGenerator extends ClassGenerator {
 
   _computeSharedStructures(classNames) {
     const forced = [];
-    try {
-      if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
-        Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
-      }
-    } catch (e) { /* ignore */ }
+    if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+      Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
+    }
     const { classToSupers, sharedSupers, sharedInterfaceNames } = this.computeSharedSupers(classNames, forced);
     const usedSharedInterfaces = this.computeUsedSharedInterfaces(classNames, classToSupers, sharedInterfaceNames);
     const relPropertyMap = new Map();
@@ -350,10 +344,8 @@ export class TypeScriptGenerator extends ClassGenerator {
       let sourceLocalName = className;
       if (!classInfo) {
         for (const [ln, info] of this.ontology.classes) {
-          try {
-            const bn = this.getBusinessNameForClass(info.iri);
-            if (bn === className) { classInfo = info; sourceLocalName = ln; break; }
-          } catch (e) { /* ignore */ }
+          const bn = this.ontology.getBusinessNameForClass(info.iri);
+          if (bn === className) { classInfo = info; sourceLocalName = ln; break; }
         }
       } else {
         sourceLocalName = className;
@@ -378,15 +370,13 @@ export class TypeScriptGenerator extends ClassGenerator {
       
       const modelImports = new Set();
       const interfaceImports = new Map();
-      try {
-        attrs.forEach(a => {
-          if (!a) return;
-          if (a.type && /^I[A-Z]/.test(a.type)) {
-            const iface = a.type; const local = iface.slice(1); const ifaceFile = path.join(this.outputPath, `${local}.interface.ts`);
-            if (fs.existsSync(ifaceFile)) interfaceImports.set(local, iface);
-          }
-        });
-      } catch (e) { /* ignore */ }
+      attrs.forEach(a => {
+        if (!a) return;
+        if (a.type && /^I[A-Z]/.test(a.type)) {
+          const iface = a.type; const local = iface.slice(1); const ifaceFile = path.join(this.outputPath, `${local}.interface.ts`);
+          if (fs.existsSync(ifaceFile)) interfaceImports.set(local, iface);
+        }
+      });
 
       if (implementsIface) {
         const superEntry = [...sharedInterfaceNames.entries()].find(([, val]) => val === implementsIface);
@@ -460,14 +450,12 @@ export class TypeScriptGenerator extends ClassGenerator {
                 if (isArraySuper) st = `${st}[]`;
                 baseType = st;
               } else {
-                try {
-                  const ifaceFile = path.join(this.outputPath, `${superName}.interface.ts`);
-                  if (fs.existsSync(ifaceFile)) {
-                    const ifaceContent = fs.readFileSync(ifaceFile, 'utf8'); const re = new RegExp(`\\b${officialName}\\b\\s*\\??\\s*:\\s*([^;\\n]+);`);
-                    const m = ifaceContent.match(re);
-                    if (m) { const typeDecl = m[1] || ''; if (typeDecl.includes('[]')) { const elem = typeDecl.replace(/\\[\\]/g, '').trim(); baseType = elem + '[]'; } else { baseType = typeDecl.trim(); } }
-                  }
-                } catch (e) { }
+                const ifaceFile = path.join(this.outputPath, `${superName}.interface.ts`);
+                if (fs.existsSync(ifaceFile)) {
+                  const ifaceContent = fs.readFileSync(ifaceFile, 'utf8'); const re = new RegExp(`\\b${officialName}\\b\\s*\\??\\s*:\\s*([^;\\n]+);`);
+                  const m = ifaceContent.match(re);
+                  if (m) { const typeDecl = m[1] || ''; if (typeDecl.includes('[]')) { const elem = typeDecl.replace(/\\[\\]/g, '').trim(); baseType = elem + '[]'; } else { baseType = typeDecl.trim(); } }
+                }
               }
             }
           }
@@ -484,17 +472,17 @@ export class TypeScriptGenerator extends ClassGenerator {
 
         if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length >= 1) {
           const targets = attr.targetClasses.filter(t => classNames.includes(t));
-          try {
-            const localPropName = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
-            const relMapped = relPropertyMap.get(`${className}|${localPropName}`) || relPropertyMap.get(`${className}|${attr.name}`);
-            if (relMapped) {
-              if (/^I[A-Z]/.test(relMapped)) { baseType = relMapped + (isArray ? '[]' : ''); const ifaceLocal = String(relMapped).replace(/^I/, ''); interfaceImports.set(ifaceLocal, relMapped); targets.length = 0; }
-              else { const sharedIfaceForRel = this.findSharedInterfaceForTargets([relMapped], classToSupers, sharedInterfaceNames); if (sharedIfaceForRel) { baseType = sharedIfaceForRel + (isArray ? '[]' : ''); const ifaceLocal = String(sharedIfaceForRel).replace(/^I/, ''); interfaceImports.set(ifaceLocal, sharedIfaceForRel); targets.length = 0; } else { baseType = pascal(relMapped) + (isArray ? '[]' : ''); modelImports.add(relMapped); targets.length = 0; } }
-            }
-          } catch (e) { }
+          const localPropName = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
+          const relMapped = relPropertyMap.get(`${className}|${localPropName}`) || relPropertyMap.get(`${className}|${attr.name}`);
+          if (relMapped) {
+            if (/^I[A-Z]/.test(relMapped)) { baseType = relMapped + (isArray ? '[]' : ''); const ifaceLocal = String(relMapped).replace(/^I/, ''); interfaceImports.set(ifaceLocal, relMapped); targets.length = 0; }
+            else { const sharedIfaceForRel = this.findSharedInterfaceForTargets([relMapped], classToSupers, sharedInterfaceNames); if (sharedIfaceForRel) { baseType = sharedIfaceForRel + (isArray ? '[]' : ''); const ifaceLocal = String(sharedIfaceForRel).replace(/^I/, ''); interfaceImports.set(ifaceLocal, sharedIfaceForRel); targets.length = 0; } else { baseType = pascal(relMapped) + (isArray ? '[]' : ''); modelImports.add(relMapped); targets.length = 0; } }
+          }
 
           if ((!targets || targets.length === 0) && attr.propertyIri) {
-            try { const localProp = this.ontology.extractLocalName(attr.propertyIri); const mapped = relPropertyMap.get(`${className}|${localProp}`) || relPropertyMap.get(`${className}|${attr.name}`); if (mapped) { if (/^I[A-Z]/.test(mapped)) targets.push(String(mapped).replace(/^I/, '')); else targets.push(mapped); } } catch (e) { }
+            const localProp = this.ontology.extractLocalName(attr.propertyIri);
+            const mapped = relPropertyMap.get(`${className}|${localProp}`) || relPropertyMap.get(`${className}|${attr.name}`);
+            if (mapped) { if (/^I[A-Z]/.test(mapped)) targets.push(String(mapped).replace(/^I/, '')); else targets.push(mapped); }
           }
           const sharedIface = this.findSharedInterfaceForTargets(targets, classToSupers, sharedInterfaceNames);
           if (sharedIface) {
@@ -503,26 +491,22 @@ export class TypeScriptGenerator extends ClassGenerator {
             else if (targets.length === 1) { const target = targets[0]; baseType = pascal(target); modelImports.add(target); } else { baseType = 'string'; }
           } else if (targets.length === 1) { const target = targets[0]; baseType = pascal(target); modelImports.add(target); } else { baseType = 'string'; }
 
-          try {
-            const explicitFromComment = (attr.comment || '').split(',').map(s => s.trim()).filter(Boolean).filter(tn => classNames.includes(tn)); if (explicitFromComment.length === 1) { const concrete = explicitFromComment[0]; baseType = pascal(concrete); modelImports.add(concrete); }
-            let agentLocal = 'Agent'; try { if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) { const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k)); if (found) agentLocal = found; } } catch (e) { }
-            const anyAgent = Array.isArray(targets) && targets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && ti.iri && this.ontology.isSubClassOf(ti.iri, agentLocal); });
-            const explicitTargets = Array.isArray(attr.targetClasses) ? attr.targetClasses.filter(t => classNames.includes(t)) : []; const hasInternalTarget = explicitTargets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && !ti.external; });
-            if (anyAgent && !hasInternalTarget) {
-              if (!baseType || baseType === 'string' || baseType === 'object') {
-                let agentIfaceName = null;
-                try {
-                  const agentEntryLocal = (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) ? Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k)) || 'Agent' : 'Agent';
-                  const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === agentEntryLocal || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, agentEntryLocal)));
-                  if (agentEntry) { agentIfaceName = agentEntry[1]; agentLocal = agentEntry[0]; }
-                } catch (e) { }
-                const attrMax = (typeof attr.maxCardinality === 'number' && attr.maxCardinality >= 0) ? attr.maxCardinality : undefined;
-                const attrIsArray = (typeof attrMax === 'number' && attrMax !== 1) || (attrMax === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
-                if (agentIfaceName) { baseType = attrIsArray ? `${agentIfaceName}[]` : agentIfaceName; interfaceImports.set(agentLocal, agentIfaceName); }
-                else { const ifaceName = `I${agentLocal}`; baseType = attrIsArray ? `${ifaceName}[]` : ifaceName; interfaceImports.set(agentLocal, ifaceName); const agentIfaceFile = path.join(this.outputPath, `${agentLocal}.interface.ts`); if (!fs.existsSync(agentIfaceFile)) { const agentContent = `// Auto-generated minimal ${agentLocal} interface\n\nexport interface ${ifaceName} {\n  uri?: string;\n}\n`; fs.writeFileSync(agentIfaceFile, agentContent, 'utf8'); } }
-              }
+          const explicitFromComment = (attr.comment || '').split(',').map(s => s.trim()).filter(Boolean).filter(tn => classNames.includes(tn)); if (explicitFromComment.length === 1) { const concrete = explicitFromComment[0]; baseType = pascal(concrete); modelImports.add(concrete); }
+          let agentLocal = 'Agent'; if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) { const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k)); if (found) agentLocal = found; }
+          const anyAgent = Array.isArray(targets) && targets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && ti.iri && this.ontology.isSubClassOf(ti.iri, agentLocal); });
+          const explicitTargets = Array.isArray(attr.targetClasses) ? attr.targetClasses.filter(t => classNames.includes(t)) : []; const hasInternalTarget = explicitTargets.some(tn => { const ti = this.ontology.classes.get(tn); return ti && !ti.external; });
+          if (anyAgent && !hasInternalTarget) {
+            if (!baseType || baseType === 'string' || baseType === 'object') {
+              let agentIfaceName = null;
+              const agentEntryLocal = (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) ? Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k)) || 'Agent' : 'Agent';
+              const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === agentEntryLocal || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, agentEntryLocal)));
+              if (agentEntry) { agentIfaceName = agentEntry[1]; agentLocal = agentEntry[0]; }
+              const attrMax = (typeof attr.maxCardinality === 'number' && attr.maxCardinality >= 0) ? attr.maxCardinality : undefined;
+              const attrIsArray = (typeof attrMax === 'number' && attrMax !== 1) || (attrMax === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
+              if (agentIfaceName) { baseType = attrIsArray ? `${agentIfaceName}[]` : agentIfaceName; interfaceImports.set(agentLocal, agentIfaceName); }
+              else { const ifaceName = `I${agentLocal}`; baseType = attrIsArray ? `${ifaceName}[]` : ifaceName; interfaceImports.set(agentLocal, ifaceName); const agentIfaceFile = path.join(this.outputPath, `${agentLocal}.interface.ts`); if (!fs.existsSync(agentIfaceFile)) { const agentContent = `// Auto-generated minimal ${agentLocal} interface\n\nexport interface ${ifaceName} {\n  uri?: string;\n}\n`; fs.writeFileSync(agentIfaceFile, agentContent, 'utf8'); } }
             }
-          } catch (e) { }
+          }
         }
 
         let memberCtor = 'String'; if (baseType === 'Date') memberCtor = 'Date'; else if (baseType === 'number') memberCtor = 'Number'; else if (baseType === 'boolean') memberCtor = 'Boolean'; else if (/^[A-Z]/.test(String(baseType)) && !/^I[A-Z]/.test(String(baseType))) { const isEnum = Array.isArray(localEnumFiles) && localEnumFiles.length > 0 && localEnumFiles.some(e => e.name === String(baseType)); if (isEnum) memberCtor = `() => ${baseType}`; else memberCtor = baseType; }
@@ -536,7 +520,60 @@ export class TypeScriptGenerator extends ClassGenerator {
       });
 
       try { const updatedPreamble = this.buildModelPreamble(localEnumFiles, interfaceImports, needsArray) + '\n'; const idx = content.indexOf('@jsonObject'); if (idx >= 0) content = updatedPreamble + content.slice(idx); } catch (e) { }
+      // If a hydra IRI template exists for this class, append a small
+      // demonstration `generateUri()` method that fills `uri` if unset.
+      try {
+        const tplForMethod = (() => {
+          try { return this.ontology.getIriTemplateForClass(classInfo && classInfo.iri ? classInfo.iri : className); } catch (e) { return null; }
+        })();
+        if (tplForMethod && tplForMethod.template) {
+          let method = '';
+          method += '\n  /**\n';
+          method += '   * Demonstration: generate a `uri` from the configured IRI template.\n';
+          method += '   * Does not override an existing `uri`. For demonstration purposes only.\n';
+          method += '   * @returns {string|undefined} the generated or existing uri\n';
+          method += '   */\n';
+          method += '  generateUri(): string | undefined {\n';
+          method += "    if (this.uri) return this.uri;\n";
+          method += `    let uri = '${String(tplForMethod.template).replace(/'/g, "\\'")}';\n`;
+          // For each mapping, attempt to extract a string value from the instance
+          (tplForMethod.mappings || []).forEach(m => {
+            const local = m.propertyIri ? this.ontology.extractLocalName(m.propertyIri) : null;
+            const varName = m.variable || 'var';
+            method += `    let ${varName} = '' as any;\n`;
+            method += `    try {\n`;
+            method += `      // try direct property first\n`;
+            method += `      let v = (this as any)['${local}'];\n`;
+            method += `      // if not found, search nested objects for likely identifier properties\n`;
+            method += `      if (!v) {\n`;
+            method += `        for (const k of Object.keys(this)) {\n`;
+            method += `          try { const o = (this as any)[k]; if (o && typeof o === 'object') { if (o['${local}']) { v = o['${local}']; break; } if (o['identifier']) { v = o['identifier']; break; } if (o['value']) { v = o['value']; break; } if (o['notation']) { v = o['notation']; break; } if (o['uri']) { v = o['uri']; break; } } } catch (e) { /* ignore */ }\n`;
+            method += `        }\n`;
+            method += `      }\n`;
+            method += `      if (Array.isArray(v)) v = v.length>0 ? v[0] : null;\n`;
+            method += `      if (v) {\n`;
+            method += `        if (typeof v === 'string') ${varName} = v;\n`;
+            method += `        else if (v.value) ${varName} = v.value;\n`;
+            method += `        else if (v.notation) ${varName} = v.notation;\n`;
+            method += `        else if (v.uri) ${varName} = v.uri;\n`;
+            method += `        else if (v.id) ${varName} = v.id;\n`;
+            method += `      }\n`;
+            method += `    } catch (e) { /* ignore */ }\n`;
+            method += `    uri = uri.replace('{${varName}}', encodeURIComponent(String(${varName} || '')));\n`;
+          });
+          method += `    this.uri = uri;\n`;
+          method += `    return this.uri;\n`;
+          method += '  }\n\n';
+          content += method;
+        }
+      } catch (e) { /* ignore template method generation errors */ }
       if (!content.trim().endsWith('}')) content += '}\n';
+        // Ensure class-level braces are balanced: append closing braces until balanced
+        try {
+          const open = (content.match(/\{/g) || []).length;
+          const close = (content.match(/\}/g) || []).length;
+          for (let i = 0; i < open - close; i++) content += '}\n';
+        } catch (e) { if (!content.trim().endsWith('}')) content += '}\n'; }
       content = this.buildModelImports(modelImports, className) + '\n' + content;
 
       if (implementsIface) {
@@ -639,7 +676,24 @@ export class TypeScriptGenerator extends ClassGenerator {
 
       try { content = this._cleanupImportsInContent(content); } catch (e) { }
       content = content.replace(/^[\s\n\r]+/, '');
-      const header = `// Auto-generated models` + '\n\n'; content = header + content;
+      // Emit IRI template comment if available via hydra:search -> hydra:IriTemplate
+      let iriComment = '';
+      try {
+        const tpl = this.ontology.getIriTemplateForClass(classInfo && classInfo.iri ? classInfo.iri : className);
+        if (tpl && tpl.template) {
+          iriComment += `// URI template: ${tpl.template}\n`;
+          if (Array.isArray(tpl.mappings) && tpl.mappings.length > 0) {
+            tpl.mappings.forEach(m => {
+              const propShort = m.propertyIri ? (this.ontology.extractLocalName(m.propertyIri) || m.propertyIri) : m.propertyIri;
+              iriComment += `// Mapping: {${m.variable}} -> ${propShort}${m.required ? ' (required)' : ''}\n`;
+            });
+          }
+          iriComment += '\n';
+        }
+      } catch (e) {
+        /* ignore template extraction errors */
+      }
+      const header = iriComment + `// Auto-generated models` + '\n\n'; content = header + content;
       fs.writeFileSync(fileName, content, 'utf8');
       try { if (Array.isArray(enumFiles) && enumFiles.length > 0) { let written = fs.readFileSync(fileName, 'utf8'); enumFiles.forEach(e => { const en = e.name; const re = new RegExp(`@json(Member|ArrayMember)\\(\\s*${en}\\s*,`, 'g'); written = written.replace(re, `@json$1(() => ${en},`); }); fs.writeFileSync(fileName, written, 'utf8'); } } catch (e) { }
       info('Wrote TS model ->', fileName);

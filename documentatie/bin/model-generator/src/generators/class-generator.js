@@ -30,11 +30,9 @@ export class ClassGenerator extends BaseGenerator {
   isAttributeMultiValued(attr) {
     if (!attr) return false;
     // Treat 'rdfs:label' / local 'label' and business name 'benaming' as single-valued
-    try {
-      const local = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : null;
-      const biz = (attr.name && typeof attr.name === 'string') ? String(attr.name) : null;
-      if (local === 'label' || biz === 'benaming' || String(attr.propertyIri).endsWith('/label') || String(attr.propertyIri).endsWith('#label')) return false;
-    } catch (e) { /* ignore */ }
+    const local = (attr.propertyIri && this.ontology && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : null;
+    const biz = (attr.name && typeof attr.name === 'string') ? String(attr.name) : null;
+    if (local === 'label' || biz === 'benaming' || String(attr.propertyIri).endsWith('/label') || String(attr.propertyIri).endsWith('#label')) return false;
     // Treat negative or undefined maxCardinality (e.g. -1 meaning unspecified)
     // as "no explicit max" so the determination falls back to minCardinality
     // and FK status.
@@ -58,17 +56,15 @@ export class ClassGenerator extends BaseGenerator {
     const superAttrs = this.utils.deriveAttributes(superInfo, this.enumClasses, superName) || [];
     superAttrs.forEach(attr => {
       let t = 'string';
-        if (attr.type === 'date' || attr.type === 'datetime') t = 'Date';
-        else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') t = 'number';
+      if (attr.type === 'date' || attr.type === 'datetime') t = 'Date';
+      else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') t = 'number';
       else if (attr.type === 'boolean') t = 'boolean';
       else if (attr.type === 'enum') {
         // Resolve enum class name (prefer explicit enum class, fallback to business name)
         let enumClass = null;
-        try {
-          if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
-            enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
-          }
-        } catch (e) { /* ignore */ }
+        if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+          enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
+        }
         const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
         t = enumName || 'string';
       }
@@ -77,10 +73,8 @@ export class ClassGenerator extends BaseGenerator {
         // Prefer a single explicit internal concrete target when present.
         const targets = attr.targetClasses.slice();
         const explicitInternal = targets.filter(tn => {
-          try {
-            const ti = this.ontology.classes.get(tn);
-            return ti && !ti.external;
-          } catch (e) { return false; }
+          const ti = this.ontology.classes.get(tn);
+          return ti && !ti.external;
         });
         if (explicitInternal.length === 1) {
           const single = explicitInternal[0];
@@ -110,41 +104,31 @@ export class ClassGenerator extends BaseGenerator {
       // on the interface. Fall back to the attribute's own cardinality
       // when no implementer provides guidance.
       let isArray = false;
-      try {
-        const visible = Array.from(this.computeVisibleClasses() || []);
-        const implementers = [];
-        if (classToSupers && typeof classToSupers.forEach === 'function') {
-          classToSupers.forEach((supers, cls) => {
-            try {
-              if (Array.isArray(supers) && supers.includes(superName) && cls !== superName) implementers.push(cls);
-            } catch (e) { /* ignore */ }
-          });
-        }
-        for (const impl of implementers) {
-          try {
-            const implAttrs = this.computeAttributesForClass(impl, visible) || [];
-            const matching = implAttrs.find(a => {
-              if (!a) return false;
-              if (a.name === attr.name) return true;
-              if (a.propertyIri && attr.propertyIri && a.propertyIri === attr.propertyIri) return true;
-              try {
-                const aLocal = a.propertyIri ? this.ontology.extractLocalName(a.propertyIri) : a.name;
-                const attrLocal = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
-                if (aLocal && attrLocal && aLocal === attrLocal) return true;
-                const aBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(a.propertyIri, impl) : null;
-                const attrBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, impl) : null;
-                if (aBiz && attrBiz && aBiz === attrBiz) return true;
-              } catch (e) { /* ignore */ }
-              return false;
-            });
-            if (matching && this.isAttributeMultiValued(matching)) { isArray = true; break; }
-          } catch (e) { /* ignore */ }
-        }
-        if (implementers.length === 0) {
-          // No implementing classes found — conservative fallback to attribute metadata
-          isArray = this.isAttributeMultiValued(attr);
-        }
-      } catch (e) {
+      const visible = Array.from(this.computeVisibleClasses() || []);
+      const implementers = [];
+      if (classToSupers && typeof classToSupers.forEach === 'function') {
+        classToSupers.forEach((supers, cls) => {
+          if (Array.isArray(supers) && supers.includes(superName) && cls !== superName) implementers.push(cls);
+        });
+      }
+      for (const impl of implementers) {
+        const implAttrs = this.computeAttributesForClass(impl, visible) || [];
+        const matching = implAttrs.find(a => {
+          if (!a) return false;
+          if (a.name === attr.name) return true;
+          if (a.propertyIri && attr.propertyIri && a.propertyIri === attr.propertyIri) return true;
+          const aLocal = a.propertyIri ? this.ontology.extractLocalName(a.propertyIri) : a.name;
+          const attrLocal = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
+          if (aLocal && attrLocal && aLocal === attrLocal) return true;
+          const aBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(a.propertyIri, impl) : null;
+          const attrBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, impl) : null;
+          if (aBiz && attrBiz && aBiz === attrBiz) return true;
+          return false;
+        });
+        if (matching && this.isAttributeMultiValued(matching)) { isArray = true; break; }
+      }
+      if (implementers.length === 0) {
+        // No implementing classes found — conservative fallback to attribute metadata
         isArray = this.isAttributeMultiValued(attr);
       }
       const rawName = (attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null);
@@ -210,11 +194,9 @@ export class ClassGenerator extends BaseGenerator {
       else if (attr.type === 'enum') {
         // Resolve enum class name for diagram rendering
         let enumClass = null;
-        try {
-          if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
-            enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
-          }
-        } catch (e) { /* ignore */ }
+        if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+          enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
+        }
         const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
         type = enumName || 'enum';
       }
@@ -229,7 +211,8 @@ export class ClassGenerator extends BaseGenerator {
     if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
       // Prefer explicit internal concrete targets regardless of visible class list
       const explicitInternal = (attr.targetClasses || []).filter(tn => {
-        try { const ti = this.ontology.classes.get(tn); return ti && !ti.external; } catch (e) { return false; }
+        const ti = this.ontology.classes.get(tn);
+        return ti && !ti.external;
       });
       if (explicitInternal.length === 1) {
         const target = explicitInternal[0];
@@ -271,55 +254,49 @@ export class ClassGenerator extends BaseGenerator {
    */
   collectEnumerableMembers(localName) {
     const members = new Set();
-    try {
-      const candidates = Array.from(this.enumClasses || []).filter(ec => {
-        try {
-          const info = this.ontology.classes.get(ec);
-          return info && info.iri && this.ontology.isSubClassOf(info.iri, localName);
-        } catch (e) { return false; }
-      });
-      candidates.forEach(ec => {
-        let vals = this.ontology.deriveEnumMembers ? (this.ontology.deriveEnumMembers(ec) || []) : [];
-        if (!vals || vals.length === 0) {
-          // formatted fallback: strip common suffixes and convert to snake
-          let formatted = String(ec).replace(/Procedure$/i, '');
-          if (formatted.endsWith('s')) formatted = formatted.slice(0, -1);
-          const snake = formatted.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/[^0-9A-Za-z_]/g, '_');
-          vals = [snake.toUpperCase()];
-        }
-        if ((!vals || vals.length === 0) && this.ontology && this.ontology.store && this.ontology.classes) {
-          const info = this.ontology.classes.get(ec);
-          if (info && info.iri) {
-            const iri = info.iri;
-            const quads = this.ontology.store.getQuads(null, null, null) || [];
-            const subjects = new Set();
-            quads.forEach(q => {
-              try {
-                if (q.object && q.object.value === iri) {
-                  const pred = String(q.predicate && q.predicate.value || '').toLowerCase();
-                  if (pred.includes('broader') || pred.includes('inscheme')) subjects.add(q.subject);
-                }
-              } catch (e) { /* ignore */ }
-            });
-            if (subjects.size > 0) {
-              vals = [];
-              subjects.forEach(s => {
-                const labelQuad = (this.ontology.store.getQuads(s, null, null) || []).find(lq => String(lq.predicate && lq.predicate.value || '').toLowerCase().includes('label'));
-                if (labelQuad && labelQuad.object && labelQuad.object.value) vals.push(labelQuad.object.value);
-                else if (s && s.termType === 'NamedNode') {
-                  const local = this.ontology.extractLocalName ? this.ontology.extractLocalName(s.value) : (s.value.split(/[#\\/]/).pop());
-                  if (local) vals.push(local);
-                }
-              });
+    const candidates = Array.from(this.enumClasses || []).filter(ec => {
+      const info = this.ontology.classes.get(ec);
+      return info && info.iri && this.ontology.isSubClassOf(info.iri, localName);
+    });
+    candidates.forEach(ec => {
+      let vals = this.ontology.deriveEnumMembers ? (this.ontology.deriveEnumMembers(ec) || []) : [];
+      if (!vals || vals.length === 0) {
+        // formatted fallback: strip common suffixes and convert to snake
+        let formatted = String(ec).replace(/Procedure$/i, '');
+        if (formatted.endsWith('s')) formatted = formatted.slice(0, -1);
+        const snake = formatted.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/[^0-9A-Za-z_]/g, '_');
+        vals = [snake.toUpperCase()];
+      }
+      if ((!vals || vals.length === 0) && this.ontology && this.ontology.store && this.ontology.classes) {
+        const info = this.ontology.classes.get(ec);
+        if (info && info.iri) {
+          const iri = info.iri;
+          const quads = this.ontology.store.getQuads(null, null, null) || [];
+          const subjects = new Set();
+          quads.forEach(q => {
+            if (q.object && q.object.value === iri) {
+              const pred = String(q.predicate && q.predicate.value || '').toLowerCase();
+              if (pred.includes('broader') || pred.includes('inscheme')) subjects.add(q.subject);
             }
+          });
+          if (subjects.size > 0) {
+            vals = [];
+            subjects.forEach(s => {
+              const labelQuad = (this.ontology.store.getQuads(s, null, null) || []).find(lq => String(lq.predicate && lq.predicate.value || '').toLowerCase().includes('label'));
+              if (labelQuad && labelQuad.object && labelQuad.object.value) vals.push(labelQuad.object.value);
+              else if (s && s.termType === 'NamedNode') {
+                const local = this.ontology.extractLocalName ? this.ontology.extractLocalName(s.value) : (s.value.split(/[#\\/]/).pop());
+                if (local) vals.push(local);
+              }
+            });
           }
         }
-        (vals || []).forEach(v => {
-          const id = String(v).replace(/[^0-9A-Za-z_]/g, '_').replace(/^_+|_+$/g, '');
-          if (id) members.add(id.toUpperCase());
-        });
+      }
+      (vals || []).forEach(v => {
+        const id = String(v).replace(/[^0-9A-Za-z_]/g, '_').replace(/^_+|_+$/g, '');
+        if (id) members.add(id.toUpperCase());
       });
-    } catch (e) { /* ignore */ }
+    });
     return Array.from(members);
   }
 

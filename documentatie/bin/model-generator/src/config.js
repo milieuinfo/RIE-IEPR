@@ -47,7 +47,7 @@ export const ENUMERABLE_CLASSES = new Set([
  */
 export const TEMPORAL_CLASSES = new Set([
   'ProcesVariabele',
-  'Adres'
+  'Adres',
 ]);
 
 /**
@@ -118,28 +118,18 @@ export function getTechnicalNamespacePrefixes() {
 /**
  * Override property groups to customize generator behavior without
  * changing code. Keys are optional and can include:
- *  - `qudt`: Map or Set of QUDT property IRIs. When a Map is provided
- *            entries can map to a spec object `{ type, sqlType, comment }`.
- *  - `geometry`: Map or Set of property local names or IRIs treated as geometry.
- *
- * Examples below use Maps to demonstrate how to provide per-property specs.
  */
-export const OVERRIDE_PROPERTIES = {
-  qudt: new Map([
-    [
-      `${NAMESPACES.qudt}hasUnit`,
-      { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasUnit` }
-    ],
-    [
-      `${NAMESPACES.qudt}hasNumericValue`,
-      { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasNumericValue` }
-    ]
-  ]),
-  geometry: new Map([
-    ['geometry', { type: 'string', sqlType: 'TEXT', comment: 'WKT (Well-Known Text) geometry representation' }],
-    ['geom', { type: 'string', sqlType: 'TEXT', comment: 'WKT (Well-Known Text) geometry representation' }]
-  ])
-};
+export const OVERRIDE_PROPERTIES = new Map([
+  [`${NAMESPACES.qudt}hasUnit`, { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasUnit` }],
+  [`${NAMESPACES.qudt}hasNumericValue`, { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasNumericValue` }],
+  [`${NAMESPACES.ogc}hasGeometry`, { type: 'string', sqlType: 'TEXT', comment: `${NAMESPACES.ogc}hasGeometry -> WKT` }]
+]);
+
+/**
+ * If true, prefer creating a super-entity table for multi-target
+ * relationships instead of a typed join table with a `target_type` column.
+ */
+export const USE_SUPER_ENTITY_FOR_MULTI_RELATIONS = false;
 
 /**
  * Check if a class should always include temporal attributes
@@ -238,6 +228,8 @@ export function formatEnumValue(enumClassName) {
  */
 export function isPrimaryKeyField(attrName, classInfo, className) {
   if (PRIMARY_KEY_FIELDS.has(attrName)) return true;
+  // Treat per-entity UUID columns (e.g. `entity_uuid`) as primary keys
+  if (typeof attrName === 'string' && attrName.endsWith('_uuid')) return true;
   
   const baseName = camelCaseToSnakeCase(classInfo?.localName || className || 'entity');
   const identifierAttr = `${baseName}_identifiers`;

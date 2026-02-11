@@ -95,8 +95,8 @@ export class ERDiagramGenerator extends SchemaGenerator {
           const baseClass = className.replace('_variabele_relatie', '');
           const relatedClass = 'proces_variabele';
           attributes = [
-            { name: `${baseClass}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
-            { name: `${relatedClass}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+            { name: `${baseClass}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+            { name: `${relatedClass}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
             { name: 'relationship_type', type: 'enum', isForeignKey: false, isPrimaryKey: true, comment: 'INPUT_VAR, OUTPUT_VAR' }
           ];
         } else {
@@ -108,19 +108,19 @@ export class ERDiagramGenerator extends SchemaGenerator {
             // Consolidated junction table for multiple target types (e.g. toegeschreven aan)
             const fromTable = this.utils.deriveTableName(info.from);
             attributes = [
-              { name: `${fromTable}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
-              { name: 'target_uri', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
+              { name: `${fromTable}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+              { name: 'target_uuid', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
               { name: 'target_type', type: 'string', isForeignKey: false, isPrimaryKey: false, comment: (info.to || []).join(',') }
             ];
           } else {
             // Regular many-to-many junction table with single target
             const parts = className.split('_');
             const lastPart = parts[parts.length - 1];
-            let leftCol = `${parts[0]}_uri`;
-            let rightCol = `${lastPart}_uri`;
+            let leftCol = `${parts[0]}_uuid`;
+            let rightCol = `${lastPart}_uuid`;
             if (leftCol === rightCol) {
-              leftCol = `${parts[0]}_uri_from`;
-              rightCol = `${lastPart}_uri_to`;
+              leftCol = `${parts[0]}_uuid_from`;
+              rightCol = `${lastPart}_uuid_to`;
             }
             attributes = [
               { name: leftCol, type: 'string', isForeignKey: true, isPrimaryKey: true },

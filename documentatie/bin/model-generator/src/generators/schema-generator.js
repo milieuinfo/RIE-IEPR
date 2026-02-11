@@ -70,29 +70,38 @@ export class SchemaGenerator extends BaseGenerator {
           enumDefinitions.set(enumName, enumValues);
         }
 
-        // Check for a configured override that maps this property to an
-        // interface type (collapse multiple concrete targets into one
-        // interface-backed join table). We support lookup both by full
-        // property IRI and by short property name.
-        let override = null;
-        const attributes = [
-          { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: rel0.from, isForeignKey: true, isPrimaryKey: true },
-          { name: `target_uri`, type: 'string', sqlType: 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: true },
+        // Attributes for a typed join table (default behaviour)
+        const typedAttributes = [
+          { name: `${fromTable}_uuid`, type: 'string', sqlType: 'UUID', comment: rel0.from, isForeignKey: true, isPrimaryKey: true },
+          { name: `target_uuid`, type: 'string', sqlType: 'UUID', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: true },
           { name: `target_type`, type: 'enum', sqlType: enumValues.length > 0 ? enumName : 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: false }
         ];
 
-        if (override && override.interface && config.INTERFACE_CLASSES && config.INTERFACE_CLASSES.has(override.interface)) {
-          // Collapse to the configured interface and remember concrete targets
-          // so calling generators can avoid emitting concrete per-type relations
-          joinTables.push({ name: joinTableName, attributes });
-          junctionTableInfo.set(joinTableName, { from: rel0.from, to: override.interface, concreteTargets: targetTypes, addsTemporal: true, label: businessLabel || rel0.label || '' });
-          // Add temporal fields to the join table (not primary keys)
-          attributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
-          attributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: false });
-          attributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
+        // If configured, create a super-entity table that represents the
+        // relationship target as a separate entity instead of using a
+        // typed join table with `target_type`. This mirrors the idea of
+        // shared interfaces used by the class generators.
+        if (config && config.USE_SUPER_ENTITY_FOR_MULTI_RELATIONS) {
+          const superAttributes = [
+            { name: `${joinTableName}_uuid`, type: 'string', sqlType: 'UUID', comment: joinTableName, isForeignKey: false, isPrimaryKey: true },
+            { name: `${fromTable}_uuid`, type: 'string', sqlType: 'UUID', comment: rel0.from, isForeignKey: true, isPrimaryKey: false },
+            { name: `target_uuid`, type: 'string', sqlType: 'UUID', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: false }
+          ];
+
+          joinTables.push({ name: joinTableName, attributes: superAttributes, isSuperEntity: true });
+          junctionTableInfo.set(joinTableName, { from: rel0.from, to: joinTableName, concreteTargets: targetTypes, addsTemporal: true, label: businessLabel || rel0.label || '' });
+          // Add temporal fields to the super-entity (not primary keys)
+          superAttributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: true });
+          superAttributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: true });
+          superAttributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
         } else {
-          joinTables.push({ name: joinTableName, attributes });
-          junctionTableInfo.set(joinTableName, { from: rel0.from, to: targetTypes, label: businessLabel || rel0.label || '' });
+          // Default behavior: typed join table — make it temporal
+          typedAttributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: true });
+          typedAttributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: true });
+          typedAttributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
+          joinTables.push({ name: joinTableName, attributes: typedAttributes });
+          // Include `concreteTargets` for downstream consumers (ER generator)
+          junctionTableInfo.set(joinTableName, { from: rel0.from, to: targetTypes, concreteTargets: targetTypes, addsTemporal: true, label: businessLabel || rel0.label || '' });
         }
       } else {
         const rel = rels[0];
@@ -102,20 +111,23 @@ export class SchemaGenerator extends BaseGenerator {
         if (visibleSet && (!visibleSet.has(rel.from) || !visibleSet.has(rel.to))) return;
         seen.add(joinTableName);
 
-        let fromColumn = `${fromTable}_uri`;
-        let toColumn = `${toTable}_uri`;
+        let fromColumn = `${fromTable}_uuid`;
+        let toColumn = `${toTable}_uuid`;
         if (fromColumn === toColumn) {
-          fromColumn = `${fromTable}_uri_from`;
-          toColumn = `${toTable}_uri_to`;
+          fromColumn = `${fromTable}_uuid_from`;
+          toColumn = `${toTable}_uuid_to`;
         }
 
         const attributes = [
-          { name: fromColumn, type: 'string', sqlType: 'TEXT', comment: rel.from, isForeignKey: true, isPrimaryKey: true },
-          { name: toColumn, type: 'string', sqlType: 'TEXT', comment: rel.to, isForeignKey: true, isPrimaryKey: true }
+          { name: fromColumn, type: 'string', sqlType: 'UUID', comment: rel.from, isForeignKey: true, isPrimaryKey: true },
+          { name: toColumn, type: 'string', sqlType: 'UUID', comment: rel.to, isForeignKey: true, isPrimaryKey: true },
+          { name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: true },
+          { name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: true },
+          { name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false }
         ];
 
         joinTables.push({ name: joinTableName, attributes });
-        junctionTableInfo.set(joinTableName, { from: rel.from, to: rel.to, label: businessLabel || rel.label || '' });
+        junctionTableInfo.set(joinTableName, { from: rel.from, to: rel.to, addsTemporal: true, label: businessLabel || rel.label || '' });
       }
     });
 
@@ -131,13 +143,18 @@ export class SchemaGenerator extends BaseGenerator {
       enumDefinitions.set(relEnumName, relEnumValues);
 
       const attributes = [
-        { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: config.fromClass, isForeignKey: true, isPrimaryKey: true },
-        { name: `${toTable}_uri`, type: 'string', sqlType: 'TEXT', comment: config.toClass, isForeignKey: true, isPrimaryKey: true },
+        { name: `${fromTable}_uuid`, type: 'string', sqlType: 'UUID', comment: config.fromClass, isForeignKey: true, isPrimaryKey: true },
+        { name: `${toTable}_uuid`, type: 'string', sqlType: 'UUID', comment: config.toClass, isForeignKey: true, isPrimaryKey: true },
         { name: 'relationship_type', type: 'enum', sqlType: relEnumName, comment: relEnumValues.join(', '), isForeignKey: false, isPrimaryKey: true }
       ];
 
+      // Make variable relationship tables temporal as well
+      attributes.push({ name: 'geldig_van', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: true });
+      attributes.push({ name: 'aangemaakt_op', type: 'datetime', sqlType: 'TIMESTAMP', isForeignKey: false, isPrimaryKey: true });
+      attributes.push({ name: 'geldig_tot', type: 'date', sqlType: 'DATE', isForeignKey: false, isPrimaryKey: false });
+
       joinTables.push({ name: joinTableName, attributes });
-      junctionTableInfo.set(joinTableName, { from: config.fromClass, to: config.toClass, label: 'hasInputVar/hasOutputVar' });
+      junctionTableInfo.set(joinTableName, { from: config.fromClass, to: config.toClass, addsTemporal: true, label: 'hasInputVar/hasOutputVar' });
     });
 
     return { joinTables, junctionTableInfo, enumDefinitions };
@@ -147,9 +164,9 @@ export class SchemaGenerator extends BaseGenerator {
     // Delegate to BaseGenerator implementation
     return [
       {
-        name: `${Config.camelCaseToSnakeCase(parentClass)}_uid`,
+        name: `${Config.camelCaseToSnakeCase(parentClass)}_uuid`,
         type: 'string',
-        sqlType: 'TEXT',
+        sqlType: 'UUID',
         comment: parentClass,
         isForeignKey: true,
         isPrimaryKey: true,

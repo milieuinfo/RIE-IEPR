@@ -300,6 +300,46 @@ export class OntologyModel {
     });
   }
 
+  /**
+   * Retrieve an IRI template (hydra:IriTemplate) for a given class.
+   * Accepts either a full class IRI or a local class name. Returns an
+   * object { template, mappings, templateNode } or null when none found.
+   */
+  getIriTemplateForClass(classRef) {
+    if (!classRef) return null;
+    let classIri = String(classRef);
+    // If a local name was provided, try to resolve via known classes
+    if (!classIri.includes('://')) {
+      const info = this.classes.get(classIri);
+      if (info && info.iri) classIri = info.iri;
+      else classIri = NAMESPACES.riepr + classIri;
+    }
+
+    const searchQuads = this.store.getQuads(new NamedNode(classIri), new NamedNode(NAMESPACES.hydra + 'search'), null);
+    if (!searchQuads || searchQuads.length === 0) return null;
+
+    const templateNode = searchQuads[0].object;
+    const templateQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'template'), null);
+    const template = (templateQuads && templateQuads.length > 0) ? templateQuads[0].object.value : null;
+
+    const mappingQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'mapping'), null);
+    const mappings = [];
+    if (mappingQuads && mappingQuads.length > 0) {
+      mappingQuads.forEach(mq => {
+        const mnode = mq.object;
+        const varQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'variable'), null);
+        const propQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'property'), null);
+        const reqQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'required'), null);
+        const variable = varQ && varQ.length > 0 ? varQ[0].object.value : null;
+        const propertyIri = propQ && propQ.length > 0 && propQ[0].object.termType === 'NamedNode' ? propQ[0].object.value : (propQ && propQ.length > 0 ? propQ[0].object.value : null);
+        const required = reqQ && reqQ.length > 0 ? String(reqQ[0].object.value).toLowerCase() === 'true' : false;
+        mappings.push({ variable, propertyIri, required });
+      });
+    }
+
+    return { template, mappings, templateNode: templateNode && templateNode.termType === 'NamedNode' ? templateNode.value : null };
+  }
+
   async applyReasoning() {
     const rulesContent = fs.readFileSync(this.rulesPath, 'utf-8');
     const rulesParser = new Parser({ format: 'text/n3' });
@@ -983,6 +1023,7 @@ export class OntologyModel {
    * concept targets.
    */
   getSuperClassNames(classInfo) {
+    if (!classInfo) return [];
     const names = [];
     (classInfo.superClasses || []).forEach(superIri => {
       const local = this.extractLocalName(superIri);

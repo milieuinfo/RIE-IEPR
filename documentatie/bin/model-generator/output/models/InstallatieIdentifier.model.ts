@@ -4,9 +4,6 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class InstallatieIdentifier {
-  @jsonMember(String, { name: 'uri' })
-  uri!: string;
-
   @jsonMember(String, { name: 'inScheme' })
   inScheme?: string;
 

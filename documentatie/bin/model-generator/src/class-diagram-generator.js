@@ -40,31 +40,29 @@ export class ClassDiagramGenerator extends ClassGenerator {
     Array.from(this.relationships.values()).forEach(rel => {
       const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
       const toResolved = sharedIface || rel.to;
-      try {
-        const rawKey = `${rel.from}|${rel.property}`;
-        relPropertyMap.set(rawKey, toResolved);
+      const rawKey = `${rel.from}|${rel.property}`;
+      relPropertyMap.set(rawKey, toResolved);
 
-        const camelProp = (typeof rel.property === 'string') ? this.toCamelCase(rel.property) : null;
-        if (camelProp) {
-          relPropertyMap.set(`${rel.from}|${camelProp}`, toResolved);
-          relPropertyMap.set(`${rel.from}|${camelProp.replace(/Id$/i, '')}`, toResolved);
-        }
+      const camelProp = (typeof rel.property === 'string') ? this.toCamelCase(rel.property) : null;
+      if (camelProp) {
+        relPropertyMap.set(`${rel.from}|${camelProp}`, toResolved);
+        relPropertyMap.set(`${rel.from}|${camelProp.replace(/Id$/i, '')}`, toResolved);
+      }
 
-        if (rel.label && typeof rel.label === 'string') {
-          const camelLabel = this.toCamelCase(rel.label);
-          relPropertyMap.set(`${rel.from}|${camelLabel}`, toResolved);
-          relPropertyMap.set(`${rel.from}|${camelLabel.replace(/Id$/i, '')}`, toResolved);
-        }
+      if (rel.label && typeof rel.label === 'string') {
+        const camelLabel = this.toCamelCase(rel.label);
+        relPropertyMap.set(`${rel.from}|${camelLabel}`, toResolved);
+        relPropertyMap.set(`${rel.from}|${camelLabel.replace(/Id$/i, '')}`, toResolved);
+      }
 
-        // normalized variants (strip diacritics and non-alphanumerics)
-        const normProp = normalize(rel.property);
-        if (normProp) relPropertyMap.set(`${rel.from}|${normProp}`, toResolved);
-        if (camelProp) relPropertyMap.set(`${rel.from}|${normalize(camelProp)}`, toResolved);
-        if (rel.label) {
-          const normLabel = normalize(rel.label);
-          relPropertyMap.set(`${rel.from}|${normLabel}`, toResolved);
-        }
-      } catch (e) { /* ignore mapping errors */ }
+      // normalized variants (strip diacritics and non-alphanumerics)
+      const normProp = normalize(rel.property);
+      if (normProp) relPropertyMap.set(`${rel.from}|${normProp}`, toResolved);
+      if (camelProp) relPropertyMap.set(`${rel.from}|${normalize(camelProp)}`, toResolved);
+      if (rel.label) {
+        const normLabel = normalize(rel.label);
+        relPropertyMap.set(`${rel.from}|${normLabel}`, toResolved);
+      }
     });
 
     // render nodes
@@ -79,35 +77,29 @@ export class ClassDiagramGenerator extends ClassGenerator {
     });
 
     // Synthesize enumerated classes from configured ENUMERABLE_CLASSES
-    try {
-      if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
-        Array.from(Config.ENUMERABLE_CLASSES).forEach(localName => {
-          try {
-            const memberList = this.collectEnumerableMembers(localName) || [];
-            if (memberList.length === 0) return;
-            const members = new Set(memberList);
-            if (members.size > 0) {
-              const enumClassName = (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName;
-              mermaid += `    class ${enumClassName} {\n`;
-              mermaid += `        <<enumerable>>\n`;
-              Array.from(members).forEach(m => { mermaid += `        ${m}\n`; });
-              mermaid += `    }\n`;
-              // Link any classes that have an enum attribute referring to this enumerable
-              Array.from(classNames || []).forEach(cn => {
-                try {
-                  const ci = this.ontology.classes.get(cn);
-                  const attrs = this.deriveAttributes(ci, this.enumClasses, cn) || [];
-                  const hasEnumAttr = attrs.some(a => a && a.type === 'enum' && (a.comment === localName || (a.propertyIri && this.ontology.extractLocalName && this.ontology.extractLocalName(a.propertyIri) === 'type')));
-                  if (hasEnumAttr) {
-                    mermaid += `    ${this.getDisplayName(cn)} --> ${enumClassName} : type\n`;
-                  }
-                } catch (e) { /* ignore */ }
-              });
+    if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
+      Array.from(Config.ENUMERABLE_CLASSES).forEach(localName => {
+        const memberList = this.collectEnumerableMembers(localName) || [];
+        if (memberList.length === 0) return;
+        const members = new Set(memberList);
+        if (members.size > 0) {
+          const enumClassName = (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName;
+          mermaid += `    class ${enumClassName} {\n`;
+          mermaid += `        <<enumerable>>\n`;
+          Array.from(members).forEach(m => { mermaid += `        ${m}\n`; });
+          mermaid += `    }\n`;
+          // Link any classes that have an enum attribute referring to this enumerable
+          Array.from(classNames || []).forEach(cn => {
+            const ci = this.ontology.classes.get(cn);
+            const attrs = this.deriveAttributes(ci, this.enumClasses, cn) || [];
+            const hasEnumAttr = attrs.some(a => a && a.type === 'enum' && (a.comment === localName || (a.propertyIri && this.ontology.extractLocalName && this.ontology.extractLocalName(a.propertyIri) === 'type')));
+            if (hasEnumAttr) {
+              mermaid += `    ${this.getDisplayName(cn)} --> ${enumClassName} : type\n`;
             }
-          } catch (e) { /* ignore */ }
-        });
-      }
-    } catch (e) { /* ignore */ }
+          });
+        }
+      });
+    }
 
     // Add identifier relations as explicit relationships so identifier classes are linked
     // to their parent classes in the class diagram. identifierRelations map keys are
@@ -217,11 +209,9 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
   _computeShared(classNames) {
     const forced = [];
-    try {
-      if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
-        Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
-      }
-    } catch (e) { /* ignore */ }
+    if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
+      Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
+    }
     return this.computeSharedSupers(classNames, forced);
   }
 
@@ -252,14 +242,10 @@ export class ClassDiagramGenerator extends ClassGenerator {
     // Determine a direct internal superclass (if any) so computeAttributesForClass
     // can filter out attributes inherited from that superclass (avoid duplicate FKs)
     let extendsSuperName = null;
-    try {
-      const supers = classToSupers.get(className) || [];
-      for (const s of supers) {
-        const info = this.ontology.classes.get(s);
-        if (info && !info.external && classNames.includes(s)) { extendsSuperName = s; break; }
-      }
-    } catch (e) {
-      extendsSuperName = null;
+    const supers = classToSupers.get(className) || [];
+    for (const s of supers) {
+      const info = this.ontology.classes.get(s);
+      if (info && !info.external && classNames.includes(s)) { extendsSuperName = s; break; }
     }
 
     // Use centralized attribute computation (handles identifier relations and superclass filtering)
@@ -310,27 +296,25 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
       // Fallback: try to find a matching relationship by fuzzy normalized match between attribute name and relationship label/property
       if (!mapped) {
-        try {
-          const aNorm = String(attr.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
-          for (const r of Array.from(this.relationships.values())) {
-            if (r.from !== className) continue;
-            const rNorm = String(r.label || r.property || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
-            if (!rNorm) continue;
-            const lcsMatch = (() => {
-              if (!aNorm || !rNorm) return false;
-              const minLen = 4;
-              for (let i = 0; i + minLen <= aNorm.length; i++) {
-                const sub = aNorm.substr(i, minLen);
-                if (sub && rNorm.indexOf(sub) >= 0) return true;
-              }
-              return false;
-            })();
-            if (rNorm.includes(aNorm) || aNorm.includes(rNorm) || rNorm.startsWith(aNorm) || aNorm.startsWith(rNorm) || lcsMatch) {
-              mapped = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames) || r.to;
-              break;
+        const aNorm = String(attr.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+        for (const r of Array.from(this.relationships.values())) {
+          if (r.from !== className) continue;
+          const rNorm = String(r.label || r.property || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+          if (!rNorm) continue;
+          const lcsMatch = (() => {
+            if (!aNorm || !rNorm) return false;
+            const minLen = 4;
+            for (let i = 0; i + minLen <= aNorm.length; i++) {
+              const sub = aNorm.substr(i, minLen);
+              if (sub && rNorm.indexOf(sub) >= 0) return true;
             }
+            return false;
+          })();
+          if (rNorm.includes(aNorm) || aNorm.includes(rNorm) || rNorm.startsWith(aNorm) || aNorm.startsWith(rNorm) || lcsMatch) {
+            mapped = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames) || r.to;
+            break;
           }
-        } catch (e) { /* ignore */ }
+        }
       }
 
       let displayType = attr.type;
