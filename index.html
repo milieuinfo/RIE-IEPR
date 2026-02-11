@@ -2098,12 +2098,13 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#concept-electriciteitsVerbruikProces"><span class="secno">6.5</span> <span class="content">Elektriciteitsverbruikproces</span></a>
       <li><a href="#concept-Gesloten"><span class="secno">6.6</span> <span class="content">Gesloten</span></a>
       <li><a href="#concept-Inactief"><span class="secno">6.7</span> <span class="content">Inactief</span></a>
-      <li><a href="#concept-lozingsProces"><span class="secno">6.8</span> <span class="content">Lozingsproces</span></a>
-      <li><a href="#concept-meetProces"><span class="secno">6.9</span> <span class="content">Meetproces</span></a>
-      <li><a href="#concept-overbrengingsProces"><span class="secno">6.10</span> <span class="content">Overbrengingsproces</span></a>
-      <li><a href="#concept-uitstootProces"><span class="secno">6.11</span> <span class="content">Uitstootproces</span></a>
-      <li><a href="#concept-Voorgesteld"><span class="secno">6.12</span> <span class="content">Voorgesteld</span></a>
-      <li><a href="#concept-waterVerbruikProces"><span class="secno">6.13</span> <span class="content">Waterverbruikproces</span></a>
+      <li><a href="#concept-installatieVerwerkingsProces"><span class="secno">6.8</span> <span class="content">Installatieverwerkingsproces</span></a>
+      <li><a href="#concept-lozingsProces"><span class="secno">6.9</span> <span class="content">Lozingsproces</span></a>
+      <li><a href="#concept-meetProces"><span class="secno">6.10</span> <span class="content">Meetproces</span></a>
+      <li><a href="#concept-overbrengingsProces"><span class="secno">6.11</span> <span class="content">Overbrengingsproces</span></a>
+      <li><a href="#concept-uitstootProces"><span class="secno">6.12</span> <span class="content">Uitstootproces</span></a>
+      <li><a href="#concept-Voorgesteld"><span class="secno">6.13</span> <span class="content">Voorgesteld</span></a>
+      <li><a href="#concept-waterVerbruikProces"><span class="secno">6.14</span> <span class="content">Waterverbruikproces</span></a>
      </ol>
     <li><a href="#downloads"><span class="secno">7</span> <span class="content">Downloads</span></a>
     <li><a href="#conformance①"><span class="secno"></span> <span class="content">
@@ -2180,7 +2181,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
 </pre>
    <h2 class="heading settled" data-level="4" id="overview"><span class="secno">4. </span><span class="content">Overzicht</span><a class="self-link" href="#overview"></a></h2>
-   <p>Deze ontologie definieert 20 klassen en 13 concept instanties.</p>
+   <p>Deze ontologie definieert 20 klassen en 14 concept instanties.</p>
    <h2 class="heading settled" data-level="5" id="classes"><span class="secno">5. </span><span class="content">Klassen</span><a class="self-link" href="#classes"></a></h2>
    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:false});</script>
@@ -2293,6 +2294,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Lozingspunt</code></p>
    <p><strong>Definitie:</strong> Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
+   <p><strong>Constraints:</strong> depth: min 0, max 1</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Lozingspunt</c-> <c- p>;</c->
@@ -2328,9 +2330,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-98; label: min 1; address: min 0 of Address</p>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-99; label: min 1; address: min 0, max 1 of Address</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOThbIm4zLTk4Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185OApuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTlbIm4zLTk5Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185OQpuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
    <h3 class="heading settled" data-level="5.5" id="Contactpersoon"><span class="secno">5.5. </span><span class="content">Exploitant Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Contactpersoon</code></p>
    <p><strong>Definitie:</strong> Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
@@ -2342,7 +2344,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:ExploitatieLocatie</code></p>
    <p><strong>Definitie:</strong> Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Entity</code>, <code>ogc:Feature</code>, <code>sosa:Platform</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0 of ExploitatieLocatie; hasGeometry: min 1, max 1; address: min 0, max 1 of Address</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; wasAttributedTo: min 1, max 1 of Exploitant; identifier: min 0; hadPrimarySource: min 0, max 1 of Site; wasInfluencedBy: min 0; wasDerivedFrom: min 0, max 1 of ExploitatieLocatie; hasGeometry: min 1, max 1; address: min 0, max 1 of Address</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
@@ -2436,7 +2438,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Proces</code></p>
    <p><strong>Definitie:</strong> Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.</p>
    <p><strong>Subklasse van:</strong> <code>pplan:Plan</code>, <code>pplan:Step</code>, <code>dbo:Project</code>, <code>ssn:System</code>, <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; implementedBy: min 0 of Agent; type: min 0, max 1 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
+   <p><strong>Constraints:</strong> created: min 1, max 1 of dateTime; label: min 1; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; identifier: min 0; implementedBy: min 0 of System; type: min 0, max 1 of Procedure; hasInputVar: min 0 of Variable; hasOutputVar: min 0 of Variable; isStepOfPlan: min 0, max 1 of Proces</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Proces</c-> <c- p>;</c->
@@ -2455,7 +2457,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5BZ2VudFsiQWdlbnQiXQpuUHJvY2VkdXJlWyJQcm9jZWR1cmUiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KblByb2NlcyAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5Qcm9jZXMgLS0+fGlzc3VlZHwgbmRhdGUKblByb2NlcyAtLT58dmFsaWR8IG5kYXRlCm5Qcm9jZXMgLS0+fGlzSG9zdGVkQnl8IG5FeHBsb2l0YXRpZUxvY2F0aWUKblByb2NlcyAtLT58aW1wbGVtZW50ZWRCeXwgbkFnZW50Cm5Qcm9jZXMgLS0+fHR5cGV8IG5Qcm9jZWR1cmUKblByb2NlcyAtLT58aGFzSW5wdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxoYXNPdXRwdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxpc1N0ZXBPZlBsYW58IG5Qcm9jZXM="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblByb2Nlc1siUHJvY2VzIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KbkV4cGxvaXRhdGllTG9jYXRpZVsiRXhwbG9pdGF0aWUgTG9jYXRpZSJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5Qcm9jZWR1cmVbIlByb2NlZHVyZSJdCm5WYXJpYWJsZVsiVmFyaWFibGUiXQpuUHJvY2VzIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKblByb2NlcyAtLT58aXNzdWVkfCBuZGF0ZQpuUHJvY2VzIC0tPnx2YWxpZHwgbmRhdGUKblByb2NlcyAtLT58aXNIb3N0ZWRCeXwgbkV4cGxvaXRhdGllTG9jYXRpZQpuUHJvY2VzIC0tPnxpbXBsZW1lbnRlZEJ5fCBuU3lzdGVtCm5Qcm9jZXMgLS0+fHR5cGV8IG5Qcm9jZWR1cmUKblByb2NlcyAtLT58aGFzSW5wdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxoYXNPdXRwdXRWYXJ8IG5WYXJpYWJsZQpuUHJvY2VzIC0tPnxpc1N0ZXBPZlBsYW58IG5Qcm9jZXM="></div>
    <h3 class="heading settled" data-level="5.13" id="ProcesVariabele"><span class="secno">5.13. </span><span class="content">Proces variabele</span><a class="self-link" href="#ProcesVariabele"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:ProcesVariabele</code></p>
    <p><strong>Definitie:</strong> Een proces variabele is een stof die als input of output van een proces dient.</p>
@@ -2516,26 +2518,30 @@ Parts of this work may be from another specification document.  If so, those par
    <h3 class="heading settled" data-level="6.7" id="concept-Inactief"><span class="secno">6.7. </span><span class="content">Inactief</span><a class="self-link" href="#concept-Inactief"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Inactief</code></p>
    <p><strong>Definitie:</strong> De inactieve status geeft aan dat een entiteit momenteel niet in gebruik is.</p>
-   <h3 class="heading settled" data-level="6.8" id="concept-lozingsProces"><span class="secno">6.8. </span><span class="content">Lozingsproces</span><a class="self-link" href="#concept-lozingsProces"></a></h3>
+   <h3 class="heading settled" data-level="6.8" id="concept-installatieVerwerkingsProces"><span class="secno">6.8. </span><span class="content">Installatieverwerkingsproces</span><a class="self-link" href="#concept-installatieVerwerkingsProces"></a></h3>
+   <p><strong>IRI:</strong> <code>riepr:installatieVerwerkingsProces</code></p>
+   <p><strong>Definitie:</strong> Een installatieverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een installatie.</p>
+   <p><strong>Breder concept:</strong> <code>riepr:VerwerkingsProcedure</code></p>
+   <h3 class="heading settled" data-level="6.9" id="concept-lozingsProces"><span class="secno">6.9. </span><span class="content">Lozingsproces</span><a class="self-link" href="#concept-lozingsProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:lozingsProces</code></p>
    <p><strong>Definitie:</strong> Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater.</p>
    <p><strong>Breder concept:</strong> <code>riepr:EmissieProcedure</code></p>
-   <h3 class="heading settled" data-level="6.9" id="concept-meetProces"><span class="secno">6.9. </span><span class="content">Meetproces</span><a class="self-link" href="#concept-meetProces"></a></h3>
+   <h3 class="heading settled" data-level="6.10" id="concept-meetProces"><span class="secno">6.10. </span><span class="content">Meetproces</span><a class="self-link" href="#concept-meetProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:meetProces</code></p>
    <p><strong>Definitie:</strong> Een meetproces is een specifieke procedure die betrekking heeft op het uitvoeren van metingen op meetpunten.</p>
    <p><strong>Breder concept:</strong> <code>riepr:MeetProcedure</code></p>
-   <h3 class="heading settled" data-level="6.10" id="concept-overbrengingsProces"><span class="secno">6.10. </span><span class="content">Overbrengingsproces</span><a class="self-link" href="#concept-overbrengingsProces"></a></h3>
+   <h3 class="heading settled" data-level="6.11" id="concept-overbrengingsProces"><span class="secno">6.11. </span><span class="content">Overbrengingsproces</span><a class="self-link" href="#concept-overbrengingsProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:overbrengingsProces</code></p>
    <p><strong>Definitie:</strong> Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging.</p>
    <p><strong>Breder concept:</strong> <code>riepr:TransportProcedure</code></p>
-   <h3 class="heading settled" data-level="6.11" id="concept-uitstootProces"><span class="secno">6.11. </span><span class="content">Uitstootproces</span><a class="self-link" href="#concept-uitstootProces"></a></h3>
+   <h3 class="heading settled" data-level="6.12" id="concept-uitstootProces"><span class="secno">6.12. </span><span class="content">Uitstootproces</span><a class="self-link" href="#concept-uitstootProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:uitstootProces</code></p>
    <p><strong>Definitie:</strong> Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht.</p>
    <p><strong>Breder concept:</strong> <code>riepr:EmissieProcedure</code></p>
-   <h3 class="heading settled" data-level="6.12" id="concept-Voorgesteld"><span class="secno">6.12. </span><span class="content">Voorgesteld</span><a class="self-link" href="#concept-Voorgesteld"></a></h3>
+   <h3 class="heading settled" data-level="6.13" id="concept-Voorgesteld"><span class="secno">6.13. </span><span class="content">Voorgesteld</span><a class="self-link" href="#concept-Voorgesteld"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Voorgesteld</code></p>
    <p><strong>Definitie:</strong> De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is.</p>
-   <h3 class="heading settled" data-level="6.13" id="concept-waterVerbruikProces"><span class="secno">6.13. </span><span class="content">Waterverbruikproces</span><a class="self-link" href="#concept-waterVerbruikProces"></a></h3>
+   <h3 class="heading settled" data-level="6.14" id="concept-waterVerbruikProces"><span class="secno">6.14. </span><span class="content">Waterverbruikproces</span><a class="self-link" href="#concept-waterVerbruikProces"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:waterVerbruikProces</code></p>
    <p><strong>Definitie:</strong> Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een proces.</p>
    <p><strong>Breder concept:</strong> <code>riepr:VerbruiksProcedure</code></p>
