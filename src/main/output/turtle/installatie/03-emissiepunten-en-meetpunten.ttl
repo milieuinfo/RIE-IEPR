@@ -1,4 +1,4 @@
-@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix :                   <http://purl.org/net/p-plan#> .
 @prefix activiteit:         <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix adms:               <http://www.w3.org/ns/adms#> .
 @prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
@@ -59,48 +59,52 @@ meetpunt:MP_001  rdf:type  riepr:Meetpunt , geo:SpatialObject , prov:Agent , ssn
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
         adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:EX;
+        sosa:isHostedBy  exploitatielocatie:EX;
         sosa:isProxyFor  emissiepunt:EP_001 .
 
 riepr:Actief  rdf:type  skos:Concept .
 
 installatie:GPBV_12345
-        rdf:type         prov:Agent , ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
-        rdfs:label       "Fictief NV"@nl;
-        rdfs:member      <file:///home/gehau/git/RIE-IEPR/...>;
-        rdfs:seeAlso     <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
-        dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued       "2020-01-01"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:identifier  [ rdf:type       adms:Identifier;
-                           skos:notation  "20260101-0001"
-                         ];
-        adms:identifier  [ rdf:type       adms:Identifier;
-                           skos:notation  "BE.VL.000000001.INSTALLATION"
-                         ];
-        adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:EX .
+        rdf:type           prov:Agent , ssn:System , riepr:Installatie , geo:SpatialObjectCollection;
+        rdfs:label         "Fictief NV"@nl;
+        rdfs:seeAlso       <https://gpbv.omgeving.vlaanderen.be/installatiefiche/BE.VL.000000001.INSTALLATION>;
+        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued         "2020-01-01"^^xsd:date;
+        dct:valid          "2030-12-31"^^xsd:date;
+        adms:identifier    [ rdf:type       adms:Identifier;
+                             skos:notation  "20260101-0001"
+                           ];
+        adms:identifier    [ rdf:type       adms:Identifier;
+                             skos:notation  "BE.VL.000000001.INSTALLATION"
+                           ];
+        adms:status        riepr:Actief;
+        sosa:hasSubSystem  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
+        sosa:isHostedBy    exploitatielocatie:EX .
+
+<file:///Users/maximvdw/workspaces/RIE-IEPR/...>
+        rdf:type            geo:Geometry , geo:SpatialObject;
+        sosa:isSubSystemOf  installatie:GPBV_12345 .
 
 exploitatielocatie:EX
-        rdf:type         riepr:ExploitatieLocatie , prov:Location , prov:Entity , geo:SpatialObject , geo:Feature , geo:SpatialObjectCollection;
+        rdf:type         riepr:ExploitatieLocatie , prov:Entity , geo:SpatialObject , sosa:Platform , geo:Feature;
         rdfs:label       "Exploitatielocatie Fictief NV"@nl;
         geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
                            geo:asWKT             "POINT(4.4000 51.2100)"^^geo:WKTLiteral;
                            geo:hasSerialization  "POINT(4.4000 51.2100)"^^geo:WKTLiteral
                          ];
-        prov:locationOf  meetpunt:MP_001 , installatie:GPBV_12345 , meetpunt:MP_002 , emissiepunt:EP_001 .
+        sosa:hosts       emissiepunt:EP_001 , meetpunt:MP_002 , installatie:GPBV_12345 , meetpunt:MP_001 .
 
 meetpunt:MP_002  rdf:type  riepr:Meetpunt , geo:Feature , prov:Agent , ssn:System , geo:SpatialObject;
         rdfs:label       "Meetpunt Waterkwaliteit 1"@nl;
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
         adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:EX;
-        sosa:isProxyFor  [ rdf:type       prov:Plan , pplan:Plan , owl:Thing , prov:Entity , dbo:UnitOfWork , pplan:Entity , riepr:IIOA , riepr:Proces , ssn:System , dbo:Project , prov:Agent , pplan:Step;
+        sosa:isHostedBy  exploitatielocatie:EX;
+        sosa:isProxyFor  [ rdf:type       dbo:UnitOfWork , prov:Entity , riepr:IIOA , ssn:System , owl:Thing , riepr:Proces , pplan:Entity , prov:Agent , pplan:Step , prov:Plan , dbo:Project , pplan:Plan;
                            rdfs:label     "Waterzuiveringsproces"@nl;
                            sosa:hasProxy  meetpunt:MP_002
                          ] .
@@ -110,10 +114,7 @@ emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Featur
         dct:created      "2020-01-01T00:00:00"^^xsd:dateTime;
         dct:issued       "2020-01-01"^^xsd:date;
         dct:valid        "2030-12-31"^^xsd:date;
-        geo:hasGeometry  <file:///home/gehau/git/RIE-IEPR/...>;
+        geo:hasGeometry  <file:///Users/maximvdw/workspaces/RIE-IEPR/...>;
         adms:status      riepr:Actief;
-        prov:atLocation  exploitatielocatie:EX;
-        sosa:hasProxy    meetpunt:MP_001 .
-
-<file:///home/gehau/git/RIE-IEPR/...>
-        rdf:type  geo:Geometry , geo:SpatialObject .
+        sosa:hasProxy    meetpunt:MP_001;
+        sosa:isHostedBy  exploitatielocatie:EX .

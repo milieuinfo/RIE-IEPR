@@ -37,7 +37,7 @@ exploitant:0400123123 a riepr:Exploitant ;
 # Vestigingsnummer als deel van de URI
 exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
     rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
-    prov:atLocation exploitant:0400123123 ;
+    sosa:isHostedBy exploitant:0400123123 ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
@@ -51,7 +51,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1 a riepr:Proces ;
     rdfs:label "Staalproductieproces"@nl ;
     pplan:hasInputVar stof:ijzererts ;
     pplan:hasOutputVar stof:staalplaat ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
@@ -72,44 +72,44 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000001 .
+    dct:type riepr:uitstootProces ;
+    ssn:implementedBy emissiepunt:0400123123_6851234567_0000001 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:Proces ;
     rdfs:label "Schroot"@nl ;
     pplan:hasInputVar stof:schroot ;
     pplan:hasOutputVar stof:schroot ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
-    prov:wasDerivedFrom riepr:overbrengingsProces .
+    dct:type riepr:overbrengingsProces .
 proces:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:schroot ;
     pplan:hasOutputVar stof:vloeibaar_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0003 ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0001 .
+    ssn:implementedBy apparaat:0400123123_6851234567_0001 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0004 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000002 .
+    dct:type riepr:uitstootProces ;
+    ssn:implementedBy emissiepunt:0400123123_6851234567_0000002 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:Proces ;
     rdfs:label "Overbrenging vloeibaar staal"@nl ;
     pplan:hasInputVar stof:vloeibaar_staal ;
     pplan:hasOutputVar stof:vloeibaar_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0004 ;
-    prov:wasDerivedFrom riepr:overbrengingsProces .
+    dct:type riepr:overbrengingsProces .
 
 ## ONDERDEEL VAN Argon-zuurstofontkoling proces
 proces:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:vloeibaar_staal ;
     pplan:hasOutputVar stof:geraffineerd_staal ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0004 ;
+    ssn:implementedBy apparaat:0400123123_6851234567_0004 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0006 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:Proces ;
@@ -118,11 +118,11 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0007 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000003 .
+    dct:type riepr:uitstootProces ;
+    ssn:implementedBy emissiepunt:0400123123_6851234567_0000003 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:Proces ;
     rdfs:label "Overbrenging naar decarburisatie"@nl ;
-    prov:wasDerivedFrom riepr:overbrengingsProces ;
+    dct:type riepr:overbrengingsProces ;
     pplan:hasInputVar stof:geraffineerd_staal ;
     pplan:hasOutputVar stof:geraffineerd_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
@@ -136,16 +136,16 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0008b .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:geraffineerd_staal ;
     pplan:hasOutputVar stof:vod_staal ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
+    ssn:implementedBy apparaat:0400123123_6851234567_0003 ; # Toevoeginstallatie VOD
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:vod_staal ;
     pplan:hasOutputVar stof:gezuiverd_staal ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
+    ssn:implementedBy apparaat:0400123123_6851234567_0005 ; # Zuiveringsapparaat Toevoeginstallatie
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:Proces ;
@@ -154,19 +154,19 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
+    dct:type riepr:uitstootProces ;
+    ssn:implementedBy emissiepunt:0400123123_6851234567_0000004 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:gezuiverd_staal ;
     pplan:hasOutputVar stof:afgewerkt_staal ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0007 ; # Afwerkstand
+    ssn:implementedBy apparaat:0400123123_6851234567_0007 ; # Afwerkstand
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:afgewerkt_staal ;
     pplan:hasOutputVar stof:gedec_staal ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
+    ssn:implementedBy apparaat:0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:Proces ;
@@ -175,8 +175,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000004 .
+    dct:type riepr:uitstootProces ;
+    sosa:hasFeatureOfInterest emissiepunt:0400123123_6851234567_0000004 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:Proces ;
     rdfs:label "Overbrenging naar gietinstallatie"@nl ;
@@ -184,13 +184,13 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:Proces ;
     pplan:hasOutputVar stof:gedec_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009 ;
-    prov:wasDerivedFrom riepr:overbrengingsProces .
+    dct:type riepr:overbrengingsProces .
 proces:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:Proces ;
-    prov:wasDerivedFrom riepr:apparaatVerwerkingsProces ;
+    dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:gedec_staal ;
     pplan:hasOutputVar stof:staalplaat ;
     pplan:hasOutputVar stof:rookgas ;
-    prov:wasAttributedTo apparaat:0400123123_6851234567_0002 ;
+    ssn:implementedBy apparaat:0400123123_6851234567_0002 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
 proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
@@ -199,8 +199,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0011 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:0400123123_6851234567_0000005 .
+    dct:type riepr:uitstootProces ;
+    ssn:implementedBy emissiepunt:0400123123_6851234567_0000005 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0012_METING a riepr:Proces ;
     rdfs:label "Meting van rookgas en blah"@nl ;
@@ -208,7 +208,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0012_METING a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1 ;
     dct:type riepr:meetProces ;
-    sosa:implementedBy meetpunt:X .
+    ssn:implementedBy meetpunt:X .
 
 var:1234123123_input a pplan:Variable ;
     dct:type stof:rookgas ;
@@ -233,7 +233,7 @@ emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     rdfs:comment "Afzuiging en ontstoffing van de toevoeginstallatie"@nl ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3505 51.2005)"^^ogc:WKTLiteral
     ] .
@@ -244,7 +244,7 @@ emissiepunt:0400123123_6851234567_0000002 a riepr:Emissiepunt ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     rdfs:comment "Afzuiging en ontstoffing van de oven"@nl ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3510 51.2000)"^^ogc:WKTLiteral
     ] .
@@ -255,7 +255,7 @@ emissiepunt:0400123123_6851234567_0000003 a riepr:Emissiepunt ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     rdfs:comment "Afzuiging en ontstoffing van de stroomboogoven"@nl ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     ogc:hasGeometry [ 
         ogc:asWKT "POINT(4.3500 51.1995)"^^ogc:WKTLiteral
     ] .
@@ -285,35 +285,35 @@ apparaat:0400123123_6851234567_0001 a riepr:Apparaat ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0002 a riepr:Apparaat ;
     rdfs:label "Gieterijmachine"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0003 a riepr:Apparaat ;
     rdfs:label "Toevoeginstallatie VOD"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0005 a riepr:Apparaat ;
     rdfs:label "Zuiveringsapparaat Toevoeginstallatie"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0006 a riepr:Apparaat ;
     rdfs:label "Stoomketel 1"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 .
 apparaat:0400123123_6851234567_0007 a riepr:Apparaat ;
     rdfs:label "Afwerkstand"@nl ;
     dct:issued "2020-07-30"^^xsd:date ;
@@ -374,28 +374,28 @@ stof:rookgas a riepr:ProcesVariabele ;
 # Installaties op de exploitatielocatie
 installatie:0400123123_6851234567_0000001 a riepr:Installatie ;
     rdfs:label "Stroomboogoven"@nl ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     adms:status riepr:Actief ;
-    rdfs:member emissiepunt:0400123123_6851234567_0000001, emissiepunt:0400123123_6851234567_0000002, apparaat:0400123123_6851234567_0001 .
+    sosa:hasSubSystem emissiepunt:0400123123_6851234567_0000001, emissiepunt:0400123123_6851234567_0000002, apparaat:0400123123_6851234567_0001 .
 installatie:0400123123_6851234567_0000002 a riepr:Installatie ;
     rdfs:label "Gieterij"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
-    rdfs:member emissiepunt:0400123123_6851234567_0000005, apparaat:0400123123_6851234567_0002 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
+    sosa:hasSubSystem emissiepunt:0400123123_6851234567_0000005, apparaat:0400123123_6851234567_0002 .
 installatie:0400123123_6851234567_0000003 a riepr:Installatie ;
     rdfs:label "VOD-installatie"@nl ;
     adms:status riepr:Actief ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0400123123_6851234567 ;
-    rdfs:member emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003, apparaat:0400123123_6851234567_0008, apparaat:0400123123_6851234567_0007, apparaat:0400123123_6851234567_0005 .
+    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
+    sosa:hasSubSystem emissiepunt:0400123123_6851234567_0000004, apparaat:0400123123_6851234567_0003, apparaat:0400123123_6851234567_0008, apparaat:0400123123_6851234567_0007, apparaat:0400123123_6851234567_0005 .
 installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
     rdfs:label "AOD-installatie"@nl ;
     adms:status riepr:Actief ;
@@ -403,4 +403,4 @@ installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
     dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     prov:atLocation exploitatielocatie:0400123123_6851234567 ;
-    rdfs:member emissiepunt:0400123123_6851234567_0000003, apparaat:0400123123_6851234567_0004 .
+    sosa:hasSubSystem emissiepunt:0400123123_6851234567_0000003, apparaat:0400123123_6851234567_0004 .

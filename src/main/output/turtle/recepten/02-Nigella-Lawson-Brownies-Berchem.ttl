@@ -75,13 +75,14 @@ kitchen:keuken-geert  rdf:type     prov:Entity , sosa:Platform;
         sosa:hasDeployment         exec:brownies-bakken-voor-demo-op-woensdag;
         sosa:inDeployment          exec:brownies-bakken-voor-demo-op-woensdag .
 
-step:bakken  rdf:type             pplan:MultiStep , riepr:IIOA , pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , prov:Entity;
-        rdfs:label                "Bak het beslag"@nl;
-        pplan:hasInputVar         var:beslag;
-        pplan:hasOutputVar        var:brownies;
-        pplan:isDecomposedAsPlan  plan:bakken;
-        pplan:isPrecededBy        step:mengen;
-        pplan:isStepOfPlan        plan:nigella-brownies .
+step:bakken  rdf:type          riepr:IIOA , pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity;
+        rdfs:label             "Bak het beslag"@nl;
+        pplan:hasInputVar      var:beslag;
+        pplan:hasOutputVar     var:brownies;
+        pplan:isPrecededBy     step:mengen;
+        pplan:isStepOfPlan     plan:nigella-brownies;
+        sosa:implementedBy     inst:oven-geert;
+        sosa:usedForExecution  exec:bakken-2026-02-10 .
 
 ent:eieren_001  rdf:type             prov:Entity , pplan:Entity;
         rdf:value                    6;
@@ -99,7 +100,7 @@ inst:pan-geert  rdf:type      prov:Agent , prov:Entity , sosa:System;
         prov:wasAssociateFor  exec:als-recipient-functioneren-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
-        sosa:implements       plan:boter_en_chocolade_in_pan;
+        sosa:implements       step:boter_en_chocolade_in_pan;
         sosa:isSubSystemOf    inst:smeltsysteem-geert .
 
 var:suiker  rdf:type            pplan:Variable;
@@ -120,15 +121,12 @@ exec:brownies-bakken-voor-demo-op-woensdag
 
 ingredient:eieren  rdf:type  skos:Concept .
 
-plan:beslag_in_bakvorm
-        sosa:implementedBy  inst:bakvorm-geert .
-
 step:laat_bakken_tot_lichtbruine_bovenkant
-        rdf:type               pplan:Step;
-        rdfs:label             "Laat ongeveer 25 minuten bakken tot de bovenzijde lichtbruin is"@nl;
+        rdf:type               riepr:IIOA , pplan:Plan , prov:Plan , sosa:Procedure , pplan:Entity , pplan:Step , prov:Entity;
+        rdfs:label             "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"@nl;
         pplan:hasOutputVar     var:kleur;
         pplan:isPrecededBy     step:bakvorm_in_oven;
-        pplan:isStepOfPlan     plan:bakken;
+        pplan:isStepOfPlan     step:bakken;
         sosa:forProperty       parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
         sosa:hasOutput         var:kleur;
         sosa:implementedBy     agent:geert;
@@ -152,22 +150,14 @@ exec:als-recipient-functioneren-2026-02-10
         prov:wasInfluencedBy    inst:pan-geert;
         sosa:isMemberOf         exec:brownies-bakken-026-02-10 .
 
-plan:hakken  rdf:type          riepr:IIOA , pplan:Entity , prov:Plan , prov:Entity , pplan:Plan , sosa:Procedure;
-        rdfs:label             "Hak de walnoten"@nl;
-        pplan:isSubPlanOfPlan  plan:nigella-brownies;
-        owl:topObjectProperty  plan:nigella-brownies;
-        sosa:implementedBy     inst:haksysteem-geert;
-        sosa:usedForExecution  exec:hakken-2026-02-10 .
-
-plan:verwarm_pan  sosa:implementedBy  inst:gasvuur-geert .
-
-step:mengen  rdf:type             prov:Plan , pplan:MultiStep , prov:Entity , riepr:IIOA , pplan:Plan , pplan:Step , pplan:Entity;
-        rdfs:label                "Meng alle ingrediënten"@nl;
-        pplan:hasInputVar         var:bloem , var:gesmolten-mengsel , var:suiker , var:gehakte-walnoten , var:eieren;
-        pplan:hasOutputVar        var:beslag;
-        pplan:isDecomposedAsPlan  plan:mengen;
-        pplan:isPrecededBy        step:hakken;
-        pplan:isStepOfPlan        plan:nigella-brownies .
+step:mengen  rdf:type          prov:Plan , sosa:Procedure , prov:Entity , riepr:IIOA , pplan:Plan , pplan:Step , pplan:Entity;
+        rdfs:label             "Meng alle ingrediënten"@nl;
+        pplan:hasInputVar      var:bloem , var:gesmolten-mengsel , var:suiker , var:gehakte-walnoten , var:eieren;
+        pplan:hasOutputVar     var:beslag;
+        pplan:isPrecededBy     step:hakken;
+        pplan:isStepOfPlan     plan:nigella-brownies;
+        sosa:implementedBy     inst:keukenrobot-geert;
+        sosa:usedForExecution  exec:mengen-2026-02-10 , exec:hakken-2026-02-10 .
 
 var:bloem  rdf:type             pplan:Variable;
         rdf:value               225;
@@ -209,7 +199,7 @@ exec:smelten-2026-02-10
         sosa:hasResult           ent:gesmolten-mengsel_001;
         sosa:madeByActuator      inst:smeltsysteem-geert;
         sosa:madeBySystem        inst:smeltsysteem-geert;
-        sosa:usedProcedure       plan:smelten .
+        sosa:usedProcedure       step:smelten .
 
 var:eieren  rdf:type            pplan:Variable;
         rdf:value               6;
@@ -258,13 +248,13 @@ inst:smeltsysteem-geert
         prov:wasAssociateFor  exec:smelten-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasSubSystem     inst:garde-geert , inst:pan-geert , inst:gasvuur-geert;
-        sosa:implements       plan:smelten;
+        sosa:implements       step:smelten;
         sosa:madeActuation    exec:smelten-2026-02-10;
         sosa:madeExecution    exec:smelten-2026-02-10 .
 
 ingredient:walnoten  rdf:type  skos:Concept .
 
-ent:brownies_001  rdf:type           prov:Entity , pplan:Entity;
+ent:brownies_001  rdf:type           sosa:FeatureOfInterest , prov:Entity , pplan:Entity;
         rdf:value                    150;
         dct:type                     eindproduct:brownies;
         pplan:correspondsToVariable  var:brownies;
@@ -327,20 +317,22 @@ inst:bakvorm-geert  rdf:type  prov:Entity , prov:Agent , sosa:System;
         dct:type              attribuut:bakvorm;
         prov:actedOnBehalfOf  agent:geert;
         prov:wasInfluencedBy  agent:geert;
-        sosa:implements       plan:beslag_in_bakvorm .
+        sosa:implements       step:beslag_in_bakvorm .
 
-step:verwarm_pan  rdf:type  pplan:Step;
+step:verwarm_pan  rdf:type  riepr:IIOA , prov:Plan , prov:Entity , pplan:Step , pplan:Entity , pplan:Plan , sosa:Procedure;
         rdfs:label          "Verwarm de pan op het vuur"@nl;
         pplan:isPrecededBy  step:boter_en_chocolade_in_pan;
-        pplan:isStepOfPlan  plan:smelten .
+        pplan:isStepOfPlan  step:smelten;
+        sosa:implementedBy  inst:gasvuur-geert .
 
 step:roer_tot_homogeen_vloeibaar_mengsel
-        rdf:type            pplan:Step;
+        rdf:type            prov:Plan , sosa:Procedure , pplan:Entity , pplan:Plan , prov:Entity , riepr:IIOA , pplan:Step;
         rdfs:label          "Roer tot homogeen mengsel"@nl;
         pplan:isPrecededBy  step:verwarm_pan;
-        pplan:isStepOfPlan  plan:smelten .
+        pplan:isStepOfPlan  step:smelten;
+        sosa:implementedBy  inst:garde-geert .
 
-agent:geert  rdf:type          prov:Agent , owl:Thing;
+agent:geert  rdf:type          sosa:System , prov:Agent , owl:Thing , sosa:Sensor , prov:Entity;
         rdfs:label             "Geert Van Haute"@nl;
         prov:agentOfInfluence  attr:relatie-keuken-geert;
         prov:contributed       kitchen:keuken-geert;
@@ -348,17 +340,17 @@ agent:geert  rdf:type          prov:Agent , owl:Thing;
         prov:hadInfluence      attr:relatie-keuken-geert;
         prov:influenced        inst:gasvuur-geert , inst:inst:mes-geert , inst:garde-geert , inst:bakvorm-geert , inst:haksysteem-geert , inst:keukenrobot-geert , kitchen:keuken-geert , exec:controleer_wanneer_brownies_klaar_zijn , inst:oven-geert , exec:brownies-bakken-026-02-10 , inst:snijplank-geert , inst:smeltsysteem-geert , inst:pan-geert;
         prov:wasAssociateFor   exec:brownies-bakken-026-02-10 , exec:controleer_wanneer_brownies_klaar_zijn;
-        sosa:implements        plan:bakvorm_in_oven , step:laat_bakken_tot_lichtbruine_bovenkant;
+        sosa:implements        step:laat_bakken_tot_lichtbruine_bovenkant , step:bakvorm_in_oven;
         sosa:madeExecution     exec:controleer_wanneer_brownies_klaar_zijn;
         sosa:madeObservation   exec:controleer_wanneer_brownies_klaar_zijn .
 
-step:hakken  rdf:type             pplan:Entity , pplan:Plan , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity , pplan:MultiStep;
-        rdfs:label                "Hak de walnoten"@nl;
-        pplan:hasInputVar         var:walnoten;
-        pplan:hasOutputVar        var:gehakte-walnoten;
-        pplan:isDecomposedAsPlan  plan:hakken;
-        pplan:isPrecededBy        step:smelten;
-        pplan:isStepOfPlan        plan:nigella-brownies .
+step:hakken  rdf:type       pplan:Entity , sosa:Procedure , pplan:Plan , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity;
+        rdfs:label          "Hak de walnoten"@nl;
+        pplan:hasInputVar   var:walnoten;
+        pplan:hasOutputVar  var:gehakte-walnoten;
+        pplan:isPrecededBy  step:mengen;
+        pplan:isStepOfPlan  plan:nigella-brownies;
+        sosa:implementedBy  inst:haksysteem-geert .
 
 exec:homogeniseren-2026-02-10
         rdf:type                prov:Activity;
@@ -382,7 +374,7 @@ exec:mengen-2026-02-10
         sosa:isMemberOf          exec:brownies-bakken-026-02-10;
         sosa:madeByActuator      inst:keukenrobot-geert;
         sosa:madeBySystem        inst:keukenrobot-geert;
-        sosa:usedProcedure       plan:mengen .
+        sosa:usedProcedure       step:mengen .
 
 inst:oven-geert  rdf:type     prov:Entity , prov:Agent , sosa:System;
         rdfs:label            "Oven in Geert's keuken."@nl;
@@ -391,7 +383,7 @@ inst:oven-geert  rdf:type     prov:Entity , prov:Agent , sosa:System;
         prov:wasAssociateFor  exec:bakken-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
-        sosa:implements       plan:bakken;
+        sosa:implements       step:bakken;
         sosa:madeActuation    exec:bakken-2026-02-10;
         sosa:madeExecution    exec:bakken-2026-02-10 .
 
@@ -418,22 +410,13 @@ var:boter  rdf:type             pplan:Variable;
 ingredient:donkere_chocolade
         rdf:type  skos:Concept .
 
-plan:bakken  rdf:type          sosa:Procedure , pplan:Plan , riepr:IIOA , prov:Entity , prov:Plan , pplan:Entity;
-        rdfs:label             "Bak het beslag"@nl;
-        pplan:isSubPlanOfPlan  plan:nigella-brownies;
-        owl:topObjectProperty  plan:nigella-brownies;
-        sosa:implementedBy     inst:oven-geert;
-        sosa:usedForExecution  exec:bakken-2026-02-10 .
-
-step:smelten  rdf:type            prov:Plan , prov:Entity , pplan:Plan , pplan:Entity , pplan:MultiStep , riepr:IIOA , pplan:Step;
-        rdfs:label                "Smelt boter en chocolade"@nl;
-        pplan:hasInputVar         var:donkere-chocolade , var:boter;
-        pplan:hasOutputVar        var:gesmolten-mengsel;
-        pplan:isDecomposedAsPlan  plan:smelten;
-        pplan:isStepOfPlan        plan:nigella-brownies .
-
-plan:boter_en_chocolade_in_pan
-        sosa:implementedBy  inst:pan-geert .
+step:smelten  rdf:type         prov:Plan , prov:Entity , pplan:Plan , pplan:Entity , riepr:IIOA , pplan:Step , sosa:Procedure;
+        rdfs:label             "Smelt boter en chocolade"@nl;
+        pplan:hasInputVar      var:donkere-chocolade , var:boter;
+        pplan:hasOutputVar     var:gesmolten-mengsel;
+        pplan:isStepOfPlan     plan:nigella-brownies;
+        sosa:implementedBy     inst:smeltsysteem-geert;
+        sosa:usedForExecution  exec:smelten-2026-02-10 .
 
 role:gebruiker  rdf:type  prov:Role;
         prov:wasRoleIn  attr:relatie-keuken-geert .
@@ -447,7 +430,7 @@ var:gehakte-walnoten  rdf:type  pplan:Variable;
 exec:hakken-2026-02-10
         rdf:type                 pplan:Activity , sosa:Actuation , sosa:Execution , prov:Activity;
         rdfs:label               "Hakken van walnoten."@nl;
-        pplan:correspondsToStep  step:hakken;
+        pplan:correspondsToStep  step:mengen;
         prov:generated           ent:gehakte-walnoten_001;
         prov:influenced          ent:gehakte-walnoten_001;
         prov:used                ent:walnoten_001;
@@ -457,7 +440,7 @@ exec:hakken-2026-02-10
         sosa:isMemberOf          exec:brownies-bakken-026-02-10;
         sosa:madeByActuator      inst:haksysteem-geert;
         sosa:madeBySystem        inst:haksysteem-geert;
-        sosa:usedProcedure       plan:hakken .
+        sosa:usedProcedure       step:mengen .
 
 inst:inst:mes-geert  rdf:type  prov:Entity , prov:Agent , sosa:System;
         rdfs:label            "Het systeem van Geert dat kan snijden."@nl;
@@ -479,7 +462,7 @@ inst:haksysteem-geert
         prov:wasAssociateFor  exec:hakken-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasSubSystem     inst:mes-geert , inst:snijplank-geert;
-        sosa:implements       plan:hakken;
+        sosa:implements       step:hakken;
         sosa:madeActuation    exec:hakken-2026-02-10;
         sosa:madeExecution    exec:hakken-2026-02-10 .
 
@@ -493,10 +476,11 @@ ent:bloem_001  rdf:type              prov:Entity , pplan:Entity;
         prov:wasUsedBy               exec:mengen-2026-02-10 .
 
 step:beslag_in_bakvorm
-        rdf:type            pplan:Step;
+        rdf:type            prov:Entity , riepr:IIOA , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity , prov:Plan;
         rdfs:label          "Vul de bakvorm met beslag"@nl;
         pplan:isPrecededBy  step:voorverwarmen;
-        pplan:isStepOfPlan  plan:bakken .
+        pplan:isStepOfPlan  step:bakken;
+        sosa:implementedBy  inst:bakvorm-geert .
 
 ingredient:bloem  rdf:type  skos:Concept .
 
@@ -533,9 +517,9 @@ exec:bakken-2026-02-10
         sosa:isMemberOf          exec:brownies-bakken-026-02-10;
         sosa:madeByActuator      inst:oven-geert;
         sosa:madeBySystem        inst:oven-geert;
-        sosa:usedProcedure       plan:bakken .
+        sosa:usedProcedure       step:bakken .
 
-agent:nigella-lawson  rdf:type  prov:Agent;
+agent:nigella-lawson  rdf:type  sosa:System , prov:Entity , prov:Agent , sosa:Sensor;
         rdfs:label  "Nigella Lawson"@nl .
 
 ent:chocolade_001  rdf:type          prov:Entity , pplan:Entity;
@@ -551,9 +535,9 @@ ent:chocolade_001  rdf:type          prov:Entity , pplan:Entity;
         sosa:isUltimateFeatureOfInterestOf
                 exec:brownies-bakken-026-02-10 .
 
-step:voorverwarmen  rdf:type  pplan:Step;
+step:voorverwarmen  rdf:type  prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity , pplan:Step , pplan:Plan , sosa:Procedure;
         rdfs:label          "Verwarm de oven tot 180 graden"@nl;
-        pplan:isStepOfPlan  plan:bakken .
+        pplan:isStepOfPlan  step:bakken .
 
 var:donkere-chocolade
         rdf:type                pplan:Variable;
@@ -566,9 +550,6 @@ var:donkere-chocolade
 
 ingredient:suiker  rdf:type  skos:Concept .
 
-plan:roer_tot_homogeen_vloeibaar_mengsel
-        sosa:implementedBy  inst:garde-geert .
-
 inst:garde-geert  rdf:type    sosa:System , prov:Entity , prov:Agent;
         rdfs:label            "Garde in Geert's keuken."@nl;
         prov:actedOnBehalfOf  agent:geert;
@@ -576,7 +557,7 @@ inst:garde-geert  rdf:type    sosa:System , prov:Entity , prov:Agent;
         prov:wasAssociateFor  exec:homogeniseren-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
-        sosa:implements       plan:roer_tot_homogeen_vloeibaar_mengsel;
+        sosa:implements       step:roer_tot_homogeen_vloeibaar_mengsel;
         sosa:isSubSystemOf    inst:smeltsysteem-geert .
 
 exec:brownies-bakken-026-02-10
@@ -600,15 +581,8 @@ inst:gasvuur-geert  rdf:type  sosa:System , prov:Entity , prov:Agent;
         prov:wasAssociateFor  exec:verhitten-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
-        sosa:implements       plan:verwarm_pan;
+        sosa:implements       step:verwarm_pan;
         sosa:isSubSystemOf    inst:smeltsysteem-geert .
-
-plan:smelten  rdf:type         prov:Plan , prov:Entity , pplan:Plan , sosa:Procedure , riepr:IIOA , pplan:Entity;
-        rdfs:label             "Smelt boter en chocolade"@nl;
-        pplan:isSubPlanOfPlan  plan:nigella-brownies;
-        owl:topObjectProperty  plan:nigella-brownies;
-        sosa:implementedBy     inst:smeltsysteem-geert;
-        sosa:usedForExecution  exec:smelten-2026-02-10 .
 
 inst:keukenrobot-geert
         rdf:type              prov:Agent , prov:Entity , sosa:System;
@@ -618,21 +592,15 @@ inst:keukenrobot-geert
         prov:wasAssociateFor  exec:mengen-2026-02-10;
         prov:wasInfluencedBy  agent:geert;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
-        sosa:implements       plan:mengen;
+        sosa:implements       step:mengen;
         sosa:madeActuation    exec:mengen-2026-02-10;
         sosa:madeExecution    exec:mengen-2026-02-10 .
 
-plan:mengen  rdf:type          sosa:Procedure , pplan:Plan , pplan:Entity , riepr:IIOA , prov:Plan , prov:Entity;
-        rdfs:label             "Meng alle ingrediënten"@nl;
-        pplan:isSubPlanOfPlan  plan:nigella-brownies;
-        owl:topObjectProperty  plan:nigella-brownies;
-        sosa:implementedBy     inst:keukenrobot-geert;
-        sosa:usedForExecution  exec:mengen-2026-02-10 .
-
-step:bakvorm_in_oven  rdf:type  pplan:Step;
+step:bakvorm_in_oven  rdf:type  riepr:IIOA , sosa:Procedure , prov:Plan , prov:Entity , pplan:Plan , pplan:Step , pplan:Entity;
         rdfs:label          "Plaats de bakvorm in de oven"@nl;
         pplan:isPrecededBy  step:beslag_in_bakvorm;
-        pplan:isStepOfPlan  plan:bakken .
+        pplan:isStepOfPlan  step:bakken;
+        sosa:implementedBy  agent:geert .
 
 var:brownies  rdf:type          pplan:Variable;
         rdfs:label              "Gebakken brownies"@nl;
@@ -641,9 +609,10 @@ var:brownies  rdf:type          pplan:Variable;
         pplan:isVariableOfPlan  plan:nigella-brownies .
 
 step:boter_en_chocolade_in_pan
-        rdf:type            pplan:Step;
+        rdf:type            sosa:Procedure , pplan:Step , pplan:Plan , prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity;
         rdfs:label          "Doe de boter en de chocolade in een pan"@nl;
-        pplan:isStepOfPlan  plan:smelten .
+        pplan:isStepOfPlan  step:smelten;
+        sosa:implementedBy  inst:pan-geert .
 
 var:kleur  rdf:type             pplan:Variable;
         rdfs:label              "Kleur"@nl;
@@ -654,15 +623,12 @@ var:kleur  rdf:type             pplan:Variable;
         sosa:outputFor          step:laat_bakken_tot_lichtbruine_bovenkant .
 
 step:haal_bakvorm_uit_oven_en_laat_afkoelen
-        rdf:type            pplan:Step;
+        rdf:type            riepr:IIOA , prov:Entity , prov:Plan , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity;
         rdfs:label          "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl;
         pplan:hasInputVar   var:kleur;
         pplan:isPrecededBy  step:laat_bakken_tot_lichtbruine_bovenkant;
-        pplan:isStepOfPlan  plan:bakken;
+        pplan:isStepOfPlan  step:bakken;
         sosa:hasInput       var:kleur .
-
-plan:bakvorm_in_oven  sosa:implementedBy
-                agent:geert .
 
 parameter:de_kleur_van_de_bovenzijde_va_de_brownie
         rdf:type            prov:Entity , sosa:Property;

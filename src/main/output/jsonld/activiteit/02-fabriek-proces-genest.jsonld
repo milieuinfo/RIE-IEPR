@@ -312,7 +312,11 @@
     "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/koekjes",
     "label" : "Koekjes maken",
     "status" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Actief",
-    "atLocation" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC"
+    "http://www.w3.org/ns/sosa/isHostedBy" : {
+      "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/ACTIVITEIT_001_LOC",
+      "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie",
+      "label" : "Locatie ACTIVITEIT_001"
+    }
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
     "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
@@ -330,12 +334,12 @@
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_2",
     "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+    "dct_type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces",
     "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
     "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/mengsel",
     "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_1",
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001",
-    "label" : "Overbrenging",
-    "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#overbrengingsProces"
+    "label" : "Overbrenging"
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_001_3",
     "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
@@ -355,12 +359,16 @@
   }, {
     "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_003",
     "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces",
+    "dct_type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
     "hasInputVar" : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
     "hasOutputVar " : "https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas",
     "isPrecededBy" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/STAP_002",
     "isStepOfPlan" : "https://data.riepr.omgeving.vlaanderen.be/id/proces/ACTIVITEIT_001",
     "label" : "Rookgas afvoeren",
-    "wasDerivedFrom" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitstootProces",
-    "wasInfluencedBy" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD"
+    "http://www.w3.org/ns/ssn/implementedBy" : {
+      "uri" : "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/TBD",
+      "type" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt",
+      "label" : "Emissiepunt koekjesoven"
+    }
   } ]
 }

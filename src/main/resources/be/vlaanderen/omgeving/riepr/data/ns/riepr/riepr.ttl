@@ -114,7 +114,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan worden geïmplementeerd door een agent
-        owl:onProperty sosa:implementedBy ; 
+        owl:onProperty ssn:implementedBy ; 
         owl:someValuesFrom prov:Agent ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
@@ -199,6 +199,8 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een installatie kan als systeem meerdere objecten bevatten
+        # dit is optioneel, want een installatie kan ook (nog) geen
+        # sub-systemen hebben
         owl:onProperty ssn:hasSubSystem ; 
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
@@ -247,7 +249,8 @@
         # bijvoorbeeld wanneer een vestiging verkocht is en de locatie hergebruikt wordt
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :Installatie ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Emissiepunt a owl:Class ;
@@ -381,6 +384,19 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
+    
+:AbstractEmissiepunt a owl:Class ;
+    rdfs:label "Abstract Emissiepunt"@nl ;
+    rdfs:comment "Een abstract emissiepunt is een conceptueel emissiepunt dat niet noodzakelijk een vaste locatie heeft, maar wel een functionele rol vervult in het proces."@nl ;
+    skos:example [ a :AbstractEmissiepunt ;
+        rdfs:label "Gebouw uitstootpunt"@nl ;
+        dct:issued "2020-01-01"^^xsd:date ;
+        dct:valid "2030-12-31"^^xsd:date ;
+        sosa:isHostedBy [ a :ExploitatieLocatie ;
+            rdfs:label "Cementfabriek Antwerpen"@nl
+        ]
+    ] ;
+    rdfs:subClassOf :Emissiepunt .
     
 :Schouw a owl:Class ;
     rdfs:label "Schouw"@nl ;
@@ -891,7 +907,7 @@
         owl:someValuesFrom :EmissieProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty sosa:implementedBy ;
+    owl:onProperty ssn:implementedBy ;
     owl:someValuesFrom :Emissiepunt
 ] .
 
@@ -902,7 +918,7 @@
         owl:someValuesFrom :apparaatVerwerkingsProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty sosa:implementedBy ;
+    owl:onProperty ssn:implementedBy ;
     owl:someValuesFrom :Apparaat
 ] .
 
@@ -924,6 +940,6 @@
         owl:someValuesFrom :meetProces
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty sosa:implementedBy ;
+    owl:onProperty ssn:implementedBy ;
     owl:someValuesFrom :Meetpunt
 ] .

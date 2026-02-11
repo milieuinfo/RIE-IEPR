@@ -198,7 +198,7 @@ exec:bakken  rdf:type            sosa:Execution , sosa:Actuation , prov:Activity
         sosa:madeBySystem        inst:oven-nigella;
         sosa:usedProcedure       step:bakken .
 
-ent:brownies_001  rdf:type           prov:Entity , pplan:Entity;
+ent:brownies_001  rdf:type           sosa:FeatureOfInterest , prov:Entity , pplan:Entity;
         rdf:value                    150;
         dct:type                     eindproduct:brownies;
         pplan:correspondsToVariable  var:brownies;
@@ -375,7 +375,7 @@ exec:controleer_wanneer_brownies_klaar_zijn
         sosa:observedProperty      parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
         sosa:usedProcedure         step:laat_bakken_tot_lichtbruine_bovenkant .
 
-agent:nigella-lawson  rdf:type  prov:Agent , owl:Thing;
+agent:nigella-lawson  rdf:type  prov:Agent , sosa:System , sosa:Sensor , prov:Entity , owl:Thing;
         rdfs:label             "Nigella Lawson"@nl;
         prov:agentOfInfluence  attr:plan-koekjes-maken_0408249136;
         prov:contributed       kitchen:nigella-keuken;

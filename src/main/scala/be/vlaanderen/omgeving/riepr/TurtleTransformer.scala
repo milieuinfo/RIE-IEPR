@@ -190,16 +190,29 @@ object TurtleTransformer {
     if (records.nonEmpty) {
       val df = spark.read.json(spark.createDataset(records))
 
+      // Sanitize column names: replace any non-alphanumeric character with underscore
+      def sanitize(name: String): String = name.replaceAll("[^A-Za-z0-9_]", "_")
+
       val preferredCols = Seq("uri", "type", "label")
       val orderedCols =
         preferredCols.filter(df.columns.contains) ++
           df.columns.filterNot(preferredCols.contains)
 
-      df.select(orderedCols.map(col): _*)
-        .coalesce(1)
+      // Rename all columns to sanitized names to avoid Spark unresolved-column errors
+      val renamedDf = df.columns.foldLeft(df) { (acc, c) =>
+        acc.withColumnRenamed(c, sanitize(c))
+      }
+
+      // Reorder columns: prefered columns (sanitized) first, then the rest
+      val sanitizedPreferred = preferredCols.filter(df.columns.contains).map(sanitize)
+      val remaining = renamedDf.columns.filterNot(sanitizedPreferred.contains)
+      val outDf = renamedDf.select((sanitizedPreferred ++ remaining).map(col): _*)
+
+      outDf.coalesce(1)
         .write.mode("overwrite")
         .parquet(outputPath)
-      val schemaJson = df.schema.json
+
+      val schemaJson = outDf.schema.json
       val writer = new FileWriter(outputPath + "/_schema.json")
       try writer.write(schemaJson)
       finally writer.close()

@@ -23,7 +23,7 @@ proces:89031055579_6839805367_ACTIVITEIT_1 a riepr:Proces ;
     adms:status riepr:Actief ;
     pplan:hasInputVar stof:meel ;
     pplan:hasOutputVar stof:koekjes ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 .
+    sosa:isHostedBy exploitatielocatie:0408249136_6842345678 .
 
 proces:89031055579_6839805367_ACTIVITEIT_1_0001 a riepr:Proces ;
     rdfs:label "Koekjesdeeg maken"@nl ;
@@ -36,15 +36,15 @@ proces:89031055579_6839805367_ACTIVITEIT_1_0002 a riepr:Proces ;
     pplan:hasOutputVar stof:rookgas ;
     pplan:isStepOfPlan proces:89031055579_6839805367_ACTIVITEIT_1 ;
     pplan:isPrecededBy proces:89031055579_6839805367_ACTIVITEIT_1_0001 ;
-    prov:wasDerivedFrom riepr:uitstootProces ;
-    prov:wasInfluencedBy emissiepunt:TBD .
+        dct:type riepr:uitstootProces ;
+        ssn:implementedBy emissiepunt:TBD .
 
 emissiepunt:TBD a riepr:Emissiepunt ;
     rdfs:label "Emissiepunt koekjesoven"@nl ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:valid "2030-12-31"^^xsd:date ;
-    prov:atLocation exploitatielocatie:0408249136_6842345678 ;
+    sosa:isHostedBy exploitatielocatie:0408249136_6842345678 ;
     adms:status riepr:Actief .
 
 stof:meel a riepr:ProcesVariabele ;

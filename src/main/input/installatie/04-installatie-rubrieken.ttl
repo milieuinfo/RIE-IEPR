@@ -7,6 +7,8 @@
 @prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 ## ---------------------------------------
@@ -17,11 +19,11 @@ installatie:GPBV_12345 a riepr:Installatie ;
     dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
     adms:status riepr:Actief ;
-    prov:atLocation [ a riepr:ExploitatieLocatie ;
+    sosa:isHostedBy [ a riepr:ExploitatieLocatie ;
         rdfs:label "Exploitatielocatie MijnInstallatie"@nl ;
         ogc:hasGeometry [ 
             ogc:asWKT "POINT(4.1234 51.5678)"^^ogc:WKTLiteral
         ]
     ] ;
     # TODO VLAREM rubrieken hebben URIs maar nog geen documentatie gevonden
-    rdfs:member <...>, <...> .
+    sosa:hasSubSystem <...>, <...> .
