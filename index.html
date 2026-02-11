@@ -2015,7 +2015,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p data-fill-with="logo"></p>
    <h1 class="no-ref p-name" id="title">RIE-IEPR Ontologie</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">Living Document,
-    <time class="dt-updated" datetime="2026-02-10">10 February 2026</time></span></h2>
+    <time class="dt-updated" datetime="2026-02-11">11 February 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2030,7 +2030,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 10 February 2026,
+In addition, as of 11 February 2026,
 the editors have made this specification available under the
 <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
@@ -2062,8 +2062,9 @@ Parts of this work may be from another specification document.  If so, those par
       <li>
        <a href="#Emissiepunt"><span class="secno">5.3</span> <span class="content">Emissiepunt</span></a>
        <ol class="toc">
-        <li><a href="#Lozingspunt"><span class="secno">5.3.1</span> <span class="content">Lozingspunt</span></a>
-        <li><a href="#Schouw"><span class="secno">5.3.2</span> <span class="content">Schouw</span></a>
+        <li><a href="#AbstractEmissiepunt"><span class="secno">5.3.1</span> <span class="content">Abstract Emissiepunt</span></a>
+        <li><a href="#Lozingspunt"><span class="secno">5.3.2</span> <span class="content">Lozingspunt</span></a>
+        <li><a href="#Schouw"><span class="secno">5.3.3</span> <span class="content">Schouw</span></a>
        </ol>
       <li><a href="#Exploitant"><span class="secno">5.4</span> <span class="content">Exploitant</span></a>
       <li><a href="#Contactpersoon"><span class="secno">5.5</span> <span class="content">Exploitant Contactpersoon</span></a>
@@ -2179,7 +2180,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
 </pre>
    <h2 class="heading settled" data-level="4" id="overview"><span class="secno">4. </span><span class="content">Overzicht</span><a class="self-link" href="#overview"></a></h2>
-   <p>Deze ontologie definieert 19 klassen en 13 concept instanties.</p>
+   <p>Deze ontologie definieert 20 klassen en 13 concept instanties.</p>
    <h2 class="heading settled" data-level="5" id="classes"><span class="secno">5. </span><span class="content">Klassen</span><a class="self-link" href="#classes"></a></h2>
    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:false});</script>
@@ -2209,6 +2210,7 @@ Parts of this work may be from another specification document.  If so, those par
     <li>
      <a href="#Emissiepunt">Emissiepunt</a>
      <ul>
+      <li><a href="#AbstractEmissiepunt">Abstract Emissiepunt</a>
       <li><a href="#Lozingspunt">Lozingspunt</a>
       <li><a href="#Schouw">Schouw</a>
      </ul>
@@ -2271,7 +2273,23 @@ Parts of this work may be from another specification document.  If so, those par
 </pre>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZUxvY2F0aWVbIkV4cGxvaXRhdGllIExvY2F0aWUiXQpuRW1pc3NpZXB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnx2YWxpZHwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkVtaXNzaWVwdW50IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVMb2NhdGll"></div>
-   <h4 class="heading settled" data-level="5.3.1" id="Lozingspunt"><span class="secno">5.3.1. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
+   <h4 class="heading settled" data-level="5.3.1" id="AbstractEmissiepunt"><span class="secno">5.3.1. </span><span class="content">Abstract Emissiepunt</span><a class="self-link" href="#AbstractEmissiepunt"></a></h4>
+   <p><strong>IRI:</strong> <code>riepr:AbstractEmissiepunt</code></p>
+   <p><strong>Definitie:</strong> Een abstract emissiepunt is een conceptueel emissiepunt dat niet noodzakelijk een vaste locatie heeft, maar wel een functionele rol vervult in het proces.</p>
+   <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
+   <p><strong>Voorbeelden:</strong></p>
+<pre class="highlight language-turtle"><c- p>[</c->
+  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>AbstractEmissiepunt</c-> <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/issued></c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Gebouw uitstootpunt"</c-><c- o>@</c->nl <c- p>;</c->
+  <c- g>&lt;http://purl.org/dc/terms/valid></c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
+  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>ExploitatieLocatie</c-> <c- p>;</c->
+  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
+<c- p>]</c->
+</pre>
+   <p><strong>Relaties:</strong></p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFic3RyYWN0RW1pc3NpZXB1bnRbIkFic3RyYWN0IEVtaXNzaWVwdW50Il0KbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5BYnN0cmFjdEVtaXNzaWVwdW50IC0tPnxzdWJDbGFzc09mfCBuRW1pc3NpZXB1bnQ="></div>
+   <h4 class="heading settled" data-level="5.3.2" id="Lozingspunt"><span class="secno">5.3.2. </span><span class="content">Lozingspunt</span><a class="self-link" href="#Lozingspunt"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Lozingspunt</code></p>
    <p><strong>Definitie:</strong> Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
@@ -2287,7 +2305,7 @@ Parts of this work may be from another specification document.  If so, those par
 </pre>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkxvemluZ3NwdW50WyJMb3ppbmdzcHVudCJdCm5FbWlzc2llcHVudFsiRW1pc3NpZXB1bnQiXQpuTG96aW5nc3B1bnQgLS0+fHN1YkNsYXNzT2Z8IG5FbWlzc2llcHVudA=="></div>
-   <h4 class="heading settled" data-level="5.3.2" id="Schouw"><span class="secno">5.3.2. </span><span class="content">Schouw</span><a class="self-link" href="#Schouw"></a></h4>
+   <h4 class="heading settled" data-level="5.3.3" id="Schouw"><span class="secno">5.3.3. </span><span class="content">Schouw</span><a class="self-link" href="#Schouw"></a></h4>
    <p><strong>IRI:</strong> <code>riepr:Schouw</code></p>
    <p><strong>Definitie:</strong> Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen.</p>
    <p><strong>Subklasse van:</strong> <code>riepr:Emissiepunt</code></p>
@@ -2310,9 +2328,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Exploitant</code></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
    <p><strong>Subklasse van:</strong> <code>prov:Agent</code></p>
-   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-96; label: min 1; address: min 0 of Address</p>
+   <p><strong>Constraints:</strong> created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; type: min 1 of n3-98; label: min 1; address: min 0 of Address</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOTZbIm4zLTk2Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185NgpuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhbnRbIkV4cGxvaXRhbnQiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpubjNfOThbIm4zLTk4Il0KbkFkZHJlc3NbIkFkZHJlc3MiXQpuRXhwbG9pdGFudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YW50IC0tPnx2YWxpZHwgbmRhdGUKbkV4cGxvaXRhbnQgLS0+fHR5cGV8IG5uM185OApuRXhwbG9pdGFudCAtLT58YWRkcmVzc3wgbkFkZHJlc3M="></div>
    <h3 class="heading settled" data-level="5.5" id="Contactpersoon"><span class="secno">5.5. </span><span class="content">Exploitant Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
    <p><strong>IRI:</strong> <code>riepr:Contactpersoon</code></p>
    <p><strong>Definitie:</strong> Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
@@ -2339,7 +2357,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <code>riepr:Installatie</code></p>
    <p><strong>Definitie:</strong> Een installatie is een verzameling van apparatuur en infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
    <p><strong>Subklasse van:</strong> <code>ssn:System</code>, <code>prov:Agent</code>, <code>ogc:SpatialObjectCollection</code></p>
-   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0 of Installatie</p>
+   <p><strong>Constraints:</strong> identifier: min 0; hasSubSystem: min 0 of System; label: min 1; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; isHostedBy: min 1, max 1 of ExploitatieLocatie; status: min 1, max 1; wasDerivedFrom: min 0, max 1 of Installatie</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Installatie</c-> <c- p>;</c->
