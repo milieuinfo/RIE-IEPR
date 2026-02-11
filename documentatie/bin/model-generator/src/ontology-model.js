@@ -406,7 +406,15 @@ export class OntologyModel {
 
       const propertyIri = property.value;
       const propertyLocal = this.extractLocalName(propertyIri);
+
+      // Determine the local name of the domain and only propagate
+      // when the declared domain itself is a core (non-external) class
+      // from the RIE ontology. This prevents broad external domains
+      // (e.g. prov:Entity) from adding predicates to many unrelated
+      // core classes.
       const domainLocal = this.extractLocalName(domainClass.value);
+      const domainInfo = this.classes.get(domainLocal);
+      if (!domainInfo || domainInfo.external) return;
 
       // Bepaal de ranges voor deze property
       const rangeQuads = this.store.getQuads(property, new NamedNode(NAMESPACES.rdfs + 'range'), null);
@@ -418,9 +426,15 @@ export class OntologyModel {
         .filter(t => !!t);
       if (rangeTypes.length === 0) return;
 
-      // Voeg restrictie toe aan alle klassen die subklasse zijn van domainClass
+      // Voeg restrictie toe aan alle (core) klassen die subklasse zijn van domainClass
+      // Beperk propagatie tot niet-externe (core) klassen zodat algemene
+      // externe vocabularia (bv. PROV/SOSA) niet onbedoeld predicates aan alle
+      // agent/system-achtige klassen toevoegen.
       this.classes.forEach((classInfo, className) => {
         const classIri = classInfo.iri;
+
+        // Only propagate to core (non-external) classes
+        if (classInfo.external) return;
 
         // Alleen klassen die (transitief) subClassOf domainLocal zijn
         if (!this.isSubClassOf(classIri, domainLocal) && this.extractLocalName(classIri) !== domainLocal) {

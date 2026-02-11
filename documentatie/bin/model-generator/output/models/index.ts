@@ -1,5 +1,5 @@
 // Auto-generated models
-export * from './Address.model';
+export * from './AbstractEmissiepunt.model';
 export * from './Apparaat.model';
 export * from './Contactpersoon.model';
 export * from './Emissiepunt.model';

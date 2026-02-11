@@ -1,5 +1,6 @@
 // Auto-generated models
 
+import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 import { InstallatieIdentifier } from './InstallatieIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -11,8 +12,8 @@ export class Installatie implements ISystem {
   @jsonMember(String, { name: 'uri' })
   uri!: string;
 
-  @jsonArrayMember(String, { name: 'hasSubSystem' })
-  hasSubSystem?: string[];
+  @jsonArrayMember(Object, { name: 'hasSubSystem' })
+  heeftSubSysteem?: ISystem[];
 
   @jsonMember(String, { name: 'label' })
   benaming!: string;
@@ -23,8 +24,11 @@ export class Installatie implements ISystem {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonMember(AfgeleidVan, { name: 'wasDerivedFrom' })
-  afgeleidVan?: AfgeleidVan;
+  @jsonMember(ExploitatieLocatie, { name: 'isHostedBy' })
+  locatie!: ExploitatieLocatie;
+
+  @jsonMember(Installatie, { name: 'wasDerivedFrom' })
+  afgeleidVan?: Installatie;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

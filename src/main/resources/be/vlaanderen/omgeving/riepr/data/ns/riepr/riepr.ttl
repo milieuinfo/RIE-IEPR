@@ -115,7 +115,7 @@
     rdfs:subClassOf [ a owl:Restriction ; 
         # Een proces kan worden geïmplementeerd door een agent
         owl:onProperty ssn:implementedBy ; 
-        owl:someValuesFrom prov:Agent ; 
+        owl:someValuesFrom ssn:System ; 
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
@@ -737,7 +737,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet gekoppeld zijn aan exact één exploitant
-        owl:onProperty prov:wasAttributedTo ; # TODO
+        owl:onProperty prov:wasAttributedTo ; # TODO MOGELIJK ANDERE PROPERTY
         owl:someValuesFrom :Exploitant ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -770,7 +770,8 @@
         # bijvoorbeeld wanneer een vestiging verkocht is en de locatie hergebruikt wordt
         owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # Een exploitatie locatie moet exact 1 geometrie hebben
@@ -834,6 +835,11 @@
     rdfs:comment "Een apparaatverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een apparaat."@nl ;
     skos:broader :VerwerkingsProcedure ;
     skos:prefLabel "Apparaatverwerkingsproces"@nl .
+:installatieVerwerkingsProces a skos:Concept, sosa:Procedure ;
+    rdfs:label "Installatieverwerkingsproces"@nl ;
+    rdfs:comment "Een installatieverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een installatie."@nl ;
+    skos:broader :VerwerkingsProcedure ;
+    skos:prefLabel "Installatieverwerkingsproces"@nl .
 :overbrengingsProces a skos:Concept, sosa:Procedure ;
     rdfs:label "Overbrengingsproces"@nl ;
     rdfs:comment "Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging."@nl ;

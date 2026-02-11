@@ -89,51 +89,10 @@ export class SqlGenerator extends SchemaGenerator {
 
     // Compute attributes using centralized helper (handles identifiers and superclass filtering)
     attributes = this.computeAttributesForClass(className, this.computeVisibleClasses(), null);
-
     // Filter out enum attributes (only needed for ER diagrams, not SQL)
     attributes = attributes.filter(attr => attr.type !== 'enum');
-
-    // Remove virtual identifier attributes from main (non-Identifier) tables; identifiers
-    // are represented in separate Identifier tables (e.g. exploitatie_locatie_identifier)
-    if (!className.endsWith('Identifier')) {
-      attributes = attributes.filter(attr => {
-        if (!attr.propertyIri) return true;
-        return !String(attr.propertyIri).includes('adms#identifier');
-      });
-    }
-
-    // Filter out FK attributes to purely technical classes
-    attributes = attributes.filter(attr => {
-      if (!attr.isForeignKey || !attr.comment) return true;
-      const targets = String(attr.comment)
-        .split(',')
-        .map(s => s.trim())
-        .filter(s => !!s);
-      if (targets.length === 0) return true;
-      const allTechnical = targets.every(t => {
-        const info = this.ontology.classes.get(t);
-        return this.utils.isTechnicalClass(t, info);
-      });
-      return !allTechnical;
-    });
-
-    // Sort attributes: PK fields first, then geldig_tot, then others
-    const pkFieldOrder = ['uri', 'geldig_van', 'aangemaakt_op'];
-    attributes.sort((a, b) => {
-      // PK fields first (in defined order)
-      const aIndex = pkFieldOrder.indexOf(a.name);
-      const bIndex = pkFieldOrder.indexOf(b.name);
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
-      
-      // geldig_tot comes after PK fields
-      if (a.name === 'geldig_tot') return -1;
-      if (b.name === 'geldig_tot') return 1;
-      
-      // All other fields in original order
-      return 0;
-    });
+    // Reuse shared filtering and sorting
+    attributes = this.filterAndSortAttributes(attributes, className, this.computeVisibleClasses());
 
     let sql = `CREATE TABLE ${tableName} (\n`;
     // Column definitions

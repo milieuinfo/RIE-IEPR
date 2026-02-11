@@ -85,10 +85,10 @@ installatie1.benaming = 'Stroomboogoven';
 installatie1.aangemaaktOp = D('2020-01-01T00:00:00Z');
 installatie1.geldigVan = D('2020-07-30');
 installatie1.locatie = hoofdZetel;
-installatie1.hasSubSystem = [
-  emissiepunt1.uri,
-  emissiepunt2.uri,
-  apparaat1.uri,
+installatie1.heeftSubSysteem = [
+  emissiepunt1,
+  emissiepunt2,
+  apparaat1,
 ];
 
 export const installatie2 = new Installatie();
@@ -97,7 +97,7 @@ installatie2.benaming = 'Gieterij';
 installatie2.aangemaaktOp = D('2020-01-01T00:00:00Z');
 installatie2.geldigVan = D('2020-07-30');
 installatie2.locatie = hoofdZetel;
-installatie2.hasSubSystem = [emissiepunt5.uri, apparaat2.uri];
+installatie2.heeftSubSysteem = [emissiepunt5, apparaat2];
 
 // Procesvariabelen (stoffen)
 const baseStof = 'https://data.riepr.omgeving.vlaanderen.be/id/stof/';

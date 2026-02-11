@@ -35,54 +35,17 @@ export class ClassGenerator extends BaseGenerator {
       const biz = (attr.name && typeof attr.name === 'string') ? String(attr.name) : null;
       if (local === 'label' || biz === 'benaming' || String(attr.propertyIri).endsWith('/label') || String(attr.propertyIri).endsWith('#label')) return false;
     } catch (e) { /* ignore */ }
-    return (typeof attr.maxCardinality === 'number' && attr.maxCardinality !== 1)
-      || (attr.maxCardinality === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
+    // Treat negative or undefined maxCardinality (e.g. -1 meaning unspecified)
+    // as "no explicit max" so the determination falls back to minCardinality
+    // and FK status.
+    const max = (typeof attr.maxCardinality === 'number' && attr.maxCardinality >= 0) ? attr.maxCardinality : undefined;
+    return (typeof max === 'number' && max !== 1)
+      || (max === undefined && attr.minCardinality !== 1 && !attr.isPrimaryKey && attr.isForeignKey);
   }
 
   mapForeignKeyAttribute(attr, className) {
     if (!attr || !attr.propertyIri) return null;
-    let override = Config.PROPERTY_TYPE_OVERRIDES.get(attr.propertyIri);
-    // fallback: try local name key (some attributes store local names)
-    try {
-      if (!override && attr.propertyIri && typeof this.ontology.extractLocalName === 'function') {
-        const local = this.ontology.extractLocalName(attr.propertyIri);
-        if (local) override = Config.PROPERTY_TYPE_OVERRIDES.get(local) || override;
-      }
-    } catch (e) { /* ignore */ }
-    if (override) {
-      // If the attribute explicitly targets an internal (non-external)
-      // concrete class, prefer the concrete target and skip the override
-      // which typically maps to a generic interface (e.g. IAgent).
-      if (Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
-        for (const t of attr.targetClasses) {
-          const ti = this.ontology.classes.get(t);
-          if (ti && !ti.external) return null;
-        }
-      }
-      // If no targetClasses were provided on the derived attribute, attempt
-      // to inspect the original class definition's restrictions to see if
-      // it explicitly targets an internal class; if so, skip the override.
-      try {
-        if ((!attr.targetClasses || attr.targetClasses.length === 0) && className) {
-          const classInfo = this.ontology.classes.get(className);
-          if (classInfo && Array.isArray(classInfo.restrictions)) {
-            const matching = classInfo.restrictions.find(r => r.propertyIri === attr.propertyIri);
-            if (matching) {
-              const resolved = (typeof this.ontology.resolveRangeTypes === 'function') ? this.ontology.resolveRangeTypes(matching.rangeTypes || [], matching) : (matching.rangeTypes || []);
-              for (const t of resolved) {
-                const ti = this.ontology.classes.get(t);
-                if (ti && !ti.external) return null;
-              }
-            }
-          }
-        }
-      } catch (e) { /* ignore */ }
-      const biz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, className) : null;
-      const fallback = (attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null);
-      const name = override.name || biz || fallback || '';
-      const type = override.type || 'object';
-      return { name, type };
-    }
+
     return null;
   }
 
@@ -94,7 +57,6 @@ export class ClassGenerator extends BaseGenerator {
     if (!superInfo) return { props, imports };
     const superAttrs = this.utils.deriveAttributes(superInfo, this.enumClasses, superName) || [];
     superAttrs.forEach(attr => {
-      const override = attr.propertyIri ? Config.PROPERTY_TYPE_OVERRIDES.get(attr.propertyIri) : null;
       let t = 'string';
       if (attr.type === 'date' || attr.type === 'datetime') t = 'Date';
       else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') t = 'number';
@@ -142,17 +104,53 @@ export class ClassGenerator extends BaseGenerator {
         }
       }
 
-      const isArray = this.isAttributeMultiValued(attr);
+      // Determine arrayness for shared-interface properties by inspecting
+      // implementing classes: if any implementing class defines the
+      // corresponding attribute as multi-valued, expose it as an array
+      // on the interface. Fall back to the attribute's own cardinality
+      // when no implementer provides guidance.
+      let isArray = false;
+      try {
+        const visible = Array.from(this.computeVisibleClasses() || []);
+        const implementers = [];
+        if (classToSupers && typeof classToSupers.forEach === 'function') {
+          classToSupers.forEach((supers, cls) => {
+            try {
+              if (Array.isArray(supers) && supers.includes(superName) && cls !== superName) implementers.push(cls);
+            } catch (e) { /* ignore */ }
+          });
+        }
+        for (const impl of implementers) {
+          try {
+            const implAttrs = this.computeAttributesForClass(impl, visible) || [];
+            const matching = implAttrs.find(a => {
+              if (!a) return false;
+              if (a.name === attr.name) return true;
+              if (a.propertyIri && attr.propertyIri && a.propertyIri === attr.propertyIri) return true;
+              try {
+                const aLocal = a.propertyIri ? this.ontology.extractLocalName(a.propertyIri) : a.name;
+                const attrLocal = attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : attr.name;
+                if (aLocal && attrLocal && aLocal === attrLocal) return true;
+                const aBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(a.propertyIri, impl) : null;
+                const attrBiz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, impl) : null;
+                if (aBiz && attrBiz && aBiz === attrBiz) return true;
+              } catch (e) { /* ignore */ }
+              return false;
+            });
+            if (matching && this.isAttributeMultiValued(matching)) { isArray = true; break; }
+          } catch (e) { /* ignore */ }
+        }
+        if (implementers.length === 0) {
+          // No implementing classes found — conservative fallback to attribute metadata
+          isArray = this.isAttributeMultiValued(attr);
+        }
+      } catch (e) {
+        isArray = this.isAttributeMultiValued(attr);
+      }
       const rawName = (attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null);
       let propName = this.toCamelCase(rawName);
       const base = propName.replace(/Id$/i, '');
-      if (override && override.dropId) propName = base;
-
-      if (override && override.interface) {
-        const iface = `I${override.interface}` + (isArray ? '[]' : '');
-        t = iface;
-        imports.add(override.interface);
-      } else if (isArray) {
+      if (isArray) {
         t = `${t}[]`;
       }
 
@@ -208,18 +206,18 @@ export class ClassGenerator extends BaseGenerator {
       const biz = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(attr.propertyIri, className) : null;
       const rawName = biz || ((attr.name && typeof attr.name === 'string') ? attr.name : (this.ontology.extractLocalName ? this.ontology.extractLocalName(attr.propertyIri) : null));
       name = (typeof rawName === 'string' && rawName.length > 0) ? this.toCamelCase(rawName) : (rawName || '');
-        if (attr.propertyIri === 'rdfs:label' || attr.propertyIri === `${Config.NAMESPACES.rdfs}label`) type = 'string';
-        else if (attr.type === 'enum') {
-          // Resolve enum class name for diagram rendering
-          let enumClass = null;
-          try {
-            if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
-              enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
-            }
-          } catch (e) { /* ignore */ }
-          const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
-          type = enumName || 'enum';
-        }
+      if (attr.propertyIri === 'rdfs:label' || attr.propertyIri === `${Config.NAMESPACES.rdfs}label`) type = 'string';
+      else if (attr.type === 'enum') {
+        // Resolve enum class name for diagram rendering
+        let enumClass = null;
+        try {
+          if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+            enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
+          }
+        } catch (e) { /* ignore */ }
+        const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
+        type = enumName || 'enum';
+      }
       else if (attr.type === 'date' || attr.type === 'datetime') type = 'Date';
       else if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') type = attr.type;
       else if (attr.type === 'boolean') type = 'boolean';
@@ -228,62 +226,38 @@ export class ClassGenerator extends BaseGenerator {
 
     const isArray = this.isAttributeMultiValued(attr);
 
-    const override = Config.PROPERTY_TYPE_OVERRIDES.get(attr.propertyIri);
-    if (override && override.dropId) {
-      name = String(name).replace(/Id$/i, '');
-      if (override && override.type) type = override.type;
-      else {
-        let ifaceName = null;
-        if (override && override.interface) ifaceName = `I${override.interface}`;
-        if (!ifaceName) {
-          let provAgentLocal = 'Agent';
-          try {
-            if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
-              const found = Array.from(Config.INTERFACE_CLASSES).find(k => /agent/i.test(k));
-              if (found) provAgentLocal = found;
-            }
-          } catch (e) { /* ignore */ }
-          const agentEntry = [...sharedInterfaceNames.entries()].find(([s, iface]) => s === provAgentLocal || (this.ontology.classes.get(s) && this.ontology.isSubClassOf(this.ontology.classes.get(s).iri, provAgentLocal)));
-          if (agentEntry) ifaceName = agentEntry[1];
-        }
-        type = ifaceName || 'object';
-      }
-      if (isArray) type = `${type}[]`;
-      return { name, type, isArray, isForeignKey: !!attr.isForeignKey };
-    }
-
-      if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
-        // Prefer explicit internal concrete targets regardless of visible class list
-        const explicitInternal = (attr.targetClasses || []).filter(tn => {
-          try { const ti = this.ontology.classes.get(tn); return ti && !ti.external; } catch (e) { return false; }
+    if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
+      // Prefer explicit internal concrete targets regardless of visible class list
+      const explicitInternal = (attr.targetClasses || []).filter(tn => {
+        try { const ti = this.ontology.classes.get(tn); return ti && !ti.external; } catch (e) { return false; }
+      });
+      if (explicitInternal.length === 1) {
+        const target = explicitInternal[0];
+        type = this.pascalCase(target);
+      } else {
+        const targets = attr.targetClasses.filter(t => {
+          const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
+          return isRelevant || classNames.includes(t);
         });
-        if (explicitInternal.length === 1) {
-          const target = explicitInternal[0];
-          type = this.pascalCase(target);
+        if (!targets || targets.length === 0) {
+          type = 'string';
         } else {
-          const targets = attr.targetClasses.filter(t => {
-            const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
-            return isRelevant || classNames.includes(t);
-          });
-          if (!targets || targets.length === 0) {
-            type = 'string';
+          // Prefer collapsing to a shared interface when possible (also for internal classes)
+          const iface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
+          if (iface) {
+            type = iface;
+          } else if (targets.length === 1) {
+            const target = targets[0];
+            type = this.pascalCase(target);
           } else {
-            // Prefer collapsing to a shared interface when possible (also for internal classes)
-            const iface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
-            if (iface) {
-              type = iface;
-            } else if (targets.length === 1) {
-              const target = targets[0];
-              type = this.pascalCase(target);
-            } else {
-              type = 'object';
-            }
+            type = 'object';
           }
         }
-        name = String(name).replace(/Id$/i, '');
-        if (isArray) type = `${type}[]`;
-        return { name, type, isArray, isForeignKey: true };
       }
+      name = String(name).replace(/Id$/i, '');
+      if (isArray) type = `${type}[]`;
+      return { name, type, isArray, isForeignKey: true };
+    }
 
     return { name, type, isArray, isForeignKey: !!attr.isForeignKey };
   }
@@ -351,7 +325,9 @@ export class ClassGenerator extends BaseGenerator {
 
   tsTypeForAttribute(attr) {
     // TypeScript typing moved to TypeScriptHelper
-    if (!attr) return 'string';
+    // For shared interfaces prefer conservative single-valued properties
+    // so implementing classes' own cardinality can take precedence.
+    const isArray = false;
     if (attr.type === 'enum') return attr.enumName || 'string';
     if (attr.type === 'date' || attr.type === 'datetime') return 'Date';
     if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double') return 'number';
@@ -383,7 +359,7 @@ export class ClassGenerator extends BaseGenerator {
     }
     return null;
   }
-  
+
 }
 
 export default ClassGenerator;

@@ -1,5 +1,7 @@
 // Auto-generated models
 
+import { ExploitatieLocatie } from './ExploitatieLocatie.model';
+
 import { jsonObject, jsonMember } from 'typedjson';
 
 import type { ISystem } from './System.interface';
@@ -20,6 +22,9 @@ export class Onttrekkingspunt implements ISystem {
 
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
+
+  @jsonMember(ExploitatieLocatie, { name: 'isHostedBy' })
+  locatie!: ExploitatieLocatie;
 
   @jsonMember(String, { name: 'hasGeometry' })
   geometrie?: string;

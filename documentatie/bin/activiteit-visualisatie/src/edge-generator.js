@@ -16,9 +16,8 @@ const prov = {
     used: namedNode('http://www.w3.org/ns/prov#used'),
     wasInfluencedBy: namedNode('http://www.w3.org/ns/prov#wasInfluencedBy'),
     wasAttributedTo: namedNode('http://www.w3.org/ns/prov#wasAttributedTo'),
+    wasDerivedFrom: namedNode('http://www.w3.org/ns/prov#wasDerivedFrom')
 };
-
-prov.wasDerivedFrom = namedNode('http://www.w3.org/ns/prov#wasDerivedFrom');
 
 const rdfs = {
     label: namedNode('http://www.w3.org/2000/01/rdf-schema#label'),

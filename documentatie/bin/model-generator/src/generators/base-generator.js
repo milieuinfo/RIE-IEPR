@@ -163,7 +163,6 @@ export class BaseGenerator {
           return;
         }
         if (restriction.rangeTypes.length === 0) return;
-        if (typeof Config.isExcludedProperty === 'function' && Config.isExcludedProperty(restriction.property)) return;
         if (!ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
         const resolvedRangeTypes = ontology
           .resolveRangeTypes(restriction.rangeTypes, restriction)
@@ -174,8 +173,6 @@ export class BaseGenerator {
             return !this.isTechnicalClass(type, info);
           });
         resolvedRangeTypes.forEach(rangeType => {
-          // Skip spurious self-edge created by prov:wasAttributedTo intersection axioms
-          if (rangeType === classLocalName && restriction.propertyIri && restriction.propertyIri.endsWith('wasAttributedTo')) return;
           const key = `${classLocalName}|${rangeType}|${restriction.property}`;
           if (!relationships.has(key)) {
             const businessLabel = ontology.getBusinessLabelForProperty(restriction.propertyIri, classLocalName);
@@ -209,7 +206,6 @@ export class BaseGenerator {
     const seen = new Set();
 
     (classInfo.restrictions || []).forEach(restriction => {
-      if (Config.isExcludedProperty(restriction.property)) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
 
       // Handle dct:type with no explicit range as a simple string attribute
@@ -456,10 +452,6 @@ export class BaseGenerator {
         // interface-backed join table). We support lookup both by full
         // property IRI and by short property name.
         let override = null;
-        try {
-          override = config.PROPERTY_TYPE_OVERRIDES.get(rel0.propertyIri) || config.PROPERTY_TYPE_OVERRIDES.get(rel0.property);
-        } catch (e) { override = null; }
-
         const attributes = [
           { name: `${fromTable}_uri`, type: 'string', sqlType: 'TEXT', comment: rel0.from, isForeignKey: true, isPrimaryKey: true },
           { name: `target_uri`, type: 'string', sqlType: 'TEXT', comment: targetTypes.join(', '), isForeignKey: false, isPrimaryKey: true },
@@ -621,11 +613,7 @@ export class BaseGenerator {
 
     // Handle property restrictions
     classInfo.restrictions.forEach(restriction => {
-      // Skip identifier restrictions here; identifier relations are handled
-      // separately via `identifierRelations` to produce a single plural
-      // identifiers attribute and a linked Identifier class.
       if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
-      if (Config.isExcludedProperty(restriction.property)) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
 
       // Special handling for dct:type
@@ -693,8 +681,6 @@ export class BaseGenerator {
           }
           return;
         }
-        // If rangeTypes present but not enum, treat as FK (handled below)
-        // (fall through)
       }
 
       // Special handling for QUDT properties without explicit range
@@ -715,11 +701,7 @@ export class BaseGenerator {
         return;
       }
 
-      // If there are no explicit rangeTypes, emit a default string
-      // attribute (covers common cases like rdfs:label and other
-      // data properties that lack an explicit range in the OWL
-      // restriction). This ensures optional attributes (minCard = 0)
-      // are still represented in the class diagram.
+      // If there are no explicit rangeTypes, emit a default string attribute (except for dct:type which is handled above)
       if (!Array.isArray(restriction.rangeTypes) || restriction.rangeTypes.length === 0) {
         const attrName = this.deriveAttributeName(restriction);
         if (!attributes.has(attrName)) {
@@ -769,20 +751,22 @@ export class BaseGenerator {
 
         // Add enum attribute if there are enum types (already handled for dct:type above)
         if (enumTypes.length > 0 && restriction.propertyIri !== `${Config.NAMESPACES.dct}type`) {
-          const attrName = this.ontology.deriveAttributeName(restriction);
-          if (!attributes.has(attrName)) {
-            // Format enum values to UPPER_SNAKE_CASE
-            const formattedEnumValues = enumTypes
-              .map(type => Config.formatEnumValue(type))
-              .join(', ');
-            attributes.set(attrName, {
-              name: attrName,
-              type: 'enum',
-              sqlType: 'TEXT',
-              comment: formattedEnumValues,
-              isForeignKey: false,
-              propertyIri: restriction.propertyIri
-            });
+          if (nonEnumTypes.length === 0) {
+            const attrName = this.ontology.deriveAttributeName(restriction);
+            if (!attributes.has(attrName)) {
+              // Format enum values to UPPER_SNAKE_CASE
+              const formattedEnumValues = enumTypes
+                .map(type => Config.formatEnumValue(type))
+                .join(', ');
+              attributes.set(attrName, {
+                name: attrName,
+                type: 'enum',
+                sqlType: 'TEXT',
+                comment: formattedEnumValues,
+                isForeignKey: false,
+                propertyIri: restriction.propertyIri
+              });
+            }
           }
         }
 
@@ -793,8 +777,8 @@ export class BaseGenerator {
         if (!isUnionLike || nonEnumTypes.length === 1) {
           // Single target type OR union with single non-enum: use simple FK column name
           const fkName = this.deriveFkName(restriction);
+          const displayTypes = nonEnumTypes.map(type => this.getBusinessClassName(type));
           if (!attributes.has(fkName)) {
-            const displayTypes = nonEnumTypes.map(type => this.getBusinessClassName(type));
             attributes.set(fkName, {
               name: fkName,
               type: 'string',
@@ -806,23 +790,46 @@ export class BaseGenerator {
               minCardinality: restriction.minCardinality,
               maxCardinality: restriction.maxCardinality
             });
+          } else {
+            // If an attribute already exists (from a superclass), prefer the
+            // stricter single-valued restriction when the current restriction
+            // declares maxCardinality === 1. This avoids emitting arrays when a
+            // subclass tightens cardinality to a single value.
+            const existing = attributes.get(fkName);
+            if (typeof restriction.maxCardinality === 'number' && restriction.maxCardinality === 1 && existing && existing.maxCardinality !== 1) {
+              existing.maxCardinality = 1;
+              existing.minCardinality = restriction.minCardinality;
+              // update comment/targetClasses to reflect the more specific restriction
+              existing.comment = displayTypes.join(', ');
+              existing.targetClasses = nonEnumTypes;
+              attributes.set(fkName, existing);
+            }
           }
         } else {
           // Union/list with multiple non-enum types: separate FK column per type
           nonEnumTypes.forEach(targetType => {
             const fkName = `${this.deriveFkName(restriction)}_${Config.camelCaseToSnakeCase(this.getBusinessClassName(targetType))}`;
+            const comment = this.getBusinessClassName(targetType);
             if (!attributes.has(fkName)) {
               attributes.set(fkName, {
                 name: fkName,
                 type: 'string',
                 sqlType: 'TEXT',
-                comment: this.getBusinessClassName(targetType),
+                comment,
                 isForeignKey: true,
                 propertyIri: restriction.propertyIri,
                 targetClasses: [targetType],
                 minCardinality: restriction.minCardinality,
                 maxCardinality: restriction.maxCardinality
               });
+            } else {
+              const existing = attributes.get(fkName);
+              if (typeof restriction.maxCardinality === 'number' && restriction.maxCardinality === 1 && existing && existing.maxCardinality !== 1) {
+                existing.maxCardinality = 1;
+                existing.minCardinality = restriction.minCardinality;
+                existing.comment = comment;
+                attributes.set(fkName, existing);
+              }
             }
           });
         }

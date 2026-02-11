@@ -43,40 +43,10 @@ export const ENUMERABLE_CLASSES = new Set([
 ]);
 
 /**
- * Properties that should be excluded from relationships
- */
-export const EXCLUDED_PROPERTIES = new Set([
-  'hadPrimarySource',
-  'wasGeneratedBy',
-  'isFeatureOfInterestOf',
-  'wasAssociatedWith',
-  'correspondsToVariable'
-]);
-
-/**
  * Classes that should always include temporal validity attributes
  */
 export const TEMPORAL_CLASSES = new Set([
   'ProcesVariabele'
-]);
-
-/**
- * Property type overrides allow mapping a property IRI to a preferred
- * TypeScript/interface type and some generation hints (e.g. drop trailing
- * "Id" from generated property names). Keep config here so generators
- * remain data-driven rather than hard-coded.
- * Example key: `${NAMESPACES.prov}wasAttributedTo`
- * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
- */
-export const PROPERTY_TYPE_OVERRIDES = new Map([
-  [
-    `${NAMESPACES.ssn}hasSubSystem`,
-    { interface: 'System', type: 'ISystem', dropId: true }
-  ],
-  [
-    'hasSubSystem',
-    { interface: 'System', type: 'ISystem', dropId: true }
-  ],
 ]);
 
 /**
@@ -168,8 +138,10 @@ function isLikelyInverseProperty(propertyName) {
   // parent Plan and should be shown as a relationship).
   const INVERSE_PROPERTY_EXCEPTIONS = new Set([
     'isStepOfPlan',
-    'isPrecededBy'
+    'isPrecededBy',
+    'isHostedBy'
   ]);
+
   if (INVERSE_PROPERTY_EXCEPTIONS.has(name)) return false;
   
   // Check for "is*Of" pattern (inverse of "has*")
@@ -193,19 +165,6 @@ function isLikelyInverseProperty(propertyName) {
   }
   
   return false;
-}
-
-/**
- * Check if a property should be excluded from relationships
- */
-export function isExcludedProperty(propertyName) {
-  // First check explicit exclusions
-  if (EXCLUDED_PROPERTIES.has(propertyName)) {
-    return true;
-  }
-  
-  // Then check if it's likely an inverse property
-  return isLikelyInverseProperty(propertyName);
 }
 
 /**

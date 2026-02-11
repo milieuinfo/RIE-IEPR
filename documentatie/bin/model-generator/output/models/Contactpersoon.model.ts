@@ -1,9 +1,8 @@
 // Auto-generated models
 
-import { Address } from './Address.model';
 import { Exploitant } from './Exploitant.model';
 
-import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
+import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class Contactpersoon {
@@ -16,17 +15,14 @@ export class Contactpersoon {
   @jsonMember(String, { name: 'label' })
   benaming!: string;
 
-  @jsonArrayMember(String, { name: 'mbox' })
-  mbox?: string[];
+  @jsonMember(String, { name: 'mbox' })
+  email?: string;
 
-  @jsonArrayMember(String, { name: 'phone' })
-  phone?: string[];
+  @jsonMember(String, { name: 'phone' })
+  telefoonnummer?: string;
 
-  @jsonArrayMember(String, { name: 'hasRole' })
-  hasRole!: string[];
-
-  @jsonMember(Address, { name: 'address' })
-  address?: Address;
+  @jsonMember(String, { name: 'hasRole' })
+  hasRole!: string;
 
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
@@ -34,8 +30,8 @@ export class Contactpersoon {
   @jsonMember(Date, { name: 'issued' })
   geldigVan!: Date;
 
-  @jsonArrayMember(String, { name: 'name' })
-  name!: string[];
+  @jsonMember(String, { name: 'name' })
+  name!: string;
 
   @jsonMember(Date, { name: 'valid' })
   geldigTot?: Date;

@@ -10,17 +10,13 @@ export class ClassDiagramGenerator extends ClassGenerator {
   }
 
   generate() {
-    // use BaseGenerator lifecycle
     this.prepareOntology();
     this.buildRelationships(true);
     const diagram = this.generateMermaidDiagram();
     fs.writeFileSync(this.outputPath, diagram, 'utf-8');
   }
 
-  // buildRelationships inherited from BaseGenerator
-
   generateMermaidDiagram() {
-    // build top-level mermaid document and assemble using helpers
     let mermaid = `%% Auto-generated from OWL/SHACL\nclassDiagram\n`;
 
     const classNames = this.computeVisibleClasses();
@@ -34,11 +30,44 @@ export class ClassDiagramGenerator extends ClassGenerator {
     joinTables.forEach(jt => joinTableMap.set(jt.name, jt));
 
     // Build a quick lookup for property -> resolved target (used to display FK attributes as interfaces)
+    // Add multiple keys (raw property, camel-cased property, camel-cased label, id-stripped variants)
     const relPropertyMap = new Map();
+    const normalize = s => {
+      if (!s || typeof s !== 'string') return '';
+      try {
+        // remove diacritics, non-alphanumeric and lower-case
+        return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+      } catch (e) { return s.replace(/[^0-9A-Za-z]/g, '').toLowerCase(); }
+    };
+
     Array.from(this.relationships.values()).forEach(rel => {
       const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
       const toResolved = sharedIface || rel.to;
-      relPropertyMap.set(`${rel.from}|${rel.property}`, toResolved);
+      try {
+        const rawKey = `${rel.from}|${rel.property}`;
+        relPropertyMap.set(rawKey, toResolved);
+
+        const camelProp = (typeof rel.property === 'string') ? this.toCamelCase(rel.property) : null;
+        if (camelProp) {
+          relPropertyMap.set(`${rel.from}|${camelProp}`, toResolved);
+          relPropertyMap.set(`${rel.from}|${camelProp.replace(/Id$/i, '')}`, toResolved);
+        }
+
+        if (rel.label && typeof rel.label === 'string') {
+          const camelLabel = this.toCamelCase(rel.label);
+          relPropertyMap.set(`${rel.from}|${camelLabel}`, toResolved);
+          relPropertyMap.set(`${rel.from}|${camelLabel.replace(/Id$/i, '')}`, toResolved);
+        }
+
+        // normalized variants (strip diacritics and non-alphanumerics)
+        const normProp = normalize(rel.property);
+        if (normProp) relPropertyMap.set(`${rel.from}|${normProp}`, toResolved);
+        if (camelProp) relPropertyMap.set(`${rel.from}|${normalize(camelProp)}`, toResolved);
+        if (rel.label) {
+          const normLabel = normalize(rel.label);
+          relPropertyMap.set(`${rel.from}|${normLabel}`, toResolved);
+        }
+      } catch (e) { /* ignore mapping errors */ }
     });
 
     // render nodes
@@ -131,16 +160,9 @@ export class ClassDiagramGenerator extends ClassGenerator {
     });
 
     // render object relationships
-    // Collapse relationships that target a shared interface (e.g., multiple Agent subtypes -> IAgent)
     const renderRelMap = new Map();
 
-    // If there exists an explicit relationship from the same source+property
-    // that targets an interface, prefer that interface and drop concrete
-    // target relations (avoids duplicate edges like ``Proces -> ISystem`` and
-    // ``Proces -> Schouw`` when Schouw implements ISystem).
-    // Build groups by (from, label/property) so we can decide per-group
-    // whether any target resolves to a shared interface. If so, prefer
-    // that interface for the entire group.
+    // If there exists an explicit relationship from the same source+property to multiple targets that share a common interface, prefer rendering a single relationship to that shared interface (e.g. Sensor -> IAgent instead of Sensor -> Person, Sensor -> Organization)
     const groupMap = new Map();
     Array.from(this.relationships.values()).forEach(rel => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
@@ -159,6 +181,15 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
     Array.from(this.relationships.values()).forEach(rel => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
+      // Filter out certain inferred/undesired relationships for specific classes (e.g. Proces)
+      try {
+        const relNorm = (rel.property && typeof rel.property === 'string') ? rel.property : (rel.label || '');
+        const norm = normalize(relNorm);
+        const propStr = String(rel.property || '').toLowerCase();
+        if (rel.from === 'Proces' && (norm === 'afgeleidvan' || norm === 'wasattributedto' || propStr.includes('wasderivedfrom') || propStr.includes('wasattributedto'))) {
+          return;
+        }
+      } catch (e) { /* ignore */ }
       // If we have an interface target for this (from,property), always use it
       const ifaceKey = `${rel.from}|${rel.label || rel.property}`;
       const forcedIface = interfaceTargetMap.get(ifaceKey);
@@ -275,12 +306,52 @@ export class ClassDiagramGenerator extends ClassGenerator {
     mermaid += `    class ${displayName} {
 `;
     finalAttributes.forEach(attr => {
+      // Skip certain inferred/undesired attributes for specific classes
+      if (className === 'Proces' && (attr.name === 'afgeleidVan' || attr.name === 'wasAttributedTo')) return;
+
       const displayAttrName = attr.isForeignKey ? `${attr.name} (FK)` : attr.name;
       // If there is a known relationship mapping for this class+property, prefer that resolved target
-      const mapped = relPropertyMap.get(`${className}|${attr.name}`) || null;
+      let mapped = relPropertyMap.get(`${className}|${attr.name}`) || relPropertyMap.get(`${className}|${attr.name.replace(/Id$/i, '')}`) || null;
+      if (!mapped) mapped = relPropertyMap.get(`${className}|${this.toCamelCase(attr.name)}`) || null;
+      if (!mapped) {
+        const norm = n => { try { return String(n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^0-9A-Za-z]/g,'').toLowerCase(); } catch (e) { return String(n||'').replace(/[^0-9A-Za-z]/g,'').toLowerCase(); } };
+        mapped = relPropertyMap.get(`${className}|${norm(attr.name)}`) || relPropertyMap.get(`${className}|${norm(this.toCamelCase(attr.name))}`) || null;
+      }
+
+      // Fallback: try to find a matching relationship by fuzzy normalized match between attribute name and relationship label/property
+      if (!mapped) {
+        try {
+          const aNorm = String(attr.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+          for (const r of Array.from(this.relationships.values())) {
+            if (r.from !== className) continue;
+            const rNorm = String(r.label || r.property || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+            if (!rNorm) continue;
+            const lcsMatch = (() => {
+              if (!aNorm || !rNorm) return false;
+              const minLen = 4;
+              for (let i = 0; i + minLen <= aNorm.length; i++) {
+                const sub = aNorm.substr(i, minLen);
+                if (sub && rNorm.indexOf(sub) >= 0) return true;
+              }
+              return false;
+            })();
+            if (rNorm.includes(aNorm) || aNorm.includes(rNorm) || rNorm.startsWith(aNorm) || aNorm.startsWith(rNorm) || lcsMatch) {
+              mapped = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames) || r.to;
+              break;
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+
       let displayType = attr.type;
       if (mapped) {
-        displayType = mapped + (attr.isArray ? '[]' : '');
+        // If the mapped target looks like an interface (I... with upper-case second letter) keep as-is
+        if (typeof mapped === 'string' && /^I[A-Z]/.test(mapped)) {
+          displayType = mapped + (attr.isArray ? '[]' : '');
+        } else {
+          // otherwise normalize to pascal-cased class name
+          displayType = this.pascalCase(mapped) + (attr.isArray ? '[]' : '');
+        }
       }
       mermaid += `        ${displayType} ${displayAttrName}
 `;
@@ -288,6 +359,6 @@ export class ClassDiagramGenerator extends ClassGenerator {
     mermaid += `    }
   `;
     return mermaid;
-    }
-
   }
+
+}
