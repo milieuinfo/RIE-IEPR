@@ -478,6 +478,59 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
 }
 
 function generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes, templates = []) {
+  // Ensure prefixUri uses the provided prefixes
+  filePrefixes = Object.assign({}, filePrefixes || {}, prefixes || {});
+
+  const ontologyBase = (ontologyMeta && (ontologyMeta.preferredNamespaceUri || prefixes.riepr)) || (filePrefixes.riepr || '');
+
+  function linkify(uri) {
+    if (!uri) return '';
+    try {
+      const u = String(uri);
+      const baseNoHash = ontologyBase.replace(/#$/, '');
+      const isInternal = ontologyBase && (u.startsWith(ontologyBase) || u.startsWith(baseNoHash));
+      // For internal ontology IRIs prefer a relational/prefixed label (or local name)
+      let text;
+      if (isInternal) {
+        const local = localName(u);
+        // try to find a prefix for this namespace
+        const entry = Object.entries(filePrefixes || {}).find(([, ns]) => u.startsWith(ns));
+        if (entry) {
+          const pfx = entry[0];
+          text = `${pfx}:${local}`;
+        } else {
+          text = local;
+        }
+        return `[${text}](#${local})`;
+      }
+      // External link: show prefixed form if available and link to the full URI
+      text = prefixUri(u);
+      if (!text || text === 'undefined') {
+        const local = localName(u);
+        const entry = Object.entries(filePrefixes || {}).find(([, ns]) => u.startsWith(ns));
+        text = entry ? `${entry[0]}:${local}` : local;
+      }
+      if (typeof text === 'string' && text.startsWith('<') && text.endsWith('>')) {
+        text = text.slice(1, -1);
+      }
+      return `[${text}](${u})`;
+    } catch (e) {
+      return `
+${uri}`;
+    }
+  }
+
+  // Render the full IRI as link text. For internal ontology IRIs link to the local anchor.
+  function fullIriLink(uri) {
+    if (!uri) return '';
+    const u = String(uri);
+    const baseNoHash = ontologyBase.replace(/#$/, '');
+    const isInternal = ontologyBase && (u.startsWith(ontologyBase) || u.startsWith(baseNoHash));
+    if (isInternal) {
+      return `[${u}](#${localName(u)})`;
+    }
+    return `[${u}](${u})`;
+  }
   const shortname = ontologyMeta.preferredNamespacePrefix;
   const ontologyUrl = ontologyMeta.preferredNamespaceUri;
   // Remove trailing # from URL if present
@@ -517,7 +570,7 @@ Deze ontologie importeert de volgende externe ontologieën:
 ${ontologyMeta.imports.map(imp => `* ${prefixUri(imp)}`).join('\n')}
 ` : ''}
 
-# Conformiteit # {#conformance}
+# Conformiteit # {#conformance-ontology}
 
 Deze specificatie beschrijft een RDF vocabulaire. Conformante toepassingen MOETEN RDF-data produceren en/of consumeren volgens de definities in dit document.
 
@@ -601,14 +654,14 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     const anchorId = cls.localName;
     const headingMarks = '#'.repeat(level);
     section += `${headingMarks} ${cls.label} ${headingMarks} {#${anchorId}}\n\n`;
-    section += `**IRI:** \`${cls.id}\`\n\n`;
+    section += `**IRI:** ${fullIriLink(cls.id)}\n\n`;
     
     if (cls.comment) {
       section += `**Definitie:** ${cls.comment}\n\n`;
     }
     
     if (cls.superClasses.length > 0) {
-      section += `**Subklasse van:** ${cls.superClasses.map(sc => `\`${sc}\``).join(', ')}\n\n`;
+      section += `**Subklasse van:** ${cls.superClasses.map(sc => linkify(sc)).join(', ')}\n\n`;
     }
     
     if (cls.restrictions && cls.restrictions.length > 0) {
@@ -664,7 +717,7 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       if (t.mappings && t.mappings.length > 0) {
         output += `**Mappings:**\n\n`;
         t.mappings.forEach(m => {
-          const prop = m.property ? `\`${m.property}\`` : m.raw;
+          const prop = m.property ? linkify(m.property) : m.raw;
           output += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
         });
         output += `\n`;
@@ -679,7 +732,7 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     properties.forEach(prop => {
       const anchorId = prop.localName;
       output += `## ${prop.label} ## {#${anchorId}}\n\n`;
-      output += `**IRI:** \`${prop.id}\`\n\n`;
+      output += `**IRI:** ${fullIriLink(prop.id)}\n\n`;
       output += `**Type:** ${prop.kind}\n\n`;
       
       if (prop.comment) {
@@ -687,11 +740,11 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       }
       
       if (prop.domains.length > 0) {
-        output += `**Domein:** ${prop.domains.map(d => `\`${d}\``).join(', ')}\n\n`;
+        output += `**Domein:** ${prop.domains.map(d => linkify(d)).join(', ')}\n\n`;
       }
       
       if (prop.ranges.length > 0) {
-        output += `**Bereik:** ${prop.ranges.map(r => `\`${r}\``).join(', ')}\n\n`;
+        output += `**Bereik:** ${prop.ranges.map(r => linkify(r)).join(', ')}\n\n`;
       }
       
       output += '\n';
@@ -705,17 +758,17 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     
     concepts.forEach(concept => {
       const anchorId = concept.localName;
-      output += `## ${concept.label} ## {#concept-${anchorId}}\n\n`;
-      output += `**IRI:** \`${concept.id}\`\n\n`;
-      
+      output += `## ${concept.label} ## {#${anchorId}}\n\n`;
+      output += `**IRI:** ${fullIriLink(concept.id)}\n\n`;
+
       if (concept.comment) {
         output += `**Definitie:** ${concept.comment}\n\n`;
       }
-      
+
       if (concept.broader.length > 0) {
-        output += `**Breder concept:** ${concept.broader.map(b => `\`${b}\``).join(', ')}\n\n`;
+        output += `**Breder concept:** ${concept.broader.map(b => linkify(b)).join(', ')}\n\n`;
       }
-      
+
       output += '\n';
     });
   }
@@ -763,7 +816,6 @@ function build() {
   writeFileSync(outPath, bikeshed, "utf8");
   
   console.log(`✓ Bikeshed specificatie gegenereerd: ${outPath}`);
-  console.log(`\nBouw de HTML met: bikeshed spec ontologie.bs`);
 }
 
 build();
