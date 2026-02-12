@@ -161,19 +161,17 @@ function prefixUri(uri) {
 let filePrefixes = Object.assign({}, NAMESPACES || {});
 
 function collectIriTemplates(store) {
-  // Find subjects that have a hydra:template
+  // Find subjects that have a hydra:template (subjects can be NamedNode or BlankNode)
   const templateQuads = store.getQuads(null, namedNode(NAMESPACES.hydra + 'template'), null, null);
-  const subjects = [...new Set(templateQuads.map(q => q.subject.value))];
+  const subjects = [...new Map(templateQuads.map(q => [q.subject.value, q.subject])).values()];
 
-  return subjects.map(subj => {
-    const subjectTerm = namedNode(subj);
+  return subjects.map(subjectTerm => {
     const templateLiteral = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'template'), null, null)[0]?.object?.value || '';
 
     // Collect mapping blank nodes
     const mappingQuads = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'mapping'), null, null);
     const mappings = mappingQuads.map(mq => {
       const bn = mq.object;
-      // bn is typically a BlankNode
       const variable = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'variable'), null, null)[0]?.object?.value || null;
       const propertyNode = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'property'), null, null)[0]?.object || null;
       const requiredLit = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'required'), null, null)[0]?.object || null;
@@ -187,7 +185,9 @@ function collectIriTemplates(store) {
     });
 
     return {
-      id: subj,
+      // Keep the term value as id. For blank nodes this is the blank id (e.g. 'b0')
+      id: subjectTerm.value,
+      termType: subjectTerm.termType,
       template: templateLiteral,
       mappings,
     };
@@ -276,7 +276,9 @@ function collectClasses(store) {
         };
       }).filter(r => r.property);
 
-      const searches = urisFor(store, uri, hydraSearch).filter(s => !s.startsWith('_:'));
+      // Collect hydra:search targets (may be NamedNode or BlankNode)
+      const searchQuads = store.getQuads(namedNode(uri), hydraSearch, null, null);
+      const searches = searchQuads.map(q => q.object.value || null).filter(Boolean);
 
       return {
         id: uri,
@@ -435,7 +437,19 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
         const target = allClasses.find(c => c.id === range);
         const targetId = target ? target.id : range;
         addNode(targetId, target ? target.label : localName(range));
-        edges.push({ from: cls.id, to: targetId, label: prop.localName });
+        // Determine whether this property is mandatory via class restrictions
+        const hasRestriction = (cls.restrictions || []).find(r => r.property === prop.id);
+        let edgeLabel = prop.localName;
+        if (hasRestriction) {
+          const min = hasRestriction.minCardinality ? Number(hasRestriction.minCardinality) : 0;
+          const card = hasRestriction.cardinality ? Number(hasRestriction.cardinality) : 0;
+          const mandatory = (card > 0) || (min > 0);
+          if (!mandatory) edgeLabel = `${edgeLabel} (optional)`;
+        } else {
+          // No restriction -> optional
+          edgeLabel = `${edgeLabel} (optional)`;
+        }
+        edges.push({ from: cls.id, to: targetId, label: edgeLabel });
       });
     }
   });
@@ -447,7 +461,11 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
       const target = allClasses.find(c => c.id === targetUri);
       const targetId = target ? target.id : targetUri;
       addNode(targetId, target ? target.label : localName(targetUri));
-      const label = r.cardinality ? `${localName(r.property)} (${r.cardinality})` : localName(r.property);
+      const baseLabel = r.cardinality ? `${localName(r.property)} (${r.cardinality})` : localName(r.property);
+      const min = r.minCardinality ? Number(r.minCardinality) : 0;
+      const card = r.cardinality ? Number(r.cardinality) : 0;
+      const mandatory = (card > 0) || (min > 0);
+      const label = mandatory ? baseLabel : `${baseLabel} (optional)`;
       edges.push({ from: cls.id, to: targetId, label });
     }
   });
@@ -468,8 +486,14 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
     const from = nodeIdFor(e.from);
     const to = nodeIdFor(e.to);
     const rawLabel = e.label || '';
-    const safeEdgeLabel = String(rawLabel).replace(/<[^>]*>/g, '').replace(/`/g, '').replace(/"/g, '');
-    lines.push(`${from} -->|${safeEdgeLabel}| ${to}`);
+    let safeEdgeLabel = String(rawLabel).replace(/<[^>]*>/g, '').replace(/`/g, '').replace(/"/g, '');
+    // Remove newlines and escape pipe characters which break mermaid label delimiters
+    safeEdgeLabel = safeEdgeLabel.replace(/\r?\n/g, ' ').replace(/\|/g, '&#124;').trim();
+    if (safeEdgeLabel === '') {
+      lines.push(`${from} --> ${to}`);
+    } else {
+      lines.push(`${from} -->|${safeEdgeLabel}| ${to}`);
+    }
   });
 
   const mermaidText = lines.join('\n');
@@ -682,15 +706,33 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       section += mermaidBlock + '\n';
     }
 
-    // Link to any hydra templates associated with this class (via hydra:search)
+    // Inline any hydra templates associated with this class (via hydra:search)
     if (cls.templates && cls.templates.length > 0) {
-      section += `**IRI template(s):** `;
-      const links = cls.templates.map(turi => {
-        const found = templates.find(tt => tt.id === turi);
-        const name = found ? localName(found.id) : localName(turi);
-        return `[${name}](#template-${localName(turi)})`;
+      cls.templates.forEach(turi => {
+          const found = templates.find(tt => tt.id === turi);
+          const templ = found ? found.template : '';
+          // If the template is a blank node, avoid showing the internal parser id (e.g. n3-123).
+          if (found && found.termType === 'BlankNode') {
+            section += `**IRI template:**\n\n`;
+            if (templ) {
+              section += `\`\`\`text\n${templ}\n\`\`\`\n\n`;
+            }
+          } else {
+            const title = found ? localName(found.id) : localName(turi);
+            section += `**IRI template:** ${title}\n\n`;
+            if (templ) {
+              section += `\`\`\`text\n${templ}\n\`\`\`\n\n`;
+            }
+          }
+          if (found && found.mappings && found.mappings.length > 0) {
+            section += `**Mappings:**\n\n`;
+            found.mappings.forEach(m => {
+              const prop = m.property ? linkify(m.property) : m.raw;
+              section += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
+            });
+            section += `\n`;
+          }
       });
-      section += links.join(', ') + '\n\n';
     }
 
     section += '\n';
@@ -708,22 +750,7 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     output += generateClassSection(rootClass);
   });
 
-  // IRI Templates (Hydra)
-  if (templates && templates.length > 0) {
-    output += `# IRI Templates # {#iri-templates}\n\n`;
-    templates.forEach(t => {
-      output += `## Template: ${localName(t.id)} ## {#template-${localName(t.id)}}\n\n`;
-      output += `**IRI template:** \`${t.template}\`\n\n`;
-      if (t.mappings && t.mappings.length > 0) {
-        output += `**Mappings:**\n\n`;
-        t.mappings.forEach(m => {
-          const prop = m.property ? linkify(m.property) : m.raw;
-          output += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
-        });
-        output += `\n`;
-      }
-    });
-  }
+  // IRI templates are rendered inline with their classes (no separate section)
 
   // Generate properties section if any
   if (properties.length > 0) {
