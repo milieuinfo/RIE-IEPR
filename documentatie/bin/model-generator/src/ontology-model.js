@@ -1,5 +1,8 @@
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
+import path from 'path';
+import crypto from 'crypto';
 import { Parser, Store, NamedNode, Quad } from 'n3';
 import { NAMESPACES, PATHS, resolveProjectPath, camelCaseToSnakeCase } from './config.js';
 
@@ -31,34 +34,73 @@ export class OntologyModel {
   }
 
   async fetchRemoteTurtle(url) {
+    // Provide simple on-disk caching to avoid re-downloading large remote
+    // ontologies on every run. Cache lives in <project>/.cache/ontologies and
+    // is keyed by SHA1(URL). Set MODEL_GENERATOR_CACHE_REFRESH=1 to force
+    // re-download.
     return new Promise((resolve, reject) => {
-      const req = https.get(url, {
-        headers: {
-          Accept: 'text/turtle, application/x-turtle;q=0.9, */*;q=0.1'
-        }
-      }, res => {
-        if (res.statusCode && res.statusCode >= 400) {
-          reject(new Error(`HTTP ${res.statusCode}`));
-          return;
+      try {
+        if (!url) return resolve(null);
+        const doRefresh = process && process.env && process.env.MODEL_GENERATOR_CACHE_REFRESH === '1';
+        // Determine cache directory (prefer resolveProjectPath if available)
+        let cacheBase = null;
+        try { cacheBase = resolveProjectPath ? resolveProjectPath('.cache/ontologies') : null; } catch (e) { cacheBase = null; }
+        if (!cacheBase) cacheBase = path.join(process.cwd(), '.cache', 'ontologies');
+        if (!fs.existsSync(cacheBase)) fs.mkdirSync(cacheBase, { recursive: true });
+
+        const hash = crypto.createHash('sha1').update(String(url)).digest('hex');
+        const ext = String(url).endsWith('.nt') ? '.nt' : '.ttl';
+        const cacheFile = path.join(cacheBase, `${hash}${ext}`);
+
+        if (!doRefresh && fs.existsSync(cacheFile)) {
+          try {
+            const cached = fs.readFileSync(cacheFile, 'utf8');
+            // eslint-disable-next-line no-console
+            console.log(`Using cached ontology for ${url} -> ${cacheFile}`);
+            return resolve(cached);
+          } catch (e) {
+            // If reading cache fails, continue to download
+          }
         }
 
-        let data = '';
-        res.setEncoding('utf8');
-        res.on('data', chunk => {
-          data += chunk;
-        });
-        res.on('end', () => {
-          const trimmed = (data || '').trim();
-          if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
-            reject(new Error('Geen Turtle-antwoord (HTML ontvangen)'));
+        // eslint-disable-next-line no-console
+        console.log(`Downloading remote ontology: ${url}`);
+        const client = String(url || '').startsWith('https') ? https : http;
+        const req = client.get(url, {
+          headers: {
+            Accept: 'text/turtle, application/x-turtle, application/n-triples, */*;q=0.1'
+          }
+        }, res => {
+          if (res.statusCode && res.statusCode >= 400) {
+            reject(new Error(`HTTP ${res.statusCode}`));
             return;
           }
-          resolve(data);
-        });
-      });
 
-      req.on('error', err => reject(err));
-      req.end();
+          let data = '';
+          res.setEncoding('utf8');
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => {
+            const trimmed = (data || '').trim();
+            if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
+              reject(new Error('Geen Turtle/NT-antwoord (HTML ontvangen)'));
+              return;
+            }
+            try {
+              fs.writeFileSync(cacheFile, data, 'utf8');
+              // eslint-disable-next-line no-console
+              console.log(`Saved ontology to cache: ${cacheFile}`);
+            } catch (e) {
+              // Ignore cache write errors but still resolve with data
+            }
+            resolve(data);
+          });
+        });
+
+        req.on('error', err => reject(err));
+        req.end();
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -118,7 +160,7 @@ export class OntologyModel {
     const remoteOntologies = [
       { url: 'https://www.w3.org/ns/legacy_locn.ttl', kind: 'external' },
       { url: 'https://www.w3.org/ns/legacy_adms.ttl', kind: 'external' },
-      { url: 'http://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt', kind: 'external' }
+      { url: 'https://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt', kind: 'external' }
     ];
 
     for (const { url, kind } of remoteOntologies) {
@@ -205,10 +247,14 @@ export class OntologyModel {
     if (!termIri) return null;
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
     const owlEquivalentProperty = new NamedNode(NAMESPACES.owl + 'equivalentProperty');
+    const owlEquivalentClass = new NamedNode(NAMESPACES.owl + 'equivalentClass');
     const node = new NamedNode(termIri);
     let conceptQuads = this.store.getQuads(null, skosExactMatch, node);
     if (conceptQuads.length === 0) {
       conceptQuads = this.store.getQuads(null, owlEquivalentProperty, node);
+    }
+    if (conceptQuads.length === 0) {
+      conceptQuads = this.store.getQuads(null, owlEquivalentClass, node);
     }
     if (conceptQuads.length === 0) return null;
     return conceptQuads[0].subject;
@@ -252,6 +298,46 @@ export class OntologyModel {
         else resolve();
       });
     });
+  }
+
+  /**
+   * Retrieve an IRI template (hydra:IriTemplate) for a given class.
+   * Accepts either a full class IRI or a local class name. Returns an
+   * object { template, mappings, templateNode } or null when none found.
+   */
+  getIriTemplateForClass(classRef) {
+    if (!classRef) return null;
+    let classIri = String(classRef);
+    // If a local name was provided, try to resolve via known classes
+    if (!classIri.includes('://')) {
+      const info = this.classes.get(classIri);
+      if (info && info.iri) classIri = info.iri;
+      else classIri = NAMESPACES.riepr + classIri;
+    }
+
+    const searchQuads = this.store.getQuads(new NamedNode(classIri), new NamedNode(NAMESPACES.hydra + 'search'), null);
+    if (!searchQuads || searchQuads.length === 0) return null;
+
+    const templateNode = searchQuads[0].object;
+    const templateQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'template'), null);
+    const template = (templateQuads && templateQuads.length > 0) ? templateQuads[0].object.value : null;
+
+    const mappingQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'mapping'), null);
+    const mappings = [];
+    if (mappingQuads && mappingQuads.length > 0) {
+      mappingQuads.forEach(mq => {
+        const mnode = mq.object;
+        const varQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'variable'), null);
+        const propQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'property'), null);
+        const reqQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'required'), null);
+        const variable = varQ && varQ.length > 0 ? varQ[0].object.value : null;
+        const propertyIri = propQ && propQ.length > 0 && propQ[0].object.termType === 'NamedNode' ? propQ[0].object.value : (propQ && propQ.length > 0 ? propQ[0].object.value : null);
+        const required = reqQ && reqQ.length > 0 ? String(reqQ[0].object.value).toLowerCase() === 'true' : false;
+        mappings.push({ variable, propertyIri, required });
+      });
+    }
+
+    return { template, mappings, templateNode: templateNode && templateNode.termType === 'NamedNode' ? templateNode.value : null };
   }
 
   async applyReasoning() {
@@ -336,7 +422,13 @@ export class OntologyModel {
     // zijn, zoals "Address") te markeren dat ze aan een business-
     // concept zijn uitgelijnd.
     const skosExactMatch = new NamedNode(NAMESPACES.skos + 'exactMatch');
-    const exactMatchQuads = this.store.getQuads(null, skosExactMatch, null);
+    const owlEquivalentProperty = new NamedNode(NAMESPACES.owl + 'equivalentProperty');
+    const owlEquivalentClass = new NamedNode(NAMESPACES.owl + 'equivalentClass');
+    const exactMatchQuads = [
+      ...this.store.getQuads(null, skosExactMatch, null),
+      ...this.store.getQuads(null, owlEquivalentProperty, null),
+      ...this.store.getQuads(null, owlEquivalentClass, null)
+    ];
     const businessTargetLocalNames = new Set();
     const businessTargetFullIris = new Map(); // Map from localName to fullIri
     exactMatchQuads.forEach(q => {
@@ -369,10 +461,6 @@ export class OntologyModel {
             superClasses: [],
             restrictions: [],
             external: true,
-            // Synthetische externe klassen hebben geen eigen
-            // RDF-typering, maar als hun localName overeenkomt met
-            // het doel van een skos:exactMatch (bv. locn:Address),
-            // dan weten we dat het een businessconcept-doel is.
             isConceptScheme: false,
             isBusinessConceptTarget: businessTargetLocalNames.has(rangeType)
           });
@@ -406,7 +494,11 @@ export class OntologyModel {
 
       const propertyIri = property.value;
       const propertyLocal = this.extractLocalName(propertyIri);
+
       const domainLocal = this.extractLocalName(domainClass.value);
+      const domainInfo = this.classes.get(domainLocal);
+      if (!domainInfo) return;
+      if (domainInfo.external && !domainInfo.isBusinessConceptTarget) return;
 
       // Bepaal de ranges voor deze property
       const rangeQuads = this.store.getQuads(property, new NamedNode(NAMESPACES.rdfs + 'range'), null);
@@ -418,9 +510,12 @@ export class OntologyModel {
         .filter(t => !!t);
       if (rangeTypes.length === 0) return;
 
-      // Voeg restrictie toe aan alle klassen die subklasse zijn van domainClass
+      // Voeg restrictie toe aan alle (core) klassen die subklasse zijn van domainClass
       this.classes.forEach((classInfo, className) => {
         const classIri = classInfo.iri;
+
+        // Only propagate to core (non-external) classes
+        if (classInfo.external) return;
 
         // Alleen klassen die (transitief) subClassOf domainLocal zijn
         if (!this.isSubClassOf(classIri, domainLocal) && this.extractLocalName(classIri) !== domainLocal) {
@@ -928,6 +1023,7 @@ export class OntologyModel {
    * concept targets.
    */
   getSuperClassNames(classInfo) {
+    if (!classInfo) return [];
     const names = [];
     (classInfo.superClasses || []).forEach(superIri => {
       const local = this.extractLocalName(superIri);
@@ -1001,18 +1097,22 @@ export class OntologyModel {
     const rdfsRange = NAMESPACES.rdfs + 'range';
     const owlOnProperty = NAMESPACES.owl + 'onProperty';
     const skosExactMatch = NAMESPACES.skos + 'exactMatch';
+    const owlEquivalentProperty = NAMESPACES.owl + 'equivalentProperty';
+    const owlEquivalentClass = NAMESPACES.owl + 'equivalentClass';
 
-    // Business-concepten: skos:exactMatch naar property/klasse-IRIs
-    if (kind === 'concepts' && pIri === skosExactMatch && object.termType === 'NamedNode') {
+    // Business-concepten: map concept links (skos:exactMatch, owl:equivalentProperty,
+    // owl:equivalentClass) to "used" properties/classes so external terms
+    // such as locn:Address (equivalentClass to :Adres) are considered relevant
+    // for the ER/class model rendering.
+    if (kind === 'concepts' && object.termType === 'NamedNode') {
       const iri = object.value;
-      // Predicaten worden via hun volledige IRI herkend.
-      this.usedPropertyIris.add(iri);
-      // Klassen kunnen als volledige IRI of enkel via localName
-      // (bij synthetisch toegevoegde externe klassen) voorkomen.
-      this.usedClassIris.add(iri);
-      const local = this.extractLocalName(iri);
-      if (local) {
-        this.usedClassIris.add(local);
+      if (pIri === skosExactMatch || pIri === owlEquivalentProperty || pIri === owlEquivalentClass || pIri === (NAMESPACES.owl + 'equivalentProperty')) {
+        // If the concept maps to a property IRI, register it as usedProperty
+        // otherwise also register usedClass for classes.
+        this.usedPropertyIris.add(iri);
+        this.usedClassIris.add(iri);
+        const local = this.extractLocalName(iri);
+        if (local) this.usedClassIris.add(local);
       }
       return;
     }

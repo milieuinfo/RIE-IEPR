@@ -10,6 +10,7 @@ export const NAMESPACES = {
     sosa: 'http://www.w3.org/ns/sosa/',
     dct: 'http://purl.org/dc/terms/',
     adms: 'http://www.w3.org/ns/adms#',
+    hydra: 'http://www.w3.org/ns/hydra/core#',
     skos: 'http://www.w3.org/2004/02/skos/core#',
     dbo: 'http://dbpedia.org/ontology/',
     ogc: 'http://www.opengis.net/ont/geosparql#',

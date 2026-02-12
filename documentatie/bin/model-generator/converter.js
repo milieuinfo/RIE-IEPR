@@ -5,6 +5,7 @@ import { ERDiagramGenerator } from './src/er-diagram-generator.js';
 import { ClassDiagramGenerator } from './src/class-diagram-generator.js';
 import { SqlGenerator } from './src/sql-generator.js';
 import { TypeScriptGenerator } from './src/typescript-generator.js';
+import { info } from './src/utils/log.js';
 
 const ontology = new OntologyModel();
 await ontology.load();
@@ -16,28 +17,28 @@ if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
 if (!modelType) {
 	// Generate all models if MODEL is not specified
-	console.log('Generating all models...');
+	info('Generating all models...');
 
 	const erOut = path.join(outputDir, 'ER-generated.mmd');
 	const erGenerator = new ERDiagramGenerator(ontology, { outputPath: erOut });
 	erGenerator.generate();
-	console.log('✓ ER diagram generated ->', erOut);
+	info('✓ ER diagram generated ->', erOut);
 
 	const classOut = path.join(outputDir, 'Class-generated.mmd');
 	const classGenerator = new ClassDiagramGenerator(ontology, { outputPath: classOut });
 	classGenerator.generate();
-	console.log('✓ Class diagram generated ->', classOut);
+	info('✓ Class diagram generated ->', classOut);
 
 	const sqlOut = path.join(outputDir, 'schema-generated.sql');
 	const sqlGenerator = new SqlGenerator(ontology, { outputPath: sqlOut });
 	sqlGenerator.generate();
-	console.log('✓ SQL schema generated ->', sqlOut);
+	info('✓ SQL schema generated ->', sqlOut);
 
 	const modelsOut = path.join(outputDir, 'models');
 	if (!fs.existsSync(modelsOut)) fs.mkdirSync(modelsOut, { recursive: true });
 	const tsGenerator = new TypeScriptGenerator(ontology, { outputPath: modelsOut });
 	tsGenerator.generate();
-	console.log('✓ TypeScript models generated ->', modelsOut);
+	info('✓ TypeScript models generated ->', modelsOut);
 
 } else if (modelType === 'class') {
 	const classOut = path.join(outputDir, 'Class-generated.mmd');

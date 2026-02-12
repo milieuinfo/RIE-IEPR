@@ -43,40 +43,11 @@ export const ENUMERABLE_CLASSES = new Set([
 ]);
 
 /**
- * Properties that should be excluded from relationships
- */
-export const EXCLUDED_PROPERTIES = new Set([
-  'hadPrimarySource',
-  'wasGeneratedBy',
-  'isFeatureOfInterestOf',
-  'wasAssociatedWith',
-  'correspondsToVariable'
-]);
-
-/**
  * Classes that should always include temporal validity attributes
  */
 export const TEMPORAL_CLASSES = new Set([
-  'ProcesVariabele'
-]);
-
-/**
- * Property type overrides allow mapping a property IRI to a preferred
- * TypeScript/interface type and some generation hints (e.g. drop trailing
- * "Id" from generated property names). Keep config here so generators
- * remain data-driven rather than hard-coded.
- * Example key: `${NAMESPACES.prov}wasAttributedTo`
- * Example value: { interface: 'Agent', type: 'IAgent', dropId: true }
- */
-export const PROPERTY_TYPE_OVERRIDES = new Map([
-  [
-    `${NAMESPACES.ssn}hasSubSystem`,
-    { interface: 'System', type: 'ISystem', dropId: true }
-  ],
-  [
-    'hasSubSystem',
-    { interface: 'System', type: 'ISystem', dropId: true }
-  ],
+  'ProcesVariabele',
+  'Adres',
 ]);
 
 /**
@@ -145,68 +116,20 @@ export function getTechnicalNamespacePrefixes() {
 }
 
 /**
- * Check if a property is a geometry property (should be treated as text/spatial type)
+ * Override property groups to customize generator behavior without
+ * changing code. Keys are optional and can include:
  */
-export function isGeometryProperty(propertyName) {
-  const name = String(propertyName).toLowerCase();
-  return name.includes('geometry') || name.includes('geom');
-}
+export const OVERRIDE_PROPERTIES = new Map([
+  [`${NAMESPACES.qudt}hasUnit`, { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasUnit` }],
+  [`${NAMESPACES.qudt}hasNumericValue`, { type: 'number', sqlType: 'DOUBLE PRECISION', comment: `${NAMESPACES.qudt}hasNumericValue` }],
+  [`${NAMESPACES.ogc}hasGeometry`, { type: 'string', sqlType: 'TEXT', comment: `${NAMESPACES.ogc}hasGeometry -> WKT` }]
+]);
 
 /**
- * Check if a property is likely an inverse property based on naming patterns
- * Inverse properties typically follow patterns like:
- * - hasX -> isXOf (hasInputVar -> isInputVarOf)
- * - hasX -> isXOfPlan (hasInputVar -> isVariableOfPlan)
- * - hasX -> isXBy (hasAgent -> isAgentBy)
- * - hasPart -> isPartOf (mereological relationships)
+ * If true, prefer creating a super-entity table for multi-target
+ * relationships instead of a typed join table with a `target_type` column.
  */
-function isLikelyInverseProperty(propertyName) {
-  const name = String(propertyName);
-  // Exceptions: these properties look like inverses by naming
-  // convention but should be treated as normal forward properties
-  // in the ER/schema (e.g. pplan:isStepOfPlan links a Step to its
-  // parent Plan and should be shown as a relationship).
-  const INVERSE_PROPERTY_EXCEPTIONS = new Set([
-    'isStepOfPlan',
-    'isPrecededBy'
-  ]);
-  if (INVERSE_PROPERTY_EXCEPTIONS.has(name)) return false;
-  
-  // Check for "is*Of" pattern (inverse of "has*")
-  if (name.match(/^is.+Of$/i)) {
-    return true;
-  }
-  
-  // Check for "is*OfPlan" or "is*OfStep" pattern (inverse relationships for plans/steps)
-  if (name.match(/^is.+(OfPlan|OfStep)$/i)) {
-    return true;
-  }
-  
-  // Check for "is*By" pattern (inverse of "has*")
-  if (name.match(/^is.+By$/i)) {
-    return true;
-  }
-  
-  // Check for other common inverse patterns
-  if (name.match(/^.+ForObject$/i) || name.match(/^.+ForSubject$/i)) {
-    return true;
-  }
-  
-  return false;
-}
-
-/**
- * Check if a property should be excluded from relationships
- */
-export function isExcludedProperty(propertyName) {
-  // First check explicit exclusions
-  if (EXCLUDED_PROPERTIES.has(propertyName)) {
-    return true;
-  }
-  
-  // Then check if it's likely an inverse property
-  return isLikelyInverseProperty(propertyName);
-}
+export const USE_SUPER_ENTITY_FOR_MULTI_RELATIONS = false;
 
 /**
  * Check if a class should always include temporal attributes
@@ -305,6 +228,8 @@ export function formatEnumValue(enumClassName) {
  */
 export function isPrimaryKeyField(attrName, classInfo, className) {
   if (PRIMARY_KEY_FIELDS.has(attrName)) return true;
+  // Treat per-entity UUID columns (e.g. `entity_uuid`) as primary keys
+  if (typeof attrName === 'string' && attrName.endsWith('_uuid')) return true;
   
   const baseName = camelCaseToSnakeCase(classInfo?.localName || className || 'entity');
   const identifierAttr = `${baseName}_identifiers`;

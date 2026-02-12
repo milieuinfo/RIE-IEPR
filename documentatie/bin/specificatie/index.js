@@ -3,54 +3,28 @@
 import { readFileSync, writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from 'url';
+import { PATHS, NAMESPACES } from '../common/src/config.js';
 import { Parser, Store, DataFactory } from "n3";
 
 const { namedNode, blankNode } = DataFactory;
 
-// RDF predicates
-const rdfType = namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-const rdfsLabel = namedNode("http://www.w3.org/2000/01/rdf-schema#label");
-const rdfsComment = namedNode("http://www.w3.org/2000/01/rdf-schema#comment");
-const rdfsSubClassOf = namedNode("http://www.w3.org/2000/01/rdf-schema#subClassOf");
-const rdfsSubPropertyOf = namedNode("http://www.w3.org/2000/01/rdf-schema#subPropertyOf");
-const rdfsDomain = namedNode("http://www.w3.org/2000/01/rdf-schema#domain");
-const rdfsRange = namedNode("http://www.w3.org/2000/01/rdf-schema#range");
-
-const owlClass = namedNode("http://www.w3.org/2002/07/owl#Class");
-const owlOntology = namedNode("http://www.w3.org/2002/07/owl#Ontology");
-const owlObjectProperty = namedNode("http://www.w3.org/2002/07/owl#ObjectProperty");
-const owlDatatypeProperty = namedNode("http://www.w3.org/2002/07/owl#DatatypeProperty");
-const owlVersionInfo = namedNode("http://www.w3.org/2002/07/owl#versionInfo");
-const owlRestriction = namedNode("http://www.w3.org/2002/07/owl#Restriction");
-const owlOnProperty = namedNode("http://www.w3.org/2002/07/owl#onProperty");
-const owlSomeValuesFrom = namedNode("http://www.w3.org/2002/07/owl#someValuesFrom");
-const owlMinCardinality = namedNode("http://www.w3.org/2002/07/owl#minCardinality");
-const owlMaxCardinality = namedNode("http://www.w3.org/2002/07/owl#maxCardinality");
-
-const skosConceptScheme = namedNode("http://www.w3.org/2004/02/skos/core#ConceptScheme");
-const skosConcept = namedNode("http://www.w3.org/2004/02/skos/core#Concept");
-const skosBroader = namedNode("http://www.w3.org/2004/02/skos/core#broader");
-const skosPrefLabel = namedNode("http://www.w3.org/2004/02/skos/core#prefLabel");
-const skosExample = namedNode("http://www.w3.org/2004/02/skos/core#example");
-
-const dctTitle = namedNode("http://purl.org/dc/terms/title");
-const dctDescription = namedNode("http://purl.org/dc/terms/description");
-const dctCreator = namedNode("http://purl.org/dc/terms/creator");
-
-const vannPreferredNamespacePrefix = namedNode("http://purl.org/vocab/vann/preferredNamespacePrefix");
-const vannPreferredNamespaceUri = namedNode("http://purl.org/vocab/vann/preferredNamespaceUri");
-const owlImports = namedNode("http://www.w3.org/2002/07/owl#imports");
-const owlAllValuesFrom = namedNode("http://www.w3.org/2002/07/owl#allValuesFrom");
-const owlCardinality = namedNode("http://www.w3.org/2002/07/owl#cardinality");
-const owlHasValue = namedNode("http://www.w3.org/2002/07/owl#hasValue");
+// Predicates will be referenced directly via NAMESPACES (e.g. namedNode(NAMESPACES.rdf + 'type')).
+const vannPreferredNamespacePrefix = namedNode('http://purl.org/vocab/vann/preferredNamespacePrefix');
+const vannPreferredNamespaceUri = namedNode('http://purl.org/vocab/vann/preferredNamespaceUri');
 
 // Resolve ontology path relative to this script file, not the current working directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const ontologyPath = resolve(
-  __dirname,
-  "../../../src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
-);
+
+// Hydra terms for IRI templates
+const hydraIriTemplate = namedNode("http://www.w3.org/ns/hydra/core#IriTemplate");
+const hydraTemplate = namedNode("http://www.w3.org/ns/hydra/core#template");
+const hydraMapping = namedNode("http://www.w3.org/ns/hydra/core#mapping");
+const hydraVariable = namedNode("http://www.w3.org/ns/hydra/core#variable");
+const hydraProperty = namedNode("http://www.w3.org/ns/hydra/core#property");
+const hydraRequired = namedNode("http://www.w3.org/ns/hydra/core#required");
+const hydraRfc6570 = namedNode("http://www.w3.org/ns/hydra/core#Rfc6570Template");
+const hydraSearch = namedNode("http://www.w3.org/ns/hydra/core#search");
 
 function loadStore(path) {
   const ttl = readFileSync(path, "utf8");
@@ -66,6 +40,8 @@ function extractPrefixes(path) {
   while ((match = prefixRegex.exec(ttl)) !== null) {
     prefixes[match[1]] = match[2];
   }
+  // store file prefixes globally so prefixUri can use them
+  filePrefixes = prefixes;
   return prefixes;
 }
 
@@ -160,8 +136,8 @@ function serializeBlankNodeToTurtle(store, blankNodeId) {
 }
 
 function labelFor(store, subject) {
-  return literalFor(store, subject, rdfsLabel) || 
-         literalFor(store, subject, skosPrefLabel) ||
+    return literalFor(store, subject, namedNode(NAMESPACES.rdfs + 'label')) || 
+      literalFor(store, subject, namedNode(NAMESPACES.skos + 'prefLabel')) ||
          localName(subject);
 }
 
@@ -173,53 +149,71 @@ function localName(uri) {
 }
 
 function prefixUri(uri) {
-  const prefixes = {
-    'http://www.w3.org/1999/02/22-rdf-syntax-ns#': 'rdf:',
-    'http://www.w3.org/2000/01/rdf-schema#': 'rdfs:',
-    'http://www.w3.org/2002/07/owl#': 'owl:',
-    'http://www.w3.org/ns/prov#': 'prov:',
-    'http://purl.org/net/p-plan#': 'pplan:',
-    'http://www.w3.org/ns/sosa/': 'sosa:',
-    'http://www.w3.org/ns/ssn/': 'ssn:',
-    'http://www.opengis.net/ont/geosparql#': 'ogc:',
-    'http://schema.org/': 'schema:',
-    'http://www.w3.org/2004/02/skos/core#': 'skos:',
-    'http://xmlns.com/foaf/0.1/': 'foaf:',
-    'http://www.w3.org/ns/org#': 'org:',
-    'http://dbpedia.org/ontology/': 'dbo:',
-    'http://www.w3.org/2001/XMLSchema#': 'xsd:',
-    'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#': 'riepr:',
-    'https://data.riepr.omgeving.vlaanderen.be/id/concept/': 'concept:',
-  };
-
-  for (const [ns, prefix] of Object.entries(prefixes)) {
-    if (uri.startsWith(ns)) {
-      return prefix + uri.slice(ns.length);
-    }
+  // Use only prefixes discovered from the file or provided via NAMESPACES
+  for (const [pfx, ns] of Object.entries(filePrefixes || {})) {
+    if (uri.startsWith(ns)) return `${pfx}:` + uri.slice(ns.length);
   }
+
   return `<${uri}>`;
 }
 
+// Populated by extractPrefixes(path). Start with shared NAMESPACES as sensible defaults.
+let filePrefixes = Object.assign({}, NAMESPACES || {});
+
+function collectIriTemplates(store) {
+  // Find subjects that have a hydra:template
+  const templateQuads = store.getQuads(null, namedNode(NAMESPACES.hydra + 'template'), null, null);
+  const subjects = [...new Set(templateQuads.map(q => q.subject.value))];
+
+  return subjects.map(subj => {
+    const subjectTerm = namedNode(subj);
+    const templateLiteral = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'template'), null, null)[0]?.object?.value || '';
+
+    // Collect mapping blank nodes
+    const mappingQuads = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'mapping'), null, null);
+    const mappings = mappingQuads.map(mq => {
+      const bn = mq.object;
+      // bn is typically a BlankNode
+      const variable = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'variable'), null, null)[0]?.object?.value || null;
+      const propertyNode = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'property'), null, null)[0]?.object || null;
+      const requiredLit = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'required'), null, null)[0]?.object || null;
+
+      return {
+        variable,
+        property: propertyNode ? (propertyNode.termType === 'NamedNode' ? propertyNode.value : propertyNode.value) : null,
+        required: requiredLit ? (requiredLit.termType === 'Literal' ? requiredLit.value : null) : null,
+        raw: bn.value
+      };
+    });
+
+    return {
+      id: subj,
+      template: templateLiteral,
+      mappings,
+    };
+  });
+}
+
 function collectOntologyMetadata(store) {
-  const ontos = store.getQuads(null, rdfType, owlOntology, null);
+  const ontos = store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'Ontology'), null);
   if (!ontos.length) return null;
 
   const subject = ontos[0].subject;
   return {
     id: subject.value || "",
-    title: literalFor(store, subject, dctTitle) || literalFor(store, subject, rdfsLabel),
-    description: literalFor(store, subject, dctDescription) || literalFor(store, subject, rdfsComment),
-    creator: literalFor(store, subject, dctCreator),
-    version: literalFor(store, subject, owlVersionInfo),
+    title: literalFor(store, subject, namedNode(NAMESPACES.dct + 'title')) || literalFor(store, subject, namedNode(NAMESPACES.rdfs + 'label')),
+    description: literalFor(store, subject, namedNode(NAMESPACES.dct + 'description')) || literalFor(store, subject, namedNode(NAMESPACES.rdfs + 'comment')),
+    creator: literalFor(store, subject, namedNode(NAMESPACES.dct + 'creator')),
+    version: literalFor(store, subject, namedNode(NAMESPACES.owl + 'versionInfo')),
     preferredNamespacePrefix: literalFor(store, subject, vannPreferredNamespacePrefix),
     preferredNamespaceUri: literalFor(store, subject, vannPreferredNamespaceUri),
-    imports: urisFor(store, subject, owlImports),
+    imports: urisFor(store, subject, namedNode(NAMESPACES.owl + 'imports')),
   };
 }
 
 function collectClasses(store) {
   const classUris = new Set([
-    ...store.getQuads(null, rdfType, owlClass, null).map((q) => q.subject.value),
+    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'Class'), null).map((q) => q.subject.value),
   ]);
 
   // Filter out blank nodes and restriction classes
@@ -227,11 +221,11 @@ function collectClasses(store) {
     .filter(uri => !uri.startsWith('_:'))
     .filter(uri => uri.includes('riepr'))
     .map((uri) => {
-      const superClasses = urisFor(store, uri, rdfsSubClassOf)
+      const superClasses = urisFor(store, uri, namedNode(NAMESPACES.rdfs + 'subClassOf'))
         .filter(sc => !sc.startsWith('_:'))
         .filter(sc => !sc.startsWith('http://www.w3.org/2002/07/owl#Restriction'));
       
-      const exampleQuads = store.getQuads(namedNode(uri), skosExample, null, null);
+      const exampleQuads = store.getQuads(namedNode(uri), namedNode(NAMESPACES.skos + 'example'), null, null);
       const examples = exampleQuads.map(q => {
         if (q.object.termType === "BlankNode") {
           return serializeBlankNodeToTurtle(store, q.object.value);
@@ -241,7 +235,7 @@ function collectClasses(store) {
       });
 
       // Extract restrictions from rdfs:subClassOf
-      const restrictionQuads = store.getQuads(namedNode(uri), rdfsSubClassOf, null, null)
+      const restrictionQuads = store.getQuads(namedNode(uri), namedNode(NAMESPACES.rdfs + 'subClassOf'), null, null)
         .filter(q => q.object.termType === "BlankNode");
       
       const restrictions = restrictionQuads.map(q => {
@@ -249,27 +243,27 @@ function collectClasses(store) {
         const restrictionBlankNode = blankNode(restrictionNode);
         
         const onProperty = store
-          .getQuads(restrictionBlankNode, owlOnProperty, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'onProperty'), null, null)
           .map(qr => qr.object.value)[0];
         
         const someValues = store
-          .getQuads(restrictionBlankNode, owlSomeValuesFrom, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'someValuesFrom'), null, null)
           .map(qr => qr.object.value)[0];
         
         const allValues = store
-          .getQuads(restrictionBlankNode, owlAllValuesFrom, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'allValuesFrom'), null, null)
           .map(qr => qr.object.value)[0];
         
         const minCard = store
-          .getQuads(restrictionBlankNode, owlMinCardinality, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'minCardinality'), null, null)
           .map(qr => qr.object.value)[0];
         
         const maxCard = store
-          .getQuads(restrictionBlankNode, owlMaxCardinality, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'maxCardinality'), null, null)
           .map(qr => qr.object.value)[0];
         
         const cardinality = store
-          .getQuads(restrictionBlankNode, owlCardinality, null, null)
+          .getQuads(restrictionBlankNode, namedNode(NAMESPACES.owl + 'cardinality'), null, null)
           .map(qr => qr.object.value)[0];
         
         return {
@@ -282,14 +276,17 @@ function collectClasses(store) {
         };
       }).filter(r => r.property);
 
+      const searches = urisFor(store, uri, hydraSearch).filter(s => !s.startsWith('_:'));
+
       return {
         id: uri,
         localName: localName(uri),
         label: labelFor(store, uri),
-        comment: literalFor(store, uri, rdfsComment),
+        comment: literalFor(store, uri, namedNode(NAMESPACES.rdfs + 'comment')),
         superClasses,
         examples,
         restrictions,
+        templates: searches,
       };
     })
     .sort((a, b) => a.label.localeCompare(b.label));
@@ -297,8 +294,8 @@ function collectClasses(store) {
 
 function collectProperties(store) {
   const propertyUris = new Set([
-    ...store.getQuads(null, rdfType, owlObjectProperty, null).map((q) => q.subject.value),
-    ...store.getQuads(null, rdfType, owlDatatypeProperty, null).map((q) => q.subject.value),
+    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'ObjectProperty'), null).map((q) => q.subject.value),
+    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'DatatypeProperty'), null).map((q) => q.subject.value),
   ]);
 
   return [...propertyUris]
@@ -306,18 +303,18 @@ function collectProperties(store) {
     .filter(uri => uri.includes('riepr'))
     .map((uri) => {
       const types = store
-        .getQuads(namedNode(uri), rdfType, null, null)
+        .getQuads(namedNode(uri), namedNode(NAMESPACES.rdf + 'type'), null, null)
         .map((q) => q.object.value);
       
       let kind = "Property";
-      if (types.includes(owlObjectProperty.value)) kind = "ObjectProperty";
-      if (types.includes(owlDatatypeProperty.value)) kind = "DatatypeProperty";
+      if (types.includes(NAMESPACES.owl + 'ObjectProperty')) kind = "ObjectProperty";
+      if (types.includes(NAMESPACES.owl + 'DatatypeProperty')) kind = "DatatypeProperty";
 
       return {
         id: uri,
         localName: localName(uri),
         label: labelFor(store, uri),
-        comment: literalFor(store, uri, rdfsComment),
+        comment: literalFor(store, uri, namedNode(NAMESPACES.rdfs + 'comment')),
         domains: urisFor(store, uri, rdfsDomain).filter(d => !d.startsWith('_:')),
         ranges: urisFor(store, uri, rdfsRange).filter(r => !r.startsWith('_:')),
         kind,
@@ -328,7 +325,7 @@ function collectProperties(store) {
 
 function collectConcepts(store) {
   const conceptUris = new Set([
-    ...store.getQuads(null, rdfType, skosConcept, null).map((q) => q.subject.value),
+    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.skos + 'Concept'), null).map((q) => q.subject.value),
   ]);
 
   return [...conceptUris]
@@ -338,8 +335,8 @@ function collectConcepts(store) {
       id: uri,
       localName: localName(uri),
       label: labelFor(store, uri),
-      comment: literalFor(store, uri, rdfsComment),
-      broader: urisFor(store, uri, skosBroader),
+      comment: literalFor(store, uri, namedNode(NAMESPACES.rdfs + 'comment')),
+      broader: urisFor(store, uri, namedNode(NAMESPACES.skos + 'broader')),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
@@ -480,7 +477,60 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
   return `<div class="riepr-mermaid" data-mermaid="${b64}"></div>`;
 }
 
-function generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes) {
+function generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes, templates = []) {
+  // Ensure prefixUri uses the provided prefixes
+  filePrefixes = Object.assign({}, filePrefixes || {}, prefixes || {});
+
+  const ontologyBase = (ontologyMeta && (ontologyMeta.preferredNamespaceUri || prefixes.riepr)) || (filePrefixes.riepr || '');
+
+  function linkify(uri) {
+    if (!uri) return '';
+    try {
+      const u = String(uri);
+      const baseNoHash = ontologyBase.replace(/#$/, '');
+      const isInternal = ontologyBase && (u.startsWith(ontologyBase) || u.startsWith(baseNoHash));
+      // For internal ontology IRIs prefer a relational/prefixed label (or local name)
+      let text;
+      if (isInternal) {
+        const local = localName(u);
+        // try to find a prefix for this namespace
+        const entry = Object.entries(filePrefixes || {}).find(([, ns]) => u.startsWith(ns));
+        if (entry) {
+          const pfx = entry[0];
+          text = `${pfx}:${local}`;
+        } else {
+          text = local;
+        }
+        return `[${text}](#${local})`;
+      }
+      // External link: show prefixed form if available and link to the full URI
+      text = prefixUri(u);
+      if (!text || text === 'undefined') {
+        const local = localName(u);
+        const entry = Object.entries(filePrefixes || {}).find(([, ns]) => u.startsWith(ns));
+        text = entry ? `${entry[0]}:${local}` : local;
+      }
+      if (typeof text === 'string' && text.startsWith('<') && text.endsWith('>')) {
+        text = text.slice(1, -1);
+      }
+      return `[${text}](${u})`;
+    } catch (e) {
+      return `
+${uri}`;
+    }
+  }
+
+  // Render the full IRI as link text. For internal ontology IRIs link to the local anchor.
+  function fullIriLink(uri) {
+    if (!uri) return '';
+    const u = String(uri);
+    const baseNoHash = ontologyBase.replace(/#$/, '');
+    const isInternal = ontologyBase && (u.startsWith(ontologyBase) || u.startsWith(baseNoHash));
+    if (isInternal) {
+      return `[${u}](#${localName(u)})`;
+    }
+    return `[${u}](${u})`;
+  }
   const shortname = ontologyMeta.preferredNamespacePrefix;
   const ontologyUrl = ontologyMeta.preferredNamespaceUri;
   // Remove trailing # from URL if present
@@ -520,7 +570,7 @@ Deze ontologie importeert de volgende externe ontologieën:
 ${ontologyMeta.imports.map(imp => `* ${prefixUri(imp)}`).join('\n')}
 ` : ''}
 
-# Conformiteit # {#conformance}
+# Conformiteit # {#conformance-ontology}
 
 Deze specificatie beschrijft een RDF vocabulaire. Conformante toepassingen MOETEN RDF-data produceren en/of consumeren volgens de definities in dit document.
 
@@ -577,7 +627,6 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
   // Build hierarchy
   const hierarchy = buildClassHierarchy(classes);
   
-  // Generate hierarchical TOC
   // Generate hierarchical TOC as nested HTML <ul> to preserve nesting in Bikeshed HTML
   function generateClassTocHtml(classesList) {
     if (!classesList || classesList.length === 0) return '';
@@ -605,14 +654,14 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     const anchorId = cls.localName;
     const headingMarks = '#'.repeat(level);
     section += `${headingMarks} ${cls.label} ${headingMarks} {#${anchorId}}\n\n`;
-    section += `**IRI:** \`${prefixUri(cls.id)}\`\n\n`;
+    section += `**IRI:** ${fullIriLink(cls.id)}\n\n`;
     
     if (cls.comment) {
       section += `**Definitie:** ${cls.comment}\n\n`;
     }
     
     if (cls.superClasses.length > 0) {
-      section += `**Subklasse van:** ${cls.superClasses.map(sc => `\`${prefixUri(sc)}\``).join(', ')}\n\n`;
+      section += `**Subklasse van:** ${cls.superClasses.map(sc => linkify(sc)).join(', ')}\n\n`;
     }
     
     if (cls.restrictions && cls.restrictions.length > 0) {
@@ -633,6 +682,17 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       section += mermaidBlock + '\n';
     }
 
+    // Link to any hydra templates associated with this class (via hydra:search)
+    if (cls.templates && cls.templates.length > 0) {
+      section += `**IRI template(s):** `;
+      const links = cls.templates.map(turi => {
+        const found = templates.find(tt => tt.id === turi);
+        const name = found ? localName(found.id) : localName(turi);
+        return `[${name}](#template-${localName(turi)})`;
+      });
+      section += links.join(', ') + '\n\n';
+    }
+
     section += '\n';
     
     // Add child classes
@@ -648,6 +708,23 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     output += generateClassSection(rootClass);
   });
 
+  // IRI Templates (Hydra)
+  if (templates && templates.length > 0) {
+    output += `# IRI Templates # {#iri-templates}\n\n`;
+    templates.forEach(t => {
+      output += `## Template: ${localName(t.id)} ## {#template-${localName(t.id)}}\n\n`;
+      output += `**IRI template:** \`${t.template}\`\n\n`;
+      if (t.mappings && t.mappings.length > 0) {
+        output += `**Mappings:**\n\n`;
+        t.mappings.forEach(m => {
+          const prop = m.property ? linkify(m.property) : m.raw;
+          output += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
+        });
+        output += `\n`;
+      }
+    });
+  }
+
   // Generate properties section if any
   if (properties.length > 0) {
     output += `# Eigenschappen # {#properties}\n\n`;
@@ -655,7 +732,7 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     properties.forEach(prop => {
       const anchorId = prop.localName;
       output += `## ${prop.label} ## {#${anchorId}}\n\n`;
-      output += `**IRI:** \`${prefixUri(prop.id)}\`\n\n`;
+      output += `**IRI:** ${fullIriLink(prop.id)}\n\n`;
       output += `**Type:** ${prop.kind}\n\n`;
       
       if (prop.comment) {
@@ -663,11 +740,11 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       }
       
       if (prop.domains.length > 0) {
-        output += `**Domein:** ${prop.domains.map(d => `\`${prefixUri(d)}\``).join(', ')}\n\n`;
+        output += `**Domein:** ${prop.domains.map(d => linkify(d)).join(', ')}\n\n`;
       }
       
       if (prop.ranges.length > 0) {
-        output += `**Bereik:** ${prop.ranges.map(r => `\`${prefixUri(r)}\``).join(', ')}\n\n`;
+        output += `**Bereik:** ${prop.ranges.map(r => linkify(r)).join(', ')}\n\n`;
       }
       
       output += '\n';
@@ -681,17 +758,17 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     
     concepts.forEach(concept => {
       const anchorId = concept.localName;
-      output += `## ${concept.label} ## {#concept-${anchorId}}\n\n`;
-      output += `**IRI:** \`${prefixUri(concept.id)}\`\n\n`;
-      
+      output += `## ${concept.label} ## {#${anchorId}}\n\n`;
+      output += `**IRI:** ${fullIriLink(concept.id)}\n\n`;
+
       if (concept.comment) {
         output += `**Definitie:** ${concept.comment}\n\n`;
       }
-      
+
       if (concept.broader.length > 0) {
-        output += `**Breder concept:** ${concept.broader.map(b => `\`${prefixUri(b)}\``).join(', ')}\n\n`;
+        output += `**Breder concept:** ${concept.broader.map(b => linkify(b)).join(', ')}\n\n`;
       }
-      
+
       output += '\n';
     });
   }
@@ -709,13 +786,13 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
 
 function build() {
   console.log("Laden van ontologie...");
-  const store = loadStore(ontologyPath);
+  const store = loadStore(PATHS.ontology);
   
   console.log("Extractie van metadata...");
   const ontologyMeta = collectOntologyMetadata(store);
   
   console.log("Extractie van prefixes...");
-  const prefixes = extractPrefixes(ontologyPath);
+  const prefixes = extractPrefixes(PATHS.ontology);
   
   console.log("Verzamelen van klassen...");
   const classes = collectClasses(store);
@@ -726,17 +803,19 @@ function build() {
   console.log("Verzamelen van concepten...");
   const concepts = collectConcepts(store);
   
+  console.log("Verzamelen van IRI templates (Hydra)...");
+  const templates = collectIriTemplates(store);
+  
   console.log(`Gevonden: ${classes.length} klassen, ${properties.length} eigenschappen, ${concepts.length} concepten`);
   
   console.log("Genereren van Bikeshed specificatie...");
-  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes);
+  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes, templates);
   
   // Write the generated Bikeshed spec into this package directory so Docker builds include it
   const outPath = resolve(__dirname, "ontologie.bs");
   writeFileSync(outPath, bikeshed, "utf8");
   
   console.log(`✓ Bikeshed specificatie gegenereerd: ${outPath}`);
-  console.log(`\nBouw de HTML met: bikeshed spec ontologie.bs`);
 }
 
 build();

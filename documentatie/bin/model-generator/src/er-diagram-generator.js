@@ -72,24 +72,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
     computedJunctionInfo.forEach((v, k) => junctionTableInfo.set(k, v));
 
     // 3. Verzamel alle klassen die daadwerkelijk gebruikt worden
-    const usedClassSet = new Set();
-    classNames.forEach(className => {
-      const classInfo = this.ontology.classes.get(className);
-      if (!classInfo) {
-        // Include identifier tables even when no explicit class info exists
-        if (String(className).endsWith('Identifier') && this.utils.isIdentifierTable(className)) {
-          usedClassSet.add(className);
-        }
-        return;
-      }
-      const attrs = this.utils.deriveAttributes(classInfo, this.enumClasses, className);
-      if (attrs && attrs.length > 0) usedClassSet.add(className);
-    });
-    this.relationships.forEach(rel => {
-      usedClassSet.add(rel.from);
-      usedClassSet.add(rel.to);
-    });
-    joinTables.forEach(jt => usedClassSet.add(jt.name));
+    const usedClassSet = this.computeUsedClassSet(classNames, joinTables);
 
     // 4. Filter classNames op daadwerkelijk gebruikte klassen
     classNames = classNames.filter(cn => usedClassSet.has(cn));
@@ -112,8 +95,8 @@ export class ERDiagramGenerator extends SchemaGenerator {
           const baseClass = className.replace('_variabele_relatie', '');
           const relatedClass = 'proces_variabele';
           attributes = [
-            { name: `${baseClass}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
-            { name: `${relatedClass}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+            { name: `${baseClass}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+            { name: `${relatedClass}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
             { name: 'relationship_type', type: 'enum', isForeignKey: false, isPrimaryKey: true, comment: 'INPUT_VAR, OUTPUT_VAR' }
           ];
         } else {
@@ -125,19 +108,19 @@ export class ERDiagramGenerator extends SchemaGenerator {
             // Consolidated junction table for multiple target types (e.g. toegeschreven aan)
             const fromTable = this.utils.deriveTableName(info.from);
             attributes = [
-              { name: `${fromTable}_uri`, type: 'string', isForeignKey: true, isPrimaryKey: true },
-              { name: 'target_uri', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
+              { name: `${fromTable}_uuid`, type: 'string', isForeignKey: true, isPrimaryKey: true },
+              { name: 'target_uuid', type: 'string', isForeignKey: false, isPrimaryKey: true, comment: (info.to || []).join(',') },
               { name: 'target_type', type: 'string', isForeignKey: false, isPrimaryKey: false, comment: (info.to || []).join(',') }
             ];
           } else {
             // Regular many-to-many junction table with single target
             const parts = className.split('_');
             const lastPart = parts[parts.length - 1];
-            let leftCol = `${parts[0]}_uri`;
-            let rightCol = `${lastPart}_uri`;
+            let leftCol = `${parts[0]}_uuid`;
+            let rightCol = `${lastPart}_uuid`;
             if (leftCol === rightCol) {
-              leftCol = `${parts[0]}_uri_from`;
-              rightCol = `${lastPart}_uri_to`;
+              leftCol = `${parts[0]}_uuid_from`;
+              rightCol = `${lastPart}_uuid_to`;
             }
             attributes = [
               { name: leftCol, type: 'string', isForeignKey: true, isPrimaryKey: true },
@@ -165,49 +148,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
 
       // Compute attributes using centralized helper (handles identifiers and superclass filtering)
       attributes = this.computeAttributesForClass(className, classNames, null);
-
-      // Remove virtual identifier attribute from main entity rendering; identifiers
-      // are displayed as separate identifier tables instead.
-      if (!className.endsWith('Identifier')) {
-        attributes = attributes.filter(attr => {
-          if (!attr.propertyIri) return true;
-          return !String(attr.propertyIri).includes('adms#identifier');
-        });
-      }
-
-      // Verwijder FK-attributen die enkel verwijzen naar puur
-      // technische/abstracte klassen.
-      attributes = attributes.filter(attr => {
-        if (!attr.isForeignKey || !attr.comment) return true;
-        const targets = String(attr.comment)
-          .split(',')
-          .map(s => s.trim())
-          .filter(s => !!s);
-        if (targets.length === 0) return true;
-        const allTechnical = targets.every(t => {
-          const info = this.ontology.classes.get(t);
-          return this.utils.isTechnicalClass(t, info);
-        });
-        return !allTechnical;
-      });
-
-      // Sort attributes: PK fields first, then geldig_tot, then others
-      const pkFieldOrder = ['uri', 'geldig_van', 'aangemaakt_op'];
-      attributes.sort((a, b) => {
-        // PK fields first (in defined order)
-        const aIndex = pkFieldOrder.indexOf(a.name);
-        const bIndex = pkFieldOrder.indexOf(b.name);
-        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-        if (aIndex !== -1) return -1;
-        if (bIndex !== -1) return 1;
-        
-        // geldig_tot comes after PK fields
-        if (a.name === 'geldig_tot') return -1;
-        if (b.name === 'geldig_tot') return 1;
-        
-        // All other fields in original order
-        return 0;
-      });
+      attributes = this.filterAndSortAttributes(attributes, className, classNames);
 
       mermaid += `    ${displayName}["${tableName}"] {\n`;
       attributes.forEach(attr => {

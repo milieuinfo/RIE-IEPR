@@ -56,6 +56,7 @@ const prov = {
     used: namedNode('http://www.w3.org/ns/prov#used'),
     wasInfluencedBy: namedNode('http://www.w3.org/ns/prov#wasInfluencedBy'),
     wasAttributedTo: namedNode('http://www.w3.org/ns/prov#wasAttributedTo'),
+    wasDerivedFrom: namedNode('http://www.w3.org/ns/prov#wasDerivedFrom')
 };
 const pplan = {
     isPrecededBy: namedNode('http://purl.org/net/p-plan#isPrecededBy'),
@@ -65,7 +66,6 @@ const pplan = {
     Plan: namedNode('http://purl.org/net/p-plan#Plan'),
     Step: namedNode('http://purl.org/net/p-plan#Step'),
 };
-prov.wasDerivedFrom = namedNode('http://www.w3.org/ns/prov#wasDerivedFrom');
 const skos = {
     example: namedNode('http://www.w3.org/2004/02/skos/core#example'),
 };

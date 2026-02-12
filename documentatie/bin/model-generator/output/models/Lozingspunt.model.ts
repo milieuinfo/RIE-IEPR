@@ -2,8 +2,11 @@
 
 import { Emissiepunt } from './Emissiepunt.model';
 
-import { jsonObject } from 'typedjson';
+import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class Lozingspunt extends Emissiepunt {
+  @jsonMember(Number, { name: 'depth' })
+  diepte?: number;
+
 }

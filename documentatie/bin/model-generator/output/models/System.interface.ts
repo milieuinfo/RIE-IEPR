@@ -1,9 +1,9 @@
 // Auto-generated shared interface for System
 
-import type { IAgent } from './Agent.interface';
+import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 
-export interface ISystem extends IAgent {
+export interface ISystem {
+  uu?: string;
   uri?: string;
-  afgeleidVan?: AfgeleidVan;
-  toegewezenAan?: string[];
+  locatie?: ExploitatieLocatie;
 }

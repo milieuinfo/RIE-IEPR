@@ -14,6 +14,7 @@
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix org:    <http://www.w3.org/ns/org#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 
 <> a skos:ConceptScheme ;
 	dct:title "RIE-IEPR concepten"@nl ;
@@ -23,25 +24,24 @@
 :geimplenteerdDoor a skos:Concept ;
     skos:prefLabel "geïmplementeerd door"@nl ;
     skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
-    skos:exactMatch ssn:implementedBy ;
+    owl:equivalentProperty ssn:implementedBy ;
     skos:inScheme <> .
 
 :geometrie a skos:Concept ;
     skos:prefLabel "geometrie"@nl ;
     skos:definition "De ruimtelijke geometrie van een object, uitgedrukt in WKT (Well-Known Text) formaat."@nl ;
-    skos:exactMatch ogc:hasGeometry ;
+    owl:equivalentProperty ogc:hasGeometry ;
     skos:inScheme <> .
 
 :eenheid a skos:Concept ;
 	skos:prefLabel "eenheid"@nl ;
     skos:definition "De eigenschap die de eenheid van een meetwaarde beschrijft."@nl ;
-	skos:exactMatch qudt:unit, qudt:hasUnit ;
+    owl:equivalentProperty qudt:unit, qudt:hasUnit ;
 	skos:inScheme <> .
 
 :waarde a skos:Concept ;
     skos:prefLabel "waarde"@nl ;
     skos:definition "De eigenschap die de waarde van een meetwaarde beschrijft."@nl ;
-    skos:exactMatch qudt:numericValue, qudt:hasNumericValue ;
     owl:equivalentProperty qudt:numericValue, qudt:hasNumericValue ;
     skos:inScheme <> .
 
@@ -49,14 +49,12 @@
 	skos:prefLabel "hoogte"@nl ;
 	skos:altLabel "height"@en ;
 	skos:definition "De eigenschap die de hoogte (bijvoorbeeld van een schouw) beschrijft."@nl ;
-	skos:exactMatch dbo:height ;
     owl:equivalentProperty dbo:height ;
 	skos:inScheme <> .
 
 :locatie a skos:Concept ;
 	skos:prefLabel "locatie"@nl ;
 	skos:definition "De eigenschap die de koppeling met een exploitatie-locatie beschrijft."@nl ;
-	skos:exactMatch sosa:isHostedBy ;
     owl:equivalentProperty sosa:isHostedBy ;
 	skos:inScheme <> .
 
@@ -70,51 +68,31 @@
 :geldigVan a skos:Concept ;
     skos:prefLabel "geldig van"@nl ;
     skos:definition "De eigenschap die de begindatum van de geldigheidsperiode van een entiteit beschrijft."@nl ;
-    skos:exactMatch dct:issued ;
     owl:equivalentProperty dct:issued ;
     skos:inScheme <> .
 
 :geldigTot a skos:Concept ;
     skos:prefLabel "geldig tot"@nl ;
     skos:definition "De eigenschap die de einddatum van de geldigheidsperiode van een entiteit beschrijft."@nl ;
-    skos:exactMatch dct:valid ;
     owl:equivalentProperty dct:valid ;
     skos:inScheme <> .
 
 :aangemaaktOp a skos:Concept ;
     skos:prefLabel "aangemaakt op"@nl ;
     skos:definition "De eigenschap die de creatiedatum van een entiteit beschrijft."@nl ;
-    skos:exactMatch dct:created ;
     owl:equivalentProperty dct:created ;
     skos:inScheme <> .
 
 :afgeleidVan a skos:Concept ;
     skos:prefLabel "afgeleid van"@nl ;
     skos:definition "De eigenschap die de afleiding van een entiteit beschrijft."@nl ;
-    skos:exactMatch prov:wasDerivedFrom ;
     owl:equivalentProperty prov:wasDerivedFrom ;
-    skos:inScheme <> .
-
-:procesType a skos:Concept ;
-    skos:prefLabel "type proces"@nl ;
-    skos:definition "De eigenschap die het type van een proces beschrijft door verwijzing naar een procedurespecificatie."@nl ;
-    skos:exactMatch prov:wasDerivedFrom ;
-    owl:equivalentProperty prov:wasDerivedFrom ;
-    skos:scopeNote "Dit concept is specifiek bedoeld voor de Proces entiteit."@nl ;
     skos:inScheme <> .
 
 :beinvloedDoor a skos:Concept ;
     skos:prefLabel "beïnvloed door"@nl ;
     skos:definition "De eigenschap die de invloed van een entiteit op een andere entiteit beschrijft."@nl ;
-    skos:exactMatch prov:wasInfluencedBy ;
     owl:equivalentProperty prov:wasInfluencedBy ;
-    skos:inScheme <> .
-
-:toegewezenAan a skos:Concept ;
-    skos:prefLabel "toegewezen aan"@nl ;
-    skos:definition "De eigenschap die een stap of entiteit toeschrijft aan een verantwoordelijke agent (bijvoorbeeld een apparaat)."@nl ;
-    skos:exactMatch prov:wasAttributedTo ;
-    owl:equivalentProperty prov:wasAttributedTo ;
     skos:inScheme <> .
 
 :onderdeelVan a skos:Concept ;
@@ -127,29 +105,31 @@
 :gaatVoorafAan a skos:Concept ;
     skos:prefLabel "gaat vooraf aan"@nl ;
     skos:definition "De eigenschap die aangeeft welke stap direct voorafgaat aan een andere stap binnen hetzelfde plan."@nl ;
-    skos:exactMatch pplan:isPrecededBy ;
     owl:equivalentProperty pplan:isPrecededBy ;
     skos:inScheme <> .
 
 :benaming a skos:Concept ;
     skos:prefLabel "benaming"@nl ;
     skos:definition "De eigenschap die de naam of titel van een entiteit beschrijft."@nl ;
-    skos:exactMatch rdfs:label ;
     owl:equivalentProperty rdfs:label ;
     skos:inScheme <> .
 
 :beschrijving a skos:Concept ;
     skos:prefLabel "beschrijving"@nl ;
     skos:definition "De eigenschap die een nadere toelichting of commentaar bij een entiteit geeft."@nl ;
-    skos:exactMatch rdfs:comment ;
     owl:equivalentProperty rdfs:comment ;
     skos:inScheme <> .
 
 :Adres a skos:Concept ;
     skos:prefLabel "adres"@nl ;
     skos:definition "Het adres van een contactpersoon of organisatie."@nl ;
-    skos:exactMatch locn:Address ;
     owl:equivalentClass locn:Address ;
+    skos:inScheme <> .
+
+:adres a skos:Concept ;
+    skos:prefLabel "adres"@nl ;
+    skos:definition "De eigenschap die het adres van een contactpersoon of organisatie beschrijft."@nl ;
+    owl:equivalentProperty locn:address ;
     skos:inScheme <> .
 
 :straat a skos:Concept ;
@@ -162,21 +142,18 @@
 :stad a skos:Concept ;
     skos:prefLabel "stad"@nl ;
     skos:definition "De eigenschap die de stad of gemeente van een adres beschrijft."@nl ;
-    skos:exactMatch locn:postName ;
     owl:equivalentProperty locn:postName ;
     skos:inScheme <> .
 
 :postcode a skos:Concept ;
     skos:prefLabel "postcode"@nl ;
     skos:definition "De eigenschap die de postcode van een adres beschrijft."@nl ;
-    skos:exactMatch locn:postCode ;
     owl:equivalentProperty locn:postCode ;
     skos:inScheme <> .
 
 :diameter a skos:Concept ;
     skos:prefLabel "diameter"@nl ;
     skos:definition "De eigenschap die de diameter van een object beschrijft."@nl ;
-    skos:exactMatch dbo:diameter ;
     owl:equivalentProperty dbo:diameter ;
     skos:inScheme <> .
 
@@ -197,15 +174,13 @@
 :heeftUitvoer a skos:Concept ;
     skos:prefLabel "heeft uitvoer"@nl ;
     skos:definition "De eigenschap die de uitvoer van een processtap beschrijft."@nl ;
-    skos:exactMatch pplan:hasOutputVar ;
     owl:equivalentProperty pplan:hasOutputVar ;
     skos:inScheme <> .
 
 :heeftSubSysteem a skos:Concept ;
     skos:prefLabel "heeft subsysteem"@nl ;
     skos:definition "De eigenschap die de relatie tussen een installatie en haar subsystemen beschrijft."@nl ;
-    skos:exactMatch dbo:hasSubSystem ;
-    owl:equivalentProperty dbo:hasSubSystem ;
+    owl:equivalentProperty ssn:hasSubSystem ;
     skos:inScheme <> .
 
 :exploitant a skos:Concept ;
@@ -213,3 +188,21 @@
     skos:definition "De eigenschap die de relatie tussen een natuurlijk persoon en haar exploitant beschrijft."@nl ;
     owl:equivalentProperty org:memberOf ;
     skos:inScheme <> . 
+
+:email a skos:Concept ;
+    skos:prefLabel "e-mail"@nl ;
+    skos:definition "De eigenschap die het e-mailadres van een contactpersoon beschrijft."@nl ;
+    owl:equivalentProperty foaf:mbox ;
+    skos:inScheme <> .
+
+:telefoonnummer a skos:Concept ;
+    skos:prefLabel "telefoonnummer"@nl ;
+    skos:definition "De eigenschap die het telefoonnummer van een contactpersoon beschrijft."@nl ;
+    owl:equivalentProperty foaf:phone ;
+    skos:inScheme <> .
+
+:toegewezenAan a skos:Concept ;
+    skos:prefLabel "toegewezen aan"@nl ;
+    skos:definition "De eigenschap die de toewijzing van een entiteit aan een andere entiteit beschrijft."@nl ;
+    owl:equivalentProperty prov:wasAttributedTo ;
+    skos:inScheme <> .
