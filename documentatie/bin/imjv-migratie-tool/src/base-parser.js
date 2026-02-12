@@ -26,6 +26,13 @@ export class BaseParser {
             this.turtle.qname('owl', 'sameAs'),
             this.turtle.qname('vkbo', exploitantId)
         );
+
+        // add a simple adms:identifier literal for the exploitant (keeps provenance accessible)
+        this.turtle.triple(
+            exploitantUri,
+            this.turtle.qname('adms', 'identifier'),
+            this.turtle.literal(exploitantId)
+        );
     }
 
     createExploitatieLocatie(type, label) {
@@ -45,9 +52,11 @@ export class BaseParser {
             this.turtle.literal(label, null, 'nl')
         );
 
+        // According to the RIE-IEPR ontology an exploitation location is an entity
+        // that can be attributed to an agent (the exploitant). Use prov:wasAttributedTo.
         this.turtle.triple(
             locatieUri,
-            this.turtle.qname('prov', 'atLocation'),
+            this.turtle.qname('prov', 'wasAttributedTo'),
             exploitantUri
         );
     }
@@ -62,12 +71,37 @@ export class BaseParser {
             const value = ref._;
 
             if (value) {
+                // Create a proper blank node for the ADMS identifier instead of an inline bracket string
+                // Many turtle builders expose a blankNode() helper; fall back to a generated blank node id
+                const idNode = (typeof this.turtle.blankNode === 'function')
+                    ? this.turtle.blankNode()
+                    : `_:id_${this.sanitizeId(naam)}_${Math.abs(hashCode(value))}`;
+
                 const scheme = this.turtle.literal('VMM');
                 const notation = naam.replace('VMM_', '');
+
                 this.turtle.triple(
                     parentUri,
                     this.turtle.qname('adms', 'identifier'),
-                    `[ ${this.turtle.qname('rdf', 'value')} ${this.turtle.literal(value)} ; ${this.turtle.qname('adms', 'schemeAgency')} ${scheme} ; ${this.turtle.qname('skos', 'notation')} ${this.turtle.literal(notation)} ]`
+                    idNode
+                );
+
+                this.turtle.triple(
+                    idNode,
+                    this.turtle.qname('rdf', 'value'),
+                    this.turtle.literal(value)
+                );
+
+                this.turtle.triple(
+                    idNode,
+                    this.turtle.qname('adms', 'schemeAgency'),
+                    scheme
+                );
+
+                this.turtle.triple(
+                    idNode,
+                    this.turtle.qname('skos', 'notation'),
+                    this.turtle.literal(notation)
                 );
             }
         });
@@ -80,4 +114,14 @@ export class BaseParser {
             .replace(/[()]/g, '')
             .replace(/[^\w-]/g, '');
     }
+}
+
+// small helper to produce a stable-ish hash for fallback blank node ids
+function hashCode(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+        h = ((h << 5) - h) + str.charCodeAt(i);
+        h |= 0; // convert to 32bit int
+    }
+    return h;
 }

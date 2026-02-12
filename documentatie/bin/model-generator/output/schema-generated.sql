@@ -1,5 +1,5 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-11T22:17:52.580Z
+-- Generated: 2026-02-12T14:52:09.292Z
 
 -- PostgreSQL DDL
 
@@ -317,7 +317,7 @@ CREATE TABLE proces_variabele (
     benaming TEXT NOT NULL,
     type TEXT NULL,
     eenheid DOUBLE PRECISION NULL,
-    waarde DOUBLE PRECISION NULL,
+    waarde TEXT NULL,
     CONSTRAINT pk_proces_variabele PRIMARY KEY (uuid)
 );
 COMMENT ON COLUMN proces_variabele.geldig_van IS 'http://purl.org/dc/terms/issued';
@@ -326,7 +326,7 @@ COMMENT ON COLUMN proces_variabele.geldig_tot IS 'http://purl.org/dc/terms/valid
 COMMENT ON COLUMN proces_variabele.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN proces_variabele.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN proces_variabele.eenheid IS 'http://qudt.org/schema/qudt/hasUnit';
-COMMENT ON COLUMN proces_variabele.waarde IS 'http://qudt.org/schema/qudt/hasNumericValue';
+COMMENT ON COLUMN proces_variabele.waarde IS 'http://qudt.org/schema/qudt/numericValue';
 COMMENT ON TABLE proces_variabele IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele';
 
 CREATE TABLE schouw (
@@ -480,7 +480,6 @@ CREATE TABLE proces_variabele_relatie (
 );
 
 -- Foreign Key Constraints
-ALTER TABLE abstract_emissiepunt ADD CONSTRAINT fk_abstract_emissiepunt_emissiepunt_uuid FOREIGN KEY (emissiepunt_uuid) REFERENCES emissiepunt(uri);
 ALTER TABLE apparaat ADD CONSTRAINT fk_apparaat_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE contactpersoon ADD CONSTRAINT fk_contactpersoon_exploitant_id FOREIGN KEY (exploitant_id) REFERENCES exploitant(uri);
 ALTER TABLE contactpersoon ADD CONSTRAINT fk_contactpersoon_adres_id FOREIGN KEY (adres_id) REFERENCES adres(uri);
@@ -490,14 +489,9 @@ ALTER TABLE exploitant ADD CONSTRAINT fk_exploitant_adres_id FOREIGN KEY (adres_
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_toegewezen_aan_id FOREIGN KEY (toegewezen_aan_id) REFERENCES exploitant(uri);
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_adres_id FOREIGN KEY (adres_id) REFERENCES adres(uri);
-ALTER TABLE exploitatie_locatie_identifier ADD CONSTRAINT fk_exploitatie_locatie_identifier_exploitatie_locatie_uuid FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE grondwaterput ADD CONSTRAINT fk_grondwaterput_onttrekkingspunt_uuid FOREIGN KEY (onttrekkingspunt_uuid) REFERENCES onttrekkingspunt(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_heeft_sub_systeem_id FOREIGN KEY (heeft_sub_systeem_id) REFERENCES proces(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES installatie(uri);
-ALTER TABLE installatie_identifier ADD CONSTRAINT fk_installatie_identifier_installatie_uuid FOREIGN KEY (installatie_uuid) REFERENCES installatie(uri);
-ALTER TABLE lozingspunt ADD CONSTRAINT fk_lozingspunt_emissiepunt_uuid FOREIGN KEY (emissiepunt_uuid) REFERENCES emissiepunt(uri);
-ALTER TABLE meetpunt_identifier ADD CONSTRAINT fk_meetpunt_identifier_meetpunt_uuid FOREIGN KEY (meetpunt_uuid) REFERENCES meetpunt(uri);
 ALTER TABLE observatie ADD CONSTRAINT fk_observatie_has_feature_of_interest_id FOREIGN KEY (has_feature_of_interest_id) REFERENCES meetpunt(uri);
 ALTER TABLE onttrekkingspunt ADD CONSTRAINT fk_onttrekkingspunt_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
@@ -505,36 +499,6 @@ ALTER TABLE proces ADD CONSTRAINT fk_proces_geimplenteerd_door_id FOREIGN KEY (g
 ALTER TABLE proces ADD CONSTRAINT fk_proces_heeft_invoer_id FOREIGN KEY (heeft_invoer_id) REFERENCES proces_variabele(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_heeft_uitvoer_id FOREIGN KEY (heeft_uitvoer_id) REFERENCES proces_variabele(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_onderdeel_van_id FOREIGN KEY (onderdeel_van_id) REFERENCES proces(uri);
-ALTER TABLE proces_identifier ADD CONSTRAINT fk_proces_identifier_proces_uuid FOREIGN KEY (proces_uuid) REFERENCES proces(uri);
-ALTER TABLE schouw ADD CONSTRAINT fk_schouw_emissiepunt_uuid FOREIGN KEY (emissiepunt_uuid) REFERENCES emissiepunt(uri);
-ALTER TABLE proces_locatie_exploitatie_locatie ADD CONSTRAINT fk_proces_locatie_exploitatie_locatie_proces_uuid FOREIGN KEY (proces_uuid) REFERENCES proces(uri);
-ALTER TABLE proces_locatie_exploitatie_locatie ADD CONSTRAINT fk_proces_locatie_exploitatie_locatie_exploitatie_locatie_uuid FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE proces_geimplementeerd_door ADD CONSTRAINT fk_proces_geimplementeerd_door_proces_uuid FOREIGN KEY (proces_uuid) REFERENCES proces(uri);
-ALTER TABLE proces_onderdeel_van_proces ADD CONSTRAINT fk_proces_onderdeel_van_proces_proces_uuid_from FOREIGN KEY (proces_uuid_from) REFERENCES proces(uri);
-ALTER TABLE proces_onderdeel_van_proces ADD CONSTRAINT fk_proces_onderdeel_van_proces_proces_uuid_to FOREIGN KEY (proces_uuid_to) REFERENCES proces(uri);
-ALTER TABLE exploitatie_locatie_toegewezen_aan_exploitant ADD CONSTRAINT fk_exploitatie_locatie_toegewezen_aan_exploitant_exploitatie_lo FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE exploitatie_locatie_toegewezen_aan_exploitant ADD CONSTRAINT fk_exploitatie_locatie_toegewezen_aan_exploitant_exploitant_uui FOREIGN KEY (exploitant_uuid) REFERENCES exploitant(uri);
-ALTER TABLE exploitatie_locatie_afgeleid_van_exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_afgeleid_van_exploitatie_locatie_exploit FOREIGN KEY (exploitatie_locatie_uuid_from) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE exploitatie_locatie_afgeleid_van_exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_afgeleid_van_exploitatie_locatie_exploit FOREIGN KEY (exploitatie_locatie_uuid_to) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE installatie_heeft_subsysteem ADD CONSTRAINT fk_installatie_heeft_subsysteem_installatie_uuid FOREIGN KEY (installatie_uuid) REFERENCES installatie(uri);
-ALTER TABLE installatie_locatie_exploitatie_locatie ADD CONSTRAINT fk_installatie_locatie_exploitatie_locatie_installatie_uuid FOREIGN KEY (installatie_uuid) REFERENCES installatie(uri);
-ALTER TABLE installatie_locatie_exploitatie_locatie ADD CONSTRAINT fk_installatie_locatie_exploitatie_locatie_exploitatie_locatie_ FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE installatie_afgeleid_van_installatie ADD CONSTRAINT fk_installatie_afgeleid_van_installatie_installatie_uuid_from FOREIGN KEY (installatie_uuid_from) REFERENCES installatie(uri);
-ALTER TABLE installatie_afgeleid_van_installatie ADD CONSTRAINT fk_installatie_afgeleid_van_installatie_installatie_uuid_to FOREIGN KEY (installatie_uuid_to) REFERENCES installatie(uri);
-ALTER TABLE emissiepunt_locatie_exploitatie_locatie ADD CONSTRAINT fk_emissiepunt_locatie_exploitatie_locatie_emissiepunt_uuid FOREIGN KEY (emissiepunt_uuid) REFERENCES emissiepunt(uri);
-ALTER TABLE emissiepunt_locatie_exploitatie_locatie ADD CONSTRAINT fk_emissiepunt_locatie_exploitatie_locatie_exploitatie_locatie_ FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE onttrekkingspunt_locatie_exploitatie_locatie ADD CONSTRAINT fk_onttrekkingspunt_locatie_exploitatie_locatie_onttrekkingspun FOREIGN KEY (onttrekkingspunt_uuid) REFERENCES onttrekkingspunt(uri);
-ALTER TABLE onttrekkingspunt_locatie_exploitatie_locatie ADD CONSTRAINT fk_onttrekkingspunt_locatie_exploitatie_locatie_exploitatie_loc FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE apparaat_locatie_exploitatie_locatie ADD CONSTRAINT fk_apparaat_locatie_exploitatie_locatie_apparaat_uuid FOREIGN KEY (apparaat_uuid) REFERENCES apparaat(uri);
-ALTER TABLE apparaat_locatie_exploitatie_locatie ADD CONSTRAINT fk_apparaat_locatie_exploitatie_locatie_exploitatie_locatie_uui FOREIGN KEY (exploitatie_locatie_uuid) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE observatie_has_feature_of_interest_meetpunt ADD CONSTRAINT fk_observatie_has_feature_of_interest_meetpunt_observatie_uuid FOREIGN KEY (observatie_uuid) REFERENCES observatie(uri);
-ALTER TABLE observatie_has_feature_of_interest_meetpunt ADD CONSTRAINT fk_observatie_has_feature_of_interest_meetpunt_meetpunt_uuid FOREIGN KEY (meetpunt_uuid) REFERENCES meetpunt(uri);
-ALTER TABLE exploitant_type_contactpersoon ADD CONSTRAINT fk_exploitant_type_contactpersoon_exploitant_uuid FOREIGN KEY (exploitant_uuid) REFERENCES exploitant(uri);
-ALTER TABLE exploitant_type_contactpersoon ADD CONSTRAINT fk_exploitant_type_contactpersoon_contactpersoon_uuid FOREIGN KEY (contactpersoon_uuid) REFERENCES contactpersoon(uri);
-ALTER TABLE contactpersoon_exploitant_exploitant ADD CONSTRAINT fk_contactpersoon_exploitant_exploitant_contactpersoon_uuid FOREIGN KEY (contactpersoon_uuid) REFERENCES contactpersoon(uri);
-ALTER TABLE contactpersoon_exploitant_exploitant ADD CONSTRAINT fk_contactpersoon_exploitant_exploitant_exploitant_uuid FOREIGN KEY (exploitant_uuid) REFERENCES exploitant(uri);
-ALTER TABLE proces_variabele_relatie ADD CONSTRAINT fk_proces_variabele_relatie_proces_uuid FOREIGN KEY (proces_uuid) REFERENCES proces(uri);
-ALTER TABLE proces_variabele_relatie ADD CONSTRAINT fk_proces_variabele_relatie_proces_variabele_uuid FOREIGN KEY (proces_variabele_uuid) REFERENCES proces_variabele(uri);
 
 -- Indexes
 CREATE INDEX idx_abstract_emissiepunt_emissiepunt_uuid ON abstract_emissiepunt(emissiepunt_uuid);

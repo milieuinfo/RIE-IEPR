@@ -31,17 +31,19 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const relPropertyMap = new Map();
     const normalize = s => {
       if (!s || typeof s !== 'string') return '';
-      try {
-        // remove diacritics, non-alphanumeric and lower-case
+      // prefer Unicode normalization when available, otherwise fall back
+      if (typeof String.prototype.normalize === 'function') {
         return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
-      } catch (e) { return s.replace(/[^0-9A-Za-z]/g, '').toLowerCase(); }
+      }
+      return s.replace(/[^0-9A-Za-z]/g, '').toLowerCase();
     };
 
     Array.from(this.relationships.values()).forEach(rel => {
       const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
       const toResolved = sharedIface || rel.to;
+      const toResolvedName = this.getBusinessClassName ? this.getBusinessClassName(toResolved) || toResolved : toResolved;
       const rawKey = `${rel.from}|${rel.property}`;
-      relPropertyMap.set(rawKey, toResolved);
+      relPropertyMap.set(rawKey, toResolvedName);
 
       const camelProp = (typeof rel.property === 'string') ? this.toCamelCase(rel.property) : null;
       if (camelProp) {
@@ -52,16 +54,16 @@ export class ClassDiagramGenerator extends ClassGenerator {
       if (rel.label && typeof rel.label === 'string') {
         const camelLabel = this.toCamelCase(rel.label);
         relPropertyMap.set(`${rel.from}|${camelLabel}`, toResolved);
-        relPropertyMap.set(`${rel.from}|${camelLabel.replace(/Id$/i, '')}`, toResolved);
+        relPropertyMap.set(`${rel.from}|${camelLabel.replace(/Id$/i, '')}`, toResolvedName);
       }
 
       // normalized variants (strip diacritics and non-alphanumerics)
       const normProp = normalize(rel.property);
-      if (normProp) relPropertyMap.set(`${rel.from}|${normProp}`, toResolved);
-      if (camelProp) relPropertyMap.set(`${rel.from}|${normalize(camelProp)}`, toResolved);
+      if (normProp) relPropertyMap.set(`${rel.from}|${normProp}`, toResolvedName);
+      if (camelProp) relPropertyMap.set(`${rel.from}|${normalize(camelProp)}`, toResolvedName);
       if (rel.label) {
         const normLabel = normalize(rel.label);
-        relPropertyMap.set(`${rel.from}|${normLabel}`, toResolved);
+        relPropertyMap.set(`${rel.from}|${normLabel}`, toResolvedName);
       }
     });
 
@@ -169,14 +171,14 @@ export class ClassDiagramGenerator extends ClassGenerator {
     Array.from(this.relationships.values()).forEach(rel => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
       // Filter out certain inferred/undesired relationships for specific classes (e.g. Proces)
-      try {
+      {
         const relNorm = (rel.property && typeof rel.property === 'string') ? rel.property : (rel.label || '');
         const norm = normalize(relNorm);
         const propStr = String(rel.property || '').toLowerCase();
         if (rel.from === 'Proces' && (norm === 'afgeleidvan' || norm === 'wasattributedto' || propStr.includes('wasderivedfrom') || propStr.includes('wasattributedto'))) {
           return;
         }
-      } catch (e) { /* ignore */ }
+      }
       // If we have an interface target for this (from,property), always use it
       const ifaceKey = `${rel.from}|${rel.label || rel.property}`;
       const forcedIface = interfaceTargetMap.get(ifaceKey);
@@ -222,11 +224,14 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const displayName = this.getDisplayName(className);
     mermaid += `    class ${displayName} {\n`;
     mermaid += `        <<interface>>\n`;
-    if (matched) {
+      if (matched) {
       const superName = matched[0];
       const { props } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames, classToSupers);
       if (props && props.length > 0) {
-        props.forEach(p => { mermaid += `        ${p.type} ${p.name}\n`; });
+        props.forEach(p => {
+          // Do not include long comments in class diagram; keep only type + name
+          mermaid += `        ${p.type} ${p.name}\n`;
+        });
       } else {
         mermaid += `        string uri\n`;
       }
@@ -263,8 +268,8 @@ export class ClassDiagramGenerator extends ClassGenerator {
       // Normalize property rendering for diagrams using centralized helper
       const resolved = this.applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames, classToSupers);
       if (!resolved) return null;
-      const { name, type, isArray, isForeignKey } = resolved;
-      return { name, type, isForeignKey, isArray };
+      const { name, type, isArray, isForeignKey, comment } = resolved;
+      return { name, type, isForeignKey, isArray, comment: comment || null };
     });
 
     // Deduplicate attributes by name: prefer interface or concrete types over generic 'object'/'string' entries
@@ -327,8 +332,8 @@ export class ClassDiagramGenerator extends ClassGenerator {
           displayType = this.pascalCase(mapped) + (attr.isArray ? '[]' : '');
         }
       }
-      mermaid += `        ${displayType} ${displayAttrName}
-`;
+      // Do not render attribute comments in class diagram; keep only type + name
+      mermaid += `        ${displayType} ${displayAttrName}\n`;
     });
     mermaid += `    }
   `;

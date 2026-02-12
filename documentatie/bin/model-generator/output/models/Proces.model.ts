@@ -50,8 +50,8 @@ export class Proces implements ISystem {
   @jsonArrayMember(ProcesVariabele, { name: 'hasOutputVar' })
   heeftUitvoer?: ProcesVariabele[];
 
-  @jsonMember(Proces, { name: 'isStepOfPlan' })
-  onderdeelVan?: Proces;
+  @jsonMember(Object, { name: 'isStepOfPlan' })
+  onderdeelVan?: ISystem;
 
   @jsonArrayMember(ProcesIdentifier, { name: 'identifier' })
   identifier?: ProcesIdentifier[];

@@ -195,7 +195,7 @@ export class WaterParser extends BaseParser {
             const herkomst = gebruik.Herkomst?.[0];
             if (herkomst) {
                 const stofId = this.sanitizeId(herkomst);
-                const stofUri = this.turtle.qname('stof', `${this.cbbNumber}_${stofId}`);
+                const stofUri = this.turtle.qname('var', `${this.cbbNumber}_${stofId}`);
 
                 // Create ProcesVariabele entity
                 this.turtle.triple(
@@ -461,7 +461,7 @@ export class WaterParser extends BaseParser {
             
             // Create riepr:ProcesVariabele instance
             const stofId = this.sanitizeId(stofNaam);
-            const stofUri = this.turtle.qname('stof', stofId);
+            const stofUri = this.turtle.qname('var', stofId);
 
             this.turtle.triple(
                 stofUri,
@@ -520,7 +520,7 @@ export class WaterParser extends BaseParser {
             // Create Stof if present
             if (stofNaam) {
                 const stofId = this.sanitizeId(stofNaam);
-                const stofUri = this.turtle.qname('stof', stofId);
+                const stofUri = this.turtle.qname('var', stofId);
 
                 this.turtle.triple(
                     stofUri,

@@ -697,6 +697,9 @@ export class BaseGenerator {
   _processPropertyRestrictions(classInfo, attributes, enumClasses, className, skipTechnicalFilters) {
     if (!classInfo || !Array.isArray(classInfo.restrictions)) return;
     classInfo.restrictions.forEach(restriction => {
+      // synthesize a human-readable comment summarizing the restriction
+      const rComment = (restriction && restriction.comment && String(restriction.comment).trim())
+        || `${restriction.propertyIri}${(typeof restriction.minCardinality === 'number' && restriction.minCardinality>0) ? ' min:'+restriction.minCardinality : ''}${(typeof restriction.maxCardinality === 'number' && restriction.maxCardinality>=0) ? ' max:'+restriction.maxCardinality : ''}${(Array.isArray(restriction.rangeTypes) && restriction.rangeTypes.length>0) ? ' range:'+restriction.rangeTypes.join(',') : ''}`;
       if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
 
@@ -724,9 +727,10 @@ export class BaseGenerator {
                 name: attrName,
                 type: 'enum',
                 sqlType: 'TEXT',
-                comment: matched,
+                comment: rComment,
                 isForeignKey: false,
-                propertyIri: restriction.propertyIri
+                propertyIri: restriction.propertyIri,
+                enumClass: matched
               });
             }
             return;
@@ -740,9 +744,10 @@ export class BaseGenerator {
               name: attrName,
               type: 'enum',
               sqlType: 'TEXT',
-              comment: enumTypes[0],
+              comment: rComment,
               isForeignKey: false,
-              propertyIri: restriction.propertyIri
+              propertyIri: restriction.propertyIri,
+              enumClass: enumTypes[0]
             });
           }
           return;
@@ -754,7 +759,7 @@ export class BaseGenerator {
               name: attrName,
               type: 'string',
               sqlType: 'TEXT',
-              comment: restriction.propertyIri,
+              comment: rComment,
               isForeignKey: false,
               propertyIri: restriction.propertyIri
             });
@@ -775,7 +780,7 @@ export class BaseGenerator {
             name: attrName,
             type: t,
             sqlType: sql,
-            comment: comment,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri
           });
@@ -791,7 +796,7 @@ export class BaseGenerator {
             name: attrName,
             type: 'string',
             sqlType: 'TEXT',
-            comment: restriction.propertyIri,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri,
             minCardinality: restriction.minCardinality,
@@ -813,7 +818,7 @@ export class BaseGenerator {
             name: attrName,
             type: t,
             sqlType: sql,
-            comment: comment,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri
           });
@@ -848,7 +853,7 @@ export class BaseGenerator {
                 name: attrName,
                 type: 'enum',
                 sqlType: 'TEXT',
-                comment: formattedEnumValues,
+                comment: rComment,
                 isForeignKey: false,
                 propertyIri: restriction.propertyIri
               });
@@ -869,7 +874,7 @@ export class BaseGenerator {
               name: fkName,
               type: 'string',
               sqlType: 'TEXT',
-              comment: displayTypes.join(', '),
+              comment: rComment,
               isForeignKey: true,
               propertyIri: restriction.propertyIri,
               targetClasses: nonEnumTypes,
@@ -886,7 +891,7 @@ export class BaseGenerator {
                 name: fkName,
                 type: 'string',
                 sqlType: 'TEXT',
-                comment: this.getBusinessClassName(targetType),
+                comment: rComment,
                 isForeignKey: true,
                 propertyIri: restriction.propertyIri,
                 targetClasses: [targetType],
@@ -908,7 +913,7 @@ export class BaseGenerator {
           name: attrName,
           type: mermaidType,
           sqlType: sqlType,
-          comment: restriction.rangeTypes.join(', '),
+          comment: rComment,
           isForeignKey: false,
           propertyIri: restriction.propertyIri,
           minCardinality: restriction.minCardinality,

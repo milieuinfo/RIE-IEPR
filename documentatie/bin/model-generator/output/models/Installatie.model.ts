@@ -38,8 +38,8 @@ export class Installatie implements ISystem {
   @jsonMember(ExploitatieLocatie, { name: 'isHostedBy' })
   locatie!: ExploitatieLocatie;
 
-  @jsonMember(Installatie, { name: 'wasDerivedFrom' })
-  afgeleidVan?: Installatie;
+  @jsonMember(Object, { name: 'wasDerivedFrom' })
+  afgeleidVan?: ISystem;
 
   @jsonArrayMember(InstallatieIdentifier, { name: 'identifier' })
   identifier?: InstallatieIdentifier[];

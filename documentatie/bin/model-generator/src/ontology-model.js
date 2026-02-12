@@ -44,7 +44,11 @@ export class OntologyModel {
         const doRefresh = process && process.env && process.env.MODEL_GENERATOR_CACHE_REFRESH === '1';
         // Determine cache directory (prefer resolveProjectPath if available)
         let cacheBase = null;
-        try { cacheBase = resolveProjectPath ? resolveProjectPath('.cache/ontologies') : null; } catch (e) { cacheBase = null; }
+        if (typeof resolveProjectPath === 'function') {
+          cacheBase = resolveProjectPath('.cache/ontologies');
+        } else {
+          cacheBase = null;
+        }
         if (!cacheBase) cacheBase = path.join(process.cwd(), '.cache', 'ontologies');
         if (!fs.existsSync(cacheBase)) fs.mkdirSync(cacheBase, { recursive: true });
 
@@ -711,6 +715,18 @@ export class OntologyModel {
       if (restriction.rangeTypes.length > 0 && !restriction.restrictionType) {
         restriction.restrictionType = 'range';
       }
+    }
+
+    // Capture any rdfs:comment on the restriction node (human-readable hint)
+    try {
+      const commentQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.rdfs + 'comment'), null);
+      if (commentQuads && commentQuads.length > 0 && commentQuads[0].object && commentQuads[0].object.value) {
+        restriction.comment = commentQuads[0].object.value;
+      } else {
+        restriction.comment = '';
+      }
+    } catch (e) {
+      restriction.comment = '';
     }
 
     return restriction;
