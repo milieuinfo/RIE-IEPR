@@ -1,0 +1,130 @@
+flowchart LR
+
+%% =====================================================
+%% TOP-LEVEL PLAN
+%% =====================================================
+    subgraph PLAN0["PLAN — Nigella Brownies (p-plan:Plan)"]
+        STEP_smelt["Step: Smelten"]
+        STEP_hak["Step: Hakken"]
+        STEP_meng["Step: Mengen"]
+        STEP_bak["Step: Bakken"]
+
+        STEP_smelt --> STEP_hak --> STEP_meng --> STEP_bak
+    end
+
+%% =====================================================
+%% DECOMPOSED PLAN: SMELTEN
+%% =====================================================
+    subgraph PLAN_SMELT["SUBPLAN — Smelten (p-plan:Plan)"]
+        S1["Boter & chocolade in pan"]
+        S2["Pan verwarmen"]
+        S3["Roeren tot homogeen"]
+
+        S1 --> S2 --> S3
+    end
+
+    STEP_smelt -.isDecomposedAsPlan.-> PLAN_SMELT
+
+%% =====================================================
+%% DECOMPOSED PLAN: BAKKEN
+%% =====================================================
+    subgraph PLAN_BAK["SUBPLAN — Bakken (p-plan:Plan)"]
+        B1["Oven voorverwarmen"]
+        B2["Beslag in bakvorm"]
+        B3["Bakvorm in oven"]
+        B4["Bakken tot lichtbruin"]
+        B5["Uit oven & afkoelen"]
+
+        B1 --> B2 --> B3 --> B4 --> B5
+    end
+
+    STEP_bak -.isDecomposedAsPlan.-> PLAN_BAK
+
+%% =====================================================
+%% EXECUTION LANE
+%% =====================================================
+    subgraph EXEC["EXECUTION — 10 Feb 2026"]
+        E_smelt["Actuation: Smelten"]
+        E_hak["Actuation: Hakken"]
+        E_meng["Actuation: Mengen"]
+        E_bak["Actuation: Bakken"]
+        E_obs["Observation: Kleur"]
+
+        E_smelt --> E_hak --> E_meng --> E_bak --> E_obs
+
+        E_smelt -.correspondsToStep.-> STEP_smelt
+        E_hak   -.correspondsToStep.-> STEP_hak
+        E_meng  -.correspondsToStep.-> STEP_meng
+        E_bak   -.correspondsToStep.-> STEP_bak
+        E_obs   -.correspondsToStep.-> B4
+    end
+
+%% =====================================================
+%% SYSTEMS / AGENTS
+%% =====================================================
+    subgraph SYSTEMS["SYSTEMS & AGENTS"]
+        SYS_smelt["Smeltsysteem<br/>(pan+gas+garde)"]
+        SYS_hak["Haksysteem"]
+        SYS_robot["Keukenrobot"]
+        SYS_oven["Oven"]
+        AG_geert["Geert (sensor)"]
+
+        SYS_smelt -.implements.-> STEP_smelt
+        SYS_hak -.implements.-> STEP_hak
+        SYS_robot -.implements.-> STEP_meng
+        SYS_oven -.implements.-> STEP_bak
+        AG_geert -.implements.-> B4
+    end
+
+    E_smelt -.madeByActuator.-> SYS_smelt
+    E_hak   -.madeByActuator.-> SYS_hak
+    E_meng  -.madeByActuator.-> SYS_robot
+    E_bak   -.madeByActuator.-> SYS_oven
+    E_obs   -.madeBySensor.-> AG_geert
+
+%% =====================================================
+%% PROV ENTITIES & DERIVATION
+%% =====================================================
+    subgraph DATA["PROV ENTITIES (Ingrediënten → Resultaat)"]
+        I_boter["Boter"]
+        I_choc["Chocolade"]
+        I_wal["Walnoten"]
+        I_suiker["Suiker"]
+        I_eieren["Eieren"]
+        I_bloem["Bloem"]
+
+        T_smelt["Gesmolten mengsel"]
+        T_hak["Gehakte walnoten"]
+        T_beslag["Beslag"]
+        R_brownies["Brownies"]
+        O_kleur["Kleur: lichtbruin"]
+    end
+
+%% used
+    E_smelt -->|prov:used| I_boter
+    E_smelt -->|prov:used| I_choc
+    E_hak   -->|prov:used| I_wal
+    E_meng  -->|prov:used| T_smelt
+    E_meng  -->|prov:used| T_hak
+    E_meng  -->|prov:used| I_suiker
+    E_meng  -->|prov:used| I_eieren
+    E_meng  -->|prov:used| I_bloem
+    E_bak   -->|prov:used| T_beslag
+
+%% results
+    E_smelt -->|hasResult| T_smelt
+    E_hak   -->|hasResult| T_hak
+    E_meng  -->|hasResult| T_beslag
+    E_bak   -->|hasResult| R_brownies
+    E_obs   -->|hasResult| O_kleur
+
+%% derivation
+    T_smelt -.wasDerivedFrom.-> I_boter
+    T_smelt -.wasDerivedFrom.-> I_choc
+    T_hak   -.wasDerivedFrom.-> I_wal
+    T_beslag -.wasDerivedFrom.-> T_smelt
+    T_beslag -.wasDerivedFrom.-> T_hak
+    T_beslag -.wasDerivedFrom.-> I_suiker
+    T_beslag -.wasDerivedFrom.-> I_eieren
+    T_beslag -.wasDerivedFrom.-> I_bloem
+    R_brownies -.wasDerivedFrom.-> T_beslag
