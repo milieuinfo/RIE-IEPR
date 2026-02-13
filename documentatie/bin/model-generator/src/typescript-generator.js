@@ -419,7 +419,8 @@ export class TypeScriptGenerator extends ClassGenerator {
 
       // attribute processing (kept intact but scoped)
       attrs.forEach(attr => {
-        const jsonName = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : ((attr.name && String(attr.name).length > 0) ? attr.name : attr.propertyIri || '');
+        // prefer explicit jsonName (set for synthetic attrs), otherwise use propertyIri local name
+        const jsonName = (attr.jsonName && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.jsonName) : ((attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : ((attr.name && String(attr.name).length > 0) ? attr.name : attr.propertyIri || ''));
         const safeJsonName = String(jsonName).replace(/'/g, "\\'");
         let mapped = this.mapForeignKeyAttribute(attr, className);
         let officialName, baseType;
@@ -430,7 +431,13 @@ export class TypeScriptGenerator extends ClassGenerator {
           content += `  ${officialName}!: ${baseType};\n\n`;
           return;
         } else {
-          officialName = attr.name; if (attr.propertyIri) officialName = this.ontology.getBusinessNameForProperty(attr.propertyIri, className) || this.ontology.extractLocalName(attr.propertyIri) || attr.name;
+          officialName = attr.name;
+          // For synthetic attributes (injected system relations) prefer the
+          // provided business `attr.name` (skos:prefLabel). Do not let the
+          // internal `propertyIri` (e.g. hasInputVar__system) override that.
+          if (!attr.synthetic && attr.propertyIri) {
+            officialName = this.ontology.getBusinessNameForProperty(attr.propertyIri, className) || this.ontology.extractLocalName(attr.propertyIri) || attr.name;
+          }
         }
         baseType = this.tsTypeForAttribute(attr);
         // prefer shared-interface types if present
@@ -514,6 +521,26 @@ export class TypeScriptGenerator extends ClassGenerator {
             }
           }
         }
+
+        // Special-case: for Proces.isStepOfPlan ensure explicit Proces typing
+        try {
+          const localProp = attr.jsonName ? this.ontology.extractLocalName(attr.jsonName) : (attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : null);
+          if (className === 'Proces' && localProp === 'isStepOfPlan') {
+            baseType = pascal('Proces');
+            modelImports.add('Proces');
+          }
+        } catch (e) { /* ignore */ }
+
+        // If this attribute is our synthetic system relationship, prefer ISystem interface
+        try {
+          if (attr.synthetic && Array.isArray(attr.targetClasses) && attr.targetClasses.includes('System')) {
+            // prefer the ISystem interface as the element type and let the
+            // surrounding `isArray` flag control arrayness (avoid double [])
+            baseType = `I${pascal('System')}`;
+            // ensure interface import for System
+            interfaceImports.set('System', `I${pascal('System')}`);
+          }
+        } catch (e) { /* ignore */ }
 
         let memberCtor = 'String'; if (baseType === 'Date') memberCtor = 'Date'; else if (baseType === 'number') memberCtor = 'Number'; else if (baseType === 'boolean') memberCtor = 'Boolean'; else if (/^[A-Z]/.test(String(baseType)) && !/^I[A-Z]/.test(String(baseType))) { const isEnum = Array.isArray(localEnumFiles) && localEnumFiles.length > 0 && localEnumFiles.some(e => e.name === String(baseType)); if (isEnum) memberCtor = `() => ${baseType}`; else memberCtor = baseType; }
         try { const ifaceMatch = String(baseType).match(/I[A-Z][A-Za-z0-9_]*/); if (ifaceMatch) memberCtor = 'Object'; } catch (e) { }

@@ -10,10 +10,10 @@ import { InstallatieIdentifier } from './InstallatieIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
-import type { ISystem } from './System.interface';
+import type { IAgent } from './Agent.interface';
 
 @jsonObject
-export class Installatie implements ISystem {
+export class Installatie implements IAgent {
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 
@@ -21,7 +21,7 @@ export class Installatie implements ISystem {
   uri?: string;
 
   @jsonArrayMember(Object, { name: 'hasSubSystem' })
-  heeftSubSysteem?: ISystem[];
+  heeftSubSysteem?: IAgent[];
 
   @jsonMember(String, { name: 'label' })
   benaming!: string;
@@ -39,7 +39,7 @@ export class Installatie implements ISystem {
   locatie!: ExploitatieLocatie;
 
   @jsonMember(Object, { name: 'wasDerivedFrom' })
-  afgeleidVan?: ISystem;
+  afgeleidVan?: IAgent;
 
   @jsonArrayMember(InstallatieIdentifier, { name: 'identifier' })
   identifier?: InstallatieIdentifier[];

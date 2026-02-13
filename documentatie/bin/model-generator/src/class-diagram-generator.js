@@ -29,18 +29,17 @@ export class ClassDiagramGenerator extends ClassGenerator {
     // Build a quick lookup for property -> resolved target (used to display FK attributes as interfaces)
     // Add multiple keys (raw property, camel-cased property, camel-cased label, id-stripped variants)
     const relPropertyMap = new Map();
-    const normalize = s => {
-      if (!s || typeof s !== 'string') return '';
-      // prefer Unicode normalization when available, otherwise fall back
-      if (typeof String.prototype.normalize === 'function') {
-        return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
-      }
-      return s.replace(/[^0-9A-Za-z]/g, '').toLowerCase();
-    };
+    const normalize = s => (this.utils && typeof this.utils.normalizeString === 'function') ? this.utils.normalizeString(s) : (s || '').toString().toLowerCase();
 
     Array.from(this.relationships.values()).forEach(rel => {
-      const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
-      const toResolved = sharedIface || rel.to;
+      // Prefer concrete targets when configured or for synthetic/override cases
+      let toResolved = null;
+      if (this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(rel)) {
+        toResolved = rel.to;
+      } else {
+        const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+        toResolved = sharedIface || rel.to;
+      }
       const toResolvedName = this.getBusinessClassName ? this.getBusinessClassName(toResolved) || toResolved : toResolved;
       const rawKey = `${rel.from}|${rel.property}`;
       relPropertyMap.set(rawKey, toResolvedName);
@@ -163,6 +162,8 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const interfaceTargetMap = new Map();
     groupMap.forEach((rels, labelKey) => {
       for (const r of rels) {
+        // Do not collapse relationships that prefer concrete targets to interfaces
+        if (this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(r)) continue;
         const sharedIface = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames);
         if (sharedIface) { interfaceTargetMap.set(labelKey, sharedIface); break; }
       }
@@ -191,7 +192,11 @@ export class ClassDiagramGenerator extends ClassGenerator {
       }
 
       // Ask ClassGenerator helper whether these targets share a common interface
-      const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      // Skip interface collapsing for relationships that prefer concrete targets
+      let sharedIface = null;
+      if (!(this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(rel))) {
+        sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      }
       const toResolved = sharedIface || rel.to;
       const key = `${rel.from}|${toResolved}|${rel.property}`;
       if (!renderRelMap.has(key)) {
