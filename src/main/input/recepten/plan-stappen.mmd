@@ -1,0 +1,57 @@
+flowchart RL
+
+%% =====================================================
+%% TOP-LEVEL PLAN
+%% =====================================================
+    subgraph PLAN0["PLAN — Nigella Brownies (p-plan:Plan)"]
+        STEP_smelt["Step: Smelten"]
+        style STEP_smelt color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        STEP_hak["Step: Hakken"]
+        style STEP_hak color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        STEP_meng["Step: Mengen"]
+        style STEP_meng color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        STEP_bak["Step: Bakken"]
+        style STEP_bak color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+
+        STEP_bak -->|isPrecededBy| STEP_meng -->|isPrecededBy| STEP_hak -->|isPrecededBy| STEP_smelt
+    end
+    style PLAN0 color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
+
+%% =====================================================
+%% DECOMPOSED PLAN: SMELTEN
+%% =====================================================
+    subgraph PLAN_SMELT["SUBPLAN — Smelten (p-plan:Plan)"]
+        S1["Boter & chocolade in pan"]
+        style S1 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        S2["Pan verwarmen"]
+        style S2 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        S3["Roeren tot homogeen"]
+        style S3 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+
+        S3 -->|isPrecededBy| S2 -->|isPrecededBy| S1
+    end
+    style PLAN_SMELT color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
+
+    STEP_smelt -.isDecomposedAsPlan.-> PLAN_SMELT
+
+%% =====================================================
+%% DECOMPOSED PLAN: BAKKEN
+%% =====================================================
+    subgraph PLAN_BAK["SUBPLAN — Bakken (p-plan:Plan)"]
+        B1["Oven voorverwarmen"]
+        style B1 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        B2["Beslag in bakvorm"]
+        style B2 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        B3["Bakvorm in oven"]
+        style B3 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        B4["Bakken tot lichtbruin"]
+        style B4 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+        B5["Uit oven & afkoelen"]
+        style B5 color:white,fill:#4A90E2,stroke:#2E5C8A,color:#fff
+
+
+        B5 -->|isPrecededBy| B4 -->|isPrecededBy| B3 -->|isPrecededBy| B2 -->|isPrecededBy| B1
+    end
+    style PLAN_BAK color:white,fill:#7F59AE,stroke:#2E5C8A,color:#fff
+
+    STEP_bak -.isDecomposedAsPlan.-> PLAN_BAK
