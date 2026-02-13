@@ -61,11 +61,14 @@ export class ClassGenerator extends BaseGenerator {
       else if (attr.type === 'boolean') t = 'boolean';
       else if (attr.type === 'enum') {
         // Resolve enum class name (prefer explicit enum class, fallback to business name)
-        let enumClass = null;
-        if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+        // Prefer explicit enumClass metadata attached during attribute derivation
+        let enumClass = attr && attr.enumClass ? attr.enumClass : null;
+        if (!enumClass && this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
           enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
         }
-        const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
+        // Only accept short/safe comments as enum names (avoid long human-readable sentences)
+        const isSafeEnumLabel = c => (typeof c === 'string' && c.length > 0 && c.length <= 30 && !/\s/.test(c) && /^[A-Za-z0-9_\-]+$/.test(c));
+        const enumName = enumClass ? this.pascalCase(enumClass) : (isSafeEnumLabel(attr.comment) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
         t = enumName || 'string';
       }
 
@@ -78,8 +81,9 @@ export class ClassGenerator extends BaseGenerator {
         });
         if (explicitInternal.length === 1) {
           const single = explicitInternal[0];
-          t = this.pascalCase(single);
-          imports.add(single);
+          const biz = this.getBusinessClassName ? this.getBusinessClassName(single) : single;
+          t = this.pascalCase(biz);
+          imports.add(biz || single);
         } else {
           // Prefer interface types for foreign-key properties on shared interfaces
           const sharedIface = this.findSharedInterfaceForTargets(targets, classToSupers || new Map(), sharedInterfaceNames);
@@ -90,14 +94,15 @@ export class ClassGenerator extends BaseGenerator {
           } else if (targets.length === 1) {
             // Single concrete target -> prefer its interface (I<Class>) if available
             const single = targets[0];
-            t = `I${this.pascalCase(single)}`;
-            imports.add(this.pascalCase(single));
+            const biz = this.getBusinessClassName ? this.getBusinessClassName(single) : single;
+            t = `I${this.pascalCase(biz)}`;
+            imports.add(this.pascalCase(biz));
           } else {
             t = 'string';
           }
         }
       }
-
+      
       // Determine arrayness for shared-interface properties by inspecting
       // implementing classes: if any implementing class defines the
       // corresponding attribute as multi-valued, expose it as an array
@@ -140,16 +145,16 @@ export class ClassGenerator extends BaseGenerator {
 
       const existing = propMap.get(base);
       if (!existing) {
-        propMap.set(base, { name: propName, type: t });
+        propMap.set(base, { name: propName, type: t, comment: attr.comment || null });
       } else {
         const existingIsIface = /^I[A-Z]/.test(existing.type);
         const newIsIface = /^I[A-Z]/.test(t);
         if (existing.name.endsWith('Id') && !propName.endsWith('Id')) {
-          propMap.set(base, { name: propName, type: newIsIface ? t : existingIsIface ? existing.type : t });
+          propMap.set(base, { name: propName, type: newIsIface ? t : existingIsIface ? existing.type : t, comment: attr.comment || null });
         } else if (newIsIface && !existingIsIface) {
-          propMap.set(base, { name: propName, type: t });
+          propMap.set(base, { name: propName, type: t, comment: attr.comment || null });
         } else {
-          if (existing.type === 'object' && t !== 'object') propMap.set(base, { name: propName, type: t });
+          if (existing.type === 'object' && t !== 'object') propMap.set(base, { name: propName, type: t, comment: attr.comment || null });
         }
       }
     });
@@ -193,11 +198,13 @@ export class ClassGenerator extends BaseGenerator {
       if (attr.propertyIri === 'rdfs:label' || attr.propertyIri === `${Config.NAMESPACES.rdfs}label`) type = 'string';
       else if (attr.type === 'enum') {
         // Resolve enum class name for diagram rendering
-        let enumClass = null;
-        if (this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+        // Prefer explicit enumClass metadata attached during attribute derivation
+        let enumClass = attr && attr.enumClass ? attr.enumClass : null;
+        if (!enumClass && this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
           enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
         }
-        const enumName = enumClass ? this.pascalCase(enumClass) : ((attr.comment && typeof attr.comment === 'string' && !attr.comment.includes(',')) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
+        const isSafeEnumLabel = c => (typeof c === 'string' && c.length > 0 && c.length <= 30 && !/\s/.test(c) && /^[A-Za-z0-9_\-]+$/.test(c));
+        const enumName = enumClass ? this.pascalCase(enumClass) : (isSafeEnumLabel(attr.comment) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
         type = enumName || 'enum';
       }
       else if (attr.type === 'date' || attr.type === 'datetime') type = 'Date';
@@ -216,7 +223,8 @@ export class ClassGenerator extends BaseGenerator {
       });
       if (explicitInternal.length === 1) {
         const target = explicitInternal[0];
-        type = this.pascalCase(target);
+        const biz = this.getBusinessClassName ? this.getBusinessClassName(target) : target;
+        type = this.pascalCase(biz);
       } else {
         const targets = attr.targetClasses.filter(t => {
           const isRelevant = (this.ontology.isRelevantClassName && this.ontology.isRelevantClassName(t));
@@ -231,7 +239,8 @@ export class ClassGenerator extends BaseGenerator {
             type = iface;
           } else if (targets.length === 1) {
             const target = targets[0];
-            type = this.pascalCase(target);
+            const biz = this.getBusinessClassName ? this.getBusinessClassName(target) : target;
+            type = this.pascalCase(biz);
           } else {
             type = 'object';
           }
@@ -239,10 +248,10 @@ export class ClassGenerator extends BaseGenerator {
       }
       name = String(name).replace(/Id$/i, '');
       if (isArray) type = `${type}[]`;
-      return { name, type, isArray, isForeignKey: true };
+      return { name, type, isArray, isForeignKey: true, comment: attr.comment || null };
     }
 
-    return { name, type, isArray, isForeignKey: !!attr.isForeignKey };
+    return { name, type, isArray, isForeignKey: !!attr.isForeignKey, comment: attr.comment || null };
   }
 
   /**

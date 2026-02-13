@@ -16,14 +16,6 @@ const vannPreferredNamespaceUri = namedNode('http://purl.org/vocab/vann/preferre
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Hydra terms for IRI templates
-const hydraIriTemplate = namedNode("http://www.w3.org/ns/hydra/core#IriTemplate");
-const hydraTemplate = namedNode("http://www.w3.org/ns/hydra/core#template");
-const hydraMapping = namedNode("http://www.w3.org/ns/hydra/core#mapping");
-const hydraVariable = namedNode("http://www.w3.org/ns/hydra/core#variable");
-const hydraProperty = namedNode("http://www.w3.org/ns/hydra/core#property");
-const hydraRequired = namedNode("http://www.w3.org/ns/hydra/core#required");
-const hydraRfc6570 = namedNode("http://www.w3.org/ns/hydra/core#Rfc6570Template");
 const hydraSearch = namedNode("http://www.w3.org/ns/hydra/core#search");
 
 function loadStore(path) {
@@ -161,33 +153,35 @@ function prefixUri(uri) {
 let filePrefixes = Object.assign({}, NAMESPACES || {});
 
 function collectIriTemplates(store) {
-  // Find subjects that have a hydra:template
+  // Find subjects that have a hydra:template (subjects may be NamedNode or BlankNode)
   const templateQuads = store.getQuads(null, namedNode(NAMESPACES.hydra + 'template'), null, null);
-  const subjects = [...new Set(templateQuads.map(q => q.subject.value))];
+  // Keep unique subject terms (preserve termType)
+  const subjects = [...new Map(templateQuads.map(q => [q.subject.value, q.subject])).values()];
 
-  return subjects.map(subj => {
-    const subjectTerm = namedNode(subj);
+  return subjects.map(subjectTerm => {
     const templateLiteral = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'template'), null, null)[0]?.object?.value || '';
 
     // Collect mapping blank nodes
     const mappingQuads = store.getQuads(subjectTerm, namedNode(NAMESPACES.hydra + 'mapping'), null, null);
     const mappings = mappingQuads.map(mq => {
       const bn = mq.object;
-      // bn is typically a BlankNode
       const variable = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'variable'), null, null)[0]?.object?.value || null;
       const propertyNode = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'property'), null, null)[0]?.object || null;
       const requiredLit = store.getQuads(bn, namedNode(NAMESPACES.hydra + 'required'), null, null)[0]?.object || null;
 
       return {
         variable,
-        property: propertyNode ? (propertyNode.termType === 'NamedNode' ? propertyNode.value : propertyNode.value) : null,
+        property: propertyNode ? propertyNode.value : null,
         required: requiredLit ? (requiredLit.termType === 'Literal' ? requiredLit.value : null) : null,
-        raw: bn.value
+        raw: bn.value,
+        termType: bn.termType
       };
     });
 
     return {
-      id: subj,
+      // Keep the term value as id. For blank nodes this is the blank id (e.g. 'b0')
+      id: subjectTerm.value,
+      termType: subjectTerm.termType,
       template: templateLiteral,
       mappings,
     };
@@ -276,7 +270,9 @@ function collectClasses(store) {
         };
       }).filter(r => r.property);
 
-      const searches = urisFor(store, uri, hydraSearch).filter(s => !s.startsWith('_:'));
+      // Collect hydra:search targets; keep BlankNode references as well
+      const searchQuads = store.getQuads(namedNode(uri), hydraSearch, null, null);
+      const searches = searchQuads.map(q => q.object && q.object.value).filter(Boolean);
 
       return {
         id: uri,
@@ -682,15 +678,34 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
       section += mermaidBlock + '\n';
     }
 
-    // Link to any hydra templates associated with this class (via hydra:search)
+    // Inline any hydra templates associated with this class (via hydra:search)
     if (cls.templates && cls.templates.length > 0) {
-      section += `**IRI template(s):** `;
-      const links = cls.templates.map(turi => {
+      cls.templates.forEach(turi => {
         const found = templates.find(tt => tt.id === turi);
-        const name = found ? localName(found.id) : localName(turi);
-        return `[${name}](#template-${localName(turi)})`;
+        const templ = found ? found.template : '';
+        // If the template is a blank node, show the template string instead of an internal id
+        if (found && found.termType === 'BlankNode') {
+          section += `**IRI template:**\n\n`;
+          if (templ) {
+            section += `\`\`\`text\n${templ}\n\`\`\`\n\n`;
+          }
+        } else {
+          const title = found ? localName(found.id) : localName(turi);
+          section += `**IRI template:** ${title}\n\n`;
+          if (templ) {
+            section += `\`\`\`text\n${templ}\n\`\`\`\n\n`;
+          }
+        }
+
+        if (found && found.mappings && found.mappings.length > 0) {
+          section += `**Mappings:**\n\n`;
+          found.mappings.forEach(m => {
+            const prop = m.property ? linkify(m.property) : m.raw;
+            section += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
+          });
+          section += `\n`;
+        }
       });
-      section += links.join(', ') + '\n\n';
     }
 
     section += '\n';
@@ -707,23 +722,6 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
   hierarchy.rootClasses.forEach(rootClass => {
     output += generateClassSection(rootClass);
   });
-
-  // IRI Templates (Hydra)
-  if (templates && templates.length > 0) {
-    output += `# IRI Templates # {#iri-templates}\n\n`;
-    templates.forEach(t => {
-      output += `## Template: ${localName(t.id)} ## {#template-${localName(t.id)}}\n\n`;
-      output += `**IRI template:** \`${t.template}\`\n\n`;
-      if (t.mappings && t.mappings.length > 0) {
-        output += `**Mappings:**\n\n`;
-        t.mappings.forEach(m => {
-          const prop = m.property ? linkify(m.property) : m.raw;
-          output += `- **${m.variable}** -> ${prop}${m.required ? ` (required: ${m.required})` : ''}\n`;
-        });
-        output += `\n`;
-      }
-    });
-  }
 
   // Generate properties section if any
   if (properties.length > 0) {

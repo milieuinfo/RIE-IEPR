@@ -1,0 +1,26 @@
+---
+title: "Staalproductieproces van Staalfabriek NV op 1999 (transport as edges)"
+---
+flowchart LR
+proces_0400123123_6851234567_ACTIVITEIT_1_0001["Toevoeging van grondstoffen"]
+emissiepunt_0400123123_6851234567_0000001["Schouw 1"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0004["Staalproductie in stroomboogoven
+Apparaat: Stroomboogoven"]
+emissiepunt_0400123123_6851234567_0000002["Schouw 2"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0007["Argon-zuurstofontkoling
+Apparaat: Argon-zuurstofontkoling"]
+emissiepunt_0400123123_6851234567_0000003["Schouw 3"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999["Decarburisatie zonder tussenstappen"]
+emissiepunt_0400123123_6851234567_0000004["Schoorsteen Ketels"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0011["Gieten en afkoelen
+Apparaat: Gieterijmachine"]
+emissiepunt_0400123123_6851234567_0000005["Schouw 5"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0001 -- "Schroot" --> proces_0400123123_6851234567_ACTIVITEIT_1_0004
+proces_0400123123_6851234567_ACTIVITEIT_1_0004 -- "Overbrenging vloeibaar staal" --> proces_0400123123_6851234567_ACTIVITEIT_1_0007
+proces_0400123123_6851234567_ACTIVITEIT_1_0007 -- "Overbrenging naar decarburisatie" --> proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 -- "Overbrenging naar gietinstallatie" --> proces_0400123123_6851234567_ACTIVITEIT_1_0011
+proces_0400123123_6851234567_ACTIVITEIT_1_0001 -. "Afgassing" .-> emissiepunt_0400123123_6851234567_0000001
+proces_0400123123_6851234567_ACTIVITEIT_1_0004 -. "Afgassing" .-> emissiepunt_0400123123_6851234567_0000002
+proces_0400123123_6851234567_ACTIVITEIT_1_0007 -. "Afgassing" .-> emissiepunt_0400123123_6851234567_0000003
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 -. "Afgassing" .-> emissiepunt_0400123123_6851234567_0000004
+proces_0400123123_6851234567_ACTIVITEIT_1_0011 -. "Afgassing" .-> emissiepunt_0400123123_6851234567_0000005

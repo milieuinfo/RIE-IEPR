@@ -32,7 +32,7 @@ export class LuchtParser extends BaseParser {
         this.turtle.triple(
             varUri,
             this.turtle.qname('rdf', 'type'),
-            this.turtle.qname('riepr', 'Variable')
+            this.turtle.qname('riepr', 'ProcesVariabele')
         );
         this.turtle.triple(
             varUri,
@@ -240,7 +240,7 @@ export class LuchtParser extends BaseParser {
         if (eenheid.GeproduceerdeStof?.[0]?.Naam) {
             const stofNaam = eenheid.GeproduceerdeStof[0].Naam[0];
             const stofId = this.sanitizeId(stofNaam);
-            producedStofUri = this.turtle.qname('stof', stofId);
+            producedStofUri = this.turtle.qname('var', stofId);
             this.turtle.triple(producedStofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
             this.turtle.triple(producedStofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
         }
@@ -517,7 +517,7 @@ export class LuchtParser extends BaseParser {
         stoffenArray.forEach(stof => {
             const stofId = stof.$.stofID;
             const naam = stof.Benaming?.[0];
-            const stofUri = this.turtle.qname('stof', stofId);
+            const stofUri = this.turtle.qname('var', stofId);
             this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
             if (naam) {
                 this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(naam, null, 'nl'));
@@ -750,7 +750,7 @@ export class LuchtParser extends BaseParser {
                         this.turtle.triple(
                             inputVarUri,
                             this.turtle.qname('rdf', 'type'),
-                            this.turtle.qname('riepr', 'Variable')
+                            this.turtle.qname('riepr', 'ProcesVariabele')
                         );
                         this.turtle.triple(
                             inputVarUri,
@@ -769,7 +769,7 @@ export class LuchtParser extends BaseParser {
                     this.turtle.triple(
                         outputVarUri,
                         this.turtle.qname('rdf', 'type'),
-                        this.turtle.qname('riepr', 'Variable')
+                        this.turtle.qname('riepr', 'ProcesVariabele')
                     );
                     this.turtle.triple(
                         outputVarUri,
@@ -795,7 +795,7 @@ export class LuchtParser extends BaseParser {
             if (!stofNaam) return;
 
             const stofId = this.sanitizeId(stofNaam);
-            const stofUri = this.turtle.qname('stof', stofId);
+            const stofUri = this.turtle.qname('var', stofId);
 
             this.turtle.triple(
                 stofUri,
@@ -836,7 +836,7 @@ export class LuchtParser extends BaseParser {
             this.turtle.triple(procedureUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(methodeNaam, null, 'nl'));
             if (stofNaam) {
                 const stofId = this.sanitizeId(stofNaam);
-                const stofUri = this.turtle.qname('stof', stofId);
+                const stofUri = this.turtle.qname('var', stofId);
                 this.turtle.triple(stofUri, this.turtle.qname('rdf', 'type'), this.turtle.qname('riepr', 'ProcesVariabele'));
                 this.turtle.triple(stofUri, this.turtle.qname('rdfs', 'label'), this.turtle.literal(stofNaam, null, 'nl'));
                 this.turtle.triple(procedureUri, this.turtle.qname('rdfs', 'comment'), this.turtle.literal(`Meet ${stofNaam}`, null, 'nl'));
@@ -890,7 +890,7 @@ export class LuchtParser extends BaseParser {
                     const stofNode = verbruik.Stof?.[0] || verbruik.Stof;
                     if (stofNode?.$.StofID) {
                         const stofId = stofNode.$.StofID;
-                        const stofUri = this.turtle.qname('stof', stofId);
+                        const stofUri = this.turtle.qname('var', stofId);
                         if (typePrefix === 'brandstof') {
                             // Brandstof is INPUT only (consumed, not produced)
                             this.turtle.triple(stepUri, this.turtle.qname('pplan', 'hasInputVar'), stofUri);

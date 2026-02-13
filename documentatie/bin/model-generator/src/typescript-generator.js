@@ -255,7 +255,10 @@ export class TypeScriptGenerator extends ClassGenerator {
   }
 
   tsTypeForAttribute(attr) {
-    if (attr.type === 'enum') return attr.enumName || 'string';
+    if (attr.type === 'enum') {
+      if (attr && attr.enumClass) return (typeof this.pascalCase === 'function') ? this.pascalCase(attr.enumClass) : String(attr.enumClass);
+      return attr.enumName || 'string';
+    }
     if (attr.type === 'date' || attr.type === 'datetime') return 'Date';
     if (attr.type === 'integer' || attr.type === 'float' || attr.type === 'double' || attr.type === 'number') return 'number';
     if (attr.type === 'boolean') return 'boolean';
@@ -394,7 +397,10 @@ export class TypeScriptGenerator extends ClassGenerator {
       attrs.forEach(attr => {
         if (!attr) return;
         if (attr.type === 'enum') {
-          if (attr.propertyIri === `${Config.NAMESPACES.dct}type`) {
+          // Prefer explicit enumClass metadata attached during attribute derivation
+          if (attr.enumClass) {
+            usedEnumNames.add(pascal(attr.enumClass));
+          } else if (attr.propertyIri === `${Config.NAMESPACES.dct}type`) {
             if (attr.comment) { Array.from(interfaceEnumMap.entries()).forEach(([local, ts]) => { if (attr.comment === local || attr.comment === ts) usedEnumNames.add(ts); }); }
           } else {
             const enumClass = otherEnumClasses.find(ec => ec === attr.comment || ec === attr.propertyIri || pascal(ec) === pascal(attr.name));
@@ -413,7 +419,8 @@ export class TypeScriptGenerator extends ClassGenerator {
 
       // attribute processing (kept intact but scoped)
       attrs.forEach(attr => {
-        const jsonName = (attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : ((attr.name && String(attr.name).length > 0) ? attr.name : attr.propertyIri || '');
+        // prefer explicit jsonName (set for synthetic attrs), otherwise use propertyIri local name
+        const jsonName = (attr.jsonName && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.jsonName) : ((attr.propertyIri && typeof this.ontology.extractLocalName === 'function') ? this.ontology.extractLocalName(attr.propertyIri) : ((attr.name && String(attr.name).length > 0) ? attr.name : attr.propertyIri || ''));
         const safeJsonName = String(jsonName).replace(/'/g, "\\'");
         let mapped = this.mapForeignKeyAttribute(attr, className);
         let officialName, baseType;
@@ -424,7 +431,13 @@ export class TypeScriptGenerator extends ClassGenerator {
           content += `  ${officialName}!: ${baseType};\n\n`;
           return;
         } else {
-          officialName = attr.name; if (attr.propertyIri) officialName = this.ontology.getBusinessNameForProperty(attr.propertyIri, className) || this.ontology.extractLocalName(attr.propertyIri) || attr.name;
+          officialName = attr.name;
+          // For synthetic attributes (injected system relations) prefer the
+          // provided business `attr.name` (skos:prefLabel). Do not let the
+          // internal `propertyIri` (e.g. hasInputVar__system) override that.
+          if (!attr.synthetic && attr.propertyIri) {
+            officialName = this.ontology.getBusinessNameForProperty(attr.propertyIri, className) || this.ontology.extractLocalName(attr.propertyIri) || attr.name;
+          }
         }
         baseType = this.tsTypeForAttribute(attr);
         // prefer shared-interface types if present
@@ -508,6 +521,26 @@ export class TypeScriptGenerator extends ClassGenerator {
             }
           }
         }
+
+        // Special-case: for Proces.isStepOfPlan ensure explicit Proces typing
+        try {
+          const localProp = attr.jsonName ? this.ontology.extractLocalName(attr.jsonName) : (attr.propertyIri ? this.ontology.extractLocalName(attr.propertyIri) : null);
+          if (className === 'Proces' && localProp === 'isStepOfPlan') {
+            baseType = pascal('Proces');
+            modelImports.add('Proces');
+          }
+        } catch (e) { /* ignore */ }
+
+        // If this attribute is our synthetic system relationship, prefer ISystem interface
+        try {
+          if (attr.synthetic && Array.isArray(attr.targetClasses) && attr.targetClasses.includes('System')) {
+            // prefer the ISystem interface as the element type and let the
+            // surrounding `isArray` flag control arrayness (avoid double [])
+            baseType = `I${pascal('System')}`;
+            // ensure interface import for System
+            interfaceImports.set('System', `I${pascal('System')}`);
+          }
+        } catch (e) { /* ignore */ }
 
         let memberCtor = 'String'; if (baseType === 'Date') memberCtor = 'Date'; else if (baseType === 'number') memberCtor = 'Number'; else if (baseType === 'boolean') memberCtor = 'Boolean'; else if (/^[A-Z]/.test(String(baseType)) && !/^I[A-Z]/.test(String(baseType))) { const isEnum = Array.isArray(localEnumFiles) && localEnumFiles.length > 0 && localEnumFiles.some(e => e.name === String(baseType)); if (isEnum) memberCtor = `() => ${baseType}`; else memberCtor = baseType; }
         try { const ifaceMatch = String(baseType).match(/I[A-Z][A-Za-z0-9_]*/); if (ifaceMatch) memberCtor = 'Object'; } catch (e) { }
@@ -694,6 +727,27 @@ export class TypeScriptGenerator extends ClassGenerator {
         /* ignore template extraction errors */
       }
       const header = iriComment + `// Auto-generated models` + '\n\n'; content = header + content;
+      // Normalize model imports to prefer business-named model files when they exist.
+      try {
+        for (const mn of Array.from(modelImports)) {
+          const biz = this.getBusinessClassName ? this.getBusinessClassName(mn) || mn : mn;
+          if (biz && biz !== mn) {
+            const bizFile = path.join(this.outputPath, `${biz}.model.ts`);
+            if (fs.existsSync(bizFile)) {
+              const pasMn = this.pascalCase ? this.pascalCase(mn) : mn;
+              const pasBiz = this.pascalCase ? this.pascalCase(biz) : biz;
+              // replace import line if present
+              const importRe = new RegExp(`import \\{\\s*${pasMn}\\s*\\} from '\\.\\/${mn}\\.model';`, 'g');
+              content = content.replace(importRe, `import { ${pasBiz} } from './${biz}.model';`);
+              // replace type usages
+              const typeRe = new RegExp(`\\b${pasMn}\\b`, 'g');
+              content = content.replace(typeRe, pasBiz);
+              modelImports.delete(mn);
+              modelImports.add(biz);
+            }
+          }
+        }
+      } catch (e) { /* ignore normalization errors */ }
       fs.writeFileSync(fileName, content, 'utf8');
       try { if (Array.isArray(enumFiles) && enumFiles.length > 0) { let written = fs.readFileSync(fileName, 'utf8'); enumFiles.forEach(e => { const en = e.name; const re = new RegExp(`@json(Member|ArrayMember)\\(\\s*${en}\\s*,`, 'g'); written = written.replace(re, `@json$1(() => ${en},`); }); fs.writeFileSync(fileName, written, 'utf8'); } } catch (e) { }
       info('Wrote TS model ->', fileName);

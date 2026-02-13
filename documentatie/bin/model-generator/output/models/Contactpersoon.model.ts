@@ -6,9 +6,10 @@
 // Auto-generated models
 
 import { Adres } from './Adres.model';
-import { Exploitant } from './Exploitant.model';
 
 import { jsonObject, jsonMember } from 'typedjson';
+
+import type { IAgent } from './Agent.interface';
 
 @jsonObject
 export class Contactpersoon {
@@ -18,8 +19,8 @@ export class Contactpersoon {
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
-  @jsonMember(Exploitant, { name: 'memberOf' })
-  exploitant!: Exploitant;
+  @jsonMember(Object, { name: 'memberOf' })
+  exploitant!: IAgent;
 
   @jsonMember(String, { name: 'label' })
   benaming!: string;
@@ -47,6 +48,7 @@ export class Contactpersoon {
 
   @jsonMember(String, { name: 'name' })
   name!: string;
+
 
   /**
    * Demonstration: generate a `uri` from the configured string template.

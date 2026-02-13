@@ -25,7 +25,7 @@ classDiagram
         string email
         string telefoonnummer
         string hasRole
-        Address adres (FK)
+        Adres adres (FK)
         Date aangemaaktOp
         Date geldigVan
         Date geldigTot
@@ -50,7 +50,17 @@ classDiagram
         Date geldigTot
         Contactpersoon type (FK)
         string benaming
-        Address adres (FK)
+        Adres adres (FK)
+    }
+      class Exploitatie {
+        string uuid
+        string uri
+        string benaming
+        Date aangemaaktOp
+        IAgent[] deployedSystem (FK)
+        ExploitatieLocatie locatie (FK)
+        Date geldigVan
+        Date geldigTot
     }
       class ExploitatieLocatie {
         string uuid
@@ -63,7 +73,7 @@ classDiagram
         string beinvloedDoor
         ExploitatieLocatie afgeleidVan (FK)
         string geometrie
-        Address adres (FK)
+        Adres adres (FK)
         ExploitatieLocatieIdentifier[] identifiers (FK)
     }
       class ExploitatieLocatieIdentifier {
@@ -78,13 +88,13 @@ classDiagram
       class Installatie {
         string uuid
         string uri
-        ISystem[] heeftSubSysteem (FK)
+        IAgent[] heeftSubSysteem (FK)
         string benaming
         Date aangemaaktOp
         Date geldigVan
         Date geldigTot
         ExploitatieLocatie locatie (FK)
-        ISystem afgeleidVan (FK)
+        IAgent afgeleidVan (FK)
         InstallatieIdentifier[] identifiers (FK)
     }
       class InstallatieIdentifier {
@@ -116,7 +126,7 @@ classDiagram
       class Observatie {
         string uuid
         string uri
-        ISystem hasFeatureOfInterest (FK)
+        IAgent hasFeatureOfInterest (FK)
     }
       class Onttrekkingspunt {
         string uuid
@@ -134,15 +144,12 @@ classDiagram
         string uri
         Date aangemaaktOp
         string benaming
-        Date geldigVan
-        Date geldigTot
-        ExploitatieLocatie locatie (FK)
-        ISystem[] geimplenteerdDoor (FK)
-        Procedure type
+        IAgent type
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
-        ISystem onderdeelVan (FK)
+        Proces[] onderdeelVan (FK)
         ProcesIdentifier[] identifiers (FK)
+        System[] gebruikt (FK)
     }
       class ProcesIdentifier {
         string inScheme
@@ -159,19 +166,13 @@ classDiagram
         string benaming
         string type
         number eenheid
-        number waarde
+        string waarde
     }
       class Schouw {
         double diameter
         double hoogte
     }
-      class ISystem {
-        <<interface>>
-        string uuid
-        string uri
-        ExploitatieLocatie locatieId
-    }
-    class IAgent {
+      class IAgent {
         <<interface>>
         string uuid
         string uri
@@ -180,6 +181,17 @@ classDiagram
         <<interface>>
         string uuid
         string uri
+    }
+    class IActuator {
+        <<interface>>
+        string uuid
+        string uri
+    }
+    class ISystem {
+        <<interface>>
+        string uuid
+        string uri
+        ExploitatieLocatie locatieId
     }
     class Procedure {
         <<enumerable>>
@@ -194,12 +206,6 @@ classDiagram
     Emissiepunt <|-- Schouw
     Onttrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
-    ISystem <|.. Apparaat
-    ISystem <|.. Emissiepunt
-    ISystem <|.. Installatie
-    ISystem <|.. Meetpunt
-    ISystem <|.. Onttrekkingspunt
-    ISystem <|.. Proces
     IAgent <|.. Apparaat
     IAgent <|.. Emissiepunt
     IAgent <|.. Exploitant
@@ -211,23 +217,29 @@ classDiagram
     ISpatialObject <|.. Emissiepunt
     ISpatialObject <|.. Meetpunt
     ISpatialObject <|.. Onttrekkingspunt
-    Proces --> ExploitatieLocatie : locatie
-    Proces --> ISystem : geïmplementeerd door
-    Proces --> ProcesVariabele : heeft invoer
-    Proces --> ProcesVariabele : heeft uitvoer
-    Proces --> ISystem : onderdeel van
+    IActuator <|.. Apparaat
+    IActuator <|.. Emissiepunt
+    IActuator <|.. Onttrekkingspunt
+    ISystem <|.. Installatie
+    ISystem <|.. Meetpunt
+    Exploitant --> ExploitantContactpersoon : type
+    ExploitantContactpersoon --> IAgent : exploitant
     ExploitatieLocatie --> IAgent : toegewezen aan
     ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
-    Installatie --> ISystem : heeft subsysteem
+    Exploitatie --> IAgent : deployedSystem
+    Exploitatie --> ExploitatieLocatie : locatie
+    Proces --> IAgent : type
+    Proces --> ProcesVariabele : heeft invoer
+    Proces --> ProcesVariabele : heeft uitvoer
+    Proces --> Proces : onderdeel van
+    Installatie --> IAgent : heeft subsysteem
     Installatie --> ExploitatieLocatie : locatie
-    Installatie --> ISystem : afgeleid van
+    Installatie --> IAgent : afgeleid van
     Emissiepunt --> ExploitatieLocatie : locatie
     Onttrekkingspunt --> ExploitatieLocatie : locatie
     Apparaat --> ExploitatieLocatie : locatie
-    Observatie --> ISystem : hasFeatureOfInterest
-    Exploitant --> ExploitantContactpersoon : type
-    ExploitantContactpersoon --> IAgent : exploitant
-    Proces --> ProcesIdentifier : identifiers
+    Observatie --> IAgent : hasFeatureOfInterest
     ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
+    Proces --> ProcesIdentifier : identifiers
     Installatie --> InstallatieIdentifier : identifiers
     Meetpunt --> MeetpuntIdentifier : identifiers

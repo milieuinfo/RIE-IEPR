@@ -5,9 +5,9 @@
 
 // Auto-generated models
 
-import { Meetpunt } from './Meetpunt.model';
-
 import { jsonObject, jsonMember } from 'typedjson';
+
+import type { IAgent } from './Agent.interface';
 
 @jsonObject
 export class Observatie {
@@ -17,8 +17,9 @@ export class Observatie {
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
-  @jsonMember(Meetpunt, { name: 'hasFeatureOfInterest' })
-  hasFeatureOfInterest!: Meetpunt;
+  @jsonMember(Object, { name: 'hasFeatureOfInterest' })
+  hasFeatureOfInterest!: IAgent;
+
 
   /**
    * Demonstration: generate a `uri` from the configured string template.

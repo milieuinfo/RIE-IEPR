@@ -5,6 +5,7 @@ export * from './Apparaat.model';
 export * from './Contactpersoon.model';
 export * from './Emissiepunt.model';
 export * from './Exploitant.model';
+export * from './Exploitatie.model';
 export * from './ExploitatieLocatie.model';
 export * from './ExploitatieLocatieIdentifier.model';
 export * from './Grondwaterput.model';

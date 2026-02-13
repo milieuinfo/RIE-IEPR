@@ -10,7 +10,6 @@ export class BaseGenerator {
     this.identifierRelations = new Map();
     this.inheritance = new Map();
   }
-
   prepareOntology() {
     this.ontology.extractClasses();
     this.ontology.addExternalClassesFromRestrictions();
@@ -44,6 +43,48 @@ export class BaseGenerator {
     return false;
   }
 
+  /**
+   * Normalize a string for fuzzy matching: strip diacritics and non-alphanumerics, lower-case.
+   */
+  normalizeString(s) {
+    if (!s || typeof s !== 'string') return '';
+    try {
+      if (typeof String.prototype.normalize === 'function') {
+        return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+      }
+    } catch (e) {
+      // fallthrough
+    }
+    return s.replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+  }
+
+  /**
+   * Decide whether a relationship should prefer a concrete target instead of
+   * collapsing to a shared interface. Uses a configurable map in `Config` when
+   * available, otherwise defaults to preferring concrete targets for synthetic
+   * relationships and the legacy `Proces/isStepOfPlan` case.
+   */
+  shouldPreferConcreteTarget(rel) {
+    if (!rel) return false;
+    if (rel.synthetic) return true;
+    // Allow configuration to override behavior: Config.RELATION_CONCRETE_PREFERENCES
+    if (Config && Config.RELATION_CONCRETE_PREFERENCES) {
+      try {
+        const pref = Config.RELATION_CONCRETE_PREFERENCES;
+        if (typeof pref === 'function') return pref(rel);
+        if (pref instanceof Set) return pref.has(rel.property) || pref.has(rel.propertyIri) || pref.has(`${rel.from}|${rel.property}`);
+        if (pref instanceof Map) return Boolean(pref.get(rel.property) || pref.get(rel.propertyIri));
+      } catch (e) { /* ignore config errors */ }
+    }
+    // legacy fallback
+    if (rel.from === 'Proces') {
+      const p = String(rel.property || '').toLowerCase();
+      const pi = String(rel.propertyIri || '').toLowerCase();
+      if (p.includes('isstepofplan') || pi.includes('isstepofplan')) return true;
+    }
+    return false;
+  }
+
   buildRelationships(includeIdentifierRelations = true) {
     this.relationships.clear();
     this.inheritance.clear();
@@ -52,6 +93,103 @@ export class BaseGenerator {
     if (relationships) relationships.forEach((r, k) => this.relationships.set(k, r));
     if (inheritance) inheritance.forEach((r, k) => this.inheritance.set(k, r));
     if (identifierRelations) identifierRelations.forEach((r, k) => this.identifierRelations.set(k, r));
+
+    // Post-process: detect anonymous intersection restrictions that indicate
+    // a `hasInputVar`-like pattern pointing to an underlying `ssn:System` via
+    // `rdf:value someValuesFrom ssn:System`. For those, add an additional
+    // relationship entry that targets `System` (ontology-driven) and stores
+    // the original property IRI so the TypeScript generator can emit a
+    // separate property with the original json name.
+    const store = this.ontology && this.ontology.store;
+    if (store && typeof store.getQuads === 'function') {
+      for (const [classLocalName2, classInfo2] of this.ontology.classes) {
+        const classIri = classInfo2 && classInfo2.iri ? classInfo2.iri : null;
+        if (!classIri) continue;
+        // get subclassOf restrictions quads
+        const subs = store.getQuads(classIri, `${Config.NAMESPACES.rdfs}subClassOf`, null) || [];
+        for (const sq of subs) {
+          const obj = sq.object;
+          if (!obj || obj.termType !== 'BlankNode') continue;
+          const onProp = store.getQuads(obj, `${Config.NAMESPACES.owl}onProperty`, null) || [];
+          if (!onProp || onProp.length === 0) continue;
+          const propIri = onProp[0].object && onProp[0].object.value ? String(onProp[0].object.value) : null;
+          if (!propIri) continue;
+          const svf = store.getQuads(obj, `${Config.NAMESPACES.owl}someValuesFrom`, null) || [];
+          if (!svf || svf.length === 0) continue;
+          const svObj = svf[0].object;
+          // Check for intersectionOf pattern
+          const inters = store.getQuads(svObj, `${Config.NAMESPACES.owl}intersectionOf`, null) || [];
+          if (!inters || inters.length === 0) continue;
+          for (const iq of inters) {
+            const listNode = iq.object;
+            // traverse rdf:list
+            const items = [];
+            let cur = listNode;
+            while (cur && cur.termType && cur.value && String(cur.value) !== `${Config.NAMESPACES.rdf}nil`) {
+              const first = store.getQuads(cur, `${Config.NAMESPACES.rdf}first`, null)[0];
+              if (first && first.object) items.push(first.object);
+              const rest = store.getQuads(cur, `${Config.NAMESPACES.rdf}rest`, null)[0];
+              if (!rest) break;
+              cur = rest.object;
+            }
+            // look for a member that is a restriction on rdf:value someValuesFrom ssn:System
+            let indicatesSystem = false;
+            for (const item of items) {
+              if (!item || item.termType !== 'BlankNode') continue;
+              const onPropInner = store.getQuads(item, `${Config.NAMESPACES.owl}onProperty`, null) || [];
+              const hasOnValue = onPropInner.some(q => String(q.object.value) === `${Config.NAMESPACES.rdf}value`);
+              const svInner = store.getQuads(item, `${Config.NAMESPACES.owl}someValuesFrom`, null) || [];
+              const hasSystem = svInner.some(q => String(q.object.value) === `${Config.NAMESPACES.ssn}System`);
+              if (hasOnValue && hasSystem) { indicatesSystem = true; break; }
+            }
+            if (indicatesSystem) {
+              // derive a skos:prefLabel if present on the outer restriction node
+              const labelQuad = store.getQuads(obj, `${Config.NAMESPACES.skos}prefLabel`, null)[0];
+              const businessLabel = labelQuad && labelQuad.object && labelQuad.object.value ? labelQuad.object.value : null;
+              // create a relationship entry that targets the (interface) System
+              const syntheticPropLocal = `${this.ontology.extractLocalName ? this.ontology.extractLocalName(propIri) : String(propIri)}__system`;
+              const key = `${classLocalName2}|System|${syntheticPropLocal}`;
+              if (!relationships.has(key)) {
+                const relObj = {
+                  from: classLocalName2,
+                  to: 'System',
+                  // unique internal property name so we don't clash with the original
+                  property: syntheticPropLocal,
+                  // preserve original IRI separately so downstream generators can
+                  // choose the JSON property name explicitly
+                  propertyIriOriginal: propIri,
+                  // label from skos:prefLabel or fallback to business label
+                  label: businessLabel || (this.ontology.getBusinessLabelForProperty ? this.ontology.getBusinessLabelForProperty(propIri, classLocalName2) : propIri),
+                  minCard: undefined,
+                  maxCard: undefined,
+                  synthetic: true
+                };
+                relationships.set(key, relObj);
+                // also expose on this.relationships so later consumers see it
+                if (this.relationships && typeof this.relationships.set === 'function') this.relationships.set(key, relObj);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Force known ontology-driven corrections: ensure `pplan:isStepOfPlan`
+    // when declared on `Proces` resolves to `Proces` (not a generic Agent).
+    if (this.relationships && typeof this.relationships.forEach === 'function') {
+      for (const [k, rel] of this.relationships) {
+        if (!rel || rel.from !== 'Proces') continue;
+        let propLocal = null;
+        if (rel.property) propLocal = String(rel.property);
+        else if (rel.propertyIri && typeof this.ontology.extractLocalName === 'function') propLocal = this.ontology.extractLocalName(rel.propertyIri);
+        else if (rel.propertyIriOriginal && typeof this.ontology.extractLocalName === 'function') propLocal = this.ontology.extractLocalName(rel.propertyIriOriginal);
+        if (propLocal && (propLocal === 'isStepOfPlan' || propLocal.toLowerCase() === 'isstepofplan')) {
+          rel.to = 'Proces';
+          this.relationships.set(k, rel);
+          if (typeof relationships !== 'undefined' && relationships && relationships.has(k)) relationships.set(k, rel);
+        }
+      }
+    }
   }
 
   computeEnumClasses() {
@@ -305,14 +443,10 @@ export class BaseGenerator {
         attrs = this.generateIdentifierAttributesForClass(parentClass) || [];
       } else {
         attrs = [];
-        try {
-          // Attempt to infer attributes for business-only classes (no classInfo)
-          const inferred = new Map();
-          this._inferBusinessConceptAttributes(inferred, null, className);
-          if (inferred.size > 0) {
-            inferred.forEach(v => attrs.push(v));
-          }
-        } catch (e) { /* ignore inference errors */ }
+        // Attempt to infer attributes for business-only classes (no classInfo)
+        const inferred = new Map();
+        this._inferBusinessConceptAttributes(inferred, null, className);
+        if (inferred.size > 0) inferred.forEach(v => attrs.push(v));
       }
     } else {
       attrs = this.deriveAttributes(classInfo, this.enumClasses, className) || [];
@@ -372,6 +506,54 @@ export class BaseGenerator {
         });
       }
     }
+    // Append any special relationships we injected (e.g. __system targets)
+    if (this.relationships && typeof this.relationships.forEach === 'function') {
+      this.relationships.forEach(rel => {
+        if (!rel || rel.from !== className) return;
+        if (!rel.synthetic) return;
+        // create attribute for this synthetic relationship
+        const baseProp = String(rel.property).replace(/__system$/, '');
+        const attrName = Config.camelCaseToSnakeCase ? Config.camelCaseToSnakeCase(`${baseProp}_system`) : `${baseProp}_system`;
+        // avoid duplicates
+        if ((attrs || []).some(a => a && a.name === attrName)) return;
+        // Use a unique internal propertyIri to avoid colliding with the original
+        const internalPropIri = rel.property; // e.g. hasInputVar__system
+        let propLocalJson = rel.propertyIriOriginal && this.ontology.extractLocalName ? this.ontology.extractLocalName(rel.propertyIriOriginal) : null;
+        if (!propLocalJson) propLocalJson = (rel.property && String(rel.property).length > 0) ? String(rel.property) : 'hasInputVar';
+        let propLabel = (rel.label && typeof rel.label === 'string' && rel.label.length > 0) ? rel.label : null;
+        if (!propLabel) propLabel = propLocalJson + '_system';
+        attrs.push({
+          // exposed name used by generators as the business property name
+          name: propLabel,
+          type: 'string',
+          sqlType: 'TEXT',
+          comment: rel.label || rel.property,
+          isForeignKey: true,
+          // internal propertyIri distinct from original
+          propertyIri: internalPropIri,
+          // jsonName: the original property local name to use for JSON decorator
+          jsonName: propLocalJson,
+          targetClasses: [rel.to],
+          minCardinality: rel.minCard,
+          maxCardinality: rel.maxCard,
+          synthetic: true
+        });
+      });
+    }
+
+    // Ensure class-level attribute mapping: when `isStepOfPlan` appears on
+    // `Proces`, make the derived attribute target `Proces` explicitly so
+    // class diagrams render `Proces` -> `Proces` rather than a generic
+    // `IAgent` interface.
+    (attrs || []).forEach(a => {
+      if (!a) return;
+      const aLocal = (a.propertyIri && this.ontology.extractLocalName) ? this.ontology.extractLocalName(a.propertyIri) : (a.name || null);
+      if (className === 'Proces' && (aLocal === 'isStepOfPlan' || String(a.name).toLowerCase() === 'onderdeelvan' || String(a.name) === 'isStepOfPlan')) {
+        a.targetClasses = ['Proces'];
+        a.isForeignKey = true;
+      }
+    });
+
     return attrs;
   }
 
@@ -429,16 +611,14 @@ export class BaseGenerator {
     }
     // Prefer business name from ontology when available (handled below)
     let raw = className;
-    try {
-      if (classInfo && classInfo.iri && this.ontology.getBusinessNameForClass) {
+    if (classInfo) {
+      if (classInfo.iri && this.ontology.getBusinessNameForClass) {
         const bn = this.ontology.getBusinessNameForClass(classInfo.iri);
         if (bn) raw = bn;
         else if (classInfo.label) raw = classInfo.label;
-      } else if (classInfo && classInfo.label) {
+      } else if (classInfo.label) {
         raw = classInfo.label;
       }
-    } catch (e) {
-      raw = className;
     }
     // normalize to a safe mermaid identifier: replace non-alnum/underscore with underscore
     const cleaned = String(raw).replace(/[^A-Za-z0-9_]+/g, '_');
@@ -697,6 +877,9 @@ export class BaseGenerator {
   _processPropertyRestrictions(classInfo, attributes, enumClasses, className, skipTechnicalFilters) {
     if (!classInfo || !Array.isArray(classInfo.restrictions)) return;
     classInfo.restrictions.forEach(restriction => {
+      // synthesize a human-readable comment summarizing the restriction
+      const rComment = (restriction && restriction.comment && String(restriction.comment).trim())
+        || `${restriction.propertyIri}${(typeof restriction.minCardinality === 'number' && restriction.minCardinality > 0) ? ' min:' + restriction.minCardinality : ''}${(typeof restriction.maxCardinality === 'number' && restriction.maxCardinality >= 0) ? ' max:' + restriction.maxCardinality : ''}${(Array.isArray(restriction.rangeTypes) && restriction.rangeTypes.length > 0) ? ' range:' + restriction.rangeTypes.join(',') : ''}`;
       if (restriction.property === 'identifier' && restriction.propertyIri && restriction.propertyIri.includes('adms#identifier')) return;
       if (!this.ontology.isRelevantPropertyIri(restriction.propertyIri)) return;
 
@@ -724,9 +907,10 @@ export class BaseGenerator {
                 name: attrName,
                 type: 'enum',
                 sqlType: 'TEXT',
-                comment: matched,
+                comment: rComment,
                 isForeignKey: false,
-                propertyIri: restriction.propertyIri
+                propertyIri: restriction.propertyIri,
+                enumClass: matched
               });
             }
             return;
@@ -740,9 +924,10 @@ export class BaseGenerator {
               name: attrName,
               type: 'enum',
               sqlType: 'TEXT',
-              comment: enumTypes[0],
+              comment: rComment,
               isForeignKey: false,
-              propertyIri: restriction.propertyIri
+              propertyIri: restriction.propertyIri,
+              enumClass: enumTypes[0]
             });
           }
           return;
@@ -754,7 +939,7 @@ export class BaseGenerator {
               name: attrName,
               type: 'string',
               sqlType: 'TEXT',
-              comment: restriction.propertyIri,
+              comment: rComment,
               isForeignKey: false,
               propertyIri: restriction.propertyIri
             });
@@ -775,7 +960,7 @@ export class BaseGenerator {
             name: attrName,
             type: t,
             sqlType: sql,
-            comment: comment,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri
           });
@@ -791,7 +976,7 @@ export class BaseGenerator {
             name: attrName,
             type: 'string',
             sqlType: 'TEXT',
-            comment: restriction.propertyIri,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri,
             minCardinality: restriction.minCardinality,
@@ -813,7 +998,7 @@ export class BaseGenerator {
             name: attrName,
             type: t,
             sqlType: sql,
-            comment: comment,
+            comment: rComment,
             isForeignKey: false,
             propertyIri: restriction.propertyIri
           });
@@ -848,7 +1033,7 @@ export class BaseGenerator {
                 name: attrName,
                 type: 'enum',
                 sqlType: 'TEXT',
-                comment: formattedEnumValues,
+                comment: rComment,
                 isForeignKey: false,
                 propertyIri: restriction.propertyIri
               });
@@ -869,7 +1054,7 @@ export class BaseGenerator {
               name: fkName,
               type: 'string',
               sqlType: 'TEXT',
-              comment: displayTypes.join(', '),
+              comment: rComment,
               isForeignKey: true,
               propertyIri: restriction.propertyIri,
               targetClasses: nonEnumTypes,
@@ -886,7 +1071,7 @@ export class BaseGenerator {
                 name: fkName,
                 type: 'string',
                 sqlType: 'TEXT',
-                comment: this.getBusinessClassName(targetType),
+                comment: rComment,
                 isForeignKey: true,
                 propertyIri: restriction.propertyIri,
                 targetClasses: [targetType],
@@ -908,7 +1093,7 @@ export class BaseGenerator {
           name: attrName,
           type: mermaidType,
           sqlType: sqlType,
-          comment: restriction.rangeTypes.join(', '),
+          comment: rComment,
           isForeignKey: false,
           propertyIri: restriction.propertyIri,
           minCardinality: restriction.minCardinality,
@@ -968,40 +1153,40 @@ export class BaseGenerator {
     if (domainProps.size === 0) return;
 
     const businessProps = new Set();
-      // find business properties that are equivalentProperty -> domainProp
-      quads.forEach(q => {
-        if (q.predicate && q.predicate.value === eqPropPred && q.object && domainProps.has(q.object.value)) {
-          if (q.subject && q.subject.value) businessProps.add(q.subject.value);
-        }
-      });
+    // find business properties that are equivalentProperty -> domainProp
+    quads.forEach(q => {
+      if (q.predicate && q.predicate.value === eqPropPred && q.object && domainProps.has(q.object.value)) {
+        if (q.subject && q.subject.value) businessProps.add(q.subject.value);
+      }
+    });
 
-      // Keep only business-mapped properties:
-      // - properties that are subjects of `owl:equivalentProperty` pointing to the domain prop
-      // - OR domain properties that themselves have an associated business concept
-      const filteredBusinessProps = new Set();
-      businessProps.forEach(p => { filteredBusinessProps.add(p); });
-      domainProps.forEach(dp => {
-        const bn = (this.ontology && typeof this.ontology.getBusinessNameForProperty === 'function') ? this.ontology.getBusinessNameForProperty(dp, className) : null;
-        if (bn) filteredBusinessProps.add(dp);
-      });
+    // Keep only business-mapped properties:
+    // - properties that are subjects of `owl:equivalentProperty` pointing to the domain prop
+    // - OR domain properties that themselves have an associated business concept
+    const filteredBusinessProps = new Set();
+    businessProps.forEach(p => { filteredBusinessProps.add(p); });
+    domainProps.forEach(dp => {
+      const bn = (this.ontology && typeof this.ontology.getBusinessNameForProperty === 'function') ? this.ontology.getBusinessNameForProperty(dp, className) : null;
+      if (bn) filteredBusinessProps.add(dp);
+    });
 
-      if (filteredBusinessProps.size === 0) return;
-      filteredBusinessProps.forEach(propIri => {
-        const propLocal = this.ontology.extractLocalName ? this.ontology.extractLocalName(propIri) : null;
-        const bn = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(propIri, className) : null;
-        const base = bn || propLocal || String(propIri).split(/[\/#!]/).pop();
-        const attrName = Config.camelCaseToSnakeCase ? Config.camelCaseToSnakeCase(base) : String(base);
-        if (!attributes.has(attrName)) {
-          attributes.set(attrName, {
-            name: attrName,
-            type: 'string',
-            sqlType: 'TEXT',
-            comment: propIri,
-            isForeignKey: false,
-            propertyIri: propIri
-          });
-        }
-      });
+    if (filteredBusinessProps.size === 0) return;
+    filteredBusinessProps.forEach(propIri => {
+      const propLocal = this.ontology.extractLocalName ? this.ontology.extractLocalName(propIri) : null;
+      const bn = this.ontology.getBusinessNameForProperty ? this.ontology.getBusinessNameForProperty(propIri, className) : null;
+      const base = bn || propLocal || String(propIri).split(/[\/#!]/).pop();
+      const attrName = Config.camelCaseToSnakeCase ? Config.camelCaseToSnakeCase(base) : String(base);
+      if (!attributes.has(attrName)) {
+        attributes.set(attrName, {
+          name: attrName,
+          type: 'string',
+          sqlType: 'TEXT',
+          comment: propIri,
+          isForeignKey: false,
+          propertyIri: propIri
+        });
+      }
+    });
   }
 
   /**

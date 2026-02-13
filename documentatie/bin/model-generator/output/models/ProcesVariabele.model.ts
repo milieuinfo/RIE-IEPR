@@ -33,8 +33,8 @@ export class ProcesVariabele {
   @jsonMember(Number, { name: 'hasUnit' })
   eenheid?: number;
 
-  @jsonMember(Number, { name: 'hasNumericValue' })
-  waarde?: number;
+  @jsonMember(String, { name: 'numericValue' })
+  waarde?: string;
 
 
   /**

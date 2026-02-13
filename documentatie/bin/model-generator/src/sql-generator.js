@@ -177,23 +177,17 @@ export class SqlGenerator extends SchemaGenerator {
 
   generateForeignKeyForAttribute(className, attr) {
     const tableName = this.utils.deriveTableName(className);
-    
-    // Extract target class names from comment
-    const targetClasses = String(attr.comment || '')
-      .split(',')
-      .map(s => s.trim())
-      .filter(s => !!s);
-    
-    if (targetClasses.length === 0) return '';
-    
-    // For now, use the first target class for the FK constraint
-    // In a real schema you might need junction tables for multi-target FKs
-    const targetClassName = targetClasses[0];
+    // Prefer explicit targetClasses on the attribute (set during deriveAttributes)
+    const targets = Array.isArray(attr.targetClasses) ? attr.targetClasses.filter(Boolean) : [];
+    if (targets.length === 0) return '';
+
+    // Use the first target class for the FK constraint (multi-targets would need junction tables)
+    const targetClassName = targets[0];
     const targetTable = this.utils.deriveTableName(targetClassName);
-    
+
     const escapedColName = Config.escapeReservedKeyword(attr.name);
     const constraintName = `fk_${tableName}_${attr.name}`.substring(0, 63); // PostgreSQL name limit
-    
+
     return `ALTER TABLE ${tableName} ADD CONSTRAINT ${constraintName} FOREIGN KEY (${escapedColName}) REFERENCES ${targetTable}(uri);\n`;
   }
 
