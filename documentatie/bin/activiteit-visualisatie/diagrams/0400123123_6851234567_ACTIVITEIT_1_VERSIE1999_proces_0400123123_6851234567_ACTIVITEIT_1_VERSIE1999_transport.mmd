@@ -2,19 +2,31 @@
 title: "Staalproductieproces van Staalfabriek NV op 1999 (transport as edges)"
 ---
 flowchart LR
-proces_0400123123_6851234567_ACTIVITEIT_1_0001["Toevoeging van grondstoffen"]
+subgraph installatie_0400123123_6851234567_0000001["Stroomboogoven"]
 emissiepunt_0400123123_6851234567_0000001["Schouw 1"]
+emissiepunt_0400123123_6851234567_0000002["Schouw 2"]
 proces_0400123123_6851234567_ACTIVITEIT_1_0004["Staalproductie in stroomboogoven
 Apparaat: Stroomboogoven"]
-emissiepunt_0400123123_6851234567_0000002["Schouw 2"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0007["Argon-zuurstofontkoling
-Apparaat: Argon-zuurstofontkoling"]
-emissiepunt_0400123123_6851234567_0000003["Schouw 3"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999["Decarburisatie zonder tussenstappen"]
-emissiepunt_0400123123_6851234567_0000004["Schoorsteen Ketels"]
+end
+subgraph installatie_0400123123_6851234567_0000002["Gieterij"]
+emissiepunt_0400123123_6851234567_0000005["Schouw 5"]
 proces_0400123123_6851234567_ACTIVITEIT_1_0011["Gieten en afkoelen
 Apparaat: Gieterijmachine"]
-emissiepunt_0400123123_6851234567_0000005["Schouw 5"]
+end
+subgraph installatie_0400123123_6851234567_0000003["VOD-installatie"]
+emissiepunt_0400123123_6851234567_0000004["Schoorsteen Ketels"]
+end
+subgraph installatie_0400123123_6851234567_0000004["AOD-installatie"]
+emissiepunt_0400123123_6851234567_0000003["Schouw 3"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0007["Argon-zuurstofontkoling
+Apparaat: Argon-zuurstofontkoling"]
+end
+proces_0400123123_6851234567_ACTIVITEIT_1_0001["Toevoeging van grondstoffen"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999["Decarburisatie zonder tussenstappen"]
+installatie_0400123123_6851234567_0000001["Stroomboogoven"]
+installatie_0400123123_6851234567_0000002["Gieterij"]
+installatie_0400123123_6851234567_0000003["VOD-installatie"]
+installatie_0400123123_6851234567_0000004["AOD-installatie"]
 proces_0400123123_6851234567_ACTIVITEIT_1_0001 -- "Schroot" --> proces_0400123123_6851234567_ACTIVITEIT_1_0004
 proces_0400123123_6851234567_ACTIVITEIT_1_0004 -- "Overbrenging vloeibaar staal" --> proces_0400123123_6851234567_ACTIVITEIT_1_0007
 proces_0400123123_6851234567_ACTIVITEIT_1_0007 -- "Overbrenging naar decarburisatie" --> proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999

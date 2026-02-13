@@ -7,7 +7,7 @@
 
 import { jsonObject, jsonMember } from 'typedjson';
 
-import type { IAgent } from './Agent.interface';
+import type { ISystem } from './System.interface';
 
 @jsonObject
 export class Observatie {
@@ -18,7 +18,7 @@ export class Observatie {
   uri?: string;
 
   @jsonMember(Object, { name: 'hasFeatureOfInterest' })
-  hasFeatureOfInterest!: IAgent;
+  hasFeatureOfInterest!: ISystem;
 
 
   /**

@@ -76,12 +76,30 @@ export class BaseGenerator {
         if (pref instanceof Map) return Boolean(pref.get(rel.property) || pref.get(rel.propertyIri));
       } catch (e) { /* ignore config errors */ }
     }
-    // legacy fallback
-    if (rel.from === 'Proces') {
-      const p = String(rel.property || '').toLowerCase();
-      const pi = String(rel.propertyIri || '').toLowerCase();
-      if (p.includes('isstepofplan') || pi.includes('isstepofplan')) return true;
-    }
+    // Automatic detection: if the declaring class has a restriction for the
+    // same property whose resolved range explicitly includes the concrete
+    // target class (`rel.to`), prefer the concrete target rather than
+    // collapsing to a shared interface. This avoids hardcoding property
+    // names like "isStepOfPlan" while still honouring ontology intent.
+    try {
+      const classInfo = this.ontology && this.ontology.classes ? this.ontology.classes.get(rel.from) : null;
+      if (classInfo && Array.isArray(classInfo.restrictions) && (rel.property || rel.propertyIri)) {
+        for (const r of classInfo.restrictions) {
+          const propMatch = (r.property && rel.property && String(r.property) === String(rel.property)) || (r.propertyIri && rel.propertyIri && String(r.propertyIri) === String(rel.propertyIri));
+          if (!propMatch) continue;
+          const resolved = this.ontology.resolveRangeTypes ? this.ontology.resolveRangeTypes(r.rangeTypes || [], r) : (r.rangeTypes || []);
+          if (!Array.isArray(resolved) || resolved.length === 0) continue;
+          // Prefer concrete target only when the declaring restriction resolves
+          // to a single concrete type equal to the candidate target. This
+          // avoids preferring concrete classes when the restriction is a
+          // union/multi-range (e.g. hasSubSysteem -> [Emissiepunt, Apparaat,...])
+          // where collapsing to a shared interface is more appropriate.
+          const nonEnumResolved = resolved.filter(rt => !(this.enumClasses && this.enumClasses.has(rt)));
+          if (nonEnumResolved.length === 1 && String(nonEnumResolved[0]) === String(rel.to)) return true;
+        }
+      }
+    } catch (e) { /* ignore ontology inspection errors */ }
+
     return false;
   }
 
@@ -174,22 +192,8 @@ export class BaseGenerator {
       }
     }
 
-    // Force known ontology-driven corrections: ensure `pplan:isStepOfPlan`
-    // when declared on `Proces` resolves to `Proces` (not a generic Agent).
-    if (this.relationships && typeof this.relationships.forEach === 'function') {
-      for (const [k, rel] of this.relationships) {
-        if (!rel || rel.from !== 'Proces') continue;
-        let propLocal = null;
-        if (rel.property) propLocal = String(rel.property);
-        else if (rel.propertyIri && typeof this.ontology.extractLocalName === 'function') propLocal = this.ontology.extractLocalName(rel.propertyIri);
-        else if (rel.propertyIriOriginal && typeof this.ontology.extractLocalName === 'function') propLocal = this.ontology.extractLocalName(rel.propertyIriOriginal);
-        if (propLocal && (propLocal === 'isStepOfPlan' || propLocal.toLowerCase() === 'isstepofplan')) {
-          rel.to = 'Proces';
-          this.relationships.set(k, rel);
-          if (typeof relationships !== 'undefined' && relationships && relationships.has(k)) relationships.set(k, rel);
-        }
-      }
-    }
+    // No implicit rewrites here; let configuration and downstream
+    // analysis determine concrete-vs-interface choices.
   }
 
   computeEnumClasses() {
@@ -449,7 +453,8 @@ export class BaseGenerator {
         if (inferred.size > 0) inferred.forEach(v => attrs.push(v));
       }
     } else {
-      attrs = this.deriveAttributes(classInfo, this.enumClasses, className) || [];
+      const derived = this.deriveAttributes(classInfo, this.enumClasses, className) || [];
+      attrs = derived;
     }
 
     // If we derived no attributes from classInfo, still attempt inference
@@ -541,18 +546,8 @@ export class BaseGenerator {
       });
     }
 
-    // Ensure class-level attribute mapping: when `isStepOfPlan` appears on
-    // `Proces`, make the derived attribute target `Proces` explicitly so
-    // class diagrams render `Proces` -> `Proces` rather than a generic
-    // `IAgent` interface.
-    (attrs || []).forEach(a => {
-      if (!a) return;
-      const aLocal = (a.propertyIri && this.ontology.extractLocalName) ? this.ontology.extractLocalName(a.propertyIri) : (a.name || null);
-      if (className === 'Proces' && (aLocal === 'isStepOfPlan' || String(a.name).toLowerCase() === 'onderdeelvan' || String(a.name) === 'isStepOfPlan')) {
-        a.targetClasses = ['Proces'];
-        a.isForeignKey = true;
-      }
-    });
+    // No ad-hoc property-name based rewrites here; prefer configuration
+    // and ontology-driven analysis for target resolution.
 
     return attrs;
   }
@@ -743,7 +738,9 @@ export class BaseGenerator {
    */
   ensureTemporal(attributes, className) {
     const biz = this.getBusinessClassName ? this.getBusinessClassName(className) : className;
-    if (!Config.isTemporalClass(className) && !Config.isTemporalClass(biz)) return;
+    // Ensure certain business classes (e.g. `Adres`) are treated as temporal
+    const isTemporal = Config.isTemporalClass(className) || Config.isTemporalClass(biz) || String(className) === 'Adres' || String(biz) === 'Adres';
+    if (!isTemporal) return;
 
     const van = {
       name: 'geldig_van',
@@ -1044,6 +1041,12 @@ export class BaseGenerator {
         if (nonEnumTypes.length === 0) return;
 
         const isUnionLike = restriction.restrictionType === 'union' || restriction.restrictionType === 'list';
+
+        // If an enum attribute for the same property was already derived,
+        // prefer the enum and skip adding FK columns that would duplicate
+        // the semantic 'type' attribute (prevents `Proces type` as FK).
+        const derivedAttrName = this.ontology.deriveAttributeName(restriction);
+        if (attributes.has(derivedAttrName) && attributes.get(derivedAttrName).type === 'enum') return;
 
         if (!isUnionLike || nonEnumTypes.length === 1) {
           // Single target type OR union with single non-enum: use simple FK column name

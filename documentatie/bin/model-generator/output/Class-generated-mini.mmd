@@ -3,74 +3,107 @@ config:
     layout: default
     theme: default
 ---
+%% Auto-generated from OWL/SHACL
 classDiagram
-    class Apparaat {
+      class Apparaat {
+        string uuid
         string uri
-        Date aangemaaktOp
+        ExploitatieLocatie locatie (FK)
         string benaming
+        string geometrie
     }
-    class Emissiepunt {
+      class Emissiepunt {
+        string uuid
         string uri
         string benaming
         string type
-        Date aangemaaktOp
+        ExploitatieLocatie locatie (FK)
+        string geometrie
     }
-    class Grondwaterput {
-        number diepte
+      class Exploitant {
+        string uuid
+        string uri
+        Contactpersoon type (FK)
+        string benaming
+        Adres adres (FK)
     }
-    class Installatie {
+      class Grondwaterput {
+        double diepte
+    }
+      class Installatie {
+        string uuid
         string uri
         ISystem[] heeftSubSysteem (FK)
+        Proces[] implementeert (FK)
         string benaming
         Date aangemaaktOp
     }
-    class Lozingspunt {
+      class Lozingspunt {
+        double diepte
     }
-    class Meetpunt {
+      class Meetpunt {
+        string uuid
         string uri
         string benaming
         string type
         Date aangemaaktOp
+        string geometrie
     }
-    class Onttrekkingspunt {
+      class Onttrekkingspunt {
+        string uuid
         string uri
         string benaming
         string type
         Date aangemaaktOp
+        string geometrie
     }
-    class Proces {
+      class Proces {
+        string uuid
         string uri
         Date aangemaaktOp
         string benaming
-        IAgent[] toegewezenAan (FK)
-        enum type
+        IAgent type
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
-        Proces onderdeelVan (FK)
-        Proces[] gaatVoorafAan (FK)
+        Proces[] onderdeelVan (FK)
+        System[] gebruikt (FK)
     }
-    class ProcesVariabele {
+      class ProcesVariabele {
+        string uuid
         string uri
+        Date aangemaaktOp
         string benaming
         string type
-        string eenheid
+        number eenheid
         string waarde
-        Date aangemaaktOp
     }
-    class Schouw {
-        number diameter
-        number hoogte
+      class Schouw {
+        double diameter
+        double hoogte
     }
-    class ISystem {
+      class ISystem {
         <<interface>>
+        string uuid
         string uri
-        string afgeleidVan
-        IAgent[] toegewezenAan
+    }
+    class ISpatialObject {
+        <<interface>>
+        string uuid
+        string uri
     }
     class IAgent {
         <<interface>>
+        string uuid
         string uri
     }
+    class Procedure {
+        <<enumerable>>
+        VERWERKING
+        TRANSPORT
+        VERBRUIK
+        EMISSIE
+    }
+    Proces --> Procedure : type
 
     Emissiepunt <|-- Schouw
     Onttrekkingspunt <|-- Grondwaterput
@@ -80,16 +113,14 @@ classDiagram
     ISystem <|.. Installatie
     ISystem <|.. Meetpunt
     ISystem <|.. Onttrekkingspunt
-    ISystem <|.. Proces
-    IAgent <|.. Apparaat
-    IAgent <|.. Emissiepunt
-    IAgent <|.. Installatie
-    IAgent <|.. Meetpunt
-    IAgent <|.. Onttrekkingspunt
+    ISpatialObject <|.. Apparaat
+    ISpatialObject <|.. Emissiepunt
+    ISpatialObject <|.. Meetpunt
+    ISpatialObject <|.. Onttrekkingspunt
     IAgent <|.. Proces
-    Proces --> IAgent : toegewezen aan
     Proces --> ProcesVariabele : heeft invoer
     Proces --> ProcesVariabele : heeft uitvoer
     Proces --> Proces : onderdeel van
-    Proces --> Proces : gaat vooraf aan
-    Installatie --> ISystem : heeft sub systeem
+    Installatie --> ISystem : heeft subsysteem
+    Installatie --> IAgent : implementeert
+

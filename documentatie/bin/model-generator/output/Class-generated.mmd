@@ -1,8 +1,20 @@
+---
+config:
+  theme: default
+  layout: elk
+  elk:
+    nodePlacementStrategy: SIMPLE
+---
 %% Auto-generated from OWL/SHACL
 classDiagram
     class AbstractEmissiepunt {
     }
       class Adres {
+        string uuid
+        string uri
+        Date geldigVan
+        Date aangemaaktOp
+        Date geldigTot
         string straat
         string stad
         string postcode
@@ -20,7 +32,7 @@ classDiagram
       class ExploitantContactpersoon {
         string uuid
         string uri
-        IAgent exploitant (FK)
+        Exploitant exploitant (FK)
         string benaming
         string email
         string telefoonnummer
@@ -57,7 +69,7 @@ classDiagram
         string uri
         string benaming
         Date aangemaaktOp
-        IAgent[] deployedSystem (FK)
+        ISystem[] inzetbaarSysteem (FK)
         ExploitatieLocatie locatie (FK)
         Date geldigVan
         Date geldigTot
@@ -69,9 +81,9 @@ classDiagram
         string benaming
         Date geldigVan
         Date geldigTot
-        IAgent toegewezenAan (FK)
+        Exploitant toegewezenAan (FK)
         string beinvloedDoor
-        ExploitatieLocatie afgeleidVan (FK)
+        ExploitatieLocatie revisieVan (FK)
         string geometrie
         Adres adres (FK)
         ExploitatieLocatieIdentifier[] identifiers (FK)
@@ -88,13 +100,14 @@ classDiagram
       class Installatie {
         string uuid
         string uri
-        IAgent[] heeftSubSysteem (FK)
+        ISystem[] heeftSubSysteem (FK)
+        Proces[] implementeert (FK)
         string benaming
         Date aangemaaktOp
         Date geldigVan
         Date geldigTot
         ExploitatieLocatie locatie (FK)
-        IAgent afgeleidVan (FK)
+        Installatie revisieVan (FK)
         InstallatieIdentifier[] identifiers (FK)
     }
       class InstallatieIdentifier {
@@ -126,7 +139,7 @@ classDiagram
       class Observatie {
         string uuid
         string uri
-        IAgent hasFeatureOfInterest (FK)
+        Meetpunt hasFeatureOfInterest (FK)
     }
       class Onttrekkingspunt {
         string uuid
@@ -142,9 +155,10 @@ classDiagram
       class Proces {
         string uuid
         string uri
+        Proces revisieVan (FK)
         Date aangemaaktOp
         string benaming
-        IAgent type
+        Procedure type
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
         Proces[] onderdeelVan (FK)
@@ -177,21 +191,16 @@ classDiagram
         string uuid
         string uri
     }
-    class ISpatialObject {
-        <<interface>>
-        string uuid
-        string uri
-    }
-    class IActuator {
-        <<interface>>
-        string uuid
-        string uri
-    }
     class ISystem {
         <<interface>>
         string uuid
         string uri
         ExploitatieLocatie locatieId
+    }
+    class ISpatialObject {
+        <<interface>>
+        string uuid
+        string uri
     }
     class Procedure {
         <<enumerable>>
@@ -206,39 +215,35 @@ classDiagram
     Emissiepunt <|-- Schouw
     Onttrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
-    IAgent <|.. Apparaat
-    IAgent <|.. Emissiepunt
     IAgent <|.. Exploitant
-    IAgent <|.. Installatie
-    IAgent <|.. Meetpunt
-    IAgent <|.. Onttrekkingspunt
     IAgent <|.. Proces
-    ISpatialObject <|.. Apparaat
-    ISpatialObject <|.. Emissiepunt
-    ISpatialObject <|.. Meetpunt
-    ISpatialObject <|.. Onttrekkingspunt
-    IActuator <|.. Apparaat
-    IActuator <|.. Emissiepunt
-    IActuator <|.. Onttrekkingspunt
     ISystem <|.. Installatie
+    ISystem <|.. Emissiepunt
+    ISystem <|.. Onttrekkingspunt
     ISystem <|.. Meetpunt
+    ISystem <|.. Apparaat
+    ISpatialObject <|.. Emissiepunt
+    ISpatialObject <|.. Onttrekkingspunt
+    ISpatialObject <|.. Meetpunt
+    ISpatialObject <|.. Apparaat
     Exploitant --> ExploitantContactpersoon : type
-    ExploitantContactpersoon --> IAgent : exploitant
-    ExploitatieLocatie --> IAgent : toegewezen aan
-    ExploitatieLocatie --> ExploitatieLocatie : afgeleid van
-    Exploitatie --> IAgent : deployedSystem
+    ExploitantContactpersoon --> Exploitant : exploitant
+    ExploitatieLocatie --> Exploitant : toegewezen aan
+    ExploitatieLocatie --> ExploitatieLocatie : revisie van
+    Exploitatie --> ISystem : inzetbaar systeem
     Exploitatie --> ExploitatieLocatie : locatie
-    Proces --> IAgent : type
+    Proces --> Proces : revisie van
     Proces --> ProcesVariabele : heeft invoer
     Proces --> ProcesVariabele : heeft uitvoer
     Proces --> Proces : onderdeel van
-    Installatie --> IAgent : heeft subsysteem
+    Installatie --> ISystem : heeft subsysteem
+    Installatie --> Proces : implementeert
     Installatie --> ExploitatieLocatie : locatie
-    Installatie --> IAgent : afgeleid van
+    Installatie --> Installatie : revisie van
     Emissiepunt --> ExploitatieLocatie : locatie
     Onttrekkingspunt --> ExploitatieLocatie : locatie
     Apparaat --> ExploitatieLocatie : locatie
-    Observatie --> IAgent : hasFeatureOfInterest
+    Observatie --> Meetpunt : hasFeatureOfInterest
     ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
     Proces --> ProcesIdentifier : identifiers
     Installatie --> InstallatieIdentifier : identifiers

@@ -9,10 +9,10 @@ import { ExploitatieLocatie } from './ExploitatieLocatie.model';
 
 import { jsonObject, jsonMember } from 'typedjson';
 
-import type { IAgent } from './Agent.interface';
+import type { ISystem } from './System.interface';
 
 @jsonObject
-export class Apparaat implements IAgent {
+export class Apparaat implements ISystem {
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 

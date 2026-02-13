@@ -17,7 +17,7 @@ export class ERDiagramGenerator extends SchemaGenerator {
   }
 
   generateMermaidDiagram() {
-    let mermaid = `%% Auto-generated from OWL/SHACL\nerDiagram\n`;
+    let mermaid = `---\nconfig:\n  theme: default\n  layout: elk\n  elk:\n    nodePlacementStrategy: SIMPLE\n---\n%% Auto-generated from OWL/SHACL\nerDiagram\n`;
 
     const junctionTableNames = new Set();
     const junctionTableInfo = new Map();

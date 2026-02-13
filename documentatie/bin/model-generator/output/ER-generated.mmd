@@ -1,3 +1,10 @@
+---
+config:
+  theme: default
+  layout: elk
+  elk:
+    nodePlacementStrategy: SIMPLE
+---
 %% Auto-generated from OWL/SHACL
 erDiagram
     AbstractEmissiepunt["abstract_emissiepunt"] {
@@ -85,20 +92,13 @@ erDiagram
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
         string benaming "rdfs:label"
-        string deployed_system_id "ssn:deployedSystem [FK]"
+        string inzetbaar_systeem_id "ssn:deployedSystem [FK]"
         string locatie_id "ssn:deployedOnPlatform [FK]"
     }
-    ExploitatieDeployedSystem["exploitatie_deployed_system"] {
+    ExploitatieInzetbaarSysteem["exploitatie_inzetbaar_systeem"] {
         string exploitatie_uuid "Exploitatie [PK,FK]"
-        string target_uuid "Installatie, Emissiepunt, Actuator, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
-        enum target_type "Installatie, Emissiepunt, Actuator, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
-    }
-    ExploitatieLocatieAfgeleidVanExploitatieLocatie["exploitatie_locatie_afgeleid_van_exploitatie_locatie"] {
-        string exploitatie_locatie_uuid_from "ExploitatieLocatie [PK,FK]"
-        string exploitatie_locatie_uuid_to "ExploitatieLocatie [PK,FK]"
+        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
+        enum target_type "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -113,6 +113,13 @@ erDiagram
     ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier["exploitatie_locatie_identifiers_exploitatie_locatie_identifier"] {
         string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
         string exploitatie_locatie_identifier_uuid "ExploitatieLocatieIdentifier [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    ExploitatieLocatieRevisieVanExploitatieLocatie["exploitatie_locatie_revisie_van_exploitatie_locatie"] {
+        string exploitatie_locatie_uuid_from "ExploitatieLocatie [PK,FK]"
+        string exploitatie_locatie_uuid_to "ExploitatieLocatie [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -133,7 +140,7 @@ erDiagram
         string benaming "rdfs:label"
         string toegewezen_aan_id "prov:wasAttributedTo [FK]"
         string beinvloed_door "prov:wasInfluencedBy"
-        string afgeleid_van_id "prov:wasDerivedFrom [FK]"
+        string revisie_van_id "prov:wasRevisionOf [FK]"
         string geometrie "ogc:hasGeometry"
         string adres_id "http://www.w3.org/ns/locn#address [FK]"
     }
@@ -157,21 +164,15 @@ erDiagram
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
         string heeft_sub_systeem_id "ssn:hasSubSystem [FK]"
+        string implementeert_id "ssn:implements [FK]"
         string benaming "rdfs:label"
         string locatie_id "sosa:isHostedBy [FK]"
-        string afgeleid_van_id "prov:wasDerivedFrom [FK]"
-    }
-    InstallatieAfgeleidVanInstallatie["installatie_afgeleid_van_installatie"] {
-        string installatie_uuid_from "Installatie [PK,FK]"
-        string installatie_uuid_to "Installatie [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
+        string revisie_van_id "prov:wasRevisionOf [FK]"
     }
     InstallatieHeeftSubsysteem["installatie_heeft_subsysteem"] {
         string installatie_uuid "Installatie [PK,FK]"
-        string target_uuid "Installatie, Emissiepunt, Actuator, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
-        enum target_type "Installatie, Emissiepunt, Actuator, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
+        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
+        enum target_type "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -183,9 +184,23 @@ erDiagram
         datetime aangemaakt_op "[PK]"
         date geldig_tot
     }
+    InstallatieImplementeertProces["installatie_implementeert_proces"] {
+        string installatie_uuid "Installatie [PK,FK]"
+        string proces_uuid "Proces [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
     InstallatieLocatieExploitatieLocatie["installatie_locatie_exploitatie_locatie"] {
         string installatie_uuid "Installatie [PK,FK]"
         string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    InstallatieRevisieVanInstallatie["installatie_revisie_van_installatie"] {
+        string installatie_uuid_from "Installatie [PK,FK]"
+        string installatie_uuid_to "Installatie [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -261,6 +276,7 @@ erDiagram
         string uri "URI"
         datetime aangemaakt_op "dct:created"
         string uuid "UUID primary key [PK]"
+        string revisie_van_id "prov:wasRevisionOf [FK]"
         string benaming "rdfs:label"
         enum type "dct:type"
         string heeft_invoer_id "pplan:hasInputVar [FK]"
@@ -276,6 +292,13 @@ erDiagram
         date geldig_tot
     }
     ProcesOnderdeelVanProces["proces_onderdeel_van_proces"] {
+        string proces_uuid_from "Proces [PK,FK]"
+        string proces_uuid_to "Proces [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    ProcesRevisieVanProces["proces_revisie_van_proces"] {
         string proces_uuid_from "Proces [PK,FK]"
         string proces_uuid_to "Proces [PK,FK]"
         date geldig_van "[PK]"
@@ -324,12 +347,14 @@ erDiagram
     Exploitant many to many ExploitantContactpersoon : "type"
     ExploitantContactpersoon one to one Exploitant : "exploitant"
     ExploitatieLocatie one to one Exploitant : "toegewezen aan"
-    ExploitatieLocatie many to one ExploitatieLocatie : "afgeleid van"
+    ExploitatieLocatie many to one ExploitatieLocatie : "revisie van"
     Exploitatie one to one ExploitatieLocatie : "locatie"
+    Proces many to one Proces : "revisie van"
     Proces many to one Proces : "type"
     Proces many to many ProcesVariabele : "heeft invoer"
     Proces many to many ProcesVariabele : "heeft uitvoer"
     Proces many to many Proces : "onderdeel van"
+    Installatie many to many Proces : "implementeert"
     Installatie one to one ExploitatieLocatie : "locatie"
     Emissiepunt one to one ExploitatieLocatie : "locatie"
     Onttrekkingspunt one to one ExploitatieLocatie : "locatie"
@@ -345,25 +370,24 @@ erDiagram
     Exploitant one to many ContactpersoonExploitantExploitant : "exploitant"
     ExploitatieLocatie one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
     Exploitant one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
-    ExploitatieLocatie one to many ExploitatieLocatieAfgeleidVanExploitatieLocatie : "afgeleid van"
-    Exploitatie one to many ExploitatieDeployedSystem : "deployedSystem"
-    Installatie one to many ExploitatieDeployedSystem : "deployedSystem"
-    Emissiepunt one to many ExploitatieDeployedSystem : "deployedSystem"
-    Actuator one to many ExploitatieDeployedSystem : "deployedSystem"
-    Onttrekkingspunt one to many ExploitatieDeployedSystem : "deployedSystem"
-    AbstractEmissiepunt one to many ExploitatieDeployedSystem : "deployedSystem"
-    Schouw one to many ExploitatieDeployedSystem : "deployedSystem"
-    Grondwaterput one to many ExploitatieDeployedSystem : "deployedSystem"
-    Lozingspunt one to many ExploitatieDeployedSystem : "deployedSystem"
-    Meetpunt one to many ExploitatieDeployedSystem : "deployedSystem"
-    Apparaat one to many ExploitatieDeployedSystem : "deployedSystem"
+    ExploitatieLocatie one to many ExploitatieLocatieRevisieVanExploitatieLocatie : "revisie van"
+    Exploitatie one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Installatie one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Emissiepunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Onttrekkingspunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    AbstractEmissiepunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Schouw one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Grondwaterput one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Lozingspunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Meetpunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    Apparaat one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
     Exploitatie one to many ExploitatieLocatieExploitatieLocatie : "locatie"
     ExploitatieLocatie one to many ExploitatieLocatieExploitatieLocatie : "locatie"
+    Proces one to many ProcesRevisieVanProces : "revisie van"
     Proces one to many ProcesTypeProces : "type"
     Proces one to many ProcesOnderdeelVanProces : "onderdeel van"
     Installatie one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     Emissiepunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Actuator one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     Onttrekkingspunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     AbstractEmissiepunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     Schouw one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
@@ -371,9 +395,11 @@ erDiagram
     Lozingspunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     Meetpunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
     Apparaat one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
+    Installatie one to many InstallatieImplementeertProces : "implementeert"
+    Proces one to many InstallatieImplementeertProces : "implementeert"
     Installatie one to many InstallatieLocatieExploitatieLocatie : "locatie"
     ExploitatieLocatie one to many InstallatieLocatieExploitatieLocatie : "locatie"
-    Installatie one to many InstallatieAfgeleidVanInstallatie : "afgeleid van"
+    Installatie one to many InstallatieRevisieVanInstallatie : "revisie van"
     Emissiepunt one to many EmissiepuntLocatieExploitatieLocatie : "locatie"
     ExploitatieLocatie one to many EmissiepuntLocatieExploitatieLocatie : "locatie"
     Onttrekkingspunt one to many OnttrekkingspuntLocatieExploitatieLocatie : "locatie"

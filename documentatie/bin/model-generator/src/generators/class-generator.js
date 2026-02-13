@@ -216,6 +216,23 @@ export class ClassGenerator extends BaseGenerator {
     const isArray = this.isAttributeMultiValued(attr);
 
     if (attr.isForeignKey && Array.isArray(attr.targetClasses) && attr.targetClasses.length > 0) {
+      // If this property is enum-backed, prefer the enum type over
+      // resolving to target classes (prevents overwriting enum types
+      // like `Procedure` with a concrete class like `Proces`).
+      if (attr.type === 'enum') {
+        let enumClass = attr && attr.enumClass ? attr.enumClass : null;
+        if (!enumClass && this.enumClasses && typeof this.enumClasses[Symbol.iterator] === 'function') {
+          enumClass = Array.from(this.enumClasses).find(ec => ec === attr.comment || ec === attr.propertyIri || this.pascalCase(ec) === this.pascalCase(attr.name));
+        }
+        const isSafeEnumLabel = c => (typeof c === 'string' && c.length > 0 && c.length <= 30 && !/\s/.test(c) && /^[A-Za-z0-9_\-]+$/.test(c));
+        const enumName = enumClass ? this.pascalCase(enumClass) : (isSafeEnumLabel(attr.comment) ? this.pascalCase(attr.comment) : this.pascalCase(attr.name));
+        if (enumName) {
+          // keep FK marker but render type as the enum
+          name = String(name).replace(/Id$/i, '');
+          if (isArray) type = `${enumName}[]`; else type = enumName;
+          return { name, type, isArray, isForeignKey: true, comment: attr.comment || null };
+        }
+      }
       // Prefer explicit internal concrete targets regardless of visible class list
       const explicitInternal = (attr.targetClasses || []).filter(tn => {
         const ti = this.ontology.classes.get(tn);

@@ -1,11 +1,11 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-13T23:32:02.471Z
+-- Generated: 2026-02-13T23:40:28.867Z
 
 -- PostgreSQL DDL
 
 -- Enum types
-CREATE TYPE exploitatie_deployed_system_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ACTUATOR', 'ONTTREKKINGSPUNT', 'ABSTRACTEMISSIEPUNT', 'SCHOUW', 'GRONDWATERPUT', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT');
-CREATE TYPE installatie_heeft_subsysteem_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ACTUATOR', 'ONTTREKKINGSPUNT', 'ABSTRACTEMISSIEPUNT', 'SCHOUW', 'GRONDWATERPUT', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT');
+CREATE TYPE exploitatie_inzetbaar_systeem_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ONTTREKKINGSPUNT', 'ABSTRACTEMISSIEPUNT', 'SCHOUW', 'GRONDWATERPUT', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT');
+CREATE TYPE installatie_heeft_subsysteem_target_type_enum AS ENUM ('INSTALLATIE', 'EMISSIEPUNT', 'ONTTREKKINGSPUNT', 'ABSTRACTEMISSIEPUNT', 'SCHOUW', 'GRONDWATERPUT', 'LOZINGSPUNT', 'MEETPUNT', 'APPARAAT');
 CREATE TYPE proces_variabele_relatie_relationship_type_enum AS ENUM ('INPUT_VAR', 'OUTPUT_VAR');
 
 CREATE TABLE abstract_emissiepunt (
@@ -119,7 +119,7 @@ CREATE TABLE exploitatie (
     geldig_tot DATE NULL,
     uuid UUID NOT NULL,
     benaming TEXT NOT NULL,
-    deployed_system_id TEXT NULL,
+    inzetbaar_systeem_id TEXT NULL,
     locatie_id TEXT NOT NULL,
     CONSTRAINT pk_exploitatie PRIMARY KEY (uuid)
 );
@@ -127,7 +127,7 @@ COMMENT ON COLUMN exploitatie.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN exploitatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN exploitatie.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN exploitatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
-COMMENT ON COLUMN exploitatie.deployed_system_id IS 'http://www.w3.org/ns/ssn/deployedSystem';
+COMMENT ON COLUMN exploitatie.inzetbaar_systeem_id IS 'http://www.w3.org/ns/ssn/deployedSystem';
 COMMENT ON COLUMN exploitatie.locatie_id IS 'http://www.w3.org/ns/ssn/deployedOnPlatform';
 COMMENT ON TABLE exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie';
 
@@ -140,7 +140,7 @@ CREATE TABLE exploitatie_locatie (
     benaming TEXT NOT NULL,
     toegewezen_aan_id TEXT NOT NULL,
     beinvloed_door TEXT NULL,
-    afgeleid_van_id TEXT NULL,
+    revisie_van_id TEXT NULL,
     geometrie TEXT NULL,
     adres_id TEXT NULL,
     CONSTRAINT pk_exploitatie_locatie PRIMARY KEY (uuid)
@@ -151,7 +151,7 @@ COMMENT ON COLUMN exploitatie_locatie.geldig_tot IS 'http://purl.org/dc/terms/va
 COMMENT ON COLUMN exploitatie_locatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN exploitatie_locatie.toegewezen_aan_id IS 'http://www.w3.org/ns/prov#wasAttributedTo';
 COMMENT ON COLUMN exploitatie_locatie.beinvloed_door IS 'http://www.w3.org/ns/prov#wasInfluencedBy';
-COMMENT ON COLUMN exploitatie_locatie.afgeleid_van_id IS 'http://www.w3.org/ns/prov#wasDerivedFrom';
+COMMENT ON COLUMN exploitatie_locatie.revisie_van_id IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN exploitatie_locatie.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN exploitatie_locatie.adres_id IS 'http://www.w3.org/ns/locn#address';
 COMMENT ON TABLE exploitatie_locatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie';
@@ -187,18 +187,20 @@ CREATE TABLE installatie (
     geldig_tot DATE NULL,
     uuid UUID NOT NULL,
     heeft_sub_systeem_id TEXT NULL,
+    implementeert_id TEXT NULL,
     benaming TEXT NOT NULL,
     locatie_id TEXT NOT NULL,
-    afgeleid_van_id TEXT NULL,
+    revisie_van_id TEXT NULL,
     CONSTRAINT pk_installatie PRIMARY KEY (uuid)
 );
 COMMENT ON COLUMN installatie.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN installatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN installatie.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN installatie.heeft_sub_systeem_id IS 'http://www.w3.org/ns/ssn/hasSubSystem';
+COMMENT ON COLUMN installatie.implementeert_id IS 'http://www.w3.org/ns/ssn/implements';
 COMMENT ON COLUMN installatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN installatie.locatie_id IS 'http://www.w3.org/ns/sosa/isHostedBy';
-COMMENT ON COLUMN installatie.afgeleid_van_id IS 'http://www.w3.org/ns/prov#wasDerivedFrom';
+COMMENT ON COLUMN installatie.revisie_van_id IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON TABLE installatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie';
 
 CREATE TABLE installatie_identifier (
@@ -292,6 +294,7 @@ CREATE TABLE proces (
     uri TEXT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     uuid UUID NOT NULL,
+    revisie_van_id TEXT NULL,
     benaming TEXT NOT NULL,
     heeft_invoer_id TEXT NULL,
     heeft_uitvoer_id TEXT NULL,
@@ -300,6 +303,7 @@ CREATE TABLE proces (
     CONSTRAINT pk_proces PRIMARY KEY (uuid)
 );
 COMMENT ON COLUMN proces.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN proces.revisie_van_id IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN proces.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN proces.heeft_invoer_id IS 'http://purl.org/net/p-plan#hasInputVar';
 COMMENT ON COLUMN proces.heeft_uitvoer_id IS 'http://purl.org/net/p-plan#hasOutputVar';
@@ -381,23 +385,23 @@ CREATE TABLE exploitatie_locatie_toegewezen_aan_exploitant (
     CONSTRAINT pk_exploitatie_locatie_toegewezen_aan_exploitant PRIMARY KEY (exploitatie_locatie_uuid, exploitant_uuid, geldig_van, aangemaakt_op)
 );
 
-CREATE TABLE exploitatie_locatie_afgeleid_van_exploitatie_locatie (
+CREATE TABLE exploitatie_locatie_revisie_van_exploitatie_locatie (
     exploitatie_locatie_uuid_from UUID NOT NULL,
     exploitatie_locatie_uuid_to UUID NOT NULL,
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
-    CONSTRAINT pk_exploitatie_locatie_afgeleid_van_exploitatie_locatie PRIMARY KEY (exploitatie_locatie_uuid_from, exploitatie_locatie_uuid_to, geldig_van, aangemaakt_op)
+    CONSTRAINT pk_exploitatie_locatie_revisie_van_exploitatie_locatie PRIMARY KEY (exploitatie_locatie_uuid_from, exploitatie_locatie_uuid_to, geldig_van, aangemaakt_op)
 );
 
-CREATE TABLE exploitatie_deployed_system (
+CREATE TABLE exploitatie_inzetbaar_systeem (
     exploitatie_uuid UUID NOT NULL,
     target_uuid UUID NOT NULL,
-    target_type exploitatie_deployed_system_target_type_enum NULL,
+    target_type exploitatie_inzetbaar_systeem_target_type_enum NULL,
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
-    CONSTRAINT pk_exploitatie_deployed_system PRIMARY KEY (exploitatie_uuid, target_uuid, geldig_van, aangemaakt_op)
+    CONSTRAINT pk_exploitatie_inzetbaar_systeem PRIMARY KEY (exploitatie_uuid, target_uuid, geldig_van, aangemaakt_op)
 );
 
 CREATE TABLE exploitatie_locatie_exploitatie_locatie (
@@ -407,6 +411,15 @@ CREATE TABLE exploitatie_locatie_exploitatie_locatie (
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
     CONSTRAINT pk_exploitatie_locatie_exploitatie_locatie PRIMARY KEY (exploitatie_uuid, exploitatie_locatie_uuid, geldig_van, aangemaakt_op)
+);
+
+CREATE TABLE proces_revisie_van_proces (
+    proces_uuid_from UUID NOT NULL,
+    proces_uuid_to UUID NOT NULL,
+    geldig_van DATE NOT NULL,
+    aangemaakt_op TIMESTAMP NOT NULL,
+    geldig_tot DATE NULL,
+    CONSTRAINT pk_proces_revisie_van_proces PRIMARY KEY (proces_uuid_from, proces_uuid_to, geldig_van, aangemaakt_op)
 );
 
 CREATE TABLE proces_type_proces (
@@ -437,6 +450,15 @@ CREATE TABLE installatie_heeft_subsysteem (
     CONSTRAINT pk_installatie_heeft_subsysteem PRIMARY KEY (installatie_uuid, target_uuid, geldig_van, aangemaakt_op)
 );
 
+CREATE TABLE installatie_implementeert_proces (
+    installatie_uuid UUID NOT NULL,
+    proces_uuid UUID NOT NULL,
+    geldig_van DATE NOT NULL,
+    aangemaakt_op TIMESTAMP NOT NULL,
+    geldig_tot DATE NULL,
+    CONSTRAINT pk_installatie_implementeert_proces PRIMARY KEY (installatie_uuid, proces_uuid, geldig_van, aangemaakt_op)
+);
+
 CREATE TABLE installatie_locatie_exploitatie_locatie (
     installatie_uuid UUID NOT NULL,
     exploitatie_locatie_uuid UUID NOT NULL,
@@ -446,13 +468,13 @@ CREATE TABLE installatie_locatie_exploitatie_locatie (
     CONSTRAINT pk_installatie_locatie_exploitatie_locatie PRIMARY KEY (installatie_uuid, exploitatie_locatie_uuid, geldig_van, aangemaakt_op)
 );
 
-CREATE TABLE installatie_afgeleid_van_installatie (
+CREATE TABLE installatie_revisie_van_installatie (
     installatie_uuid_from UUID NOT NULL,
     installatie_uuid_to UUID NOT NULL,
     geldig_van DATE NOT NULL,
     aangemaakt_op TIMESTAMP NOT NULL,
     geldig_tot DATE NULL,
-    CONSTRAINT pk_installatie_afgeleid_van_installatie PRIMARY KEY (installatie_uuid_from, installatie_uuid_to, geldig_van, aangemaakt_op)
+    CONSTRAINT pk_installatie_revisie_van_installatie PRIMARY KEY (installatie_uuid_from, installatie_uuid_to, geldig_van, aangemaakt_op)
 );
 
 CREATE TABLE emissiepunt_locatie_exploitatie_locatie (
@@ -508,16 +530,18 @@ ALTER TABLE contactpersoon ADD CONSTRAINT fk_contactpersoon_adres_id FOREIGN KEY
 ALTER TABLE emissiepunt ADD CONSTRAINT fk_emissiepunt_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE exploitant ADD CONSTRAINT fk_exploitant_type_id FOREIGN KEY (type_id) REFERENCES contactpersoon(uri);
 ALTER TABLE exploitant ADD CONSTRAINT fk_exploitant_adres_id FOREIGN KEY (adres_id) REFERENCES adres(uri);
-ALTER TABLE exploitatie ADD CONSTRAINT fk_exploitatie_deployed_system_id FOREIGN KEY (deployed_system_id) REFERENCES installatie(uri);
+ALTER TABLE exploitatie ADD CONSTRAINT fk_exploitatie_inzetbaar_systeem_id FOREIGN KEY (inzetbaar_systeem_id) REFERENCES installatie(uri);
 ALTER TABLE exploitatie ADD CONSTRAINT fk_exploitatie_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_toegewezen_aan_id FOREIGN KEY (toegewezen_aan_id) REFERENCES exploitant(uri);
-ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES exploitatie_locatie(uri);
+ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_revisie_van_id FOREIGN KEY (revisie_van_id) REFERENCES exploitatie_locatie(uri);
 ALTER TABLE exploitatie_locatie ADD CONSTRAINT fk_exploitatie_locatie_adres_id FOREIGN KEY (adres_id) REFERENCES adres(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_heeft_sub_systeem_id FOREIGN KEY (heeft_sub_systeem_id) REFERENCES installatie(uri);
+ALTER TABLE installatie ADD CONSTRAINT fk_installatie_implementeert_id FOREIGN KEY (implementeert_id) REFERENCES proces(uri);
 ALTER TABLE installatie ADD CONSTRAINT fk_installatie_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
-ALTER TABLE installatie ADD CONSTRAINT fk_installatie_afgeleid_van_id FOREIGN KEY (afgeleid_van_id) REFERENCES installatie(uri);
+ALTER TABLE installatie ADD CONSTRAINT fk_installatie_revisie_van_id FOREIGN KEY (revisie_van_id) REFERENCES installatie(uri);
 ALTER TABLE observatie ADD CONSTRAINT fk_observatie_has_feature_of_interest_id FOREIGN KEY (has_feature_of_interest_id) REFERENCES meetpunt(uri);
 ALTER TABLE onttrekkingspunt ADD CONSTRAINT fk_onttrekkingspunt_locatie_id FOREIGN KEY (locatie_id) REFERENCES exploitatie_locatie(uri);
+ALTER TABLE proces ADD CONSTRAINT fk_proces_revisie_van_id FOREIGN KEY (revisie_van_id) REFERENCES proces(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_heeft_invoer_id FOREIGN KEY (heeft_invoer_id) REFERENCES proces_variabele(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_heeft_uitvoer_id FOREIGN KEY (heeft_uitvoer_id) REFERENCES proces_variabele(uri);
 ALTER TABLE proces ADD CONSTRAINT fk_proces_onderdeel_van_id FOREIGN KEY (onderdeel_van_id) REFERENCES proces(uri);
@@ -531,21 +555,23 @@ CREATE INDEX idx_contactpersoon_adres_id ON contactpersoon(adres_id);
 CREATE INDEX idx_emissiepunt_locatie_id ON emissiepunt(locatie_id);
 CREATE INDEX idx_exploitant_type_id ON exploitant(type_id);
 CREATE INDEX idx_exploitant_adres_id ON exploitant(adres_id);
-CREATE INDEX idx_exploitatie_deployed_system_id ON exploitatie(deployed_system_id);
+CREATE INDEX idx_exploitatie_inzetbaar_systeem_id ON exploitatie(inzetbaar_systeem_id);
 CREATE INDEX idx_exploitatie_locatie_id ON exploitatie(locatie_id);
 CREATE INDEX idx_exploitatie_locatie_toegewezen_aan_id ON exploitatie_locatie(toegewezen_aan_id);
-CREATE INDEX idx_exploitatie_locatie_afgeleid_van_id ON exploitatie_locatie(afgeleid_van_id);
+CREATE INDEX idx_exploitatie_locatie_revisie_van_id ON exploitatie_locatie(revisie_van_id);
 CREATE INDEX idx_exploitatie_locatie_adres_id ON exploitatie_locatie(adres_id);
 CREATE INDEX idx_exploitatie_locatie_identifiers ON exploitatie_locatie(identifiers);
 CREATE INDEX idx_grondwaterput_onttrekkingspunt_uuid ON grondwaterput(onttrekkingspunt_uuid);
 CREATE INDEX idx_installatie_heeft_sub_systeem_id ON installatie(heeft_sub_systeem_id);
+CREATE INDEX idx_installatie_implementeert_id ON installatie(implementeert_id);
 CREATE INDEX idx_installatie_locatie_id ON installatie(locatie_id);
-CREATE INDEX idx_installatie_afgeleid_van_id ON installatie(afgeleid_van_id);
+CREATE INDEX idx_installatie_revisie_van_id ON installatie(revisie_van_id);
 CREATE INDEX idx_installatie_identifiers ON installatie(identifiers);
 CREATE INDEX idx_lozingspunt_emissiepunt_uuid ON lozingspunt(emissiepunt_uuid);
 CREATE INDEX idx_meetpunt_identifiers ON meetpunt(identifiers);
 CREATE INDEX idx_observatie_has_feature_of_interest_id ON observatie(has_feature_of_interest_id);
 CREATE INDEX idx_onttrekkingspunt_locatie_id ON onttrekkingspunt(locatie_id);
+CREATE INDEX idx_proces_revisie_van_id ON proces(revisie_van_id);
 CREATE INDEX idx_proces_heeft_invoer_id ON proces(heeft_invoer_id);
 CREATE INDEX idx_proces_heeft_uitvoer_id ON proces(heeft_uitvoer_id);
 CREATE INDEX idx_proces_onderdeel_van_id ON proces(onderdeel_van_id);
@@ -558,20 +584,24 @@ CREATE INDEX idx_contactpersoon_exploitant_exploitant_contactpersoon_uuid ON con
 CREATE INDEX idx_contactpersoon_exploitant_exploitant_exploitant_uuid ON contactpersoon_exploitant_exploitant(exploitant_uuid);
 CREATE INDEX idx_exploitatie_locatie_toegewezen_aan_exploitant_exploitatie_locatie_uuid ON exploitatie_locatie_toegewezen_aan_exploitant(exploitatie_locatie_uuid);
 CREATE INDEX idx_exploitatie_locatie_toegewezen_aan_exploitant_exploitant_uuid ON exploitatie_locatie_toegewezen_aan_exploitant(exploitant_uuid);
-CREATE INDEX idx_exploitatie_locatie_afgeleid_van_exploitatie_locatie_exploitatie_locatie_uuid_from ON exploitatie_locatie_afgeleid_van_exploitatie_locatie(exploitatie_locatie_uuid_from);
-CREATE INDEX idx_exploitatie_locatie_afgeleid_van_exploitatie_locatie_exploitatie_locatie_uuid_to ON exploitatie_locatie_afgeleid_van_exploitatie_locatie(exploitatie_locatie_uuid_to);
-CREATE INDEX idx_exploitatie_deployed_system_exploitatie_uuid ON exploitatie_deployed_system(exploitatie_uuid);
+CREATE INDEX idx_exploitatie_locatie_revisie_van_exploitatie_locatie_exploitatie_locatie_uuid_from ON exploitatie_locatie_revisie_van_exploitatie_locatie(exploitatie_locatie_uuid_from);
+CREATE INDEX idx_exploitatie_locatie_revisie_van_exploitatie_locatie_exploitatie_locatie_uuid_to ON exploitatie_locatie_revisie_van_exploitatie_locatie(exploitatie_locatie_uuid_to);
+CREATE INDEX idx_exploitatie_inzetbaar_systeem_exploitatie_uuid ON exploitatie_inzetbaar_systeem(exploitatie_uuid);
 CREATE INDEX idx_exploitatie_locatie_exploitatie_locatie_exploitatie_uuid ON exploitatie_locatie_exploitatie_locatie(exploitatie_uuid);
 CREATE INDEX idx_exploitatie_locatie_exploitatie_locatie_exploitatie_locatie_uuid ON exploitatie_locatie_exploitatie_locatie(exploitatie_locatie_uuid);
+CREATE INDEX idx_proces_revisie_van_proces_proces_uuid_from ON proces_revisie_van_proces(proces_uuid_from);
+CREATE INDEX idx_proces_revisie_van_proces_proces_uuid_to ON proces_revisie_van_proces(proces_uuid_to);
 CREATE INDEX idx_proces_type_proces_proces_uuid_from ON proces_type_proces(proces_uuid_from);
 CREATE INDEX idx_proces_type_proces_proces_uuid_to ON proces_type_proces(proces_uuid_to);
 CREATE INDEX idx_proces_onderdeel_van_proces_proces_uuid_from ON proces_onderdeel_van_proces(proces_uuid_from);
 CREATE INDEX idx_proces_onderdeel_van_proces_proces_uuid_to ON proces_onderdeel_van_proces(proces_uuid_to);
 CREATE INDEX idx_installatie_heeft_subsysteem_installatie_uuid ON installatie_heeft_subsysteem(installatie_uuid);
+CREATE INDEX idx_installatie_implementeert_proces_installatie_uuid ON installatie_implementeert_proces(installatie_uuid);
+CREATE INDEX idx_installatie_implementeert_proces_proces_uuid ON installatie_implementeert_proces(proces_uuid);
 CREATE INDEX idx_installatie_locatie_exploitatie_locatie_installatie_uuid ON installatie_locatie_exploitatie_locatie(installatie_uuid);
 CREATE INDEX idx_installatie_locatie_exploitatie_locatie_exploitatie_locatie_uuid ON installatie_locatie_exploitatie_locatie(exploitatie_locatie_uuid);
-CREATE INDEX idx_installatie_afgeleid_van_installatie_installatie_uuid_from ON installatie_afgeleid_van_installatie(installatie_uuid_from);
-CREATE INDEX idx_installatie_afgeleid_van_installatie_installatie_uuid_to ON installatie_afgeleid_van_installatie(installatie_uuid_to);
+CREATE INDEX idx_installatie_revisie_van_installatie_installatie_uuid_from ON installatie_revisie_van_installatie(installatie_uuid_from);
+CREATE INDEX idx_installatie_revisie_van_installatie_installatie_uuid_to ON installatie_revisie_van_installatie(installatie_uuid_to);
 CREATE INDEX idx_emissiepunt_locatie_exploitatie_locatie_emissiepunt_uuid ON emissiepunt_locatie_exploitatie_locatie(emissiepunt_uuid);
 CREATE INDEX idx_emissiepunt_locatie_exploitatie_locatie_exploitatie_locatie_uuid ON emissiepunt_locatie_exploitatie_locatie(exploitatie_locatie_uuid);
 CREATE INDEX idx_onttrekkingspunt_locatie_exploitatie_locatie_onttrekkingspunt_uuid ON onttrekkingspunt_locatie_exploitatie_locatie(onttrekkingspunt_uuid);

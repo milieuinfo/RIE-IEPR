@@ -155,6 +155,7 @@ class ActiviteitVisualizer {
 
         const edges = [];
 
+        const systemToSteps = new Map();
         for (const step of stepTerms) {
           const stepId = literalValue(step.id || step.value || step);
           const label = this.getNodeLabel(store, step, stepId);
@@ -167,9 +168,16 @@ class ActiviteitVisualizer {
               const val = valQuad.object.value || literalValue(valQuad.object);
               if (val && val.startsWith(APPARAAT_NS)) {
                 const apparaatTerm = valQuad.object;
+                const apparaatId = literalValue(apparaatTerm.id || apparaatTerm.value || apparaatTerm);
                 const apparaatLabelQuad = store.getQuads(apparaatTerm, RDFS_LABEL, null, null)[0];
                 const apparaatLabel = apparaatLabelQuad ? apparaatLabelQuad.object.value : this.shortLabelFromUri(val);
                 finalLabel = `${finalLabel}\nApparaat: ${apparaatLabel}`;
+                // do not create a separate apparaat node here — the apparaat
+                // is merged into the step label. We only record the mapping
+                // so steps can be grouped under installations that include the apparaat.
+                // record that this step depends on this apparaat
+                if (!systemToSteps.has(apparaatId)) systemToSteps.set(apparaatId, []);
+                systemToSteps.get(apparaatId).push(stepId);
                 break;
               }
               if (val && val.startsWith(EMISSIE_NS)) {
@@ -180,6 +188,9 @@ class ActiviteitVisualizer {
                   nodes.set(epId, { id: idFor(epId), label: epLabel });
                 }
                 edges.push({ from: stepId, to: epId });
+                // record that this step references this emissionpoint system
+                if (!systemToSteps.has(epId)) systemToSteps.set(epId, []);
+                systemToSteps.get(epId).push(stepId);
               }
               if (val && val.startsWith(ONT_NS)) {
                 const opId = literalValue(valQuad.object.id || valQuad.object.value || valQuad.object);
@@ -189,6 +200,9 @@ class ActiviteitVisualizer {
                   nodes.set(opId, { id: idFor(opId), label: opLabel });
                 }
                 edges.push({ from: opId, to: stepId });
+                // record that this step references this onttrekkingspunt system
+                if (!systemToSteps.has(opId)) systemToSteps.set(opId, []);
+                systemToSteps.get(opId).push(stepId);
               }
             } else {
               const varUri = literalValue(varNode.id || varNode.value || varNode) || '';
@@ -209,6 +223,9 @@ class ActiviteitVisualizer {
                       nodes.set(epId, { id: idFor(epId), label: epLabel });
                     }
                     edges.push({ from: stepId, to: epId });
+                    // record mapping step -> emissionpoint system
+                    if (!systemToSteps.has(epId)) systemToSteps.set(epId, []);
+                    systemToSteps.get(epId).push(stepId);
                     break;
                   }
                 }
@@ -256,6 +273,7 @@ class ActiviteitVisualizer {
 
         const parentChildren = new Map();
         for (const q of quads) {
+          // group steps under parent plans
           if (q.predicate.value === PPLAN + 'isStepOfPlan') {
             const childId = literalValue(q.subject.id || q.subject.value || q.subject);
             const parentId = literalValue(q.object.id || q.object.value || q.object);
@@ -263,6 +281,38 @@ class ActiviteitVisualizer {
               if (!parentChildren.has(parentId)) parentChildren.set(parentId, []);
               parentChildren.get(parentId).push(childId);
             }
+          }
+
+          // also group subsystems under installations (sosa:hasSubSystem or ssn:hasSubSystem)
+          try {
+            const sosaHas = NAMESPACES.sosa ? NAMESPACES.sosa + 'hasSubSystem' : null;
+            const ssnHas = SSN + 'hasSubSystem';
+            if ((sosaHas && q.predicate.value === sosaHas) || q.predicate.value === ssnHas) {
+              const parentId = literalValue(q.subject.id || q.subject.value || q.subject);
+              const childId = literalValue(q.object.id || q.object.value || q.object);
+              if (nodes.has(childId)) {
+                if (!parentChildren.has(parentId)) parentChildren.set(parentId, []);
+                parentChildren.get(parentId).push(childId);
+                // ensure parent installation node exists so it can be rendered as subgraph
+                if (!nodes.has(parentId)) {
+                  const parentLabel = this.getNodeLabel(store, q.subject, parentId);
+                  nodes.set(parentId, { id: idFor(parentId), label: parentLabel, term: q.subject });
+                }
+              }
+                // include steps that reference this subsystem (apparaat/emissie/etc.)
+              if (systemToSteps.has(childId)) {
+                if (!parentChildren.has(parentId)) parentChildren.set(parentId, []);
+                for (const sid of systemToSteps.get(childId)) {
+                  if (!parentChildren.get(parentId).includes(sid) && nodes.has(sid)) parentChildren.get(parentId).push(sid);
+                }
+                if (!nodes.has(parentId)) {
+                  const parentLabel = this.getNodeLabel(store, q.subject, parentId);
+                  nodes.set(parentId, { id: idFor(parentId), label: parentLabel, term: q.subject });
+                }
+              }
+            }
+          } catch (e) {
+            // ignore if NAMESPACES.sosa undefined
           }
         }
 
@@ -389,6 +439,37 @@ class ActiviteitVisualizer {
                 if (!parentChildrenV.has(parentId)) parentChildrenV.set(parentId, []);
                 parentChildrenV.get(parentId).push(childId);
               }
+            }
+
+            // Also group subsystems under installations for the variant view
+            try {
+              const sosaHas = NAMESPACES.sosa ? NAMESPACES.sosa + 'hasSubSystem' : null;
+              const ssnHas = SSN + 'hasSubSystem';
+              if ((sosaHas && q.predicate.value === sosaHas) || q.predicate.value === ssnHas) {
+                const parentId = literalValue(q.subject.id || q.subject.value || q.subject);
+                const childId = literalValue(q.object.id || q.object.value || q.object);
+                if (nodesV.has(childId)) {
+                  if (!parentChildrenV.has(parentId)) parentChildrenV.set(parentId, []);
+                  parentChildrenV.get(parentId).push(childId);
+                  if (!nodesV.has(parentId)) {
+                    const parentLabel = this.getNodeLabel(store, q.subject, parentId);
+                    nodesV.set(parentId, { id: idFor(parentId), label: parentLabel, term: q.subject });
+                  }
+                }
+                // include steps that reference this subsystem (apparaat/emissie/etc.) in variant
+                if (systemToSteps.has(childId)) {
+                  if (!parentChildrenV.has(parentId)) parentChildrenV.set(parentId, []);
+                  for (const sid of systemToSteps.get(childId)) {
+                    if (!parentChildrenV.get(parentId).includes(sid) && nodesV.has(sid)) parentChildrenV.get(parentId).push(sid);
+                  }
+                  if (!nodesV.has(parentId)) {
+                    const parentLabel = this.getNodeLabel(store, q.subject, parentId);
+                    nodesV.set(parentId, { id: idFor(parentId), label: parentLabel, term: q.subject });
+                  }
+                }
+              }
+            } catch (e) {
+              // ignore if NAMESPACES.sosa undefined
             }
           }
 

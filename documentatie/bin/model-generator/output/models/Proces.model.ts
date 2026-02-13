@@ -23,6 +23,9 @@ export class Proces implements IAgent {
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
+  @jsonMember(Object, { name: 'wasRevisionOf' })
+  revisieVan?: IAgent;
+
   @jsonMember(Date, { name: 'created' })
   aangemaaktOp!: Date;
 

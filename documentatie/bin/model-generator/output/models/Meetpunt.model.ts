@@ -9,10 +9,10 @@ import { MeetpuntIdentifier } from './MeetpuntIdentifier.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
-import type { IAgent } from './Agent.interface';
+import type { ISystem } from './System.interface';
 
 @jsonObject
-export class Meetpunt implements IAgent {
+export class Meetpunt implements ISystem {
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 
