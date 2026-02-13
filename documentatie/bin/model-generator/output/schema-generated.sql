@@ -1,5 +1,5 @@
 -- Auto-generated from OWL/SHACL ontology
--- Generated: 2026-02-13T13:48:16.585Z
+-- Generated: 2026-02-13T23:32:02.471Z
 
 -- PostgreSQL DDL
 
