@@ -9,6 +9,8 @@
 @prefix apparaat: <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
 @prefix var: <https://data.riepr.omgeving.vlaanderen.be/id/var/> .
 @prefix stof: <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
+@prefix entity: <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
+@prefix actuation: <https://data.riepr.omgeving.vlaanderen.be/id/actuation/> .
 
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -40,7 +42,8 @@ exploitant:0400123123 a riepr:Exploitant ;
 # Vestigingsnummer als deel van de URI
 exploitatielocatie:0400123123_6851234567 a riepr:ExploitatieLocatie ;
     rdfs:label "Hoofdzetel Staalfabriek NV"@nl ;
-    sosa:isHostedBy exploitant:0400123123 ;
+    #sosa:isHostedBy exploitant:0400123123 ;
+    prov:wasAttributedTo exploitant:0400123123 ;
     dct:issued "2020-07-30"^^xsd:date ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     dct:valid "2030-12-31"^^xsd:date ;
@@ -142,15 +145,18 @@ exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 a riepr:Exploitatie ;
 ## ---------------------------------------
 ## PROCES DIE HET >>DEPLOYMENT<< BESCHRIJFT
 ## ---------------------------------------
+# *********************************************
+# Stappen en plan
+# *********************************************
 proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 a riepr:Proces ;
     rdfs:label "Staalproductieproces van Staalfabriek NV op 1999"@nl ;
-    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
+    #sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     dct:created "1999-01-01T00:00:00Z"^^xsd:dateTime ;
     adms:status riepr:Inactief .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 a riepr:Proces ;
     rdfs:label "Staalproductieproces van Staalfabriek NV op 2020"@nl ;
-    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
+    #sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     prov:wasRevisionOf proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     dct:created "2020-07-30T10:00:00Z"^^xsd:dateTime ;
     adms:status riepr:Actief .
@@ -159,7 +165,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 a riepr:Proces ;
 # Individuele stappen kunnen hergebruikt worden
 proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 a riepr:Proces ;
     rdfs:label "Staalproductieproces van Staalfabriek NV op 2026"@nl ;
-    sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
+    #sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     prov:wasRevisionOf proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     adms:status riepr:Actief .
@@ -167,6 +173,7 @@ proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 a riepr:Proces ;
 # Procesketen van de staalfabriek
 
 ## ONDERDEEL VAN Stroomboogoven proces
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0001 a riepr:Proces ;
     rdfs:label "Toevoeging van grondstoffen"@nl ;
     pplan:hasInputVar var:ijzererts ;
@@ -180,7 +187,9 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0002 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000001 .
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000001 .
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000001 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0003 a riepr:Proces ;
     rdfs:label "Schroot"@nl ;
     pplan:hasInputVar var:schroot ;
@@ -195,7 +204,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0004 a riepr:Proces ;
     pplan:hasOutputVar var:vloeibaar_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0003 ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0001 .
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0001 .
+    sosa:implementedBy  apparaat:0400123123_6851234567_0001 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 a riepr:Proces ;
     rdfs:label "Staalproductie in stroomboogoven"@nl ;
@@ -204,7 +214,9 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 a riepr:Proces ;
     pplan:hasOutputVar var:vloeibaar_staal ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0003 ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0010 .
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0010 .
+    sosa:implementedBy  apparaat:0400123123_6851234567_0010 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
@@ -212,7 +224,9 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0005 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0004 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000002 .
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000002 .
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000002 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0006 a riepr:Proces ;
     rdfs:label "Overbrenging vloeibaar staal"@nl ;
     pplan:hasInputVar var:vloeibaar_staal ;
@@ -227,9 +241,11 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0007 a riepr:Proces ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:vloeibaar_staal ;
     pplan:hasOutputVar stof:geraffineerd_staal ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0004 ;
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0004 ;
+    sosa:implementedBy  apparaat:0400123123_6851234567_0004 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0006 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
@@ -237,7 +253,9 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0008 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0007 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000003 .
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000003 .
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000003 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0008b a riepr:Proces ;
     rdfs:label "Overbrenging naar decarburisatie"@nl ;
     dct:type riepr:overbrengingsProces ;
@@ -261,7 +279,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
 
 # 2020
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 a riepr:Proces ;
@@ -276,16 +295,20 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 a riepr:Proces ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:geraffineerd_staal ;
     pplan:hasOutputVar stof:vod_staal ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0003 ;
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0003 ;
+    sosa:implementedBy  apparaat:0400123123_6851234567_0003 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 a riepr:Proces ;
     rdfs:label "Zuivering van stoffen"@nl ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar var:vod_staal ;
     pplan:hasOutputVar var:gezuiverd_staal ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0005 ;
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0005 ;
+    sosa:implementedBy  apparaat:0400123123_6851234567_0005 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
@@ -293,22 +316,29 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 a riepr:Proces ;
     rdfs:label "Afwerking van staal"@nl ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:gezuiverd_staal ;
     pplan:hasOutputVar stof:afgewerkt_staal ;
     pplan:hasInputVar var:apparaat_0400123123_6851234567_0007 ; # Afwerkstand
+    #proces:0400123123_6851234567_ACTIVITEIT_1_0009_004
+    sosa:implementedBy  apparaat:0400123123_6851234567_0007 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 a riepr:Proces ;
     rdfs:label "Zuivering van afgewerkt staal"@nl ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar var:afgewerkt_staal ;
     pplan:hasOutputVar var:gedec_staal ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0008 ; # Zuiveringsapparaat Afwerkstand
+    sosa:implementedBy  apparaat:0400123123_6851234567_0008 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
@@ -316,7 +346,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000004 . # MERK OP var hetzelfde
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0010 a riepr:Proces ;
     rdfs:label "Overbrenging naar gietinstallatie"@nl ;
@@ -330,9 +361,11 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0011 a riepr:Proces ;
     dct:type riepr:apparaatVerwerkingsProces ;
     pplan:hasInputVar stof:gedec_staal ;
     pplan:hasOutputVar stof:staalplaat ;
-    pplan:hasInputVar var:apparaat_0400123123_6851234567_0002 ;
+    #pplan:hasInputVar var:apparaat_0400123123_6851234567_0002 ;
+    sosa:implementedBy  apparaat:0400123123_6851234567_0002 ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
     rdfs:label "Afgassing"@nl ;
     pplan:hasInputVar stof:rookgas ;
@@ -340,7 +373,8 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0012 a riepr:Proces ;
     pplan:isStepOfPlan proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020, proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 ;
     pplan:isPrecededBy proces:0400123123_6851234567_ACTIVITEIT_1_0011 ;
     dct:type riepr:uitstootProces ;
-    pplan:hasInputVar var:emissie_0400123123_6851234567_0000005 .
+    #pplan:hasInputVar var:emissie_0400123123_6851234567_0000005 .
+    sosa:implementedBy  emissiepunt:0400123123_6851234567_0000005 .
 
 # Emissiepunten
 emissiepunt:0400123123_6851234567_0000001 a riepr:Emissiepunt ;
@@ -497,32 +531,32 @@ stof:rookgas a riepr:ProcesVariabele ;
 
 
 # Variabelen die verwijzen naar apparaten en emissiepunten
-var:apparaat_0400123123_6851234567_0001 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0001 .
-var:apparaat_0400123123_6851234567_0002 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0002 .
-var:apparaat_0400123123_6851234567_0003 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0003 .
-var:apparaat_0400123123_6851234567_0004 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0004 .
-var:apparaat_0400123123_6851234567_0005 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0005 .
-var:apparaat_0400123123_6851234567_0007 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0007 .
-var:apparaat_0400123123_6851234567_0008 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0008 .
-var:apparaat_0400123123_6851234567_0010 a pplan:Variable ;
-    rdf:value apparaat:0400123123_6851234567_0010 .
-var:emissie_0400123123_6851234567_0000001 a pplan:Variable ;
-    rdf:value emissiepunt:0400123123_6851234567_0000001 .
-var:emissie_0400123123_6851234567_0000002 a pplan:Variable ;
-    rdf:value emissiepunt:0400123123_6851234567_0000002 .
-var:emissie_0400123123_6851234567_0000003 a pplan:Variable ;
-    rdf:value emissiepunt:0400123123_6851234567_0000003 .
-var:emissie_0400123123_6851234567_0000004 a pplan:Variable ;
-    rdf:value emissiepunt:0400123123_6851234567_0000004 .
-var:emissie_0400123123_6851234567_0000005 a pplan:Variable ;
-    rdf:value emissiepunt:0400123123_6851234567_0000005 .
+#var:apparaat_0400123123_6851234567_0001 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0001 .
+#var:apparaat_0400123123_6851234567_0002 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0002 .
+#var:apparaat_0400123123_6851234567_0003 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0003 .
+#var:apparaat_0400123123_6851234567_0004 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0004 .
+#var:apparaat_0400123123_6851234567_0005 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0005 .
+#var:apparaat_0400123123_6851234567_0007 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0007 .
+#var:apparaat_0400123123_6851234567_0008 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0008 .
+#var:apparaat_0400123123_6851234567_0010 a pplan:Variable ;
+#    rdf:value apparaat:0400123123_6851234567_0010 .
+#var:emissie_0400123123_6851234567_0000001 a pplan:Variable ;
+#    rdf:value emissiepunt:0400123123_6851234567_0000001 .
+#var:emissie_0400123123_6851234567_0000002 a pplan:Variable ;
+#    rdf:value emissiepunt:0400123123_6851234567_0000002 .
+#var:emissie_0400123123_6851234567_0000003 a pplan:Variable ;
+#    rdf:value emissiepunt:0400123123_6851234567_0000003 .
+#var:emissie_0400123123_6851234567_0000004 a pplan:Variable ;
+#    rdf:value emissiepunt:0400123123_6851234567_0000004 .
+#var:emissie_0400123123_6851234567_0000005 a pplan:Variable ;
+#    rdf:value emissiepunt:0400123123_6851234567_0000005 .
 
 # Installaties op de exploitatielocatie
 installatie:0400123123_6851234567_0000001 a riepr:Installatie ;
@@ -564,3 +598,7 @@ installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
 
 # Hier kunnen we later een 'activiteit' maken op basis van de aangifte
 # observaties, ... entiteiten die verwijzen naar de variabelen ...
+
+
+
+
