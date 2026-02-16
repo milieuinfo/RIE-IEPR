@@ -7,7 +7,7 @@ config:
 ---
 %% Auto-generated from OWL/SHACL
 classDiagram
-    class AbstractEmissiepunt {
+    class AbstractEmissiepunt:::system {
     }
       class Adres {
         string uuid
@@ -19,18 +19,19 @@ classDiagram
         string stad
         string postcode
     }
-      class Apparaat {
-        string uuid
+      class Apparaat:::system {
+        string uuid (PK)
         string uri
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
         ExploitatieLocatie locatie (FK)
         string benaming
         string geometrie
     }
-      class ExploitantContactpersoon {
-        string uuid
+      class Contactpersoon {
+        string uuid (PK)
         string uri
         Exploitant exploitant (FK)
         string benaming
@@ -38,48 +39,60 @@ classDiagram
         string telefoonnummer
         string hasRole
         Adres adres (FK)
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
         string name
     }
-      class Emissiepunt {
-        string uuid
+      class Emissiepunt:::system {
+        string uuid (PK)
         string uri
         string benaming
         string type
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
+        Date aangepastOp (PK)
         Date aangemaaktOp
         ExploitatieLocatie locatie (FK)
         string geometrie
     }
       class Exploitant {
-        string uuid
+        string uuid (PK)
         string uri
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
-        Contactpersoon type (FK)
+        string type
         string benaming
         Adres adres (FK)
     }
       class Exploitatie {
-        string uuid
+        string uuid (PK)
         string uri
         string benaming
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        ISystem[] inzetbaarSysteem (FK)
+        ISysteem[] inzetbaarSysteem (FK)
         ExploitatieLocatie locatie (FK)
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
+        ExploitatieIdentifier[] identifiers (FK)
+    }
+      class ExploitatieIdentifier {
+        string inScheme
+        string notatie (PK)
+        Date geldigTot
+        string value
     }
       class ExploitatieLocatie {
         string uuid
         string uri
+        Date aangepastOp (PK)
         Date aangemaaktOp
         string benaming
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
         Exploitant toegewezenAan (FK)
         string beinvloedDoor
@@ -90,21 +103,22 @@ classDiagram
     }
       class ExploitatieLocatieIdentifier {
         string inScheme
-        string notation
+        string notatie (PK)
         Date geldigTot
         string value
     }
-      class Grondwaterput {
+      class Grondwaterput:::system {
         double diepte
     }
-      class Installatie {
-        string uuid
+      class Installatie:::system {
+        string uuid (PK)
         string uri
-        ISystem[] heeftSubSysteem (FK)
+        ISysteem[] heeftSubSysteem (FK)
         Proces[] implementeert (FK)
         string benaming
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
         ExploitatieLocatie locatie (FK)
         Installatie revisieVan (FK)
@@ -112,86 +126,74 @@ classDiagram
     }
       class InstallatieIdentifier {
         string inScheme
-        string notation
+        string notatie (PK)
         Date geldigTot
         string value
     }
-      class Lozingspunt {
+      class Lozingspunt:::system {
         double diepte
     }
-      class Meetpunt {
-        string uuid
+      class Meetpunt:::system {
+        string uuid (PK)
         string uri
         string benaming
         string type
+        Date aangepastOp (PK)
         Date aangemaaktOp
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
         string geometrie
         MeetpuntIdentifier[] identifiers (FK)
     }
       class MeetpuntIdentifier {
         string inScheme
-        string notation
+        string notatie (PK)
         Date geldigTot
         string value
     }
       class Observatie {
-        string uuid
+        string uuid (PK)
         string uri
         Meetpunt hasFeatureOfInterest (FK)
     }
-      class Onttrekkingspunt {
-        string uuid
+      class Onttrekkingspunt:::system {
+        string uuid (PK)
         string uri
         string benaming
         string type
-        Date geldigVan
+        Date geldigVan (PK)
         Date geldigTot
+        Date aangepastOp (PK)
         Date aangemaaktOp
         ExploitatieLocatie locatie (FK)
         string geometrie
     }
-      class Proces {
-        string uuid
+      class Proces:::procedure {
+        string uuid (PK)
         string uri
         Proces revisieVan (FK)
+        Date aangepastOp
         Date aangemaaktOp
         string benaming
-        Procedure type
+        Proces type
+        ISysteem geimplementeerdDoor (FK)
         ProcesVariabele[] heeftInvoer (FK)
         ProcesVariabele[] heeftUitvoer (FK)
         Proces[] onderdeelVan (FK)
-        ProcesIdentifier[] identifiers (FK)
-        System[] gebruikt (FK)
-    }
-      class ProcesIdentifier {
-        string inScheme
-        string notation
-        Date geldigTot
-        string value
     }
       class ProcesVariabele {
-        string uuid
+        string uuid (PK)
         string uri
-        Date geldigVan
-        Date aangemaaktOp
-        Date geldigTot
         string benaming
         string type
         number eenheid
         string waarde
     }
-      class Schouw {
+      class Schouw:::system {
         double diameter
         double hoogte
     }
-      class IAgent {
-        <<interface>>
-        string uuid
-        string uri
-    }
-    class ISystem {
+      class ISysteem {
         <<interface>>
         string uuid
         string uri
@@ -202,6 +204,30 @@ classDiagram
         string uuid
         string uri
     }
+    class IAxente {
+        <<interface>>
+        string uuid
+        string uri
+    }
+    Apparaat --> ExploitatieLocatie : locatie
+    Contactpersoon --> Exploitant : exploitant
+    Emissiepunt --> ExploitatieLocatie : locatie
+    Exploitatie --> ExploitatieLocatie : locatie
+    Exploitatie --> ExploitatieIdentifier : identifiers
+    ExploitatieLocatie --> Exploitant : toegewezen aan
+    ExploitatieLocatie --> ExploitatieLocatie : revisie van
+    ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
+    Installatie --> Proces : implementeert
+    Installatie --> ExploitatieLocatie : locatie
+    Installatie --> Installatie : revisie van
+    Installatie --> InstallatieIdentifier : identifiers
+    Meetpunt --> MeetpuntIdentifier : identifiers
+    Observatie --> Installatie : has feature of interest
+    Onttrekkingspunt --> ExploitatieLocatie : locatie
+    Proces --> Proces : revisie van
+    Proces --> ProcesVariabele : heeft invoer
+    Proces --> ProcesVariabele : heeft uitvoer
+    Proces --> Proces : onderdeel van
     class Procedure {
         <<enumerable>>
         VERWERKING
@@ -215,36 +241,25 @@ classDiagram
     Emissiepunt <|-- Schouw
     Onttrekkingspunt <|-- Grondwaterput
     Emissiepunt <|-- Lozingspunt
-    IAgent <|.. Exploitant
-    IAgent <|.. Proces
-    ISystem <|.. Installatie
-    ISystem <|.. Emissiepunt
-    ISystem <|.. Onttrekkingspunt
-    ISystem <|.. Meetpunt
-    ISystem <|.. Apparaat
+    ISysteem <|.. Installatie
+    ISysteem <|.. Emissiepunt
+    ISysteem <|.. Onttrekkingspunt
+    ISysteem <|.. Meetpunt
+    ISysteem <|.. Apparaat
     ISpatialObject <|.. Emissiepunt
     ISpatialObject <|.. Onttrekkingspunt
     ISpatialObject <|.. Meetpunt
     ISpatialObject <|.. Apparaat
-    Exploitant --> ExploitantContactpersoon : type
-    ExploitantContactpersoon --> Exploitant : exploitant
-    ExploitatieLocatie --> Exploitant : toegewezen aan
-    ExploitatieLocatie --> ExploitatieLocatie : revisie van
-    Exploitatie --> ISystem : inzetbaar systeem
-    Exploitatie --> ExploitatieLocatie : locatie
-    Proces --> Proces : revisie van
-    Proces --> ProcesVariabele : heeft invoer
-    Proces --> ProcesVariabele : heeft uitvoer
-    Proces --> Proces : onderdeel van
-    Installatie --> ISystem : heeft subsysteem
-    Installatie --> Proces : implementeert
-    Installatie --> ExploitatieLocatie : locatie
-    Installatie --> Installatie : revisie van
-    Emissiepunt --> ExploitatieLocatie : locatie
-    Onttrekkingspunt --> ExploitatieLocatie : locatie
-    Apparaat --> ExploitatieLocatie : locatie
-    Observatie --> Meetpunt : hasFeatureOfInterest
-    ExploitatieLocatie --> ExploitatieLocatieIdentifier : identifiers
-    Proces --> ProcesIdentifier : identifiers
-    Installatie --> InstallatieIdentifier : identifiers
-    Meetpunt --> MeetpuntIdentifier : identifiers
+    IAxente <|.. Exploitant
+    Exploitant --> Adres : adres
+    Contactpersoon --> Adres : adres
+    ExploitatieLocatie --> Adres : adres
+    Exploitatie --> ISysteem : inzetbaar systeem
+    Proces --> ISysteem : geïmplementeerd door
+    Installatie --> ISysteem : heeft subsysteem
+    Observatie --> Meetpunt : has feature of interest
+
+    %% system style
+    classDef system fill:#cfc,stroke:#333,stroke-width:1px
+    %% procedure style
+    classDef procedure fill:#ccf,stroke:#333,stroke-width:1px

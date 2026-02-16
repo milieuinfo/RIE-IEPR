@@ -1,47 +1,36 @@
 ---
 config:
-    layout: default
-    theme: default
+  theme: default
+  layout: elk
+  elk:
+    nodePlacementStrategy: SIMPLE
 ---
 %% Auto-generated from OWL/SHACL
 classDiagram
-      class Apparaat {
+    direction LR
+
+      class Apparaat:::system {
         string uuid
         string uri
-        ExploitatieLocatie locatie (FK)
         string benaming
         string geometrie
     }
-      class Emissiepunt {
+      class Emissiepunt:::system {
         string uuid
         string uri
         string benaming
         string type
-        ExploitatieLocatie locatie (FK)
         string geometrie
     }
-      class Exploitant {
+      class Installatie:::system {
         string uuid
         string uri
-        Contactpersoon type (FK)
-        string benaming
-        Adres adres (FK)
-    }
-      class Grondwaterput {
-        double diepte
-    }
-      class Installatie {
-        string uuid
-        string uri
-        ISystem[] heeftSubSysteem (FK)
-        Proces[] implementeert (FK)
+        ISysteem[] heeftSubSysteem 
+        Proces[] implementeert 
         string benaming
         Date aangemaaktOp
     }
-      class Lozingspunt {
-        double diepte
-    }
-      class Meetpunt {
+      class Meetpunt:::system {
         string uuid
         string uri
         string benaming
@@ -49,7 +38,7 @@ classDiagram
         Date aangemaaktOp
         string geometrie
     }
-      class Onttrekkingspunt {
+      class Onttrekkingspunt:::system {
         string uuid
         string uri
         string benaming
@@ -57,16 +46,16 @@ classDiagram
         Date aangemaaktOp
         string geometrie
     }
-      class Proces {
+      class Proces:::procedure {
         string uuid
         string uri
         Date aangemaaktOp
         string benaming
-        IAgent type
-        ProcesVariabele[] heeftInvoer (FK)
-        ProcesVariabele[] heeftUitvoer (FK)
-        Proces[] onderdeelVan (FK)
-        System[] gebruikt (FK)
+        Procedure type
+        ProcesVariabele[] heeftInvoer 
+        ProcesVariabele[] heeftUitvoer 
+        Proces[] onderdeelVan 
+        ISysteem geimplementeerdDoor 
     }
       class ProcesVariabele {
         string uuid
@@ -77,26 +66,13 @@ classDiagram
         number eenheid
         string waarde
     }
-      class Schouw {
-        double diameter
-        double hoogte
-    }
-      class ISystem {
+      class ISysteem:::system {
         <<interface>>
         string uuid
         string uri
     }
-    class ISpatialObject {
-        <<interface>>
-        string uuid
-        string uri
-    }
-    class IAgent {
-        <<interface>>
-        string uuid
-        string uri
-    }
-    class Procedure {
+
+    class Procedure:::procedure {
         <<enumerable>>
         VERWERKING
         TRANSPORT
@@ -105,22 +81,19 @@ classDiagram
     }
     Proces --> Procedure : type
 
-    Emissiepunt <|-- Schouw
-    Onttrekkingspunt <|-- Grondwaterput
-    Emissiepunt <|-- Lozingspunt
-    ISystem <|.. Apparaat
-    ISystem <|.. Emissiepunt
-    ISystem <|.. Installatie
-    ISystem <|.. Meetpunt
-    ISystem <|.. Onttrekkingspunt
-    ISpatialObject <|.. Apparaat
-    ISpatialObject <|.. Emissiepunt
-    ISpatialObject <|.. Meetpunt
-    ISpatialObject <|.. Onttrekkingspunt
-    IAgent <|.. Proces
+    ISysteem <|.. Apparaat
+    ISysteem <|.. Emissiepunt
+    ISysteem <|.. Installatie
+    ISysteem <|.. Meetpunt
+    ISysteem <|.. Onttrekkingspunt
     Proces --> ProcesVariabele : heeft invoer
     Proces --> ProcesVariabele : heeft uitvoer
     Proces --> Proces : onderdeel van
-    Installatie --> ISystem : heeft subsysteem
-    Installatie --> IAgent : implementeert
+    Proces --> ISysteem : geimplementeerd door
+    Installatie --> ISysteem : heeft subsysteem
+    Installatie --> Proces : implementeert
 
+    %% System green
+    classDef system fill:#cfc,stroke:#333,stroke-width:1px
+    %% Procedure blue
+    classDef procedure fill:#ccf,stroke:#333,stroke-width:1px

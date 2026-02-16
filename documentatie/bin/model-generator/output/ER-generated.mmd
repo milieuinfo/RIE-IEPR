@@ -9,39 +9,69 @@ config:
 erDiagram
     AbstractEmissiepunt["abstract_emissiepunt"] {
         string uri "URI"
-        string uuid "UUID primary key [PK]"
-        string emissiepunt_uuid "Emissiepunt [FK]"
+        string uuid "UUID primary key"
+        string emissiepunt_uuid "Emissiepunt [PK,FK]"
+        string system_uuid "System [PK,FK]"
     }
-    Apparaat["apparaat"] {
+    Adres["adres"] {
         string uri "URI"
         date geldig_van "dct:issued"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
-        string uuid "UUID primary key [PK]"
-        string locatie_id "sosa:isHostedBy [FK]"
-        string benaming "rdfs:label"
-        string geometrie "ogc:hasGeometry"
+        string uuid "UUID primary key"
+        string straat "https://data.riepr.omgeving.vlaanderen.be/id/concept/straat"
+        string stad "https://data.riepr.omgeving.vlaanderen.be/id/concept/stad"
+        string postcode "https://data.riepr.omgeving.vlaanderen.be/id/concept/postcode"
     }
-    ApparaatLocatieExploitatieLocatie["apparaat_locatie_exploitatie_locatie"] {
-        string apparaat_uuid "Apparaat [PK,FK]"
+    Axente["agent"] {
+        string uri "URI"
+        string uuid "UUID primary key"
+    }
+    AgentAdresAdres["agent_adres_adres"] {
+        string agent_uuid "Agent [PK,FK]"
+        string adres_uuid "Address [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    AgentLocatieExploitatieLocatie["agent_locatie_exploitatie_locatie"] {
+        string agent_uuid "Agent [PK,FK]"
         string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
     }
-    ExploitantContactpersoon["contactpersoon"] {
+    Apparaat["apparaat"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
-        string exploitant_id "http://www.w3.org/ns/org#memberOf [FK]"
+        string system_uuid "System [PK,FK]"
+        datetime aangepast_op "dct:modified [PK]"
+        string benaming "rdfs:label"
+        string geometrie "ogc:hasGeometry"
+        string spatial_object_uuid "SpatialObject [FK]"
+    }
+    Contactpersoon["contactpersoon"] {
+        string uri "URI"
+        date geldig_van "dct:issued [PK]"
+        datetime aangemaakt_op "dct:created"
+        date geldig_tot "dct:valid"
+        string uuid "UUID primary key [PK]"
         string benaming "rdfs:label"
         string email "http://xmlns.com/foaf/0.1/mbox"
         string telefoonnummer "http://xmlns.com/foaf/0.1/phone"
         string has_role "http://www.w3.org/ns/org#hasRole"
-        string adres_id "http://www.w3.org/ns/locn#address [FK]"
+        datetime aangepast_op "dct:modified [PK]"
         string name "http://xmlns.com/foaf/0.1/name"
+    }
+    ContactpersoonAdresAdres["contactpersoon_adres_adres"] {
+        string contactpersoon_uuid "Contactpersoon [PK,FK]"
+        string adres_uuid "Address [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
     }
     ContactpersoonExploitantExploitant["contactpersoon_exploitant_exploitant"] {
         string contactpersoon_uuid "Contactpersoon [PK,FK]"
@@ -52,53 +82,53 @@ erDiagram
     }
     Emissiepunt["emissiepunt"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
+        string system_uuid "System [PK,FK]"
         string benaming "rdfs:label"
-        string type "dct:type"
-        string locatie_id "sosa:isHostedBy [FK]"
+        datetime aangepast_op "dct:modified [PK]"
         string geometrie "ogc:hasGeometry"
-    }
-    EmissiepuntLocatieExploitatieLocatie["emissiepunt_locatie_exploitatie_locatie"] {
-        string emissiepunt_uuid "Emissiepunt [PK,FK]"
-        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
+        string spatial_object_uuid "SpatialObject [FK]"
     }
     Exploitant["exploitant"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
-        string type_id "dct:type [FK]"
+        datetime aangepast_op "dct:modified [PK]"
         string benaming "rdfs:label"
-        string adres_id "http://www.w3.org/ns/locn#address [FK]"
+        string agent_uuid "Agent [FK]"
     }
-    ExploitantTypeContactpersoon["exploitant_type_contactpersoon"] {
-        string exploitant_uuid "Exploitant [PK,FK]"
-        string contactpersoon_uuid "Contactpersoon [PK,FK]"
+    Exploitatie["exploitatie"] {
+        string uri "URI"
+        date geldig_van "dct:issued [PK]"
+        datetime aangemaakt_op "dct:created"
+        date geldig_tot "dct:valid"
+        string uuid "UUID primary key [PK]"
+        string benaming "rdfs:label"
+        datetime aangepast_op "dct:modified [PK]"
+    }
+    ExploitatieIdentifiersExploitatieIdentifier["exploitatie_identifiers_exploitatie_identifier"] {
+        string exploitatie_uuid "Exploitatie [PK,FK]"
+        string exploitatie_identifier_uuid "ExploitatieIdentifier [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
     }
-    Exploitatie["exploitatie"] {
-        string uri "URI"
-        date geldig_van "dct:issued"
-        datetime aangemaakt_op "dct:created"
-        date geldig_tot "dct:valid"
-        string uuid "UUID primary key [PK]"
-        string benaming "rdfs:label"
-        string inzetbaar_systeem_id "ssn:deployedSystem [FK]"
-        string locatie_id "ssn:deployedOnPlatform [FK]"
-    }
     ExploitatieInzetbaarSysteem["exploitatie_inzetbaar_systeem"] {
-        string exploitatie_uuid "Exploitatie [PK,FK]"
-        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
-        enum target_type "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
+        string exploitatie_inzetbaar_systeem_uuid "exploitatie_inzetbaar_systeem [PK]"
+        string exploitatie_uuid "Exploitatie [FK]"
+        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    ExploitatieLocatieAdresAdres["exploitatie_locatie_adres_adres"] {
+        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
+        string adres_uuid "Address [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -131,18 +161,23 @@ erDiagram
         datetime aangemaakt_op "[PK]"
         date geldig_tot
     }
+    ExploitatieIdentifier["exploitatie_identifier"] {
+        date geldig_tot "dct:valid"
+        string exploitatie_uuid "adms:identifier [PK,FK]"
+        string in_scheme "skos:inScheme"
+        string notation "skos:notation [PK]"
+        string value "rdf:value"
+    }
     ExploitatieLocatie["exploitatie_locatie"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
-        string uuid "UUID primary key [PK]"
+        string uuid "UUID primary key"
+        datetime aangepast_op "dct:modified [PK]"
         string benaming "rdfs:label"
-        string toegewezen_aan_id "prov:wasAttributedTo [FK]"
         string beinvloed_door "prov:wasInfluencedBy"
-        string revisie_van_id "prov:wasRevisionOf [FK]"
         string geometrie "ogc:hasGeometry"
-        string adres_id "http://www.w3.org/ns/locn#address [FK]"
     }
     ExploitatieLocatieIdentifier["exploitatie_locatie_identifier"] {
         date geldig_tot "dct:valid"
@@ -153,54 +188,24 @@ erDiagram
     }
     Grondwaterput["grondwaterput"] {
         string uri "URI"
-        string uuid "UUID primary key [PK]"
-        string onttrekkingspunt_uuid "Onttrekkingspunt [FK]"
+        string uuid "UUID primary key"
+        string onttrekkingspunt_uuid "Onttrekkingspunt [PK,FK]"
+        string system_uuid "System [PK,FK]"
         double diepte "dbo:depth"
     }
     Installatie["installatie"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
-        string heeft_sub_systeem_id "ssn:hasSubSystem [FK]"
-        string implementeert_id "ssn:implements [FK]"
+        string system_uuid "System [PK,FK]"
         string benaming "rdfs:label"
-        string locatie_id "sosa:isHostedBy [FK]"
-        string revisie_van_id "prov:wasRevisionOf [FK]"
-    }
-    InstallatieHeeftSubsysteem["installatie_heeft_subsysteem"] {
-        string installatie_uuid "Installatie [PK,FK]"
-        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat [PK]"
-        enum target_type "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
+        datetime aangepast_op "dct:modified [PK]"
     }
     InstallatieIdentifiersInstallatieIdentifier["installatie_identifiers_installatie_identifier"] {
         string installatie_uuid "Installatie [PK,FK]"
         string installatie_identifier_uuid "InstallatieIdentifier [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
-    }
-    InstallatieImplementeertProces["installatie_implementeert_proces"] {
-        string installatie_uuid "Installatie [PK,FK]"
-        string proces_uuid "Proces [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
-    }
-    InstallatieLocatieExploitatieLocatie["installatie_locatie_exploitatie_locatie"] {
-        string installatie_uuid "Installatie [PK,FK]"
-        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
-    }
-    InstallatieRevisieVanInstallatie["installatie_revisie_van_installatie"] {
-        string installatie_uuid_from "Installatie [PK,FK]"
-        string installatie_uuid_to "Installatie [PK,FK]"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -214,19 +219,22 @@ erDiagram
     }
     Lozingspunt["lozingspunt"] {
         string uri "URI"
-        string uuid "UUID primary key [PK]"
-        string emissiepunt_uuid "Emissiepunt [FK]"
+        string uuid "UUID primary key"
+        string emissiepunt_uuid "Emissiepunt [PK,FK]"
+        string system_uuid "System [PK,FK]"
         double diepte "dbo:depth"
     }
     Meetpunt["meetpunt"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
+        string system_uuid "System [PK,FK]"
         string benaming "rdfs:label"
-        string type "dct:type"
+        datetime aangepast_op "dct:modified [PK]"
         string geometrie "ogc:hasGeometry"
+        string spatial_object_uuid "SpatialObject [FK]"
     }
     MeetpuntIdentifiersMeetpuntIdentifier["meetpunt_identifiers_meetpunt_identifier"] {
         string meetpunt_uuid "Meetpunt [PK,FK]"
@@ -245,7 +253,6 @@ erDiagram
     Observatie["observatie"] {
         string uri "URI"
         string uuid "UUID primary key [PK]"
-        string has_feature_of_interest_id "sosa:hasFeatureOfInterest [FK]"
     }
     ObservatieHasFeatureOfInterestMeetpunt["observatie_has_feature_of_interest_meetpunt"] {
         string observatie_uuid "Observatie [PK,FK]"
@@ -256,37 +263,27 @@ erDiagram
     }
     Onttrekkingspunt["onttrekkingspunt"] {
         string uri "URI"
-        date geldig_van "dct:issued"
+        date geldig_van "dct:issued [PK]"
         datetime aangemaakt_op "dct:created"
         date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
+        string system_uuid "System [PK,FK]"
         string benaming "rdfs:label"
-        string type "dct:type"
-        string locatie_id "sosa:isHostedBy [FK]"
+        datetime aangepast_op "dct:modified [PK]"
         string geometrie "ogc:hasGeometry"
-    }
-    OnttrekkingspuntLocatieExploitatieLocatie["onttrekkingspunt_locatie_exploitatie_locatie"] {
-        string onttrekkingspunt_uuid "Onttrekkingspunt [PK,FK]"
-        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
-        date geldig_van "[PK]"
-        datetime aangemaakt_op "[PK]"
-        date geldig_tot
+        string spatial_object_uuid "SpatialObject [FK]"
     }
     Proces["proces"] {
         string uri "URI"
         datetime aangemaakt_op "dct:created"
         string uuid "UUID primary key [PK]"
-        string revisie_van_id "prov:wasRevisionOf [FK]"
+        datetime aangepast_op "dct:modified"
         string benaming "rdfs:label"
-        enum type "dct:type"
-        string heeft_invoer_id "pplan:hasInputVar [FK]"
-        string heeft_uitvoer_id "pplan:hasOutputVar [FK]"
-        string onderdeel_van_id "pplan:isStepOfPlan [FK]"
-        string gebruikt "hasInputVar__system [FK]"
     }
-    ProcesIdentifiersProcesIdentifier["proces_identifiers_proces_identifier"] {
-        string proces_uuid "Proces [PK,FK]"
-        string proces_identifier_uuid "ProcesIdentifier [PK,FK]"
+    ProcesGeimplementeerdDoor["proces_geimplementeerd_door"] {
+        string proces_geimplementeerd_door_uuid "proces_geimplementeerd_door [PK]"
+        string proces_uuid "Proces [FK]"
+        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
         date geldig_van "[PK]"
         datetime aangemaakt_op "[PK]"
         date geldig_tot
@@ -317,104 +314,143 @@ erDiagram
         string proces_variabele_uuid "[PK,FK]"
         enum relationship_type "INPUT_VAR, OUTPUT_VAR [PK]"
     }
-    ProcesIdentifier["proces_identifier"] {
-        date geldig_tot "dct:valid"
-        string proces_uuid "adms:identifier [PK,FK]"
-        string in_scheme "skos:inScheme"
-        string notation "skos:notation [PK]"
-        string value "rdf:value"
-    }
     ProcesVariabele["proces_variabele"] {
         string uri "URI"
-        date geldig_van "dct:issued"
-        datetime aangemaakt_op "dct:created"
-        date geldig_tot "dct:valid"
         string uuid "UUID primary key [PK]"
         string benaming "rdfs:label"
-        string type "dct:type"
         number eenheid "qudt:hasUnit"
         string waarde "qudt:numericValue"
     }
     Schouw["schouw"] {
         string uri "URI"
-        string uuid "UUID primary key [PK]"
-        string emissiepunt_uuid "Emissiepunt [FK]"
+        string uuid "UUID primary key"
+        string emissiepunt_uuid "Emissiepunt [PK,FK]"
+        string system_uuid "System [PK,FK]"
         double diameter "dbo:diameter"
         double hoogte "dbo:height"
     }
+    SpatialObjectLocatieExploitatieLocatie["spatial_object_locatie_exploitatie_locatie"] {
+        string spatial_object_uuid "SpatialObject [PK,FK]"
+        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    SpatialObject["spatial_object"] {
+        string uri "URI"
+        string uuid "UUID primary key"
+    }
+    SysteemHeeftSubsysteem["systeem_heeft_subsysteem"] {
+        string systeem_heeft_subsysteem_uuid "systeem_heeft_subsysteem [PK]"
+        string systeem_uuid "System [FK]"
+        string target_uuid "Installatie, Emissiepunt, Onttrekkingspunt, AbstractEmissiepunt, Schouw, Grondwaterput, Lozingspunt, Meetpunt, Apparaat"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    SysteemImplementeertProces["systeem_implementeert_proces"] {
+        string systeem_uuid "System [PK,FK]"
+        string proces_uuid "Proces [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    SysteemLocatieExploitatieLocatie["systeem_locatie_exploitatie_locatie"] {
+        string systeem_uuid "System [PK,FK]"
+        string exploitatie_locatie_uuid "ExploitatieLocatie [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    SysteemRevisieVanInstallatie["systeem_revisie_van_installatie"] {
+        string systeem_uuid "System [PK,FK]"
+        string installatie_uuid "Installatie [PK,FK]"
+        date geldig_van "[PK]"
+        datetime aangemaakt_op "[PK]"
+        date geldig_tot
+    }
+    System["systeem"] {
+        string uri "URI"
+        string uuid "UUID primary key"
+        string agent_uuid "Agent [FK]"
+    }
 
     %% Relationships
-    Exploitant many to many ExploitantContactpersoon : "type"
-    ExploitantContactpersoon one to one Exploitant : "exploitant"
+    Contactpersoon one to one Exploitant : "exploitant"
+    Contactpersoon many to one Adres : "adres"
     ExploitatieLocatie one to one Exploitant : "toegewezen aan"
     ExploitatieLocatie many to one ExploitatieLocatie : "revisie van"
+    ExploitatieLocatie many to one Adres : "adres"
     Exploitatie one to one ExploitatieLocatie : "locatie"
     Proces many to one Proces : "revisie van"
     Proces many to one Proces : "type"
     Proces many to many ProcesVariabele : "heeft invoer"
     Proces many to many ProcesVariabele : "heeft uitvoer"
     Proces many to many Proces : "onderdeel van"
-    Installatie many to many Proces : "implementeert"
-    Installatie one to one ExploitatieLocatie : "locatie"
-    Emissiepunt one to one ExploitatieLocatie : "locatie"
-    Onttrekkingspunt one to one ExploitatieLocatie : "locatie"
-    Apparaat one to one ExploitatieLocatie : "locatie"
     Observatie one to one Meetpunt : "hasFeatureOfInterest"
+    System many to many ExploitatieLocatie : "locatie"
+    Axente many to one Adres : "adres"
+    System many to many Proces : "implementeert"
+    SpatialObject one to one ExploitatieLocatie : "locatie"
+    Axente many to many ExploitatieLocatie : "locatie"
     ExploitatieLocatie many to many ExploitatieLocatieIdentifier : "identifiers"
-    Proces many to many ProcesIdentifier : "identifiers"
+    Exploitatie many to many ExploitatieIdentifier : "identifiers"
     Installatie many to many InstallatieIdentifier : "identifiers"
     Meetpunt many to many MeetpuntIdentifier : "identifiers"
-    Exploitant one to many ExploitantTypeContactpersoon : "type"
-    ExploitantContactpersoon one to many ExploitantTypeContactpersoon : "type"
-    ExploitantContactpersoon one to many ContactpersoonExploitantExploitant : "exploitant"
+    Contactpersoon one to many ContactpersoonExploitantExploitant : "exploitant"
     Exploitant one to many ContactpersoonExploitantExploitant : "exploitant"
+    Contactpersoon one to many ContactpersoonAdresAdres : "adres"
+    Adres one to many ContactpersoonAdresAdres : "adres"
     ExploitatieLocatie one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
     Exploitant one to many ExploitatieLocatieToegewezenAanExploitant : "toegewezen aan"
     ExploitatieLocatie one to many ExploitatieLocatieRevisieVanExploitatieLocatie : "revisie van"
+    ExploitatieLocatie one to many ExploitatieLocatieAdresAdres : "adres"
+    Adres one to many ExploitatieLocatieAdresAdres : "adres"
     Exploitatie one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Installatie one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Emissiepunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Onttrekkingspunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    AbstractEmissiepunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Schouw one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Grondwaterput one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Lozingspunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Meetpunt one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
-    Apparaat one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
+    ExploitatieInzetbaarSysteem one to many ExploitatieInzetbaarSysteem : "inzetbaar systeem"
     Exploitatie one to many ExploitatieLocatieExploitatieLocatie : "locatie"
     ExploitatieLocatie one to many ExploitatieLocatieExploitatieLocatie : "locatie"
     Proces one to many ProcesRevisieVanProces : "revisie van"
     Proces one to many ProcesTypeProces : "type"
+    Proces one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
+    ProcesGeimplementeerdDoor one to many ProcesGeimplementeerdDoor : "geïmplementeerd door"
     Proces one to many ProcesOnderdeelVanProces : "onderdeel van"
-    Installatie one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Emissiepunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Onttrekkingspunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    AbstractEmissiepunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Schouw one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Grondwaterput one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Lozingspunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Meetpunt one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Apparaat one to many InstallatieHeeftSubsysteem : "heeft subsysteem"
-    Installatie one to many InstallatieImplementeertProces : "implementeert"
-    Proces one to many InstallatieImplementeertProces : "implementeert"
-    Installatie one to many InstallatieLocatieExploitatieLocatie : "locatie"
-    ExploitatieLocatie one to many InstallatieLocatieExploitatieLocatie : "locatie"
-    Installatie one to many InstallatieRevisieVanInstallatie : "revisie van"
-    Emissiepunt one to many EmissiepuntLocatieExploitatieLocatie : "locatie"
-    ExploitatieLocatie one to many EmissiepuntLocatieExploitatieLocatie : "locatie"
-    Onttrekkingspunt one to many OnttrekkingspuntLocatieExploitatieLocatie : "locatie"
-    ExploitatieLocatie one to many OnttrekkingspuntLocatieExploitatieLocatie : "locatie"
-    Apparaat one to many ApparaatLocatieExploitatieLocatie : "locatie"
-    ExploitatieLocatie one to many ApparaatLocatieExploitatieLocatie : "locatie"
     Observatie one to many ObservatieHasFeatureOfInterestMeetpunt : "hasFeatureOfInterest"
     Meetpunt one to many ObservatieHasFeatureOfInterestMeetpunt : "hasFeatureOfInterest"
+    System one to many SysteemLocatieExploitatieLocatie : "locatie"
+    ExploitatieLocatie one to many SysteemLocatieExploitatieLocatie : "locatie"
+    Axente one to many AgentAdresAdres : "adres"
+    Adres one to many AgentAdresAdres : "adres"
+    System one to many SysteemHeeftSubsysteem : "heeft subsysteem"
+    SysteemHeeftSubsysteem one to many SysteemHeeftSubsysteem : "heeft subsysteem"
+    System one to many SysteemImplementeertProces : "implementeert"
+    Proces one to many SysteemImplementeertProces : "implementeert"
+    System one to many SysteemRevisieVanInstallatie : "revisie van"
+    Installatie one to many SysteemRevisieVanInstallatie : "revisie van"
+    SpatialObject one to many SpatialObjectLocatieExploitatieLocatie : "locatie"
+    ExploitatieLocatie one to many SpatialObjectLocatieExploitatieLocatie : "locatie"
+    Axente one to many AgentLocatieExploitatieLocatie : "locatie"
+    ExploitatieLocatie one to many AgentLocatieExploitatieLocatie : "locatie"
     ExploitatieLocatie one to many ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier : "identifiers"
     ExploitatieLocatieIdentifier one to many ExploitatieLocatieIdentifiersExploitatieLocatieIdentifier : "identifiers"
-    Proces one to many ProcesIdentifiersProcesIdentifier : "identifiers"
-    ProcesIdentifier one to many ProcesIdentifiersProcesIdentifier : "identifiers"
+    Exploitatie one to many ExploitatieIdentifiersExploitatieIdentifier : "identifiers"
+    ExploitatieIdentifier one to many ExploitatieIdentifiersExploitatieIdentifier : "identifiers"
     Installatie one to many InstallatieIdentifiersInstallatieIdentifier : "identifiers"
     InstallatieIdentifier one to many InstallatieIdentifiersInstallatieIdentifier : "identifiers"
     Meetpunt one to many MeetpuntIdentifiersMeetpuntIdentifier : "identifiers"
     MeetpuntIdentifier one to many MeetpuntIdentifiersMeetpuntIdentifier : "identifiers"
     Proces one to many ProcesVariabeleRelatie : "hasInputVar/hasOutputVar"
     ProcesVariabele one to many ProcesVariabeleRelatie : "hasInputVar/hasOutputVar"
+
+    %% Styling
+    style AbstractEmissiepunt fill:#cfc,stroke:#333,stroke-width:1px
+    style Apparaat fill:#cfc,stroke:#333,stroke-width:1px
+    style Emissiepunt fill:#cfc,stroke:#333,stroke-width:1px
+    style Grondwaterput fill:#cfc,stroke:#333,stroke-width:1px
+    style Installatie fill:#cfc,stroke:#333,stroke-width:1px
+    style Lozingspunt fill:#cfc,stroke:#333,stroke-width:1px
+    style Meetpunt fill:#cfc,stroke:#333,stroke-width:1px
+    style Onttrekkingspunt fill:#cfc,stroke:#333,stroke-width:1px
+    style Proces fill:#ccf,stroke:#333,stroke-width:1px
+    style Schouw fill:#cfc,stroke:#333,stroke-width:1px
+    style System fill:#cfc,stroke:#333,stroke-width:1px

@@ -7,7 +7,11 @@ import { Parser, Store, NamedNode, Quad } from 'n3';
 import { NAMESPACES, PATHS, resolveProjectPath, camelCaseToSnakeCase } from './config.js';
 
 export class OntologyModel {
-  constructor({ ontologyPath = PATHS.ontology, rulesPath = PATHS.rules, shapesPath = PATHS.shapes } = {}) {
+  constructor({
+    ontologyPath = PATHS.ontology,
+    rulesPath = PATHS.rules,
+    shapesPath = PATHS.shapes,
+  } = {}) {
     this.ontologyPath = ontologyPath;
     this.rulesPath = rulesPath;
     this.shapesPath = shapesPath;
@@ -41,7 +45,8 @@ export class OntologyModel {
     return new Promise((resolve, reject) => {
       try {
         if (!url) return resolve(null);
-        const doRefresh = process && process.env && process.env.MODEL_GENERATOR_CACHE_REFRESH === '1';
+        const doRefresh =
+          process && process.env && process.env.MODEL_GENERATOR_CACHE_REFRESH === '1';
         // Determine cache directory (prefer resolveProjectPath if available)
         let cacheBase = null;
         if (typeof resolveProjectPath === 'function') {
@@ -70,37 +75,43 @@ export class OntologyModel {
         // eslint-disable-next-line no-console
         console.log(`Downloading remote ontology: ${url}`);
         const client = String(url || '').startsWith('https') ? https : http;
-        const req = client.get(url, {
-          headers: {
-            Accept: 'text/turtle, application/x-turtle, application/n-triples, */*;q=0.1'
-          }
-        }, res => {
-          if (res.statusCode && res.statusCode >= 400) {
-            reject(new Error(`HTTP ${res.statusCode}`));
-            return;
-          }
-
-          let data = '';
-          res.setEncoding('utf8');
-          res.on('data', chunk => { data += chunk; });
-          res.on('end', () => {
-            const trimmed = (data || '').trim();
-            if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
-              reject(new Error('Geen Turtle/NT-antwoord (HTML ontvangen)'));
+        const req = client.get(
+          url,
+          {
+            headers: {
+              Accept: 'text/turtle, application/x-turtle, application/n-triples, */*;q=0.1',
+            },
+          },
+          (res) => {
+            if (res.statusCode && res.statusCode >= 400) {
+              reject(new Error(`HTTP ${res.statusCode}`));
               return;
             }
-            try {
-              fs.writeFileSync(cacheFile, data, 'utf8');
-              // eslint-disable-next-line no-console
-              console.log(`Saved ontology to cache: ${cacheFile}`);
-            } catch (e) {
-              // Ignore cache write errors but still resolve with data
-            }
-            resolve(data);
-          });
-        });
 
-        req.on('error', err => reject(err));
+            let data = '';
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+              data += chunk;
+            });
+            res.on('end', () => {
+              const trimmed = (data || '').trim();
+              if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
+                reject(new Error('Geen Turtle/NT-antwoord (HTML ontvangen)'));
+                return;
+              }
+              try {
+                fs.writeFileSync(cacheFile, data, 'utf8');
+                // eslint-disable-next-line no-console
+                console.log(`Saved ontology to cache: ${cacheFile}`);
+              } catch (e) {
+                // Ignore cache write errors but still resolve with data
+              }
+              resolve(data);
+            });
+          }
+        );
+
+        req.on('error', (err) => reject(err));
         req.end();
       } catch (e) {
         reject(e);
@@ -122,16 +133,38 @@ export class OntologyModel {
       // niet om relevantie te bepalen)
       { path: resolveProjectPath('src/main/resources/generated-shapes.ttl'), kind: 'shapes' },
       // Gecombineerde SSN/SOSA/PROV/P-PLAN/GeoSPARQL/DBO ontologie
-      { path: resolveProjectPath('src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl'), kind: 'external' },
+      {
+        path: resolveProjectPath('src/main/resources/ssn-sosa-fullprov-o-p-plan-geosparql-dbo.ttl'),
+        kind: 'external',
+      },
       // Local DBpedia ontology (provide xsd:range info like dbo:diameter -> xsd:double)
-      { path: resolveProjectPath('src/main/resources/org/dbpedia/ontology/dbo.ttl'), kind: 'external' },
+      {
+        path: resolveProjectPath('src/main/resources/org/dbpedia/ontology/dbo.ttl'),
+        kind: 'external',
+      },
       // Volledige GeoSPARQL vocabulaire (incl. hasGeometry, Feature, Geometry)
-      { path: resolveProjectPath('src/main/resources/net/opengis/www/ont/geosparql/geosparql_vocab_all.ttl'), kind: 'external' },
+      {
+        path: resolveProjectPath(
+          'src/main/resources/net/opengis/www/ont/geosparql/geosparql_vocab_all.ttl'
+        ),
+        kind: 'external',
+      },
       // Business concept alignments (NL aliassen voor predicaten)
-      { path: resolveProjectPath('src/main/resources/be/vlaanderen/omgeving/riepr/data/id/concept/riepr/riepr.ttl'), kind: 'concepts' },
+      {
+        path: resolveProjectPath(
+          'src/main/resources/be/vlaanderen/omgeving/riepr/data/id/concept/riepr/riepr.ttl'
+        ),
+        kind: 'concepts',
+      },
       // Bestaande externe vocabularia
-      { path: resolveProjectPath('src/main/resources/org/w3/www/ns/ssn-sosa_2023.ttl'), kind: 'external' },
-      { path: resolveProjectPath('src/main/resources/org/w3/www/ns/prov/prov-o.ttl'), kind: 'external' }
+      {
+        path: resolveProjectPath('src/main/resources/org/w3/www/ns/ssn-sosa_2023.ttl'),
+        kind: 'external',
+      },
+      {
+        path: resolveProjectPath('src/main/resources/org/w3/www/ns/prov/prov-o.ttl'),
+        kind: 'external',
+      },
     ];
 
     for (const { path: filePath, kind } of ontologyFiles) {
@@ -164,7 +197,7 @@ export class OntologyModel {
     const remoteOntologies = [
       { url: 'https://www.w3.org/ns/legacy_locn.ttl', kind: 'external' },
       { url: 'https://www.w3.org/ns/legacy_adms.ttl', kind: 'external' },
-      { url: 'https://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt', kind: 'external' }
+      { url: 'https://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt', kind: 'external' },
     ];
 
     for (const { url, kind } of remoteOntologies) {
@@ -274,14 +307,14 @@ export class OntologyModel {
 
     const prefLabels = this.store.getQuads(concept, skosPrefLabel, null);
     if (prefLabels.length > 0) {
-      const nlLabelQuad = prefLabels.find(q => q.object.language === 'nl');
+      const nlLabelQuad = prefLabels.find((q) => q.object.language === 'nl');
       if (nlLabelQuad) return nlLabelQuad.object.value;
       return prefLabels[0].object.value;
     }
 
     const rdfsLabels = this.store.getQuads(concept, rdfsLabel, null);
     if (rdfsLabels.length > 0) {
-      const nlLabelQuad = rdfsLabels.find(q => q.object.language === 'nl');
+      const nlLabelQuad = rdfsLabels.find((q) => q.object.language === 'nl');
       if (nlLabelQuad) return nlLabelQuad.object.value;
       return rdfsLabels[0].object.value;
     }
@@ -319,29 +352,57 @@ export class OntologyModel {
       else classIri = NAMESPACES.riepr + classIri;
     }
 
-    const searchQuads = this.store.getQuads(new NamedNode(classIri), new NamedNode(NAMESPACES.hydra + 'search'), null);
+    const searchQuads = this.store.getQuads(
+      new NamedNode(classIri),
+      new NamedNode(NAMESPACES.hydra + 'search'),
+      null
+    );
     if (!searchQuads || searchQuads.length === 0) return null;
 
     const templateNode = searchQuads[0].object;
-    const templateQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'template'), null);
-    const template = (templateQuads && templateQuads.length > 0) ? templateQuads[0].object.value : null;
+    const templateQuads = this.store.getQuads(
+      templateNode,
+      new NamedNode(NAMESPACES.hydra + 'template'),
+      null
+    );
+    const template =
+      templateQuads && templateQuads.length > 0 ? templateQuads[0].object.value : null;
 
-    const mappingQuads = this.store.getQuads(templateNode, new NamedNode(NAMESPACES.hydra + 'mapping'), null);
+    const mappingQuads = this.store.getQuads(
+      templateNode,
+      new NamedNode(NAMESPACES.hydra + 'mapping'),
+      null
+    );
     const mappings = [];
     if (mappingQuads && mappingQuads.length > 0) {
-      mappingQuads.forEach(mq => {
+      mappingQuads.forEach((mq) => {
         const mnode = mq.object;
         const varQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'variable'), null);
-        const propQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'property'), null);
+        const propQ = this.store.getQuads(
+          mnode,
+          new NamedNode(NAMESPACES.hydra + 'property'),
+          null
+        );
         const reqQ = this.store.getQuads(mnode, new NamedNode(NAMESPACES.hydra + 'required'), null);
         const variable = varQ && varQ.length > 0 ? varQ[0].object.value : null;
-        const propertyIri = propQ && propQ.length > 0 && propQ[0].object.termType === 'NamedNode' ? propQ[0].object.value : (propQ && propQ.length > 0 ? propQ[0].object.value : null);
-        const required = reqQ && reqQ.length > 0 ? String(reqQ[0].object.value).toLowerCase() === 'true' : false;
+        const propertyIri =
+          propQ && propQ.length > 0 && propQ[0].object.termType === 'NamedNode'
+            ? propQ[0].object.value
+            : propQ && propQ.length > 0
+            ? propQ[0].object.value
+            : null;
+        const required =
+          reqQ && reqQ.length > 0 ? String(reqQ[0].object.value).toLowerCase() === 'true' : false;
         mappings.push({ variable, propertyIri, required });
       });
     }
 
-    return { template, mappings, templateNode: templateNode && templateNode.termType === 'NamedNode' ? templateNode.value : null };
+    return {
+      template,
+      mappings,
+      templateNode:
+        templateNode && templateNode.termType === 'NamedNode' ? templateNode.value : null,
+    };
   }
 
   async applyReasoning() {
@@ -358,12 +419,20 @@ export class OntologyModel {
     });
 
     // Subclass inference
-    const subClassQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdfs + 'subClassOf'), null);
-    subClassQuads.forEach(subClassQuad => {
+    const subClassQuads = this.store.getQuads(
+      null,
+      new NamedNode(NAMESPACES.rdfs + 'subClassOf'),
+      null
+    );
+    subClassQuads.forEach((subClassQuad) => {
       const subClass = subClassQuad.subject;
       const superClass = subClassQuad.object;
-      const instanceQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdf + 'type'), subClass);
-      instanceQuads.forEach(instanceQuad => {
+      const instanceQuads = this.store.getQuads(
+        null,
+        new NamedNode(NAMESPACES.rdf + 'type'),
+        subClass
+      );
+      instanceQuads.forEach((instanceQuad) => {
         const instance = instanceQuad.subject;
         this.store.addQuad(new Quad(instance, new NamedNode(NAMESPACES.rdf + 'type'), superClass));
       });
@@ -371,11 +440,11 @@ export class OntologyModel {
 
     // Domain inference
     const domainQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdfs + 'domain'), null);
-    domainQuads.forEach(domainQuad => {
+    domainQuads.forEach((domainQuad) => {
       const property = domainQuad.subject;
       const domainClass = domainQuad.object;
       const usageQuads = this.store.getQuads(null, property, null);
-      usageQuads.forEach(usageQuad => {
+      usageQuads.forEach((usageQuad) => {
         const subject = usageQuad.subject;
         this.store.addQuad(new Quad(subject, new NamedNode(NAMESPACES.rdf + 'type'), domainClass));
       });
@@ -383,11 +452,11 @@ export class OntologyModel {
 
     // Range inference
     const rangeQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdfs + 'range'), null);
-    rangeQuads.forEach(rangeQuad => {
+    rangeQuads.forEach((rangeQuad) => {
       const property = rangeQuad.subject;
       const rangeClass = rangeQuad.object;
       const usageQuads = this.store.getQuads(null, property, null);
-      usageQuads.forEach(usageQuad => {
+      usageQuads.forEach((usageQuad) => {
         const object = usageQuad.object;
         if (object.termType === 'NamedNode') {
           this.store.addQuad(new Quad(object, new NamedNode(NAMESPACES.rdf + 'type'), rangeClass));
@@ -406,7 +475,7 @@ export class OntologyModel {
     const classIri = NAMESPACES.owl + 'Class';
     const classQuads = this.store.getQuads(null, new NamedNode(typeIri), new NamedNode(classIri));
 
-    classQuads.forEach(quad => {
+    classQuads.forEach((quad) => {
       const classIriValue = quad.subject.value;
       const classLocalName = this.extractLocalName(classIriValue);
 
@@ -431,11 +500,11 @@ export class OntologyModel {
     const exactMatchQuads = [
       ...this.store.getQuads(null, skosExactMatch, null),
       ...this.store.getQuads(null, owlEquivalentProperty, null),
-      ...this.store.getQuads(null, owlEquivalentClass, null)
+      ...this.store.getQuads(null, owlEquivalentClass, null),
     ];
     const businessTargetLocalNames = new Set();
     const businessTargetFullIris = new Map(); // Map from localName to fullIri
-    exactMatchQuads.forEach(q => {
+    exactMatchQuads.forEach((q) => {
       if (q.object.termType === 'NamedNode') {
         const local = this.extractLocalName(q.object.value);
         const fullIri = q.object.value;
@@ -446,9 +515,9 @@ export class OntologyModel {
       }
     });
 
-    this.classes.forEach(classInfo => {
-      classInfo.restrictions.forEach(restriction => {
-        restriction.rangeTypes.forEach(rangeType => {
+    this.classes.forEach((classInfo) => {
+      classInfo.restrictions.forEach((restriction) => {
+        restriction.rangeTypes.forEach((rangeType) => {
           if (this.classes.has(rangeType) || additions.has(rangeType)) return;
 
           // For business concept targets, use the full IRI from the mapping
@@ -458,7 +527,7 @@ export class OntologyModel {
           }
 
           additions.set(rangeType, {
-            iri: fullIri,  // Store the full IRI if known, otherwise just the local name
+            iri: fullIri, // Store the full IRI if known, otherwise just the local name
             localName: rangeType,
             label: rangeType,
             comment: '',
@@ -466,7 +535,7 @@ export class OntologyModel {
             restrictions: [],
             external: true,
             isConceptScheme: false,
-            isBusinessConceptTarget: businessTargetLocalNames.has(rangeType)
+            isBusinessConceptTarget: businessTargetLocalNames.has(rangeType),
           });
         });
       });
@@ -490,7 +559,7 @@ export class OntologyModel {
   addDomainRangeRestrictions() {
     const domainQuads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdfs + 'domain'), null);
 
-    domainQuads.forEach(domainQuad => {
+    domainQuads.forEach((domainQuad) => {
       const property = domainQuad.subject;
       const domainClass = domainQuad.object;
 
@@ -505,13 +574,17 @@ export class OntologyModel {
       if (domainInfo.external && !domainInfo.isBusinessConceptTarget) return;
 
       // Bepaal de ranges voor deze property
-      const rangeQuads = this.store.getQuads(property, new NamedNode(NAMESPACES.rdfs + 'range'), null);
+      const rangeQuads = this.store.getQuads(
+        property,
+        new NamedNode(NAMESPACES.rdfs + 'range'),
+        null
+      );
       if (rangeQuads.length === 0) return;
 
       const rangeTypes = rangeQuads
-        .filter(q => q.object.termType === 'NamedNode')
-        .map(q => this.extractLocalName(q.object.value))
-        .filter(t => !!t);
+        .filter((q) => q.object.termType === 'NamedNode')
+        .map((q) => this.extractLocalName(q.object.value))
+        .filter((t) => !!t);
       if (rangeTypes.length === 0) return;
 
       // Voeg restrictie toe aan alle (core) klassen die subklasse zijn van domainClass
@@ -522,12 +595,17 @@ export class OntologyModel {
         if (classInfo.external) return;
 
         // Alleen klassen die (transitief) subClassOf domainLocal zijn
-        if (!this.isSubClassOf(classIri, domainLocal) && this.extractLocalName(classIri) !== domainLocal) {
+        if (
+          !this.isSubClassOf(classIri, domainLocal) &&
+          this.extractLocalName(classIri) !== domainLocal
+        ) {
           return;
         }
 
         // Vermijd duplicaten als er al een restrictie voor dezelfde property bestaat
-        const hasExisting = (classInfo.restrictions || []).some(r => r.propertyIri === propertyIri);
+        const hasExisting = (classInfo.restrictions || []).some(
+          (r) => r.propertyIri === propertyIri
+        );
         if (hasExisting) return;
 
         const restriction = {
@@ -540,7 +618,7 @@ export class OntologyModel {
           maxInclusive: null,
           rangeTypes: [...new Set(rangeTypes)],
           rangeValue: null,
-          restrictionType: 'domain-range'
+          restrictionType: 'domain-range',
         };
 
         classInfo.restrictions.push(restriction);
@@ -557,7 +635,7 @@ export class OntologyModel {
 
     const restrictions = [
       ...this.extractRestrictions(classIri),
-      ...this.extractShaclRestrictions(classIri)
+      ...this.extractShaclRestrictions(classIri),
     ];
 
     // Alles buiten de eigen RIEPR-namespace beschouwen we als
@@ -569,22 +647,24 @@ export class OntologyModel {
     // EmissieProcedure, ...). Zulke conceptenschema's willen we in
     // de ER- en klassendiagrammen doorgaans niet als aparte tabel
     // tonen.
-    const isConceptScheme = this.store.getQuads(
-      new NamedNode(classIri),
-      new NamedNode(NAMESPACES.rdf + 'type'),
-      new NamedNode(NAMESPACES.skos + 'ConceptScheme')
-    ).length > 0;
+    const isConceptScheme =
+      this.store.getQuads(
+        new NamedNode(classIri),
+        new NamedNode(NAMESPACES.rdf + 'type'),
+        new NamedNode(NAMESPACES.skos + 'ConceptScheme')
+      ).length > 0;
 
     // Bepaal of deze (mogelijk externe) klasse expliciet het doel is
     // van een business-concept via skos:exactMatch. Zulke klassen
     // willen we als volwaardige domeinklassen behandelen, zelfs als
     // ze zelf weinig of geen attributen hebben (bv. locn:Address als
     // doel van het concept "Verzendadres").
-    const isBusinessConceptTarget = this.store.getQuads(
-      null,
-      new NamedNode(NAMESPACES.skos + 'exactMatch'),
-      new NamedNode(classIri)
-    ).length > 0;
+    const isBusinessConceptTarget =
+      this.store.getQuads(
+        null,
+        new NamedNode(NAMESPACES.skos + 'exactMatch'),
+        new NamedNode(classIri)
+      ).length > 0;
 
     return {
       iri: classIri,
@@ -596,21 +676,26 @@ export class OntologyModel {
       isEnum,
       external,
       isConceptScheme,
-      isBusinessConceptTarget
+      isBusinessConceptTarget,
     };
   }
 
   extractRestrictions(classIri) {
     const restrictions = [];
-    const subClassOfQuads = this.store.getQuads(new NamedNode(classIri), new NamedNode(NAMESPACES.rdfs + 'subClassOf'), null);
+    const subClassOfQuads = this.store.getQuads(
+      new NamedNode(classIri),
+      new NamedNode(NAMESPACES.rdfs + 'subClassOf'),
+      null
+    );
 
-    subClassOfQuads.forEach(quad => {
+    subClassOfQuads.forEach((quad) => {
       const restrictionNode = quad.object;
-      const isRestriction = this.store.getQuads(
-        restrictionNode,
-        new NamedNode(NAMESPACES.rdf + 'type'),
-        new NamedNode(NAMESPACES.owl + 'Restriction')
-      ).length > 0;
+      const isRestriction =
+        this.store.getQuads(
+          restrictionNode,
+          new NamedNode(NAMESPACES.rdf + 'type'),
+          new NamedNode(NAMESPACES.owl + 'Restriction')
+        ).length > 0;
 
       if (isRestriction) {
         const restriction = this.parseRestriction(restrictionNode, classIri);
@@ -632,7 +717,7 @@ export class OntologyModel {
       maxInclusive: null,
       rangeTypes: [],
       rangeValue: null,
-      restrictionType: null
+      restrictionType: null,
     };
 
     const onPropertyQuads = this.store.getQuads(
@@ -645,21 +730,36 @@ export class OntologyModel {
     restriction.propertyIri = onPropertyQuads[0].object.value;
     restriction.property = this.extractLocalName(restriction.propertyIri);
 
-    const minCardQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'minCardinality'), null);
+    const minCardQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'minCardinality'),
+      null
+    );
     if (minCardQuads.length > 0) {
       restriction.minCardinality = parseInt(minCardQuads[0].object.value, 10);
     }
 
-    const maxCardQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'maxCardinality'), null);
+    const maxCardQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'maxCardinality'),
+      null
+    );
     if (maxCardQuads.length > 0) {
       restriction.maxCardinality = parseInt(maxCardQuads[0].object.value, 10);
     }
 
-    const someValuesFromQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'someValuesFrom'), null);
-    someValuesFromQuads.forEach(quad => {
+    const someValuesFromQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'someValuesFrom'),
+      null
+    );
+    someValuesFromQuads.forEach((quad) => {
       const targetValue = quad.object;
-      const isRdfList = this.store.getQuads(targetValue, new NamedNode(NAMESPACES.rdf + 'first'), null).length > 0;
-      const isUnionOf = this.store.getQuads(targetValue, new NamedNode(NAMESPACES.owl + 'unionOf'), null).length > 0;
+      const isRdfList =
+        this.store.getQuads(targetValue, new NamedNode(NAMESPACES.rdf + 'first'), null).length > 0;
+      const isUnionOf =
+        this.store.getQuads(targetValue, new NamedNode(NAMESPACES.owl + 'unionOf'), null).length >
+        0;
 
       if (isRdfList || isUnionOf) {
         const listTypes = this.parseRdfList(targetValue, this.store);
@@ -672,8 +772,12 @@ export class OntologyModel {
       }
     });
 
-    const allValuesFromQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'allValuesFrom'), null);
-    allValuesFromQuads.forEach(quad => {
+    const allValuesFromQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'allValuesFrom'),
+      null
+    );
+    allValuesFromQuads.forEach((quad) => {
       const typeName = this.extractLocalName(quad.object.value);
       if (!restriction.rangeTypes.includes(typeName)) {
         restriction.rangeTypes.push(typeName);
@@ -681,13 +785,21 @@ export class OntologyModel {
       }
     });
 
-    const hasValueQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'hasValue'), null);
+    const hasValueQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'hasValue'),
+      null
+    );
     if (hasValueQuads.length > 0) {
       restriction.rangeValue = hasValueQuads[0].object.value;
       restriction.restrictionType = 'value';
     }
 
-    const onDataRangeQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.owl + 'onDataRange'), null);
+    const onDataRangeQuads = this.store.getQuads(
+      restrictionNode,
+      new NamedNode(NAMESPACES.owl + 'onDataRange'),
+      null
+    );
     if (onDataRangeQuads.length > 0) {
       const datatype = this.extractLocalName(onDataRangeQuads[0].object.value);
       restriction.restrictionType = 'datatype';
@@ -699,13 +811,9 @@ export class OntologyModel {
     // Fallback: if no explicit range was found on the restriction itself,
     // derive it from rdfs:range of the property in the ontology.
     if (restriction.rangeTypes.length === 0 && restriction.propertyIri) {
-      const rangeIris = this.getIrisByProperty(
-        restriction.propertyIri,
-        NAMESPACES.rdfs,
-        'range'
-      );
+      const rangeIris = this.getIrisByProperty(restriction.propertyIri, NAMESPACES.rdfs, 'range');
 
-      rangeIris.forEach(rangeIri => {
+      rangeIris.forEach((rangeIri) => {
         const typeName = this.extractLocalName(rangeIri);
         if (typeName && !restriction.rangeTypes.includes(typeName)) {
           restriction.rangeTypes.push(typeName);
@@ -719,8 +827,17 @@ export class OntologyModel {
 
     // Capture any rdfs:comment on the restriction node (human-readable hint)
     try {
-      const commentQuads = this.store.getQuads(restrictionNode, new NamedNode(NAMESPACES.rdfs + 'comment'), null);
-      if (commentQuads && commentQuads.length > 0 && commentQuads[0].object && commentQuads[0].object.value) {
+      const commentQuads = this.store.getQuads(
+        restrictionNode,
+        new NamedNode(NAMESPACES.rdfs + 'comment'),
+        null
+      );
+      if (
+        commentQuads &&
+        commentQuads.length > 0 &&
+        commentQuads[0].object &&
+        commentQuads[0].object.value
+      ) {
         restriction.comment = commentQuads[0].object.value;
       } else {
         restriction.comment = '';
@@ -734,15 +851,27 @@ export class OntologyModel {
 
   extractShaclRestrictions(classIri) {
     const restrictions = [];
-    const shapeQuads = this.shapesStore.getQuads(null, new NamedNode(NAMESPACES.sh + 'targetClass'), new NamedNode(classIri));
+    const shapeQuads = this.shapesStore.getQuads(
+      null,
+      new NamedNode(NAMESPACES.sh + 'targetClass'),
+      new NamedNode(classIri)
+    );
 
-    shapeQuads.forEach(shapeQuad => {
+    shapeQuads.forEach((shapeQuad) => {
       const shapeNode = shapeQuad.subject;
-      const propertyQuads = this.shapesStore.getQuads(shapeNode, new NamedNode(NAMESPACES.sh + 'property'), null);
+      const propertyQuads = this.shapesStore.getQuads(
+        shapeNode,
+        new NamedNode(NAMESPACES.sh + 'property'),
+        null
+      );
 
-      propertyQuads.forEach(propertyQuad => {
+      propertyQuads.forEach((propertyQuad) => {
         const propertyNode = propertyQuad.object;
-        const pathQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'path'), null);
+        const pathQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'path'),
+          null
+        );
         if (pathQuads.length === 0) return;
 
         let propertyIri = null;
@@ -750,7 +879,11 @@ export class OntologyModel {
         if (pathNode.termType === 'NamedNode') {
           propertyIri = pathNode.value;
         } else {
-          const inverseQuads = this.shapesStore.getQuads(pathNode, new NamedNode(NAMESPACES.sh + 'inversePath'), null);
+          const inverseQuads = this.shapesStore.getQuads(
+            pathNode,
+            new NamedNode(NAMESPACES.sh + 'inversePath'),
+            null
+          );
           if (inverseQuads.length > 0 && inverseQuads[0].object.termType === 'NamedNode') {
             propertyIri = inverseQuads[0].object.value;
           }
@@ -768,27 +901,43 @@ export class OntologyModel {
           maxInclusive: null,
           rangeTypes: [],
           rangeValue: null,
-          restrictionType: 'shacl'
+          restrictionType: 'shacl',
         };
 
-        const minCountQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'minCount'), null);
+        const minCountQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'minCount'),
+          null
+        );
         if (minCountQuads.length > 0) {
           restriction.minCardinality = parseInt(minCountQuads[0].object.value, 10);
         }
 
-        const maxCountQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'maxCount'), null);
+        const maxCountQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'maxCount'),
+          null
+        );
         if (maxCountQuads.length > 0) {
           restriction.maxCardinality = parseInt(maxCountQuads[0].object.value, 10);
         }
 
-        const classQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'class'), null);
-        classQuads.forEach(classQuad => {
+        const classQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'class'),
+          null
+        );
+        classQuads.forEach((classQuad) => {
           const typeName = this.extractLocalName(classQuad.object.value);
           restriction.rangeTypes.push(typeName);
         });
 
-        const datatypeQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'datatype'), null);
-        datatypeQuads.forEach(datatypeQuad => {
+        const datatypeQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'datatype'),
+          null
+        );
+        datatypeQuads.forEach((datatypeQuad) => {
           const typeName = this.extractLocalName(datatypeQuad.object.value);
           if (typeName && !restriction.rangeTypes.includes(typeName)) {
             restriction.rangeTypes.push(typeName);
@@ -796,8 +945,12 @@ export class OntologyModel {
           restriction.restrictionType = 'datatype';
         });
 
-        const orQuads = this.shapesStore.getQuads(propertyNode, new NamedNode(NAMESPACES.sh + 'or'), null);
-        orQuads.forEach(orQuad => {
+        const orQuads = this.shapesStore.getQuads(
+          propertyNode,
+          new NamedNode(NAMESPACES.sh + 'or'),
+          null
+        );
+        orQuads.forEach((orQuad) => {
           const listTypes = this.parseShaclOrList(orQuad.object);
           restriction.rangeTypes.push(...listTypes);
         });
@@ -809,7 +962,7 @@ export class OntologyModel {
             'range'
           );
 
-          rangeIris.forEach(rangeIri => {
+          rangeIris.forEach((rangeIri) => {
             const typeName = this.extractLocalName(rangeIri);
             if (typeName && !restriction.rangeTypes.includes(typeName)) {
               restriction.rangeTypes.push(typeName);
@@ -858,20 +1011,32 @@ export class OntologyModel {
     const nilValue = NAMESPACES.rdf + 'nil';
 
     while (current && current.value !== nilValue) {
-      const firstQuads = this.shapesStore.getQuads(current, new NamedNode(NAMESPACES.rdf + 'first'), null);
+      const firstQuads = this.shapesStore.getQuads(
+        current,
+        new NamedNode(NAMESPACES.rdf + 'first'),
+        null
+      );
       if (firstQuads.length > 0) {
         const element = firstQuads[0].object;
         if (element.termType === 'NamedNode') {
           items.push(this.extractLocalName(element.value));
         } else {
-          const classQuads = this.shapesStore.getQuads(element, new NamedNode(NAMESPACES.sh + 'class'), null);
-          classQuads.forEach(classQuad => {
+          const classQuads = this.shapesStore.getQuads(
+            element,
+            new NamedNode(NAMESPACES.sh + 'class'),
+            null
+          );
+          classQuads.forEach((classQuad) => {
             items.push(this.extractLocalName(classQuad.object.value));
           });
         }
       }
 
-      const restQuads = this.shapesStore.getQuads(current, new NamedNode(NAMESPACES.rdf + 'rest'), null);
+      const restQuads = this.shapesStore.getQuads(
+        current,
+        new NamedNode(NAMESPACES.rdf + 'rest'),
+        null
+      );
       current = restQuads.length > 0 ? restQuads[0].object : null;
     }
 
@@ -881,14 +1046,14 @@ export class OntologyModel {
   resolveRangeTypes(rangeTypes, restriction) {
     const resolved = new Set();
 
-    rangeTypes.forEach(rangeType => {
+    rangeTypes.forEach((rangeType) => {
       const classInfo = this.classes.get(rangeType);
       const isExternal = classInfo?.external === true;
 
       if (isExternal) {
         const mapped = this.mapExternalTypeToLocal(rangeType, restriction);
         if (mapped.length > 0) {
-          mapped.forEach(type => resolved.add(type));
+          mapped.forEach((type) => resolved.add(type));
           return;
         }
       }
@@ -899,7 +1064,7 @@ export class OntologyModel {
       }
 
       const mapped = this.mapExternalTypeToLocal(rangeType, restriction);
-      mapped.forEach(type => resolved.add(type));
+      mapped.forEach((type) => resolved.add(type));
     });
 
     return Array.from(resolved);
@@ -979,9 +1144,10 @@ export class OntologyModel {
       }
 
       if (classInfo.superClasses) {
-        const isConceptSubclass = classInfo.superClasses.some(sc =>
-          String(sc).includes('skos:Concept') ||
-          (String(sc).includes('Concept') && String(sc).includes('skos'))
+        const isConceptSubclass = classInfo.superClasses.some(
+          (sc) =>
+            String(sc).includes('skos:Concept') ||
+            (String(sc).includes('Concept') && String(sc).includes('skos'))
         );
         if (isConceptSubclass) {
           enumClasses.add(className);
@@ -990,8 +1156,8 @@ export class OntologyModel {
       }
 
       if (classInfo.restrictions) {
-        const hasInScheme = classInfo.restrictions.some(r =>
-          r.property === 'inScheme' || String(r.property).includes('inScheme')
+        const hasInScheme = classInfo.restrictions.some(
+          (r) => r.property === 'inScheme' || String(r.property).includes('inScheme')
         );
         if (hasInScheme) {
           enumClasses.add(className);
@@ -1012,7 +1178,11 @@ export class OntologyModel {
     if (!classInfo || !classInfo.iri) return [];
     const classIri = classInfo.iri;
     const members = new Set();
-    const quads = this.store.getQuads(null, new NamedNode(NAMESPACES.rdf + 'type'), new NamedNode(classIri));
+    const quads = this.store.getQuads(
+      null,
+      new NamedNode(NAMESPACES.rdf + 'type'),
+      new NamedNode(classIri)
+    );
     for (const q of quads) {
       const subject = q.subject;
       if (!subject) continue;
@@ -1041,7 +1211,7 @@ export class OntologyModel {
   getSuperClassNames(classInfo) {
     if (!classInfo) return [];
     const names = [];
-    (classInfo.superClasses || []).forEach(superIri => {
+    (classInfo.superClasses || []).forEach((superIri) => {
       const local = this.extractLocalName(superIri);
       if (local && this.classes.has(local)) {
         const info = this.classes.get(local);
@@ -1122,7 +1292,12 @@ export class OntologyModel {
     // for the ER/class model rendering.
     if (kind === 'concepts' && object.termType === 'NamedNode') {
       const iri = object.value;
-      if (pIri === skosExactMatch || pIri === owlEquivalentProperty || pIri === owlEquivalentClass || pIri === (NAMESPACES.owl + 'equivalentProperty')) {
+      if (
+        pIri === skosExactMatch ||
+        pIri === owlEquivalentProperty ||
+        pIri === owlEquivalentClass ||
+        pIri === NAMESPACES.owl + 'equivalentProperty'
+      ) {
         // If the concept maps to a property IRI, register it as usedProperty
         // otherwise also register usedClass for classes.
         this.usedPropertyIris.add(iri);
@@ -1180,23 +1355,18 @@ export class OntologyModel {
    * (input en gegenereerde output).
    */
   getDataExampleFiles() {
-    const dirs = [
-      'src/main/input',
-    ];
+    const dirs = ['src/main/input'];
     // Except voorbeelden Geert
-    const exceptions = [
-      'src/main/input/bedrijf',
-      'src/main/input/recepten',
-    ];
+    const exceptions = ['src/main/input/bedrijf', 'src/main/input/recepten'];
 
     const files = [];
 
-    const collect = dir => {
+    const collect = (dir) => {
       const absDir = resolveProjectPath(dir);
       if (!fs.existsSync(absDir)) return;
 
       const entries = fs.readdirSync(absDir, { withFileTypes: true });
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         const fullPath = `${absDir}/${entry.name}`;
         if (entry.isDirectory() && !exceptions.includes(`${dir}/${entry.name}`)) {
           collect(`${dir}/${entry.name}`);
@@ -1206,7 +1376,7 @@ export class OntologyModel {
       });
     };
 
-    dirs.forEach(dir => collect(dir));
+    dirs.forEach((dir) => collect(dir));
     return files;
   }
 
@@ -1244,7 +1414,7 @@ export class OntologyModel {
       null
     );
 
-    quads.forEach(quad => {
+    quads.forEach((quad) => {
       if (quad.object.termType === 'NamedNode') {
         iris.push(quad.object.value);
       }
@@ -1257,7 +1427,10 @@ export class OntologyModel {
    * Derive foreign key column name using business name of the property
    */
   deriveFkName(restriction) {
-    const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);
+    const businessName = this.getBusinessNameForProperty(
+      restriction.propertyIri,
+      restriction.fromClass
+    );
     const base = businessName || restriction.property;
     const snake = camelCaseToSnakeCase(base || 'property');
     return `${snake}_id`;
@@ -1275,7 +1448,10 @@ export class OntologyModel {
       return 'identifiers';
     }
 
-    const businessName = this.getBusinessNameForProperty(restriction.propertyIri, restriction.fromClass);
+    const businessName = this.getBusinessNameForProperty(
+      restriction.propertyIri,
+      restriction.fromClass
+    );
     const base = businessName || restriction.property;
     return camelCaseToSnakeCase(base || 'property');
   }

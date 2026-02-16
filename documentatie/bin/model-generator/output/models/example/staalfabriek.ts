@@ -124,8 +124,6 @@ export const procesHoofd = new Proces();
 procesHoofd.uri = 'https://data.riepr.omgeving.vlaanderen.be/id/proces/0400123123_6851234567_ACTIVITEIT_1';
 procesHoofd.benaming = 'Staalproductieproces';
 procesHoofd.aangemaaktOp = D('2020-07-30T10:00:00Z');
-procesHoofd.geldigVan = D('2020-07-30');
-procesHoofd.locatie = hoofdZetel;
 procesHoofd.heeftInvoer = [ijzererts];
 procesHoofd.heeftUitvoer = [staalplaat];
 
@@ -140,11 +138,9 @@ proces1.uri =
   'https://data.riepr.omgeving.vlaanderen.be/id/proces/0400123123_6851234567_ACTIVITEIT_1_0001';
 proces1.benaming = 'Toevoeging van grondstoffen';
 proces1.aangemaaktOp = D('2020-07-30T10:00:00Z');
-proces1.geldigVan = D('2020-07-30');
-proces1.locatie = hoofdZetel;
 proces1.heeftInvoer = [ijzererts];
 proces1.heeftUitvoer = [grondstoffenMix];
-proces1.onderdeelVan = procesHoofd;
+proces1.onderdeelVan = [procesHoofd];
 
 export const processen = [procesHoofd, proces1];
 

@@ -21,7 +21,7 @@
 	dct:description "Nederlandstalige benamingen die aligneren met (technische) predicaten in de RIE-IEPR ontologie en geïmporteerde vocabularia."@nl ;
 	dct:creator "Vlaamse overheid - Departement Omgeving"@nl .
 
-:geimplenteerdDoor a skos:Concept ;
+:geimplementeerdDoor a skos:Concept ;
     skos:prefLabel "geïmplementeerd door"@nl ;
     skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
     owl:equivalentProperty ssn:implementedBy ;
@@ -93,6 +93,12 @@
     skos:prefLabel "aangemaakt op"@nl ;
     skos:definition "De eigenschap die de creatiedatum van een entiteit beschrijft."@nl ;
     owl:equivalentProperty dct:created ;
+    skos:inScheme <> .
+
+:aangepastOp a skos:Concept ;
+    skos:prefLabel "aangepast op"@nl ;
+    skos:definition "De eigenschap die de datum van de laatste aanpassing van een entiteit beschrijft."@nl ;
+    owl:equivalentProperty dct:modified ;
     skos:inScheme <> .
 
 :revisieVan a skos:Concept ;
@@ -217,4 +223,22 @@
     skos:prefLabel "toegewezen aan"@nl ;
     skos:definition "De eigenschap die de toewijzing van een entiteit aan een andere entiteit beschrijft."@nl ;
     owl:equivalentProperty prov:wasAttributedTo ;
+    skos:inScheme <> .
+
+:Systeem a skos:Concept ;
+    skos:prefLabel "systeem"@nl ;
+    skos:definition "Een systeem dat betrokken is bij de uitvoering van een proces."@nl ;
+    owl:equivalentClass ssn:System ;
+    skos:inScheme <> .
+
+:schema a skos:Concept ;
+    skos:prefLabel "schema"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een concept en het schema waartoe het behoort beschrijft."@nl ;
+    owl:equivalentProperty adms:schemeAgency ;
+    skos:inScheme <> .
+
+:notatie a skos:Concept ;
+    skos:prefLabel "notatie"@nl ;
+    skos:definition "De eigenschap die de notatie of code van een concept beschrijft."@nl ;
+    owl:equivalentProperty skos:notation ;
     skos:inScheme <> .

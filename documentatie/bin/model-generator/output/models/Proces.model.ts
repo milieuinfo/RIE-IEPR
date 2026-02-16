@@ -6,50 +6,48 @@
 
 // Auto-generated models
 
-import { ProcesIdentifier } from './ProcesIdentifier.model';
 import { ProcesVariabele } from './ProcesVariabele.model';
 
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 import { Procedure } from './procedure.enum';
 
-import type { IAgent } from './Agent.interface';
-import type { ISystem } from './System.interface';
+import type { ISysteem } from './Systeem.interface';
 
 @jsonObject
-export class Proces implements IAgent {
+export class Proces {
+  // PK (primary key from ontology/hydra string)
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
-  @jsonMember(Object, { name: 'wasRevisionOf' })
-  revisieVan?: IAgent;
+  @jsonMember(Proces, { name: 'http://www.w3.org/ns/prov#wasRevisionOf' })
+  revisieVan?: Proces;
 
-  @jsonMember(Date, { name: 'created' })
+  @jsonMember(Date, { name: 'http://purl.org/dc/terms/modified' })
+  aangepastOp!: Date;
+
+  @jsonMember(Date, { name: 'http://purl.org/dc/terms/created' })
   aangemaaktOp!: Date;
 
-  @jsonMember(String, { name: 'label' })
+  @jsonMember(String, { name: 'http://www.w3.org/2000/01/rdf-schema#label' })
   benaming!: string;
 
-  @jsonMember(() => Procedure, { name: 'type' })
+  @jsonMember(() => Procedure, { name: 'http://purl.org/dc/terms/type' })
   type?: Procedure;
 
-  @jsonArrayMember(ProcesVariabele, { name: 'hasInputVar' })
+  @jsonMember(Object, { name: 'http://www.w3.org/ns/ssn/implementedBy' })
+  geimplementeerdDoor?: ISysteem;
+
+  @jsonArrayMember(ProcesVariabele, { name: 'http://purl.org/net/p-plan#hasInputVar' })
   heeftInvoer?: ProcesVariabele[];
 
-  @jsonArrayMember(ProcesVariabele, { name: 'hasOutputVar' })
+  @jsonArrayMember(ProcesVariabele, { name: 'http://purl.org/net/p-plan#hasOutputVar' })
   heeftUitvoer?: ProcesVariabele[];
 
-  @jsonArrayMember(Proces, { name: 'isStepOfPlan' })
+  @jsonArrayMember(Proces, { name: 'http://purl.org/net/p-plan#isStepOfPlan' })
   onderdeelVan?: Proces[];
-
-  @jsonArrayMember(ProcesIdentifier, { name: 'identifier' })
-  identifier?: ProcesIdentifier[];
-
-  @jsonArrayMember(Object, { name: 'hasInputVar' })
-  gebruikt?: ISystem[];
-
 
   /**
    * Demonstration: generate a `uri` from the configured string template.

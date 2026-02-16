@@ -11,7 +11,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
   generate() {
     this.prepareOntology();
-    this.buildRelationships(true);
+    this.buildRelationships(true, false);
     const diagram = this.generateMermaidDiagram();
     // Post-process diagram for a few edge-cases then write
     const finalDiagram = this._postprocessMermaid ? this._postprocessMermaid(diagram) : diagram;
@@ -24,101 +24,267 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const classNames = this.computeVisibleClasses();
     const { classToSupers, sharedSupers, sharedInterfaceNames } = this._computeShared(classNames);
     // ensure interface nodes are present in classNames so they get rendered
-    Array.from(sharedInterfaceNames.values()).forEach(ifaceNode => { if (!classNames.includes(ifaceNode)) classNames.push(ifaceNode); });
+    Array.from(sharedInterfaceNames.values()).forEach((ifaceNode) => {
+      if (!classNames.includes(ifaceNode)) classNames.push(ifaceNode);
+    });
 
     // join table detection removed: not needed for class diagrams
 
     // Build a quick lookup for property -> resolved target (used to display FK attributes as interfaces)
     // Add multiple keys (raw property, camel-cased property, camel-cased label, id-stripped variants)
     const relPropertyMap = new Map();
-    const normalize = s => (this.utils && typeof this.utils.normalizeString === 'function') ? this.utils.normalizeString(s) : (s || '').toString().toLowerCase();
+    const normalize = (s) =>
+      this.utils && typeof this.utils.normalizeString === 'function'
+        ? this.utils.normalizeString(s)
+        : (s || '').toString().toLowerCase();
 
-    Array.from(this.relationships.values()).forEach(rel => {
+    Array.from(this.relationships.values()).forEach((rel) => {
       // Prefer concrete targets when configured or for synthetic/override cases
       let toResolved = null;
-      if (this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(rel)) {
+      if (
+        this.utils &&
+        typeof this.utils.shouldPreferConcreteTarget === 'function' &&
+        this.utils.shouldPreferConcreteTarget(rel)
+      ) {
         toResolved = rel.to;
       } else {
-        const sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+        const sharedIface = this.findSharedInterfaceForTargets(
+          [rel.to],
+          classToSupers,
+          sharedInterfaceNames
+        );
         toResolved = sharedIface || rel.to;
       }
-      const toResolvedName = this.getBusinessClassName ? this.getBusinessClassName(toResolved) || toResolved : toResolved;
+      const toResolvedName = this.getBusinessClassName
+        ? this.getBusinessClassName(toResolved) || toResolved
+        : toResolved;
       const rawKey = `${rel.from}|${rel.property}`;
       // Prefer enum targets (e.g. Procedure) when multiple relationships
       // share the same source+property. Avoid silently overwriting a
       // previously-determined enum mapping with a concrete class.
       const existing = relPropertyMap.get(rawKey);
-      const enumSet = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) ? Config.ENUMERABLE_CLASSES : null;
-      const isEnumTarget = enumSet ? enumSet.has(toResolved) : (this.enumClasses && this.enumClasses.has(toResolved));
-      const existingIsEnum = existing ? (enumSet ? enumSet.has(existing) : (this.enumClasses && this.enumClasses.has(existing))) : false;
-      if (!existing || (!existingIsEnum && isEnumTarget)) relPropertyMap.set(rawKey, toResolvedName);
+      const enumSet =
+        Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set
+          ? Config.ENUMERABLE_CLASSES
+          : null;
+      const isEnumTarget = enumSet
+        ? enumSet.has(toResolved)
+        : this.enumClasses && this.enumClasses.has(toResolved);
+      const existingIsEnum = existing
+        ? enumSet
+          ? enumSet.has(existing)
+          : this.enumClasses && this.enumClasses.has(existing)
+        : false;
+      if (!existing || (!existingIsEnum && isEnumTarget))
+        relPropertyMap.set(rawKey, toResolvedName);
 
-      const camelProp = (typeof rel.property === 'string') ? this.toCamelCase(rel.property) : null;
+      const camelProp = typeof rel.property === 'string' ? this.toCamelCase(rel.property) : null;
       if (camelProp) {
         const key1 = `${rel.from}|${camelProp}`;
         const key2 = `${rel.from}|${camelProp.replace(/Id$/i, '')}`;
-        if (!relPropertyMap.has(key1) || (!relPropertyMap.has(key1) && isEnumTarget)) relPropertyMap.set(key1, toResolvedName);
-        if (!relPropertyMap.has(key2) || (!relPropertyMap.has(key2) && isEnumTarget)) relPropertyMap.set(key2, toResolvedName);
+        if (!relPropertyMap.has(key1) || (!relPropertyMap.has(key1) && isEnumTarget))
+          relPropertyMap.set(key1, toResolvedName);
+        if (!relPropertyMap.has(key2) || (!relPropertyMap.has(key2) && isEnumTarget))
+          relPropertyMap.set(key2, toResolvedName);
       }
 
       if (rel.label && typeof rel.label === 'string') {
         const camelLabel = this.toCamelCase(rel.label);
         const keyA = `${rel.from}|${camelLabel}`;
         const keyB = `${rel.from}|${camelLabel.replace(/Id$/i, '')}`;
-        if (!relPropertyMap.has(keyA) || (!relPropertyMap.has(keyA) && isEnumTarget)) relPropertyMap.set(keyA, toResolvedName);
-        if (!relPropertyMap.has(keyB) || (!relPropertyMap.has(keyB) && isEnumTarget)) relPropertyMap.set(keyB, toResolvedName);
+        if (!relPropertyMap.has(keyA) || (!relPropertyMap.has(keyA) && isEnumTarget))
+          relPropertyMap.set(keyA, toResolvedName);
+        if (!relPropertyMap.has(keyB) || (!relPropertyMap.has(keyB) && isEnumTarget))
+          relPropertyMap.set(keyB, toResolvedName);
       }
 
       // normalized variants (strip diacritics and non-alphanumerics)
       const normProp = normalize(rel.property);
       if (normProp) {
         const k = `${rel.from}|${normProp}`;
-        if (!relPropertyMap.has(k) || (!relPropertyMap.has(k) && isEnumTarget)) relPropertyMap.set(k, toResolvedName);
+        if (!relPropertyMap.has(k) || (!relPropertyMap.has(k) && isEnumTarget))
+          relPropertyMap.set(k, toResolvedName);
       }
       if (camelProp) {
         const kc = `${rel.from}|${normalize(camelProp)}`;
-        if (!relPropertyMap.has(kc) || (!relPropertyMap.has(kc) && isEnumTarget)) relPropertyMap.set(kc, toResolvedName);
+        if (!relPropertyMap.has(kc) || (!relPropertyMap.has(kc) && isEnumTarget))
+          relPropertyMap.set(kc, toResolvedName);
       }
       if (rel.label) {
         const normLabel = normalize(rel.label);
         const kl = `${rel.from}|${normLabel}`;
-        if (!relPropertyMap.has(kl) || (!relPropertyMap.has(kl) && isEnumTarget)) relPropertyMap.set(kl, toResolvedName);
+        if (!relPropertyMap.has(kl) || (!relPropertyMap.has(kl) && isEnumTarget))
+          relPropertyMap.set(kl, toResolvedName);
       }
     });
 
+    // Determine diagram styling configuration using shared helper
+    const { styleForClass, classDefToStyle } = this.computeDiagramStyles(classNames, classToSupers);
+
     // render nodes
-    classNames.forEach(className => {
+    const emittedRelSet = new Set();
+    classNames.forEach((className) => {
       // interface nodes
-      if (className.startsWith('I') && className.length > 1 && className[1] === className[1].toUpperCase()) {
-        const matched = Array.from(sharedInterfaceNames.entries()).find(([, iface]) => iface === className);
-        mermaid += this._renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers);
+      if (
+        className.startsWith('I') &&
+        className.length > 1 &&
+        className[1] === className[1].toUpperCase()
+      ) {
+        const matched = Array.from(sharedInterfaceNames.entries()).find(
+          ([, iface]) => iface === className
+        );
+        const style = styleForClass.get(className) || null;
+        mermaid += this._renderInterfaceNode(
+          className,
+          matched,
+          sharedInterfaceNames,
+          classToSupers,
+          style
+        );
         return;
       }
-      mermaid += this._renderClassNode(className, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap);
+      const style = styleForClass.get(className) || null;
+      mermaid += this._renderClassNode(
+        className,
+        sharedInterfaceNames,
+        sharedSupers,
+        classToSupers,
+        classNames,
+        relPropertyMap,
+        style
+      );
     });
 
     // Emit explicit relationship lines for FK attributes referencing other visible classes (robust matching)
     // Build a normalized lookup for classNames
     const normalizedClassMap = new Map();
-    classNames.forEach(cn => {
-      normalizedClassMap.set(String(cn).toLowerCase(), cn);
+    classNames.forEach((cn) => {
+      const key = String(cn).toLowerCase();
+      normalizedClassMap.set(key, cn);
+      // also map stripped-interface name (e.g. ISystem -> system) so FK lookups succeed
+      const stripped = String(cn).replace(/^I/, '').toLowerCase();
+      if (!normalizedClassMap.has(stripped)) normalizedClassMap.set(stripped, cn);
     });
 
-    classNames.forEach(className => {
+    classNames.forEach((className) => {
       const classInfo = this.ontology.classes.get(className);
       if (!classInfo) return;
       const attrs = this.computeAttributesForClass(className, classNames) || [];
-      attrs.forEach(attr => {
-        if (attr.isForeignKey && typeof attr.type === 'string') {
-          let targetClass = attr.type.replace(/\[\]$/, '').replace(/\s*\(FK\)\s*$/, '');
-          let normTarget = String(targetClass).replace(/^I/, '').toLowerCase();
-          let foundClass = normalizedClassMap.get(normTarget);
-          // Debug output
-          if (typeof console !== 'undefined' && console.log) {
-            console.log(`[MermaidGen] FK: ${className} -> ${targetClass} (normalized: ${normTarget}) | found: ${!!foundClass}`);
+      attrs.forEach((attr) => {
+        if (!attr || !attr.isForeignKey) return;
+        // Use the diagram-rendering override to resolve the displayed type (may collapse to interfaces)
+        const rendered =
+          this.applyPropertyRenderOverride(
+            attr,
+            className,
+            sharedInterfaceNames,
+            classNames,
+            classToSupers
+          ) || {};
+        let targetClass = (rendered.type || attr.type || '')
+          .toString()
+          .replace(/\[\]$/, '')
+          .replace(/\s*\(FK\)\s*$/, '');
+        let normTarget = String(targetClass).replace(/^I/, '').toLowerCase();
+        // Try both stripped and raw variants when looking up
+        let foundClass =
+          normalizedClassMap.get(normTarget) ||
+          normalizedClassMap.get(String(targetClass).toLowerCase());
+        // If not found, try resolving to a shared interface (e.g. System -> ISystem)
+        if (
+          !foundClass &&
+          sharedInterfaceNames &&
+          typeof sharedInterfaceNames.forEach === 'function'
+        ) {
+          // direct lookup by super-name
+          if (sharedInterfaceNames.has(targetClass)) {
+            foundClass = sharedInterfaceNames.get(targetClass);
+          } else {
+            // try matching by normalized names
+            for (const [sup, iface] of sharedInterfaceNames.entries()) {
+              try {
+                if (
+                  String(sup).toLowerCase() === normTarget ||
+                  String(iface).toLowerCase() === String(targetClass).toLowerCase()
+                ) {
+                  foundClass = iface;
+                  break;
+                }
+              } catch (e) {
+                /* ignore */
+              }
+            }
           }
-          if (foundClass) {
-            mermaid += `    ${this.getDisplayName(className)} --> ${this.getDisplayName(foundClass)} : ${attr.name}\n`;
+        }
+        // Special-case: when attribute is the Dutch 'gebruikt', prefer the System interface if available
+        if (
+          !foundClass &&
+          (String(rendered.name || '').toLowerCase() === 'gebruikt' ||
+            String(attr.name || '').toLowerCase() === 'gebruikt')
+        ) {
+          if (sharedInterfaceNames && sharedInterfaceNames.has('System')) {
+            foundClass = sharedInterfaceNames.get('System');
+          } else {
+            for (const [sup, iface] of sharedInterfaceNames.entries()) {
+              if (
+                String(sup).toLowerCase() === 'system' ||
+                String(iface).toLowerCase() === 'isystem'
+              ) {
+                foundClass = iface;
+                break;
+              }
+            }
+          }
+        }
+        // Debug output
+        if (typeof console !== 'undefined' && console.log) {
+          console.log(
+            `[MermaidGen] FK: ${className} -> ${targetClass} (normalized: ${normTarget}) | found: ${!!foundClass}`
+          );
+        }
+        // If the resolved target is an interface (e.g. IAgent) prefer a
+        // concrete visible implementor when one exists so diagrams show
+        // the concrete class (e.g. Exploitant) instead of the generic
+        // interface node. We only pick the first visible implementor to
+        // avoid collapsing to many targets.
+        if (foundClass && typeof foundClass === 'string' && /^I[A-Z]/.test(foundClass)) {
+          for (const [superName, iface] of sharedInterfaceNames.entries()) {
+            if (iface === foundClass) {
+              for (const [cn, supers] of classToSupers.entries()) {
+                try {
+                  if (supers && supers.includes(superName) && classNames.includes(cn)) {
+                    foundClass = cn;
+                    break;
+                  }
+                } catch (e) {
+                  /* ignore */
+                }
+              }
+              break;
+            }
+          }
+        }
+
+        if (foundClass) {
+          const attrName = rendered.name || attr.name || '';
+          // Humanize label: turn camelCase into spaced lower-case ('revisieVan' -> 'revisie van')
+          const humanize = (s) => {
+            if (!s || typeof s !== 'string') return '';
+            const hasSpace = /\s+/.test(s);
+            let out = s;
+            if (!hasSpace) out = out.replace(/([a-z])([A-Z])/g, '$1 $2');
+            out = out.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+            return out;
+          };
+          const humanLabel = humanize(String(attrName));
+          const sig = `${this.getDisplayName(className)}|${this.getDisplayName(
+            foundClass
+          )}|${normalize(humanLabel)}`;
+          if (!emittedRelSet.has(sig)) {
+            mermaid += `    ${this.getDisplayName(className)} --> ${this.getDisplayName(
+              foundClass
+            )} : ${humanLabel}\n`;
+            emittedRelSet.add(sig);
           }
         }
       });
@@ -126,21 +292,32 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
     // Synthesize enumerated classes from configured ENUMERABLE_CLASSES
     if (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) {
-      Array.from(Config.ENUMERABLE_CLASSES).forEach(localName => {
+      Array.from(Config.ENUMERABLE_CLASSES).forEach((localName) => {
         const memberList = this.collectEnumerableMembers(localName) || [];
         if (memberList.length === 0) return;
         const members = new Set(memberList);
         if (members.size > 0) {
-          const enumClassName = (typeof this.pascalCase === 'function') ? this.pascalCase(localName) : localName;
+          const enumClassName =
+            typeof this.pascalCase === 'function' ? this.pascalCase(localName) : localName;
           mermaid += `    class ${enumClassName} {\n`;
           mermaid += `        <<enumerable>>\n`;
-          Array.from(members).forEach(m => { mermaid += `        ${m}\n`; });
+          Array.from(members).forEach((m) => {
+            mermaid += `        ${m}\n`;
+          });
           mermaid += `    }\n`;
           // Link any classes that have an enum attribute referring to this enumerable
-          Array.from(classNames || []).forEach(cn => {
+          Array.from(classNames || []).forEach((cn) => {
             const ci = this.ontology.classes.get(cn);
             const attrs = this.deriveAttributes(ci, this.enumClasses, cn) || [];
-            const hasEnumAttr = attrs.some(a => a && a.type === 'enum' && (a.comment === localName || (a.propertyIri && this.ontology.extractLocalName && this.ontology.extractLocalName(a.propertyIri) === 'type')));
+            const hasEnumAttr = attrs.some(
+              (a) =>
+                a &&
+                a.type === 'enum' &&
+                (a.comment === localName ||
+                  (a.propertyIri &&
+                    this.ontology.extractLocalName &&
+                    this.ontology.extractLocalName(a.propertyIri) === 'type'))
+            );
             if (hasEnumAttr) {
               mermaid += `    ${this.getDisplayName(cn)} --> ${enumClassName} : type\n`;
             }
@@ -156,16 +333,17 @@ export class ClassDiagramGenerator extends ClassGenerator {
       const idClass = `${parent}Identifier`;
       const key = `${parent}|${idClass}|identifier`;
       if (!this.relationships.has(key)) {
-        const label = (this.ontology && typeof this.ontology.deriveAttributeName === 'function')
-          ? this.ontology.deriveAttributeName(restriction)
-          : 'identifiers';
+        const label =
+          this.ontology && typeof this.ontology.deriveAttributeName === 'function'
+            ? this.ontology.deriveAttributeName(restriction)
+            : 'identifiers';
         this.relationships.set(key, {
           from: parent,
           to: idClass,
           property: 'identifier',
           label,
           minCard: restriction?.minCardinality,
-          maxCard: restriction?.maxCardinality
+          maxCard: restriction?.maxCardinality,
         });
       }
     });
@@ -176,7 +354,7 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
     // relationships: inheritance and implementations
     const visibleSet = new Set(classNames);
-    this.inheritance.forEach(rel => {
+    this.inheritance.forEach((rel) => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
       const fromDisplay = this.getDisplayName(rel.from);
       const toDisplay = this.getDisplayName(rel.to);
@@ -199,26 +377,43 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
     // If there exists an explicit relationship from the same source+property to multiple targets that share a common interface, prefer rendering a single relationship to that shared interface (e.g. Sensor -> IAgent instead of Sensor -> Person, Sensor -> Organization)
     const groupMap = new Map();
-    Array.from(this.relationships.values()).forEach(rel => {
+    Array.from(this.relationships.values()).forEach((rel) => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
       // If there exists an enum-targeting relationship for the same
       // source+property, prefer that and skip non-enum targets to avoid
       // duplicate `Proces -> Proces : type` when `Procedure` is the enum.
       try {
-        const enumSet = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) ? Config.ENUMERABLE_CLASSES : null;
+        const enumSet =
+          Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set
+            ? Config.ENUMERABLE_CLASSES
+            : null;
         if (enumSet) {
-          const propLocal = rel.property ? String(rel.property).toLowerCase() : (rel.propertyIri && this.ontology && typeof this.ontology.extractLocalName === 'function' ? String(this.ontology.extractLocalName(rel.propertyIri)).toLowerCase() : null);
+          const propLocal = rel.property
+            ? String(rel.property).toLowerCase()
+            : rel.propertyIri &&
+              this.ontology &&
+              typeof this.ontology.extractLocalName === 'function'
+            ? String(this.ontology.extractLocalName(rel.propertyIri)).toLowerCase()
+            : null;
           if (propLocal) {
-            const hasEnumTarget = Array.from(this.relationships.values()).some(r2 => {
+            const hasEnumTarget = Array.from(this.relationships.values()).some((r2) => {
               if (!r2 || r2.from !== rel.from) return false;
-              const r2PropLocal = r2.property ? String(r2.property).toLowerCase() : (r2.propertyIri && this.ontology && typeof this.ontology.extractLocalName === 'function' ? String(this.ontology.extractLocalName(r2.propertyIri)).toLowerCase() : null);
+              const r2PropLocal = r2.property
+                ? String(r2.property).toLowerCase()
+                : r2.propertyIri &&
+                  this.ontology &&
+                  typeof this.ontology.extractLocalName === 'function'
+                ? String(this.ontology.extractLocalName(r2.propertyIri)).toLowerCase()
+                : null;
               return r2PropLocal === propLocal && enumSet.has(r2.to);
             });
             const isEnum = enumSet.has(rel.to);
             if (hasEnumTarget && !isEnum) return; // skip non-enum target when enum exists
           }
         }
-      } catch (e) { /* ignore */ }
+      } catch (e) {
+        /* ignore */
+      }
       const labelKey = `${rel.from}|${rel.label || rel.property}`;
       if (!groupMap.has(labelKey)) groupMap.set(labelKey, []);
       groupMap.get(labelKey).push(rel);
@@ -228,20 +423,39 @@ export class ClassDiagramGenerator extends ClassGenerator {
     groupMap.forEach((rels, labelKey) => {
       for (const r of rels) {
         // Do not collapse relationships that prefer concrete targets to interfaces
-        if (this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(r)) continue;
-        const sharedIface = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames);
-        if (sharedIface) { interfaceTargetMap.set(labelKey, sharedIface); break; }
+        if (
+          this.utils &&
+          typeof this.utils.shouldPreferConcreteTarget === 'function' &&
+          this.utils.shouldPreferConcreteTarget(r)
+        )
+          continue;
+        const sharedIface = this.findSharedInterfaceForTargets(
+          [r.to],
+          classToSupers,
+          sharedInterfaceNames
+        );
+        if (sharedIface) {
+          interfaceTargetMap.set(labelKey, sharedIface);
+          break;
+        }
       }
     });
 
-    Array.from(this.relationships.values()).forEach(rel => {
+    Array.from(this.relationships.values()).forEach((rel) => {
       if (!visibleSet.has(rel.from) || !visibleSet.has(rel.to)) return;
       // Filter out certain inferred/undesired relationships for specific classes (e.g. Proces)
       {
-        const relNorm = (rel.property && typeof rel.property === 'string') ? rel.property : (rel.label || '');
+        const relNorm =
+          rel.property && typeof rel.property === 'string' ? rel.property : rel.label || '';
         const norm = normalize(relNorm);
         const propStr = String(rel.property || '').toLowerCase();
-        if (rel.from === 'Proces' && (norm === 'afgeleidvan' || norm === 'wasattributedto' || propStr.includes('wasderivedfrom') || propStr.includes('wasattributedto'))) {
+        if (
+          rel.from === 'Proces' &&
+          (norm === 'afgeleidvan' ||
+            norm === 'wasattributedto' ||
+            propStr.includes('wasderivedfrom') ||
+            propStr.includes('wasattributedto'))
+        ) {
           return;
         }
       }
@@ -256,25 +470,85 @@ export class ClassDiagramGenerator extends ClassGenerator {
         return; // skip concrete target
       }
 
+      // If the relationship target is an interface, prefer a visible
+      // concrete implementor when one exists so class diagrams are more
+      // specific (e.g. Exploitant instead of IAgent).
+      let explicitConcrete = null;
+      if (typeof rel.to === 'string' && /^I[A-Z]/.test(rel.to)) {
+        for (const [superName, iface] of sharedInterfaceNames.entries()) {
+          if (iface === rel.to) {
+            for (const [cn, supers] of classToSupers.entries()) {
+              try {
+                if (supers && supers.includes(superName) && visibleSet.has(cn)) {
+                  explicitConcrete = cn;
+                  break;
+                }
+              } catch (e) {
+                /* ignore */
+              }
+            }
+            break;
+          }
+        }
+      }
       // Ask ClassGenerator helper whether these targets share a common interface
       // Skip interface collapsing for relationships that prefer concrete targets
       let sharedIface = null;
-      if (!(this.utils && typeof this.utils.shouldPreferConcreteTarget === 'function' && this.utils.shouldPreferConcreteTarget(rel))) {
-        sharedIface = this.findSharedInterfaceForTargets([rel.to], classToSupers, sharedInterfaceNames);
+      if (
+        !(
+          this.utils &&
+          typeof this.utils.shouldPreferConcreteTarget === 'function' &&
+          this.utils.shouldPreferConcreteTarget(rel)
+        )
+      ) {
+        sharedIface = this.findSharedInterfaceForTargets(
+          [rel.to],
+          classToSupers,
+          sharedInterfaceNames
+        );
       }
-      const toResolved = sharedIface || rel.to;
+      const toResolved = explicitConcrete || sharedIface || rel.to;
       const key = `${rel.from}|${toResolved}|${rel.property}`;
       if (!renderRelMap.has(key)) {
         renderRelMap.set(key, Object.assign({}, rel, { toResolved }));
       }
     });
 
-    Array.from(renderRelMap.values()).forEach(rel => {
+    Array.from(renderRelMap.values()).forEach((rel) => {
       const fromDisplay = this.getDisplayName(rel.from);
       const toDisplay = this.getDisplayName(rel.toResolved || rel.to);
-      const label = (rel.label || '').replace(/\n|\r|\r\n/g, ' ').replace(/\s+/g, ' ').trim();
-      mermaid += `    ${fromDisplay} --> ${toDisplay} : ${label}\n`;
+      const rawLabel = (rel.label || rel.property || '').toString();
+      const compact = rawLabel
+        .replace(/\n|\r|\r\n/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      const humanize = (s) => {
+        if (!s || typeof s !== 'string') return '';
+        const hasSpace = /\s+/.test(s);
+        let out = s;
+        if (!hasSpace) out = out.replace(/([a-z])([A-Z])/g, '$1 $2');
+        out = out.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+        return out;
+      };
+      const label = humanize(compact);
+      const sig = `${fromDisplay}|${toDisplay}|${normalize(label)}`;
+      if (!emittedRelSet.has(sig)) {
+        mermaid += `    ${fromDisplay} --> ${toDisplay} : ${label}\n`;
+        emittedRelSet.add(sig);
+      }
     });
+
+    // Emit classDef style blocks for configured diagram styles
+    if (classDefToStyle && classDefToStyle.size > 0) {
+      mermaid += `\n`;
+      for (const [classDefName, styleSpec] of classDefToStyle.entries()) {
+        const fill = styleSpec && styleSpec.fill ? styleSpec.fill : '#eee';
+        const stroke = styleSpec && styleSpec.stroke ? styleSpec.stroke : '#333';
+        const strokeWidth = styleSpec && styleSpec.strokeWidth ? styleSpec.strokeWidth : '1px';
+        mermaid += `    %% ${classDefName} style\n`;
+        mermaid += `    classDef ${classDefName} fill:${fill},stroke:${stroke},stroke-width:${strokeWidth}\n`;
+      }
+    }
 
     return mermaid;
   }
@@ -285,8 +559,19 @@ export class ClassDiagramGenerator extends ClassGenerator {
     if (!mermaid || typeof mermaid !== 'string') return mermaid;
     try {
       const lines = String(mermaid).split(/\r?\n/);
-      const enumSet = (Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set) ? Config.ENUMERABLE_CLASSES : null;
-      const knownEnums = new Set(enumSet ? Array.from(enumSet).map(e => (typeof this.pascalCase === 'function' ? this.pascalCase(e) : e)) : (this.enumClasses ? Array.from(this.enumClasses) : []));
+      const enumSet =
+        Config && Config.ENUMERABLE_CLASSES && Config.ENUMERABLE_CLASSES instanceof Set
+          ? Config.ENUMERABLE_CLASSES
+          : null;
+      const knownEnums = new Set(
+        enumSet
+          ? Array.from(enumSet).map((e) =>
+              typeof this.pascalCase === 'function' ? this.pascalCase(e) : e
+            )
+          : this.enumClasses
+          ? Array.from(this.enumClasses)
+          : []
+      );
 
       // Collect enum-targeting relationships: map key -> enumTarget
       const enumRelMap = new Map();
@@ -294,7 +579,9 @@ export class ClassDiagramGenerator extends ClassGenerator {
       for (const l of lines) {
         const m = relRe.exec(l);
         if (!m) continue;
-        const from = m[1]; const to = m[2]; const label = (m[3] || '').trim();
+        const from = m[1];
+        const to = m[2];
+        const label = (m[3] || '').trim();
         const labelKey = `${from}|${String(label).toLowerCase()}`;
         if (knownEnums.has(to)) enumRelMap.set(labelKey, to);
       }
@@ -306,15 +593,25 @@ export class ClassDiagramGenerator extends ClassGenerator {
         const l = lines[i];
         // detect class block start
         const classStart = l.match(/^\s*class\s+(\S+)\s*\{/);
-        if (classStart) { currentClass = classStart[1]; inClassBlock = true; out.push(l); continue; }
-        if (inClassBlock && /^\s*\}/.test(l)) { inClassBlock = false; currentClass = null; out.push(l); continue; }
+        if (classStart) {
+          currentClass = classStart[1];
+          inClassBlock = true;
+          out.push(l);
+          continue;
+        }
+        if (inClassBlock && /^\s*\}/.test(l)) {
+          inClassBlock = false;
+          currentClass = null;
+          out.push(l);
+          continue;
+        }
 
         if (inClassBlock && currentClass) {
           // attribute line like: "        Type name" or "        Type[] name (FK)"
           const attrMatch = l.match(/^\s*([A-Za-z0-9_\[\]]+)\s+(.+?)$/);
           if (attrMatch) {
             const attrType = attrMatch[1];
-            const attrName = attrMatch[2].replace(/\s*\([^)]*\)\s*$/,'').trim();
+            const attrName = attrMatch[2].replace(/\s*\([^)]*\)\s*$/, '').trim();
             const labelKey = `${currentClass}|${String(attrName).toLowerCase()}`;
             const enumTarget = enumRelMap.get(labelKey);
             if (enumTarget && attrType !== enumTarget) {
@@ -334,13 +631,22 @@ export class ClassDiagramGenerator extends ClassGenerator {
         // relationship exists for same source+label; skip the non-enum duplicate.
         const relMatch = relRe.exec(l);
         if (relMatch) {
-          const from = relMatch[1]; const to = relMatch[2]; const label = (relMatch[3] || '').trim();
+          const from = relMatch[1];
+          const to = relMatch[2];
+          const label = (relMatch[3] || '').trim();
           const labelKey = `${from}|${String(label).toLowerCase()}`;
           const enumTarget = enumRelMap.get(labelKey);
           if (enumTarget && enumTarget !== to) {
             // skip this non-enum relationship
             continue;
           }
+        }
+        // Defensive cleanup: drop any relationship-like lines that lack a
+        // label (malformed output like `A --> some label without target`).
+        // Valid relationship lines follow the pattern `A --> B : label`.
+        if (String(l).includes('-->') && !String(l).includes(':')) {
+          // skip malformed relationship line
+          continue;
         }
 
         out.push(l);
@@ -355,7 +661,9 @@ export class ClassDiagramGenerator extends ClassGenerator {
   _computeShared(classNames) {
     const forced = [];
     if (Config && Config.INTERFACE_CLASSES && Config.INTERFACE_CLASSES instanceof Set) {
-      Array.from(Config.INTERFACE_CLASSES).forEach(k => { if (!forced.includes(k)) forced.push(k); });
+      Array.from(Config.INTERFACE_CLASSES).forEach((k) => {
+        if (!forced.includes(k)) forced.push(k);
+      });
     }
     // map incoming visible class names (which may be business names) to local ontology names
     const localNames = [];
@@ -365,7 +673,10 @@ export class ClassDiagramGenerator extends ClassGenerator {
         localNames.push(local);
       }
     }
-    const { classToSupers, sharedSupers, sharedInterfaceNames } = this.computeSharedSupers(localNames, forced);
+    const { classToSupers, sharedSupers, sharedInterfaceNames } = this.computeSharedSupers(
+      localNames,
+      forced
+    );
     // expose classToSupers keyed by both local name and business name for downstream callers
     const dualMap = new Map();
     for (const [local, supers] of classToSupers.entries()) {
@@ -378,16 +689,20 @@ export class ClassDiagramGenerator extends ClassGenerator {
 
   // join table helper removed — join tables are not needed in class diagrams
 
-  _renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers) {
+  _renderInterfaceNode(className, matched, sharedInterfaceNames, classToSupers, style) {
     let mermaid = '';
     const displayName = this.getDisplayName(className);
-    mermaid += `    class ${displayName} {\n`;
+    mermaid += `    class ${displayName}${style ? ':::' + style : ''} {\n`;
     mermaid += `        <<interface>>\n`;
-      if (matched) {
+    if (matched) {
       const superName = matched[0];
-      const { props } = this.renderSharedInterfaceProps(superName, sharedInterfaceNames, classToSupers);
+      const { props } = this.renderSharedInterfaceProps(
+        superName,
+        sharedInterfaceNames,
+        classToSupers
+      );
       if (props && props.length > 0) {
-        props.forEach(p => {
+        props.forEach((p) => {
           // Do not include long comments in class diagram; keep only type + name
           mermaid += `        ${p.type} ${p.name}\n`;
         });
@@ -399,7 +714,15 @@ export class ClassDiagramGenerator extends ClassGenerator {
     return mermaid;
   }
 
-  _renderClassNode(className, sharedInterfaceNames, sharedSupers, classToSupers, classNames, relPropertyMap = new Map()) {
+  _renderClassNode(
+    className,
+    sharedInterfaceNames,
+    sharedSupers,
+    classToSupers,
+    classNames,
+    relPropertyMap = new Map(),
+    style
+  ) {
     let mermaid = '';
     const classInfo = this.ontology.classes.get(className);
     const displayName = this.getDisplayName(className, classInfo);
@@ -409,7 +732,10 @@ export class ClassDiagramGenerator extends ClassGenerator {
     const supers = classToSupers.get(className) || [];
     for (const s of supers) {
       const info = this.ontology.classes.get(s);
-      if (info && !info.external && classNames.includes(s)) { extendsSuperName = s; break; }
+      if (info && !info.external && classNames.includes(s)) {
+        extendsSuperName = s;
+        break;
+      }
     }
 
     // Resolve business class name to ontology local name when possible so
@@ -420,15 +746,22 @@ export class ClassDiagramGenerator extends ClassGenerator {
       for (const [ln, info] of this.ontology.classes) {
         try {
           const bn = this.ontology.getBusinessNameForClass(info.iri);
-          if (bn === className) { classInfoLocal = info; sourceLocalName = ln; break; }
-        } catch (e) { /* ignore */ }
+          if (bn === className) {
+            classInfoLocal = info;
+            sourceLocalName = ln;
+            break;
+          }
+        } catch (e) {
+          /* ignore */
+        }
       }
     } else {
       sourceLocalName = className;
     }
 
     // Use centralized attribute computation (handles identifier relations and superclass filtering)
-    let attrsRaw = this.computeAttributesForClass(sourceLocalName, classNames, extendsSuperName) || [];
+    let attrsRaw =
+      this.computeAttributesForClass(sourceLocalName, classNames, extendsSuperName) || [];
     // debug logging removed
     // Merge any CODE_ADDED_ATTRIBUTES while avoiding duplicates
     let extraAttrs = [];
@@ -436,50 +769,101 @@ export class ClassDiagramGenerator extends ClassGenerator {
       extraAttrs = Config.CODE_ADDED_ATTRIBUTES.get(className);
     }
     const seen = new Set();
-    attrsRaw.forEach(a => seen.add(a.propertyIri || a.name));
-    extraAttrs.forEach(a => { if (!seen.has(a.propertyIri || a.name)) attrsRaw.push(a); });
+    attrsRaw.forEach((a) => seen.add(a.propertyIri || a.name));
+    extraAttrs.forEach((a) => {
+      if (!seen.has(a.propertyIri || a.name)) attrsRaw.push(a);
+    });
 
-    const attributes = attrsRaw.map(attr => {
+    const attributes = attrsRaw.map((attr) => {
       // Normalize property rendering for diagrams using centralized helper
-      const resolved = this.applyPropertyRenderOverride(attr, className, sharedInterfaceNames, classNames, classToSupers);
+      const resolved = this.applyPropertyRenderOverride(
+        attr,
+        className,
+        sharedInterfaceNames,
+        classNames,
+        classToSupers
+      );
       if (!resolved) return null;
       const { name, type, isArray, isForeignKey, comment } = resolved;
-      return { name, type, isForeignKey, isArray, comment: comment || null };
+      return {
+        name,
+        type,
+        isForeignKey,
+        isArray,
+        // prefer explicit attr.isPrimaryKey (derived earlier) fallback to resolved flag
+        isPrimaryKey: Boolean((attr && attr.isPrimaryKey) || resolved.isPrimaryKey),
+        comment: comment || null,
+      };
     });
 
     // Deduplicate attributes by name: prefer interface or concrete types over generic 'object'/'string' entries
     const attrByName = new Map();
-    attributes.filter(Boolean).forEach(a => {
+    attributes.filter(Boolean).forEach((a) => {
       const n = a.name || '';
-      if (!attrByName.has(n)) { attrByName.set(n, a); return; }
+      if (!attrByName.has(n)) {
+        attrByName.set(n, a);
+        return;
+      }
       const existing = attrByName.get(n);
-      const isPreferred = t => (typeof t === 'string' && (/^I[A-Z]/.test(t) || /^[A-Z][a-zA-Z0-9]/.test(t)));
+      const isPreferred = (t) =>
+        typeof t === 'string' && (/^I[A-Z]/.test(t) || /^[A-Z][a-zA-Z0-9]/.test(t));
       if (isPreferred(a.type) && !isPreferred(existing.type)) attrByName.set(n, a);
       else if (a.type && existing.type === 'object') attrByName.set(n, a);
     });
     const finalAttributes = Array.from(attrByName.values());
 
-    mermaid += `    class ${displayName} {
-`;
-    finalAttributes.forEach(attr => {
+    mermaid += `    class ${displayName}${style ? ':::' + style : ''} {\n`;
+    finalAttributes.forEach((attr) => {
       // Skip certain inferred/undesired attributes for specific classes
-      if (className === 'Proces' && (attr.name === 'afgeleidVan' || attr.name === 'wasAttributedTo')) return;
+      if (
+        className === 'Proces' &&
+        (attr.name === 'afgeleidVan' || attr.name === 'wasAttributedTo')
+      )
+        return;
 
       const displayAttrName = attr.isForeignKey ? `${attr.name} (FK)` : attr.name;
+      const pkSuffix = attr.isPrimaryKey ? ' (PK)' : '';
       // If there is a known relationship mapping for this class+property, prefer that resolved target
-      let mapped = relPropertyMap.get(`${className}|${attr.name}`) || relPropertyMap.get(`${className}|${attr.name.replace(/Id$/i, '')}`) || null;
-      if (!mapped) mapped = relPropertyMap.get(`${className}|${this.toCamelCase(attr.name)}`) || null;
+      let mapped =
+        relPropertyMap.get(`${className}|${attr.name}`) ||
+        relPropertyMap.get(`${className}|${attr.name.replace(/Id$/i, '')}`) ||
+        null;
+      if (!mapped)
+        mapped = relPropertyMap.get(`${className}|${this.toCamelCase(attr.name)}`) || null;
       if (!mapped) {
-        const norm = n => { try { return String(n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^0-9A-Za-z]/g,'').toLowerCase(); } catch (e) { return String(n||'').replace(/[^0-9A-Za-z]/g,'').toLowerCase(); } };
-        mapped = relPropertyMap.get(`${className}|${norm(attr.name)}`) || relPropertyMap.get(`${className}|${norm(this.toCamelCase(attr.name))}`) || null;
+        const norm = (n) => {
+          try {
+            return String(n || '')
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/[^0-9A-Za-z]/g, '')
+              .toLowerCase();
+          } catch (e) {
+            return String(n || '')
+              .replace(/[^0-9A-Za-z]/g, '')
+              .toLowerCase();
+          }
+        };
+        mapped =
+          relPropertyMap.get(`${className}|${norm(attr.name)}`) ||
+          relPropertyMap.get(`${className}|${norm(this.toCamelCase(attr.name))}`) ||
+          null;
       }
 
       // Fallback: try to find a matching relationship by fuzzy normalized match between attribute name and relationship label/property
       if (!mapped) {
-        const aNorm = String(attr.name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+        const aNorm = String(attr.name || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^0-9A-Za-z]/g, '')
+          .toLowerCase();
         for (const r of Array.from(this.relationships.values())) {
           if (r.from !== className) continue;
-          const rNorm = String(r.label || r.property || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z]/g, '').toLowerCase();
+          const rNorm = String(r.label || r.property || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^0-9A-Za-z]/g, '')
+            .toLowerCase();
           if (!rNorm) continue;
           const lcsMatch = (() => {
             if (!aNorm || !rNorm) return false;
@@ -490,8 +874,16 @@ export class ClassDiagramGenerator extends ClassGenerator {
             }
             return false;
           })();
-          if (rNorm.includes(aNorm) || aNorm.includes(rNorm) || rNorm.startsWith(aNorm) || aNorm.startsWith(rNorm) || lcsMatch) {
-            mapped = this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames) || r.to;
+          if (
+            rNorm.includes(aNorm) ||
+            aNorm.includes(rNorm) ||
+            rNorm.startsWith(aNorm) ||
+            aNorm.startsWith(rNorm) ||
+            lcsMatch
+          ) {
+            mapped =
+              this.findSharedInterfaceForTargets([r.to], classToSupers, sharedInterfaceNames) ||
+              r.to;
             break;
           }
         }
@@ -508,11 +900,10 @@ export class ClassDiagramGenerator extends ClassGenerator {
         }
       }
       // Do not render attribute comments in class diagram; keep only type + name
-      mermaid += `        ${displayType} ${displayAttrName}\n`;
+      mermaid += `        ${displayType} ${displayAttrName}${pkSuffix}\n`;
     });
     mermaid += `    }
   `;
     return mermaid;
   }
-
 }
