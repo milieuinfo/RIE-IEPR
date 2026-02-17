@@ -1,25 +1,25 @@
 // Auto-generated models
 
-// URI template: https://data.riepr.omgeving.vlaanderen.be/id/observatie/{id}
-// Mapping: {id} -> identifier (required)
+// URI template: https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}
+// Mapping: {uuid} -> identifier (required)
 
 // Auto-generated models
 
 import { jsonObject, jsonMember } from 'typedjson';
 
-import type { IAgent } from './Agent.interface';
+import type { ISysteem } from './Systeem.interface';
 
 @jsonObject
 export class Observatie {
+  // PK (primary key from ontology/hydra string)
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
-  @jsonMember(Object, { name: 'hasFeatureOfInterest' })
-  hasFeatureOfInterest!: IAgent;
-
+  @jsonMember(Object, { name: 'http://www.w3.org/ns/sosa/hasFeatureOfInterest' })
+  hasFeatureOfInterest!: ISysteem;
 
   /**
    * Demonstration: generate a `uri` from the configured string template.
@@ -28,8 +28,8 @@ export class Observatie {
    */
   generateUri(): string | undefined {
     if (this.uri) return this.uri;
-    let uri = 'https://data.riepr.omgeving.vlaanderen.be/id/observatie/{id}';
-    let id = '' as any;
+    let uri = 'https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}';
+    let uuid = '' as any;
     try {
       // try direct property first
       let v = (this as any)['identifier'];
@@ -41,14 +41,14 @@ export class Observatie {
       }
       if (Array.isArray(v)) v = v.length>0 ? v[0] : null;
       if (v) {
-        if (typeof v === 'string') id = v;
-        else if (v.value) id = v.value;
-        else if (v.notation) id = v.notation;
-        else if (v.uri) id = v.uri;
-        else if (v.id) id = v.id;
+        if (typeof v === 'string') uuid = v;
+        else if (v.value) uuid = v.value;
+        else if (v.notation) uuid = v.notation;
+        else if (v.uri) uuid = v.uri;
+        else if (v.id) uuid = v.id;
       }
     } catch (e) { /* ignore */ }
-    uri = uri.replace('{id}', encodeURIComponent(String(id || '')));
+    uri = uri.replace('{uuid}', encodeURIComponent(String(uuid || '')));
     this.uri = uri;
     return this.uri;
   }

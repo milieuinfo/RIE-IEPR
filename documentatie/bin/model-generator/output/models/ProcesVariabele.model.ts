@@ -1,7 +1,7 @@
 // Auto-generated models
 
-// URI template: https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{id}
-// Mapping: {id} -> identifier (required)
+// URI template: https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{uuid}
+// Mapping: {uuid} -> identifier (required)
 
 // Auto-generated models
 
@@ -9,31 +9,23 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class ProcesVariabele {
+  // PK (primary key from ontology/hydra string)
   @jsonMember(String, { name: 'uuid' })
   uuid!: string;
 
   @jsonMember(String, { name: 'uri' })
   uri?: string;
 
-  @jsonMember(Date, { name: 'issued' })
-  geldigVan!: Date;
-
-  @jsonMember(Date, { name: 'created' })
-  aangemaaktOp!: Date;
-
-  @jsonMember(Date, { name: 'valid' })
-  geldigTot?: Date;
-
-  @jsonMember(String, { name: 'label' })
+  @jsonMember(String, { name: 'http://www.w3.org/2000/01/rdf-schema#label' })
   benaming!: string;
 
-  @jsonMember(String, { name: 'type' })
+  @jsonMember(String, { name: 'http://purl.org/dc/terms/type' })
   type?: string;
 
-  @jsonMember(Number, { name: 'hasUnit' })
+  @jsonMember(Number, { name: 'http://qudt.org/schema/qudt/hasUnit' })
   eenheid?: number;
 
-  @jsonMember(String, { name: 'numericValue' })
+  @jsonMember(String, { name: 'http://qudt.org/schema/qudt/numericValue' })
   waarde?: string;
 
 
@@ -44,8 +36,8 @@ export class ProcesVariabele {
    */
   generateUri(): string | undefined {
     if (this.uri) return this.uri;
-    let uri = 'https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{id}';
-    let id = '' as any;
+    let uri = 'https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{uuid}';
+    let uuid = '' as any;
     try {
       // try direct property first
       let v = (this as any)['identifier'];
@@ -57,14 +49,14 @@ export class ProcesVariabele {
       }
       if (Array.isArray(v)) v = v.length>0 ? v[0] : null;
       if (v) {
-        if (typeof v === 'string') id = v;
-        else if (v.value) id = v.value;
-        else if (v.notation) id = v.notation;
-        else if (v.uri) id = v.uri;
-        else if (v.id) id = v.id;
+        if (typeof v === 'string') uuid = v;
+        else if (v.value) uuid = v.value;
+        else if (v.notation) uuid = v.notation;
+        else if (v.uri) uuid = v.uri;
+        else if (v.id) uuid = v.id;
       }
     } catch (e) { /* ignore */ }
-    uri = uri.replace('{id}', encodeURIComponent(String(id || '')));
+    uri = uri.replace('{uuid}', encodeURIComponent(String(uuid || '')));
     this.uri = uri;
     return this.uri;
   }

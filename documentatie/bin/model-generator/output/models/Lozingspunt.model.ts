@@ -6,7 +6,7 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class Lozingspunt extends Emissiepunt {
-  @jsonMember(Number, { name: 'depth' })
+  @jsonMember(Number, { name: 'http://dbpedia.org/ontology/depth' })
   diepte?: number;
 
 }

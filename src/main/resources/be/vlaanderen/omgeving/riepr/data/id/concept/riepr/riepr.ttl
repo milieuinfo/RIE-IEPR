@@ -21,10 +21,16 @@
 	dct:description "Nederlandstalige benamingen die aligneren met (technische) predicaten in de RIE-IEPR ontologie en geïmporteerde vocabularia."@nl ;
 	dct:creator "Vlaamse overheid - Departement Omgeving"@nl .
 
-:geimplenteerdDoor a skos:Concept ;
+:geimplementeerdDoor a skos:Concept ;
     skos:prefLabel "geïmplementeerd door"@nl ;
     skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
     owl:equivalentProperty ssn:implementedBy ;
+    skos:inScheme <> .
+
+:implementeert a skos:Concept ;
+    skos:prefLabel "implementeert"@nl ;
+    skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
+    owl:equivalentProperty ssn:implements ;
     skos:inScheme <> .
 
 :geometrie a skos:Concept ;
@@ -58,6 +64,12 @@
     owl:equivalentProperty sosa:isHostedBy, ssn:deployedOnPlatform ;
 	skos:inScheme <> .
 
+:inzetbaarSysteem a skos:Concept ;
+    skos:prefLabel "inzetbaar systeem"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een proces en een systeem beschrijft, waarbij het systeem inzetbaar is voor de uitvoering van het proces."@nl ;
+    owl:equivalentProperty ssn:deployedSystem ;
+    skos:inScheme <> .
+
 :status a skos:Concept ;
     skos:prefLabel "status"@nl ;
     skos:definition "De eigenschap die de status van een entiteit beschrijft."@nl ;
@@ -83,10 +95,16 @@
     owl:equivalentProperty dct:created ;
     skos:inScheme <> .
 
-:afgeleidVan a skos:Concept ;
-    skos:prefLabel "afgeleid van"@nl ;
-    skos:definition "De eigenschap die de afleiding van een entiteit beschrijft."@nl ;
-    owl:equivalentProperty prov:wasDerivedFrom ;
+:aangepastOp a skos:Concept ;
+    skos:prefLabel "aangepast op"@nl ;
+    skos:definition "De eigenschap die de datum van de laatste aanpassing van een entiteit beschrijft."@nl ;
+    owl:equivalentProperty dct:modified ;
+    skos:inScheme <> .
+
+:revisieVan a skos:Concept ;
+    skos:prefLabel "revisie van"@nl ;
+    skos:definition "De eigenschap die de revisie van een entiteit beschrijft."@nl ;
+    owl:equivalentProperty prov:wasRevisionOf ;
     skos:inScheme <> .
 
 :beinvloedDoor a skos:Concept ;
@@ -205,4 +223,22 @@
     skos:prefLabel "toegewezen aan"@nl ;
     skos:definition "De eigenschap die de toewijzing van een entiteit aan een andere entiteit beschrijft."@nl ;
     owl:equivalentProperty prov:wasAttributedTo ;
+    skos:inScheme <> .
+
+:Systeem a skos:Concept ;
+    skos:prefLabel "systeem"@nl ;
+    skos:definition "Een systeem dat betrokken is bij de uitvoering van een proces."@nl ;
+    owl:equivalentClass ssn:System ;
+    skos:inScheme <> .
+
+:schema a skos:Concept ;
+    skos:prefLabel "schema"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een concept en het schema waartoe het behoort beschrijft."@nl ;
+    owl:equivalentProperty adms:schemeAgency ;
+    skos:inScheme <> .
+
+:notatie a skos:Concept ;
+    skos:prefLabel "notatie"@nl ;
+    skos:definition "De eigenschap die de notatie of code van een concept beschrijft."@nl ;
+    owl:equivalentProperty skos:notation ;
     skos:inScheme <> .

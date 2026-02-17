@@ -4,16 +4,17 @@ import { jsonObject, jsonMember } from 'typedjson';
 
 @jsonObject
 export class MeetpuntIdentifier {
-  @jsonMember(String, { name: 'inScheme' })
+  @jsonMember(String, { name: 'http://www.w3.org/2004/02/skos/core#inScheme' })
   inScheme?: string;
 
-  @jsonMember(String, { name: 'notation' })
-  notation!: string;
+  // PK (primary key from ontology/hydra string)
+  @jsonMember(String, { name: 'http://www.w3.org/2004/02/skos/core#notation' })
+  notatie!: string;
 
-  @jsonMember(Date, { name: 'valid' })
+  @jsonMember(Date, { name: 'http://purl.org/dc/terms/valid' })
   geldigTot?: Date;
 
-  @jsonMember(String, { name: 'value' })
+  @jsonMember(String, { name: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value' })
   value?: string;
 
 }
