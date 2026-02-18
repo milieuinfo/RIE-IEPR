@@ -66,6 +66,12 @@ plan:mengen
     rdfs:label "Meng alle ingrediënten"@nl ;
     p-plan:isSubPlanOfPlan  plan:nigella-brownies .
 
+plan:laat_bakken_tot_lichtbruine_bovenkant
+    a p-plan:Plan, sosa:Procedure ;
+    rdfs:label "Laat ongeveer 25 minuten bakken tot de bovenzijde lichtbruin is"@nl ;
+    p-plan:isSubPlanOfPlan  plan:nigella-brownies .
+
+
 
 
 # *********************************************
@@ -137,6 +143,7 @@ step:laat_bakken_tot_lichtbruine_bovenkant
     a p-plan:Step;
     rdfs:label "Laat ongeveer 25 minuten bakken tot de bovenzijde lichtbruin is"@nl ;
     p-plan:isPrecededBy step:bakvorm_in_oven;
+    p-plan:isDecomposedAsPlan plan:laat_bakken_tot_lichtbruine_bovenkant;
     p-plan:isStepOfPlan plan:bakken .
 
 step:haal_bakvorm_uit_oven_en_laat_afkoelen
@@ -144,6 +151,7 @@ step:haal_bakvorm_uit_oven_en_laat_afkoelen
     rdfs:label "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl ;
     p-plan:isPrecededBy step:laat_bakken_tot_lichtbruine_bovenkant;
     p-plan:isStepOfPlan plan:bakken .
+
 
 
 # *********************************************
@@ -471,9 +479,9 @@ exec:bakken-2026-02-10 a sosa:Actuation ;
 exec:controleer_wanneer_brownies_klaar_zijn a sosa:Observation ;
     rdfs:label "Controleer wanneer brownies klaar zijn."@nl ;
     p-plan:correspondsToStep  step:laat_bakken_tot_lichtbruine_bovenkant;
-    sosa:usedProcedure step:laat_bakken_tot_lichtbruine_bovenkant;
+    sosa:usedProcedure plan:laat_bakken_tot_lichtbruine_bovenkant;
     sosa:hasFeatureOfInterest ent:brownies_001 ;
-    sosa:observedProperty parameter:de_kleur_van_de_bovenzijde_va_de_brownie ;
+    sosa:observedProperty parameter:de_kleur_van_de_bovenzijde_van_de_brownie ;
     sosa:hasResult  ent:kleur_001 ;
     sosa:madeBySensor agent:geert;
     sosa:startTime "2026-02-10T21:29:30Z"^^xsd:dateTime ;
