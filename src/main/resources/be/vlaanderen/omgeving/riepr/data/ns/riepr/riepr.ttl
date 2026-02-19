@@ -1,3 +1,4 @@
+@prefix dc: <http://purl.org/dc/terms/> .
 @prefix :       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -14,7 +15,6 @@
 @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
-@prefix schema: <http://schema.org/> .
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix dct:    <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
@@ -42,7 +42,7 @@
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
     rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
     foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
-    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf: .
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf:, qudt:, adms: , locn:, <http://www.w3.org/ns/sosa/prov> .
 
 # --------------------------------------- #
 # Classes
@@ -52,11 +52,10 @@
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitant/{scheme}/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "scheme" ; hydra:property dct:type ; hydra:required true ] ,
-                      [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitant/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf prov:Agent ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -90,7 +89,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant moet een organisatie of persoon zijn maar niet beide tegelijk"@nl ;
         owl:onProperty dct:type ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant moet een benaming hebben"@nl ;
@@ -98,10 +98,17 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitant heeft een verzendadres dat kan afwijken van het vestigingsadres"@nl ;
+        # *..* relation with org:memberOf
+        rdfs:comment "Een exploitant kan meerdere contactpersonen hebben"@nl ;
+        owl:onProperty org:hasMember ;
+        owl:someValuesFrom :Contactpersoon ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ; 
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitant moet een adres hebben"@nl ;
         owl:onProperty locn:address ;
         owl:someValuesFrom locn:Address ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
@@ -110,17 +117,10 @@
     rdfs:comment "Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
     rdfs:subClassOf foaf:Person ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitant contactpersoon moet gekoppeld zijn aan exact één exploitant"@nl ;
-        owl:onProperty org:memberOf ;
-        owl:someValuesFrom :Exploitant ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon moet een benaming hebben"@nl ;
@@ -141,13 +141,6 @@
         rdfs:comment "Een exploitant contactpersoon moet een functie hebben binnen de organisatie"@nl ;
         owl:onProperty org:hasRole ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitant contactpersoon kan een adres hebben"@nl ;
-        owl:onProperty locn:address ;
-        owl:someValuesFrom locn:Address ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon kan een modificatie datum hebben"@nl ;
@@ -181,17 +174,27 @@
         rdfs:comment "Een exploitant contactpersoon moet een naam hebben"@nl ;
         owl:onProperty foaf:name ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitant contactpersoon kan een opmerking hebben"@nl ;
+        owl:onProperty rdfs:comment ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with org:member
+        owl:onProperty org:memberOf ;
+        owl:someValuesFrom :Exploitant, :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger 
     ] .
 
 :ExploitatieLocatie a owl:Class ;
     rdfs:label "Exploitatie Locatie"@nl ;
     rdfs:comment "Een exploitatie locatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/{source}/{geoId}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "source" ; hydra:property dct:source ; hydra:required true ] ,
-                      [ hydra:variable "geoId" ; hydra:property owl:sameAs ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/{geoId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "geoId" ; hydra:property owl:sameAs ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf ogc:Feature, prov:Entity, sosa:Platform ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -237,6 +240,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie locatie heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -255,7 +259,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie locatie kan optioneel beïnvloed zijn door aan een org:Site of ander type"@nl ;
         owl:onProperty prov:wasInfluencedBy ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie locatie kan een revisie zijn van een andere exploitatie locatie (optioneel)"@nl ;
@@ -276,6 +281,12 @@
         owl:someValuesFrom locn:Address ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:inDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Exploitatie a owl:Class ;
@@ -283,11 +294,10 @@
     rdfs:comment "Een exploitatie is de uitrol van middelen door een exploitant op een exploitatie locatie leidend tot een milieueffect."@nl ;
     rdfs:subClassOf ssn:Deployment ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/{exploitatielocatie}/{localId}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "exploitatielocatie" ; hydra:property adms:identifier ; hydra:required true ] ,
-                      [ hydra:variable "localId" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie moet een benaming hebben"@nl ;
@@ -309,12 +319,14 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:inDeployment
         rdfs:comment "Een exploitatie zet systemem in"@nl ;
         owl:onProperty ssn:deployedSystem ;
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+    
         rdfs:comment "Een exploitatie wordt op een bepaalde exploitatie locatie uitgevoerd"@nl ;
         owl:onProperty ssn:deployedOnPlatform ;
         owl:someValuesFrom :ExploitatieLocatie ;
@@ -324,12 +336,14 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie heeft een status"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie kan externe identificaties hebben (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -345,15 +359,30 @@
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatie is geimplementeerd door een proces"@nl ;
+        owl:onProperty ssn:implementedBy ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with org:memberOf
+        rdfs:comment "Een exploitatie kan meerdere contactpersonen hebben"@nl ;
+        owl:onProperty org:hasMember ;
+        owl:someValuesFrom :Contactpersoon ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Proces a owl:Class ;
     rdfs:label "Proces"@nl ;
     rdfs:comment "Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/proces/{exploitatielocatie}/{localId}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "exploitatielocatie" ; hydra:property adms:identifier ; hydra:required true ] ,
-                      [ hydra:variable "localId" ; hydra:property adms:identifier ; hydra:required true ]
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     skos:example [ a :Proces ;
         rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
@@ -364,12 +393,26 @@
     ] ;
     skos:example [ a :Proces ;
         rdfs:label "Verwerking van grondstoffen"@nl ;
-        dct:type [ a :VerwerkingsProcedure ]
+        dct:type [ a :VerwerkingProcedure ]
     ] ;
     rdfs:subClassOf pplan:Plan, pplan:Step, sosa:Procedure ;
     owl:equivalentClass [ a owl:Class ;
         rdfs:comment "Proces kan een plan op zichzelf zijn (multi step)"@nl ;
         owl:unionOf ( pplan:Step pplan:MultiStep pplan:Plan ) 
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een proces kan een geldigheid start hebben"@nl ;
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een proces kan een geldigheid einde hebben"@nl ;
+        owl:onProperty dct:valid ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces kan een revisie zijn van een ander proces (optioneel)"@nl ;
@@ -400,6 +443,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -418,22 +462,36 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isInputVarOf
         rdfs:comment "Een proces mag minstens één inputvariabele hebben (stof)"@nl ;
         owl:onProperty pplan:hasInputVar ;
         owl:someValuesFrom pplan:Variable ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isOutputVarOf
         rdfs:comment "Een proces mag minstens één outputvariabele hebben (stof)"@nl ;
         owl:onProperty pplan:hasOutputVar ;
         owl:someValuesFrom pplan:Variable ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een proces kan deel uitmaken van een ander proces (hiërarchie)"@nl ;
+        rdfs:comment "Een proces kan deel uitmaken van een of meer andere processen"@nl ;
         owl:onProperty pplan:isStepOfPlan ; 
         owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdf:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isStepOfPlan
+        owl:onProperty pplan:hasStep ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:implements
+        owl:onProperty ssn:implementedBy ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     ] .
 
 :ProcesVariabele a owl:Class ;
@@ -447,7 +505,7 @@
     ] ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ]
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf pplan:Variable ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -458,16 +516,31 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces variabele kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces variabele kan een eenheid hebben"@nl ;
         owl:onProperty qudt:hasUnit ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces variabele kan een waarde hebben"@nl ;
         owl:onProperty qudt:numericValue ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:hasInputVar
+        owl:onProperty pplan:isInputVarOf ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:hasOutputVar
+        owl:onProperty pplan:isOutputVarOf ;
+        owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
     
@@ -485,24 +558,27 @@
         ]
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf ssn:System ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
+        # *..* relation with the inverse of ssn:hasSubSystem
         rdfs:comment "Een installatie kan als systeem meerdere objecten bevatten; dit is optioneel, want een installatie kan ook (nog) geen sub-systemen hebben"@nl ;
         owl:onProperty ssn:hasSubSystem ; 
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:implementedBy
         rdfs:comment "Een installatie kan ook processen bevatten die deze installatie voortstelt"@nl ;
         owl:onProperty ssn:implements ;
         owl:someValuesFrom :Proces ;
@@ -551,6 +627,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -560,6 +637,20 @@
         owl:someValuesFrom :Installatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Emissiepunt a owl:Class ;
@@ -589,7 +680,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt moet een geldigheid start hebben"@nl ;
@@ -622,14 +714,15 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt kan een status hebben"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         rdfs:comment "Een emissiepunt moet gekoppeld zijn aan een exploitatie locatie"@nl ;
@@ -643,6 +736,26 @@
         owl:onProperty ogc:hasGeometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een emissiepunt kan een externe identificator hebben"@nl ;
+        owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Onttrekkingspunt a owl:Class ;
@@ -653,10 +766,10 @@
         rdfs:label "Onttrekking 1"@nl
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een Onttrekkingspunt moet een benaming hebben"@nl ;
@@ -670,7 +783,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt moet een geldigheid start hebben"@nl ;
@@ -703,6 +817,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt kan een status hebben"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -718,6 +833,26 @@
         owl:onProperty ogc:hasGeometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een onttrekkingspunt kan een externe identificator hebben"@nl ;
+        owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
     
 :AbstractEmissiepunt a owl:Class ;
@@ -806,10 +941,10 @@
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     rdfs:subClassOf ogc:SpatialObject, ssn:System ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     skos:example [ a :Meetpunt ;
         rdfs:label "Meetpunt Luchtkwaliteit Schouw 1"@nl ;
@@ -836,7 +971,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt moet een modificatie datum hebben"@nl ;
@@ -869,12 +1005,14 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -882,81 +1020,55 @@
         owl:onProperty ogc:hasGeometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
-:Apparaat a owl:Class ;
-    rdfs:label "Apparaat"@nl ;
-    rdfs:comment "Een apparaat is een specifiek onderdeel van een installatie dat een bepaalde functie vervult binnen de installatie."@nl ;
-    skos:example [ a :Apparaat ;
-        rdfs:label "Filterinstallatie Schouw 1"@nl ;
-        dct:created "2020-01-01T00:00:00"^^xsd:dateTime ;
-        dct:issued "2020-01-01"^^xsd:date ;
-        dct:valid "2030-12-31"^^xsd:date ;
-        sosa:isHostedBy [ a :Installatie ;
-            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
-        ]
-    ] ;
-    hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/apparaat/{uuid}/{issued}/{modified}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ] ,
-                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "modified" ; hydra:property dct:modified ; hydra:required true ]
-    ] ;
-    rdfs:subClassOf ogc:SpatialObject, ssn:System ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een apparaat moet een modificatie datum hebben"@nl ;
-        owl:onProperty dct:modified ;
-        owl:someValuesFrom xsd:dateTime ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een apparaat moet een creatie datum hebben"@nl ;
-        owl:onProperty dct:created ;
-        owl:someValuesFrom xsd:dateTime ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een apparaat moet een geldigheid start hebben"@nl ;
-        owl:onProperty dct:issued ;
-        owl:someValuesFrom xsd:date ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een apparaat kan een geldigheid einde hebben"@nl ;
-        owl:onProperty dct:valid ;
-        owl:someValuesFrom xsd:date ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een apparaat moet gekoppeld zijn aan exact één exploitatie locatie"@nl ;
-        owl:onProperty sosa:isHostedBy ; 
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een apparaat moet een benaming hebben"@nl ;
-        owl:onProperty rdfs:label ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een apparaat mag max 1 geometrie hebben"@nl ;
-        owl:onProperty ogc:hasGeometry ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
+# Proces Procedures
+:TransportProcedure a owl:Class, skos:Concept ;
+    rdfs:label "Transport Procedure"@nl ;
+    rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+:VerwerkingProcedure a owl:Class, skos:Concept ;
+    rdfs:label "Verwerkings Procedure"@nl ;
+    rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
+    rdfs:subClassOf sosa:Procedure .
 
+:VerbruikProcedure a owl:Class, skos:Concept ;
+    rdfs:label "Verbruiks Procedure"@nl ;
+    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
+    rdfs:subClassOf :TransportProcedure .
+:EmissieProcedure a owl:Class, skos:Concept ;
+    rdfs:label "Emissie Procedure"@nl ;
+    rdfs:comment "Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
+    rdfs:subClassOf :TransportProcedure .
+
+# Meet Procedures
+:MeetProcedure a owl:Class, skos:Concept ;
+    rdfs:label "Meetprocedure"@nl ;
+    rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
+    rdfs:subClassOf sosa:Procedure .
+
+# Observatie
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property adms:identifier ; hydra:required true ]
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         rdfs:comment "Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie"@nl ;
@@ -964,34 +1076,45 @@
         owl:someValuesFrom :Meetpunt ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        rdfs:comment "Een observatie moet een resultaat hebben."@nl ;
+        owl:onProperty sosa:hasResult ;
+        owl:someValuesFrom sosa:Result ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-# Proces Procedures
-:TransportProcedure a owl:Class, skos:ConceptScheme ;
-    rdfs:label "Transport Procedure"@nl ;
-    rdfs:comment "Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces."@nl ;
-    rdfs:subClassOf sosa:Procedure .
-:VerwerkingsProcedure a owl:Class, skos:ConceptScheme ;
-    rdfs:label "Verwerkings Procedure"@nl ;
-    rdfs:comment "Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
-    rdfs:subClassOf sosa:Procedure .
-
-:VerbruiksProcedure a owl:Class, skos:ConceptScheme ;
-    rdfs:label "Verbruiks Procedure"@nl ;
-    rdfs:comment "Een verbruiks procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
-    # Verbruiks procedures zijn het transport van stoffen van buiten naar binnen
-    rdfs:subClassOf :TransportProcedure .
-:EmissieProcedure a owl:Class, skos:ConceptScheme ;
-    rdfs:label "Emissie Procedure"@nl ;
-    rdfs:comment "Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
-    # Emissie procedures zijn het intern transport van stoffen naar emissiepunten
-    rdfs:subClassOf :TransportProcedure .
-
-# Meet Procedures
-:MeetProcedure a owl:Class ;
-    rdfs:label "Meetprocedure"@nl ;
-    rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
-    rdfs:subClassOf sosa:Procedure .
+:Emissie a owl:Class ;
+    rdfs:label "Emissie"@nl ;
+    rdfs:comment "Een emissie is een specifiek resultaat dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
+    rdfs:subClassOf sosa:Result ;
+    owl:equivalentClass [ a owl:Restriction ;
+        rdfs:comment "Een emissie moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een emissiepunt"@nl ;
+        owl:onProperty pplan:correspondsToVariable ;
+        owl:someValuesFrom [ a owl:Restriction ;
+            owl:onProperty pplan:isOutputVarOf ;
+            owl:someValuesFrom [ a owl:Restriction ;
+                owl:onProperty ssn:implementedBy ;
+                owl:someValuesFrom :Emissiepunt
+            ]
+        ]
+    ] .
+:Lozing a owl:Class ;
+    rdfs:label "Lozing"@nl ;
+    rdfs:comment "Een lozing is een specifiek resultaat dat betrekking heeft op het lozen van stoffen aan een lozingspunt."@nl ;
+    rdfs:subClassOf :Emissie ;
+    owl:equivalentClass [ a owl:Restriction ;
+        rdfs:comment "Een lozing moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een lozingspunt"@nl ;
+        owl:onProperty pplan:correspondsToVariable ;
+        owl:someValuesFrom [ a owl:Restriction ;
+            owl:onProperty pplan:isOutputVarOf ;
+            owl:someValuesFrom [ a owl:Restriction ;
+                owl:onProperty ssn:implementedBy ;
+                owl:someValuesFrom :Lozingspunt
+            ]
+        ]
+    ] .
 
 # --------------------------------------- #
 # Object Properties
@@ -1008,58 +1131,6 @@
 # --------------------------------------- #
 # Individuals
 # --------------------------------------- #
-# Procedure concepten voor ssn:implements
-:apparaatVerwerkingsProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Apparaatverwerkingsproces"@nl ;
-    rdfs:comment "Een apparaatverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een apparaat."@nl ;
-    skos:broader :VerwerkingsProcedure ;
-    skos:prefLabel "Apparaatverwerkingsproces"@nl .
-:installatieVerwerkingsProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Installatieverwerkingsproces"@nl ;
-    rdfs:comment "Een installatieverwerkingsproces is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een installatie."@nl ;
-    skos:broader :VerwerkingsProcedure ;
-    skos:prefLabel "Installatieverwerkingsproces"@nl .
-:overbrengingsProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Overbrengingsproces"@nl ;
-    rdfs:comment "Een overbrengingsproces is een specifieke procedure die betrekking heeft op het transport van stoffen via externe overbrenging."@nl ;
-    skos:broader :TransportProcedure ;
-    skos:prefLabel "Overbrengingsproces"@nl .
-:lozingsProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Lozingsproces"@nl ;
-    rdfs:comment "Een lozingsproces is een specifieke procedure die betrekking heeft op het lozen van stoffen aan een emissiepunt in grondwater."@nl ;
-    skos:broader :EmissieProcedure ;
-    skos:prefLabel "Lozingsproces"@nl .
-:uitstootProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Uitstootproces"@nl ;
-    rdfs:comment "Een uitstootproces is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan een emissiepunt in de lucht."@nl ;
-    skos:broader :EmissieProcedure ;
-    skos:prefLabel "Uitstootproces"@nl .
-:electriciteitsVerbruikProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Elektriciteitsverbruikproces"@nl ;
-    rdfs:comment "Een elektriciteitsverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van elektriciteit binnen een proces."@nl ;
-    skos:broader :VerbruiksProcedure ;
-    skos:prefLabel "Elektriciteitsverbruikproces"@nl .
-:waterVerbruikProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Waterverbruikproces"@nl ;
-    rdfs:comment "Een waterverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van water binnen een proces."@nl ;
-    skos:broader :VerbruiksProcedure ;
-    skos:prefLabel "Waterverbruikproces"@nl .
-:brandstofVerbruikProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Brandstofverbruikproces"@nl ;
-    rdfs:comment "Een brandstofverbruikproces is een specifieke procedure die betrekking heeft op het verbruik van brandstof binnen een proces."@nl ;
-    skos:broader :VerbruiksProcedure ;
-    skos:prefLabel "Brandstofverbruikproces"@nl .
-:eindproductProductieProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Eindproduct productieproces"@nl ;
-    rdfs:comment "Een eindproduct productieproces is een specifieke procedure die betrekking heeft op de productie van eindproducten als output van een proces."@nl ;
-    skos:broader :VerwerkingsProcedure ;
-    skos:prefLabel "Eindproduct productieproces"@nl .
-:meetProces a skos:Concept, sosa:Procedure ;
-    rdfs:label "Meetproces"@nl ;
-    rdfs:comment "Een meetproces is een specifieke procedure die betrekking heeft op het uitvoeren van metingen op meetpunten."@nl ;
-    skos:broader :MeetProcedure ;
-    skos:prefLabel "Meetproces"@nl .
-
 # Status concepten voor adms:status
 :Actief a skos:Concept ;
     rdfs:label "Actief"@nl ;
@@ -1081,11 +1152,6 @@
     rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is."@nl ;
     skos:prefLabel "Voorgesteld"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/UnderDevelopment> .
-:Ontwerp a skos:Concept ;
-    rdfs:label "Ontwerp"@nl ;
-    rdfs:comment "De ontwerp status geeft aan dat een entiteit in de ontwerpfase zit en nog niet is voorgesteld."@nl ;
-    skos:prefLabel "Ontwerp"@nl ;
-    rdfs:equivalentClass <http://purl.org/adms/status/UnderDevelopment> .
 
 # --------------------------------------- #
 # Axioms
@@ -1101,21 +1167,25 @@
 ] .
 
 [ a owl:Class ;
-    rdfs:comment "Een proces met een verwerkingsprocedure moet stoffen verwerken binnen een apparaat"@nl ;
+    rdfs:comment "Een proces met een VerwerkingProcedure moet stoffen verwerken binnen een installatie"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:someValuesFrom :apparaatVerwerkingsProces
+        owl:someValuesFrom :VerwerkingProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
-    owl:someValuesFrom :Apparaat
+    owl:someValuesFrom :Installatie
 ] .
 
 [ a owl:Class ;
     rdfs:comment "Een proces met een meetprocedure moet metingen uitvoeren op een meetpunt"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
-        owl:someValuesFrom :meetProces
+        owl:someValuesFrom :MeetProcedure
     ] )
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
     owl:someValuesFrom :Meetpunt
 ] .
+
+# p-plan does not have an inverse indication for pplan:hasOutputVar
+# It does have an inverse for hasInputVar
+pplan:isOutputVarOf owl:inverseOf pplan:hasOutputVar .
