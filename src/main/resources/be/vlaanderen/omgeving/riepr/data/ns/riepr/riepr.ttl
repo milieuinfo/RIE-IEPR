@@ -361,8 +361,8 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitatie is geimplementeerd door een proces"@nl ;
-        owl:onProperty ssn:implementedBy ;
+        rdfs:comment "Een exploitatie implementeerd een proces"@nl ;
+        owl:onProperty ssn:implements ;
         owl:someValuesFrom :Proces ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
@@ -649,7 +649,7 @@
         owl:onProperty [ a owl:ObjectProperty ;
             owl:inverseOf ssn:hasSubSystem
         ] ;
-        owl:someValuesFrom :Installatie ;
+        owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -754,7 +754,7 @@
         owl:onProperty [ a owl:ObjectProperty ;
             owl:inverseOf ssn:hasSubSystem
         ] ;
-        owl:someValuesFrom :Installatie ;
+        owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -851,9 +851,16 @@
         owl:onProperty [ a owl:ObjectProperty ;
             owl:inverseOf ssn:hasSubSystem
         ] ;
-        owl:someValuesFrom :Installatie ;
+        owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] .
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # *..* relation with the inverse of ssn:hasSubSystem
+        rdfs:comment "Een onttrekkingspunt kan filters hebben"@nl ;
+        owl:onProperty ssn:hasSubSystem ; 
+        owl:someValuesFrom :Filter ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;.
     
 :AbstractEmissiepunt a owl:Class ;
     rdfs:label "Abstract Emissiepunt"@nl ;
@@ -1032,9 +1039,15 @@
         owl:onProperty [ a owl:ObjectProperty ;
             owl:inverseOf ssn:hasSubSystem
         ] ;
-        owl:someValuesFrom :Installatie ;
+        owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
+
+# Filters
+:Filter a owl:Class ;
+    rdfs:label "Filter"@nl ;
+    rdfs:comment "Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen."@nl ;
+    rdfs:subClassOf ssn:System .
 
 # Proces Procedures
 :TransportProcedure a owl:Class, skos:Concept ;
@@ -1073,7 +1086,7 @@
     rdfs:subClassOf [ a owl:Restriction ; 
         rdfs:comment "Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie"@nl ;
         owl:onProperty sosa:hasFeatureOfInterest ; 
-        owl:someValuesFrom :Meetpunt ;
+        owl:someValuesFrom :Emissie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1099,6 +1112,12 @@
                 owl:someValuesFrom :Emissiepunt
             ]
         ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with sosa:hasResult
+        owl:onProperty sosa:isResultOf ;
+        owl:someValuesFrom sosa:Observation ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 :Lozing a owl:Class ;
     rdfs:label "Lozing"@nl ;
@@ -1132,22 +1151,22 @@
 # Individuals
 # --------------------------------------- #
 # Status concepten voor adms:status
-:Actief a skos:Concept ;
+:Actief a adms:Status, skos:Concept ;
     rdfs:label "Actief"@nl ;
     rdfs:comment "De actieve status geeft aan dat een entiteit momenteel in gebruik is."@nl ;
     skos:prefLabel "Actief"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Completed> .
-:Inactief a skos:Concept ;
+:Inactief a adms:Status, skos:Concept ;
     rdfs:label "Inactief"@nl ;
     rdfs:comment "De inactieve status geeft aan dat een entiteit momenteel niet in gebruik is."@nl ;
     skos:prefLabel "Inactief"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Deprecated> .
-:Gesloten a skos:Concept ;
+:Gesloten a adms:Status, skos:Concept ;
     rdfs:label "Gesloten"@nl ;
     rdfs:comment "De gesloten status geeft aan dat een entiteit permanent buiten gebruik is gesteld."@nl ;
     skos:prefLabel "Gesloten"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Withdrawn> .
-:Voorgesteld a skos:Concept ;
+:Voorgesteld a adms:Status, skos:Concept ;
     rdfs:label "Voorgesteld"@nl ;
     rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is."@nl ;
     skos:prefLabel "Voorgesteld"@nl ;

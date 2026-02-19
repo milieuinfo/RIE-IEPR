@@ -1,3 +1,5 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix :       <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix riepr:  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
@@ -249,6 +251,26 @@
     owl:equivalentClass ssn:System ;
     skos:inScheme <> .
 
+# ---------------------------------------- #
+# adms:Identifier
+# ---------------------------------------- #
+
+:ExterneIdentificator a skos:Concept ;
+    skos:prefLabel "externe identificator"@nl ;
+    skos:definition "Een identificator die verwijst naar een entiteit in een extern systeem."@nl ;
+    owl:equivalentClass adms:Identifier ;
+    skos:inScheme <> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        owl:onProperty skos:notation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        owl:onProperty rdf:value ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
 :schema a skos:Concept ;
     skos:prefLabel "schema"@nl ;
     skos:definition "De eigenschap die de relatie tussen een concept en het schema waartoe het behoort beschrijft."@nl ;
@@ -261,8 +283,4 @@
     owl:equivalentProperty skos:notation ;
     skos:inScheme <> .
 
-:ExterneIdentificator a skos:Concept ;
-    skos:prefLabel "externe identificator"@nl ;
-    skos:definition "Een identificator die verwijst naar een entiteit in een extern systeem."@nl ;
-    owl:equivalentClass adms:Identifier ;
-    skos:inScheme <> .
+# ---------------------------------------- #
