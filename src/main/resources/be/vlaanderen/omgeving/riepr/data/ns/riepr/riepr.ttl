@@ -98,8 +98,9 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with org:memberOf
         rdfs:comment "Een exploitant kan meerdere contactpersonen hebben"@nl ;
-        owl:onProperty foaf:member ;
+        owl:onProperty org:hasMember ;
         owl:someValuesFrom :Contactpersoon ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ; 
@@ -178,8 +179,13 @@
         rdfs:comment "Een exploitant contactpersoon kan een opmerking hebben"@nl ;
         owl:onProperty rdfs:comment ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] 
-    .
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with org:member
+        owl:onProperty org:memberOf ;
+        owl:someValuesFrom :Exploitant, :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger 
+    ] .
 
 :ExploitatieLocatie a owl:Class ;
     rdfs:label "Exploitatie Locatie"@nl ;
@@ -253,7 +259,8 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie locatie kan optioneel beïnvloed zijn door aan een org:Site of ander type"@nl ;
         owl:onProperty prov:wasInfluencedBy ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie locatie kan een revisie zijn van een andere exploitatie locatie (optioneel)"@nl ;
@@ -274,6 +281,12 @@
         owl:someValuesFrom locn:Address ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:inDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Exploitatie a owl:Class ;
@@ -306,12 +319,14 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:inDeployment
         rdfs:comment "Een exploitatie zet systemem in"@nl ;
         owl:onProperty ssn:deployedSystem ;
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+    
         rdfs:comment "Een exploitatie wordt op een bepaalde exploitatie locatie uitgevoerd"@nl ;
         owl:onProperty ssn:deployedOnPlatform ;
         owl:someValuesFrom :ExploitatieLocatie ;
@@ -353,8 +368,9 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with org:memberOf
         rdfs:comment "Een exploitatie kan meerdere contactpersonen hebben"@nl ;
-        owl:onProperty foaf:member ;
+        owl:onProperty org:hasMember ;
         owl:someValuesFrom :Contactpersoon ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
@@ -446,22 +462,36 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isInputVarOf
         rdfs:comment "Een proces mag minstens één inputvariabele hebben (stof)"@nl ;
         owl:onProperty pplan:hasInputVar ;
         owl:someValuesFrom pplan:Variable ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isOutputVarOf
         rdfs:comment "Een proces mag minstens één outputvariabele hebben (stof)"@nl ;
         owl:onProperty pplan:hasOutputVar ;
         owl:someValuesFrom pplan:Variable ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een proces kan deel uitmaken van een ander proces (hiërarchie)"@nl ;
+        rdfs:comment "Een proces kan deel uitmaken van een of meer andere processen"@nl ;
         owl:onProperty pplan:isStepOfPlan ; 
         owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdf:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:isStepOfPlan
+        owl:onProperty pplan:hasStep ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:implements
+        owl:onProperty ssn:implementedBy ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     ] .
 
 :ProcesVariabele a owl:Class ;
@@ -500,6 +530,18 @@
         owl:onProperty qudt:numericValue ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:hasInputVar
+        owl:onProperty pplan:isInputVarOf ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with pplan:hasOutputVar
+        owl:onProperty pplan:isOutputVarOf ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
     
 :Installatie a owl:Class ;
@@ -529,12 +571,14 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
+        # *..* relation with the inverse of ssn:hasSubSystem
         rdfs:comment "Een installatie kan als systeem meerdere objecten bevatten; dit is optioneel, want een installatie kan ook (nog) geen sub-systemen hebben"@nl ;
         owl:onProperty ssn:hasSubSystem ; 
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:implementedBy
         rdfs:comment "Een installatie kan ook processen bevatten die deze installatie voortstelt"@nl ;
         owl:onProperty ssn:implements ;
         owl:someValuesFrom :Proces ;
@@ -593,6 +637,20 @@
         owl:someValuesFrom :Installatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Emissiepunt a owl:Class ;
@@ -684,6 +742,20 @@
         owl:onProperty adms:identifier ;
         owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Onttrekkingspunt a owl:Class ;
@@ -766,6 +838,20 @@
         rdfs:comment "Een onttrekkingspunt kan een externe identificator hebben"@nl ;
         owl:onProperty adms:identifier ;
         owl:someValuesFrom adms:Identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
     
@@ -934,6 +1020,20 @@
         owl:onProperty ogc:hasGeometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:deployedSystem
+        owl:onProperty ssn:hasDeployment ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom :Installatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 # Proces Procedures
@@ -987,12 +1087,34 @@
 
 :Emissie a owl:Class ;
     rdfs:label "Emissie"@nl ;
-    rdfs:comment "Een emissie is een specifieke procedure die betrekking heeft op het uitstoten van stoffen aan emissiepunten in de lucht."@nl ;
-    rdfs:subClassOf sosa:Result .
+    rdfs:comment "Een emissie is een specifiek resultaat dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
+    rdfs:subClassOf sosa:Result ;
+    owl:equivalentClass [ a owl:Restriction ;
+        rdfs:comment "Een emissie moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een emissiepunt"@nl ;
+        owl:onProperty pplan:correspondsToVariable ;
+        owl:someValuesFrom [ a owl:Restriction ;
+            owl:onProperty pplan:isOutputVarOf ;
+            owl:someValuesFrom [ a owl:Restriction ;
+                owl:onProperty ssn:implementedBy ;
+                owl:someValuesFrom :Emissiepunt
+            ]
+        ]
+    ] .
 :Lozing a owl:Class ;
     rdfs:label "Lozing"@nl ;
-    rdfs:comment "Een lozing is een specifieke procedure die betrekking heeft op het lozen van stoffen aan emissiepunten in grondwater."@nl ;
-    rdfs:subClassOf sosa:Result .
+    rdfs:comment "Een lozing is een specifiek resultaat dat betrekking heeft op het lozen van stoffen aan een lozingspunt."@nl ;
+    rdfs:subClassOf :Emissie ;
+    owl:equivalentClass [ a owl:Restriction ;
+        rdfs:comment "Een lozing moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een lozingspunt"@nl ;
+        owl:onProperty pplan:correspondsToVariable ;
+        owl:someValuesFrom [ a owl:Restriction ;
+            owl:onProperty pplan:isOutputVarOf ;
+            owl:someValuesFrom [ a owl:Restriction ;
+                owl:onProperty ssn:implementedBy ;
+                owl:someValuesFrom :Lozingspunt
+            ]
+        ]
+    ] .
 
 # --------------------------------------- #
 # Object Properties
@@ -1064,28 +1186,6 @@
     owl:someValuesFrom :Meetpunt
 ] .
 
-[ a owl:Class ;
-    rdfs:comment "Een emissie moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als invoer of uitvoer) dat geimplementeerd wordt door een emissiepunt"@nl ;
-    owl:intersectionOf ( :Emissie [ a owl:Restriction ;
-        # Een emissie resultaat correspondeert met variabele van een proces
-        owl:onProperty pplan:correspondsToVariable ;
-        owl:someValuesFrom [ a owl:Restriction ;
-            # ... die variabele is onderdeel van een proces
-            owl:onProperty pplan:isVariableOfPlan ;
-            owl:someValuesFrom [ a owl:Restriction ;
-                # ... dat proces wordt geimplementeerd door een emissiepunt
-                owl:onProperty ssn:implementedBy ;
-                owl:someValuesFrom :EmissieProcedure
-            ]
-        ]
-    ] )
-] rdfs:subClassOf [ a owl:Restriction ;
-    owl:onProperty pplan:correspondsToVariable ;
-    owl:someValuesFrom [ a owl:Restriction ;
-        owl:onProperty pplan:isVariableOfPlan ;
-        owl:someValuesFrom [ a owl:Restriction ;
-            owl:onProperty ssn:implementedBy ;
-            owl:someValuesFrom :EmissieProcedure
-        ]
-    ]
-] .
+# p-plan does not have an inverse indication for pplan:hasOutputVar
+# It does have an inverse for hasInputVar
+pplan:isOutputVarOf owl:inverseOf pplan:hasOutputVar .
