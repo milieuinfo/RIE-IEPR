@@ -10,516 +10,536 @@ erDiagram
 
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 	emissiepunt {
-	  uri VARCHAR 
-	  geometrie VARCHAR 
-	  geldig_van DATE PK
-	  benaming VARCHAR 
-	  status null 
-	  type VARCHAR 
-	  aangemaakt_op DATETIME PK
-	  geldig_tot DATE 
-	  aangepast_op DATETIME 
-	  locatie_uuid VARCHAR FK
-	  systeem_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  benaming String 
+	  status Status 
+	  locatie_uuid String FK
+	  geldigVan Date PK
+	  geldigTot Date 
+	  aangepastOp DateTime 
+	  geometrie String 
+	  type String 
+	  aangemaaktOp DateTime PK
+	  emissiepunt_uuid String PK,FK
 	}
 	
 	class emissiepunt system
 	%% http://www.w3.org/ns/sosa/isHostedBy
-	emissiepunt MANY to ONE exploitatie_locatie : locatie
+	emissiepunt many to one exploitatie_locatie : locatie_uuid
 	
-	emissiepunt ONE to MANY systeem : ""
+	emissiepunt one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Lozing
 	lozing {
-	  emissie_uuid VARCHAR FK
+	  lozing_uuid String PK,FK
 	}
 	
 	class lozing result
-	lozing ONE to MANY emissie : ""
+	lozing one to many emissie : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
 	contactpersoon {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  email VARCHAR 
-	  geldig_van DATE PK
-	  aangepast_op DATETIME 
-	  has_role VARCHAR 
-	  beschrijving VARCHAR 
-	  name VARCHAR 
-	  geldig_tot DATE 
-	  telefoonnummer VARCHAR 
-	  aangemaakt_op DATETIME PK
-	  benaming VARCHAR 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
+	  email String 
+	  hasRole String 
+	  aangepastOp DateTime 
+	  geldigTot Date 
+	  benaming String 
+	  beschrijving String 
+	  aangemaaktOp DateTime PK
+	  telefoonnummer String 
+	  geldigVan Date PK
+	  name String 
 	}
 	
+	class contactpersoon exploitant
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	exploitatie {
-	  uri VARCHAR 
-	  status null 
-	  aangepast_op DATETIME 
-	  benaming VARCHAR 
-	  geldig_van DATE PK
-	  geldig_tot DATE 
-	  aangemaakt_op DATETIME PK
-	  implementeert_uuid VARCHAR FK
-	  locatie_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  implementeert_uuid String FK
+	  aangepastOp DateTime 
+	  benaming String 
+	  geldigVan Date PK
+	  geldigTot Date 
+	  status Status 
+	  locatie_uuid String FK
+	  aangemaaktOp DateTime PK
 	}
 	
+	class exploitatie exploitant
 	%% http://www.w3.org/ns/ssn/implements
-	exploitatie ONE to ONE proces : implementeert
+	exploitatie many to one proces : implementeert_uuid
 	
 	%% http://www.w3.org/ns/ssn/deployedOnPlatform
-	exploitatie MANY to ONE exploitatie_locatie : locatie
+	exploitatie many to one exploitatie_locatie : locatie_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant
 	exploitant {
-	  uri VARCHAR 
-	  geldig_van DATE PK
-	  aangepast_op DATETIME 
-	  type VARCHAR 
-	  benaming VARCHAR 
-	  geldig_tot DATE 
-	  aangemaakt_op DATETIME PK
-	  adres_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  adres_uuid String FK
+	  geldigVan Date PK
+	  geldigTot Date 
+	  benaming String 
+	  type String 
+	  aangepastOp DateTime 
+	  aangemaaktOp DateTime PK
 	}
 	
+	class exploitant exploitant
 	%% http://www.w3.org/ns/locn#address
-	exploitant MANY to ONE adres : adres
+	exploitant many to one adres : adres_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	meetpunt {
-	  uri VARCHAR 
-	  aangepast_op DATETIME 
-	  benaming VARCHAR 
-	  status null 
-	  aangemaakt_op DATETIME PK
-	  type VARCHAR 
-	  geldig_van DATE PK
-	  geldig_tot DATE 
-	  geometrie VARCHAR 
-	  systeem_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  benaming String 
+	  geometrie String 
+	  geldigTot Date 
+	  geldigVan Date PK
+	  aangepastOp DateTime 
+	  type String 
+	  aangemaaktOp DateTime PK
+	  status Status 
+	  meetpunt_uuid String PK,FK
 	}
 	
 	class meetpunt system
-	meetpunt ONE to MANY systeem : ""
+	meetpunt one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele
 	proces_variabele {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  eenheid VARCHAR 
-	  type VARCHAR 
-	  waarde VARCHAR 
-	  benaming VARCHAR 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
+	  benaming String 
+	  type String 
+	  eenheid String 
+	  waarde Decimal 
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Schouw
 	schouw {
-	  hoogte VARCHAR 
-	  diameter VARCHAR 
-	  emissiepunt_uuid VARCHAR FK
+	  hoogte String 
+	  diameter String 
+	  schouw_uuid String PK,FK
 	}
 	
 	class schouw system
-	schouw ONE to MANY emissiepunt : ""
+	schouw one to many emissiepunt : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
 	}
 	
 	class emissie result
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 	observatie {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  has_result VARCHAR 
-	  has_feature_of_interest_uuid VARCHAR FK
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
+	  heeftResultaat Lozing 
+	  heeftAandachtspunt_uuid String FK
 	}
 	
 	%% http://www.w3.org/ns/sosa/hasResult
-	observatie MANY to ONE lozing : has_result
+	observatie many to one lozing : heeft_resultaat
 	
 	%% http://www.w3.org/ns/sosa/hasFeatureOfInterest
-	observatie MANY to ONE emissie : has_feature_of_interest
+	observatie many to one emissie : heeft_aandachtspunt_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt
 	abstract_emissiepunt {
-	  emissiepunt_uuid VARCHAR FK
+	  abstract_emissiepunt_uuid String PK,FK
 	}
 	
 	class abstract_emissiepunt system
-	abstract_emissiepunt ONE to MANY emissiepunt : ""
+	abstract_emissiepunt one to many emissiepunt : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	installatie {
-	  uri VARCHAR 
-	  revisie_van_uuid VARCHAR FK
-	  locatie_uuid VARCHAR FK
-	  aangepast_op DATETIME 
-	  geldig_van DATE PK
-	  benaming VARCHAR 
-	  geldig_tot DATE 
-	  aangemaakt_op DATETIME PK
-	  status null 
-	  systeem_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  geldigTot Date 
+	  locatie_uuid String FK
+	  status Status 
+	  geldigVan Date PK
+	  aangepastOp DateTime 
+	  revisieVan_uuid String FK
+	  benaming String 
+	  aangemaaktOp DateTime PK
+	  installatie_uuid String PK,FK
 	}
 	
 	class installatie system
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	installatie MANY to ONE installatie : revisie_van
-	
 	%% http://www.w3.org/ns/sosa/isHostedBy
-	installatie MANY to ONE exploitatie_locatie : locatie
+	installatie many to one exploitatie_locatie : locatie_uuid
 	
-	installatie ONE to MANY systeem : ""
+	%% http://www.w3.org/ns/prov#wasRevisionOf
+	installatie many to one installatie : revisie_van_uuid
+	
+	installatie one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 	onttrekkingspunt {
-	  uri VARCHAR 
-	  geldig_van DATE PK
-	  benaming VARCHAR 
-	  geometrie VARCHAR 
-	  type VARCHAR 
-	  locatie_uuid VARCHAR FK
-	  aangemaakt_op DATETIME PK
-	  geldig_tot DATE 
-	  status null 
-	  aangepast_op DATETIME 
-	  systeem_uuid VARCHAR FK
+	  uri String 
+	  ingediend Boolean 
+	  geldigVan Date PK
+	  benaming String 
+	  type String 
+	  locatie_uuid String FK
+	  aangemaaktOp DateTime PK
+	  aangepastOp DateTime 
+	  geldigTot Date 
+	  geometrie String 
+	  status Status 
+	  onttrekkingspunt_uuid String PK,FK
 	}
 	
 	class onttrekkingspunt system
 	%% http://www.w3.org/ns/sosa/isHostedBy
-	onttrekkingspunt MANY to ONE exploitatie_locatie : locatie
+	onttrekkingspunt many to one exploitatie_locatie : locatie_uuid
 	
-	onttrekkingspunt ONE to MANY systeem : ""
+	onttrekkingspunt one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces {
-	  uri VARCHAR 
-	  type VARCHAR 
-	  aangepast_op DATETIME 
-	  geimplementeerd_door_uuid VARCHAR FK
-	  benaming VARCHAR 
-	  geldig_van DATE PK
-	  status null 
-	  aangemaakt_op DATETIME PK
-	  revisie_van_uuid VARCHAR FK
-	  geldig_tot DATE 
+	  uri String 
+	  ingediend Boolean 
+	  status Status 
+	  aangepastOp DateTime 
+	  type Procedure 
+	  aangemaaktOp DateTime PK
+	  revisieVan_uuid String FK
+	  geldigTot Date 
+	  geldigVan Date PK
+	  benaming String 
+	  geimplementeerdDoor_uuid String FK
 	}
 	
 	class proces procedure
-	%% http://www.w3.org/ns/ssn/implementedBy
-	proces ONE to ONE systeem : geimplementeerd_door
-	
 	%% http://www.w3.org/ns/prov#wasRevisionOf
-	proces MANY to ONE proces : revisie_van
+	proces many to one proces : revisie_van_uuid
+	
+	%% http://www.w3.org/ns/ssn/implementedBy
+	proces many to one systeem : geimplementeerd_door_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  systeem_uuid VARCHAR FK
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
+	  filter_uuid String PK,FK
 	}
 	
 	class filter system
-	filter ONE to MANY systeem : ""
+	filter one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie
 	exploitatie_locatie {
-	  uri VARCHAR 
-	  geldig_van DATE PK
-	  aangemaakt_op DATETIME PK
-	  benaming VARCHAR 
-	  adres_uuid VARCHAR FK
-	  primaire_bron VARCHAR 
-	  geldig_tot DATE 
-	  geometrie VARCHAR 
-	  aangepast_op DATETIME 
-	  toegewezen_aan_uuid VARCHAR FK
-	  revisie_van_uuid VARCHAR FK
-	  beinvloed_door VARCHAR 
-	  same_as VARCHAR PK
+	  uri String 
+	  ingediend Boolean 
+	  toegewezenAan_uuid String FK
+	  geldigVan Date PK
+	  aangepastOp DateTime 
+	  aangemaaktOp DateTime PK
+	  primaireBron Site 
+	  beinvloedDoor String 
+	  benaming String 
+	  geometrie String 
+	  revisieVan_uuid String FK
+	  adres_uuid String FK
+	  geldigTot Date 
+	  sameAs String PK
 	}
 	
-	%% http://www.w3.org/ns/locn#address
-	exploitatie_locatie MANY to ONE adres : adres
-	
+	class exploitatie_locatie exploitant
 	%% http://www.w3.org/ns/prov#wasAttributedTo
-	exploitatie_locatie MANY to ONE exploitant : toegewezen_aan
+	exploitatie_locatie many to one exploitant : toegewezen_aan_uuid
 	
 	%% http://www.w3.org/ns/prov#wasRevisionOf
-	exploitatie_locatie MANY to ONE exploitatie_locatie : revisie_van
+	exploitatie_locatie many to one exploitatie_locatie : revisie_van_uuid
+	
+	%% http://www.w3.org/ns/locn#address
+	exploitatie_locatie many to one adres : adres_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput
 	grondwaterput {
-	  diepte VARCHAR 
-	  onttrekkingspunt_uuid VARCHAR FK
+	  diepte String 
+	  grondwaterput_uuid String PK,FK
 	}
 	
 	class grondwaterput system
-	grondwaterput ONE to MANY onttrekkingspunt : ""
+	grondwaterput one to many onttrekkingspunt : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Lozingspunt
 	lozingspunt {
-	  diepte VARCHAR 
-	  emissiepunt_uuid VARCHAR FK
+	  diepte String 
+	  lozingspunt_uuid String PK,FK
 	}
 	
 	class lozingspunt system
-	lozingspunt ONE to MANY emissiepunt : ""
+	lozingspunt one to many emissiepunt : ""
 	
 	%% http://www.w3.org/ns/adms#Identifier
 	externe_identificator {
-	  schema VARCHAR 
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  value VARCHAR 
-	  notatie VARCHAR 
+	  schema String 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
+	  value String 
+	  notatie String 
 	}
 	
 	%% http://www.w3.org/ns/locn#Address
 	adres {
-	  stad VARCHAR 
-	  straat VARCHAR 
-	  postcode VARCHAR 
-	  uuid VARCHAR PK
-	  uri VARCHAR 
+	  stad String 
+	  straat String 
+	  postcode String 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
 	}
 	
 	%% http://www.w3.org/ns/ssn/System
 	systeem {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
+	  uuid String PK
+	  uri String 
+	  ingediend Boolean 
 	}
 	
 	class systeem system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 	emissiepunt_externe_identificator {
-	  emissiepunt_uuid VARCHAR PK,FK
-	  emissiepunt_geldig_van DATE PK,FK
-	  emissiepunt_aangemaakt_op DATETIME PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	  emissiepunt_uuid String PK,FK
+	  emissiepunt_geldigVan Date PK,FK
+	  emissiepunt_aangemaaktOp DateTime PK,FK
+	  emissiepunt_emissiepunt_uuid String PK,FK
+	  externe_identificator_uuid String PK,FK
 	}
 	
 	class emissiepunt_externe_identificator system
 	%% http://www.w3.org/ns/adms#identifier
-	emissiepunt_externe_identificator MANY to ONE emissiepunt : identifier
+	emissiepunt_externe_identificator many to one emissiepunt : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	emissiepunt_externe_identificator MANY to ONE externe_identificator : identifier
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
-	exploitatie_systeem {
-	  exploitatie_uuid VARCHAR PK,FK
-	  exploitatie_geldig_van DATE PK,FK
-	  exploitatie_aangemaakt_op DATETIME PK,FK
-	  systeem_uuid VARCHAR PK,FK
-	}
-	
-	%% http://www.w3.org/ns/ssn/deployedSystem
-	exploitatie_systeem MANY to ONE exploitatie : inzetbaar_systeem
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	exploitatie_systeem MANY to ONE systeem : inzetbaar_systeem
+	emissiepunt_externe_identificator many to one externe_identificator : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	exploitatie_externe_identificator {
-	  exploitatie_geldig_van DATE PK,FK
-	  exploitatie_aangemaakt_op DATETIME PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	  exploitatie_uuid String PK,FK
+	  exploitatie_geldigVan Date PK,FK
+	  exploitatie_aangemaaktOp DateTime PK,FK
+	  externe_identificator_uuid String PK,FK
 	}
 	
+	class exploitatie_externe_identificator exploitant
 	%% http://www.w3.org/ns/adms#identifier
-	exploitatie_externe_identificator MANY to ONE exploitatie : identifier
+	exploitatie_externe_identificator many to one exploitatie : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	exploitatie_externe_identificator MANY to ONE externe_identificator : identifier
+	exploitatie_externe_identificator many to one externe_identificator : identifier_uuid
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
+	exploitatie_systeem {
+	  exploitatie_geldigVan Date PK,FK
+	  exploitatie_aangemaaktOp DateTime PK,FK
+	  systeem_uuid String PK,FK
+	}
+	
+	class exploitatie_systeem exploitant
+	%% http://www.w3.org/ns/ssn/deployedSystem
+	exploitatie_systeem many to one exploitatie : inzetbaar_systeem_uuid
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	exploitatie_systeem many to one systeem : inzetbaar_systeem_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	exploitatie_contactpersoon {
-	  exploitatie_geldig_van DATE PK,FK
-	  exploitatie_aangemaakt_op DATETIME PK,FK
-	  contactpersoon_uuid VARCHAR PK,FK
-	  contactpersoon_geldig_van DATE PK,FK
-	  contactpersoon_aangemaakt_op DATETIME PK,FK
+	  exploitatie_geldigVan Date PK,FK
+	  exploitatie_aangemaaktOp DateTime PK,FK
+	  contactpersoon_uuid String PK,FK
+	  contactpersoon_aangemaaktOp DateTime PK,FK
+	  contactpersoon_geldigVan Date PK,FK
 	}
 	
+	class exploitatie_contactpersoon exploitant
 	%% http://www.w3.org/ns/org#hasMember
-	exploitatie_contactpersoon MANY to ONE exploitatie : heeft_contactpersoon
+	exploitatie_contactpersoon many to one exploitatie : heeft_contactpersoon_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	exploitatie_contactpersoon MANY to ONE contactpersoon : heeft_contactpersoon
+	exploitatie_contactpersoon many to one contactpersoon : heeft_contactpersoon_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant
 	exploitant_contactpersoon {
-	  exploitant_uuid VARCHAR PK,FK
-	  exploitant_geldig_van DATE PK,FK
-	  exploitant_aangemaakt_op DATETIME PK,FK
-	  contactpersoon_uuid VARCHAR PK,FK
-	  contactpersoon_geldig_van DATE PK,FK
-	  contactpersoon_aangemaakt_op DATETIME PK,FK
+	  exploitant_uuid String PK,FK
+	  exploitant_geldigVan Date PK,FK
+	  exploitant_aangemaaktOp DateTime PK,FK
+	  contactpersoon_uuid String PK,FK
+	  contactpersoon_aangemaaktOp DateTime PK,FK
+	  contactpersoon_geldigVan Date PK,FK
 	}
 	
+	class exploitant_contactpersoon exploitant
 	%% http://www.w3.org/ns/org#hasMember
-	exploitant_contactpersoon MANY to ONE exploitant : heeft_contactpersoon
+	exploitant_contactpersoon many to one exploitant : heeft_contactpersoon_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	exploitant_contactpersoon MANY to ONE contactpersoon : heeft_contactpersoon
+	exploitant_contactpersoon many to one contactpersoon : heeft_contactpersoon_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	meetpunt_externe_identificator {
-	  meetpunt_uuid VARCHAR PK,FK
-	  meetpunt_aangemaakt_op DATETIME PK,FK
-	  meetpunt_geldig_van DATE PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	  meetpunt_uuid String PK,FK
+	  meetpunt_geldigVan Date PK,FK
+	  meetpunt_aangemaaktOp DateTime PK,FK
+	  meetpunt_meetpunt_uuid String PK,FK
+	  externe_identificator_uuid String PK,FK
 	}
 	
 	class meetpunt_externe_identificator system
 	%% http://www.w3.org/ns/adms#identifier
-	meetpunt_externe_identificator MANY to ONE meetpunt : identifier
+	meetpunt_externe_identificator many to one meetpunt : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meetpunt_externe_identificator MANY to ONE externe_identificator : identifier
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
-	installatie_proces {
-	  installatie_uuid VARCHAR PK,FK
-	  installatie_geldig_van DATE PK,FK
-	  installatie_aangemaakt_op DATETIME PK,FK
-	  proces_uuid VARCHAR PK,FK
-	  proces_geldig_van DATE PK,FK
-	  proces_aangemaakt_op DATETIME PK,FK
-	}
-	
-	class installatie_proces system
-	%% http://www.w3.org/ns/ssn/implements
-	installatie_proces MANY to ONE installatie : implementeert
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	installatie_proces MANY to ONE proces : implementeert
+	meetpunt_externe_identificator many to one externe_identificator : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	installatie_systeem {
-	  installatie_geldig_van DATE PK,FK
-	  installatie_aangemaakt_op DATETIME PK,FK
-	  systeem_uuid VARCHAR PK,FK
+	  installatie_uuid String PK,FK
+	  installatie_geldigVan Date PK,FK
+	  installatie_aangemaaktOp DateTime PK,FK
+	  installatie_installatie_uuid String PK,FK
+	  systeem_uuid String PK,FK
 	}
 	
 	class installatie_systeem system
 	%% http://www.w3.org/ns/ssn/hasSubSystem
-	installatie_systeem MANY to ONE installatie : heeft_sub_systeem
+	installatie_systeem many to one installatie : heeft_sub_systeem_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	installatie_systeem MANY to ONE systeem : heeft_sub_systeem
+	installatie_systeem many to one systeem : heeft_sub_systeem_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	installatie_externe_identificator {
-	  installatie_geldig_van DATE PK,FK
-	  installatie_aangemaakt_op DATETIME PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	  installatie_geldigVan Date PK,FK
+	  installatie_aangemaaktOp DateTime PK,FK
+	  installatie_installatie_uuid String PK,FK
+	  externe_identificator_uuid String PK,FK
 	}
 	
 	class installatie_externe_identificator system
 	%% http://www.w3.org/ns/adms#identifier
-	installatie_externe_identificator MANY to ONE installatie : identifier
+	installatie_externe_identificator many to one installatie : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	installatie_externe_identificator MANY to ONE externe_identificator : identifier
+	installatie_externe_identificator many to one externe_identificator : identifier_uuid
 	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
-	onttrekkingspunt_externe_identificator {
-	  onttrekkingspunt_uuid VARCHAR PK,FK
-	  onttrekkingspunt_geldig_van DATE PK,FK
-	  onttrekkingspunt_aangemaakt_op DATETIME PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
+	installatie_proces {
+	  installatie_geldigVan Date PK,FK
+	  installatie_aangemaaktOp DateTime PK,FK
+	  installatie_installatie_uuid String PK,FK
+	  proces_uuid String PK,FK
+	  proces_aangemaaktOp DateTime PK,FK
+	  proces_geldigVan Date PK,FK
 	}
 	
-	class onttrekkingspunt_externe_identificator system
-	%% http://www.w3.org/ns/adms#identifier
-	onttrekkingspunt_externe_identificator MANY to ONE onttrekkingspunt : identifier
+	class installatie_proces system
+	%% http://www.w3.org/ns/ssn/implements
+	installatie_proces many to one installatie : implementeert_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekkingspunt_externe_identificator MANY to ONE externe_identificator : identifier
+	installatie_proces many to one proces : implementeert_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 	onttrekkingspunt_filter {
-	  onttrekkingspunt_geldig_van DATE PK,FK
-	  onttrekkingspunt_aangemaakt_op DATETIME PK,FK
-	  filter_uuid VARCHAR PK,FK
+	  onttrekkingspunt_uuid String PK,FK
+	  onttrekkingspunt_geldigVan Date PK,FK
+	  onttrekkingspunt_aangemaaktOp DateTime PK,FK
+	  onttrekkingspunt_onttrekkingspunt_uuid String PK,FK
+	  filter_uuid String PK,FK
+	  filter_filter_uuid String PK,FK
 	}
 	
 	class onttrekkingspunt_filter system
 	%% http://www.w3.org/ns/ssn/hasSubSystem
-	onttrekkingspunt_filter MANY to ONE onttrekkingspunt : heeft_sub_systeem
+	onttrekkingspunt_filter many to one onttrekkingspunt : heeft_sub_systeem_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekkingspunt_filter MANY to ONE filter : heeft_sub_systeem
+	onttrekkingspunt_filter many to one filter : heeft_sub_systeem_uuid
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
+	onttrekkingspunt_externe_identificator {
+	  onttrekkingspunt_geldigVan Date PK,FK
+	  onttrekkingspunt_aangemaaktOp DateTime PK,FK
+	  onttrekkingspunt_onttrekkingspunt_uuid String PK,FK
+	  externe_identificator_uuid String PK,FK
+	}
+	
+	class onttrekkingspunt_externe_identificator system
+	%% http://www.w3.org/ns/adms#identifier
+	onttrekkingspunt_externe_identificator many to one onttrekkingspunt : identifier_uuid
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	onttrekkingspunt_externe_identificator many to one externe_identificator : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_proces_variabele {
-	  proces_uuid VARCHAR PK,FK
-	  proces_geldig_van DATE PK,FK
-	  proces_aangemaakt_op DATETIME PK,FK
-	  proces_variabele_uuid VARCHAR PK,FK
+	  proces_uuid String PK,FK
+	  proces_aangemaaktOp DateTime PK,FK
+	  proces_geldigVan Date PK,FK
+	  proces_variabele_uuid String PK,FK
+	  relation_type proces_proces_variabele_merge_type PK
 	}
 	
 	class proces_proces_variabele procedure
 	%% http://purl.org/net/p-plan#hasOutputVar
-	proces_proces_variabele MANY to ONE proces : heeft_uitvoer
+	proces_proces_variabele many to one proces : heeft_uitvoer_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	proces_proces_variabele MANY to ONE proces_variabele : heeft_uitvoer
+	proces_proces_variabele many to one proces_variabele : heeft_uitvoer_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_proces {
-	  proces_geldig_van DATE PK,FK
-	  proces_aangemaakt_op DATETIME PK,FK
-	  proces_geldig_van DATE PK,FK
-	  proces_aangemaakt_op DATETIME PK,FK
+	  proces_aangemaaktOp DateTime PK,FK
+	  proces_geldigVan Date PK,FK
+	  proces_proces_aangemaaktOp DateTime PK,FK
+	  proces_proces_geldigVan Date PK,FK
 	}
 	
 	class proces_proces procedure
 	%% http://purl.org/net/p-plan#isStepOfPlan
-	proces_proces MANY to ONE proces : onderdeel_van
+	proces_proces many to one proces : onderdeel_van_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	proces_proces MANY to ONE proces : onderdeel_van
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
-	proces_proces_variabele {
-	  proces_geldig_van DATE PK,FK
-	  proces_aangemaakt_op DATETIME PK,FK
-	  proces_variabele_uuid VARCHAR PK,FK
-	}
-	
-	class proces_proces_variabele procedure
-	%% http://purl.org/net/p-plan#hasInputVar
-	proces_proces_variabele MANY to ONE proces : heeft_invoer
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	proces_proces_variabele MANY to ONE proces_variabele : heeft_invoer
+	proces_proces many to one proces : onderdeel_van_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie
 	exploitatie_locatie_externe_identificator {
-	  exploitatie_locatie_uuid VARCHAR PK,FK
-	  exploitatie_locatie_geldig_van DATE PK,FK
-	  exploitatie_locatie_aangemaakt_op DATETIME PK,FK
-	  exploitatie_locatie_same_as VARCHAR PK,FK
-	  externe_identificator_uuid VARCHAR PK,FK
+	  exploitatie_locatie_uuid String PK,FK
+	  exploitatie_locatie_geldigVan Date PK,FK
+	  exploitatie_locatie_aangemaaktOp DateTime PK,FK
+	  exploitatie_locatie_sameAs String PK,FK
+	  externe_identificator_uuid String PK,FK
 	}
 	
+	class exploitatie_locatie_externe_identificator exploitant
 	%% http://www.w3.org/ns/adms#identifier
-	exploitatie_locatie_externe_identificator MANY to ONE exploitatie_locatie : identifier
+	exploitatie_locatie_externe_identificator many to one exploitatie_locatie : identifier_uuid
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	exploitatie_locatie_externe_identificator MANY to ONE externe_identificator : identifier
+	exploitatie_locatie_externe_identificator many to one externe_identificator : identifier_uuid
 	
-	classDef system fill:#ffeecc,stroke:#000000
+	classDef system fill:#4bde2a,stroke:#000000
 	classDef procedure fill:#ccffcc,stroke:#000000
 	classDef result fill:#ccccff,stroke:#000000
-	classDef exploitatie fill:#ffcccc,stroke:#000000
+	classDef exploitant fill:#f6ff00,stroke:#000000
 	
