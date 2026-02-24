@@ -20,6 +20,7 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix locn:   <http://www.w3.org/ns/locn#> .
 @prefix qudt:   <http://qudt.org/schema/qudt/> .
+@prefix nace:   <http://data.europa.eu/ux2/nace2.1/> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -42,7 +43,7 @@
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
     rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
     foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
-    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf:, qudt:, adms: , locn:, <http://www.w3.org/ns/sosa/prov> .
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf:, qudt:, adms: , locn:, nace:, <http://www.w3.org/ns/sosa/prov> .
 
 # --------------------------------------- #
 # Classes
@@ -110,6 +111,12 @@
         owl:someValuesFrom locn:Address ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitant moet een hoofdactiviteit hebben"@nl ;
+        owl:onProperty org:classification ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Contactpersoon a owl:Class ;
@@ -130,17 +137,20 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon kan een e-mailadres hebben"@nl ;
         owl:onProperty foaf:mbox ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon kan een telefoonnummer hebben"@nl ;
         owl:onProperty foaf:phone ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon moet een functie hebben binnen de organisatie"@nl ;
         owl:onProperty org:hasRole ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitant contactpersoon kan een modificatie datum hebben"@nl ;
@@ -509,9 +519,9 @@
     ] ;
     rdfs:subClassOf pplan:Variable ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een proces variabele moet een benaming hebben"@nl ;
+        rdfs:comment "Een proces variabele kan een benaming hebben"@nl ;
         owl:onProperty rdfs:label ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger 
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces variabele kan een typering hebben via dct:type"@nl ;
@@ -543,7 +553,17 @@
         owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
-    
+
+# :Systeem a owl:Class ;
+#     owl:equivalentClass ssn:System ;
+#     rdfs:subClassOf [ a owl:Restriction ;
+#         rdfs:comment "Een systeem heeft externe identificaties (optioneel)"@nl ;
+#         owl:onProperty adms:identifier ;
+#         owl:someValuesFrom adms:Identifier ;
+#         owl:minCardinality "0"^^xsd:nonNegativeInteger
+#     ] ;
+#     .
+
 :Installatie a owl:Class ;
     rdfs:label "Installatie"@nl ;
     rdfs:comment "Een installatie is infrastructuur of een verzameling van infrastructuur op een bepaalde locatie die een specifieke functie vervult."@nl ;
@@ -638,6 +658,9 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
+    ## TODO: Capaciteit
+    ## TODO: Rendement
+    ## TODO: VLAREM RUBRIEKEN
     rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with ssn:deployedSystem
         owl:onProperty ssn:hasDeployment ;
@@ -743,6 +766,24 @@
         owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        rdfs:comment "Een emissiepunt van het type schouw heeft een diameter"@nl ;
+        owl:onProperty dbo:diameter ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        rdfs:comment "Een emissiepunt van het type schouw heeft een hoogte"@nl ;
+        owl:onProperty dbo:height ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        rdfs:comment "Een emissiepunt van het type lozingspunt kan een diepte hebben"@nl ;
+        owl:onProperty dbo:depth ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with ssn:deployedSystem
         owl:onProperty ssn:hasDeployment ;
@@ -840,6 +881,12 @@
         owl:someValuesFrom adms:Identifier ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        rdfs:comment "Een onttrekkingspunt kan een diepte hebben"@nl ;
+        owl:onProperty dbo:depth ; 
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with ssn:deployedSystem
         owl:onProperty ssn:hasDeployment ;
@@ -874,74 +921,6 @@
         ]
     ] ;
     rdfs:subClassOf :Emissiepunt .
-    
-:Schouw a owl:Class ;
-    rdfs:label "Schouw"@nl ;
-    rdfs:comment "Een schouw is een specifiek type emissiepunt dat wordt gebruikt voor de uitstoot van gassen en dampen."@nl ;
-    skos:example [ a :Schouw ;
-        rdfs:label "Schouw 1 Cementfabriek Antwerpen"@nl ;
-        dbo:diameter "2.5"^^xsd:float ;
-        dbo:height "30.0"^^xsd:float ;
-        sosa:isHostedBy [ a :Installatie ;
-            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
-        ] ;
-        ogc:hasGeometry [ a ogc:Geometry ;
-            ogc:asWKT "POINT(4.4025 51.2194)"^^ogc:wktLiteral
-        ]
-    ] ;
-    rdfs:subClassOf :Emissiepunt ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een schouw heeft een diameter en hoogte"@nl ;
-        owl:onProperty dbo:diameter ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        owl:onProperty dbo:height ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
-
-:Grondwaterput a owl:Class ;
-    rdfs:label "Grondwaterput"@nl ;
-    rdfs:comment "Een grondwaterput is een fysieke put (boring) die toegang geeft tot het grondwater; wordt gebruikt voor onttrekking of bemonstering."@nl ;
-    rdfs:subClassOf :Onttrekkingspunt ;
-    skos:example [ a :Grondwaterput ;
-        rdfs:label "Grondwaterput 1 Cementfabriek Antwerpen"@nl ;
-        dbo:depth "15.0"^^xsd:float ;
-        sosa:isHostedBy [ a :Installatie ;
-            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
-        ] ;
-        ogc:hasGeometry [ a ogc:Geometry ;
-            ogc:asWKT "POINT(4.4020 51.2190)"^^ogc:wktLiteral
-        ]
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een grondwaterput heeft een diepte"@nl ;
-        owl:onProperty dbo:depth ; 
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
-
-:Lozingspunt a owl:Class ;
-    rdfs:label "Lozingspunt"@nl ;
-    rdfs:comment "Een lozingspunt is een specifiek punt waar vloeistoffen of afvalstoffen de installatie verlaten en in de omgeving worden geloosd."@nl ;
-    rdfs:subClassOf :Emissiepunt ;
-    skos:example [ a :Lozingspunt ;
-        rdfs:label "Lozingspunt 1 Cementfabriek Antwerpen"@nl ;
-        sosa:isHostedBy [ a :Installatie ;
-            rdfs:label "Cementfabriek Antwerpen Installatie 1"@nl
-        ] ;
-        ogc:hasGeometry [ a ogc:Geometry ;
-            ogc:asWKT "POINT(4.4030 51.2200)"^^ogc:wktLiteral
-        ]
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een lozingspunt kan een diepte hebben"@nl ;
-        owl:onProperty dbo:depth ; 
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
 
 :Meetpunt a owl:Class ;
     rdfs:label "Meetpunt"@nl ;
@@ -1028,6 +1007,7 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
+    ## TODO: VLAREM RUBRIEKEN
     rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with ssn:deployedSystem
         owl:onProperty ssn:hasDeployment ;
@@ -1041,13 +1021,47 @@
         ] ;
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ; 
+        # *..* relation with the inverse of ssn:hasSubSystem
+        rdfs:comment "Een meetpunt kan meetinstrumenten hebben"@nl ;
+        owl:onProperty ssn:hasSubSystem ; 
+        owl:someValuesFrom :MeetInstrument ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] .
+
+:MeetInstrument a owl:Class ;
+    rdfs:label "Meetinstrument"@nl ;
+    rdfs:comment "Een meetinstrument is een specifiek apparaat of systeem dat wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
+    rdfs:subClassOf ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom ssn:System ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetpuntinstrument kan een typering hebben via dct:type"@nl ;
+        owl:onProperty dct:type ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 # Filters
 :Filter a owl:Class ;
     rdfs:label "Filter"@nl ;
     rdfs:comment "Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen."@nl ;
-    rdfs:subClassOf ssn:System .
+    rdfs:subClassOf ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with ssn:hasSubSystem
+        owl:onProperty [ a owl:ObjectProperty ;
+            owl:inverseOf ssn:hasSubSystem
+        ] ;
+        owl:someValuesFrom ssn:System ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] .
 
 # Proces Procedures
 :TransportProcedure a owl:Class, skos:Concept ;
@@ -1118,21 +1132,6 @@
         owl:onProperty sosa:isResultOf ;
         owl:someValuesFrom sosa:Observation ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] .
-:Lozing a owl:Class ;
-    rdfs:label "Lozing"@nl ;
-    rdfs:comment "Een lozing is een specifiek resultaat dat betrekking heeft op het lozen van stoffen aan een lozingspunt."@nl ;
-    rdfs:subClassOf :Emissie ;
-    owl:equivalentClass [ a owl:Restriction ;
-        rdfs:comment "Een lozing moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een lozingspunt"@nl ;
-        owl:onProperty pplan:correspondsToVariable ;
-        owl:someValuesFrom [ a owl:Restriction ;
-            owl:onProperty pplan:isOutputVarOf ;
-            owl:someValuesFrom [ a owl:Restriction ;
-                owl:onProperty ssn:implementedBy ;
-                owl:someValuesFrom :Lozingspunt
-            ]
-        ]
     ] .
 
 # --------------------------------------- #

@@ -23,6 +23,73 @@
 	dct:description "Nederlandstalige benamingen die aligneren met (technische) predicaten in de RIE-IEPR ontologie en geïmporteerde vocabularia."@nl ;
 	dct:creator "Vlaamse overheid - Departement Omgeving"@nl .
 
+# ---------------------------------------- #
+# Algemene gegevens
+# ---------------------------------------- #
+
+:Adres a skos:Concept ;
+    skos:prefLabel "adres"@nl ;
+    skos:definition "Het adres van een contactpersoon of organisatie."@nl ;
+    owl:equivalentClass locn:Address ;
+    skos:inScheme <> .
+
+:adres a skos:Concept ;
+    skos:prefLabel "adres"@nl ;
+    skos:definition "De eigenschap die het adres van een contactpersoon of organisatie beschrijft."@nl ;
+    owl:equivalentProperty locn:address ;
+    skos:inScheme <> .
+
+:straat a skos:Concept ;
+    skos:prefLabel "straat"@nl ;
+    skos:definition "De eigenschap die de straatnaam van een adres beschrijft."@nl ;
+    skos:exactMatch locn:thoroughfare ;
+    owl:equivalentProperty locn:thoroughfare ;
+    skos:inScheme <> .
+
+:stad a skos:Concept ;
+    skos:prefLabel "stad"@nl ;
+    skos:definition "De eigenschap die de stad of gemeente van een adres beschrijft."@nl ;
+    owl:equivalentProperty locn:postName ;
+    skos:inScheme <> .
+
+:postcode a skos:Concept ;
+    skos:prefLabel "postcode"@nl ;
+    skos:definition "De eigenschap die de postcode van een adres beschrijft."@nl ;
+    owl:equivalentProperty locn:postCode ;
+    skos:inScheme <> .
+
+:functie a skos:Concept ;
+    skos:prefLabel "functie"@nl ;
+    skos:definition "De eigenschap die de functie of rol van een contactpersoon binnen een organisatie beschrijft."@nl ;
+    owl:equivalentProperty org:hasRole ;
+    skos:inScheme <> .
+
+:contactpersoonVan a skos:Concept ;
+    skos:prefLabel "contact van"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een natuurlijk persoon en haar exploitant beschrijft."@nl ;
+    owl:equivalentProperty org:memberOf ;
+    skos:inScheme <> . 
+
+:heeftContactpersoon a skos:Concept ;
+    skos:prefLabel "heeft contactpersoon"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een exploitant en haar contactpersonen beschrijft."@nl ;
+    owl:equivalentProperty org:hasMember ;
+    skos:inScheme <> .
+
+:email a skos:Concept ;
+    skos:prefLabel "e-mail"@nl ;
+    skos:definition "De eigenschap die het e-mailadres van een contactpersoon beschrijft."@nl ;
+    owl:equivalentProperty foaf:mbox ;
+    skos:inScheme <> .
+
+:telefoonnummer a skos:Concept ;
+    skos:prefLabel "telefoonnummer"@nl ;
+    skos:definition "De eigenschap die het telefoonnummer van een contactpersoon beschrijft."@nl ;
+    owl:equivalentProperty foaf:phone ;
+    skos:inScheme <> .
+
+# ---------------------------------------- #
+
 :geimplementeerdDoor a skos:Concept ;
     skos:prefLabel "geïmplementeerd door"@nl ;
     skos:definition "De eigenschap die de implementatie van een processtap door een agent beschrijft."@nl ;
@@ -146,37 +213,6 @@
     owl:equivalentProperty rdfs:comment ;
     skos:inScheme <> .
 
-:Adres a skos:Concept ;
-    skos:prefLabel "adres"@nl ;
-    skos:definition "Het adres van een contactpersoon of organisatie."@nl ;
-    owl:equivalentClass locn:Address ;
-    skos:inScheme <> .
-
-:adres a skos:Concept ;
-    skos:prefLabel "adres"@nl ;
-    skos:definition "De eigenschap die het adres van een contactpersoon of organisatie beschrijft."@nl ;
-    owl:equivalentProperty locn:address ;
-    skos:inScheme <> .
-
-:straat a skos:Concept ;
-    skos:prefLabel "straat"@nl ;
-    skos:definition "De eigenschap die de straatnaam van een adres beschrijft."@nl ;
-    skos:exactMatch locn:thoroughfare ;
-    owl:equivalentProperty locn:thoroughfare ;
-    skos:inScheme <> .
-
-:stad a skos:Concept ;
-    skos:prefLabel "stad"@nl ;
-    skos:definition "De eigenschap die de stad of gemeente van een adres beschrijft."@nl ;
-    owl:equivalentProperty locn:postName ;
-    skos:inScheme <> .
-
-:postcode a skos:Concept ;
-    skos:prefLabel "postcode"@nl ;
-    skos:definition "De eigenschap die de postcode van een adres beschrijft."@nl ;
-    owl:equivalentProperty locn:postCode ;
-    skos:inScheme <> .
-
 :diameter a skos:Concept ;
     skos:prefLabel "diameter"@nl ;
     skos:definition "De eigenschap die de diameter van een object beschrijft."@nl ;
@@ -213,30 +249,6 @@
     skos:prefLabel "heeft subsysteem"@nl ;
     skos:definition "De eigenschap die de relatie tussen een installatie en haar subsystemen beschrijft."@nl ;
     owl:equivalentProperty ssn:hasSubSystem ;
-    skos:inScheme <> .
-
-:contactpersoonVan a skos:Concept ;
-    skos:prefLabel "contact van"@nl ;
-    skos:definition "De eigenschap die de relatie tussen een natuurlijk persoon en haar exploitant beschrijft."@nl ;
-    owl:equivalentProperty org:memberOf ;
-    skos:inScheme <> . 
-
-:heeftContactpersoon a skos:Concept ;
-    skos:prefLabel "heeft contactpersoon"@nl ;
-    skos:definition "De eigenschap die de relatie tussen een exploitant en haar contactpersonen beschrijft."@nl ;
-    owl:equivalentProperty org:hasMember ;
-    skos:inScheme <> .
-
-:email a skos:Concept ;
-    skos:prefLabel "e-mail"@nl ;
-    skos:definition "De eigenschap die het e-mailadres van een contactpersoon beschrijft."@nl ;
-    owl:equivalentProperty foaf:mbox ;
-    skos:inScheme <> .
-
-:telefoonnummer a skos:Concept ;
-    skos:prefLabel "telefoonnummer"@nl ;
-    skos:definition "De eigenschap die het telefoonnummer van een contactpersoon beschrijft."@nl ;
-    owl:equivalentProperty foaf:phone ;
     skos:inScheme <> .
 
 :toegewezenAan a skos:Concept ;
