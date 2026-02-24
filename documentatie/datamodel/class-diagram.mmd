@@ -10,89 +10,76 @@ classDiagram
 
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 	class Emissiepunt:::system {
+	  String diameter
+	  String hoogte
+	  String diepte
+	}
+	Systeem <|-- Emissiepunt
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek
+	class Rubriek {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  ExploitatieLocatie locatie
-	  String type
-	  Date geldigTot
-	  ExterneIdentificator[] identifier
-	  String benaming
-	  String geometrie
-	  Status status
-	  +DateTime aangemaaktOp
-	  DateTime aangepastOp
-	  +Date geldigVan
 	}
-	%% http://www.w3.org/ns/sosa/isHostedBy
-	Emissiepunt --> ExploitatieLocatie : locatie
-	%% http://www.w3.org/ns/adms#identifier
-	Emissiepunt --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/adms#status
-	Emissiepunt --> Status : status
-	Systeem <|-- Emissiepunt
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Lozing
-	class Lozing:::result {
-	}
-	Emissie <|-- Lozing
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
 	class Contactpersoon:::exploitant {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  DateTime aangepastOp
-	  String[] name
-	  +Date geldigVan
-	  +DateTime aangemaaktOp
 	  Date geldigTot
+	  +Date geldigVan
+	  String email
+	  +DateTime aangemaaktOp
+	  String functie
 	  String benaming
-	  String[] hasRole
-	  String[] email
+	  DateTime aangepastOp
+	  String telefoonnummer
 	  String beschrijving
-	  String[] telefoonnummer
+	  String[] name
 	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	class Exploitatie:::exploitant {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  String benaming
-	  Date geldigTot
-	  +DateTime aangemaaktOp
-	  DateTime aangepastOp
-	  Contactpersoon[] heeftContactpersoon
-	  Proces implementeert
-	  +Date geldigVan
-	  Systeem[] inzetbaarSysteem
-	  ExploitatieLocatie locatie
-	  Status status
 	  ExterneIdentificator[] identifier
+	  +DateTime aangemaaktOp
+	  Status status
+	  Proces implementeert
+	  ExploitatieLocatie locatie
+	  Date geldigTot
+	  Emissiepunt[] inzetbaarSysteem
+	  String benaming
+	  DateTime aangepastOp
+	  +Date geldigVan
+	  Contactpersoon[] heeftContactpersoon
 	}
-	%% http://www.w3.org/ns/org#hasMember
-	Exploitatie --> Contactpersoon : heeftContactpersoon
-	%% http://www.w3.org/ns/ssn/implements
-	Exploitatie --> Proces : implementeert
-	%% http://www.w3.org/ns/ssn/deployedSystem
-	Exploitatie --> Systeem : inzetbaarSysteem
-	%% http://www.w3.org/ns/ssn/deployedOnPlatform
-	Exploitatie --> ExploitatieLocatie : locatie
-	%% http://www.w3.org/ns/adms#status
-	Exploitatie --> Status : status
 	%% http://www.w3.org/ns/adms#identifier
 	Exploitatie --> ExterneIdentificator : identifier
+	%% http://www.w3.org/ns/adms#status
+	Exploitatie --> Status : status
+	%% http://www.w3.org/ns/ssn/implements
+	Exploitatie --> Proces : implementeert
+	%% http://www.w3.org/ns/ssn/deployedOnPlatform
+	Exploitatie --> ExploitatieLocatie : locatie
+	%% http://www.w3.org/ns/ssn/deployedSystem
+	Exploitatie --> Emissiepunt : inzetbaarSysteem
+	%% http://www.w3.org/ns/org#hasMember
+	Exploitatie --> Contactpersoon : heeftContactpersoon
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant
 	class Exploitant:::exploitant {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
 	  String benaming
-	  DateTime aangepastOp
+	  +Date geldigVan
 	  Adres adres
-	  Contactpersoon[] heeftContactpersoon
+	  String classification
 	  Date geldigTot
 	  +DateTime aangemaaktOp
-	  +Date geldigVan
 	  String type
+	  DateTime aangepastOp
+	  Contactpersoon[] heeftContactpersoon
 	}
 	%% http://www.w3.org/ns/locn#address
 	Exploitant --> Adres : adres
@@ -100,56 +87,66 @@ classDiagram
 	Exploitant --> Contactpersoon : heeftContactpersoon
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	class Meetpunt:::system {
-	  +String uuid
-	  String uri
-	  Boolean ingediend
-	  +DateTime aangemaaktOp
-	  String type
-	  DateTime aangepastOp
-	  ExterneIdentificator[] identifier
-	  +Date geldigVan
-	  String benaming
-	  Date geldigTot
-	  String geometrie
-	  Status status
 	}
-	%% http://www.w3.org/ns/adms#identifier
-	Meetpunt --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/adms#status
-	Meetpunt --> Status : status
 	Systeem <|-- Meetpunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele
-	class ProcesVariabele {
+	class ProcesVariabele:::procedure {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
 	  Decimal waarde
-	  String eenheid
 	  String benaming
 	  String type
+	  String eenheid
 	}
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Schouw
-	class Schouw:::system {
-	  String hoogte
-	  String diameter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
+	class MeetInstrument:::system {
 	}
-	Emissiepunt <|-- Schouw
+	Systeem <|-- MeetInstrument
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	class Emissie:::result {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
 	}
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeem
+	class Systeem:::system {
+	  +String uuid
+	  String uri
+	  Boolean ingediend
+	  ExploitatieLocatie locatie
+	  Date geldigTot
+	  String benaming
+	  DateTime aangemaaktOp
+	  String type
+	  Status status
+	  String geometrie
+	  DateTime aangepastOp
+	  Date geldigVan
+	  ExterneIdentificator[] identifier
+	  Emissiepunt[] heeftSubSysteem
+	  Emissiepunt revisieVan
+	}
+	%% http://www.w3.org/ns/sosa/isHostedBy
+	Systeem --> ExploitatieLocatie : locatie
+	%% http://www.w3.org/ns/adms#status
+	Systeem --> Status : status
+	%% http://www.w3.org/ns/adms#identifier
+	Systeem --> ExterneIdentificator : identifier
+	%% http://www.w3.org/ns/ssn/hasSubSystem
+	Systeem --> Emissiepunt : heeftSubSysteem
+	%% http://www.w3.org/ns/prov#wasRevisionOf
+	Systeem --> Emissiepunt : revisieVan
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 	class Observatie {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  Lozing heeftResultaat
+	  Emissie heeftResultaat
 	  Emissie heeftAandachtspunt
 	}
 	%% http://www.w3.org/ns/sosa/hasResult
-	Observatie --> Lozing : heeftResultaat
+	Observatie --> Emissie : heeftResultaat
 	%% http://www.w3.org/ns/sosa/hasFeatureOfInterest
 	Observatie --> Emissie : heeftAandachtspunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt
@@ -158,98 +155,54 @@ classDiagram
 	Emissiepunt <|-- AbstractEmissiepunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	class Installatie:::system {
-	  +String uuid
-	  String uri
-	  Boolean ingediend
-	  Systeem[] heeftSubSysteem
-	  Date geldigTot
-	  Status status
-	  ExploitatieLocatie locatie
-	  +Date geldigVan
-	  ExterneIdentificator[] identifier
-	  Installatie revisieVan
-	  +DateTime aangemaaktOp
-	  String benaming
 	  Proces[] implementeert
-	  DateTime aangepastOp
 	}
-	%% http://www.w3.org/ns/ssn/hasSubSystem
-	Installatie --> Systeem : heeftSubSysteem
-	%% http://www.w3.org/ns/adms#status
-	Installatie --> Status : status
-	%% http://www.w3.org/ns/sosa/isHostedBy
-	Installatie --> ExploitatieLocatie : locatie
-	%% http://www.w3.org/ns/adms#identifier
-	Installatie --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Installatie --> Installatie : revisieVan
 	%% http://www.w3.org/ns/ssn/implements
 	Installatie --> Proces : implementeert
 	Systeem <|-- Installatie
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 	class Onttrekkingspunt:::system {
-	  +String uuid
-	  String uri
-	  Boolean ingediend
-	  +DateTime aangemaaktOp
-	  +Date geldigVan
-	  ExploitatieLocatie locatie
-	  String type
-	  Status status
-	  Date geldigTot
-	  ExterneIdentificator[] identifier
-	  String benaming
-	  DateTime aangepastOp
-	  Filter[] heeftSubSysteem
-	  String geometrie
+	  String diepte
 	}
-	%% http://www.w3.org/ns/sosa/isHostedBy
-	Onttrekkingspunt --> ExploitatieLocatie : locatie
-	%% http://www.w3.org/ns/adms#status
-	Onttrekkingspunt --> Status : status
-	%% http://www.w3.org/ns/adms#identifier
-	Onttrekkingspunt --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/ssn/hasSubSystem
-	Onttrekkingspunt --> Filter : heeftSubSysteem
 	Systeem <|-- Onttrekkingspunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	class Proces:::procedure {
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  +Date geldigVan
-	  +DateTime aangemaaktOp
-	  ProcesVariabele[] heeftInvoer
-	  String benaming
-	  DateTime aangepastOp
-	  Proces[] onderdeelVan
-	  Date geldigTot
-	  Procedure type
-	  Proces revisieVan
-	  ProcesVariabele[] heeftUitvoer
-	  Systeem geimplementeerdDoor
+	  Rubriek[] rubriek
 	  Status status
+	  Emissiepunt geimplementeerdDoor
+	  +Date geldigVan
+	  Proces revisieVan
+	  Date geldigTot
+	  Proces[] onderdeelVan
+	  Procedure type
+	  ProcesVariabele[] heeftUitvoer
+	  DateTime aangepastOp
+	  String benaming
+	  ProcesVariabele[] heeftInvoer
+	  +DateTime aangemaaktOp
 	}
-	%% http://purl.org/net/p-plan#hasInputVar
-	Proces --> ProcesVariabele : heeftInvoer
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek
+	Proces --> Rubriek : rubriek
+	%% http://www.w3.org/ns/adms#status
+	Proces --> Status : status
+	%% http://www.w3.org/ns/ssn/implementedBy
+	Proces --> Emissiepunt : geimplementeerdDoor
+	%% http://www.w3.org/ns/prov#wasRevisionOf
+	Proces --> Proces : revisieVan
 	%% http://purl.org/net/p-plan#isStepOfPlan
 	Proces --> Proces : onderdeelVan
 	%% http://purl.org/dc/terms/type
 	Proces --> Procedure : type
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Proces --> Proces : revisieVan
 	%% http://purl.org/net/p-plan#hasOutputVar
 	Proces --> ProcesVariabele : heeftUitvoer
-	%% http://www.w3.org/ns/ssn/implementedBy
-	Proces --> Systeem : geimplementeerdDoor
-	%% http://www.w3.org/ns/adms#status
-	Proces --> Status : status
+	%% http://purl.org/net/p-plan#hasInputVar
+	Proces --> ProcesVariabele : heeftInvoer
 	Procedure <|-- Proces
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String uuid
-	  String uri
-	  Boolean ingediend
 	}
 	Systeem <|-- Filter
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie
@@ -257,38 +210,28 @@ classDiagram
 	  +String uuid
 	  String uri
 	  Boolean ingediend
-	  String geometrie
+	  ExterneIdentificator[] identifier
+	  Exploitant toegewezenAan
+	  Adres adres
+	  Date geldigTot
+	  +DateTime aangemaaktOp
+	  Site primaireBron
+	  ExploitatieLocatie revisieVan
 	  DateTime aangepastOp
 	  String beinvloedDoor
-	  Adres adres
-	  Site primaireBron
 	  String benaming
-	  Date geldigTot
+	  String geometrie
 	  +Date geldigVan
-	  ExterneIdentificator[] identifier
-	  ExploitatieLocatie revisieVan
-	  Exploitant toegewezenAan
-	  +DateTime aangemaaktOp
 	  +String sameAs
 	}
-	%% http://www.w3.org/ns/locn#address
-	ExploitatieLocatie --> Adres : adres
 	%% http://www.w3.org/ns/adms#identifier
 	ExploitatieLocatie --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	ExploitatieLocatie --> ExploitatieLocatie : revisieVan
 	%% http://www.w3.org/ns/prov#wasAttributedTo
 	ExploitatieLocatie --> Exploitant : toegewezenAan
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Grondwaterput
-	class Grondwaterput:::system {
-	  String diepte
-	}
-	Onttrekkingspunt <|-- Grondwaterput
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Lozingspunt
-	class Lozingspunt:::system {
-	  String diepte
-	}
-	Emissiepunt <|-- Lozingspunt
+	%% http://www.w3.org/ns/locn#address
+	ExploitatieLocatie --> Adres : adres
+	%% http://www.w3.org/ns/prov#wasRevisionOf
+	ExploitatieLocatie --> ExploitatieLocatie : revisieVan
 	%% http://www.w3.org/ns/adms#Identifier
 	class ExterneIdentificator {
 	  String schema
@@ -307,13 +250,6 @@ classDiagram
 	  String uri
 	  Boolean ingediend
 	}
-	%% http://www.w3.org/ns/ssn/System
-	class Systeem:::system {
-	  <<interface>>
-	  +String uuid
-	  String uri
-	  Boolean ingediend
-	}
 	%% http://www.w3.org/ns/sosa/Procedure
 	class Procedure:::procedure {
 	  <<enumerable>>
@@ -326,9 +262,9 @@ classDiagram
 	%% http://www.w3.org/ns/adms#Status
 	class Status {
 	  <<enumerable>>
-	  GESLOTEN
-	  VOORGESTELD
 	  INACTIEF
+	  VOORGESTELD
+	  GESLOTEN
 	  ACTIEF
 	}
 	classDef system fill:#4bde2a,stroke:#000000
