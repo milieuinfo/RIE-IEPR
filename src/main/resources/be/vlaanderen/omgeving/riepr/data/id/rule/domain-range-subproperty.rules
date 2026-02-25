@@ -10,3 +10,13 @@
 
 [inversePropertyRule: (?p owl:inverseOf ?q), (?x ?p ?y) -> (?y ?q ?x)]
 [inversePropertyRule: (?p owl:inverseOf ?q), (?x ?q ?y) -> (?y ?p ?x)]
+
+[emissieInference:
+    (?x <http://purl.org/net/p-plan#correspondsToVariable> ?v),
+  (?v <http://purl.org/net/p-plan#isOutputVarOf> ?plan),
+  (?plan <http://www.w3.org/ns/sosa/implementedBy> ?ep),
+  (?ep rdf:type <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt>)
+  ->
+  (?x rdf:type <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie>)
+]
+
