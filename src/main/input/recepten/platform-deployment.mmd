@@ -1,0 +1,74 @@
+flowchart RL
+
+%% =====================================================
+%% PLANNING
+%% =====================================================
+    subgraph PLANNING["PLANNING"]
+
+        STEP_smelt([Step: Smelten])
+        STEP_hak([Step: Hakken])
+        STEP_meng([Step: Mengen])
+        STEP_bak([Step: Bakken])
+        STEP_afkoelen([Step: Afkoelen])
+
+
+        STEP_controle([Step: Kwaliteitscontrole])
+
+
+
+
+    end
+
+
+
+
+    style PLANNING fill:#b8a2d4,stroke:#2E5C8A,color:#000
+    style STEP_smelt fill:#7f59ae,stroke:#2E5C8A,color:#000
+    style STEP_hak fill:#7f59ae,stroke:#2E5C8A,color:#000
+    style STEP_meng fill:#7f59ae,stroke:#2E5C8A,color:#000
+    style STEP_bak fill:#7f59ae,stroke:#2E5C8A,color:#000
+    style STEP_afkoelen fill:#7f59ae,stroke:#2E5C8A,color:#000
+    style STEP_controle fill:#7f59ae,stroke:#2E5C8A,color:#000
+
+
+
+%% Plan structuur
+
+
+
+
+    STEP_afkoelen -.->|isPrecededBy| STEP_controle -.->|isPrecededBy| STEP_bak -.->|isPrecededBy| STEP_meng -.->|isPrecededBy| STEP_hak -.->|isPrecededBy| STEP_smelt
+
+
+
+%% =====================================================
+%% DEPLOYMENT
+%% =====================================================
+
+        Platform([Platform: Keuken])
+        Deployment([Deployment])
+
+        SYS_smelt([System: Smeltsysteem])
+        SYS_hak([System: Haksysteem])
+        SYS_robot([System: Keukenrobot])
+        SYS_oven([System: Oven])
+        SYS_Sensor([System: Sensor])
+
+
+    style DEPLOYMENT fill:#b0d9e7,stroke:#2E5C8A,color:#000
+    style Platform fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style Deployment fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_smelt fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_hak fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_Sensor fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_robot fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_oven fill:#60c4e4,stroke:#2E5C8A,color:#000
+
+
+
+    SYS_smelt -->|implements| STEP_smelt
+    SYS_hak -->|implements| STEP_hak
+    SYS_robot -->|implements| STEP_meng
+    SYS_oven -->|implements| STEP_bak
+    SYS_Sensor -->|implements| STEP_controle
+
