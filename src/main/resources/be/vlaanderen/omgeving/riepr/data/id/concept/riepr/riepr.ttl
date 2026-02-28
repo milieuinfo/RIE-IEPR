@@ -10,6 +10,7 @@
 @prefix adms:   <http://www.w3.org/ns/adms#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems> .
 @prefix pplan:  <http://purl.org/net/p-plan#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix locn:   <http://www.w3.org/ns/locn#> .
@@ -257,10 +258,25 @@
     owl:equivalentProperty prov:wasAttributedTo ;
     skos:inScheme <> .
 
+# ---------------------------------------- #
+# Systeem
+# ---------------------------------------- #
 :Systeem a skos:Concept ;
     skos:prefLabel "systeem"@nl ;
     skos:definition "Een systeem dat betrokken is bij de uitvoering van een proces."@nl ;
     owl:equivalentClass ssn:System ;
+    skos:inScheme <> .
+
+:heeftEigenschap a skos:Concept ;
+    skos:prefLabel "heeft eigenschap"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een systeem en een eigenschap beschrijft."@nl ;
+    owl:equivalentProperty ssn:hasProperty ;
+    skos:inScheme <> .
+
+:isEigenschapVan a skos:Concept ;
+    skos:prefLabel "is eigenschap van"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een eigenschap en het systeem beschrijft waar deze eigenschap betrekking op heeft."@nl ;
+    owl:equivalentProperty ssn:isPropertyOf ;
     skos:inScheme <> .
 
 # ---------------------------------------- #
@@ -286,7 +302,7 @@
     skos:inScheme <> .
 
 # ---------------------------------------- #
-# adms:Identifier
+# Identifier
 # ---------------------------------------- #
 
 :ExterneIdentificator a skos:Concept ;
