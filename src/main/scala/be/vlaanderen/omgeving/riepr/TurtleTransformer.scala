@@ -397,7 +397,8 @@ object TurtleTransformer {
       }
 
       // Shacl validation
-      val report = ShaclValidator.validate(inferredModel, shaclShapes) // gebruik inferredModel
+      //val report = ShaclValidator.validate(inferredModel, shaclShapes) // gebruik inferredModel voor overdadige validatie
+      val report = ShaclValidator.validate(inferenceOntology, shaclShapes) // gebruik inferenceOntology
       ShaclValidator.printReport(report)
 
       // JSON-LD verwerking
