@@ -1,34 +1,58 @@
-@prefix :                   <http://purl.org/net/p-plan#> .
+@prefix :                   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix act_col:            <https://data.riepr.omgeving.vlaanderen.be/id/actuationcollection/> .
+@prefix activiteit:         <https://example.org/concept/activiteit/> .
+@prefix actuation:          <https://data.riepr.omgeving.vlaanderen.be/id/actuation/> .
 @prefix adms:               <http://www.w3.org/ns/adms#> .
+@prefix agent:              <https://example.org/agent/> .
+@prefix analysemethode:     <https://data.omgeving.vlaanderen.be/id/concept/observatieprocedure/> .
 @prefix apparaat:           <https://data.riepr.omgeving.vlaanderen.be/id/apparaat/> .
+@prefix attr:               <https://example.org/attribution/> .
 @prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix dbo:                <http://dbpedia.org/ontology/> .
-@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
+@prefix dc:                 <http://purl.org/dc/terms/> .
 @prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
 @prefix dcterms:            <http://purl.org/dc/terms/> .
+@prefix dctype:             <http://purl.org/dc/dcmitype/> .
 @prefix dqv:                <http://www.w3.org/ns/dqv#> .
 @prefix emissiepunt:        <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix ent:                <https://example.org/entity/> .
+@prefix entity:             <https://data.riepr.omgeving.vlaanderen.be/id/entity/> .
+@prefix exec:               <https://example.org/execution/> .
 @prefix exploitant:         <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
+@prefix exploitatie:        <https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/> .
 @prefix exploitatielocatie: <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
 @prefix foaf:               <http://xmlns.com/foaf/0.1/> .
 @prefix geo:                <http://www.opengis.net/ont/geosparql#> .
+@prefix gr:                 <http://purl.org/goodrelations/v1#> .
+@prefix hydra:              <http://www.w3.org/ns/hydra/core#> .
+@prefix imjv:               <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#> .
+@prefix inst:               <https://example.org/installation/> .
 @prefix installatie:        <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
 @prefix locn:               <http://www.w3.org/ns/locn#> .
+@prefix nace:               <http://data.europa.eu/ux2/nace2.1/> .
 @prefix ns5:                <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
 @prefix ns6:                <http://mappings.dbpedia.org/index.php/OntologyClass:> .
+@prefix observation:        <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
 @prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
 @prefix org:                <http://www.w3.org/ns/org#> .
 @prefix osm:                <https://www.openstreetmap.org/node/> .
 @prefix owl:                <http://www.w3.org/2002/07/owl#> .
+@prefix owlTime:            <http://www.w3.org/2006/time#> .
 @prefix p-plan:             <http://purl.org/net/p-plan#> .
+@prefix parameter:          <https://data.omgeving.vlaanderen.be/id/concept/cso/parameter/> .
+@prefix plan:               <https://example.org/plan/> .
+@prefix platform:           <https://example.org/platform/> .
 @prefix pplan:              <http://purl.org/net/p-plan#> .
 @prefix proces:             <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix prov:               <http://www.w3.org/ns/prov#> .
+@prefix quantitykind:       <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt:               <http://qudt.org/schema/qudt/> .
 @prefix rdf:                <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:               <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix result:             <https://data.riepr.omgeving.vlaanderen.be/id/result/> .
 @prefix riepr:              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix role:               <https://example.org/concept/role/> .
 @prefix schema:             <http://schema.org/> .
 @prefix sh:                 <http://www.w3.org/ns/shacl#> .
 @prefix skos:               <http://www.w3.org/2004/02/skos/core#> .
@@ -45,10 +69,14 @@
 @prefix ssn-dep:            <http://www.w3.org/ns/ssn/dep/> .
 @prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
+@prefix ssn-system:         <http://www.w3.org/ns/ssn/systems> .
+@prefix step:               <https://example.org/step/> .
 @prefix stof:               <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 @prefix terms:              <http://purl.org/dc/terms/> .
 @prefix time:               <http://www.w3.org/2006/time#> .
+@prefix unit:               <http://qudt.org/vocab/unit/> .
 @prefix vann:               <http://purl.org/vocab/vann/> .
+@prefix var:                <https://data.riepr.omgeving.vlaanderen.be/id/var/> .
 @prefix vcard:              <http://www.w3.org/2006/vcard/ns#> .
 @prefix vkbo:               <https://data.vkbo.omgeving.vlaanderen.be/id/organisatie/> .
 @prefix voaf:               <http://purl.org/vocommons/voaf#> .
@@ -58,451 +86,1388 @@
 @prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
 
+entity:staalplaat2020-07-30T10:00:00Z
+        rdf:type                     prov:Entity , sosa:Result , pplan:Entity;
+        rdfs:label                   "Gedecarburiseerd staal"@nl , "Staalplaat"@nl;
+        pplan:correspondsToVariable  stof:staalplaat;
+        prov:wasDerivedFrom          entity:gedec_staal2020-07-30T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00022020-07-30T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00022020-07-30T10:00:00Z , entity:gedec_staal2020-07-30T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00022020-07-30T10:00:00Z .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999
+        rdf:type            pplan:Entity , pplan:Step , pplan:Plan , prov:Plan , sosa:Procedure , prov:Entity , riepr:Proces;
+        rdfs:label          "Decarburisatie zonder tussenstappen"@nl;
+        pplan:hasInputVar   var:geraffineerd_staal;
+        pplan:hasOutputVar  var:gedec_staal;
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0008b;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        prov:hadDerivation  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        prov:hadRevision    proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 .
+
 emissiepunt:0400123123_6851234567_0000003
-        rdf:type            ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
-        rdfs:comment        "Afzuiging en ontstoffing van de stroomboogoven"@nl;
-        rdfs:label          "Schouw 3"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        geo:hasGeometry     [ rdf:type              geo:Geometry , geo:SpatialObject;
-                              geo:asWKT             "POINT(4.3500 51.1995)"^^geo:WKTLiteral;
-                              geo:hasSerialization  "POINT(4.3500 51.1995)"^^geo:WKTLiteral
-                            ];
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000004 .
+        rdf:type              ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
+        rdfs:comment          "Afzuiging en ontstoffing van de stroomboogoven"@nl;
+        rdfs:label            "Schouw 3"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        geo:hasGeometry       [ rdf:type              geo:Geometry , geo:SpatialObject;
+                                geo:asWKT             "POINT(4.3500 51.1995)"^^geo:WKTLiteral;
+                                geo:hasSerialization  "POINT(4.3500 51.1995)"^^geo:WKTLiteral
+                              ];
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0008;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000004;
+        sosa:madeActuation    actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0001
-        rdf:type            prov:Entity , pplan:Plan , riepr:IIOA , prov:Agent , owl:Thing , pplan:Step , riepr:Proces , ssn:System , prov:Plan , dbo:Project , pplan:Entity , dbo:UnitOfWork;
+        rdf:type            prov:Entity , sosa:Procedure , pplan:Plan , pplan:Step , riepr:Proces , prov:Plan , pplan:Entity;
         rdfs:label          "Toevoeging van grondstoffen"@nl;
-        pplan:hasInputVar   stof:ijzererts;
-        pplan:hasOutputVar  stof:rookgas , stof:grondstoffen_mix;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+        pplan:hasInputVar   var:ijzererts;
+        pplan:hasOutputVar  var:grondstoffen_mix , var:rookgas;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020
+        rdf:type              sosa:Procedure , pplan:Entity , prov:Plan , pplan:Plan , pplan:Step , riepr:Proces , prov:Entity;
+        rdfs:label            "Decarburisatie"@nl;
+        pplan:hasInputVar     var:geraffineerd_staal;
+        pplan:hasOutputVar    var:gedec_staal;
+        pplan:isPrecededBy    proces:0400123123_6851234567_ACTIVITEIT_1_0008b;
+        pplan:isStepOfPlan    proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:wasDerivedFrom   proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999;
+        prov:wasInfluencedBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999;
+        prov:wasRevisionOf    proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
 
 installatie:0400123123_6851234567_0000003
-        rdf:type           riepr:Installatie , prov:Agent , ssn:System , geo:SpatialObjectCollection;
+        rdf:type           riepr:Installatie , ssn:System , geo:SpatialObject;
         rdfs:label         "VOD-installatie"@nl;
-        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued         "2020-07-30"^^xsd:date;
-        dct:valid          "2030-12-31"^^xsd:date;
+        dc:created         "2020-01-01T00:00:00"^^xsd:dateTime;
+        dc:issued          "2020-07-30"^^xsd:date;
+        dc:valid           "2030-12-31"^^xsd:date;
         adms:status        riepr:Actief;
         sosa:hasSubSystem  apparaat:0400123123_6851234567_0008 , apparaat:0400123123_6851234567_0003 , emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0005;
-        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567 .
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999
+        rdf:type            pplan:Plan , prov:Plan , sosa:Procedure , riepr:Proces , prov:Entity , pplan:Entity , pplan:Step;
+        rdfs:label          "Afgassing"@nl;
+        dc:type             riepr:uitstootProces;
+        pplan:hasInputVar   stof:rookgas;
+        pplan:hasOutputVar  stof:rookgas;
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
+
+entity:gezuiverd_staal2026-01-01T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Afgewerkt staal"@nl , "Gezuiverd staal"@nl;
+        pplan:correspondsToVariable  stof:gezuiverd_staal;
+        prov:hadDerivation           entity:afgewerkt_staal2026-01-01T10:00:00Z;
+        prov:influenced              entity:afgewerkt_staal2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00072026-01-01T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00072026-01-01T10:00:00Z .
+
+entity:gezuiverd_staal1999-01-01T00:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Afgewerkt staal"@nl , "Gezuiverd staal"@nl;
+        pplan:correspondsToVariable  stof:gezuiverd_staal;
+        prov:hadDerivation           entity:afgewerkt_staal1999-01-01T00:00:00Z;
+        prov:influenced              entity:afgewerkt_staal1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00071999-01-01T00:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00071999-01-01T00:00:00Z .
+
+actuation:0400123123_6851234567_00042020-07-30T10:00:00Z
+        rdf:type                 sosa:Execution , sosa:Actuation , prov:Activity , pplan:Activity;
+        rdfs:label               "Activiteit van Argon-zuurstofontkoling";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        prov:influenced          entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:vloeibaar_staal2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0004;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0004 , entity:vloeibaar_staal2020-07-30T10:00:00Z;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0004;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0004;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0007
-        rdf:type            riepr:Proces , dbo:Project , pplan:Step , prov:Plan , riepr:IIOA , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , ssn:System , pplan:Entity , prov:Agent;
-        dct:type            riepr:apparaatVerwerkingsProces;
+        rdf:type            riepr:Proces , pplan:Step , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity , pplan:Entity;
+        rdfs:label          "Argon-zuurstofontkoling"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
         pplan:hasInputVar   stof:vloeibaar_staal;
         pplan:hasOutputVar  stof:geraffineerd_staal;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0006;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0004 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0004 .
+
+entity:geraffineerd_staal2020-07-30T10:00:00Z
+        rdf:type                     sosa:Result , pplan:Entity , prov:Entity;
+        rdfs:label                   "Vloeibaar staal"@nl , "VOD-behandeld staal"@nl , "Geraffineerd staal"@nl;
+        pplan:correspondsToVariable  stof:geraffineerd_staal;
+        prov:hadDerivation           entity:vod_staal2020-07-30T10:00:00Z;
+        prov:influenced              entity:vod_staal2020-07-30T10:00:00Z , actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        prov:wasDerivedFrom          entity:vloeibaar_staal2020-07-30T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00042020-07-30T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00042020-07-30T10:00:00Z , entity:vloeibaar_staal2020-07-30T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00042020-07-30T10:00:00Z .
+
+entity:afgewerkt_staal2020-07-30T10:00:00Z
+        rdf:type                     pplan:Entity , sosa:Result , prov:Entity;
+        rdfs:label                   "Gezuiverd staal"@nl , "Afgewerkt staal"@nl;
+        pplan:correspondsToVariable  stof:afgewerkt_staal;
+        prov:wasDerivedFrom          entity:gezuiverd_staal2020-07-30T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00072020-07-30T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , entity:gezuiverd_staal2020-07-30T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00072020-07-30T10:00:00Z .
 
 apparaat:0400123123_6851234567_0005
-        rdf:type            ssn:System , riepr:Apparaat , geo:SpatialObject , prov:Agent;
+        rdf:type            riepr:Apparaat;
         rdfs:label          "Zuiveringsapparaat Toevoeginstallatie"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
+        dc:created          "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued           "2020-07-30"^^xsd:date;
+        dc:valid            "2030-12-31"^^xsd:date;
         adms:status         riepr:Actief;
+        sosa:implements     proces:0400123123_6851234567_ACTIVITEIT_1_0009_002;
         sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003 .
+        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003;
+        ssn:hasDeployment   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2026
+        rdf:type  pplan:Plan , pplan:Entity , prov:Plan , prov:Entity .
 
 stof:staalplaat  rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Staalplaat"@nl;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1 , proces:0400123123_6851234567_ACTIVITEIT_1_0011 .
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0011 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_006
-        rdf:type            pplan:Step , dbo:Project , riepr:IIOA , ssn:System , riepr:Proces , pplan:Plan , prov:Entity , owl:Thing , prov:Agent , prov:Plan , pplan:Entity , dbo:UnitOfWork;
+        rdf:type            pplan:Step , sosa:Procedure , riepr:Proces , pplan:Plan , prov:Entity , prov:Plan , pplan:Entity;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
+        dc:type             riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas;
         pplan:hasOutputVar  stof:rookgas;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000004 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026
+        rdf:type            pplan:Entity , pplan:Step , pplan:Plan , prov:Plan , riepr:Proces , prov:Entity , sosa:Procedure;
+        rdfs:label          "Staalproductie in stroomboogoven"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
+        pplan:hasInputVar   var:schroot;
+        pplan:hasOutputVar  var:vloeibaar_staal;
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0003;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0010 .
+
+var:afgewerkt_staal  rdf:type  pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
 
 emissiepunt:0400123123_6851234567_0000004
-        rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , geo:Feature , prov:Agent;
-        rdfs:label          "Schoorsteen Ketels"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        geo:hasGeometry     [ rdf:type              geo:Geometry , geo:SpatialObject;
-                              geo:asWKT             "POINT(4.3495 51.2000)"^^geo:WKTLiteral;
-                              geo:hasSerialization  "POINT(4.3495 51.2000)"^^geo:WKTLiteral
-                            ];
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003 .
+        rdf:type              riepr:Emissiepunt , geo:SpatialObject , ssn:System , geo:Feature , prov:Agent;
+        rdfs:label            "Schoorsteen Ketels"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        geo:hasGeometry       [ rdf:type              geo:Geometry , geo:SpatialObject;
+                                geo:asWKT             "POINT(4.3495 51.2000)"^^geo:WKTLiteral;
+                                geo:hasSerialization  "POINT(4.3495 51.2000)"^^geo:WKTLiteral
+                              ];
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000003;
+        sosa:madeActuation    actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+var:vod_staal  rdf:type     pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0002
-        rdf:type            riepr:Proces , prov:Agent , prov:Plan , dbo:Project , dbo:UnitOfWork , owl:Thing , ssn:System , pplan:Plan , riepr:IIOA , pplan:Entity , prov:Entity , pplan:Step;
+        rdf:type            riepr:Proces , prov:Plan , pplan:Plan , pplan:Entity , prov:Entity , sosa:Procedure , pplan:Step;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
-        pplan:hasInputVar   stof:rookgas;
-        pplan:hasOutputVar  stof:rookgas;
+        dc:type             riepr:uitstootProces;
+        pplan:hasInputVar   var:rookgas;
+        pplan:hasOutputVar  var:rookgas;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0001;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000001 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000001 .
+
+var:apparaat_0400123123_6851234567_0007
+        rdf:type            pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
+
+var:gedec_staal  rdf:type    pplan:Variable;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
 
 installatie:0400123123_6851234567_0000004
-        rdf:type           geo:SpatialObjectCollection , prov:Agent , riepr:Installatie , ssn:System;
-        rdfs:label         "AOD-installatie"@nl;
-        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued         "2020-07-30"^^xsd:date;
-        dct:valid          "2030-12-31"^^xsd:date;
-        adms:status        riepr:Actief;
-        sosa:hasSubSystem  apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000003;
-        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567 .
+        rdf:type                        geo:SpatialObject , riepr:Installatie , ssn:System;
+        rdfs:label                      "AOD-installatie"@nl;
+        dc:created                      "2020-01-01T00:00:00"^^xsd:dateTime;
+        dc:issued                       "2020-07-30"^^xsd:date;
+        dc:valid                        "2030-12-31"^^xsd:date;
+        adms:status                     riepr:Actief;
+        sosa:hasSubSystem               apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000003;
+        sosa:isHostedBy                 exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment               exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        ssn:hasProperty                 [ rdf:type           ssn:systemsSystemProperty;
+                                          dc:type            <http://codelijst/installatie/capaciteit>;
+                                          qudt:hasUnit       unit:tonnePerDay;
+                                          qudt:numericValue  100;
+                                          ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
+                                        ];
+        ssn:hasProperty                 [ rdf:type           ssn:systemsSystemProperty;
+                                          dc:type            <http://codelijst/installatie/vermogen>;
+                                          qudt:hasUnit       unit:Watt;
+                                          qudt:numericValue  5000;
+                                          ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
+                                        ];
+        ssn:systemshasSystemCapability  [ rdf:type                      ssn:systemsSystemCapability;
+                                          ssn:systemshasSystemProperty  [ rdf:type           ssn:systemsSystemProperty;
+                                                                          dc:type            <http://codelijst/installatie/vermogen>;
+                                                                          qudt:hasUnit       unit:Watt;
+                                                                          qudt:numericValue  5000
+                                                                        ];
+                                          ssn:systemshasSystemProperty  [ rdf:type           ssn:systemsSystemProperty;
+                                                                          dc:type            <http://codelijst/installatie/capaciteit>;
+                                                                          qudt:hasUnit       unit:tonnePerDay;
+                                                                          qudt:numericValue  100
+                                                                        ];
+                                          ssn:systemsinCondition        <http://todo/conditie/normaal>
+                                        ] .
+
+var:vloeibaar_staal  rdf:type  pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 .
+
+entity:vloeibaar_staal2026-01-01T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Geraffineerd staal"@nl , "Vloeibaar staal"@nl;
+        pplan:correspondsToVariable  stof:vloeibaar_staal;
+        prov:hadDerivation           entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        prov:influenced              entity:geraffineerd_staal2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00042026-01-01T10:00:00Z .
+
+entity:vloeibaar_staal1999-01-01T00:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Geraffineerd staal"@nl , "Vloeibaar staal"@nl;
+        pplan:correspondsToVariable  stof:vloeibaar_staal;
+        prov:hadDerivation           entity:geraffineerd_staal1999-01-01T00:00:00Z;
+        prov:influenced              entity:geraffineerd_staal1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00041999-01-01T00:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00041999-01-01T00:00:00Z .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_001
-        rdf:type            owl:Thing , pplan:Entity , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , prov:Agent , prov:Entity , riepr:Proces , ssn:System , dbo:UnitOfWork;
-        dct:type            riepr:apparaatVerwerkingsProces;
+        rdf:type            pplan:Entity , prov:Plan , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , sosa:Procedure;
+        rdfs:label          "Toevoegen van stoffen"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
         pplan:hasInputVar   stof:geraffineerd_staal;
         pplan:hasOutputVar  stof:vod_staal;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0003 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0003 .
+
+exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999
+        rdf:type            prov:Entity , ssn:Deployment , riepr:Exploitatie;
+        rdfs:comment        "De exploitatie omvat het volledige staalproductieproces, inclusief de stroomboogoven, argon-zuurstofontkoling en decarburisatie."@nl;
+        rdfs:label          "Staal productie door Staalfabriek NV - Versie 1999"@nl;
+        dc:created          "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        dc:issued           "1999-01-01"^^xsd:date;
+        dc:valid            "2020-07-30"^^xsd:date;
+        adms:status         riepr:Inactief;
+        prov:hadDerivation  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:hadRevision    exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:influenced     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
+        ssn:deployedSystem  apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000005 , emissiepunt:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000004 , installatie:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0008 , installatie:0400123123_6851234567_0000001 , emissiepunt:0400123123_6851234567_0000001 , installatie:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0006 , apparaat:0400123123_6851234567_0004;
+        ssn:implements      proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0008
-        rdf:type            owl:Thing , dbo:Project , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , prov:Entity , dbo:UnitOfWork , ssn:System , pplan:Plan , pplan:Entity , prov:Agent;
+        rdf:type            riepr:Proces , pplan:Step , sosa:Procedure , prov:Plan , prov:Entity , pplan:Plan , pplan:Entity;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
+        dc:type             riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas;
         pplan:hasOutputVar  stof:rookgas;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000003 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000003 .
+
+actuation:0400123123_6851234567_00022020-07-30T10:00:00Z
+        rdf:type                 pplan:Activity , prov:Activity , sosa:Actuation , sosa:Execution;
+        rdfs:label               "Activiteit van Gieterijmachine";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0011;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:staalplaat2020-07-30T10:00:00Z;
+        prov:influenced          entity:staalplaat2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gedec_staal2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0002;
+        prov:wasInfluencedBy     entity:gedec_staal2020-07-30T10:00:00Z , apparaat:0400123123_6851234567_0002;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:staalplaat2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0002;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0002;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z
+        rdf:type                 sosa:Execution , prov:Activity , sosa:Actuation , pplan:Activity;
+        rdfs:label               "Activiteit van Schoorsteen Ketels";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2020-07-30T10:00:00Z;
+        prov:influenced          entity:rookgas2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000004;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000004 , entity:rookgas2020-07-30T10:00:00Z;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000004;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000004;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 apparaat:0400123123_6851234567_0006
-        rdf:type         geo:SpatialObject , prov:Agent , ssn:System , riepr:Apparaat;
-        rdfs:label       "Stoomketel 1"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        adms:status      riepr:Actief;
-        sosa:isHostedBy  exploitatielocatie:0400123123_6851234567 .
+        rdf:type           riepr:Apparaat;
+        rdfs:label         "Stoomketel 1"@nl;
+        dc:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued          "2020-07-30"^^xsd:date;
+        dc:valid           "2030-12-31"^^xsd:date;
+        adms:status        riepr:Actief;
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020
+        rdf:type              ssn:Deployment , riepr:Exploitatie , prov:Entity;
+        rdfs:comment          "De exploitatie omvat het volledige staalproductieproces, inclusief de stroomboogoven, argon-zuurstofontkoling en decarburisatie."@nl;
+        rdfs:label            "Staal productie door Staalfabriek NV - Versie 2020"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:hadDerivation    exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:hadRevision      exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:influenced       exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:wasDerivedFrom   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        prov:wasInfluencedBy  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        prov:wasRevisionOf    exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        ssn:deployedSystem    emissiepunt:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0003 , emissiepunt:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0004 , installatie:0400123123_6851234567_0000001 , emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0005 , installatie:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0006 , installatie:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0007 , installatie:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0001 , apparaat:0400123123_6851234567_0008 , emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002;
+        ssn:implements        proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+actuation:0400123123_6851234567_00032020-07-30T10:00:00Z
+        rdf:type                 pplan:Activity , sosa:Execution , sosa:Actuation , prov:Activity;
+        rdfs:label               "Activiteit van Toevoeginstallatie VOD";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:vod_staal2020-07-30T10:00:00Z;
+        prov:influenced          entity:vod_staal2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0003;
+        prov:wasInfluencedBy     entity:geraffineerd_staal2020-07-30T10:00:00Z , apparaat:0400123123_6851234567_0003;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:vod_staal2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0003;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0003;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z
+        rdf:type                 sosa:Actuation , pplan:Activity , prov:Activity , sosa:Execution;
+        rdfs:label               "Activiteit van Schouw 5";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0012;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2020-07-30T10:00:00Z;
+        prov:influenced          entity:rookgas2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000005;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000005 , entity:rookgas2020-07-30T10:00:00Z;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000005;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000005;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0010
-        rdf:type            prov:Agent , owl:Thing , prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , ssn:System , dbo:UnitOfWork , prov:Plan , dbo:Project , riepr:IIOA , pplan:Plan;
+        rdf:type            prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , sosa:Procedure , prov:Plan , pplan:Plan;
         rdfs:label          "Overbrenging naar gietinstallatie"@nl;
-        dct:type            riepr:overbrengingsProces;
+        dc:type             riepr:overbrengingsProces;
         pplan:hasInputVar   stof:gedec_staal;
         pplan:hasOutputVar  stof:gedec_staal;
-        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 stof:grondstoffen_mix
-        rdf:type             pplan:Variable , riepr:ProcesVariabele;
-        rdfs:label           "Grondstoffenmengsel"@nl;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
+        rdfs:label  "Grondstoffenmengsel"@nl .
+
+actuation:0400123123_6851234567_00072026-01-01T10:00:00Z
+        rdf:type                 prov:Activity , sosa:Execution , pplan:Activity , sosa:Actuation;
+        rdfs:label               "Activiteit van Afwerkstand";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:afgewerkt_staal2026-01-01T10:00:00Z;
+        prov:influenced          entity:afgewerkt_staal2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gezuiverd_staal2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0007;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0007 , entity:gezuiverd_staal2026-01-01T10:00:00Z;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:afgewerkt_staal2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0007;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0007;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 stof:gezuiverd_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
-        rdfs:label           "Gezuiverd staal"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
+        rdfs:label          "Gezuiverd staal"@nl;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
-stof:schroot  rdf:type       pplan:Variable , riepr:ProcesVariabele;
-        rdfs:label           "Schroot"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0003;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0003 .
+exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026
+        rdf:type              prov:Entity , riepr:Exploitatie , ssn:Deployment;
+        rdfs:comment          "Kopie van versie 2020; stroomboogoven apparaat vervangen door nieuw apparaat."@nl;
+        rdfs:label            "Staal productie door Staalfabriek NV - Versie 2026"@nl;
+        dc:created            "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2026-01-01"^^xsd:date;
+        dc:valid              "2036-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:wasDerivedFrom   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:wasInfluencedBy  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:wasRevisionOf    exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        ssn:deployedSystem    installatie:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000005 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000001 , installatie:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0010 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0005 , installatie:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0004 , installatie:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0006;
+        ssn:implements        proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+actuation:0400123123_6851234567_00071999-01-01T00:00:00Z
+        rdf:type                 pplan:Activity , sosa:Execution , prov:Activity , sosa:Actuation;
+        rdfs:label               "Activiteit van Afwerkstand";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:afgewerkt_staal1999-01-01T00:00:00Z;
+        prov:influenced          entity:afgewerkt_staal1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gezuiverd_staal1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0007;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0007 , entity:gezuiverd_staal1999-01-01T00:00:00Z;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:afgewerkt_staal1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0007;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0007;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
+
+var:ijzererts  rdf:type     pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
+stof:schroot  rdf:type  pplan:Variable , riepr:ProcesVariabele;
+        rdfs:label  "Schroot"@nl .
 
 emissiepunt:0400123123_6851234567_0000005
-        rdf:type            riepr:Emissiepunt , prov:Agent , ssn:System , geo:SpatialObject;
-        rdfs:comment        "Onstoffing van gieterij"@nl;
-        rdfs:label          "Schouw 5"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000002 .
+        rdf:type              riepr:Emissiepunt , prov:Agent , ssn:System , geo:SpatialObject;
+        rdfs:comment          "Onstoffing van gieterij"@nl;
+        rdfs:label            "Schouw 5"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0012;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000002;
+        sosa:madeActuation    actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+observation:0400123123_6851234567_00000052026-01-01T10:00:00Z
+        rdf:type                   sosa:Observation , prov:Activity , sosa:Execution;
+        rdfs:label                 "Observatie van de emissie van Schouw 5";
+        prov:endedAtTime           "2026-12-31T10:00:00Z"^^xsd:dateTime;
+        prov:generated             result:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        prov:influenced            result:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        prov:startedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                  entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith     exploitant:0400123123;
+        prov:wasInfluencedBy       entity:rookgas2026-01-01T10:00:00Z , exploitant:0400123123;
+        sosa:endTime               "2026-12-31T10:00:00Z"^^xsd:dateTime;
+        sosa:hasFeatureOfInterest  entity:rookgas2026-01-01T10:00:00Z;
+        sosa:hasResult             result:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:madeBySensor          exploitant:0400123123;
+        sosa:madeBySystem          exploitant:0400123123;
+        sosa:observedProperty      parameter:P_6;
+        sosa:startTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:usedProcedure         analysemethode:CMA_3_D .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0003
-        rdf:type            prov:Plan , prov:Entity , owl:Thing , riepr:Proces , ssn:System , prov:Agent , pplan:Entity , dbo:UnitOfWork , pplan:Step , riepr:IIOA , dbo:Project , pplan:Plan;
+        rdf:type            prov:Plan , prov:Entity , riepr:Proces , pplan:Entity , pplan:Step , sosa:Procedure , pplan:Plan;
         rdfs:label          "Schroot"@nl;
-        dct:type            riepr:overbrengingsProces;
-        pplan:hasInputVar   stof:schroot;
-        pplan:hasOutputVar  stof:schroot;
+        dc:type             riepr:overbrengingsProces;
+        pplan:hasInputVar   var:schroot;
+        pplan:hasOutputVar  var:schroot;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0001;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 stof:rookgas  rdf:type       pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Rookgas"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 , proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 .
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0012 , proces:0400123123_6851234567_ACTIVITEIT_1_0008 , proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0005 .
 
 apparaat:0400123123_6851234567_0001
-        rdf:type            riepr:Apparaat , prov:Agent , geo:SpatialObject , ssn:System;
+        rdf:type            riepr:Apparaat;
         rdfs:label          "Stroomboogoven"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
+        dc:created          "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued           "2020-07-30"^^xsd:date;
+        dc:valid            "2030-12-31"^^xsd:date;
         adms:status         riepr:Actief;
+        sosa:implements     proces:0400123123_6851234567_ACTIVITEIT_1_0004;
         sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000001 .
+        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000001;
+        ssn:hasDeployment   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+entity:staalplaat2026-01-01T10:00:00Z
+        rdf:type                     sosa:Result , pplan:Entity , prov:Entity;
+        rdfs:label                   "Gedecarburiseerd staal"@nl , "Staalplaat"@nl;
+        pplan:correspondsToVariable  stof:staalplaat;
+        prov:wasDerivedFrom          entity:gedec_staal2026-01-01T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00022026-01-01T10:00:00Z;
+        prov:wasInfluencedBy         entity:gedec_staal2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00022026-01-01T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00022026-01-01T10:00:00Z .
+
+entity:staalplaat1999-01-01T00:00:00Z
+        rdf:type                     sosa:Result , prov:Entity , pplan:Entity;
+        rdfs:label                   "Gedecarburiseerd staal"@nl , "Staalplaat"@nl;
+        pplan:correspondsToVariable  stof:staalplaat;
+        prov:wasDerivedFrom          entity:gedec_staal1999-01-01T00:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00021999-01-01T00:00:00Z;
+        prov:wasInfluencedBy         entity:gedec_staal1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00021999-01-01T00:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00021999-01-01T00:00:00Z .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_002
-        rdf:type            dbo:UnitOfWork , prov:Agent , prov:Entity , ssn:System , riepr:IIOA , prov:Plan , pplan:Step , dbo:Project , pplan:Plan , owl:Thing , riepr:Proces , pplan:Entity;
-        dct:type            riepr:apparaatVerwerkingsProces;
-        pplan:hasInputVar   stof:vod_staal;
-        pplan:hasOutputVar  stof:gezuiverd_staal;
+        rdf:type            prov:Entity , prov:Plan , sosa:Procedure , pplan:Step , pplan:Plan , riepr:Proces , pplan:Entity;
+        rdfs:label          "Zuivering van stoffen"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
+        pplan:hasInputVar   var:vod_staal;
+        pplan:hasOutputVar  var:gezuiverd_staal;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0005 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0005 .
 
-proces:0400123123_6851234567_ACTIVITEIT_1_0009
-        rdf:type            dbo:Project , pplan:Entity , prov:Agent , riepr:Proces , riepr:IIOA , pplan:Step , prov:Plan , dbo:UnitOfWork , owl:Thing , pplan:Plan , prov:Entity , ssn:System;
-        rdfs:label          "Decarburisatie"@nl;
-        pplan:hasInputVar   stof:geraffineerd_staal;
-        pplan:hasOutputVar  stof:gedec_staal;
-        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0008b;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+entity:vod_staal2020-07-30T10:00:00Z
+        rdf:type                     prov:Entity , pplan:Entity , sosa:Result;
+        rdfs:label                   "VOD-behandeld staal"@nl , "Geraffineerd staal"@nl;
+        pplan:correspondsToVariable  stof:vod_staal;
+        prov:wasDerivedFrom          entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00032020-07-30T10:00:00Z , entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00032020-07-30T10:00:00Z .
+
+analysemethode:CMA_3_D
+        sosa:usedForExecution  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z .
+
+actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z
+        rdf:type                 sosa:Actuation , prov:Activity , sosa:Execution , pplan:Activity;
+        rdfs:label               "Activiteit van Schouw 2";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0005;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2020-07-30T10:00:00Z;
+        prov:influenced          entity:rookgas2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000002;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000002 , entity:rookgas2020-07-30T10:00:00Z;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000002;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000002;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 apparaat:0400123123_6851234567_0007
-        rdf:type            prov:Agent , riepr:Apparaat , ssn:System , geo:SpatialObject;
-        rdfs:label          "Afwerkstand"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003 .
+        rdf:type              prov:Agent , riepr:Apparaat;
+        rdfs:label            "Afwerkstand"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00072026-01-01T10:00:00Z , actuation:0400123123_6851234567_00071999-01-01T00:00:00Z , actuation:0400123123_6851234567_00072020-07-30T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , actuation:0400123123_6851234567_00071999-01-01T00:00:00Z , actuation:0400123123_6851234567_00072026-01-01T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000003;
+        sosa:madeActuation    actuation:0400123123_6851234567_00071999-01-01T00:00:00Z , actuation:0400123123_6851234567_00072026-01-01T10:00:00Z , actuation:0400123123_6851234567_00072020-07-30T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00071999-01-01T00:00:00Z , actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , actuation:0400123123_6851234567_00072026-01-01T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+actuation:0400123123_6851234567_00042026-01-01T10:00:00Z
+        rdf:type                 sosa:Actuation , pplan:Activity , sosa:Execution , prov:Activity;
+        rdfs:label               "Activiteit van Argon-zuurstofontkoling";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        prov:influenced          entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:vloeibaar_staal2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0004;
+        prov:wasInfluencedBy     entity:vloeibaar_staal2026-01-01T10:00:00Z , apparaat:0400123123_6851234567_0004;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0004;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0004;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z
+        rdf:type                 prov:Activity , pplan:Activity , sosa:Actuation , sosa:Execution;
+        rdfs:label               "Activiteit van Schouw 3";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0008;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2020-07-30T10:00:00Z;
+        prov:influenced          entity:rookgas2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000003;
+        prov:wasInfluencedBy     entity:rookgas2020-07-30T10:00:00Z , emissiepunt:0400123123_6851234567_0000003;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000003;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000003;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0011
-        rdf:type            prov:Entity , owl:Thing , pplan:Entity , pplan:Plan , ssn:System , pplan:Step , riepr:Proces , prov:Agent , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
-        dct:type            riepr:apparaatVerwerkingsProces;
+        rdf:type            prov:Entity , pplan:Entity , pplan:Plan , sosa:Procedure , pplan:Step , riepr:Proces , prov:Plan;
+        rdfs:label          "Gieten en afkoelen"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
         pplan:hasInputVar   stof:gedec_staal;
         pplan:hasOutputVar  stof:staalplaat;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0010;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0002 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0002 .
+
+actuation:0400123123_6851234567_00041999-01-01T00:00:00Z
+        rdf:type                 prov:Activity , sosa:Actuation , pplan:Activity , sosa:Execution;
+        rdfs:label               "Activiteit van Argon-zuurstofontkoling";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:geraffineerd_staal1999-01-01T00:00:00Z;
+        prov:influenced          entity:geraffineerd_staal1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:vloeibaar_staal1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0004;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0004 , entity:vloeibaar_staal1999-01-01T00:00:00Z;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:geraffineerd_staal1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0004;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0004;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
+
+entity:geraffineerd_staal2026-01-01T10:00:00Z
+        rdf:type                     sosa:Result , pplan:Entity , prov:Entity;
+        rdfs:label                   "VOD-behandeld staal"@nl , "Vloeibaar staal"@nl , "Geraffineerd staal"@nl;
+        pplan:correspondsToVariable  stof:geraffineerd_staal;
+        prov:hadDerivation           entity:vod_staal2026-01-01T10:00:00Z;
+        prov:influenced              entity:vod_staal2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00032026-01-01T10:00:00Z;
+        prov:wasDerivedFrom          entity:vloeibaar_staal2026-01-01T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00042026-01-01T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00042026-01-01T10:00:00Z , entity:vloeibaar_staal2026-01-01T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00032026-01-01T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00042026-01-01T10:00:00Z .
+
+entity:afgewerkt_staal2026-01-01T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity , sosa:Result;
+        rdfs:label                   "Afgewerkt staal"@nl , "Gezuiverd staal"@nl;
+        pplan:correspondsToVariable  stof:afgewerkt_staal;
+        prov:wasDerivedFrom          entity:gezuiverd_staal2026-01-01T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00072026-01-01T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00072026-01-01T10:00:00Z , entity:gezuiverd_staal2026-01-01T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00072026-01-01T10:00:00Z .
+
+var:grondstoffen_mix  rdf:type  pplan:Variable;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
+entity:geraffineerd_staal1999-01-01T00:00:00Z
+        rdf:type                     prov:Entity , sosa:Result , pplan:Entity;
+        rdfs:label                   "Geraffineerd staal"@nl , "Vloeibaar staal"@nl;
+        pplan:correspondsToVariable  stof:geraffineerd_staal;
+        prov:wasDerivedFrom          entity:vloeibaar_staal1999-01-01T00:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00041999-01-01T00:00:00Z;
+        prov:wasInfluencedBy         entity:vloeibaar_staal1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00041999-01-01T00:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00041999-01-01T00:00:00Z .
+
+entity:afgewerkt_staal1999-01-01T00:00:00Z
+        rdf:type                     sosa:Result , pplan:Entity , prov:Entity;
+        rdfs:label                   "Gezuiverd staal"@nl , "Afgewerkt staal"@nl;
+        pplan:correspondsToVariable  stof:afgewerkt_staal;
+        prov:wasDerivedFrom          entity:gezuiverd_staal1999-01-01T00:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00071999-01-01T00:00:00Z;
+        prov:wasInfluencedBy         entity:gezuiverd_staal1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00071999-01-01T00:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00071999-01-01T00:00:00Z .
+
+entity:gedec_staal2020-07-30T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Staalplaat"@nl , "Gedecarburiseerd staal"@nl;
+        pplan:correspondsToVariable  stof:gedec_staal;
+        prov:hadDerivation           entity:staalplaat2020-07-30T10:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00022020-07-30T10:00:00Z , entity:staalplaat2020-07-30T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00022020-07-30T10:00:00Z .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0004
-        rdf:type            dbo:UnitOfWork , owl:Thing , pplan:Step , riepr:IIOA , ssn:System , prov:Agent , dbo:Project , pplan:Plan , prov:Plan , pplan:Entity , riepr:Proces , prov:Entity;
-        dct:type            riepr:apparaatVerwerkingsProces;
-        pplan:hasInputVar   stof:schroot;
-        pplan:hasOutputVar  stof:vloeibaar_staal;
+        rdf:type            pplan:Step , pplan:Plan , prov:Plan , pplan:Entity , sosa:Procedure , riepr:Proces , prov:Entity;
+        rdfs:label          "Staalproductie in stroomboogoven"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
+        pplan:hasInputVar   var:schroot;
+        pplan:hasOutputVar  var:vloeibaar_staal;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0003;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0001 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0001 .
 
 apparaat:0400123123_6851234567_0002
-        rdf:type            prov:Agent , riepr:Apparaat , geo:SpatialObject , ssn:System;
-        rdfs:label          "Gieterijmachine"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000002 .
+        rdf:type              prov:Agent , riepr:Apparaat;
+        rdfs:label            "Gieterijmachine"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00021999-01-01T00:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00022026-01-01T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0011;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000002;
+        sosa:madeActuation    actuation:0400123123_6851234567_00021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00022020-07-30T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00022020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+var:geraffineerd_staal
+        rdf:type            pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
 
 stof:gedec_staal  rdf:type   pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Gedecarburiseerd staal"@nl;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0011 , proces:0400123123_6851234567_ACTIVITEIT_1_0010;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009 , proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0010 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_003
-        rdf:type            prov:Plan , riepr:IIOA , owl:Thing , pplan:Entity , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , dbo:Project , prov:Agent , ssn:System , dbo:UnitOfWork;
+        rdf:type            prov:Plan , pplan:Entity , pplan:Step , pplan:Plan , prov:Entity , riepr:Proces , sosa:Procedure;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
+        dc:type             riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas;
         pplan:hasOutputVar  stof:rookgas;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000004 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
 
-stof:ijzererts  rdf:type    pplan:Variable , riepr:ProcesVariabele;
-        rdfs:label          "IJzererts"@nl;
-        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+entity:rookgas2020-07-30T10:00:00Z
+        rdf:type                     sosa:Result , riepr:Emissie , prov:Entity , pplan:Entity;
+        rdfs:label                   "Rookgas"@nl;
+        pplan:correspondsToVariable  stof:rookgas;
+        prov:hadDerivation           entity:rookgas2020-07-30T10:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , entity:rookgas2020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z;
+        prov:wasDerivedFrom          entity:rookgas2020-07-30T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z;
+        prov:wasInfluencedBy         entity:rookgas2020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z .
+
+parameter:P_6  sosa:wasObservedBy  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z .
+
+stof:ijzererts  rdf:type  pplan:Variable , riepr:ProcesVariabele;
+        rdfs:label  "IJzererts"@nl .
 
 apparaat:0400123123_6851234567_0008
-        rdf:type            geo:SpatialObject , prov:Agent , ssn:System , riepr:Apparaat;
+        rdf:type            riepr:Apparaat;
         rdfs:label          "Zuiveringsapparaat Afwerkstand"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
+        dc:created          "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued           "2020-07-30"^^xsd:date;
+        dc:valid            "2030-12-31"^^xsd:date;
         adms:status         riepr:Actief;
+        sosa:implements     proces:0400123123_6851234567_ACTIVITEIT_1_0009_005;
         sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003 .
+        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003;
+        ssn:hasDeployment   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+result:0400123123_6851234567_00000052026-01-01T10:00:00Z
+        rdf:type              prov:Entity , sosa:Result , qudt:QuantityValue;
+        qudt:hasUnit          unit:Kilogram;
+        qudt:numericValue     "17.6"^^xsd:double;
+        qudt:quantityKind     quantitykind:Mass;
+        prov:wasGeneratedBy   observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        prov:wasInfluencedBy  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:isResultOf       observation:0400123123_6851234567_00000052026-01-01T10:00:00Z .
+
+actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z
+        rdf:type                 pplan:Activity , sosa:Actuation , sosa:Execution , prov:Activity;
+        rdfs:label               "Activiteit van Schoorsteen Ketels";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_006;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2026-01-01T10:00:00Z;
+        prov:influenced          entity:rookgas2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000004;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000004 , entity:rookgas2026-01-01T10:00:00Z;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000004;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000004;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00022026-01-01T10:00:00Z
+        rdf:type                 prov:Activity , sosa:Execution , pplan:Activity , sosa:Actuation;
+        rdfs:label               "Activiteit van Gieterijmachine";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0011;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:staalplaat2026-01-01T10:00:00Z;
+        prov:influenced          entity:staalplaat2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gedec_staal2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0002;
+        prov:wasInfluencedBy     entity:gedec_staal2026-01-01T10:00:00Z , apparaat:0400123123_6851234567_0002;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:staalplaat2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0002;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0002;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0012
-        rdf:type            pplan:Plan , prov:Agent , prov:Entity , owl:Thing , pplan:Entity , pplan:Step , riepr:Proces , ssn:System , dbo:Project , dbo:UnitOfWork , prov:Plan , riepr:IIOA;
+        rdf:type            pplan:Plan , prov:Entity , pplan:Entity , pplan:Step , riepr:Proces , sosa:Procedure , prov:Plan;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
+        dc:type             riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas;
         pplan:hasOutputVar  stof:rookgas;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0011;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000005 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000005 .
+
+actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z
+        rdf:type                 prov:Activity , pplan:Activity , sosa:Execution , sosa:Actuation;
+        rdfs:label               "Activiteit van Schoorsteen Ketels";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_006 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_003 , proces:0400123123_6851234567_ACTIVITEIT_1_0010_VERSIE1999;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas1999-01-01T00:00:00Z;
+        prov:influenced          entity:rookgas1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000004;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000004 , entity:rookgas1999-01-01T00:00:00Z;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000004;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000004;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00021999-01-01T00:00:00Z
+        rdf:type                 pplan:Activity , sosa:Execution , sosa:Actuation , prov:Activity;
+        rdfs:label               "Activiteit van Gieterijmachine";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0011;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:staalplaat1999-01-01T00:00:00Z;
+        prov:influenced          entity:staalplaat1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gedec_staal1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0002;
+        prov:wasInfluencedBy     entity:gedec_staal1999-01-01T00:00:00Z , apparaat:0400123123_6851234567_0002;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:staalplaat1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0002;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0002;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
 
 riepr:Actief  rdf:type  skos:Concept .
 
 emissiepunt:0400123123_6851234567_0000001
-        rdf:type            ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
+        rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
         rdfs:comment        "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
         rdfs:label          "Schouw 1"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
+        dc:created          "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued           "2020-07-30"^^xsd:date;
+        dc:valid            "2030-12-31"^^xsd:date;
         geo:hasGeometry     [ rdf:type              geo:Geometry , geo:SpatialObject;
                               geo:asWKT             "POINT(4.3505 51.2005)"^^geo:WKTLiteral;
                               geo:hasSerialization  "POINT(4.3505 51.2005)"^^geo:WKTLiteral
                             ];
         adms:status         riepr:Actief;
+        sosa:implements     proces:0400123123_6851234567_ACTIVITEIT_1_0002;
         sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000001 .
+        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000001;
+        ssn:hasDeployment   exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
 
-proces:0400123123_6851234567_ACTIVITEIT_1
-        rdf:type            riepr:IIOA , prov:Entity , ssn:System , riepr:Proces , prov:Agent , pplan:Entity , dbo:Project , dbo:UnitOfWork , pplan:Plan , prov:Plan , owl:Thing , pplan:Step;
-        rdfs:label          "Staalproductieproces"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        pplan:hasInputVar   stof:ijzererts;
-        pplan:hasOutputVar  stof:staalplaat;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567 .
+apparaat:0400123123_6851234567_0010
+        rdf:type           riepr:Apparaat;
+        rdfs:label         "Stroomboogoven (vervangen 2026)"@nl;
+        dc:created         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        dc:issued          "2026-01-01"^^xsd:date;
+        dc:valid           "2036-12-31"^^xsd:date;
+        adms:status        riepr:Actief;
+        sosa:implements    proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+entity:gezuiverd_staal2020-07-30T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Afgewerkt staal"@nl , "Gezuiverd staal"@nl;
+        pplan:correspondsToVariable  stof:gezuiverd_staal;
+        prov:hadDerivation           entity:afgewerkt_staal2020-07-30T10:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , entity:afgewerkt_staal2020-07-30T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00072020-07-30T10:00:00Z .
+
+actuation:0400123123_6851234567_00032026-01-01T10:00:00Z
+        rdf:type                 sosa:Execution , pplan:Activity , sosa:Actuation , prov:Activity;
+        rdfs:label               "Activiteit van Toevoeginstallatie VOD";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:vod_staal2026-01-01T10:00:00Z;
+        prov:influenced          entity:vod_staal2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0003;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0003 , entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:vod_staal2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0003;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0003;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
+
+actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z
+        rdf:type                 pplan:Activity , sosa:Actuation , prov:Activity , sosa:Execution;
+        rdfs:label               "Activiteit van Schouw 5";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0012;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2026-01-01T10:00:00Z;
+        prov:influenced          entity:rookgas2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000005;
+        prov:wasInfluencedBy     entity:rookgas2026-01-01T10:00:00Z , emissiepunt:0400123123_6851234567_0000005;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000005;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000005;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 installatie:0400123123_6851234567_0000001
-        rdf:type           riepr:Installatie , geo:SpatialObjectCollection , ssn:System , prov:Agent;
+        rdf:type           riepr:Installatie , geo:SpatialObject , ssn:System;
         rdfs:label         "Stroomboogoven"@nl;
-        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued         "2020-07-30"^^xsd:date;
-        dct:valid          "2030-12-31"^^xsd:date;
+        dc:created         "2020-01-01T00:00:00"^^xsd:dateTime;
+        dc:issued          "2020-07-30"^^xsd:date;
+        dc:valid           "2030-12-31"^^xsd:date;
         adms:status        riepr:Actief;
         sosa:hasSubSystem  apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000001;
-        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567 .
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z
+        rdf:type                 sosa:Actuation , sosa:Execution , pplan:Activity , prov:Activity;
+        rdfs:label               "Activiteit van Schouw 5";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0012;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas1999-01-01T00:00:00Z;
+        prov:influenced          entity:rookgas1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000005;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000005 , entity:rookgas1999-01-01T00:00:00Z;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000005;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000005;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
+
+act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z
+        rdf:type            sosa:ExecutionCollection , sosa:ActuationCollection , prov:Activity;
+        rdfs:label          "Staalproductieproces van Staalfabriek NV op 2026"@nl;
+        prov:startedAtTime  "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasMember      actuation:0400123123_6851234567_00032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00072026-01-01T10:00:00Z , actuation:0400123123_6851234567_00022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:startTime      "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:usedProcedure  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
 
 stof:vod_staal  rdf:type     pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "VOD-behandeld staal"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_002;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0005
-        rdf:type            pplan:Step , prov:Entity , pplan:Plan , dbo:Project , riepr:Proces , owl:Thing , prov:Agent , ssn:System , pplan:Entity , dbo:UnitOfWork , riepr:IIOA , prov:Plan;
+        rdf:type            pplan:Step , prov:Entity , pplan:Plan , riepr:Proces , pplan:Entity , sosa:Procedure , prov:Plan;
         rdfs:label          "Afgassing"@nl;
-        dct:type            riepr:uitstootProces;
+        dc:type             riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas;
         pplan:hasOutputVar  stof:rookgas;
-        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0004;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1;
-        ssn:implementedBy   emissiepunt:0400123123_6851234567_0000002 .
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:implementedBy  emissiepunt:0400123123_6851234567_0000002 .
 
 apparaat:0400123123_6851234567_0003
-        rdf:type            ssn:System , riepr:Apparaat , geo:SpatialObject , prov:Agent;
-        rdfs:label          "Toevoeginstallatie VOD"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000003 .
+        rdf:type              riepr:Apparaat , prov:Agent;
+        rdfs:label            "Toevoeginstallatie VOD"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000003;
+        sosa:madeActuation    actuation:0400123123_6851234567_00032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00032026-01-01T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00032020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_004
-        rdf:type            owl:Thing , pplan:Entity , dbo:UnitOfWork , prov:Entity , prov:Agent , prov:Plan , riepr:IIOA , ssn:System , pplan:Step , pplan:Plan , riepr:Proces , dbo:Project;
-        dct:type            riepr:apparaatVerwerkingsProces;
-        pplan:hasInputVar   stof:gezuiverd_staal;
+        rdf:type            pplan:Entity , prov:Entity , prov:Plan , sosa:Procedure , pplan:Step , pplan:Plan , riepr:Proces;
+        rdfs:label          "Afwerking van staal"@nl;
+        dc:type             riepr:apparaatVerwerkingsProces;
+        pplan:hasInputVar   var:apparaat_0400123123_6851234567_0007 , stof:gezuiverd_staal;
         pplan:hasOutputVar  stof:afgewerkt_staal;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0007 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        sosa:implementedBy  apparaat:0400123123_6851234567_0007 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999
+        rdf:type               pplan:Plan , sosa:Procedure , pplan:Entity , prov:Entity , prov:Plan , pplan:Step , riepr:Proces;
+        rdfs:label             "Staalproductieproces van Staalfabriek NV op 1999"@nl;
+        dc:created             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status            riepr:Inactief;
+        prov:hadDerivation     proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:hadRevision       proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:influenced        proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:usedForExecution  act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        ssn:implementedBy      exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0008b
-        rdf:type            dbo:Project , pplan:Step , dbo:UnitOfWork , pplan:Plan , riepr:IIOA , prov:Entity , prov:Agent , prov:Plan , riepr:Proces , owl:Thing , ssn:System , pplan:Entity;
+        rdf:type            pplan:Step , pplan:Plan , prov:Entity , prov:Plan , sosa:Procedure , riepr:Proces , pplan:Entity;
         rdfs:label          "Overbrenging naar decarburisatie"@nl;
-        dct:type            riepr:overbrengingsProces;
+        dc:type             riepr:overbrengingsProces;
         pplan:hasInputVar   stof:geraffineerd_staal;
         pplan:hasOutputVar  stof:geraffineerd_staal;
         pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0007;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020
+        rdf:type               sosa:Procedure , prov:Plan , pplan:Plan , pplan:Step , riepr:Proces , pplan:Entity , prov:Entity;
+        rdfs:label             "Staalproductieproces van Staalfabriek NV op 2020"@nl;
+        dc:created             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        adms:status            riepr:Actief;
+        prov:hadDerivation     proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:hadRevision       proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:influenced        proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        prov:wasDerivedFrom    proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        prov:wasInfluencedBy   proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        prov:wasRevisionOf     proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
+        sosa:usedForExecution  act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        ssn:implementedBy      exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
+
+entity:vod_staal2026-01-01T10:00:00Z
+        rdf:type                     prov:Entity , pplan:Entity , sosa:Result;
+        rdfs:label                   "VOD-behandeld staal"@nl , "Geraffineerd staal"@nl;
+        pplan:correspondsToVariable  stof:vod_staal;
+        prov:wasDerivedFrom          entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00032026-01-01T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00032026-01-01T10:00:00Z , entity:geraffineerd_staal2026-01-01T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00032026-01-01T10:00:00Z .
+
+actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z
+        rdf:type                 sosa:Execution , prov:Activity , sosa:Actuation , pplan:Activity;
+        rdfs:label               "Activiteit van Schouw 2";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0005;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2026-01-01T10:00:00Z;
+        prov:influenced          entity:rookgas2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000002;
+        prov:wasInfluencedBy     emissiepunt:0400123123_6851234567_0000002 , entity:rookgas2026-01-01T10:00:00Z;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000002;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000002;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
+
+var:gezuiverd_staal  rdf:type  pplan:Variable;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
+
+actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z
+        rdf:type                 sosa:Actuation , prov:Activity , sosa:Execution , pplan:Activity;
+        rdfs:label               "Activiteit van Schouw 2";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0005;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas1999-01-01T00:00:00Z;
+        prov:influenced          entity:rookgas1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000002;
+        prov:wasInfluencedBy     entity:rookgas1999-01-01T00:00:00Z , emissiepunt:0400123123_6851234567_0000002;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000002;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000002;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
+
+entity:vloeibaar_staal2020-07-30T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Geraffineerd staal"@nl , "Vloeibaar staal"@nl;
+        pplan:correspondsToVariable  stof:vloeibaar_staal;
+        prov:hadDerivation           entity:geraffineerd_staal2020-07-30T10:00:00Z;
+        prov:influenced              entity:geraffineerd_staal2020-07-30T10:00:00Z , actuation:0400123123_6851234567_00042020-07-30T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00042020-07-30T10:00:00Z .
 
 emissiepunt:0400123123_6851234567_0000002
-        rdf:type            geo:Feature , ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject;
-        rdfs:comment        "Afzuiging en ontstoffing van de oven"@nl;
-        rdfs:label          "Schouw 2"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        geo:hasGeometry     [ rdf:type              geo:Geometry , geo:SpatialObject;
-                              geo:asWKT             "POINT(4.3510 51.2000)"^^geo:WKTLiteral;
-                              geo:hasSerialization  "POINT(4.3510 51.2000)"^^geo:WKTLiteral
-                            ];
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000001 .
+        rdf:type              geo:Feature , ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject;
+        rdfs:comment          "Afzuiging en ontstoffing van de oven"@nl;
+        rdfs:label            "Schouw 2"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        geo:hasGeometry       [ rdf:type              geo:Geometry , geo:SpatialObject;
+                                geo:asWKT             "POINT(4.3510 51.2000)"^^geo:WKTLiteral;
+                                geo:hasSerialization  "POINT(4.3510 51.2000)"^^geo:WKTLiteral
+                              ];
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0005;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000001;
+        sosa:madeActuation    actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z
+        rdf:type            sosa:ActuationCollection , sosa:ExecutionCollection , prov:Activity;
+        rdfs:label          "Staalproductieproces van Staalfabriek NV op 2020"@nl;
+        prov:startedAtTime  "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasMember      actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z , actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000022020-07-30T10:00:00Z , actuation:0400123123_6851234567_00032020-07-30T10:00:00Z , actuation:0400123123_6851234567_00042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00022020-07-30T10:00:00Z;
+        sosa:startTime      "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:usedProcedure  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 .
 
 exploitant:0400123123
-        rdf:type    prov:Agent , riepr:Exploitant;
-        rdfs:label  "Staalfabriek NV"@nl;
-        owl:sameAs  vkbo:0400123123;
-        sosa:hosts  exploitatielocatie:0400123123_6851234567 .
+        rdf:type              prov:Agent , riepr:Exploitant;
+        rdfs:label            "Staalfabriek NV"@nl;
+        owl:sameAs            vkbo:0400123123;
+        prov:contributed      exploitatielocatie:0400123123_6851234567;
+        prov:influenced       observation:0400123123_6851234567_00000052026-01-01T10:00:00Z , exploitatielocatie:0400123123_6851234567;
+        prov:wasAssociateFor  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:madeExecution    observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:madeObservation  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z .
+
+actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z
+        rdf:type                 sosa:Actuation , prov:Activity , pplan:Activity , sosa:Execution;
+        rdfs:label               "Activiteit van Schouw 3";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0008;
+        prov:endedAtTime         "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas2026-01-01T10:00:00Z;
+        prov:influenced          entity:rookgas2026-01-01T10:00:00Z;
+        prov:startedAtTime       "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000003;
+        prov:wasInfluencedBy     entity:rookgas2026-01-01T10:00:00Z , emissiepunt:0400123123_6851234567_0000003;
+        sosa:endTime             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas2026-01-01T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000003;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000003;
+        sosa:startTime           "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 installatie:0400123123_6851234567_0000002
-        rdf:type           geo:SpatialObjectCollection , prov:Agent , riepr:Installatie , ssn:System;
+        rdf:type           geo:SpatialObject , riepr:Installatie , ssn:System;
         rdfs:label         "Gieterij"@nl;
-        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued         "2020-07-30"^^xsd:date;
-        dct:valid          "2030-12-31"^^xsd:date;
+        dc:created         "2020-01-01T00:00:00"^^xsd:dateTime;
+        dc:issued          "2020-07-30"^^xsd:date;
+        dc:valid           "2030-12-31"^^xsd:date;
         adms:status        riepr:Actief;
         sosa:hasSubSystem  emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002;
-        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567 .
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026
+        rdf:type               prov:Entity , pplan:Plan , prov:Plan , riepr:Proces , pplan:Entity , pplan:Step , sosa:Procedure;
+        rdfs:label             "Staalproductieproces van Staalfabriek NV op 2026"@nl;
+        dc:created             "2026-01-01T10:00:00Z"^^xsd:dateTime;
+        adms:status            riepr:Actief;
+        prov:wasDerivedFrom    proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:wasInfluencedBy   proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        prov:wasRevisionOf     proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020;
+        sosa:usedForExecution  act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20262026-01-01T10:00:00Z;
+        ssn:implementedBy      exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
+
+actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z
+        rdf:type                 prov:Activity , sosa:Execution , pplan:Activity , sosa:Actuation;
+        rdfs:label               "Activiteit van Schouw 3";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0008;
+        prov:endedAtTime         "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:rookgas1999-01-01T00:00:00Z;
+        prov:influenced          entity:rookgas1999-01-01T00:00:00Z;
+        prov:startedAtTime       "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        prov:used                entity:rookgas1999-01-01T00:00:00Z;
+        prov:wasAssociatedWith   emissiepunt:0400123123_6851234567_0000003;
+        prov:wasInfluencedBy     entity:rookgas1999-01-01T00:00:00Z , emissiepunt:0400123123_6851234567_0000003;
+        sosa:endTime             "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:rookgas1999-01-01T00:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z;
+        sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000003;
+        sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000003;
+        sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
 
 stof:geraffineerd_staal
         rdf:type             pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Geraffineerd staal"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0009 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0009_001;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0008b , proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0006
-        rdf:type            dbo:UnitOfWork , owl:Thing , riepr:IIOA , prov:Plan , pplan:Step , prov:Agent , ssn:System , pplan:Plan , dbo:Project , pplan:Entity , riepr:Proces , prov:Entity;
+        rdf:type            prov:Plan , pplan:Step , pplan:Plan , pplan:Entity , sosa:Procedure , riepr:Proces , prov:Entity;
         rdfs:label          "Overbrenging vloeibaar staal"@nl;
-        dct:type            riepr:overbrengingsProces;
-        pplan:hasInputVar   stof:vloeibaar_staal;
-        pplan:hasOutputVar  stof:vloeibaar_staal;
-        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0004;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1 .
+        dc:type             riepr:overbrengingsProces;
+        pplan:hasInputVar   var:vloeibaar_staal;
+        pplan:hasOutputVar  var:vloeibaar_staal;
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
 apparaat:0400123123_6851234567_0004
-        rdf:type            prov:Agent , riepr:Apparaat , geo:SpatialObject , ssn:System;
-        rdfs:label          "Argon-zuurstofontkoling"@nl;
-        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued          "2020-07-30"^^xsd:date;
-        dct:valid           "2030-12-31"^^xsd:date;
-        adms:status         riepr:Actief;
-        sosa:isHostedBy     exploitatielocatie:0400123123_6851234567;
-        sosa:isSubSystemOf  installatie:0400123123_6851234567_0000004 .
+        rdf:type              prov:Agent , riepr:Apparaat;
+        rdfs:label            "Argon-zuurstofontkoling"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        adms:status           riepr:Actief;
+        prov:influenced       actuation:0400123123_6851234567_00041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z;
+        prov:wasAssociateFor  actuation:0400123123_6851234567_00042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00041999-01-01T00:00:00Z;
+        sosa:implements       proces:0400123123_6851234567_ACTIVITEIT_1_0007;
+        sosa:isHostedBy       exploitatielocatie:0400123123_6851234567;
+        sosa:isSubSystemOf    installatie:0400123123_6851234567_0000004;
+        sosa:madeActuation    actuation:0400123123_6851234567_00042020-07-30T10:00:00Z , actuation:0400123123_6851234567_00041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z;
+        sosa:madeExecution    actuation:0400123123_6851234567_00041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00042020-07-30T10:00:00Z;
+        ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+actuation:0400123123_6851234567_00072020-07-30T10:00:00Z
+        rdf:type                 pplan:Activity , prov:Activity , sosa:Actuation , sosa:Execution;
+        rdfs:label               "Activiteit van Afwerkstand";
+        pplan:correspondsToStep  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        prov:endedAtTime         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:generated           entity:afgewerkt_staal2020-07-30T10:00:00Z;
+        prov:influenced          entity:afgewerkt_staal2020-07-30T10:00:00Z;
+        prov:startedAtTime       "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        prov:used                entity:gezuiverd_staal2020-07-30T10:00:00Z;
+        prov:wasAssociatedWith   apparaat:0400123123_6851234567_0007;
+        prov:wasInfluencedBy     apparaat:0400123123_6851234567_0007 , entity:gezuiverd_staal2020-07-30T10:00:00Z;
+        sosa:endTime             "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        sosa:hasResult           entity:afgewerkt_staal2020-07-30T10:00:00Z;
+        sosa:isMemberOf          act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE20202020-07-30T10:00:00Z;
+        sosa:madeByActuator      apparaat:0400123123_6851234567_0007;
+        sosa:madeBySystem        apparaat:0400123123_6851234567_0007;
+        sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
 
 stof:afgewerkt_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "Afgewerkt staal"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0009_005;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
+entity:gedec_staal2026-01-01T10:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Staalplaat"@nl , "Gedecarburiseerd staal"@nl;
+        pplan:correspondsToVariable  stof:gedec_staal;
+        prov:hadDerivation           entity:staalplaat2026-01-01T10:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00022026-01-01T10:00:00Z , entity:staalplaat2026-01-01T10:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00022026-01-01T10:00:00Z .
+
 proces:0400123123_6851234567_ACTIVITEIT_1_0009_005
-        rdf:type            pplan:Entity , riepr:Proces , pplan:Plan , prov:Plan , ssn:System , dbo:UnitOfWork , pplan:Step , dbo:Project , prov:Entity , owl:Thing , riepr:IIOA , prov:Agent;
-        dct:type            riepr:apparaatVerwerkingsProces;
-        pplan:hasInputVar   stof:afgewerkt_staal;
-        pplan:hasOutputVar  stof:gedec_staal;
-        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
-        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_0009;
-        ssn:implementedBy   apparaat:0400123123_6851234567_0008 .
+        rdf:type             pplan:Entity , riepr:Proces , pplan:Plan , prov:Plan , sosa:Procedure , pplan:Step , prov:Entity;
+        rdfs:label           "Zuivering van afgewerkt staal"@nl;
+        dc:type              riepr:apparaatVerwerkingsProces;
+        pplan:hasInputVar    var:afgewerkt_staal;
+        pplan:hasOutputVar   var:gedec_staal;
+        pplan:isPrecededBy   proces:0400123123_6851234567_ACTIVITEIT_1_0009_004;
+        pplan:isStepOfPlan   proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2026;
+        sosa:implementedBy   apparaat:0400123123_6851234567_0008;
+        riepr:vlaremRubriek  <http://vmm.be/vlarem/xyz> .
+
+act_col:0400123123_6851234567_ACTIVITEIT_1_VERSIE19991999-01-01T00:00:00Z
+        rdf:type            sosa:ActuationCollection , prov:Activity , sosa:ExecutionCollection;
+        rdfs:label          "Staalproductieproces van Staalfabriek NV op 1999"@nl;
+        prov:startedAtTime  "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:hasMember      actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00071999-01-01T00:00:00Z , actuation:0400123123_6851234567_00041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00021999-01-01T00:00:00Z;
+        sosa:startTime      "1999-01-01T00:00:00Z"^^xsd:dateTime;
+        sosa:usedProcedure  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
+
+entity:gedec_staal1999-01-01T00:00:00Z
+        rdf:type                     pplan:Entity , prov:Entity;
+        rdfs:label                   "Staalplaat"@nl , "Gedecarburiseerd staal"@nl;
+        pplan:correspondsToVariable  stof:gedec_staal;
+        prov:hadDerivation           entity:staalplaat1999-01-01T00:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00021999-01-01T00:00:00Z , entity:staalplaat1999-01-01T00:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00021999-01-01T00:00:00Z .
+
+riepr:Inactief  rdf:type  skos:Concept .
 
 stof:vloeibaar_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
-        rdfs:label           "Vloeibaar staal"@nl;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0007;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 .
+        rdfs:label          "Vloeibaar staal"@nl;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
+
+var:schroot  rdf:type        pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0003 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0003 .
+
+entity:rookgas2026-01-01T10:00:00Z
+        rdf:type                     riepr:Emissie , sosa:Result , prov:Entity , pplan:Entity;
+        rdfs:label                   "Rookgas"@nl;
+        pplan:correspondsToVariable  stof:rookgas;
+        prov:hadDerivation           entity:rookgas2026-01-01T10:00:00Z;
+        prov:influenced              actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , entity:rookgas2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , observation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z;
+        prov:wasDerivedFrom          entity:rookgas2026-01-01T10:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        prov:wasInfluencedBy         actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , entity:rookgas2026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z;
+        prov:wasUsedBy               observation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z;
+        sosa:isFeatureOfInterestOf   observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z .
 
 exploitatielocatie:0400123123_6851234567
-        rdf:type         geo:Feature , geo:SpatialObject , prov:Entity , sosa:Platform , riepr:ExploitatieLocatie;
-        rdfs:label       "Hoofdzetel Staalfabriek NV"@nl;
-        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dct:issued       "2020-07-30"^^xsd:date;
-        dct:valid        "2030-12-31"^^xsd:date;
-        geo:hasGeometry  [ rdf:type              geo:Geometry , geo:SpatialObject;
-                           geo:asWKT             "POINT(4.3500 51.2000)"^^geo:WKTLiteral;
-                           geo:hasSerialization  "POINT(4.3500 51.2000)"^^geo:WKTLiteral
-                         ];
-        owl:sameAs       osm:6851234567;
-        adms:status      riepr:Actief;
-        sosa:hosts       emissiepunt:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002 , apparaat:0400123123_6851234567_0005 , apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000001 , installatie:0400123123_6851234567_0000002 , proces:0400123123_6851234567_ACTIVITEIT_1 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0006 , installatie:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0008 , apparaat:0400123123_6851234567_0003;
-        sosa:isHostedBy  exploitant:0400123123 .
+        rdf:type              geo:Feature , geo:SpatialObject , prov:Entity , sosa:Platform , riepr:ExploitatieLocatie;
+        rdfs:label            "Hoofdzetel Staalfabriek NV"@nl;
+        dc:created            "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dc:issued             "2020-07-30"^^xsd:date;
+        dc:valid              "2030-12-31"^^xsd:date;
+        geo:hasGeometry       [ rdf:type              geo:Geometry , geo:SpatialObject;
+                                geo:asWKT             "POINT(4.3500 51.2000)"^^geo:WKTLiteral;
+                                geo:hasSerialization  "POINT(4.3500 51.2000)"^^geo:WKTLiteral
+                              ];
+        owl:sameAs            osm:6851234567;
+        adms:status           riepr:Actief;
+        prov:wasAttributedTo  exploitant:0400123123;
+        prov:wasInfluencedBy  exploitant:0400123123;
+        sosa:hosts            emissiepunt:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000005 , apparaat:0400123123_6851234567_0002 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , apparaat:0400123123_6851234567_0005 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0001 , emissiepunt:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000003 , installatie:0400123123_6851234567_0000001 , installatie:0400123123_6851234567_0000002 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0010 , apparaat:0400123123_6851234567_0006 , installatie:0400123123_6851234567_0000004 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , apparaat:0400123123_6851234567_0008 , apparaat:0400123123_6851234567_0003 .
+
+entity:rookgas1999-01-01T00:00:00Z
+        rdf:type                     sosa:Result , pplan:Entity , prov:Entity , riepr:Emissie;
+        rdfs:label                   "Rookgas"@nl;
+        pplan:correspondsToVariable  stof:rookgas;
+        prov:hadDerivation           entity:rookgas1999-01-01T00:00:00Z;
+        prov:influenced              entity:rookgas1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z;
+        prov:wasDerivedFrom          entity:rookgas1999-01-01T00:00:00Z;
+        prov:wasGeneratedBy          actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z;
+        prov:wasInfluencedBy         entity:rookgas1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z;
+        prov:wasUsedBy               actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z;
+        sosa:isResultOf              actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z .
+
+var:rookgas  rdf:type        pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0002;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 .

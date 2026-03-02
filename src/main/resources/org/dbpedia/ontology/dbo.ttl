@@ -8,6 +8,15 @@ PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wikidata: <http://www.wikidata.org/entity/>
 PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
 
+dbo:influencedBy	rdf:type	owl:ObjectProperty , rdf:Property ;
+rdfs:comment	"The subject was influenced by the object. inverseOf influenced. Subject and object can be Persons or Works (eg ProgrammingLanguage)"@en ;
+    owl:sameAs	dbo:influencedBy ;
+    rdfs:label	"be\u00EFnvloed door"@nl ,
+                      "influenced by"@en .
+
+
+dbo:influencedBy	prov:wasDerivedFrom	ns6:influencedBy .
+
 dbo:fundedBy  rdfs:domain  dbo:ResearchProject .
 
 dbo:projectType  rdfs:domain  dbo:ResearchProject .

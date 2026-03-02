@@ -1,4 +1,5 @@
-@prefix :              <http://purl.org/net/p-plan#> .
+@prefix :              <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix activiteit:    <https://example.org/concept/activiteit/> .
 @prefix adms:          <http://www.w3.org/ns/adms#> .
 @prefix agent:         <https://example.org/agent/> .
 @prefix attr:          <https://example.org/attribution/> .
@@ -6,28 +7,36 @@
 @prefix colour:        <https://example.org/concept/colour/> .
 @prefix concept:       <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix dbo:           <http://dbpedia.org/ontology/> .
-@prefix dc:            <http://purl.org/dc/elements/1.1/> .
+@prefix dc:            <http://purl.org/dc/terms/> .
 @prefix dcat:          <http://www.w3.org/ns/dcat#> .
 @prefix dct:           <http://purl.org/dc/terms/> .
 @prefix dcterms:       <http://purl.org/dc/terms/> .
+@prefix dctype:        <http://purl.org/dc/dcmitype/> .
 @prefix dqv:           <http://www.w3.org/ns/dqv#> .
 @prefix eindproduct:   <https://example.org/concept/eindproduct/> .
+@prefix emissiepunt:   <https://example.org/concept/emissiepunt/> .
 @prefix ent:           <https://example.org/entity/> .
 @prefix exec:          <https://example.org/execution/> .
 @prefix foaf:          <http://xmlns.com/foaf/0.1/> .
 @prefix geo:           <http://www.opengis.net/ont/geosparql#> .
+@prefix gr:            <http://purl.org/goodrelations/v1#> .
+@prefix hydra:         <http://www.w3.org/ns/hydra/core#> .
+@prefix imjv:          <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#> .
 @prefix ingredient:    <https://example.org/concept/ingredient/> .
 @prefix inst:          <https://example.org/installation/> .
 @prefix kitchen:       <https://example.org/platform/> .
 @prefix locn:          <http://www.w3.org/ns/locn#> .
+@prefix nace:          <http://data.europa.eu/ux2/nace2.1/> .
 @prefix ns5:           <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
 @prefix ns6:           <http://mappings.dbpedia.org/index.php/OntologyClass:> .
 @prefix ogc:           <http://www.opengis.net/ont/geosparql#> .
 @prefix org:           <http://www.w3.org/ns/org#> .
 @prefix owl:           <http://www.w3.org/2002/07/owl#> .
+@prefix owlTime:       <http://www.w3.org/2006/time#> .
 @prefix p-plan:        <http://purl.org/net/p-plan#> .
 @prefix parameter:     <https://example.org/concept/parameter/> .
 @prefix plan:          <https://example.org/plan/> .
+@prefix platform:      <https://example.org/platform/> .
 @prefix pplan:         <http://purl.org/net/p-plan#> .
 @prefix prov:          <http://www.w3.org/ns/prov#> .
 @prefix qudt:          <http://qudt.org/schema/qudt/> .
@@ -51,7 +60,9 @@
 @prefix ssn-dep:       <http://www.w3.org/ns/ssn/dep/> .
 @prefix ssn-obs:       <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:       <http://www.w3.org/ns/ssn/sam/> .
+@prefix ssn-system:    <http://www.w3.org/ns/ssn/systems> .
 @prefix step:          <https://example.org/step/> .
+@prefix stof:          <https://example.org/concept/stof/> .
 @prefix terms:         <http://purl.org/dc/terms/> .
 @prefix time:          <http://www.w3.org/2006/time#> .
 @prefix tussenproduct: <https://example.org/concept/tussenproduct/> .
@@ -66,7 +77,7 @@
 @prefix xml:           <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:           <http://www.w3.org/2001/XMLSchema#> .
 
-step:bakken  rdf:type          riepr:IIOA , pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity;
+step:bakken  rdf:type          pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity;
         rdfs:label             "Bak het beslag"@nl;
         pplan:hasInputVar      var:beslag;
         pplan:hasOutputVar     var:brownies;
@@ -81,13 +92,13 @@ ent:eieren_001  rdf:type  prov:Entity;
 
 var:suiker  rdf:type            pplan:Variable;
         rdf:value               300;
-        dct:type                ingredient:suiker;
+        dc:type                 ingredient:suiker;
         pplan:isInputVarOf      step:mengen;
         pplan:isVariableOfPlan  plan:nigella-brownies;
-        qudt:unit               unit:GM .
+        qudt:hasUnit            unit:GM .
 
 step:laat_bakken_tot_lichtbruine_bovenkant
-        rdf:type               riepr:IIOA , pplan:Plan , prov:Plan , pplan:Entity , sosa:Procedure , pplan:Step , prov:Entity;
+        rdf:type               pplan:Plan , prov:Plan , pplan:Entity , sosa:Procedure , pplan:Step , prov:Entity;
         rdfs:label             "Laat ongeveer 35 minuten bakken tot de bovenzijde lichtbruin is"@nl;
         pplan:hasOutputVar     var:kleur;
         pplan:isPrecededBy     step:bakvorm_in_oven;
@@ -98,11 +109,15 @@ step:laat_bakken_tot_lichtbruine_bovenkant
         sosa:isProcedureFor    parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
         sosa:usedForExecution  exec:controleer_wanneer_brownies_klaar_zijn .
 
+<file:///home/gehau/git/RIE-IEPR/>
+        sosa:isUltimateFeatureOfInterestOf
+                exec:brownies-bakken-2024 .
+
 plan:nigella-brownies
-        rdf:type               prov:Entity , pplan:Entity , prov:Plan , riepr:IIOA , pplan:Plan , sosa:Procedure;
+        rdf:type               prov:Entity , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure;
         rdfs:label             "Nigella Lawson Brownies"@en;
-        dct:creator            agent:nigella-lawson;
-        dct:source             <https://www.nigella.com/recipes/brownies>;
+        dc:creator             agent:nigella-lawson;
+        dc:source              <https://www.nigella.com/recipes/brownies>;
         sosa:implementedBy     exec:tv-opname-brownies;
         sosa:usedForExecution  exec:brownies-bakken-2024 .
 
@@ -130,7 +145,7 @@ exec:smelten  rdf:type           sosa:Execution , prov:Activity , sosa:Actuation
         sosa:madeBySystem        inst:smeltsysteem-nigella;
         sosa:usedProcedure       step:smelten .
 
-step:mengen  rdf:type          prov:Plan , sosa:Procedure , prov:Entity , riepr:IIOA , pplan:Plan , pplan:Step , pplan:Entity;
+step:mengen  rdf:type          prov:Plan , sosa:Procedure , prov:Entity , pplan:Plan , pplan:Step , pplan:Entity;
         rdfs:label             "Meng alle ingrediënten"@nl;
         pplan:hasInputVar      var:bloem , var:gesmolten-mengsel , var:suiker , var:eieren;
         pplan:hasOutputVar     var:beslag;
@@ -141,25 +156,25 @@ step:mengen  rdf:type          prov:Plan , sosa:Procedure , prov:Entity , riepr:
 
 var:bloem  rdf:type             pplan:Variable;
         rdf:value               150;
-        dct:type                ingredient:bloem;
+        dc:type                 ingredient:bloem;
         pplan:isInputVarOf      step:mengen;
         pplan:isVariableOfPlan  plan:nigella-brownies;
-        qudt:unit               unit:GM .
+        qudt:hasUnit            unit:GM .
 
 ent:boter_001  rdf:type              pplan:Entity , prov:Entity;
         rdf:value                    225;
-        dct:type                     ingredient:boter;
+        dc:type                      ingredient:boter;
         pplan:correspondsToVariable  var:boter;
-        qudt:unit                    unit:GM;
+        qudt:hasUnit                 unit:GM;
         prov:influenced              exec:smelten;
         prov:wasUsedBy               exec:smelten .
 
 var:eieren  rdf:type            pplan:Variable;
         rdf:value               4;
-        dct:type                ingredient:eieren;
+        dc:type                 ingredient:eieren;
         pplan:isInputVarOf      step:mengen;
         pplan:isVariableOfPlan  plan:nigella-brownies;
-        qudt:unit               unit:UNITLESS .
+        qudt:hasUnit            unit:UNITLESS .
 
 inst:garde-nigella  rdf:type  prov:Entity , prov:Agent , sosa:System;
         rdfs:label            "Garde in Nigella's keuken"@nl;
@@ -198,11 +213,11 @@ exec:bakken  rdf:type            sosa:Execution , sosa:Actuation , prov:Activity
         sosa:madeBySystem        inst:oven-nigella;
         sosa:usedProcedure       step:bakken .
 
-ent:brownies_001  rdf:type           sosa:FeatureOfInterest , prov:Entity , pplan:Entity;
+ent:brownies_001  rdf:type           prov:Entity , pplan:Entity;
         rdf:value                    150;
-        dct:type                     eindproduct:brownies;
+        dc:type                      eindproduct:brownies;
         pplan:correspondsToVariable  var:brownies;
-        qudt:unit                    unit:GM;
+        qudt:hasUnit                 unit:GM;
         prov:influenced              exec:controleer_wanneer_brownies_klaar_zijn;
         prov:wasGeneratedBy          exec:bakken;
         prov:wasInfluencedBy         exec:bakken;
@@ -213,7 +228,7 @@ ent:brownies_001  rdf:type           sosa:FeatureOfInterest , prov:Entity , ppla
 ent:gesmolten-mengsel_001
         rdf:type                     pplan:Entity , prov:Entity;
         rdfs:label                   "Gesmolten boter-chocolade"@nl;
-        dct:type                     tussenproduct:gesmolten-mengsel;
+        dc:type                      tussenproduct:gesmolten-mengsel;
         pplan:correspondsToVariable  var:gesmolten-mengsel;
         prov:influenced              exec:mengen;
         prov:wasGeneratedBy          exec:smelten;
@@ -238,7 +253,7 @@ inst:keukenrobot-nigella
 
 ent:kleur_001  rdf:type              prov:Entity , pplan:Entity , sosa:Result;
         rdfs:label                   "Kleur van Brownies"@nl;
-        dct:type                     colour:light-brown;
+        dc:type                      colour:light-brown;
         pplan:correspondsToVariable  var:kleur;
         prov:wasGeneratedBy          exec:controleer_wanneer_brownies_klaar_zijn;
         prov:wasInfluencedBy         exec:controleer_wanneer_brownies_klaar_zijn;
@@ -247,26 +262,26 @@ ent:kleur_001  rdf:type              prov:Entity , pplan:Entity , sosa:Result;
 var:gesmolten-mengsel
         rdf:type                pplan:Variable;
         rdfs:label              "Gesmolten boter-chocolade"@nl;
-        dct:type                tussenproduct:gesmolten-mengsel;
+        dc:type                 tussenproduct:gesmolten-mengsel;
         pplan:isInputVarOf      step:mengen;
         pplan:isOutputVarOf     step:smelten;
         pplan:isVariableOfPlan  plan:nigella-brownies .
 
 var:beslag  rdf:type            pplan:Variable;
         rdfs:label              "Browniebeslag"@nl;
-        dct:type                tussenproduct:beslag;
+        dc:type                 tussenproduct:beslag;
         pplan:isInputVarOf      step:bakken;
         pplan:isOutputVarOf     step:mengen;
         pplan:isVariableOfPlan  plan:nigella-brownies .
 
-step:verwarm_pan  rdf:type  riepr:IIOA , prov:Plan , prov:Entity , pplan:Step , pplan:Entity , pplan:Plan , sosa:Procedure;
+step:verwarm_pan  rdf:type  prov:Plan , prov:Entity , pplan:Step , pplan:Entity , pplan:Plan , sosa:Procedure;
         rdfs:label          "Verwarm de pan op het vuur"@nl;
         pplan:isPrecededBy  step:boter_en_chocolade_in_pan;
         pplan:isStepOfPlan  step:smelten;
         sosa:implementedBy  inst:gasvuur-nigella .
 
 step:roer_tot_homogeen_vloeibaar_mengsel
-        rdf:type            prov:Plan , sosa:Procedure , pplan:Entity , pplan:Plan , prov:Entity , riepr:IIOA , pplan:Step;
+        rdf:type            prov:Plan , sosa:Procedure , pplan:Entity , pplan:Plan , prov:Entity , pplan:Step;
         rdfs:label          "Roer tot homogeen mengsel"@nl;
         pplan:isPrecededBy  step:verwarm_pan;
         pplan:isStepOfPlan  step:smelten;
@@ -274,7 +289,7 @@ step:roer_tot_homogeen_vloeibaar_mengsel
 
 ent:beslag_001  rdf:type             pplan:Entity , prov:Entity;
         rdfs:label                   "Browniebeslag"@nl;
-        dct:type                     tussenproduct:beslag;
+        dc:type                      tussenproduct:beslag;
         pplan:correspondsToVariable  var:beslag;
         prov:influenced              exec:bakken;
         prov:wasGeneratedBy          exec:mengen;
@@ -285,14 +300,14 @@ ent:beslag_001  rdf:type             pplan:Entity , prov:Entity;
 var:boter  rdf:type             pplan:Variable;
         rdf:value               225;
         rdfs:label              "Boter"@nl;
-        dct:type                ingredient:boter;
+        dc:type                 ingredient:boter;
         pplan:isInputVarOf      step:smelten;
         pplan:isVariableOfPlan  plan:nigella-brownies;
-        qudt:unit               unit:GM .
+        qudt:hasUnit            unit:GM .
 
 exec:verhitten  sosa:isMemberOf  exec:brownies-bakken-2024 .
 
-step:smelten  rdf:type         prov:Plan , prov:Entity , pplan:Plan , pplan:Entity , riepr:IIOA , pplan:Step , sosa:Procedure;
+step:smelten  rdf:type         prov:Plan , prov:Entity , pplan:Plan , pplan:Entity , pplan:Step , sosa:Procedure;
         rdfs:label             "Smelt boter en chocolade"@nl;
         pplan:hasInputVar      var:donkere-chocolade , var:boter;
         pplan:hasOutputVar     var:gesmolten-mengsel;
@@ -334,14 +349,14 @@ exec:mengen  rdf:type            sosa:Execution , prov:Activity , sosa:Actuation
 
 ent:bloem_001  rdf:type              pplan:Entity , prov:Entity;
         rdf:value                    150;
-        dct:type                     ingredient:bloem;
+        dc:type                      ingredient:bloem;
         pplan:correspondsToVariable  var:bloem;
-        qudt:unit                    unit:GM;
+        qudt:hasUnit                 unit:GM;
         prov:influenced              exec:mengen;
         prov:wasUsedBy               exec:mengen .
 
 step:beslag_in_bakvorm
-        rdf:type            prov:Entity , riepr:IIOA , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity , prov:Plan;
+        rdf:type            prov:Entity , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity , prov:Plan;
         rdfs:label          "Vul de bakvorm met beslag"@nl;
         pplan:isPrecededBy  step:voorverwarmen;
         pplan:isStepOfPlan  step:bakken;
@@ -375,7 +390,7 @@ exec:controleer_wanneer_brownies_klaar_zijn
         sosa:observedProperty      parameter:de_kleur_van_de_bovenzijde_va_de_brownie;
         sosa:usedProcedure         step:laat_bakken_tot_lichtbruine_bovenkant .
 
-agent:nigella-lawson  rdf:type  prov:Agent , sosa:System , sosa:Sensor , prov:Entity , owl:Thing;
+agent:nigella-lawson  rdf:type  prov:Agent , owl:Thing;
         rdfs:label             "Nigella Lawson"@nl;
         prov:agentOfInfluence  attr:plan-koekjes-maken_0408249136;
         prov:contributed       kitchen:nigella-keuken;
@@ -389,17 +404,13 @@ agent:nigella-lawson  rdf:type  prov:Agent , sosa:System , sosa:Sensor , prov:En
 
 ent:chocolade_001  rdf:type          pplan:Entity , prov:Entity;
         rdf:value                    375;
-        dct:type                     ingredient:donkere_chocolade;
+        dc:type                      ingredient:donkere_chocolade;
         pplan:correspondsToVariable  var:donkere-chocolade;
-        qudt:unit                    unit:GM;
+        qudt:hasUnit                 unit:GM;
         prov:influenced              exec:smelten;
         prov:wasUsedBy               exec:smelten .
 
-<file:///Users/maximvdw/workspaces/RIE-IEPR/>
-        sosa:isUltimateFeatureOfInterestOf
-                exec:brownies-bakken-2024 .
-
-step:voorverwarmen  rdf:type  prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity , pplan:Step , pplan:Plan , sosa:Procedure;
+step:voorverwarmen  rdf:type  pplan:Entity , prov:Plan , prov:Entity , pplan:Step , pplan:Plan , sosa:Procedure;
         rdfs:label          "Verwarm de oven tot 180 graden"@nl;
         pplan:isStepOfPlan  step:bakken .
 
@@ -407,14 +418,14 @@ var:donkere-chocolade
         rdf:type                pplan:Variable;
         rdf:value               375;
         rdfs:label              "Donkere chocolade"@nl;
-        dct:type                ingredient:donkere_chocolade;
+        dc:type                 ingredient:donkere_chocolade;
         pplan:isInputVarOf      step:smelten;
         pplan:isVariableOfPlan  plan:nigella-brownies;
-        qudt:unit               unit:GM .
+        qudt:hasUnit            unit:GM .
 
 inst:bakvorm-nigella  rdf:type  prov:Entity , prov:Agent , sosa:System;
         rdfs:label            "De grote aluminium bakvorm van Nigella"@nl;
-        dct:type              attribuut:bakvorm;
+        dc:type               attribuut:bakvorm;
         prov:actedOnBehalfOf  agent:nigella-lawson;
         prov:wasInfluencedBy  agent:nigella-lawson;
         sosa:implements       step:beslag_in_bakvorm .
@@ -437,7 +448,7 @@ exec:brownies-bakken-2024
         sosa:endTime            "2024-10-12T16:30:00Z"^^xsd:dateTime;
         sosa:hasMember          exec:mengen , exec:als-recipient-functioneren , exec:bakken , exec:verhitten;
         sosa:hasUltimateFeatureOfInterest
-                <file:///Users/maximvdw/workspaces/RIE-IEPR/>;
+                <file:///home/gehau/git/RIE-IEPR/>;
         sosa:startTime          "2024-10-12T15:00:00Z"^^xsd:dateTime;
         sosa:usedProcedure      plan:nigella-brownies .
 
@@ -452,7 +463,7 @@ inst:oven-nigella  rdf:type   sosa:System , prov:Entity , prov:Agent;
         sosa:madeActuation    exec:bakken;
         sosa:madeExecution    exec:bakken .
 
-step:bakvorm_in_oven  rdf:type  riepr:IIOA , sosa:Procedure , prov:Plan , prov:Entity , pplan:Plan , pplan:Step , pplan:Entity;
+step:bakvorm_in_oven  rdf:type  sosa:Procedure , prov:Plan , prov:Entity , pplan:Plan , pplan:Step , pplan:Entity;
         rdfs:label          "Plaats de bakvorm in de oven"@nl;
         pplan:isPrecededBy  step:beslag_in_bakvorm;
         pplan:isStepOfPlan  step:bakken;
@@ -469,12 +480,12 @@ exec:als-recipient-functioneren
 
 var:brownies  rdf:type          pplan:Variable;
         rdfs:label              "Gebakken brownies"@nl;
-        dct:type                eindproduct:brownies;
+        dc:type                 eindproduct:brownies;
         pplan:isOutputVarOf     step:bakken;
         pplan:isVariableOfPlan  plan:nigella-brownies .
 
 step:boter_en_chocolade_in_pan
-        rdf:type            sosa:Procedure , pplan:Step , pplan:Plan , prov:Plan , pplan:Entity , riepr:IIOA , prov:Entity;
+        rdf:type            pplan:Entity , prov:Plan , prov:Entity , pplan:Step , pplan:Plan , sosa:Procedure;
         rdfs:label          "Doe de boter en de chocolade in een pan"@nl;
         pplan:isStepOfPlan  step:smelten;
         sosa:implementedBy  inst:pan-nigella .
@@ -488,7 +499,7 @@ var:kleur  rdf:type             pplan:Variable;
         sosa:outputFor          step:laat_bakken_tot_lichtbruine_bovenkant .
 
 step:haal_bakvorm_uit_oven_en_laat_afkoelen
-        rdf:type            riepr:IIOA , prov:Entity , prov:Plan , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity;
+        rdf:type            prov:Entity , prov:Plan , pplan:Plan , sosa:Procedure , pplan:Step , pplan:Entity;
         rdfs:label          "Haal brownies uit de oven wanneer de bovenzijde lichtbruin is en laat ze afkoelen"@nl;
         pplan:hasInputVar   var:kleur;
         pplan:isPrecededBy  step:laat_bakken_tot_lichtbruine_bovenkant;
