@@ -1,4 +1,3 @@
-@prefix dc: <http://purl.org/dc/terms/> .
 @prefix :       <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -8,7 +7,7 @@
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
-@prefix ssn-system: <http://www.w3.org/ns/ssn/systems> .
+@prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
 @prefix hydra:  <http://www.w3.org/ns/hydra/core#> .
 @prefix dbo:    <http://dbpedia.org/ontology/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
@@ -394,6 +393,10 @@
         hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een (exploitatie)proces is verschillend van de exploitatie die het implementeert"@nl ;
+        owl:disjointWith :Exploitatie
     ] ;
     skos:example [ a :Proces ;
         rdfs:label "Productie van cement in een fabriek te Antwerpen"@nl ;
@@ -1366,50 +1369,54 @@
     rdfs:subClassOf sosa:Procedure .
 
 # Observatie
-:Observatie a owl:Class ;
-    rdfs:label "Observatie"@nl ;
-    rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
-    rdfs:subClassOf sosa:Observation ;
-    hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie"@nl ;
-        owl:onProperty sosa:hasFeatureOfInterest ; 
-        owl:someValuesFrom :Emissie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een observatie moet een resultaat hebben."@nl ;
-        owl:onProperty sosa:hasResult ;
-        owl:someValuesFrom sosa:Result ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] .
+# :Observatie a owl:Class ;
+#     rdfs:label "Observatie"@nl ;
+#     rdfs:comment "Een observatie is een waarneming of meting die is uitgevoerd op een meetpunt."@nl ;
+#     rdfs:subClassOf sosa:Observation ;
+#     hydra:search [ a hydra:IriTemplate ;
+#         hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}"^^hydra:Rfc6570Template ;
+#         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+#     ] ;
+#     rdfs:subClassOf [ a owl:Restriction ; 
+#         rdfs:comment "Een observatie moet gekoppeld zijn aan exact één meetpunt of installatie"@nl ;
+#         owl:onProperty sosa:hasFeatureOfInterest ; 
+#         owl:someValuesFrom :Emissie ;
+#         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+#         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+#     ] ;
+#     rdfs:subClassOf [ a owl:Restriction ; 
+#         rdfs:comment "Een observatie moet een resultaat hebben."@nl ;
+#         owl:onProperty sosa:hasResult ;
+#         owl:someValuesFrom sosa:Result ;
+#         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+#         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+#     ] .
 
-:Emissie a owl:Class ;
-    rdfs:label "Emissie"@nl ;
-    rdfs:comment "Een emissie is een specifiek resultaat dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
-    rdfs:subClassOf sosa:Result ;
-    owl:equivalentClass [ a owl:Restriction ;
-        rdfs:comment "Een emissie moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een emissiepunt"@nl ;
-        owl:onProperty pplan:correspondsToVariable ;
-        owl:someValuesFrom [ a owl:Restriction ;
-            owl:onProperty pplan:isOutputVarOf ;
-            owl:someValuesFrom [ a owl:Restriction ;
-                owl:onProperty ssn:implementedBy ;
-                owl:someValuesFrom :Emissiepunt
-            ]
-        ]
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # *..* relation with sosa:hasResult
-        owl:onProperty sosa:isResultOf ;
-        owl:someValuesFrom sosa:Observation ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] .
+# :ObservatieResultaat a owl:Class ;
+#     rdfs:label "Observatie Resultaat"@nl ;
+#     rdfs:comment "Een observatie resultaat is een specifiek resultaat dat is verkregen uit een observatie."@nl ;
+#     rdfs:subClassOf sosa:Result .
+# :Emissie a owl:Class ;
+#     rdfs:label "Emissie"@nl ;
+#     rdfs:comment "Een emissie is een specifiek resultaat dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
+#     rdfs:subClassOf sosa:Result ;
+#     owl:equivalentClass [ a owl:Restriction ;
+#         rdfs:comment "Een emissie moet gelinked zijn aan een proces variabele die binnen een proces wordt gebruikt (als uitvoer) dat geimplementeerd wordt door een emissiepunt"@nl ;
+#         owl:onProperty pplan:correspondsToVariable ;
+#         owl:someValuesFrom [ a owl:Restriction ;
+#             owl:onProperty pplan:isOutputVarOf ;
+#             owl:someValuesFrom [ a owl:Restriction ;
+#                 owl:onProperty ssn:implementedBy ;
+#                 owl:someValuesFrom :Emissiepunt
+#             ]
+#         ]
+#     ] ;
+#     rdfs:subClassOf [ a owl:Restriction ;
+#         # *..* relation with sosa:hasResult
+#         owl:onProperty sosa:isResultOf ;
+#         owl:someValuesFrom sosa:Observation ;
+#         owl:minCardinality "0"^^xsd:nonNegativeInteger
+#     ] .
 
 :Rubriek a owl:Class ;
     rdfs:label "Rubriek"@nl ;
@@ -1452,8 +1459,6 @@
 # --------------------------------------- #
 # Data Properties
 # --------------------------------------- #
-# Data properties worden vermeden waar mogelijk
-# Business benamingen worden in concepten vastgelegd
 
 # --------------------------------------- #
 # Datatypes
