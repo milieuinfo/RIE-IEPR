@@ -17,6 +17,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const hydraSearch = namedNode("http://www.w3.org/ns/hydra/core#search");
+const rdfType = namedNode(NAMESPACES.rdf + 'type');
+const rdfsDomain = namedNode(NAMESPACES.rdfs + 'domain');
+const rdfsRange = namedNode(NAMESPACES.rdfs + 'range');
 
 function loadStore(path) {
   const ttl = readFileSync(path, "utf8");
@@ -189,7 +192,7 @@ function collectIriTemplates(store) {
 }
 
 function collectOntologyMetadata(store) {
-  const ontos = store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'Ontology'), null);
+  const ontos = store.getQuads(null, rdfType, namedNode(NAMESPACES.owl + 'Ontology'), null);
   if (!ontos.length) return null;
 
   const subject = ontos[0].subject;
@@ -205,15 +208,47 @@ function collectOntologyMetadata(store) {
   };
 }
 
-function collectClasses(store) {
-  const classUris = new Set([
-    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'Class'), null).map((q) => q.subject.value),
-  ]);
+function collectSubjectsByTypes(store, typeUris) {
+  const subjects = new Set();
+  typeUris.forEach((typeUri) => {
+    store.getQuads(null, rdfType, namedNode(typeUri), null).forEach((q) => {
+      subjects.add(q.subject.value);
+    });
+  });
+  return [...subjects];
+}
+
+function createInternalResourceFilter(ontologyMeta, prefixes) {
+  const namespaceCandidates = [
+    ontologyMeta?.preferredNamespaceUri,
+    prefixes?.riepr,
+    filePrefixes?.riepr,
+  ].filter(Boolean);
+
+  if (namespaceCandidates.length === 0) {
+    return (uri) => !uri.startsWith('_:');
+  }
+
+  const namespaces = new Set();
+  namespaceCandidates.forEach((ns) => {
+    namespaces.add(ns);
+    if (ns.endsWith('#') || ns.endsWith('/')) {
+      namespaces.add(ns.slice(0, -1));
+    }
+  });
+
+  return (uri) => {
+    if (!uri || uri.startsWith('_:')) return false;
+    return [...namespaces].some((ns) => uri.startsWith(ns));
+  };
+}
+
+function collectClasses(store, isInternalResource) {
+  const classUris = collectSubjectsByTypes(store, [NAMESPACES.owl + 'Class']);
 
   // Filter out blank nodes and restriction classes
-  return [...classUris]
-    .filter(uri => !uri.startsWith('_:'))
-    .filter(uri => uri.includes('riepr'))
+  return classUris
+    .filter(isInternalResource)
     .map((uri) => {
       const superClasses = urisFor(store, uri, namedNode(NAMESPACES.rdfs + 'subClassOf'))
         .filter(sc => !sc.startsWith('_:'))
@@ -288,18 +323,17 @@ function collectClasses(store) {
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-function collectProperties(store) {
-  const propertyUris = new Set([
-    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'ObjectProperty'), null).map((q) => q.subject.value),
-    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.owl + 'DatatypeProperty'), null).map((q) => q.subject.value),
+function collectProperties(store, isInternalResource) {
+  const propertyUris = collectSubjectsByTypes(store, [
+    NAMESPACES.owl + 'ObjectProperty',
+    NAMESPACES.owl + 'DatatypeProperty',
   ]);
 
-  return [...propertyUris]
-    .filter(uri => !uri.startsWith('_:'))
-    .filter(uri => uri.includes('riepr'))
+  return propertyUris
+    .filter(isInternalResource)
     .map((uri) => {
       const types = store
-        .getQuads(namedNode(uri), namedNode(NAMESPACES.rdf + 'type'), null, null)
+        .getQuads(namedNode(uri), rdfType, null, null)
         .map((q) => q.object.value);
       
       let kind = "Property";
@@ -319,20 +353,31 @@ function collectProperties(store) {
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-function collectConcepts(store) {
-  const conceptUris = new Set([
-    ...store.getQuads(null, namedNode(NAMESPACES.rdf + 'type'), namedNode(NAMESPACES.skos + 'Concept'), null).map((q) => q.subject.value),
-  ]);
+function collectConcepts(store, isInternalResource) {
+  const conceptUris = collectSubjectsByTypes(store, [NAMESPACES.skos + 'Concept']);
 
-  return [...conceptUris]
-    .filter(uri => !uri.startsWith('_:'))
-    .filter(uri => uri.includes('riepr'))
+  return conceptUris
+    .filter(isInternalResource)
     .map((uri) => ({
       id: uri,
       localName: localName(uri),
       label: labelFor(store, uri),
       comment: literalFor(store, uri, namedNode(NAMESPACES.rdfs + 'comment')),
       broader: urisFor(store, uri, namedNode(NAMESPACES.skos + 'broader')),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function collectDatatypes(store, isInternalResource) {
+  const datatypeUris = collectSubjectsByTypes(store, [NAMESPACES.rdfs + 'Datatype']);
+
+  return datatypeUris
+    .filter(isInternalResource)
+    .map((uri) => ({
+      id: uri,
+      localName: localName(uri),
+      label: labelFor(store, uri),
+      comment: literalFor(store, uri, namedNode(NAMESPACES.rdfs + 'comment')),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
@@ -473,7 +518,7 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
   return `<div class="riepr-mermaid" data-mermaid="${b64}"></div>`;
 }
 
-function generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes, templates = []) {
+function generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates = []) {
   // Ensure prefixUri uses the provided prefixes
   filePrefixes = Object.assign({}, filePrefixes || {}, prefixes || {});
 
@@ -587,7 +632,7 @@ ${Object.entries(prefixes)
 
 # Overzicht # {#overview}
 
-Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, ${properties.length} eigenschappen` : ''}${concepts.length > 0 ? ` en ${concepts.length} concept instanties` : ''}.
+Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, ${properties.length} eigenschappen` : ''}${concepts.length > 0 ? `, ${concepts.length} concept instanties` : ''}${datatypes.length > 0 ? ` en ${datatypes.length} datatypes` : ''}.
 
 # Klassen # {#classes}
 
@@ -771,6 +816,26 @@ Deze ontologie definieert ${classes.length} klassen${properties.length > 0 ? `, 
     });
   }
 
+  if (datatypes.length > 0) {
+    output += `# Datatypes # {#datatypes}
+
+Deze sectie beschrijft de voorgedefinieerde datatypes in de ontologie.
+
+`;
+
+    datatypes.forEach(datatype => {
+      const anchorId = datatype.localName;
+      output += `## ${datatype.label} ## {#${anchorId}}\n\n`;
+      output += `**IRI:** ${fullIriLink(datatype.id)}\n\n`;
+
+      if (datatype.comment) {
+        output += `**Definitie:** ${datatype.comment}\n\n`;
+      }
+
+      output += `\n`;
+    });
+  }
+
   // Add downloads section
   output += `# Downloads # {#downloads}
 
@@ -791,23 +856,35 @@ function build() {
   
   console.log("Extractie van prefixes...");
   const prefixes = extractPrefixes(PATHS.ontology);
+
+  const isInternalResource = createInternalResourceFilter(ontologyMeta, prefixes);
   
   console.log("Verzamelen van klassen...");
-  const classes = collectClasses(store);
+  const classes = collectClasses(store, isInternalResource);
   
   console.log("Verzamelen van eigenschappen...");
-  const properties = collectProperties(store);
+  const properties = collectProperties(store, isInternalResource);
   
   console.log("Verzamelen van concepten...");
-  const concepts = collectConcepts(store);
+  let concepts = collectConcepts(store, isInternalResource);
+
+  console.log("Verzamelen van datatypes...");
+  const datatypes = collectDatatypes(store, isInternalResource);
+
+  const renderedIds = new Set([
+    ...classes.map((c) => c.id),
+    ...properties.map((p) => p.id),
+    ...datatypes.map((d) => d.id),
+  ]);
+  concepts = concepts.filter((concept) => !renderedIds.has(concept.id));
   
   console.log("Verzamelen van IRI templates (Hydra)...");
   const templates = collectIriTemplates(store);
   
-  console.log(`Gevonden: ${classes.length} klassen, ${properties.length} eigenschappen, ${concepts.length} concepten`);
+  console.log(`Gevonden: ${classes.length} klassen, ${properties.length} eigenschappen, ${concepts.length} concepten, ${datatypes.length} datatypes`);
   
   console.log("Genereren van Bikeshed specificatie...");
-  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, prefixes, templates);
+  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates);
   
   // Write the generated Bikeshed spec into this package directory so Docker builds include it
   const outPath = resolve(__dirname, "ontologie.bs");
