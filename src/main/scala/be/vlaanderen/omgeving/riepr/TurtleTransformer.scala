@@ -11,7 +11,8 @@ import org.apache.jena.riot.{Lang, RDFParser}
 import org.apache.jena.shacl.Shapes
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
-
+import org.apache.jena.vocabulary.RDF
+import org.apache.jena.rdf.model.Resource
 import java.io._
 import scala.collection.JavaConverters._
 import scala.util.Using
@@ -92,6 +93,41 @@ object TurtleTransformer {
     val jsonString = out.toString("UTF-8")
     Some(mapper.readTree(jsonString))
   }
+
+    def checkVocabularyUsage(model: Model, ontology: Model): ValidationResult = {
+
+      val errors = scala.collection.mutable.ListBuffer[String]()
+
+      // 1️⃣ Check properties
+      model.listStatements().asScala.foreach { stmt =>
+        val predicate = stmt.getPredicate
+        if (predicate.isURIResource) {
+          val uri = predicate.getURI
+          val exists =
+            ontology.containsResource(ontology.getProperty(uri))
+
+          if (!exists) {
+            errors += s"Onbekende property: $uri"
+          }
+        }
+      }
+
+      // 2️⃣ Check classes via rdf:type
+      model.listStatements(null, RDF.`type`, null).asScala.foreach { stmt =>
+        val obj = stmt.getObject
+        if (obj.isURIResource) {
+          val uri = obj.asResource().getURI
+          val exists =
+            ontology.containsResource(ontology.getResource(uri))
+
+          if (!exists) {
+            errors += s"Onbekende class: $uri"
+          }
+        }
+      }
+
+      ValidationResult(errors.isEmpty, errors.distinct.toSeq)
+    }
 
     /**
      * Applies a JSON-LD frame to a JSON-LD document.
@@ -371,9 +407,9 @@ object TurtleTransformer {
         framed <- frameJsonLd(jsonLd, frame)
         graph <- extractGraph(framed)
       } {
-        writeJson(graph, file.getPath, "json") // alleen @graph
-        writeJson(framed, file.getPath, "jsonld") // volledig framed document
-        writeGraphToParquet(graph, file.getPath, spark)
+        //writeJson(graph, file.getPath, "json") // alleen @graph
+        //writeJson(framed, file.getPath, "jsonld") // volledig framed document
+        //writeGraphToParquet(graph, file.getPath, spark)
       }
     }
 
@@ -438,6 +474,14 @@ object TurtleTransformer {
 
       val model = parseTurtle(file)
       completeDataModel.add(model)
+
+      val vocabValidation = checkVocabularyUsage(model, completeOntology)
+
+      if (!vocabValidation.valid) {
+        vocabValidation.messages.foreach(m =>
+          logger.warn(s"❌ [VOCAB ERROR] ${file.getName}: $m")
+        )
+      }
       processModel(model, inferenceOntology, reasoner, owlReasonerWithSchema, shaclShapes, frame, spark, file)
 
     }

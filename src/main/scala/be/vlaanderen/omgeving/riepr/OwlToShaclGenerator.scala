@@ -21,14 +21,16 @@ object OwlToShaclGenerator {
       res.getURI.startsWith("http://www.w3.org/2001/XMLSchema#")
 
   private def createPath(prop: Resource, shacl: Model): RDFNode = {
-    Option(prop.getPropertyResourceValue(OWL.inverseOf)) match {
-      case Some(inv) if inv.isURIResource =>
-        val b = shacl.createResource()
-        b.addProperty(shaclProp("inversePath", shacl), inv)
-        b
-      case _ =>
-        shacl.createResource(prop.getURI)
+    if (prop.isAnon) {
+      Option(prop.getPropertyResourceValue(OWL.inverseOf)) match {
+        case Some(inv) if inv.isURIResource =>
+          val b = shacl.createResource()
+          b.addProperty(shaclProp("inversePath", shacl), inv)
+          return b
+        case _ =>
+      }
     }
+    shacl.createResource(prop.getURI)
   }
 
   private def addClassOrDatatype(ps: Resource, value: Resource, shacl: Model): Unit = {

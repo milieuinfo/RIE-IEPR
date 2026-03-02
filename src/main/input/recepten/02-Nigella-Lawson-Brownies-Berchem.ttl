@@ -14,11 +14,15 @@
 @prefix parameter: <https://example.org/concept/parameter/> .
 @prefix tussenproduct: <https://example.org/concept/tussenproduct/> .
 @prefix attribuut: <https://example.org/concept/attribuut/> .
+@prefix prop:       <https://example.org/concept/property/> .
+@prefix stimulus:   <https://example.org/stimulus/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 @prefix prov:   <http://www.w3.org/ns/prov#> .
 @prefix p-plan: <http://purl.org/net/p-plan#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
+@prefix ssn:    <http://www.w3.org/ns/ssn/> .
+@prefix time:   <http://www.w3.org/2006/time#> .
 @prefix dct:    <http://purl.org/dc/terms/> .
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -40,34 +44,34 @@
 # *********************************************
 
 plan:nigella-brownies
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ActuatingProcedure ;
     rdfs:label "Nigella Lawson Brownies"@en ;
     dct:source <https://www.nigella.com/recipes/brownies> ;
     dct:creator agent:nigella-lawson ;
 .
 
 plan:smelten
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ActuatingProcedure ;
     rdfs:label "Smelt boter en chocolade"@nl ;
     p-plan:isSubPlanOfPlan  plan:nigella-brownies  .
 
 plan:hakken
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ActuatingProcedure ;
     rdfs:label "Hak de walnoten"@nl ;
     p-plan:isSubPlanOfPlan  plan:nigella-brownies .
 
 plan:bakken
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ActuatingProcedure ;
     rdfs:label "Bak het beslag"@nl ;
     p-plan:isSubPlanOfPlan plan:nigella-brownies .
 
 plan:mengen
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ActuatingProcedure ;
     rdfs:label "Meng alle ingrediënten"@nl ;
     p-plan:isSubPlanOfPlan  plan:nigella-brownies .
 
 plan:laat_bakken_tot_lichtbruine_bovenkant
-    a p-plan:Plan, sosa:Procedure ;
+    a p-plan:Plan, sosa:Procedure, sosa:ObservingProcedure ;
     rdfs:label "Laat ongeveer 25 minuten bakken tot de bovenzijde lichtbruin is"@nl ;
     p-plan:isSubPlanOfPlan  plan:nigella-brownies .
 
@@ -85,18 +89,18 @@ step:smelten
     p-plan:isStepOfPlan plan:nigella-brownies  .
 
 step:boter_en_chocolade_in_pan
-    a p-plan:Step ;
+    a p-plan:Step, sosa:Procedure ;
     rdfs:label "Doe de boter en de chocolade in een pan"@nl ;
     p-plan:isStepOfPlan plan:smelten .
 
 step:verwarm_pan
-    a p-plan:Step ;
+    a p-plan:Step, sosa:Procedure ;
     rdfs:label "Verwarm de pan op het vuur"@nl ;
     p-plan:isPrecededBy step:boter_en_chocolade_in_pan ;
     p-plan:isStepOfPlan plan:smelten .
 
 step:roer_tot_homogeen_vloeibaar_mengsel
-    a p-plan:Step;
+    a p-plan:Step, sosa:Procedure ;
     rdfs:label "Roer tot homogeen mengsel"@nl ;
     p-plan:isPrecededBy step:verwarm_pan ;
     p-plan:isStepOfPlan plan:smelten .
@@ -128,7 +132,7 @@ step:voorverwarmen
     p-plan:isStepOfPlan plan:bakken .
 
 step:beslag_in_bakvorm
-    a p-plan:Step;
+    a p-plan:Step, sosa:Procedure ;
     rdfs:label "Vul de bakvorm met beslag"@nl ;
     p-plan:isPrecededBy step:voorverwarmen ;
     p-plan:isStepOfPlan plan:bakken .
@@ -140,7 +144,7 @@ step:bakvorm_in_oven
     p-plan:isStepOfPlan plan:bakken .
 
 step:laat_bakken_tot_lichtbruine_bovenkant
-    a p-plan:Step;
+    a p-plan:Step, sosa:Procedure, sosa:ObservingProcedure ;
     rdfs:label "Laat ongeveer 25 minuten bakken tot de bovenzijde lichtbruin is"@nl ;
     p-plan:isPrecededBy step:bakvorm_in_oven;
     p-plan:isDecomposedAsPlan plan:laat_bakken_tot_lichtbruine_bovenkant;
@@ -298,7 +302,6 @@ kitchen:keuken-geert
 exec:brownies-bakken-voor-demo-op-woensdag
     a sosa:Deployment ;
     rdfs:label "Brownies bakken voor de demo"@nl ;
-    sosa:implements plan:nigella-brownies ;
     sosa:deployedAsset
         inst:pan-geert ,
         inst:garde-geert ,
@@ -316,25 +319,26 @@ exec:brownies-bakken-voor-demo-op-woensdag
 
 
 inst:smeltsysteem-geert
-    a sosa:System ;
+    a sosa:System, sosa:Actuator, ssn:System ;
     sosa:hasSubSystem inst:pan-geert, inst:garde-geert, inst:gasvuur-geert ;
     sosa:implements plan:smelten;
+    ssn:implements plan:smelten;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Het systeem van Geert dat mengsels homogeen vloeibaar kan maken"@nl .
 
 inst:pan-geert
     a sosa:System ;
-    sosa:implements plan:boter_en_chocolade_in_pan;
+    sosa:implements step:boter_en_chocolade_in_pan;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Gietijzeren pan van Geert"@nl .
 
 inst:garde-geert
     a sosa:System ;
-    sosa:implements plan:roer_tot_homogeen_vloeibaar_mengsel ;
+    sosa:implements step:roer_tot_homogeen_vloeibaar_mengsel ;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Garde in Geert's keuken."@nl .
 
-inst:inst:mes-geert
+inst:mes-geert
     a sosa:System ;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Het systeem van Geert dat kan snijden."@nl .
@@ -345,33 +349,36 @@ inst:snijplank-geert
     rdfs:label "Het systeem van Geert waarop je kan snijden en hakken."@nl .
 
 inst:haksysteem-geert
-    a sosa:System ;
+    a sosa:System, sosa:Actuator, ssn:System ;
     sosa:hasSubSystem inst:snijplank-geert, inst:mes-geert ;
     sosa:implements plan:hakken;
+    ssn:implements plan:hakken;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Het systeem van Geert dat nootjes kan hakken."@nl .
 
 inst:gasvuur-geert
     a sosa:System ;
-    sosa:implements plan:verwarm_pan ;
+    sosa:implements step:verwarm_pan ;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Gasvuur in Geert's keuken."@nl .
 
 inst:keukenrobot-geert
-    a sosa:System ;
+    a sosa:System, sosa:Actuator, ssn:System ;
     sosa:implements plan:mengen ;
+    ssn:implements plan:mengen ;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Keukenrobot van Geert."@nl .
 
 inst:oven-geert
-    a sosa:System ;
+    a sosa:System, sosa:Actuator, ssn:System ;
     sosa:implements plan:bakken ;
+    ssn:implements plan:bakken ;
     prov:actedOnBehalfOf agent:geert; # na de werking van het systeem
     rdfs:label "Oven in Geert's keuken."@nl .
 
 inst:bakvorm-geert
     a sosa:System ;
-    sosa:implements plan:beslag_in_bakvorm ;
+    sosa:implements step:beslag_in_bakvorm ;
     prov:actedOnBehalfOf agent:geert;
     rdfs:label "De grote aluminium bakvorm van Geert."@nl ;
     dct:type attribuut:bakvorm .
@@ -385,9 +392,10 @@ agent:nigella-lawson
     rdfs:label "Nigella Lawson"@nl .
 
 agent:geert
-    a prov:Agent ;
+    a prov:Agent, sosa:Sensor, sosa:System, ssn:System ;
     rdfs:label "Geert Van Haute"@nl ;
-    sosa:implements plan:bakvorm_in_oven , step:laat_bakken_tot_lichtbruine_bovenkant.
+    sosa:implements step:laat_bakken_tot_lichtbruine_bovenkant ;
+    ssn:implements step:laat_bakken_tot_lichtbruine_bovenkant .
 
 
 
@@ -407,18 +415,17 @@ exec:brownies-bakken-026-02-10
     a sosa:ActuationCollection ;
     rdfs:label "Geert bakt brownies voor de demo van 11 februari."@nl ;
     sosa:usedProcedure  plan:nigella-brownies;
-    sosa:hasUltimateFeatureOfInterest <>; # Wat zou dat kunnen zijn?
+    sosa:hasUltimateFeatureOfInterest ent:brownies_001;
     prov:wasAssociatedWith agent:geert;
     sosa:hasMember
-        exec:als-recipient-functioneren-2026-02-10,
-        exec:verhitten-2026-02-10,
+        exec:smelten-2026-02-10,
         exec:mengen-2026-02-10,
-        exec:homogeniseren-2026-02-10,
         exec:hakken-2026-02-10,
         exec:bakken-2026-02-10 ;
     sosa:startTime "2026-02-10T20:00:00Z"^^xsd:dateTime ;
     sosa:endTime   "2026-02-10T21:30:00Z"^^xsd:dateTime .
 
+# Sub-activiteiten van het smelten (geen leden van de collectie, wel onderdeel van de uitvoering)
 exec:als-recipient-functioneren-2026-02-10  a prov:Activity ;
     rdfs:label "Het uitoefenen van de functie van recipient."@nl ;
     prov:wasAssociatedWith inst:pan-geert ;
@@ -438,6 +445,9 @@ exec:smelten-2026-02-10 a sosa:Actuation ;
     rdfs:label "Verhitten"@nl ;
     p-plan:correspondsToStep step:smelten ;
     sosa:usedProcedure plan:smelten ;
+    sosa:hasFeatureOfInterest ent:boter_001 ;
+    sosa:actsOnProperty prop:toestand-boter-chocolade ;
+    sosa:resultTime "2026-02-10T20:30:00Z"^^xsd:dateTime ;
     prov:wasInformedBy exec:als-recipient-functioneren-2026-02-10, exec:verhitten-2026-02-10 , exec:homogeniseren-2026-02-10 ;
     prov:used
         ent:boter_001,
@@ -450,6 +460,9 @@ exec:mengen-2026-02-10 a sosa:Actuation ;
     rdfs:label "Mengen"@nl ;
     p-plan:correspondsToStep  step:mengen ;
     sosa:usedProcedure plan:mengen ;
+    sosa:hasFeatureOfInterest ent:gesmolten-mengsel_001 ;
+    sosa:actsOnProperty prop:toestand-bestanddelen ;
+    sosa:resultTime "2026-02-10T20:45:00Z"^^xsd:dateTime ;
     prov:used ent:gesmolten-mengsel_001 ,
                   ent:suiker_001 ,
                   ent:eieren_001 ,
@@ -462,6 +475,9 @@ exec:hakken-2026-02-10 a sosa:Actuation ;
     rdfs:label "Hakken van walnoten."@nl ;
     p-plan:correspondsToStep  step:hakken ;
     sosa:usedProcedure plan:hakken ;
+    sosa:hasFeatureOfInterest ent:walnoten_001 ;
+    sosa:actsOnProperty prop:toestand-walnoten ;
+    sosa:resultTime "2026-02-10T20:50:00Z"^^xsd:dateTime ;
     prov:used ent:walnoten_001;
     sosa:hasResult ent:gehakte-walnoten_001  ;
     sosa:madeByActuator inst:haksysteem-geert ;
@@ -471,6 +487,9 @@ exec:bakken-2026-02-10 a sosa:Actuation ;
     rdfs:label "Bakken"@nl ;
     p-plan:correspondsToStep step:bakken ;
     sosa:usedProcedure plan:bakken ;
+    sosa:hasFeatureOfInterest ent:beslag_001 ;
+    sosa:actsOnProperty prop:toestand-beslag ;
+    sosa:resultTime "2026-02-10T21:25:00Z"^^xsd:dateTime ;
     prov:used ent:beslag_001 ;
     sosa:hasResult ent:brownies_001 ;
     sosa:madeByActuator inst:oven-geert ;
@@ -484,8 +503,15 @@ exec:controleer_wanneer_brownies_klaar_zijn a sosa:Observation ;
     sosa:observedProperty parameter:de_kleur_van_de_bovenzijde_van_de_brownie ;
     sosa:hasResult  ent:kleur_001 ;
     sosa:madeBySensor agent:geert;
+    sosa:resultTime "2026-02-10T21:30:00Z"^^xsd:dateTime ;
+    sosa:phenomenonTime exec:fenomeen-kleur-2026-02-10 ;
+    ssn:wasOriginatedBy stimulus:kleur-bovenzijde-brownie ;
     sosa:startTime "2026-02-10T21:29:30Z"^^xsd:dateTime ;
     sosa:endTime   "2026-02-10T21:30:00Z"^^xsd:dateTime .
+
+exec:fenomeen-kleur-2026-02-10
+    a time:Instant ;
+    time:inXSDDateTimeStamp "2026-02-10T21:30:00Z"^^xsd:dateTimeStamp .
 
 
 # *********************************************
@@ -497,7 +523,8 @@ exec:controleer_wanneer_brownies_klaar_zijn a sosa:Observation ;
 # ----------------------------------------------------------
 
 ent:boter_001
-    a prov:Entity ;
+    a prov:Entity, sosa:FeatureOfInterest ;
+    ssn:hasProperty prop:toestand-boter-chocolade ;
     dct:type ingredient:boter ;
     rdf:value 375 ;
     qudt:hasUnit unit:GM ;
@@ -532,7 +559,8 @@ ent:eieren_001
     p-plan:correspondsToVariable var:eieren .
 
 ent:walnoten_001
-    a prov:Entity ;
+    a prov:Entity, sosa:FeatureOfInterest ;
+    ssn:hasProperty prop:toestand-walnoten ;
     dct:type ingredient:walnoten ;
     rdf:value 300 ;
     qudt:hasUnit unit:GM  ;
@@ -543,21 +571,23 @@ ent:walnoten_001
 # ------------------------------------------------------------------------------------------------------------
 
 ent:gesmolten-mengsel_001
-    a prov:Entity ;
+    a prov:Entity, sosa:Result, sosa:FeatureOfInterest ;
+    ssn:hasProperty prop:toestand-bestanddelen ;
     rdfs:label "Gesmolten boter-chocolade"@nl ;
     dct:type tussenproduct:gesmolten-mengsel ;
     prov:wasDerivedFrom ent:boter_001, ent:chocolade_001;
     p-plan:correspondsToVariable var:gesmolten-mengsel .
 
 ent:gehakte-walnoten_001
-    a prov:Entity ;
+    a prov:Entity, sosa:Result ;
     rdfs:label "Gehakte walnoten"@nl ;
     dct:type tussenproduct:gehakte-walnoten ;
     prov:wasDerivedFrom ent:walnoten_001 ;
     p-plan:correspondsToVariable var:gehakte-walnoten .
 
 ent:beslag_001
-    a prov:Entity ;
+    a prov:Entity, sosa:Result, sosa:FeatureOfInterest ;
+    ssn:hasProperty prop:toestand-beslag ;
     rdfs:label "Browniebeslag"@nl ;
     dct:type tussenproduct:beslag ;
     prov:wasDerivedFrom ent:gesmolten-mengsel_001, ent:gehakte-walnoten_001, ent:suiker_001, ent:eieren_001, ent:bloem_001 ;
@@ -570,7 +600,8 @@ ent:beslag_001
 # ----------------------------------------------------------------------------------------------
 
 ent:brownies_001
-    a prov:Entity ;
+    a prov:Entity, sosa:Result, sosa:FeatureOfInterest ;
+    ssn:hasProperty parameter:de_kleur_van_de_bovenzijde_van_de_brownie ;
     dct:type eindproduct:brownies ;
     rdf:value 150 ;
     qudt:hasUnit unit:GM ;
@@ -603,9 +634,31 @@ attr:relatie-keuken-geert
 # 11 Concepten, elementen in coded lists
 # *********************************************
 
-parameter:de_kleur_van_de_bovenzijde_va_de_brownie
-    a sosa:Property ;
-    sosa:hasProcedure step:laat_bakken_tot_lichtbruine_bovenkant .
+parameter:de_kleur_van_de_bovenzijde_van_de_brownie
+    a sosa:Property, sosa:ObservableProperty ;
+    sosa:hasProcedure plan:laat_bakken_tot_lichtbruine_bovenkant .
+
+prop:toestand-boter-chocolade
+    a sosa:ActuatableProperty, sosa:Property  ;
+    rdfs:label "Toestand van boter en chocolade (vast → vloeibaar)"@nl .
+
+prop:toestand-walnoten
+    a sosa:ActuatableProperty , sosa:Property ;
+
+    rdfs:label "Toestand van walnoten (heel → gehakt)"@nl .
+
+prop:toestand-bestanddelen
+    a sosa:ActuatableProperty , sosa:Property ;
+    rdfs:label "Toestand van de bestanddelen (apart → gemengd)"@nl .
+
+prop:toestand-beslag
+    a sosa:ActuatableProperty , sosa:Property ;
+    rdfs:label "Toestand van het beslag (rauw → gebakken)"@nl .
+
+stimulus:kleur-bovenzijde-brownie
+    a ssn:Stimulus ;
+    rdfs:label "De zichtbare kleur van de bovenzijde van de brownie"@nl ;
+    ssn:isProxyFor parameter:de_kleur_van_de_bovenzijde_van_de_brownie .
 
 role:gebruiker
     a prov:Role .
