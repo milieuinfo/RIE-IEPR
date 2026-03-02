@@ -34,7 +34,9 @@ class ShaclGenerationSpec extends AnyFunSuite with Matchers {
     RDFDataMgr.read(ontology, ontologyPath)
 
     val generatedShacl = OwlToShaclGenerator.generate(ontology)
-
+    val fos = new FileOutputStream("/tmp/test.ttl")
+    try generatedShacl.write(fos, "TURTLE")
+    finally fos.close()
     val expectedShacl = ModelFactory.createDefaultModel()
     RDFDataMgr.read(expectedShacl, expectedShaclPath)
 

@@ -14,7 +14,7 @@
 @prefix colour:             <https://example.org/concept/colour/> .
 @prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix dbo:                <http://dbpedia.org/ontology/> .
-@prefix dc:                 <http://purl.org/dc/terms/> .
+@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
 @prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
 @prefix dcterms:            <http://purl.org/dc/terms/> .
@@ -610,6 +610,12 @@ activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_003
         pplan:isStepOfPlan  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , activiteit:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
         sosa:implementedBy  emissiepunt:0400123123_6851234567_0000004 .
 
+prop:toestand-bestanddelen
+        rdf:type           prov:Entity , ssn:Property , sosa:Property , sosa:ActuatableProperty;
+        rdfs:label         "Toestand van de bestanddelen (apart → gemengd)"@nl;
+        sosa:wasActedOnBy  exec:mengen-2026-02-10;
+        ssn:isPropertyOf   ent:gesmolten-mengsel_001 .
+
 deployment:plan-koekjes-maken
         rdf:type                 sosa:Deployment , prov:Activity;
         rdfs:label               "Koekjes maken"@nl;
@@ -620,12 +626,6 @@ deployment:plan-koekjes-maken
         sosa:endTime             "2020-12-31T23:59:59Z"^^xsd:dateTime;
         sosa:implements          <https://data.riepr.omgeving.vlaanderen.be/id/activiteit/plan-koekjes-maken>;
         sosa:startTime           "2020-01-01T00:00:00Z"^^xsd:dateTime .
-
-prop:toestand-bestanddelen
-        rdf:type           prov:Entity , ssn:Property , sosa:Property , sosa:ActuatableProperty;
-        rdfs:label         "Toestand van de bestanddelen (apart → gemengd)"@nl;
-        sosa:wasActedOnBy  exec:mengen-2026-02-10;
-        ssn:isPropertyOf   ent:gesmolten-mengsel_001 .
 
 var:vloeibaar_staal  rdf:type  pplan:Variable;
         pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0006;
@@ -931,13 +931,17 @@ plan:laat_bakken_tot_lichtbruine_bovenkant
         sosa:isProcedureFor    <https://example.org/concept/parameter/de_kleur_van_de_bovenzijde_van_de_brownie>;
         sosa:usedForExecution  exec:controleer_wanneer_brownies_klaar_zijn .
 
+_:b0    rdf:type              prov:Entity , sosa:Result;
+        rdf:value             6;
+        qudt:hasUnit          unit:TON_Metric;
+        prov:wasGeneratedBy   observation:vracht_co2_rookgassen2;
+        prov:wasInfluencedBy  observation:vracht_co2_rookgassen2;
+        sosa:isResultOf       observation:vracht_co2_rookgassen2 .
+
 exploitatielocatie:ACTIVITEIT_001_LOC
         rdf:type    ogc:Feature , prov:Entity , sosa:Platform , ogc:SpatialObject , riepr:ExploitatieLocatie;
         rdfs:label  "Locatie ACTIVITEIT_001"@nl;
         sosa:hosts  exploitatie:ACTIVITEIT_001_VERSIE2020 , activiteit:ACTIVITEIT_001 .
-
-var:afgewerkt_staal  rdf:type  pplan:Variable;
-        pplan:isInputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
 
 step:bakken  rdf:type             pplan:MultiStep , pplan:Step , pplan:Entity , prov:Plan , pplan:Plan , sosa:Procedure , prov:Entity;
         rdfs:label                "Bak het beslag"@nl;
@@ -952,6 +956,9 @@ step:bakken  rdf:type             pplan:MultiStep , pplan:Step , pplan:Entity , 
 stof:vod_staal  rdf:type     pplan:Variable , riepr:ProcesVariabele;
         rdfs:label           "VOD-behandeld staal"@nl;
         pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_001 .
+
+var:afgewerkt_staal  rdf:type  pplan:Variable;
+        pplan:isInputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_005 .
 
 ingredient:eieren  rdf:type  skos:Concept .
 
@@ -1049,9 +1056,6 @@ exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026
         ssn:deployedSystem    installatie:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000005 , emissiepunt:0400123123_6851234567_0000002 , emissiepunt:0400123123_6851234567_0000004 , emissiepunt:0400123123_6851234567_0000001 , installatie:0400123123_6851234567_0000004 , apparaat:0400123123_6851234567_0010 , apparaat:0400123123_6851234567_0003 , apparaat:0400123123_6851234567_0002 , emissiepunt:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0005 , installatie:0400123123_6851234567_0000001 , apparaat:0400123123_6851234567_0007 , apparaat:0400123123_6851234567_0004 , installatie:0400123123_6851234567_0000003 , apparaat:0400123123_6851234567_0006;
         ssn:implements        activiteit:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 .
 
-plan:haal_bakvorm_uit_oven_en_laat_afkoelen
-        sosa:hasInput  <https://example.org/variable/kleur> .
-
 inst:gasvuur-nigella  rdf:type  prov:Agent , prov:Entity , sosa:System;
         rdfs:label            "Gasvuur in Nigella's keuken"@nl;
         prov:actedOnBehalfOf  agent:nigella-lawson;
@@ -1075,6 +1079,9 @@ inst:keukenrobot-geert
 
 stof:ijzererts  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "IJzererts"@nl .
+
+plan:haal_bakvorm_uit_oven_en_laat_afkoelen
+        sosa:hasInput  <https://example.org/variable/kleur> .
 
 inst:mes-geert  rdf:type      prov:Agent , prov:Entity , sosa:System;
         rdfs:label            "Het systeem van Geert dat kan snijden."@nl;
@@ -1420,9 +1427,6 @@ stof:gedec_staal  rdf:type   pplan:Variable , riepr:ProcesVariabele;
         pplan:isInputVarOf   activiteit:0400123123_6851234567_ACTIVITEIT_1_0010 , activiteit:0400123123_6851234567_ACTIVITEIT_1_0011;
         pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0010 .
 
-var:gezuiverd_staal  rdf:type  pplan:Variable;
-        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
-
 actuation:0400123123_6851234567_00072026-01-01T10:00:00Z
         rdf:type                 prov:Activity , sosa:Execution , pplan:Activity , sosa:Actuation;
         rdfs:label               "Activiteit van Afwerkstand";
@@ -1469,6 +1473,9 @@ activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020
         prov:wasDerivedFrom   activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999;
         prov:wasInfluencedBy  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999;
         prov:wasRevisionOf    activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
+
+var:gezuiverd_staal  rdf:type  pplan:Variable;
+        pplan:isOutputVarOf  activiteit:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
 
 entity:afgewerkt_staal1999-01-01T00:00:00Z
         rdf:type                     sosa:Result , pplan:Entity , prov:Entity;
@@ -1526,13 +1533,6 @@ inst:snijplank-geert  rdf:type  prov:Agent , prov:Entity , sosa:System;
         sosa:hasDeployment    exec:brownies-bakken-voor-demo-op-woensdag;
         sosa:isSubSystemOf    inst:haksysteem-geert .
 
-activiteit:STAP_002  rdf:type  pplan:Plan , prov:Entity , riepr:Proces , prov:Plan , pplan:Step , pplan:Entity , sosa:Procedure;
-        rdfs:label          "Koekjes bakken"@nl;
-        pplan:hasInputVar   stof:deeg;
-        pplan:hasOutputVar  stof:koekjes;
-        pplan:isPrecededBy  activiteit:STAP_001;
-        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
-
 actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z
         rdf:type                 sosa:Actuation , pplan:Activity , prov:Activity , sosa:Execution;
         rdfs:label               "Activiteit van Schouw 5";
@@ -1550,6 +1550,13 @@ actuation:0400123123_6851234567_00000052020-07-30T10:00:00Z
         sosa:madeByActuator      emissiepunt:0400123123_6851234567_0000005;
         sosa:madeBySystem        emissiepunt:0400123123_6851234567_0000005;
         sosa:startTime           "2020-07-30T10:00:00Z"^^xsd:dateTime .
+
+activiteit:STAP_002  rdf:type  pplan:Plan , prov:Entity , riepr:Proces , prov:Plan , pplan:Step , pplan:Entity , sosa:Procedure;
+        rdfs:label          "Koekjes bakken"@nl;
+        pplan:hasInputVar   stof:deeg;
+        pplan:hasOutputVar  stof:koekjes;
+        pplan:isPrecededBy  activiteit:STAP_001;
+        pplan:isStepOfPlan  activiteit:ACTIVITEIT_001 .
 
 <https://example.org/concept/role/tv-presenter>
         rdf:type        prov:Role;
@@ -2807,13 +2814,6 @@ exploitant:0400123123
         prov:wasAssociateFor  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
         sosa:madeExecution    observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
         sosa:madeObservation  observation:0400123123_6851234567_00000052026-01-01T10:00:00Z .
-
-_:b0    rdf:type              prov:Entity , sosa:Result;
-        rdf:value             6;
-        qudt:hasUnit          unit:TON_Metric;
-        prov:wasGeneratedBy   observation:vracht_co2_rookgassen2;
-        prov:wasInfluencedBy  observation:vracht_co2_rookgassen2;
-        sosa:isResultOf       observation:vracht_co2_rookgassen2 .
 
 step:laat_bakken_tot_lichtbruine_bovenkant
         rdf:type                  pplan:Plan , prov:Plan , sosa:Procedure , pplan:Entity , pplan:MultiStep , pplan:Step , prov:Entity , sosa:ObservingProcedure;

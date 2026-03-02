@@ -5,6 +5,17 @@ import org.apache.jena.vocabulary.{OWL, RDF, RDFS}
 
 import scala.jdk.CollectionConverters._
 
+private case class PropertyShapeSignature(
+                                           path: String,
+                                           valueKind: ValueKind,
+                                           minCount: Option[Int],
+                                           maxCount: Option[Int]
+                                         )
+
+private sealed trait ValueKind
+private case class SingleValue(uri: String, isDatatype: Boolean) extends ValueKind
+private case class OrValue(members: List[(String, Boolean)]) extends ValueKind
+
 object OwlToShaclGenerator {
 
   val SH = "http://www.w3.org/ns/shacl#"
@@ -31,6 +42,66 @@ object OwlToShaclGenerator {
       }
     }
     shacl.createResource(prop.getURI)
+  }
+
+  private def computeSignature(restriction: Resource): Option[PropertyShapeSignature] = {
+
+    val onProp = restriction.getPropertyResourceValue(OWL.onProperty)
+    if (onProp == null || !onProp.isURIResource) return None
+
+    val path = onProp.getURI
+
+    val some = Option(restriction.getPropertyResourceValue(OWL.someValuesFrom))
+    val all  = Option(restriction.getPropertyResourceValue(OWL.allValuesFrom))
+
+    val valueNode = some.orElse(all)
+
+    val valueKind: ValueKind =
+      valueNode match {
+        case Some(v) if v.hasProperty(OWL.unionOf) =>
+          val list =
+            v.getPropertyResourceValue(OWL.unionOf)
+              .as(classOf[RDFList])
+
+          val members =
+            list.iterator().asScala
+              .collect { case r: Resource if r.isURIResource =>
+                (r.getURI, isDatatype(r))
+              }
+              .toList
+              .sortBy(_._1)
+
+          OrValue(members)
+
+        case Some(v) if v.isURIResource =>
+          SingleValue(v.getURI, isDatatype(v))
+
+        case _ =>
+          // Geen waarde constraint
+          SingleValue("__none__", false)
+      }
+
+    def intValue(p: Property): Option[Int] =
+      Option(restriction.getProperty(p))
+        .map(_.getObject)
+        .collect { case l: Literal => l.getInt }
+
+    val min =
+      intValue(OWL.cardinality)
+        .orElse(intValue(OWL.minCardinality))
+        .orElse(
+          if (restriction.hasProperty(OWL.someValuesFrom) &&
+            !restriction.hasProperty(OWL.minCardinality) &&
+            !restriction.hasProperty(OWL.cardinality))
+            Some(1)
+          else None
+        )
+
+    val max =
+      intValue(OWL.cardinality)
+        .orElse(intValue(OWL.maxCardinality))
+
+    Some(PropertyShapeSignature(path, valueKind, min, max))
   }
 
   private def addClassOrDatatype(ps: Resource, value: Resource, shacl: Model): Unit = {
@@ -132,9 +203,12 @@ object OwlToShaclGenerator {
   // ---------------------------
 
   private def generateNodeShape(cls: Resource, ontology: Model, shacl: Model): Unit = {
+
     val ns = shacl.createResource(cls.getURI + "Shape")
     ns.addProperty(RDF.`type`, shacl.createResource(SH + "NodeShape"))
     ns.addProperty(shaclProp("targetClass", shacl), cls)
+
+    val seen = scala.collection.mutable.Set[PropertyShapeSignature]()
 
     ontology
       .listStatements(cls, RDFS.subClassOf, null)
@@ -143,7 +217,14 @@ object OwlToShaclGenerator {
       .collect {
         case r: Resource if r.hasProperty(RDF.`type`, OWL.Restriction) => r
       }
-      .foreach(generatePropertyShape(_, shacl, ns))
+      .foreach { restriction =>
+        computeSignature(restriction).foreach { sig =>
+          if (!seen.contains(sig)) {
+            generatePropertyShape(restriction, shacl, ns)
+            seen += sig
+          }
+        }
+      }
   }
 
   // ---------------------------

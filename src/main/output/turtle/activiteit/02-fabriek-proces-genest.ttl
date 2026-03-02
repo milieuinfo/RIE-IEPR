@@ -5,7 +5,7 @@
 @prefix attr:               <https://example.org/attribution/> .
 @prefix concept:            <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
 @prefix dbo:                <http://dbpedia.org/ontology/> .
-@prefix dc:                 <http://purl.org/dc/terms/> .
+@prefix dc:                 <http://purl.org/dc/elements/1.1/> .
 @prefix dcat:               <http://www.w3.org/ns/dcat#> .
 @prefix dct:                <http://purl.org/dc/terms/> .
 @prefix dcterms:            <http://purl.org/dc/terms/> .
@@ -58,7 +58,7 @@
 @prefix ssn-dep:            <http://www.w3.org/ns/ssn/dep/> .
 @prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
-@prefix ssn-system:         <http://www.w3.org/ns/ssn/systems> .
+@prefix ssn-system:         <http://www.w3.org/ns/ssn/systems/> .
 @prefix step:               <https://example.org/step/> .
 @prefix stof:               <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 @prefix terms:              <http://purl.org/dc/terms/> .
@@ -76,7 +76,7 @@
 
 proces:STAP_001_2  rdf:type  prov:Entity , pplan:Step , pplan:Plan , pplan:Entity , sosa:Procedure , prov:Plan , riepr:Proces;
         rdfs:label          "Overbrenging"@nl;
-        dc:type             riepr:overbrengingsProces;
+        dct:type            riepr:overbrengingsProces;
         pplan:hasInputVar   stof:mengsel;
         pplan:hasOutputVar  stof:mengsel;
         pplan:isPrecededBy  proces:STAP_001_1;
@@ -90,9 +90,9 @@ stof:deeg  rdf:type          pplan:Variable , riepr:ProcesVariabele;
 exploitatie:ACTIVITEIT_001_VERSIE2020
         rdf:type         ssn:Deployment , riepr:Exploitatie;
         rdfs:label       "Koekjes maken - Versie 2020"@nl;
-        dc:created       "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dc:issued        "2020-07-30"^^xsd:date;
-        dc:valid         "2030-12-31"^^xsd:date;
+        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued       "2020-07-30"^^xsd:date;
+        dct:valid        "2030-12-31"^^xsd:date;
         adms:status      riepr:Actief;
         sosa:isHostedBy  exploitatielocatie:ACTIVITEIT_001_LOC;
         ssn:implements   proces:ACTIVITEIT_001 .
@@ -118,9 +118,9 @@ proces:STAP_002  rdf:type   pplan:Plan , prov:Entity , riepr:Proces , prov:Plan 
 proces:ACTIVITEIT_001
         rdf:type            prov:Plan , pplan:Plan , riepr:Proces , prov:Entity , pplan:Entity , pplan:Step , sosa:Procedure;
         rdfs:label          "Koekjes maken"@nl;
-        dc:created          "2020-07-30T10:00:00Z"^^xsd:dateTime;
-        dc:issued           "2020-07-30"^^xsd:date;
-        dc:valid            "2030-12-31"^^xsd:date;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime;
+        dct:issued          "2020-07-30"^^xsd:date;
+        dct:valid           "2030-12-31"^^xsd:date;
         pplan:hasInputVar   stof:meel;
         pplan:hasOutputVar  stof:koekjes;
         adms:status         riepr:Actief;
@@ -164,7 +164,7 @@ var:emissie_TBD  rdf:type   pplan:Variable , riepr:ProcesVariabele;
 
 proces:STAP_003  rdf:type   pplan:Step , pplan:Plan , riepr:Proces , pplan:Entity , sosa:Procedure , prov:Plan , prov:Entity;
         rdfs:label          "Rookgas afvoeren"@nl;
-        dc:type             riepr:uitstootProces;
+        dct:type            riepr:uitstootProces;
         pplan:hasInputVar   stof:rookgas , var:emissie_TBD;
         pplan:hasOutputVar  stof:rookgas;
         pplan:isPrecededBy  proces:STAP_002;
