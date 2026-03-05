@@ -21,6 +21,7 @@
 @prefix locn:   <http://www.w3.org/ns/locn#> .
 @prefix qudt:   <http://qudt.org/schema/qudt/> .
 @prefix nace:   <http://data.europa.eu/ux2/nace2.1/> .
+@prefix dossier: <https://data.vlaanderen.be/ns/dossier#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -85,12 +86,6 @@
         owl:onProperty dct:valid ;
         owl:someValuesFrom xsd:date ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitant moet een organisatie of persoon zijn maar niet beide tegelijk"@nl ;
-        owl:onProperty dct:type ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -462,6 +457,12 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
+        # Codelijst:
+        # (alle sosa:Procedure)
+        # - Verwerking Procedure
+        # - Emissie Procedure
+        # - Overbrenging Procedure
+        # - Meet Procedure
         rdfs:comment "Een proces kan zijn afgeleid van een (generieke) procedure (optioneel). Max 1 omdat een proces slechts van 1 procedure afgeleid kan zijn en deze procedure een verzameling van andere procedures zou moeten zijn."@nl ;
         owl:onProperty dct:type ; 
         owl:someValuesFrom sosa:Procedure ;
@@ -534,6 +535,12 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger 
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst stoffen:
+        # Een laag binnen CSO
+        # - Naam van de stof
+        # - Of er al dan niet een verwachting moet opgegeven worden
+        # - eenheid van de stof
+        # - ()op wat van toepassing
         rdfs:comment "Een proces variabele kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -674,6 +681,10 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering installatie:
+        # - GPBV
+        # - IEPR
+        # - ...
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -688,12 +699,6 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een installatie kan meerdere rubrieken hebben"@nl ;
-        owl:onProperty :rubriek ;
-        owl:someValuesFrom :Rubriek ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie kan meerdere installatie eigenschappen hebben"@nl ;
         owl:onProperty ssn:hasProperty ;
         owl:someValuesFrom :InstallatieEigenschap ;
@@ -703,8 +708,13 @@
 :InstallatieEigenschap a owl:Class ;
     rdfs:label "Installatie Eigenschap"@nl ;
     rdfs:comment "Een installatie eigenschap is een specifieke eigenschap van een installatie, zoals capaciteit of rendement."@nl ;
-    rdfs:subClassOf ssn-system:SystemProperty ;
+    rdfs:subClassOf ssn:Property ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering installatie eigenschap:
+        # - Capaciteit
+        # - Rendement
+        # - Zuiveringstechniek
+        # - ...
         rdfs:comment "Een installatie eigenschap moet een typering hebben"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -834,6 +844,12 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering emissiepunt
+        # - Schouw met verticale uitstoot
+        # - Schouw met horizontale uitstoot
+        # - Lozingspunt
+        # - Fakkel
+        # - ...
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -971,6 +987,9 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering onttrekkingspunt:
+        # - Grondwaterput
+        # - ...
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -1116,6 +1135,8 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering meetpunt:
+        # - Controleinrichting
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -1129,12 +1150,6 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt is verschillend van een onttrekkingspunt (disjoint)"@nl ;
         owl:disjointWith :Onttrekkingspunt
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een meetpunt kan meerdere rubrieken hebben"@nl ;
-        owl:onProperty :rubriek ;
-        owl:someValuesFrom :Rubriek ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
         # *..* relation with the inverse of ssn:hasSubSystem
@@ -1237,6 +1252,9 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering meetinstrument:
+        # - Debietmeter
+        # - ...
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -1337,6 +1355,8 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        # Codelijst typering filter:
+        # - ?
         rdfs:comment "Een systeem kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
@@ -1435,10 +1455,27 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
+        # Codelijst rubrieken:
+        # VLAREM typering
         rdfs:comment "Een rubriek kan een typering hebben via dct:type"@nl ;
         owl:onProperty dct:type ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:Transactie a owl:Class ;
+    rdfs:label "Transactie"@nl ;
+    rdfs:comment "Een transactie is een specifieke gebeurtenis waarbij een aanvraag of melding wordt ingediend bij de overheid."@nl ;
+    rdfs:subClassOf prov:Activity .
+
+:Aangifte a owl:Class ;
+    rdfs:label "Aangifte"@nl ;
+    rdfs:subClassOf dossier:Stuk ;
+    rdfs:comment "Een aangifte is een specifiek stuk dat wordt ingediend bij de overheid als onderdeel van een transactie."@nl ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        owl:onProperty dossier:beschrijft ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
     ] .
 
 # --------------------------------------- #
@@ -1448,10 +1485,10 @@
 # Business benamingen worden in concepten vastgelegd
 
 :rubriek a owl:ObjectProperty ;
-    rdfs:label "VLAREM Rubriek"@nl ;
-    rdfs:comment "De VLAREM rubriek die van toepassing is op een proces of installatie."@nl ;
+    rdfs:label "Rubriek"@nl ;
+    rdfs:comment "De rubriek die van toepassing is op een proces of installatie."@nl ;
     rdfs:domain [ a owl:Class ;
-        rdfs:comment "De VLAREM rubriek kan van toepassing zijn op processen"@nl ;
+        rdfs:comment "De rubriek kan van toepassing zijn op processen"@nl ;
         owl:unionOf ( :Installatie )
     ] ;
     rdfs:range :Rubriek .
