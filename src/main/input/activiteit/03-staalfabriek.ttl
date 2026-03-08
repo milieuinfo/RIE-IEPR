@@ -603,27 +603,12 @@ installatie:0400123123_6851234567_0000004 a riepr:Installatie ;
     dct:valid "2030-12-31"^^xsd:date ;
     sosa:isHostedBy exploitatielocatie:0400123123_6851234567 ;
     sosa:hasSubSystem emissiepunt:0400123123_6851234567_0000003, apparaat:0400123123_6851234567_0004  ;
-    # Alternatief 1 (via system capability)
-    ssn-system:hasSystemCapability [ a ssn-system:SystemCapability ;
-        ssn-system:hasSystemProperty [ a ssn-system:SystemProperty ;
-            dct:type <http://codelijst/installatie/vermogen> ;
-            qudt:numericValue 5000 ;
-            qudt:hasUnit unit:Watt
-        ] ;
-        ssn-system:hasSystemProperty [ a ssn-system:SystemProperty ;
-            dct:type <http://codelijst/installatie/capaciteit> ;
-            qudt:numericValue 100 ;
-            qudt:hasUnit unit:tonnePerDay
-        ] ;
-        ssn-system:inCondition <http://todo/conditie/normaal> 
-    ] ;
-    # Alternatief 2 (via property)
-    ssn:hasProperty [ a ssn-system:SystemProperty ;
+    ssn:hasProperty [ a riepr:InstallatieEigenschap ; 
         dct:type <http://codelijst/installatie/vermogen> ;
         qudt:numericValue 5000 ;
         qudt:hasUnit unit:Watt
     ] ;
-    ssn:hasProperty [ a ssn-system:SystemProperty ;
+    ssn:hasProperty [ a riepr:InstallatieEigenschap ;
         dct:type <http://codelijst/installatie/capaciteit> ;
         qudt:numericValue 100 ;
         qudt:hasUnit unit:tonnePerDay
