@@ -486,6 +486,12 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een proces mag een of meer andere processen als voorgaande stap hebben."@nl ;
+        owl:onProperty pplan:isPrecededBy ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with pplan:isOutputVarOf
         rdfs:comment "Een proces mag minstens één outputvariabele hebben (stof)"@nl ;
         owl:onProperty pplan:hasOutputVar ;
