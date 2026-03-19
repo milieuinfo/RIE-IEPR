@@ -373,7 +373,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitatie implementeerd een proces"@nl ;
+        rdfs:comment "Een exploitatie implementeert een proces"@nl ;
         owl:onProperty ssn:implements ;
         owl:someValuesFrom :Proces ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -503,10 +503,11 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ; 
-        rdfs:comment "Een proces kan deel uitmaken van een of meer andere processen"@nl ;
+        rdfs:comment "Een proces kan deel uitmaken van een ander proces"@nl ;
         owl:onProperty pplan:isStepOfPlan ; 
         owl:someValuesFrom :Proces ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces kan meerdere rubrieken hebben"@nl ;
@@ -649,13 +650,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
@@ -804,13 +805,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
@@ -947,13 +948,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
@@ -1085,13 +1086,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
@@ -1193,13 +1194,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
@@ -1285,13 +1286,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
-        owl:onProperty sosa:isHostedBy ;
-        owl:someValuesFrom :ExploitatieLocatie ;
-        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
+    # rdfs:subClassOf [ a owl:Restriction ;
+    #     rdfs:comment "Een systeem moet onderdeel van een locatie zijn"@nl ;
+    #     owl:onProperty sosa:isHostedBy ;
+    #     owl:someValuesFrom :ExploitatieLocatie ;
+    #     owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    #     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    # ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
