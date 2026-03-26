@@ -1,0 +1,462 @@
+{
+  "@context" : {
+    "uri" : {
+      "@id" : "http://example.org/vocab/uri",
+      "@type" : "@id"
+    },
+    "type" : {
+      "@id" : "http://purl.org/dc/terms/type",
+      "@type" : "@id"
+    },
+    "uuid" : {
+      "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId",
+      "@type" : "@id"
+    },
+    "ingediend" : {
+      "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend",
+      "@type" : "@id"
+    },
+    "modified" : {
+      "@id" : "http://purl.org/dc/terms/modified",
+      "@type" : "@id"
+    },
+    "identifier" : {
+      "@id" : "http://www.w3.org/ns/adms#identifier",
+      "@type" : "@id"
+    },
+    "hasDeployment" : {
+      "@id" : "http://www.w3.org/ns/ssn/hasDeployment",
+      "@type" : "@id"
+    },
+    "status" : {
+      "@id" : "http://www.w3.org/ns/adms#status",
+      "@type" : "@id"
+    },
+    "hasSubSystem" : {
+      "@id" : "http://www.w3.org/ns/ssn/hasSubSystem",
+      "@type" : "@id"
+    },
+    "isHostedBy" : {
+      "@id" : "http://www.w3.org/ns/sosa/isHostedBy",
+      "@type" : "@id"
+    },
+    "hasGeometry" : {
+      "@id" : "http://www.opengis.net/ont/geosparql#hasGeometry",
+      "@type" : "@id"
+    },
+    "valid" : {
+      "@id" : "http://purl.org/dc/terms/valid",
+      "@type" : "@id"
+    },
+    "created" : {
+      "@id" : "http://purl.org/dc/terms/created",
+      "@type" : "@id"
+    },
+    "issued" : {
+      "@id" : "http://purl.org/dc/terms/issued",
+      "@type" : "@id"
+    },
+    "wasRevisionOf" : {
+      "@id" : "http://www.w3.org/ns/prov#wasRevisionOf",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#label",
+      "@type" : "@id"
+    },
+    "hasUnit" : {
+      "@id" : "http://qudt.org/schema/qudt/hasUnit",
+      "@type" : "@id"
+    },
+    "value" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#value",
+      "@type" : "@id"
+    },
+    "range" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#range",
+      "@type" : "@id"
+    },
+    "isPropertyOf" : {
+      "@id" : "http://www.w3.org/ns/ssn/isPropertyOf",
+      "@type" : "@id"
+    },
+    "definition" : {
+      "@id" : "http://www.w3.org/2004/02/skos/core#definition",
+      "@type" : "@id"
+    },
+    "notation" : {
+      "@id" : "http://www.w3.org/2004/02/skos/core#notation",
+      "@type" : "@id"
+    },
+    "hasRole" : {
+      "@id" : "http://www.w3.org/ns/org#hasRole",
+      "@type" : "@id"
+    },
+    "memberOf" : {
+      "@id" : "http://www.w3.org/ns/org#memberOf",
+      "@type" : "@id"
+    },
+    "phone" : {
+      "@id" : "http://xmlns.com/foaf/0.1/phone",
+      "@type" : "@id"
+    },
+    "comment" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment",
+      "@type" : "@id"
+    },
+    "name" : {
+      "@id" : "http://xmlns.com/foaf/0.1/name",
+      "@type" : "@id"
+    },
+    "mbox" : {
+      "@id" : "http://xmlns.com/foaf/0.1/mbox",
+      "@type" : "@id"
+    },
+    "hasMember" : {
+      "@id" : "http://www.w3.org/ns/org#hasMember",
+      "@type" : "@id"
+    },
+    "implements" : {
+      "@id" : "http://www.w3.org/ns/ssn/implements",
+      "@type" : "@id"
+    },
+    "deployedOnPlatform" : {
+      "@id" : "http://www.w3.org/ns/ssn/deployedOnPlatform",
+      "@type" : "@id"
+    },
+    "deployedSystem" : {
+      "@id" : "http://www.w3.org/ns/ssn/deployedSystem",
+      "@type" : "@id"
+    },
+    "address" : {
+      "@id" : "http://www.w3.org/ns/locn#address",
+      "@type" : "@id"
+    },
+    "classification" : {
+      "@id" : "http://www.w3.org/ns/org#classification",
+      "@type" : "@id"
+    },
+    "isOutputVarOf" : {
+      "@id" : "http://purl.org/net/p-plan#isOutputVarOf",
+      "@type" : "@id"
+    },
+    "isInputVarOf" : {
+      "@id" : "http://purl.org/net/p-plan#isInputVarOf",
+      "@type" : "@id"
+    },
+    "numericValue" : {
+      "@id" : "http://qudt.org/schema/qudt/numericValue",
+      "@type" : "@id"
+    },
+    "hadPart" : {
+      "@id" : "http://www.w3.org/ns/prov#hadPart",
+      "@type" : "@id"
+    },
+    "hasTarget" : {
+      "@id" : "http://www.w3.org/ns/oa#hasTarget",
+      "@type" : "@id"
+    },
+    "yAxisValue" : {
+      "@id" : "http://purl.org/poso/yAxisValue",
+      "@type" : "@id"
+    },
+    "xAxisValue" : {
+      "@id" : "http://purl.org/poso/xAxisValue",
+      "@type" : "@id"
+    },
+    "hasProperty" : {
+      "@id" : "http://www.w3.org/ns/ssn/hasProperty",
+      "@type" : "@id"
+    },
+    "depth" : {
+      "@id" : "http://dbpedia.org/ontology/depth",
+      "@type" : "@id"
+    },
+    "rubriek" : {
+      "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek",
+      "@type" : "@id"
+    },
+    "isStepOfPlan" : {
+      "@id" : "http://purl.org/net/p-plan#isStepOfPlan",
+      "@type" : "@id"
+    },
+    "hasOutputVar" : {
+      "@id" : "http://purl.org/net/p-plan#hasOutputVar",
+      "@type" : "@id"
+    },
+    "hasInputVar" : {
+      "@id" : "http://purl.org/net/p-plan#hasInputVar",
+      "@type" : "@id"
+    },
+    "implementedBy" : {
+      "@id" : "http://www.w3.org/ns/ssn/implementedBy",
+      "@type" : "@id"
+    },
+    "wasAttributedTo" : {
+      "@id" : "http://www.w3.org/ns/prov#wasAttributedTo",
+      "@type" : "@id"
+    },
+    "wasInfluencedBy" : {
+      "@id" : "http://www.w3.org/ns/prov#wasInfluencedBy",
+      "@type" : "@id"
+    },
+    "inDeployment" : {
+      "@id" : "http://www.w3.org/ns/ssn/inDeployment",
+      "@type" : "@id"
+    },
+    "hadPrimarySource" : {
+      "@id" : "http://www.w3.org/ns/prov#hadPrimarySource",
+      "@type" : "@id"
+    },
+    "sameAs" : {
+      "@id" : "http://www.w3.org/2002/07/owl#sameAs",
+      "@type" : "@id"
+    },
+    "schemeAgency" : {
+      "@id" : "http://www.w3.org/ns/adms#schemeAgency",
+      "@type" : "@id"
+    },
+    "postName" : {
+      "@id" : "http://www.w3.org/ns/locn#postName",
+      "@type" : "@id"
+    },
+    "thoroughfare" : {
+      "@id" : "http://www.w3.org/ns/locn#thoroughfare",
+      "@type" : "@id"
+    },
+    "postCode" : {
+      "@id" : "http://www.w3.org/ns/locn#postCode",
+      "@type" : "@id"
+    }
+  },
+  "@type" : [ "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissiepuntEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#FilterEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerbruikProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#InstallatieEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesMetadata", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie", "http://www.w3.org/ns/adms#Identifier", "http://www.w3.org/ns/adms#Status", "http://www.w3.org/ns/locn#Address", "http://www.w3.org/ns/sosa/Result", "https://data.riepr.omgeving.vlaanderen.be/id/concept/ExterneIdentificator", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Status", "https://data.riepr.omgeving.vlaanderen.be/id/concept/SysteemEigenschap", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Adres", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Resultaat", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Systeem" ],
+  "@embed" : "@always",
+  "uuid" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "uri" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "ingediend" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "modified" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "identifier" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasDeployment" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "status" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasSubSystem" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "type" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isHostedBy" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasGeometry" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "valid" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "created" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "issued" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "wasRevisionOf" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "label" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasUnit" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "value" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "range" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isPropertyOf" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "definition" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "notation" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasRole" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "memberOf" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "phone" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "comment" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "name" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "mbox" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasMember" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "implements" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "deployedOnPlatform" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "deployedSystem" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "address" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "classification" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isOutputVarOf" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isInputVarOf" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "numericValue" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hadPart" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasTarget" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "yAxisValue" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "xAxisValue" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasProperty" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "depth" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "rubriek" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isStepOfPlan" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasOutputVar" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hasInputVar" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "implementedBy" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "wasAttributedTo" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "wasInfluencedBy" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "inDeployment" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "hadPrimarySource" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "sameAs" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "schemeAgency" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "postName" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "thoroughfare" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "postCode" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  }
+}
