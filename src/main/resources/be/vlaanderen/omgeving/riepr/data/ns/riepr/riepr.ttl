@@ -859,6 +859,13 @@
         owl:onProperty qudt:hasUnit ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een systeem eigenschap kan een referentie naar een parameter hebben"@nl ;
+        owl:onProperty :parameter ;
+        owl:someValuesFrom rdfs:Literal ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Onttrekkingspunt a owl:Class ;
@@ -1434,6 +1441,12 @@
         owl:unionOf ( :Installatie )
     ] ;
     rdfs:range :Rubriek .
+
+:parameter a owl:ObjectProperty ;
+    rdfs:label "Parameter"@nl ;
+    rdfs:comment "De parameter die wordt gebruikt bij een eigenschap of meting."@nl ;
+    rdfs:domain :SysteemEigenschap ;
+    rdfs:range pplan:Variable .
 
 # --------------------------------------- #
 # Data Properties
