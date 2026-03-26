@@ -2089,7 +2089,8 @@ Parts of this work may be from another specification document.  If so, those par
     <li>
      <a href="#properties"><span class="secno">6</span> <span class="content">Eigenschappen</span></a>
      <ol class="toc">
-      <li><a href="#rubriek"><span class="secno">6.1</span> <span class="content">Rubriek</span></a>
+      <li><a href="#parameter"><span class="secno">6.1</span> <span class="content">Parameter</span></a>
+      <li><a href="#rubriek"><span class="secno">6.2</span> <span class="content">Rubriek</span></a>
      </ol>
     <li>
      <a href="#concepts"><span class="secno">7</span> <span class="content">Concept instanties</span></a>
@@ -2197,7 +2198,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
 </pre>
    <h2 class="heading settled" data-level="4" id="overview"><span class="secno">4. </span><span class="content">Overzicht</span><a class="self-link" href="#overview"></a></h2>
-   <p>Deze ontologie definieert 21 klassen, 1 eigenschappen, 6 concept instanties en 4 datatypes.</p>
+   <p>Deze ontologie definieert 21 klassen, 2 eigenschappen, 6 concept instanties en 4 datatypes.</p>
    <h2 class="heading settled" data-level="5" id="classes"><span class="secno">5. </span><span class="content">Klassen</span><a class="self-link" href="#classes"></a></h2>
    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:false});</script>
@@ -2408,9 +2409,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Filter">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter</a></p>
    <p><strong>Definitie:</strong> Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-221: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1</p>
+   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-222: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkZpbHRlclsiRmlsdGVyIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpuU3RhdHVzWyJTdGF0dXMiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0KbkZpbHRlciAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkZpbHRlciAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuRmlsdGVyIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkZpbHRlciAtLT58aXNzdWVkfCBuZGF0ZQpuRmlsdGVyIC0tPnx2YWxpZHwgbmRhdGUKbkZpbHRlciAtLT58c3RhdHVzfCBuU3RhdHVzCm5GaWx0ZXIgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0KbkZpbHRlciAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5GaWx0ZXIgLS0+fG4zLTIyMXwgblN5c3RlbQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkZpbHRlclsiRmlsdGVyIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbmRhdGVbImRhdGUiXQpuU3RhdHVzWyJTdGF0dXMiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0KbkZpbHRlciAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkZpbHRlciAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuRmlsdGVyIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkZpbHRlciAtLT58aXNzdWVkfCBuZGF0ZQpuRmlsdGVyIC0tPnx2YWxpZHwgbmRhdGUKbkZpbHRlciAtLT58c3RhdHVzfCBuU3RhdHVzCm5GaWx0ZXIgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0KbkZpbHRlciAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5GaWx0ZXIgLS0+fG4zLTIyMnwgblN5c3RlbQ=="></div>
    <h3 class="heading settled" data-level="5.9" id="Installatie"><span class="secno">5.9. </span><span class="content">Installatie</span><a class="self-link" href="#Installatie"></a></h3>
    <p><strong>IRI:</strong> <a href="#Installatie">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie</a></p>
    <p><strong>Definitie:</strong> Een installatie is infrastructuur of een verzameling van infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
@@ -2449,9 +2450,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#MeetInstrument">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument</a></p>
    <p><strong>Definitie:</strong> Een meetinstrument is een specifiek apparaat of systeem dat wordt gebruikt om metingen uit te voeren op meetpunten.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-208: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1</p>
+   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-209: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KblN0YXR1c1siU3RhdHVzIl0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5NZWV0SW5zdHJ1bWVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbk1lZXRJbnN0cnVtZW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5NZWV0SW5zdHJ1bWVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0SW5zdHJ1bWVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fHZhbGlkfCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuTWVldEluc3RydW1lbnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRJbnN0cnVtZW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRJbnN0cnVtZW50IC0tPnxuMy0yMDh8IG5TeXN0ZW0="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KblN0YXR1c1siU3RhdHVzIl0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5NZWV0SW5zdHJ1bWVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbk1lZXRJbnN0cnVtZW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5NZWV0SW5zdHJ1bWVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0SW5zdHJ1bWVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fHZhbGlkfCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuTWVldEluc3RydW1lbnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRJbnN0cnVtZW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRJbnN0cnVtZW50IC0tPnxuMy0yMDl8IG5TeXN0ZW0="></div>
    <h3 class="heading settled" data-level="5.11" id="MeetProcedure"><span class="secno">5.11. </span><span class="content">Meetprocedure</span><a class="self-link" href="#MeetProcedure"></a></h3>
    <p><strong>IRI:</strong> <a href="#MeetProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetProcedure</a></p>
    <p><strong>Definitie:</strong> Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten.</p>
@@ -2460,7 +2461,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Meetpunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt</a></p>
    <p><strong>Definitie:</strong> Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-191: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of MeetInstrument; hasProperty: min 0 of SysteemEigenschap</p>
+   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-192: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of MeetInstrument; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt></c-> <c- p>;</c->
@@ -2473,7 +2474,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KblN0YXR1c1siU3RhdHVzIl0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5NZWV0SW5zdHJ1bWVudFsiTWVldGluc3RydW1lbnQiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5NZWV0cHVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbk1lZXRwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuTWVldHB1bnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRwdW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRwdW50IC0tPnxuMy0xOTF8IG5TeXN0ZW0Kbk1lZXRwdW50IC0tPnxoYXNTdWJTeXN0ZW18IG5NZWV0SW5zdHJ1bWVudApuTWVldHB1bnQgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXA="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5kYXRlWyJkYXRlIl0KblN0YXR1c1siU3RhdHVzIl0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5NZWV0SW5zdHJ1bWVudFsiTWVldGluc3RydW1lbnQiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5NZWV0cHVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbk1lZXRwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5NZWV0cHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuTWVldHB1bnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuTWVldHB1bnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRwdW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRwdW50IC0tPnxuMy0xOTJ8IG5TeXN0ZW0Kbk1lZXRwdW50IC0tPnxoYXNTdWJTeXN0ZW18IG5NZWV0SW5zdHJ1bWVudApuTWVldHB1bnQgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXA="></div>
    
 <strong>IRI template:</strong>
 
@@ -2493,7 +2494,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Onttrekkingspunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt</a></p>
    <p><strong>Definitie:</strong> Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking).</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-166: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; depth: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap</p>
+   <p><strong>Constraints:</strong> identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; status: min 1, max 1 of Status; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-167: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; depth: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt></c-> <c- p>;</c->
@@ -2501,7 +2502,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuSWRlbnRpZmllclsiSWRlbnRpZmllciJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5TdGF0dXNbIlN0YXR1cyJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpZGVudGlmaWVyfCBuSWRlbnRpZmllcgpuT250dHJla2tpbmdzcHVudCAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuT250dHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5PbnR0cmVra2luZ3NwdW50IC0tPnx2YWxpZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuT250dHJla2tpbmdzcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuT250dHJla2tpbmdzcHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5PbnR0cmVra2luZ3NwdW50IC0tPnxuMy0xNjZ8IG5TeXN0ZW0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuT250dHJla2tpbmdzcHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcA=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuSWRlbnRpZmllclsiSWRlbnRpZmllciJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5TdGF0dXNbIlN0YXR1cyJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpZGVudGlmaWVyfCBuSWRlbnRpZmllcgpuT250dHJla2tpbmdzcHVudCAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuT250dHJla2tpbmdzcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5PbnR0cmVra2luZ3NwdW50IC0tPnx2YWxpZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHN0YXR1c3wgblN0YXR1cwpuT250dHJla2tpbmdzcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuT250dHJla2tpbmdzcHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5PbnR0cmVra2luZ3NwdW50IC0tPnxuMy0xNjd8IG5TeXN0ZW0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuT250dHJla2tpbmdzcHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcA=="></div>
    
 <strong>IRI template:</strong>
 
@@ -2589,9 +2590,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#SysteemEigenschap">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap</a></p>
    <p><strong>Definitie:</strong> Een systeem eigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/Property">ssn:Property</a></p>
-   <p><strong>Constraints:</strong> type: min 1, max 1; range: min 1, max 1 of Datatype; value: min 0, max 1 of Literal; hasUnit: min 0, max 1</p>
+   <p><strong>Constraints:</strong> type: min 1, max 1; range: min 1, max 1 of Datatype; value: min 0, max 1 of Literal; hasUnit: min 0, max 1; parameter: min 0, max 1 of Literal</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblN5c3RlZW1FaWdlbnNjaGFwWyJTeXN0ZWVtIEVpZ2Vuc2NoYXAiXQpuRGF0YXR5cGVbIkRhdGF0eXBlIl0KbkxpdGVyYWxbIkxpdGVyYWwiXQpuU3lzdGVlbUVpZ2Vuc2NoYXAgLS0+fHJhbmdlfCBuRGF0YXR5cGUKblN5c3RlZW1FaWdlbnNjaGFwIC0tPnx2YWx1ZXwgbkxpdGVyYWw="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblN5c3RlZW1FaWdlbnNjaGFwWyJTeXN0ZWVtIEVpZ2Vuc2NoYXAiXQpuVmFyaWFibGVbIlZhcmlhYmxlIl0KbkRhdGF0eXBlWyJEYXRhdHlwZSJdCm5MaXRlcmFsWyJMaXRlcmFsIl0KblN5c3RlZW1FaWdlbnNjaGFwIC0tPnxwYXJhbWV0ZXJ8IG5WYXJpYWJsZQpuU3lzdGVlbUVpZ2Vuc2NoYXAgLS0+fHJhbmdlfCBuRGF0YXR5cGUKblN5c3RlZW1FaWdlbnNjaGFwIC0tPnx2YWx1ZXwgbkxpdGVyYWwKblN5c3RlZW1FaWdlbnNjaGFwIC0tPnxwYXJhbWV0ZXJ8IG5MaXRlcmFs"></div>
    <h3 class="heading settled" data-level="5.18" id="TransportProcedure"><span class="secno">5.18. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h3>
    <p><strong>IRI:</strong> <a href="#TransportProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure</a></p>
    <p><strong>Definitie:</strong> Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.</p>
@@ -2613,7 +2614,13 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>Definitie:</strong> Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/sosa/Procedure">sosa:Procedure</a></p>
    <h2 class="heading settled" data-level="6" id="properties"><span class="secno">6. </span><span class="content">Eigenschappen</span><a class="self-link" href="#properties"></a></h2>
-   <h3 class="heading settled" data-level="6.1" id="rubriek"><span class="secno">6.1. </span><span class="content">Rubriek</span><a class="self-link" href="#rubriek"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="parameter"><span class="secno">6.1. </span><span class="content">Parameter</span><a class="self-link" href="#parameter"></a></h3>
+   <p><strong>IRI:</strong> <a href="#parameter">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter</a></p>
+   <p><strong>Type:</strong> ObjectProperty</p>
+   <p><strong>Definitie:</strong> De parameter die wordt gebruikt bij een eigenschap of meting.</p>
+   <p><strong>Domein:</strong> <a href="#SysteemEigenschap">SysteemEigenschap</a></p>
+   <p><strong>Bereik:</strong> <a href="http://purl.org/net/p-plan#Variable">pplan:Variable</a></p>
+   <h3 class="heading settled" data-level="6.2" id="rubriek"><span class="secno">6.2. </span><span class="content">Rubriek</span><a class="self-link" href="#rubriek"></a></h3>
    <p><strong>IRI:</strong> <a href="#rubriek">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek</a></p>
    <p><strong>Type:</strong> ObjectProperty</p>
    <p><strong>Definitie:</strong> De rubriek die van toepassing is op een proces of installatie.</p>
