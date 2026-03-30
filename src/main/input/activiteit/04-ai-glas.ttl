@@ -1,0 +1,640 @@
+## =============================================================================
+## RIEPR Dataset — Industriebedrijf NV / Afvalverwerking BV
+## Gegenereerd op basis van RIEPR-ontologie en SHACL-shapes (21/21 shapes)
+## =============================================================================
+
+@prefix :                    <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix adms:                <http://www.w3.org/ns/adms#> .
+@prefix aep:                 <https://data.riepr.omgeving.vlaanderen.be/id/abstractemissiepunt/> .
+@prefix contactpersoon:      <https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/> .
+@prefix dbo:                 <http://dbpedia.org/ontology/> .
+@prefix dct:                 <http://purl.org/dc/terms/> .
+@prefix dossier:             <https://data.vlaanderen.be/ns/dossier#> .
+@prefix emissieprocedure:    <https://data.riepr.omgeving.vlaanderen.be/id/emissieprocedure/> .
+@prefix emissiepunt:         <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix exploitant:          <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/> .
+@prefix exploitatie:         <https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/> .
+@prefix exploitatielocatie:  <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix filter:              <https://data.riepr.omgeving.vlaanderen.be/id/filter/> .
+@prefix foaf:                <http://xmlns.com/foaf/0.1/> .
+@prefix geo:                 <http://www.opengis.net/ont/geosparql#> .
+@prefix installatie:         <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix locn:                <http://www.w3.org/ns/locn#> .
+@prefix meetinstrument:      <https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/> .
+@prefix meetprocedure:       <https://data.riepr.omgeving.vlaanderen.be/id/meetprocedure/> .
+@prefix meetpunt:            <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
+@prefix onttrekkingprocedure: <https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingprocedure/> .
+@prefix onttrekkingspunt:    <https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/> .
+@prefix org:                 <http://www.w3.org/ns/org#> .
+@prefix pplan:               <http://purl.org/net/p-plan#> .
+@prefix proces:              <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
+@prefix prov:                <http://www.w3.org/ns/prov#> .
+@prefix qudt:                <http://qudt.org/schema/qudt/> .
+@prefix rdfs:                <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix riepr:               <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix rubriek:             <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/> .
+@prefix se:                  <https://data.riepr.omgeving.vlaanderen.be/id/systeemeigenschap/> .
+@prefix skos:                <http://www.w3.org/2004/02/skos/core#> .
+@prefix ssn:                 <http://www.w3.org/ns/ssn/> .
+@prefix stuk:                <https://data.riepr.omgeving.vlaanderen.be/id/stuk/> .
+@prefix transportprocedure:  <https://data.riepr.omgeving.vlaanderen.be/id/transportprocedure/> .
+@prefix unit:                <http://qudt.org/vocab/unit/> .
+@prefix var:                 <https://data.riepr.omgeving.vlaanderen.be/id/var/> .
+@prefix verwerkingprocedure: <https://data.riepr.omgeving.vlaanderen.be/id/verwerkingprocedure/> .
+@prefix xsd:                 <http://www.w3.org/2001/XMLSchema#> .
+
+
+## =============================================================================
+## STATUS CONCEPTEN  (adms:Status)
+## =============================================================================
+
+riepr:Actief    a  adms:Status .
+riepr:Inactief  a  adms:Status .
+
+## xsd:decimal is een rdfs:Datatype (vereist door SysteemEigenschapShape via rdfs:range)
+xsd:decimal  a  rdfs:Datatype .
+
+
+## =============================================================================
+## EXPLOITANTEN  (riepr:Exploitant)
+## =============================================================================
+
+exploitant:EX_EXP_001
+        a                   riepr:Exploitant ;
+        rdfs:label          "Industriebedrijf NV"@nl ;
+        dct:created         "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:issued          "2020-01-01"^^xsd:date ;
+        dct:modified        "2024-06-01T10:00:00Z"^^xsd:dateTime ;
+        locn:address        [ a                       locn:Address ;
+                              locn:thoroughfare       "Havenstraat"@nl ;
+                              locn:locatorDesignator  "1" ;
+                              locn:postCode           "2030" ;
+                              locn:postName           "Antwerpen"@nl
+                            ] ;
+        org:hasMember       contactpersoon:EX_CP_001 ,
+                            contactpersoon:EX_CP_002 .
+
+exploitant:EX_EXP_002
+        a                   riepr:Exploitant ;
+        rdfs:label          "Afvalverwerking BV"@nl ;
+        dct:created         "2021-03-15T00:00:00Z"^^xsd:dateTime ;
+        dct:issued          "2021-03-15"^^xsd:date ;
+        dct:modified        "2024-06-01T00:00:00Z"^^xsd:dateTime ;
+        locn:address        [ a                       locn:Address ;
+                              locn:thoroughfare       "Industrieweg"@nl ;
+                              locn:locatorDesignator  "88" ;
+                              locn:postCode           "9000" ;
+                              locn:postName           "Gent"@nl
+                            ] ;
+        org:classification  <http://data.europa.eu/ux2/nace2.1/38.21> .
+
+
+## =============================================================================
+## CONTACTPERSONEN  (riepr:Contactpersoon)
+## =============================================================================
+
+contactpersoon:EX_CP_001
+        a             riepr:Contactpersoon ;
+        rdfs:label    "Jan Janssen"@nl ;
+        rdfs:comment  "Verantwoordelijke milieu en veiligheid"@nl ;
+        foaf:name     "Jan Janssen" ;
+        foaf:phone    "+32 3 123 45 67" ;
+        foaf:mbox     <mailto:j.janssen@industriebedrijf.be> ;
+        dct:created   "2022-01-15T08:00:00Z"^^xsd:dateTime ;
+        dct:issued    "2022-01-15"^^xsd:date ;
+        dct:modified  "2024-06-01T10:30:00Z"^^xsd:dateTime .
+
+contactpersoon:EX_CP_002
+        a             riepr:Contactpersoon ;
+        rdfs:label    "Marie Peeters"@nl ;
+        rdfs:comment  "Technisch directeur"@nl ;
+        foaf:name     "Marie Peeters" ;
+        foaf:phone    "+32 3 987 65 43" ;
+        foaf:mbox     <mailto:m.peeters@industriebedrijf.be> ;
+        dct:created   "2021-05-20T09:00:00Z"^^xsd:dateTime ;
+        dct:issued    "2021-05-20"^^xsd:date ;
+        dct:modified  "2023-09-15T11:00:00Z"^^xsd:dateTime .
+
+
+## =============================================================================
+## EXPLOITATIELOCATIES  (riepr:Exploitatielocatie)
+## =============================================================================
+
+exploitatielocatie:EX_LOC_001
+        a                     riepr:Exploitatielocatie ;
+        rdfs:label            "Hoofdlocatie Fabriek NV"@nl ;
+        rdfs:comment          "Primaire productiesite van Industriebedrijf NV, gelegen in de haven van Antwerpen."@nl ;
+        dct:created           "2022-01-15T09:00:00Z"^^xsd:dateTime ;
+        dct:issued            "2022-01-15"^^xsd:date ;
+        dct:modified          "2024-06-01T10:30:00Z"^^xsd:dateTime ;
+        dct:valid             "2030-12-31"^^xsd:date ;
+        geo:hasGeometry       [ a          geo:Geometry ;
+                                geo:asWKT  "POINT(4.3500 51.2000)"^^geo:wktLiteral
+                              ] ;
+        adms:identifier       [ a                  adms:Identifier ;
+                                skos:notation      "EX_LOC_001" ;
+                                adms:schemeAgency  "RIEPR"
+                              ] ;
+        locn:address          [ a                       locn:Address ;
+                                locn:thoroughfare       "Havenstraat"@nl ;
+                                locn:locatorDesignator  "12" ;
+                                locn:postCode           "2030" ;
+                                locn:postName           "Antwerpen"@nl
+                              ] ;
+        prov:wasAttributedTo  exploitant:EX_EXP_001 .
+
+exploitatielocatie:EX_LOC_002
+        a                     riepr:Exploitatielocatie ;
+        rdfs:label            "Nevenlocatie Verwerkingscentrum"@nl ;
+        rdfs:comment          "Secundaire verwerkingssite voor grondstoffen, gelegen in de industriezone Gent."@nl ;
+        dct:created           "2023-03-20T08:00:00Z"^^xsd:dateTime ;
+        dct:issued            "2023-04-01"^^xsd:date ;
+        dct:modified          "2024-09-15T14:00:00Z"^^xsd:dateTime ;
+        geo:hasGeometry       [ a          geo:Geometry ;
+                                geo:asWKT  "POINT(3.7200 51.0500)"^^geo:wktLiteral
+                              ] ;
+        adms:identifier       [ a                  adms:Identifier ;
+                                skos:notation      "EX_LOC_002" ;
+                                adms:schemeAgency  "RIEPR"
+                              ] ;
+        locn:address          [ a                       locn:Address ;
+                                locn:thoroughfare       "Industrielaan"@nl ;
+                                locn:locatorDesignator  "45" ;
+                                locn:postCode           "9000" ;
+                                locn:postName           "Gent"@nl
+                              ] ;
+        prov:wasAttributedTo  exploitant:EX_EXP_001 .
+
+
+## =============================================================================
+## EXPLOITATIES  (riepr:Exploitatie)
+## =============================================================================
+
+exploitatie:EX_EXPL_001
+        a                       riepr:Exploitatie ;
+        rdfs:label              "Staalproductie exploitatie 2020"@nl ;
+        rdfs:comment            "Actieve exploitatie van het staalproductieproces op de hoofdlocatie in Antwerpen."@nl ;
+        dct:created             "2020-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:issued              "2020-01-01"^^xsd:date ;
+        dct:modified            "2024-06-01T10:00:00Z"^^xsd:dateTime ;
+        dct:valid               "2030-12-31"^^xsd:date ;
+        adms:identifier         [ a                  adms:Identifier ;
+                                  skos:notation      "EX_EXPL_001" ;
+                                  adms:schemeAgency  "RIEPR"
+                                ] ;
+        adms:status             riepr:Actief ;
+        ssn:deployedOnPlatform  exploitatielocatie:EX_LOC_001 ;
+        ssn:implements          proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 ;
+        ssn:deployedSystem      installatie:EX_INST_001 ,
+                                installatie:EX_INST_002 ,
+                                installatie:EX_INST_003 .
+
+exploitatie:EX_EXPL_002
+        a                       riepr:Exploitatie ;
+        rdfs:label              "Grondstoffenverwerking exploitatie 2023"@nl ;
+        rdfs:comment            "Exploitatie van het grondstoffenverwerkingsproces op de nevenlocatie in Gent."@nl ;
+        dct:created             "2023-04-01T08:00:00Z"^^xsd:dateTime ;
+        dct:issued              "2023-04-01"^^xsd:date ;
+        dct:modified            "2024-09-15T14:00:00Z"^^xsd:dateTime ;
+        adms:identifier         [ a                  adms:Identifier ;
+                                  skos:notation      "EX_EXPL_002" ;
+                                  adms:schemeAgency  "RIEPR"
+                                ] ;
+        adms:status             riepr:Actief ;
+        prov:wasRevisionOf      exploitatie:EX_EXPL_001 ;
+        ssn:deployedOnPlatform  exploitatielocatie:EX_LOC_002 ;
+        ssn:implements          proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
+
+## =============================================================================
+## PROCESSEN  (riepr:Proces)
+## =============================================================================
+
+## Hoofdproces — staalproductie 2020
+proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020
+        a             riepr:Proces ;
+        rdfs:label    "Staalproductieproces van Staalfabriek NV op 2020"@nl ;
+        rdfs:comment  "Het volledige staalproductieproces inclusief de stroomboogoven, argon-zuurstofontkoling en decarburisatie."@nl ;
+        dct:created   "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued    "2020-07-30"^^xsd:date ;
+        dct:modified  "2024-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:valid     "2030-12-31"^^xsd:date ;
+        adms:status   riepr:Actief .
+
+## Processtap 1 — toevoeging grondstoffen
+proces:0400123123_6851234567_ACTIVITEIT_1_0001
+        a                   riepr:Proces ;
+        rdfs:label          "Toevoeging van grondstoffen"@nl ;
+        rdfs:comment        "Voorbereiding en toevoeging van ijzererts en schroot als grondstoffen voor de stroomboogoven."@nl ;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued          "2020-07-30"^^xsd:date ;
+        dct:modified        "2024-01-01T00:00:00Z"^^xsd:dateTime ;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 ;
+        pplan:hasInputVar   var:ijzererts ;
+        pplan:hasOutputVar  var:grondstoffen_mix ;
+        adms:status         riepr:Actief .
+
+## Processtap 4 — staalproductie in stroomboogoven
+proces:0400123123_6851234567_ACTIVITEIT_1_0004
+        a                   riepr:Proces ;
+        rdfs:label          "Staalproductie in stroomboogoven"@nl ;
+        rdfs:comment        "Smeltproces van schroot en grondstoffen in de elektrische stroomboogoven tot vloeibaar staal."@nl ;
+        dct:created         "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued          "2020-07-30"^^xsd:date ;
+        dct:modified        "2024-01-01T00:00:00Z"^^xsd:dateTime ;
+        pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 ;
+        pplan:isPrecededBy  proces:0400123123_6851234567_ACTIVITEIT_1_0001 ;
+        pplan:hasInputVar   var:schroot ;
+        pplan:hasOutputVar  var:vloeibaar_staal ;
+        adms:status         riepr:Actief ;
+        riepr:rubriek       rubriek:29.1.1 ,
+                            rubriek:5.2.1 .
+
+
+## =============================================================================
+## PROCESVARIABELEN  (riepr:ProcesVariabele / pplan:Variable)
+## =============================================================================
+
+var:ijzererts
+        a           riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label  "IJzererts"@nl .
+
+var:schroot
+        a           riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label  "Schroot"@nl .
+
+var:grondstoffen_mix
+        a           riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label  "Grondstoffen mix"@nl .
+
+var:vloeibaar_staal
+        a           riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label  "Vloeibaar staal"@nl .
+
+var:rookgas
+        a             riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label    "Rookgas"@nl ;
+        qudt:hasUnit  unit:KiloGM-PER-HR .
+
+var:gedec_staal
+        a             riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label    "Gedecarboniseerd staal"@nl ;
+        qudt:hasUnit  unit:TON .
+
+
+## =============================================================================
+## RUBRIEKEN  (riepr:Rubriek)
+## =============================================================================
+
+rubriek:29.1.1
+        a                riepr:Rubriek ;
+        skos:notation    "29.1.1" ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriektype/vlarem> ;
+        skos:definition  "Smelten van metalen: installaties voor het smelten van ferrometalen met een productiecapaciteit van meer dan 20 ton per dag."@nl .
+
+rubriek:29.2.1
+        a                riepr:Rubriek ;
+        skos:notation    "29.2.1" ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriektype/vlarem> ;
+        skos:definition  "Behandeling van metalen: installaties voor de behandeling van metaaloppervlakken door middel van elektrolytische of chemische procédés."@nl .
+
+rubriek:5.2.1
+        a                riepr:Rubriek ;
+        skos:notation    "5.2.1" ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriektype/vlarem> ;
+        skos:definition  "Verbrandingsinstallaties: stookinstallaties met een totaal nominaal thermisch ingangsvermogen van 50 MW of meer."@nl .
+
+
+## =============================================================================
+## INSTALLATIES  (riepr:Installatie)
+## =============================================================================
+installatie:EX_INST_001
+        a                riepr:Installatie , ssn:System ;
+        rdfs:label       "Stroomboogoven installatie"@nl ;
+        rdfs:comment     "Installatie voor de productie van vloeibaar staal via een elektrische stroomboogoven."@nl ;
+        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2020-07-30"^^xsd:date ;
+        dct:modified     "2024-01-15T08:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3500 51.2000)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief ;
+        ssn:hasProperty  se:EX_SE_002 .
+
+installatie:EX_INST_002
+        a                riepr:Installatie , ssn:System ;
+        rdfs:label       "Gieterij installatie"@nl ;
+        rdfs:comment     "Installatie voor het gieten en afkoelen van vloeibaar staal tot staalplaten."@nl ;
+        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2020-07-30"^^xsd:date ;
+        dct:modified     "2024-01-15T08:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3510 51.2005)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief .
+
+installatie:EX_INST_003
+        a             riepr:Installatie , ssn:System ;
+        rdfs:label    "VOD-installatie"@nl ;
+        rdfs:comment  "Vacuum Oxygen Decarburization installatie voor het verfijnen en decarburiseren van staal."@nl ;
+        dct:created   "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued    "2020-07-30"^^xsd:date ;
+        dct:modified  "2024-03-10T09:00:00Z"^^xsd:dateTime ;
+        dct:valid     "2030-12-31"^^xsd:date ;
+
+        adms:status   riepr:Actief .
+
+
+## =============================================================================
+## SYSTEEMEIGENSCHAPPEN  (riepr:SysteemEigenschap)
+## =============================================================================
+
+se:EX_SE_001
+        a             riepr:SysteemEigenschap ;
+        rdfs:label    "Debiet onttrekking"@nl ;
+        dct:type      <https://data.riepr.omgeving.vlaanderen.be/id/concept/systeemeigenschap/debiet> ;
+        rdfs:range    xsd:decimal ;
+        qudt:hasUnit  unit:M3-PER-HR .
+
+se:EX_SE_002
+        a             riepr:SysteemEigenschap ;
+        rdfs:label    "Temperatuur procesvloeistof"@nl ;
+        dct:type      <https://data.riepr.omgeving.vlaanderen.be/id/concept/systeemeigenschap/temperatuur> ;
+        rdfs:range    xsd:decimal ;
+        qudt:hasUnit  unit:DEG_C .
+
+se:EX_SE_003
+        a             riepr:SysteemEigenschap ;
+        rdfs:label    "Diepte onttrekkingsfilter"@nl ;
+        dct:type      <https://data.riepr.omgeving.vlaanderen.be/id/concept/systeemeigenschap/diepte> ;
+        rdfs:range    xsd:decimal ;
+        qudt:hasUnit  unit:M .
+
+
+## =============================================================================
+## EMISSIEPUNTEN  (riepr:Emissiepunt)
+## =============================================================================
+
+emissiepunt:0400123123_6851234567_0000001
+        a                riepr:Emissiepunt ;
+        rdfs:label       "Schoorsteen stroomboogoven"@nl ;
+        rdfs:comment     "Emissiepunt voor rookgassen afkomstig van de elektrische stroomboogoven."@nl ;
+        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2020-07-30"^^xsd:date ;
+        dct:modified     "2024-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3510 51.2010)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief .
+
+emissiepunt:0400123123_6851234567_0000002
+        a                riepr:Emissiepunt ;
+        rdfs:label       "Afzuigkanaal argon-zuurstofontkoling"@nl ;
+        rdfs:comment     "Emissiepunt voor gassen vrijgekomen tijdens het argon-zuurstofontkolingsproces (AOD)."@nl ;
+        dct:created      "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2020-07-30"^^xsd:date ;
+        dct:modified     "2024-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3515 51.2012)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief .
+
+emissiepunt:0400123123_6851234567_0000003
+        a                riepr:Emissiepunt ;
+        rdfs:label       "Schoorsteen decarburisatie-installatie"@nl ;
+        rdfs:comment     "Emissiepunt voor rookgassen van de decarburisatie-installatie. Buiten gebruik gesteld in 2020."@nl ;
+        dct:created      "1999-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:issued       "1999-01-01"^^xsd:date ;
+        dct:modified     "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:valid        "2020-07-30"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3520 51.2005)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Inactief .
+
+
+## =============================================================================
+## ABSTRACT EMISSIEPUNT  (riepr:AbstractEmissiepunt)
+## =============================================================================
+
+aep:EX_AEP_001
+        a             riepr:AbstractEmissiepunt ;
+        rdfs:label    "Abstract emissiepunt staalproductie"@nl ;
+        rdfs:comment  "Geaggregeerd emissiepunt voor alle rookgasemissies van het staalproductieproces."@nl ;
+        dct:created   "2020-07-30T10:00:00Z"^^xsd:dateTime ;
+        dct:issued    "2020-07-30"^^xsd:date ;
+        dct:modified  "2024-01-10T14:30:00Z"^^xsd:dateTime ;
+        adms:status   riepr:Actief .
+
+
+## =============================================================================
+## MEETPUNTEN  (riepr:Meetpunt)
+## =============================================================================
+
+meetpunt:EX_MP_001
+        a                riepr:Meetpunt ;
+        rdfs:label       "Meetpunt Schoorsteen 1"@nl ;
+        dct:created      "2022-01-15T08:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2022-01-15"^^xsd:date ;
+        dct:modified     "2024-06-01T10:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2026-12-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(4.4025 51.2194)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Actief .
+
+meetpunt:EX_MP_002
+        a                riepr:Meetpunt ;
+        rdfs:label       "Meetpunt Afvoerkanaal Noord"@nl ;
+        dct:created      "2021-03-10T09:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2021-03-10"^^xsd:date ;
+        dct:modified     "2023-11-20T14:15:00Z"^^xsd:dateTime ;
+        dct:valid        "2025-12-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(4.4120 51.2250)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Actief .
+
+
+## =============================================================================
+## MEETINSTRUMENTEN  (riepr:MeetInstrument)
+## =============================================================================
+
+meetinstrument:EX_MI_001
+        a                riepr:MeetInstrument ;
+        rdfs:label       "Debietmeter 1"@nl ;
+        rdfs:comment     "Elektromagnetische debietmeter voor grondwateronttrekking op put 1."@nl ;
+        dct:created      "2022-03-15T09:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2022-03-15"^^xsd:date ;
+        dct:modified     "2024-01-10T14:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(3.72345 51.05123)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Actief .
+
+meetinstrument:EX_MI_002
+        a                riepr:MeetInstrument ;
+        rdfs:label       "Druksensor 1"@nl ;
+        rdfs:comment     "Piezometrische druksensor voor grondwaterpeilmeting op meetpunt 2."@nl ;
+        dct:created      "2019-06-01T08:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2019-06-01"^^xsd:date ;
+        dct:modified     "2023-11-20T11:15:00Z"^^xsd:dateTime ;
+        dct:valid        "2025-05-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(3.74812 51.04867)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Inactief .
+
+
+## =============================================================================
+## ONTTREKKINGSPUNTEN  (riepr:Onttrekkingspunt)
+## =============================================================================
+onttrekkingspunt:EX_OTP_001
+        a                riepr:Onttrekkingspunt , ssn:System ;
+        rdfs:label       "Onttrekkingspunt 1"@nl ;
+        dbo:depth        32.5 ;
+        dct:created      "2022-03-15T09:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2022-03-15"^^xsd:date ;
+        dct:modified     "2024-01-10T14:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(3.72345 51.05123)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Actief ;
+        ssn:hasProperty  se:EX_SE_001 ,
+                         se:EX_SE_003 ;
+        ssn:hasSubSystem filter:EX_FILT_001 .
+
+onttrekkingspunt:EX_OTP_002
+        a                riepr:Onttrekkingspunt , ssn:System ;
+        rdfs:label       "Onttrekkingspunt 2"@nl ;
+        dbo:depth        18.0 ;
+        dct:created      "2019-06-01T08:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2019-06-01"^^xsd:date ;
+        dct:modified     "2023-11-20T11:15:00Z"^^xsd:dateTime ;
+        dct:valid        "2025-05-31"^^xsd:date ;
+        geo:hasGeometry  [ a          geo:Geometry ;
+                           geo:asWKT  "POINT(3.74812 51.04867)"^^geo:wktLiteral
+                         ] ;
+        adms:status      riepr:Inactief ;
+
+        ssn:hasSubSystem filter:EX_FILT_002 .
+
+
+## =============================================================================
+## FILTERS  (riepr:Filter)
+## =============================================================================
+
+filter:EX_FILT_001
+        a                riepr:Filter , ssn:System ;
+        rdfs:label       "Filter 1 - Onttrekkingspunt 1"@nl ;
+        rdfs:comment     "Filterelement voor de onttrekking van grondwater via onttrekkingspunt 1. Buisfilter op diepte 28-32 m."@nl ;
+        dct:created      "2022-03-15T09:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2022-03-15"^^xsd:date ;
+        dct:modified     "2024-01-10T14:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3515 51.2010)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief .
+
+filter:EX_FILT_002
+        a                riepr:Filter , ssn:System ;
+        rdfs:label       "Filter 2 - Onttrekkingspunt 2"@nl ;
+        rdfs:comment     "Filterelement voor de onttrekking van grondwater via onttrekkingspunt 2. Buisfilter op diepte 20-25 m."@nl ;
+        dct:created      "2022-03-15T09:00:00Z"^^xsd:dateTime ;
+        dct:issued       "2022-03-15"^^xsd:date ;
+        dct:modified     "2024-01-10T14:30:00Z"^^xsd:dateTime ;
+        dct:valid        "2030-12-31"^^xsd:date ;
+        geo:hasGeometry  [ geo:asWKT  "POINT(4.3520 51.2015)"^^geo:wktLiteral ] ;
+        adms:status      riepr:Actief .
+
+
+## =============================================================================
+## AANGIFTE & STUKKEN  (riepr:Aangifte / dossier:Stuk)
+## =============================================================================
+
+<https://data.riepr.omgeving.vlaanderen.be/id/aangifte/EX_ANG_001>
+        a                     riepr:Aangifte ;
+        rdfs:label            "Jaarlijkse milieu-aangifte 2024"@nl ;
+        dct:created           "2025-01-15T00:00:00Z"^^xsd:dateTime ;
+        dct:issued            "2025-01-15"^^xsd:date ;
+        prov:wasAttributedTo  exploitant:EX_EXP_001 ;
+        prov:hadPart          stuk:EX_STUK_001 .
+
+stuk:EX_STUK_001
+        a            dossier:Stuk ;
+        rdfs:label   "Emissierapportage 2024"@nl ;
+        dct:created  "2025-01-15T00:00:00Z"^^xsd:dateTime .
+
+
+## =============================================================================
+## PROCEDURES
+## =============================================================================
+
+## --- EmissieProcedures  (riepr:EmissieProcedure) ---
+
+emissieprocedure:EX_EMISPROC_001
+        a               riepr:EmissieProcedure ;
+        rdfs:label      "Continue emissiemeting via CEMS"@nl ;
+        rdfs:comment    "Procedure voor continue automatische emissiemeting via een Continuous Emission Monitoring System (CEMS). Van toepassing op grote stookinstallaties en procesovens met continue uitstoot van SO₂, NOₓ en stof."@nl ;
+        dct:identifier  "EMISPROC-CEMS-001" ;
+        dct:source      <https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32010L0075> .
+
+emissieprocedure:EX_EMISPROC_002
+        a               riepr:EmissieProcedure ;
+        rdfs:label      "Periodieke emissiemeting via monsterneming"@nl ;
+        rdfs:comment    "Procedure voor periodieke emissiemeting door het nemen van representatieve monsters op het emissiepunt conform EN 15259. Wordt minimaal jaarlijks uitgevoerd voor niet-continue emissiebronnen."@nl ;
+        dct:identifier  "EMISPROC-PERIOD-002" ;
+        dct:source      <https://www.iso.org/standard/57758.html> .
+
+## --- VerwerkingProcedures  (riepr:VerwerkingProcedure) ---
+
+verwerkingprocedure:EX_VWKPROC_001
+        a               riepr:VerwerkingProcedure ;
+        rdfs:label      "Smelten van staal in stroomboogoven"@nl ;
+        rdfs:comment    "Procedure voor het smelten van schroot en grondstoffen tot vloeibaar staal via een elektrische stroomboogoven. Omvat toevoeging van grondstoffen, verhitting en afgassing."@nl ;
+        dct:identifier  "PROC-EAF-001" .
+
+verwerkingprocedure:EX_VWKPROC_002
+        a               riepr:VerwerkingProcedure ;
+        rdfs:label      "Decarburisatie van staal"@nl ;
+        rdfs:comment    "Procedure voor het verwijderen van koolstof uit vloeibaar staal via argon-zuurstofontkoling (AOD) of vacuüm-zuurstofdecarburisatie (VOD). Resulteert in geraffineerd staal met laag koolstofgehalte."@nl ;
+        dct:identifier  "PROC-DECARB-001" .
+
+## --- MeetProcedures  (riepr:MeetProcedure) ---
+
+meetprocedure:EX_MEETPROC_001
+        a               riepr:MeetProcedure ;
+        rdfs:label      "Grondwaterpeilmeting via piezometer"@nl ;
+        rdfs:comment    "Procedure voor het meten van het grondwaterpeil via een piezometrische druksensor op het onttrekkingspunt. Metingen worden om het uur geregistreerd en opgeslagen in het centrale meetsysteem."@nl ;
+        dct:identifier  "NBN-ISO-21413:2005" ;
+        dct:type        <https://data.riepr.omgeving.vlaanderen.be/id/concept/meetproceduretype/automatisch> .
+
+meetprocedure:EX_MEETPROC_002
+        a               riepr:MeetProcedure ;
+        rdfs:label      "Luchtkwaliteitsmeting continue emissieregistratie"@nl ;
+        rdfs:comment    "Continue meting van luchtemissies (stof, NOx, SO2) via gecalibreerde sensoren op het emissiepunt. Procedure conform Vlarem II bijlage 4.4.2 voor continue emissiemeetsystemen (CEMS)."@nl ;
+        dct:identifier  "EN-14181:2014" ;
+        dct:type        <https://data.riepr.omgeving.vlaanderen.be/id/concept/meetproceduretype/automatisch> .
+
+## --- OnttrekkingProcedures  (riepr:OnttrekkingProcedure) ---
+
+onttrekkingprocedure:EX_OTKPROC_001
+        a               riepr:OnttrekkingProcedure ;
+        rdfs:label      "Grondwateronttrekking via pompput"@nl ;
+        rdfs:comment    "Procedure voor de onttrekking van grondwater via een verticale pompput met buisfilter op diepte 28-32 m. De pomp werkt continu met een debiet van maximaal 5 m³/u."@nl ;
+        dct:identifier  "PROC-GW-2022-001" .
+
+onttrekkingprocedure:EX_OTKPROC_002
+        a               riepr:OnttrekkingProcedure ;
+        rdfs:label      "Oppervlaktewateronttrekking via inlaatwerk"@nl ;
+        rdfs:comment    "Procedure voor de onttrekking van oppervlaktewater via een vast inlaatwerk in het kanaal. Onttrekking is beperkt tot perioden buiten laagwaterstand conform vergunning."@nl ;
+        dct:identifier  "PROC-OW-2021-003" .
+
+## --- TransportProcedures  (riepr:TransportProcedure) ---
+
+transportprocedure:EX_TRSPROC_001
+        a               riepr:TransportProcedure ;
+        rdfs:label      "Overbrenging vloeibaar staal via gietpan"@nl ;
+        rdfs:comment    "Procedure voor het transporteren van vloeibaar staal van de stroomboogoven naar de argon-zuurstofontkoling via een gietpan. Omvat veiligheidsprotocollen voor het hanteren van vloeibaar metaal bij hoge temperaturen."@nl ;
+        dct:identifier  "TRSPROC-GIETPAN-001" .
+
+transportprocedure:EX_TRSPROC_002
+        a               riepr:TransportProcedure ;
+        rdfs:label      "Aanvoer van grondstoffen via transportband"@nl ;
+        rdfs:comment    "Procedure voor de geautomatiseerde aanvoer van schroot en andere grondstoffen via een transportband naar de opslagbunker van de stroomboogoven. Bevat richtlijnen voor gewichtsregistratie en kwaliteitscontrole van de invoerstroom."@nl ;
+        dct:identifier  "TRSPROC-TBAND-002" .
