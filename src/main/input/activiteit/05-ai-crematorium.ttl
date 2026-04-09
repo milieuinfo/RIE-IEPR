@@ -1,0 +1,558 @@
+@prefix :        <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+@prefix adms:    <http://www.w3.org/ns/adms#> .
+@prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix dossier: <https://data.vlaanderen.be/ns/dossier#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix locn:    <http://www.w3.org/ns/locn#> .
+@prefix ogc:     <http://www.opengis.net/ont/geosparql#> .
+@prefix org:     <http://www.w3.org/ns/org#> .
+@prefix pplan:   <http://purl.org/net/p-plan#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa:    <http://www.w3.org/ns/sosa/> .
+@prefix ssn:     <http://www.w3.org/ns/ssn/> .
+@prefix unit:    <http://qudt.org/vocab/unit/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-4/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen crematieoven 4"@nl ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen> ;
+        qudt:unit   unit:MegaW ;
+        qudt:value  0.6 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-1/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen crematieoven 1"@nl ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen> ;
+        qudt:unit   unit:MegaW ;
+        qudt:value  0.6 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4/diameter>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Diameter schoorsteen 4" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/diameter> ;
+        qudt:unit   unit:M ;
+        qudt:value  "0.35" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-2>
+        a                :Rubriek ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriek-type/vlarem> ;
+        skos:definition  "Directe stookinstallaties verbonden aan crematieovens met een geïnstalleerd thermisch vermogen van 0,6 MW"@nl ;
+        skos:notation    "43.2" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/aardgas-verbruik>
+        a                   pplan:Variable , :ProcesVariabele ;
+        rdfs:label          "Aardgas verbruik"@nl ;
+        dct:type            <https://data.riepr.omgeving.vlaanderen.be/id/concept/procesvariabele-type/brandstof> ;
+        pplan:isInputVarOf  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-activiteit> ;
+        qudt:hasUnit        unit:M3 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/grondwaterput-1>
+        a                 ssn:System , :Onttrekkingspunt ;
+        rdfs:label        "Grondwaterput 1 - Koeling crematorium"@nl ;
+        dct:created       "2022-01-15T09:00:00"^^xsd:dateTime ;
+        dct:issued        "2022-01-15"^^xsd:date ;
+        dct:modified      "2024-03-10T14:30:00"^^xsd:dateTime ;
+        ogc:hasGeometry   [ a          ogc:Geometry ;
+                            ogc:asWKT  "POINT(717813 678859)"^^ogc:wktLiteral
+                          ] ;
+        adms:status       <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/filter/grondwaterfilter-1> ;
+        ssn:implements    <https://data.riepr.omgeving.vlaanderen.be/id/procedure/grondwateronttrekking-procedure> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/proces/rookgas-transport>
+        a                   :Proces ;
+        rdfs:label          "Transport rookgassen via schoorsteen"@nl ;
+        dct:created         "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued          "2002-01-01"^^xsd:date ;
+        dct:modified        "2021-09-01T00:00:00"^^xsd:dateTime ;
+        dct:type            <https://data.riepr.omgeving.vlaanderen.be/id/procedure/rookgas-transport-procedure> ;
+        pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/rookgas-uitstoot> ;
+        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces> ;
+        adms:status         <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/geometry/crematoria-1>
+        a          ogc:Geometry ;
+        ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717815.118 678854.037)"^^ogc:wktLiteral .
+<https://data.riepr.omgeving.vlaanderen.be/id/filter/grondwaterfilter-1>
+        a             :Filter , ssn:System ;
+        a             :Filter ;
+        rdfs:label    "Grondwaterfilter 1"@nl ;
+        dct:created   "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued    "2002-01-01"^^xsd:date ;
+        dct:modified  "2002-01-01T00:00:00"^^xsd:dateTime ;
+        adms:status   <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procedure/grondwateronttrekking-procedure>
+        a                :OnttrekkingProcedure , sosa:Procedure ;
+        rdfs:label       "Grondwateronttrekkingsprocedure"@nl ;
+        skos:definition  "Procedure voor de gecontroleerde onttrekking van grondwater via de grondwaterput conform milieuvergunning"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-3>
+        a          ogc:Geometry ;
+        ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717808.117 678858.536)" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen>
+        rdfs:label  "Geïnstalleerd vermogen"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/adres/crematoria-1>
+        a                  locn:Address ;
+        locn:adminUnitL2   "Vlaanderen"@nl ;
+        locn:postCode      "9000" ;
+        locn:thoroughfare  "Crematoriumstraat"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-1>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Crematieoven 1 van het crematorium"@nl ;
+        rdfs:label       "Crematieoven 1"@nl ;
+        dct:created      "2021-08-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2021-08-01"^^xsd:date ;
+        dct:modified     "2021-08-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-1/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-2>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Centrale verwarming 2 van het crematorium"@nl ;
+        rdfs:label       "Centrale verwarming 2"@nl ;
+        dct:created      "2014-08-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2014-08-01"^^xsd:date ;
+        dct:modified     "2014-08-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-2/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2>
+        a                :Emissiepunt ;
+        rdfs:label       "Schoorsteen 2"@nl ;
+        dct:created      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2002-01-01"^^xsd:date ;
+        dct:modified     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry  <https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-2> ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2/hoogte> , <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2/diameter> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik>
+        a           adms:Status ;
+        rdfs:label  "In gebruik"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/warmte-output>
+        a                   pplan:Variable , :ProcesVariabele ;
+        rdfs:label          "Warmteproductie Centrale verwarming"@nl ;
+        dct:type            <https://data.riepr.omgeving.vlaanderen.be/id/concept/procesvariabele-type/energie> ;
+        pplan:isInputVarOf  <https://data.riepr.omgeving.vlaanderen.be/id/proces/verwarming-activiteit> ;
+        qudt:hasUnit        unit:MegaW ;
+        qudt:numericValue   0.085 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4/hoogte>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Hoogte schoorsteen 4" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/hoogte> ;
+        qudt:unit   unit:M ;
+        qudt:value  "6" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-1>
+        a                :Rubriek ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriek-type/vlarem> ;
+        skos:definition  "Crematoria"@nl ;
+        skos:notation    "43.1" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procedure/crematie-verwerking-procedure>
+        a                :VerwerkingProcedure , sosa:Procedure ;
+        rdfs:label       "Verwerkingsprocedure crematoria"@nl ;
+        skos:definition  "Procedure voor het verwerken van resten na crematie conform wettelijke vereisten"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/meetpunt-schoorsteen-2>
+        a                 ssn:System , :Meetpunt ;
+        rdfs:label        "Meetpunt Schoorsteen 2"@nl ;
+        dct:created       "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued        "2002-01-01"^^xsd:date ;
+        dct:modified      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry   [ a          ogc:Geometry ;
+                            ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717817.118 678848.537)"^^ogc:wktLiteral
+                          ] ;
+        adms:status       <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/emissiemeter-schoorsteen-2> .
+<https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/crematoria-exploitatie-1>
+        a                       :Exploitatie , ssn:Deployment ;
+        rdfs:label              "Exploitatie Crematoria"@nl ;
+        dct:created             "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued              "2002-01-01"^^xsd:date ;
+        dct:modified            "2021-09-01T00:00:00"^^xsd:dateTime ;
+        adms:status             <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:deployedOnPlatform  <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/crematoria-1> ;
+        ssn:deployedSystem      <https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-2> , <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-4> , <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/meetpunt-schoorsteen-1> , <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-1> , <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/meetpunt-schoorsteen-2> , <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-2> , <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-3> , <https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-1> ;
+        ssn:implements          <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces> ;
+
+        ssn:implements          <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3/diameter>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Diameter schoorsteen 3" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/diameter> ;
+        qudt:unit   unit:M ;
+        qudt:value  "0.35" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/aangifte/jaarrapport-2021>
+        a             :Aangifte ;
+        rdfs:label    "Jaarlijkse emissieangifte 2021 - Crematoria"@nl ;
+        dct:created   "2022-01-15T00:00:00"^^xsd:dateTime ;
+        dct:issued    "2022-01-15"^^xsd:date ;
+        prov:hadPart  <https://data.riepr.omgeving.vlaanderen.be/id/stuk/meetrapport-2021> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-2>
+        a          ogc:Geometry ;
+        ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717817.118 678848.537)" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/proces/verwarming-activiteit>
+        a                   :Proces ;
+        rdfs:comment        "Verwarmingsproces via centrale verwarmingsinstallaties (Centrale verwarming 1-2)."@nl ;
+        rdfs:label          "Verwarming Activiteit"@nl ;
+        dct:created         "2024-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued          "2024-01-01"^^xsd:date ;
+        dct:modified        "2024-01-01T00:00:00"^^xsd:dateTime ;
+        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-activiteit> ;
+        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces> ;
+        adms:status         <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        :rubriek            <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-3> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/rookgas-uitstoot>
+        a                   pplan:Variable , :ProcesVariabele ;
+        rdfs:label          "Rookgas uitstoot Crematieovens"@nl ;
+        dct:type            <https://data.riepr.omgeving.vlaanderen.be/id/concept/procesvariabele-type/emissie> ;
+        pplan:isInputVarOf  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-activiteit> ;
+        qudt:hasUnit        unit:MiLiGM-PER-NM3 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-2/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen centrale verwarming 2"@nl ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen> ;
+        qudt:unit   unit:MegaW ;
+        qudt:value  0.085 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-1>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Centrale verwarming 1 van het crematorium"@nl ;
+        rdfs:label       "Centrale verwarming 1"@nl ;
+        dct:created      "2016-08-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2016-08-01"^^xsd:date ;
+        dct:modified     "2016-08-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-1/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1>
+        a                :Emissiepunt ;
+        rdfs:label       "Schoorsteen 1"@nl ;
+        dct:created      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:modified     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry  <https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-1> ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1/hoogte> , <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1/diameter> .
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+
+<https://data.riepr.omgeving.vlaanderen.be/id/exploitant/crematoria-beheerder>
+        a                   :Exploitant ;
+        rdfs:label          "Beheerder Crematoria"@nl ;
+        dct:created         "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued          "2002-01-01"^^xsd:date ;
+        dct:modified        "2021-09-01T00:00:00"^^xsd:dateTime ;
+        locn:address        [ locn:fullAddress "Marktstraat 1, 9000 Gent, België"@nl ] ;
+        org:classification  <https://data.riepr.omgeving.vlaanderen.be/id/concept/nace/96030> ;
+        org:hasMember       <https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/contactpersoon-1> .
+
+
+<https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/meetpunt-schoorsteen-1>
+        a                 ssn:System , :Meetpunt ;
+        rdfs:label        "Meetpunt Schoorsteen 1"@nl ;
+        dct:created       "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued        "2002-01-01"^^xsd:date ;
+        dct:modified      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry   [ a          ogc:Geometry ;
+                            ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717813.117 678859.536)"^^ogc:wktLiteral
+                          ] ;
+        adms:status       <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/emissiemeter-schoorsteen-1> .
+
+xsd:decimal  a      rdfs:Datatype ;
+        rdfs:label  "decimal"@en .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procedure/emissiemeting-procedure>
+        a                :MeetProcedure , sosa:Procedure ;
+        rdfs:label       "Emissiemetingprocedure schoorstenen"@nl ;
+        skos:definition  "Jaarlijkse meetprocedure voor luchtemissies via de schoorstenen van crematieovens conform NBN-normen"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-1>
+        a          ogc:Geometry ;
+        ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717813.117 678859.536)" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procedure/rookgas-transport-procedure>
+        a                :TransportProcedure , sosa:Procedure ;
+        rdfs:label       "Transportprocedure rookgassen via schoorsteen"@nl ;
+        skos:definition  "Procedure voor het afvoeren van rookgassen van crematieovens via de schoorstenen naar de buitenlucht"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/procedure/crematie-emissie-procedure>
+        a                :EmissieProcedure , sosa:Procedure ;
+        rdfs:label       "Emissiemeetprocedure voor crematieovens"@nl ;
+        skos:definition  "Standaardprocedure voor het meten van emissies via schoorstenen van crematieovens"@nl .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-3/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen crematieoven 3"@nl ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen> ;
+        qudt:unit   unit:MegaW ;
+        qudt:value  0.6 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2/diameter>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Diameter schoorsteen 2" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/diameter> ;
+        qudt:unit   unit:M ;
+        qudt:value  "0.35" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1/hoogte>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Hoogte schoorsteen 1" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/hoogte> ;
+        qudt:unit   unit:M ;
+        qudt:value  "6" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-1/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen centrale verwarming 1"@nl ;
+        rdfs:range  xsd:decimal ;
+
+        a               :MeetInstrument , ssn:System ;
+        qudt:value  0.085 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/emissiemeter-schoorsteen-2>
+        a               :MeetInstrument ;
+        rdfs:label      "Emissiemeter Schoorsteen 2"@nl ;
+        dct:created     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued      "2002-01-01"^^xsd:date ;
+        dct:modified    "2002-01-01T00:00:00"^^xsd:dateTime ;
+        adms:status     <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:implements  <https://data.riepr.omgeving.vlaanderen.be/id/procedure/emissiemeting-procedure> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-4>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Crematieoven 4 van het crematorium"@nl ;
+        rdfs:label       "Crematieoven 4"@nl ;
+        dct:created      "2011-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2011-01-01"^^xsd:date ;
+        dct:modified     "2011-01-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-4/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces>
+        a             :Proces ;
+        rdfs:comment  "Overkoepelend proces voor alle crematie-activiteiten in het crematorium."@nl ;
+        rdfs:label    "Crematie Hoofdproces"@nl ;
+        dct:created   "2024-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued    "2024-01-01"^^xsd:date ;
+        dct:modified  "2024-01-01T00:00:00"^^xsd:dateTime ;
+        dct:type      <https://data.riepr.omgeving.vlaanderen.be/id/procedure/crematie-verwerking-procedure> ;
+        adms:status   <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/abstractemissiepunt/diffuse-emissie-1>
+        a             :AbstractEmissiepunt ;
+        rdfs:label    "Diffuse emissie crematoria"@nl ;
+        dct:created   "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued    "2002-01-01"^^xsd:date ;
+        dct:modified  "2021-09-01T00:00:00"^^xsd:dateTime ;
+        adms:status   <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/crematoria-1>
+        a                     :Exploitatielocatie ;
+        rdfs:comment          "Fysieke locatie van het crematoria met twee schoorstenen."@nl ;
+        rdfs:label            "Crematoria - Exploitatielocatie"@nl ;
+        dct:created           "2020-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued            "2020-01-01"^^xsd:date ;
+        dct:modified          "2024-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry       <https://data.riepr.omgeving.vlaanderen.be/id/geometry/crematoria-1> ;
+        locn:address          <https://data.riepr.omgeving.vlaanderen.be/id/adres/crematoria-1> ;
+        prov:wasAttributedTo  <https://data.riepr.omgeving.vlaanderen.be/id/exploitant/crematoria-beheerder> ;
+        ssn:inDeployment      <https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/crematoria-exploitatie-1> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2/hoogte>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Hoogte schoorsteen 2" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/hoogte> ;
+        qudt:unit   unit:M ;
+        qudt:value  "6" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-2/vermogen>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Geïnstalleerd vermogen crematieoven 2"@nl ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/installatie/vermogen> ;
+        qudt:unit   unit:MegaW ;
+        qudt:value  0.6 .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-activiteit>
+        a                   :Proces ;
+        rdfs:comment        "Verbrandingsproces in de crematieovens (Crematieoven 1-4) met emissie via schoorstenen."@nl ;
+        rdfs:label          "Crematie Activiteit"@nl ;
+        dct:created         "2024-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued          "2024-01-01"^^xsd:date ;
+        dct:modified        "2024-01-01T00:00:00"^^xsd:dateTime ;
+        dct:type            <https://data.riepr.omgeving.vlaanderen.be/id/procedure/crematie-emissie-procedure> ;
+        pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/aardgas-verbruik> ;
+        pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/rookgas-uitstoot> ;
+        pplan:isPrecededBy  <https://data.riepr.omgeving.vlaanderen.be/id/proces/rookgas-transport> ;
+        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/crematie-hoofdproces> ;
+        adms:status         <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        :rubriek            <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-2> , <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-1> .
+<https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/emissiemeter-schoorsteen-1>
+        a               :MeetInstrument , ssn:System ;
+        a               :MeetInstrument ;
+        rdfs:label      "Emissiemeter Schoorsteen 1"@nl ;
+        dct:created     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued      "2002-01-01"^^xsd:date ;
+        dct:modified    "2002-01-01T00:00:00"^^xsd:dateTime ;
+        adms:status     <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:implements  <https://data.riepr.omgeving.vlaanderen.be/id/procedure/emissiemeting-procedure> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1/diameter>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Diameter schoorsteen 1" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/diameter> ;
+        qudt:unit   unit:M ;
+        qudt:value  "0.35" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-3>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Crematieoven 3 van het crematorium"@nl ;
+        rdfs:label       "Crematieoven 3"@nl ;
+        dct:created      "2002-08-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2002-08-01"^^xsd:date ;
+        dct:modified     "2002-08-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-3/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4>
+        a                :Emissiepunt ;
+        rdfs:label       "Schoorsteen 4"@nl ;
+        dct:created      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2002-01-01"^^xsd:date ;
+        dct:modified     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry  <https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-4> ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4/hoogte> , <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4/diameter> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/rubriek/vlarem-43-3>
+        a                :Rubriek ;
+        dct:type         <https://data.riepr.omgeving.vlaanderen.be/id/concept/rubriek-type/vlarem> ;
+        skos:definition  "Stookinstallaties voor ruimteverwarming met een geïnstalleerd thermisch vermogen van 0,085 MW"@nl ;
+        skos:notation    "43.3" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/stuk/meetrapport-2021>
+        a                dossier:Stuk ;
+        rdfs:label       "Meetrapport emissiemetingen 2021"@nl ;
+        dct:created      "2022-01-10T00:00:00"^^xsd:dateTime ;
+        dct:description  "Jaarlijks meetrapport voor emissies van de crematieovens en centrale verwarming"@nl ;
+        foaf:page        <https://crematoria.be/documenten/meetrapport-2021.pdf> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/contactpersoon-1>
+        a             :Contactpersoon ;
+        rdfs:label    "Jan De Smet - Verantwoordelijke"@nl ;
+        dct:created   "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued    "2002-01-01"^^xsd:date ;
+        dct:modified  "2021-09-01T00:00:00"^^xsd:dateTime ;
+        org:hasRole   "Milieucoördinator"@nl ;
+        foaf:mbox     "jan.desmet@crematoria.be" ;
+        foaf:name     "Jan De Smet" ;
+        foaf:phone    "+32 9 123 45 67" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-4>
+        a          ogc:Geometry ;
+        ogc:asWKT  "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717776.119 678847.532)" .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-2>
+        a                ssn:System , :Installatie ;
+        rdfs:comment     "Crematieoven 2 van het crematorium"@nl ;
+        rdfs:label       "Crematieoven 2"@nl ;
+        dct:created      "2021-09-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2021-09-01"^^xsd:date ;
+        dct:modified     "2021-09-01T00:00:00"^^xsd:dateTime ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-2/vermogen> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3>
+        a                :Emissiepunt ;
+        rdfs:label       "Schoorsteen 3"@nl ;
+        dct:created      "2002-01-01T00:00:00"^^xsd:dateTime ;
+        dct:issued       "2002-01-01"^^xsd:date ;
+        dct:modified     "2002-01-01T00:00:00"^^xsd:dateTime ;
+        ogc:hasGeometry  <https://data.riepr.omgeving.vlaanderen.be/id/geometry/schoorsteen-3> ;
+        adms:status      <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in-gebruik> ;
+        ssn:hasProperty  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3/hoogte> , <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3/diameter> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3/hoogte>
+        a           :SysteemEigenschap ;
+        rdfs:label  "Hoogte schoorsteen 3" ;
+        rdfs:range  xsd:decimal ;
+        dct:type    <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt/hoogte> ;
+        qudt:unit   unit:M ;
+        qudt:value  "6" .
+
+# ── Emissiepunt type: schoorsteen verticale uitstroom (use case requirement) ──
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1>
+        a         ssn:System ;
+        dct:type  <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt-type/schoorsteen-verticale-uitstroom> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2>
+        a         ssn:System ;
+        dct:type  <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt-type/schoorsteen-verticale-uitstroom> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3>
+        a         ssn:System ;
+        dct:type  <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt-type/schoorsteen-verticale-uitstroom> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4>
+        a         ssn:System ;
+        dct:type  <https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt-type/schoorsteen-verticale-uitstroom> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/concept/emissiepunt-type/schoorsteen-verticale-uitstroom>
+        rdfs:label  "Schoorsteen verticale uitstroom"@nl .
+
+# ── UIT-verbindingen: stookinstallatie → emissiepunt (use case §UIT) ──
+# Crematieoven 1 + 2 → Schoorsteen 1
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-1>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-2>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-1> .
+
+# Crematieoven 3 + 4 → Schoorsteen 2
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-3>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2> .
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/crematieoven-4>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-2> .
+
+# Centrale verwarming 1 → Schoorsteen 3
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-1>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-3> .
+
+# Centrale verwarming 2 → Schoorsteen 4
+
+<https://data.riepr.omgeving.vlaanderen.be/id/installatie/centrale-verwarming-2>
+        ssn:hasSubSystem  <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/schoorsteen-4> .
