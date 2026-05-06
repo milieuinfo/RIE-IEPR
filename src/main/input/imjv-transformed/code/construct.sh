@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function set_virtuoso_env {
+	ssh ${1} "sudo cat /etc/*/*bootstrap | grep virtuoso" > /tmp/${1}
+	. /tmp/${1}
+}
+
+function query {
+	curl -u ${virtuoso_rw_username}:${virtuoso_rw_password}\
+		--request POST "http://${1}:8080/sparql-auth?"\
+		--data 'format=text/turtle'\
+		--data-urlencode query@construct.rq \
+		--output '/tmp/mjv.ttl'
+	riot --formatted=turtle '/tmp/mjv.ttl' > '../mjv.ttl'
+}
+
+
+
+set_virtuoso_env virtuoso-imjv-pr-1.vm.cumuli.be
+query virtuoso-imjv-pr-1.vm.cumuli.be

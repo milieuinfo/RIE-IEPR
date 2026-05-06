@@ -1,0 +1,141 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX imjv: <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX : <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX qudt:   <http://qudt.org/schema/qudt/>
+PREFIX sdmxa: <http://purl.org/linked-data/sdmx/2009/attribute#>
+
+
+construct
+{
+    ?expl a :Exploitatielocatie ;
+        rdfs:label ?expl_label ;
+        adms:identifier ?id ;
+        geo:hasGeometry ?geometry ;
+        sosa:inDeployment ?exploitatiestaat .
+    ?exploitatiestaat a sosa:Deployment, :Exploitatie ;
+        rdfs:label ?exploitatiestaat_label ;
+        sosa:deployedAsset ?emissiepuntToestand ,  ?meetput , ?gekoppeldeActiviteit ;
+        sosa:deployedOnPlatform ?expl .
+    ?id a adms:Identifier ;
+        skos:notation ?vestigingsnummer .
+    ?geometry geo:asWKT ?wkt .
+    ?obs a sosa:Observation ;
+        sosa:hasFeatureOfInterest ?emissie ;
+        sosa:observedProperty ?substantie ;
+        sosa:hasResult ?result ;
+        rdfs:label ?obs_label ;
+        qb:dataSet ?dataset ;
+        sosa:usedProcedure ?procedure .
+    ?procedure a sosa:Procedure .
+
+    ?emissiepuntToestand a :Emissiepunt ;
+        prov:wasRevisionOf ?emissiepunt ;
+        ssn:hasDeployment ?exploitatiestaat ;
+        ssn:hasSubSystem ?meetput .
+
+    ?meetput a :Meetpunt ;
+        dct:type ?meetputType ;
+        ssn:hasDeployment ?exploitatiestaat .
+
+    ?gekoppeldeActiviteit a :Installatie ;
+        rdfs:label ?gekoppeldeActiviteit_label ;
+        ssn:hasSubSystem ?meetput, ?emissiepuntToestand .
+
+    ?emissie a :Emissie ;
+        sosa:madeBySystem ?gekoppeldeActiviteit, ?emissiepuntToestand .
+
+    ?substantie a sosa:Property .
+
+    ?result a sosa:Result ;
+        qudt:quantityValue?quantityValue .
+
+    ?quantityValue a qudt:QuantityValue ;
+                               qudt:numericValue ?hoeveelheid ;
+                               qudt:hasUnit ?unitMeasure .
+
+}
+where {
+    FILTER (STRSTARTS(STR(?vestnr), "http://data.kbodata.be/organisation"))
+    FILTER (?expl = <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>)
+    {
+
+        ?expl rdfs:seeAlso ?vestnr ;
+            rdfs:label ?expl_label ;
+            locn:geometry ?wkt .
+        ?exploitatiestaat dcterms:isVersionOf ?expl ;
+            rdfs:label ?exploitatiestaat_label ;
+            imjv:tijdsperiode "2021"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+        ?obs imjv:exploitatieToestand ?exploitatiestaat ;
+            qb:dataSet ?dataset ;
+            imjv:bepalingsMethode ?procedure ;
+            imjv:emissiepunt ?emissiepunt ;
+            imjv:emissiepuntToestand ?emissiepuntToestand .
+
+    } UNION {
+        ?expl rdfs:seeAlso ?vestnr ;
+            rdfs:label ?expl_label ;
+            locn:geometry ?wkt .
+        ?exploitatiestaat dcterms:isVersionOf ?expl ;
+            rdfs:label ?exploitatiestaat_label ;
+            imjv:tijdsperiode "2021"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+        ?obs imjv:exploitatieToestand ?exploitatiestaat ;
+            rdfs:label ?obs_label ;
+            qb:dataSet ?dataset ;
+            imjv:substantie ?substantie ;
+            sdmxa:unitMeasure ?unitMeasure ;
+            imjv:hoeveelheid ?hoeveelheid ;
+            imjv:bepalingsMethode ?procedure ;
+            imjv:emissiepunt ?emissiepunt ;
+            imjv:emissiepuntToestand ?emissiepuntToestand .
+        ?emissiepuntToestand imjv:meetputType ?meetputType ;
+            imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit.
+        ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label .
+    }
+
+
+    BIND(
+        IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")
+        )
+        AS ?meetput
+    )
+    BIND(
+        IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/emissie/")
+        )
+        AS ?emissie
+    )
+    BIND(
+        IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")
+        )
+        AS ?result
+    )
+    BIND(
+        IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")
+        )
+        AS ?quantityValue
+    )
+
+    BIND(
+        STRDT(
+            REPLACE(
+                REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""),
+                "_|#id",
+                ""
+            ),
+            :KboVestigingsnummer
+        )
+        AS ?vestigingsnummer
+    )
+    BIND (IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", ?vestigingsnummer)) as ?id)
+    BIND (IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", ?vestigingsnummer)) as ?geometry)
+}
