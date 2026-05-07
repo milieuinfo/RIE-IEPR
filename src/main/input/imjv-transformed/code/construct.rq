@@ -7,6 +7,7 @@ PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX imjv: <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
@@ -25,7 +26,7 @@ construct
         sosa:inDeployment ?exploitatiestaat .
     ?exploitatiestaat a sosa:Deployment, :Exploitatie ;
         rdfs:label ?exploitatiestaat_label ;
-        sosa:deployedAsset ?emissiepuntToestand ,  ?meetput , ?gekoppeldeActiviteit ;
+        sosa:deployedAsset ?emissiepuntToestand , ?meetput ;
         sosa:deployedOnPlatform ?expl .
     ?id a adms:Identifier ;
         skos:notation ?vestigingsnummer .
@@ -45,97 +46,154 @@ construct
         ssn:hasSubSystem ?meetput .
 
     ?meetput a :Meetpunt ;
-        dct:type ?meetputType ;
         ssn:hasDeployment ?exploitatiestaat .
 
-    ?gekoppeldeActiviteit a :Installatie ;
-        rdfs:label ?gekoppeldeActiviteit_label ;
-        ssn:hasSubSystem ?meetput, ?emissiepuntToestand .
-
     ?emissie a :Emissie ;
-        sosa:madeBySystem ?gekoppeldeActiviteit, ?emissiepuntToestand .
+        dct:type ?emissie_type ;
+        rdfs:label ?emissie_label ;
+        sosa:madeBySystem ?emissiepuntToestand .
 
     ?substantie a sosa:Property .
 
     ?result a sosa:Result ;
-        qudt:quantityValue?quantityValue .
+        qudt:quantityValue ?quantityValue .
 
     ?quantityValue a qudt:QuantityValue ;
-                               qudt:numericValue ?hoeveelheid ;
-                               qudt:hasUnit ?unitMeasure .
+        qudt:numericValue ?hoeveelheid ;
+        qudt:hasUnit ?unitMeasure .
+
+
+    ?concentratie a sosa:Observation ;
+        sosa:hasFeatureOfInterest ?emissie ;
+        sosa:observedProperty ?substantie ;
+        sosa:hasResult ?result_concentratie ;
+        rdfs:label ?concentratie_label ;
+        sosa:usedProcedure ?procedure .
+
+    ?result_concentratie a sosa:Result ;
+        qudt:quantityValue ?quantityValue_concentratie .
+
+    ?quantityValue_concentratie a qudt:QuantityValue ;
+        qudt:numericValue  ?hoeveelheid_concentratie  ;
+        qudt:hasUnit ?unitMeasure_concentratie.
+
+    ?debiet a sosa:Observation ;
+        sosa:hasFeatureOfInterest ?emissie ;
+        sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet>;
+        sosa:hasResult ?result_debiet ;
+        rdfs:label ?debiet_label ;
+        sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting>.
+
+    ?result_debiet a sosa:Result ;
+        qudt:quantityValue ?quantityValue_debiet .
+
+    ?quantityValue_debiet a qudt:QuantityValue ;
+        qudt:numericValue  ?hoeveelheid_debiet  ;
+        qudt:hasUnit ?unitMeasure_debiet .
+
+    ?emissieDuur a sosa:Observation ;
+        sosa:hasFeatureOfInterest ?emissie ;
+        sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur>;
+        sosa:hasResult ?result_emissieDuur;
+        rdfs:label ?emissieDuur_label ;
+        sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> .
+
+    ?result_emissieDuur a sosa:Result ;
+        qudt:quantityValue ?quantityValue_emissieDuur .
+
+    ?quantityValue_emissieDuur a qudt:QuantityValue ;
+        qudt:numericValue  ?hoeveelheid_emissieDuur  ;
+        qudt:hasUnit ?unitMeasure_emissieDuur .
+
+
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> a sosa:Procedure .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur> a sosa:Property .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet> a sosa:Property .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting> a sosa:Procedure .
 
 }
 where {
-    FILTER (STRSTARTS(STR(?vestnr), "http://data.kbodata.be/organisation"))
-    FILTER (?expl = <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>)
     {
-
-        ?expl rdfs:seeAlso ?vestnr ;
-            rdfs:label ?expl_label ;
-            locn:geometry ?wkt .
-        ?exploitatiestaat dcterms:isVersionOf ?expl ;
-            rdfs:label ?exploitatiestaat_label ;
-            imjv:tijdsperiode "2021"^^<http://www.w3.org/2001/XMLSchema#gYear> .
-        ?obs imjv:exploitatieToestand ?exploitatiestaat ;
-            qb:dataSet ?dataset ;
-            imjv:bepalingsMethode ?procedure ;
-            imjv:emissiepunt ?emissiepunt ;
-            imjv:emissiepuntToestand ?emissiepuntToestand .
-
-    } UNION {
-        ?expl rdfs:seeAlso ?vestnr ;
-            rdfs:label ?expl_label ;
-            locn:geometry ?wkt .
-        ?exploitatiestaat dcterms:isVersionOf ?expl ;
-            rdfs:label ?exploitatiestaat_label ;
-            imjv:tijdsperiode "2021"^^<http://www.w3.org/2001/XMLSchema#gYear> .
-        ?obs imjv:exploitatieToestand ?exploitatiestaat ;
-            rdfs:label ?obs_label ;
-            qb:dataSet ?dataset ;
-            imjv:substantie ?substantie ;
-            sdmxa:unitMeasure ?unitMeasure ;
-            imjv:hoeveelheid ?hoeveelheid ;
-            imjv:bepalingsMethode ?procedure ;
-            imjv:emissiepunt ?emissiepunt ;
-            imjv:emissiepuntToestand ?emissiepuntToestand .
-        ?emissiepuntToestand imjv:meetputType ?meetputType ;
-            imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit.
-        ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label .
+        SELECT ?obs ?expl ?exploitatiestaat ?emissiepuntToestand ?emissie ?emissie_label ?emissie_type ?debiet ?emissieDuur
+        WHERE {
+            VALUES ?expl {
+                <https://data.cbb.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
+            }
+            ?obs imjv:exploitatie ?expl ;
+                imjv:exploitatieToestand ?exploitatiestaat ;
+                imjv:emissiepuntToestand ?emissiepuntToestand ;
+                schema:about ?emissie .
+            FILTER (CONTAINS(STR(?obs), "/2021"))
+            ?emissie rdfs:label ?emissie_label ;
+                dct:type ?emissie_type ;
+                imjv:debiet ?debiet ;
+                imjv:emissieDuur ?emissieDuur .
+        }
     }
 
+    {
+        SELECT ?obs ?obs_label ?dataset ?substantie ?unitMeasure ?hoeveelheid ?procedure ?emissiepunt
+        WHERE {
+            ?obs rdfs:label ?obs_label ;
+                qb:dataSet ?dataset ;
+                imjv:substantie ?substantie ;
+                sdmxa:unitMeasure ?unitMeasure ;
+                imjv:hoeveelheid ?hoeveelheid ;
+                imjv:bepalingsMethode ?procedure ;
+                imjv:emissiepunt ?emissiepunt .
+        }
+    }
 
-    BIND(
-        IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")
-        )
-        AS ?meetput
-    )
-    BIND(
-        IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/emissie/")
-        )
-        AS ?emissie
-    )
-    BIND(
-        IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")
-        )
-        AS ?result
-    )
-    BIND(
-        IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")
-        )
-        AS ?quantityValue
-    )
+    OPTIONAL {
+        SELECT ?expl ?exploitatiestaat ?expl_label ?wkt ?vestnr ?exploitatiestaat_label
+        WHERE {
+            ?expl rdfs:seeAlso ?vestnr ;
+                rdfs:label ?expl_label ;
+                locn:geometry ?wkt .
+            FILTER (STRSTARTS(STR(?vestnr), "http://data.kbodata.be/organisation"))
+            ?exploitatiestaat dcterms:isVersionOf ?expl ;
+                rdfs:label ?exploitatiestaat_label .
+        }
+    }
 
-    BIND(
-        STRDT(
-            REPLACE(
-                REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""),
-                "_|#id",
-                ""
-            ),
-            :KboVestigingsnummer
-        )
-        AS ?vestigingsnummer
-    )
-    BIND (IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", ?vestigingsnummer)) as ?id)
-    BIND (IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", ?vestigingsnummer)) as ?geometry)
+    OPTIONAL {
+        SELECT ?obs ?concentratie ?concentratie_label ?unitMeasure_concentratie ?hoeveelheid_concentratie
+        WHERE {
+            ?obs imjv:concentratie ?concentratie .
+            ?concentratie rdfs:label ?concentratie_label ;
+                sdmxa:unitMeasure ?unitMeasure_concentratie ;
+                <http://www.w3.org/1999/02/22-rdf-syntax-ns#waarde> ?hoeveelheid_concentratie .
+        }
+    }
+
+    OPTIONAL {
+        SELECT ?debiet ?debiet_label ?unitMeasure_debiet ?hoeveelheid_debiet
+        WHERE {
+            ?debiet rdfs:label ?debiet_label ;
+                sdmxa:unitMeasure ?unitMeasure_debiet ;
+                <http://www.w3.org/1999/02/22-rdf-syntax-ns#waarde> ?hoeveelheid_debiet .
+        }
+    }
+
+    OPTIONAL {
+        SELECT ?emissieDuur ?emissieDuur_label ?unitMeasure_emissieDuur ?hoeveelheid_emissieDuur
+        WHERE {
+            ?emissieDuur rdfs:label ?emissieDuur_label ;
+                sdmxa:unitMeasure ?unitMeasure_emissieDuur ;
+                <http://www.w3.org/1999/02/22-rdf-syntax-ns#waarde> ?hoeveelheid_emissieDuur .
+        }
+    }
+
+    BIND(IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
+    BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result)
+    BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue)
+    BIND(IRI(REPLACE(STR(?concentratie), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result_concentratie)
+    BIND(IRI(REPLACE(STR(?concentratie), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue_concentratie)
+    BIND(IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result_debiet)
+    BIND(IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue_debiet)
+    BIND(IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result_emissieDuur)
+    BIND(IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue_emissieDuur)
+    BIND(STRDT(REPLACE(REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""), "_|#id", ""), :KboVestigingsnummer) AS ?vestigingsnummer)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", STR(?vestigingsnummer))) as ?id)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", STR(?vestigingsnummer))) as ?geometry)
 }
