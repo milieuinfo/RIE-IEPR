@@ -55,19 +55,21 @@ Hoofdproces (1)
 | `activiteit/1178` | ETSLIJN 1 etsafdeling | uitstoot lucht | `emissiepunt/.../2271` |
 | `activiteit/19105` | ETSLIJN 2 etsafdeling | uitstoot lucht | `emissiepunt/.../13005` |
 | `activiteit/13241` | VACUUMPOMPEN | uitstoot lucht | `emissiepunt/.../6295` |
-| `activiteit/323` | Vormen en bewerken van vlakglas | lozing water | `lozingspunt/.../2400007`, `lozingspunt/.../2400006` |
+| `activiteit/323` | Vormen en bewerken van vlakglas | lozing water | `lozingspunt/.../2400007`, `lozingspunt/.../2400006`, `lozingspunt/.../2400019`, `lozingspunt/.../9991095` |
 
 ### IRI-patroon
 
 ```
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021           # hoofdproces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323  # activiteits-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269   # uitstoot-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400006  # lozing-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater      # grondwaterproces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043747  # pompput-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_monitoring_peilput       # peilput-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas                          # procesvariabele
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021                        # hoofdproces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323              # activiteits-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269               # uitstoot-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400006              # lozing-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater                  # grondwaterproces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043747     # pompput-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_monitoring_peilput          # peilput-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas    # activiteitsspecifieke procesvariabele (lucht)
+https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater  # activiteitsspecifieke procesvariabele (water)
+https://data.riepr.omgeving.vlaanderen.be/id/stof/grondwater                                   # globale procesvariabele (grondwater)
 ```
 
 ---
@@ -94,9 +96,11 @@ https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas                       
 | `riepr:Proces` (hoofdproces) | 1 |
 | `riepr:Proces` (activiteits-sub-processen) | 9 |
 | `riepr:Proces` (uitstoot lucht) | 8 |
-| `riepr:Proces` (lozing water) | 2 |
+| `riepr:Proces` (lozing water) | 4 |
 | `riepr:Proces` (grondwater) | 1 |
 | `riepr:Proces` (pompput-onttrekking) | 5 |
 | `riepr:Proces` (peilput-monitoring) | 1 |
-| `riepr:ProcesVariabele` | 3 |
-| **Totaal subjects** | **30** |
+| `riepr:ProcesVariabele` (activiteitsspecifiek lucht) | 8 |
+| `riepr:ProcesVariabele` (activiteitsspecifiek water) | 1 |
+| `riepr:ProcesVariabele` (globaal grondwater) | 1 |
+| **Totaal subjects** | **39** |

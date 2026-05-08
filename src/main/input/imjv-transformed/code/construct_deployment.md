@@ -34,11 +34,13 @@ Virtuoso slaat de toestandsresources op als versies per jaar (patroon `/jaar/202
 | IMJV-klasse | Aantal (2021) | RIEPR-doelklasse |
 |---|---|---|
 | `imjv:EmissiepuntStaat` | 8 | `:Emissiepunt` |
-| `imjv:LozingspuntStaat` | 2 | `:Emissiepunt` |
+| `imjv:LozingspuntStaat` | 4 | `:Emissiepunt` |
 | `imjv:PompputStaat` | 5 | `:Onttrekkingspunt` |
 | `imjv:PeilputStaat` | 1 | `:Meetpunt` |
 | `imjv:PompfilterStaat` | 5 | `:Filter` |
 | `imjv:PeilfilterStaat` | 3 | `:Filter` |
+
+Twee lozingspunten (2400019 "OPGENOMEN KANAALWATER" en 9991095 "LP07 INDUSTRIEEL COATER") hebben geen geometrie in IMJV. Ze verschijnen wel als `ssn:deployedSystem` maar krijgen geen `geo:hasGeometry`-triple.
 
 De CBB-URI is de ankervariabele voor alle lookups (`imjv:exploitatie ?expl`).
 
@@ -80,18 +82,20 @@ Inner join op `?systeem` met blok 1 → reduceert tot 10 rijen.
 
 Inner join op `?systeem`, links gekoppeld. Geeft `?zuiveringsApparatuur` terug voor systemen met luchtfiltering.
 
-### Blok 4 — geometrie
+### Blok 4 — geometrie (OPTIONAL)
 
 ```sparql
-SELECT ?systeem ?systeem_geometrie ?systeem_wkt WHERE {
-    VALUES ?expl { <cbb-uri> }
-    ?systeem imjv:exploitatie ?expl ; locn:geometry ?systeem_wkt .
-    FILTER (CONTAINS(STR(?systeem), "/2021"))
-    BIND(IRI(REPLACE(STR(?systeem), ".../id/", ".../id/geometry/")) AS ?systeem_geometrie)
+OPTIONAL {
+    SELECT ?systeem ?systeem_geometrie ?systeem_wkt WHERE {
+        VALUES ?expl { <cbb-uri> }
+        ?systeem imjv:exploitatie ?expl ; locn:geometry ?systeem_wkt .
+        FILTER (CONTAINS(STR(?systeem), "/2021"))
+        BIND(IRI(REPLACE(STR(?systeem), ".../id/", ".../id/geometry/")) AS ?systeem_geometrie)
+    }
 }
 ```
 
-Inner join op `?systeem`. Splitst de WKT-literal af naar een aparte geometrie-node conform GeoSPARQL.
+OPTIONAL join op `?systeem`. Systemen zonder `locn:geometry` in IMJV (lozingspunten 2400019 en 9991095) verschijnen toch als `ssn:deployedSystem`; ze krijgen simpelweg geen `geo:hasGeometry`-triple omdat `?systeem_geometrie` ongebonden blijft.
 
 ### Blok 5 — grondwatersystemen (OPTIONAL UNION)
 
@@ -150,11 +154,11 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 
 ## Resultaat
 
-`mjv_deployment.ttl` bevat 58 subjects:
+`mjv_deployment.ttl` bevat 60 subjects:
 
 | Resource | Klasse | Aantal |
 |---|--|---|
-| emissiepunten / lozingspunten | `:Emissiepunt`, `ssn:System` | 10 |
+| emissiepunten / lozingspunten | `:Emissiepunt`, `ssn:System` | 12 |
 | pompputten | `:Onttrekkingspunt`, `ssn:System` | 5 |
 | peilput | `:Meetpunt`, `ssn:System` | 1 |
 | pompfilters + peilfilters | `:Filter`, `ssn:System` | 8 |
@@ -165,4 +169,4 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 | geometrie-nodes | `geo:Geometry` | 17 |
 | identifier-node | `adms:Identifier` | 1 |
 
-Elke resource met locatiedata heeft een `geo:hasGeometry`-node met `geo:asWKT`. Filters hebben geen geometrie (niet aanwezig in de IMJV-bron). De exploitatie heeft `ssn:deployedSystem` voor emissiepunten, pompputten en de peilput; `ssn:deployedOnPlatform` naar de exploitatielocatie.
+Resources met locatiedata hebben een `geo:hasGeometry`-node met `geo:asWKT`. Lozingspunten 2400019 en 9991095 hebben geen geometrie in IMJV en krijgen dus geen geometrie-node. Filters hebben ook geen geometrie. De exploitatie heeft `ssn:deployedSystem` voor alle 18 emissiepunten/lozingspunten/pompputten/peilput; `ssn:deployedOnPlatform` naar de exploitatielocatie.

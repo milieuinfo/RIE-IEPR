@@ -10,9 +10,10 @@ PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 
 construct
 {
-    # Procesvariabelen (altijd aanwezig, onafhankelijk van queryresultaat)
-    stof:rookgas     a riepr:ProcesVariabele ; rdfs:label "Rookgas"@nl .
-    stof:proceswater a riepr:ProcesVariabele ; rdfs:label "Proceswater"@nl .
+    # Procesvariabelen — één per (activiteit, medium)-combinatie
+    ?procesVar a riepr:ProcesVariabele ; rdfs:label ?procesVar_label .
+
+    # Globale grondwater-variabele (niet activiteitsspecifiek)
     stof:grondwater  a riepr:ProcesVariabele ; rdfs:label "Grondwater"@nl .
 
     # Hoofdproces — één per exploitatie
@@ -30,7 +31,7 @@ construct
     ?activiteitProces a riepr:Proces ;
         rdfs:label ?activiteit_naam ;
         pplan:isStepOfPlan ?hoofdproces ;
-        pplan:hasOutputVar ?systeemVar ;
+        pplan:hasOutputVar ?procesVar ;
         sosa:implementedBy ?activiteit .
 
     # Uitstoot- of lozing-sub-proces — één per emissiepunt of lozingspunt
@@ -38,8 +39,8 @@ construct
         rdfs:label ?systeemProces_label ;
         dct:type riepr:uitstootProces ;
         pplan:isStepOfPlan ?activiteitProces ;
-        pplan:hasInputVar ?systeemVar ;
-        pplan:hasOutputVar ?systeemVar ;
+        pplan:hasInputVar ?procesVar ;
+        pplan:hasOutputVar ?procesVar ;
         sosa:implementedBy ?systeem .
 
     # Pompput-sub-proces — één per pompput
@@ -112,9 +113,10 @@ where
     BIND(REPLACE(STR(?activiteit), "^.*/", "") AS ?activiteitID)
     BIND(REPLACE(STR(?systeem), "^.*/([^/]+)/jaar/[0-9]+$", "$1") AS ?systeemID)
     BIND(IF(?type = imjv:LozingspuntStaat, "lozing", "uitstoot") AS ?systeemPrefix)
-    BIND(IF(?type = imjv:LozingspuntStaat,
-            IRI("https://data.riepr.omgeving.vlaanderen.be/id/stof/proceswater"),
-            IRI("https://data.riepr.omgeving.vlaanderen.be/id/stof/rookgas")) AS ?systeemVar)
+    BIND(IF(?type = imjv:LozingspuntStaat, "proceswater", "rookgas") AS ?medium)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/variabele/",
+             ?exploitatieID, "_activiteit_", ?activiteitID, "_", ?medium)) AS ?procesVar)
+    BIND(STRLANG(IF(?type = imjv:LozingspuntStaat, "Proceswater", "Rookgas"), "nl") AS ?procesVar_label)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
              ?exploitatieID, "_activiteit_", ?activiteitID)) AS ?activiteitProces)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",

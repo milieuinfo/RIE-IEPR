@@ -110,12 +110,13 @@ where
     # Blok 1 — anker: emissiepuntToestand via CBB IRI, één rij per massa-observatie
     {
         SELECT ?obs ?exploitatiestaat ?emissiepuntToestand ?emissie
-               ?emissie_label ?emissie_type ?debiet ?emissieDuur
+               ?emissie_label ?emissie_type ?debiet ?emissieDuur ?activiteit
         WHERE {
             VALUES ?cbb {
                 <https://data.cbb.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
             }
-            ?emissiepuntToestand imjv:exploitatie ?cbb .
+            ?emissiepuntToestand imjv:exploitatie ?cbb ;
+                                 imjv:gekoppeldeActiviteit ?activiteit .
             FILTER (CONTAINS(STR(?emissiepuntToestand), "/2021"))
             ?obs imjv:emissiepuntToestand ?emissiepuntToestand ;
                  schema:about ?emissie ;
@@ -179,7 +180,14 @@ where
         }
     }
 
-    BIND(COALESCE(?procesVar, stof:rookgas) AS ?emissieVar)
+    BIND(IF(BOUND(?procesVar), "proceswater", "rookgas") AS ?medium)
+    BIND(IRI(CONCAT(
+        "https://data.riepr.omgeving.vlaanderen.be/id/variabele/",
+        REPLACE(STR(?emissiepuntToestand),
+            "^https://data.imjv.omgeving.vlaanderen.be/id/[^/]+/([^/]+)/.*", "$1"),
+        "_activiteit_",
+        REPLACE(STR(?activiteit), "^.*/", ""),
+        "_", ?medium)) AS ?emissieVar)
 
     # Afgeleide IRIs
     BIND(IRI(REPLACE(STR(?emissiepuntToestand), "/jaar/[0-9]+$", "")) AS ?emissiepunt)
