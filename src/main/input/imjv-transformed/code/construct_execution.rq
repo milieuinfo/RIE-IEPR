@@ -16,14 +16,14 @@ PREFIX schema:  <http://schema.org/>
 construct
 {
     # Procesvariabelen
-    stof:rookgas     a riepr:ProcesVariabele ; rdfs:label "Rookgas"@nl .
-    stof:proceswater a riepr:ProcesVariabele ; rdfs:label "Proceswater"@nl .
+    #stof:rookgas     a riepr:ProcesVariabele ; rdfs:label "Rookgas"@nl .
+    #stof:proceswater a riepr:ProcesVariabele ; rdfs:label "Proceswater"@nl .
 
     # Emissie — FeatureOfInterest én instantie van de planvariabele
     ?emissie a riepr:Emissie ;
         dct:type ?emissie_type ;
         rdfs:label ?emissie_label ;
-        sosa:madeBySystem ?emissiepuntToestand ;
+        prov:wasAttributedTo  ?emissiepuntToestand ;
         pplan:correspondsToVariable ?emissieVar .
 
     # Emissiepunt en meetpunt
@@ -44,8 +44,11 @@ construct
         qb:dataSet ?dataset ;
         sosa:usedProcedure ?procedure .
 
-    ?procedure  a sosa:Procedure .
-    ?substantie a sosa:Property .
+    ?result sosa:isResultOf ?obs .
+
+    ?procedure  a sosa:Procedure  , sosa:ObservingProcedure.
+
+    ?substantie a sosa:Property , sosa:ObservableProperty .
 
     ?result a sosa:Result ;
         qudt:quantityValue ?quantityValue .
@@ -62,6 +65,8 @@ construct
         rdfs:label ?concentratie_label ;
         sosa:usedProcedure ?procedure .
 
+    ?result_concentratie sosa:isResultOf ?concentratie .
+
     ?result_concentratie a sosa:Result ;
         qudt:quantityValue ?quantityValue_concentratie .
 
@@ -76,6 +81,8 @@ construct
         sosa:hasResult ?result_debiet ;
         rdfs:label ?debiet_label ;
         sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting> .
+
+    ?result_debiet sosa:isResultOf ?debiet .
 
     ?result_debiet a sosa:Result ;
         qudt:quantityValue ?quantityValue_debiet .
@@ -92,6 +99,8 @@ construct
         rdfs:label ?emissieDuur_label ;
         sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> .
 
+    ?result_emissieDuur sosa:isResultOf ?emissieDuur .
+
     ?result_emissieDuur a sosa:Result ;
         qudt:quantityValue ?quantityValue_emissieDuur .
 
@@ -100,10 +109,10 @@ construct
         qudt:hasUnit ?unitMeasure_emissieDuur .
 
     # Concepten (altijd aanwezig)
-    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet>            a sosa:Property .
-    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting>      a sosa:Procedure .
-    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur>       a sosa:Property .
-    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> a sosa:Procedure .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet>            a sosa:Property , sosa:ObservableProperty .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting>      a sosa:Procedure  , sosa:ObservingProcedure.
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur>       a sosa:Property , sosa:ObservableProperty .
+    <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> a sosa:Procedure  , sosa:ObservingProcedure.
 }
 where
 {
