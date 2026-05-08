@@ -1,0 +1,161 @@
+flowchart RL
+
+%% =====================================================
+%% PLANNING
+%% =====================================================
+    subgraph PLANNING["PLANNING — AGC Glass Europe Mol"]
+
+        PLAN_hoofd([Plan: AGC Glass Mol 2021])
+
+        STEP_glasoven([Step: GLASOVEN])
+        STEP_vlakglas([Step: Vormen vlakglas])
+        STEP_grondwater([Step: Grondwater])
+
+        STEP_uitstoot_2269([Step: Schouw glasoven])
+        STEP_lozing_2400006([Step: LP01 Glasfabriek])
+        STEP_lozing_2400007([Step: LP02 Kempenglas])
+        STEP_pompput([Step: Pompput onttrekking])
+        STEP_peilput([Step: Peilput monitoring])
+
+        V_rookgas([var: rookgas — glasoven])
+        V_proceswater([var: proceswater — vlakglas])
+        V_grondwater([var: grondwater])
+
+    end
+
+    style PLANNING fill:#b8a2d4,stroke:#2E5C8A,color:#000
+    style PLAN_hoofd fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_glasoven fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_vlakglas fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_grondwater fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_uitstoot_2269 fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_lozing_2400006 fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_lozing_2400007 fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_pompput fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style STEP_peilput fill:#7f59ae,stroke:#2E5C8A,color:#fff
+    style V_rookgas fill:#fe7130,stroke:#2E5C8A,color:#000
+    style V_proceswater fill:#fe7130,stroke:#2E5C8A,color:#000
+    style V_grondwater fill:#fe7130,stroke:#2E5C8A,color:#000
+
+%% Plan structuur — activiteiten
+    STEP_glasoven -->|isStepOfPlan| PLAN_hoofd
+    STEP_vlakglas -->|isStepOfPlan| PLAN_hoofd
+    STEP_grondwater -->|isStepOfPlan| PLAN_hoofd
+
+%% Plan structuur — sub-processen
+    STEP_uitstoot_2269 -->|isStepOfPlan| STEP_glasoven
+    STEP_lozing_2400006 -->|isStepOfPlan| STEP_vlakglas
+    STEP_lozing_2400007 -->|isStepOfPlan| STEP_vlakglas
+    STEP_pompput -->|isStepOfPlan| STEP_grondwater
+    STEP_peilput -->|isStepOfPlan| STEP_grondwater
+
+%% Variabelen
+    V_rookgas -->|isOutputVarOf| STEP_glasoven
+    V_rookgas -->|isInputVarOf| STEP_uitstoot_2269
+    V_rookgas -->|isOutputVarOf| STEP_uitstoot_2269
+
+    V_proceswater -->|isOutputVarOf| STEP_vlakglas
+    V_proceswater -->|isInputVarOf| STEP_lozing_2400006
+    V_proceswater -->|isOutputVarOf| STEP_lozing_2400006
+    V_proceswater -->|isInputVarOf| STEP_lozing_2400007
+    V_proceswater -->|isOutputVarOf| STEP_lozing_2400007
+
+    V_grondwater -->|isInputVarOf| STEP_grondwater
+    V_grondwater -->|isInputVarOf| STEP_pompput
+    V_grondwater -->|isInputVarOf| STEP_peilput
+
+
+%% =====================================================
+%% DEPLOYMENT
+%% =====================================================
+    subgraph DEPLOYMENT["DEPLOYMENT — 2021"]
+
+        Platform([Platform: AGC Glass Mol])
+        Deployment([Deployment: exploitatie 2021])
+
+        SYS_glasoven([Installatie: GLASOVEN])
+        SYS_ep2269([Emissiepunt: Schouw glasoven])
+        SYS_vlakglas([Installatie: Vormen vlakglas])
+        SYS_lp2400006([Lozingspunt: LP01 Glasfabriek])
+        SYS_lp2400007([Lozingspunt: LP02 Kempenglas])
+        SYS_pompput([Onttrekkingspunt: Pompput])
+        SYS_peilput([Meetpunt: Peilput])
+
+    end
+
+    style DEPLOYMENT fill:#b0d9e7,stroke:#2E5C8A,color:#000
+    style Platform fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style Deployment fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_glasoven fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_ep2269 fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_vlakglas fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_lp2400006 fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_lp2400007 fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_pompput fill:#60c4e4,stroke:#2E5C8A,color:#000
+    style SYS_peilput fill:#60c4e4,stroke:#2E5C8A,color:#000
+
+    Deployment -->|deployedOnPlatform| Platform
+    Deployment -->|deployedSystem| SYS_ep2269
+    Deployment -->|deployedSystem| SYS_lp2400006
+    Deployment -->|deployedSystem| SYS_lp2400007
+    Deployment -->|deployedSystem| SYS_pompput
+    Deployment -->|deployedSystem| SYS_peilput
+
+    SYS_ep2269 -->|isHostedBy| SYS_glasoven
+    SYS_lp2400006 -->|isHostedBy| SYS_vlakglas
+    SYS_lp2400007 -->|isHostedBy| SYS_vlakglas
+
+%% Deployment → Plan
+    Deployment -->|implements| PLAN_hoofd
+    STEP_glasoven -->|implementedBy| SYS_glasoven
+    STEP_vlakglas -->|implementedBy| SYS_vlakglas
+    STEP_uitstoot_2269 -->|implementedBy| SYS_ep2269
+    STEP_lozing_2400006 -->|implementedBy| SYS_lp2400006
+    STEP_lozing_2400007 -->|implementedBy| SYS_lp2400007
+    STEP_pompput -->|implementedBy| SYS_pompput
+    STEP_peilput -->|implementedBy| SYS_peilput
+
+
+%% =====================================================
+%% EXECUTION
+%% =====================================================
+    subgraph EXECUTION["EXECUTION — rapporteringsjaar 2021"]
+
+        EMI_lucht([Emissie: lucht glasoven 2021])
+        EMI_2400006([Emissie: lozing LP01 Glasfabriek 2021])
+        EMI_2400007([Emissie: lozing LP02 Kempenglas 2021])
+
+        OBS_lucht_sox([Obs: SO₂ — 0,021 ton/jaar])
+        OBS_lucht_stof([Obs: stof — 0,205 ton/jaar])
+        OBS_2400006_czv([Obs: CZV — 185 kg/jaar])
+        OBS_2400007_czv([Obs: CZV — 27 kg/jaar])
+        OBS_2400007_nt([Obs: N-totaal — 42 kg/jaar])
+
+    end
+
+    style EXECUTION fill:#e7a3be,stroke:#2E5C8A,color:#000
+    style EMI_lucht fill:#e54b89,stroke:#2E5C8A,color:#fff
+    style EMI_2400006 fill:#e54b89,stroke:#2E5C8A,color:#fff
+    style EMI_2400007 fill:#e54b89,stroke:#2E5C8A,color:#fff
+    style OBS_lucht_sox fill:#f8b622,stroke:#2E5C8A,color:#000
+    style OBS_lucht_stof fill:#f8b622,stroke:#2E5C8A,color:#000
+    style OBS_2400006_czv fill:#f8b622,stroke:#2E5C8A,color:#000
+    style OBS_2400007_czv fill:#f8b622,stroke:#2E5C8A,color:#000
+    style OBS_2400007_nt fill:#f8b622,stroke:#2E5C8A,color:#000
+
+%% Emissies → deployment
+    EMI_lucht -->|madeBySystem| SYS_ep2269
+    EMI_2400006 -->|madeBySystem| SYS_lp2400006
+    EMI_2400007 -->|madeBySystem| SYS_lp2400007
+
+%% Observaties → emissie
+    OBS_lucht_sox -->|hasFeatureOfInterest| EMI_lucht
+    OBS_lucht_stof -->|hasFeatureOfInterest| EMI_lucht
+    OBS_2400006_czv -->|hasFeatureOfInterest| EMI_2400006
+    OBS_2400007_czv -->|hasFeatureOfInterest| EMI_2400007
+    OBS_2400007_nt -->|hasFeatureOfInterest| EMI_2400007
+
+%% Emissies → planvariabelen
+    EMI_lucht -->|correspondsToVariable| V_rookgas
+    EMI_2400006 -->|correspondsToVariable| V_proceswater
+    EMI_2400007 -->|correspondsToVariable| V_proceswater
