@@ -30,6 +30,7 @@ Execution  → mjv_execution.ttl  (wat is er gemeten)
 De brug tussen de lagen:
 
 ```turtle
+@prefix prov: <http://www.w3.org/ns/prov#> .
 # Executielaag → planlaag
 <emissie/01787986000160/...>
     pplan:correspondsToVariable
@@ -37,7 +38,7 @@ De brug tussen de lagen:
 
 # Executielaag → deploymentlaag
 <emissie/01787986000160/...>
-    sosa:madeBySystem
+    prov:wasAttributedTo
         <emissiepunt/01787986000160/2269/jaar/2021> .
 ```
 
@@ -123,15 +124,15 @@ Result- en quantityvalue-IRIs worden afgeleid door `id/` te vervangen door `id/r
 
 ## Gebruikte ontologische predicaten
 
-| Predicaat | Betekenis |
-|---|---|
-| `pplan:correspondsToVariable` | Emissie is instantie van een planvariabele |
-| `sosa:hasFeatureOfInterest` | Observatie meet een eigenschap van de emissie |
-| `sosa:observedProperty` | Gemeten stof (chemische stof of sommatiestof) |
+| Predicaat                               | Betekenis |
+|-----------------------------------------|---|
+| `pplan:correspondsToVariable`           | Emissie is instantie van een planvariabele |
+| `sosa:hasFeatureOfInterest`             | Observatie meet een eigenschap van de emissie |
+| `sosa:observedProperty`                 | Gemeten stof (chemische stof of sommatiestof) |
 | `sosa:hasResult` / `qudt:quantityValue` | Meetresultaat met waarde en eenheid |
-| `sosa:usedProcedure` | Bepalingmethode |
-| `sosa:madeBySystem` | Emissie uitgestoten via dit emissiepunt |
-| `ssn:hasDeployment` | Emissiepunt of meetpunt ingezet in deze exploitatie |
+| `sosa:usedProcedure`                    | Bepalingmethode |
+| `prov:wasAttributedTo`                  | Emissie uitgestoten via dit emissiepunt |
+| `ssn:hasDeployment`                     | Emissiepunt of meetpunt ingezet in deze exploitatie |
 
 ---
 
