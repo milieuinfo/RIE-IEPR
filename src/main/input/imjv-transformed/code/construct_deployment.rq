@@ -32,6 +32,7 @@ construct
 
     ?exploitatie a ssn:Deployment, :Exploitatie ;
         rdfs:label ?exploitatie_label ;
+        ssn:implements ?hoofdproces ;
         ssn:deployedSystem ?systeem , ?pompput , ?peilput ;
         ssn:deployedOnPlatform ?exploitatielocatie .
 
@@ -141,7 +142,7 @@ where {
         }
     }
 
-    {
+    OPTIONAL {
         SELECT ?systeem ?systeem_geometrie ?systeem_wkt
         WHERE {
             VALUES ?expl {
@@ -213,6 +214,7 @@ where {
     BIND(STRDT(REPLACE(REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""), "_|#id", ""), :KboVestigingsnummer) AS ?vestigingsnummer)
     BIND(IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", STR(?vestigingsnummer))) as ?id)
     BIND(IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", STR(?vestigingsnummer))) as ?geometry)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/", REPLACE(STR(?expl), "^.*/", ""), "_2021")) AS ?hoofdproces)
 
 
 }
