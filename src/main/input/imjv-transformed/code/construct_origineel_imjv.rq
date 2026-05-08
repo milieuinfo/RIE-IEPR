@@ -1,0 +1,115 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX imjv: <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX : <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX qudt:   <http://qudt.org/schema/qudt/>
+PREFIX sdmxa: <http://purl.org/linked-data/sdmx/2009/attribute#>
+
+
+construct
+{
+    ?exploitatielocatie a :Exploitatielocatie , sosa:Platform;
+        rdfs:label ?exploitatielocatie_label ;
+        adms:identifier ?id ;
+        geo:hasGeometry ?geometry .
+
+    ?exploitatie a sosa:Deployment, :Exploitatie ;
+        rdfs:label ?exploitatie_label ;
+        sosa:deployedAsset ?systeem ;
+        sosa:deployedOnPlatform ?exploitatielocatie .
+
+    ?systeem  a ssn:System , ?myType ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        rdfs:label ?systeem_label ;
+        geo:hasGeometry ?systeem_geometrie ;
+        ssn:hasSubSystem ?zuiveringsApparatuur ;
+        sosa:hasDeployment ?exploitatie .
+
+    ?gekoppeldeActiviteit a :Installatie ;
+        rdfs:label ?gekoppeldeActiviteit_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        ssn:hasSubSystem ?systeem ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?zuiveringsApparatuur  a ssn:System ;
+        rdfs:label ?zuiveringsApparatuur_label ;
+        sosa:hasDeployment ?exploitatie ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        rdfs:label ?gekoppeldeActiviteit_label .
+
+    ?systeem_geometrie geo:asWKT ?systeem_wkt .
+
+}
+where {
+    {
+        SELECT ?systeem ?type ?expl ?systeem_label
+        WHERE {
+            VALUES ?expl {
+                <https://data.cbb.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                rdfs:label ?systeem_label ;
+                a ?type.
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+        }
+    }
+
+    BIND(IRI(REPLACE(STR(?expl), "https://data.cbb.omgeving.vlaanderen.be/", "https://data.imjv.omgeving.vlaanderen.be/")) AS ?exploitatielocatie)
+    ?exploitatielocatie rdfs:seeAlso ?vestnr ;
+        rdfs:label ?exploitatielocatie_label ;
+        locn:geometry ?wkt .
+    FILTER (STRSTARTS(STR(?vestnr), "http://data.kbodata.be/organisation"))
+    ?exploitatie dcterms:isVersionOf ?exploitatielocatie ;
+        rdfs:label ?exploitatie_label .
+    FILTER (CONTAINS(STR(?exploitatie), "/2021"))
+
+    {
+        SELECT ?systeem ?gekoppeldeActiviteit ?myType ?gekoppeldeActiviteit_label
+        WHERE {
+            VALUES ?type {
+                <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#EmissiepuntStaat>
+                <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#LozingspuntStaat>
+            }
+            VALUES ?myType {
+                :Emissiepunt
+            }
+            ?systeem a ?type ;
+                imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit .
+            ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label .
+        }
+    }
+
+    {
+        SELECT ?systeem ?zuiveringsApparatuur ?zuiveringsApparatuur_label
+        WHERE {
+            ?systeem  imjv:zuiveringsApparatuur  ?zuiveringsApparatuur.
+            ?zuiveringsApparatuur rdfs:label ?zuiveringsApparatuur_label .
+        }
+    }
+
+    {
+        SELECT ?systeem ?systeem_geometrie ?systeem_wkt
+        WHERE {
+            ?systeem  locn:geometry ?systeem_wkt.
+            BIND(IRI(REPLACE(STR(?systeem), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/geometry/")) AS ?systeem_geometrie)
+        }
+    }
+
+
+    BIND(STRDT(REPLACE(REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""), "_|#id", ""), :KboVestigingsnummer) AS ?vestigingsnummer)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", STR(?vestigingsnummer))) as ?id)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", STR(?vestigingsnummer))) as ?geometry)
+
+
+}
