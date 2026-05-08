@@ -10,9 +10,9 @@ function query {
 	curl -u ${virtuoso_rw_username}:${virtuoso_rw_password}\
 		--request POST "http://${1}:8080/sparql-auth?"\
 		--data 'format=text/turtle'\
-		--data-urlencode query@construct_origineel_imjv.rq \
+		--data-urlencode query@construct_deployment.rq \
 		--output '/tmp/mjv.ttl'
-	riot --formatted=turtle '/tmp/mjv.ttl' > '../mjv_origineel_imjv.ttl'
+	riot --formatted=turtle '/tmp/mjv.ttl' > '../mjv_deployment.ttl'
 }
 
 
