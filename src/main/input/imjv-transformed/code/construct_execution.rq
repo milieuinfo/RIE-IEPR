@@ -1,5 +1,6 @@
 PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 PREFIX stof:    <https://data.riepr.omgeving.vlaanderen.be/id/stof/>
+PREFIX agent:    <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
 PREFIX pplan:   <http://purl.org/net/p-plan#>
 PREFIX prov:    <http://www.w3.org/ns/prov#>
 PREFIX ssn:     <http://www.w3.org/ns/ssn/>
@@ -15,6 +16,9 @@ PREFIX schema:  <http://schema.org/>
 
 construct
 {
+    # de mens fo het labo of de sensor die de observaties doet
+    agent:labo_mens_sensor_x a sosa:Sensor, prov:Agent .
+
     # Procesvariabelen
     #stof:rookgas     a riepr:ProcesVariabele ; rdfs:label "Rookgas"@nl .
     #stof:proceswater a riepr:ProcesVariabele ; rdfs:label "Proceswater"@nl .
@@ -28,6 +32,7 @@ construct
 
     # Massa-emissie observaties per stof
     ?obs a sosa:Observation ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
         sosa:hasResult ?result ;
@@ -50,6 +55,7 @@ construct
 
     # Concentratie-observaties (OPTIONAL)
     ?concentratie a sosa:Observation ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
         sosa:hasResult ?result_concentratie ;
@@ -67,6 +73,7 @@ construct
 
     # Debiet-observaties (OPTIONAL, alleen voor luchtemissies)
     ?debiet a sosa:Observation ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet> ;
         sosa:hasResult ?result_debiet ;
@@ -84,6 +91,7 @@ construct
 
     # Emissieduur-observaties (OPTIONAL, alleen voor luchtemissies)
     ?emissieDuur a sosa:Observation ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur> ;
         sosa:hasResult ?result_emissieDuur ;

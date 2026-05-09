@@ -3,10 +3,12 @@ PREFIX sosa:   <http://www.w3.org/ns/sosa/>
 PREFIX qudt:   <http://qudt.org/schema/qudt/>
 PREFIX sdmxa:  <http://purl.org/linked-data/sdmx/2009/attribute#>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX agent:    <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
 
 construct
 {
     ?waarde a sosa:Observation ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?parent ;
         sosa:observedProperty ?property ;
         sosa:hasResult ?result .

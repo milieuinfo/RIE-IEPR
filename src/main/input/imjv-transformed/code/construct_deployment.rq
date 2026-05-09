@@ -121,12 +121,15 @@ where {
                 <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#EmissiepuntStaat>
                 <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#LozingspuntStaat>
             }
-            VALUES ?myType {
-                :Emissiepunt
-            }
             ?systeem a ?type ;
                 imjv:exploitatie ?expl .
             FILTER (CONTAINS(STR(?systeem), "/2021"))
+            OPTIONAL { ?systeem imjv:meetputType ?meetputType }
+            BIND(IF(?type = imjv:EmissiepuntStaat,
+                    :Emissiepunt,
+                    IF(?meetputType = <https://data.imjv.omgeving.vlaanderen.be/id/concept/oppompend>,
+                        :Onttrekkingspunt,
+                        :Emissiepunt)) AS ?myType)
             OPTIONAL {
                 ?systeem imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit .
                 ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label .
