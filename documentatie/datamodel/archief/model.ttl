@@ -1,83 +1,70 @@
-PREFIX :               <http://purl.obolibrary.org/obo/ChemOnt.owl#>
-PREFIX CHEMONTID:      <https://data.omgeving.vlaanderen.be/id/concept/chemical_substance/>
-PREFIX annotation:     <https://data.omgeving.vlaanderen.be/id/annotation/chemical_substance/>
-PREFIX chebi:          <http://purl.obolibrary.org/obo/chebi/>
-PREFIX chebi1:         <http://purl.obolibrary.org/obo/chebi/2>
-PREFIX chebi2:         <http://purl.obolibrary.org/obo/chebi/3>
-PREFIX chebi3:         <http://purl.obolibrary.org/obo/chebi/1>
-PREFIX chemische_stof: <https://data.omgeving.vlaanderen.be/id/classificationlevel/chemische_stof/>
-PREFIX chemrof:        <https://w3id.org/chemrof/>
-PREFIX co:             <https://data.omgeving.vlaanderen.be/id/concept/observatieprocedure/>
-PREFIX compound:       <https://pubchem.ncbi.nlm.nih.gov/compound/>
-PREFIX concept:        <https://data.omgeving.vlaanderen.be/id/concept/chemical_substance/>
-PREFIX conceptscheme:  <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
-PREFIX cosc:           <https://data.omgeving.vlaanderen.be/id/collection/chemical_substance/>
-PREFIX cs:             <https://data.vlaanderen.be/ns/chemische_stof#>
-PREFIX csc:            <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
-PREFIX cscl:           <https://data.omgeving.vlaanderen.be/id/classificationlevel/chemical_substance/>
-PREFIX dbo:            <http://dbpedia.org/ontology/>
-PREFIX dbp:            <http://dbpedia.org/property/>
-PREFIX dc:             <http://purl.org/dc/elements/1.1/>
-PREFIX dct:            <http://purl.org/dc/terms/>
-PREFIX foaf:           <http://xmlns.com/foaf/0.1/>
-PREFIX geneontology:   <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX list:           <https://data.omgeving.vlaanderen.be/id/list/chemische_stof/>
-PREFIX oa:             <http://www.w3.org/ns/oa#>
-PREFIX obo:            <http://purl.obolibrary.org/obo/>
-PREFIX oboInOwl:       <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX omg_dataset:    <https://data.omgeving.vlaanderen.be/id/dataset/>
-PREFIX ovo:            <http://data.vlaanderen.be/id/organisatie/>
-PREFIX owl:            <http://www.w3.org/2002/07/owl#>
-PREFIX rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs:           <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX skos:           <http://www.w3.org/2004/02/skos/core#>
-PREFIX sosa:           <http://www.w3.org/ns/sosa/>
-PREFIX tax_nodes:      <http://classyfire.wishartlab.com/tax_nodes/>
-PREFIX terms:          <http://purl.org/dc/terms/>
-PREFIX vcs:            <https://data.vlaanderen.be/ns/chemische_stof#>
-PREFIX vlcs:           <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
-PREFIX wise:           <http://dd.eionet.europa.eu/vocabulary/wise/ObservedProperty/>
-PREFIX wk:             <https://data.omgeving.vlaanderen.be/ns/wk#>
-PREFIX xkos:           <http://rdf-vocabulary.ddialliance.org/xkos#>
-PREFIX xml:            <http://www.w3.org/XML/1998/namespace>
-PREFIX xsd:            <http://www.w3.org/2001/XMLSchema#>
+PREFIX cs:      <https://data.vlaanderen.be/ns/chemische_stof#>
+PREFIX csc:     <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/>
+PREFIX dbo:     <http://dbpedia.org/ontology/>
+PREFIX dbp:     <http://dbpedia.org/property/>
+PREFIX ns1:     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX ns2:     <http://www.w3.org/ns/ssn/>
+PREFIX ns4:     <http://www.w3.org/ns/sosa/>
+PREFIX ns6:     <http://www.w3.org/ns/adms#>
+PREFIX ogcgs:   <http://www.opengis.net/ont/geosparql#>
+PREFIX owl:     <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+PREFIX virtrdf: <http://www.openlinksw.com/schemas/virtrdf#>
+PREFIX vlcs:    <https://data.omgeving.vlaanderen.be/id/conceptscheme/>
 
-oa:Annotation  rdf:type  "rdfs:Resource";
-        dc:source       "http://www.w3.org/2001/XMLSchema#string";
-        terms:creator   "rdfs:Resource";
-        terms:source    chebi:Chebi_substance;
-        skos:prefLabel  "http://www.w3.org/2001/XMLSchema#string";
-        oa:hasBody      chebi:Chebi_biological_activity , skos:Concept;
-        oa:hasTarget    "rdfs:Resource";
-        oa:hasTarget    dbo:ChemicalSubstance;
-        oa:motivatedBy  "rdfs:Resource" .
 
-skos:Concept  rdf:type   "rdfs:Resource";
-        skos:altLabel    "http://www.w3.org/2001/XMLSchema#string";
-        skos:broader     "rdfs:Resource";
-        skos:broader     skos:Concept;
-        skos:definition  "http://www.w3.org/2001/XMLSchema#string";
-        skos:inScheme    "rdfs:Resource";
-        skos:notation    "http://www.w3.org/2001/XMLSchema#string";
-        skos:prefLabel   "http://www.w3.org/2001/XMLSchema#string" , "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
 
-skos:Collection  rdf:type  "rdfs:Resource";
-        skos:member     "rdfs:Resource";
-        skos:member     dbo:ChemicalSubstance;
-        skos:prefLabel  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
+ns1:Installatie  rdf:type  "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" , "http://www.w3.org/2001/XMLSchema#string";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie;
+        ns2:hasSubSystem   ns2:System , ns1:Emissiepunt .
 
-dbo:ChemicalSubstance
-        rdf:type         "rdfs:Resource";
-        dbo:casNumber    "http://www.w3.org/2001/XMLSchema#string";
-        dbo:ecNumber     "http://www.w3.org/2001/XMLSchema#string";
-        dbp:inchikey     "http://www.w3.org/2001/XMLSchema#string";
-        skos:broader     skos:Concept;
-        skos:exactMatch  chebi:Chebi_substance;
-        skos:note        "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
-        skos:prefLabel   "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" .
+ns2:System  rdf:type       "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" , "http://www.w3.org/2001/XMLSchema#string";
+        ogcgs:hasGeometry  "rdfs:Resource";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie;
+        ns2:hasSubSystem   ns2:System .
 
-chebi:Chebi_substance
-        rdfs:label                      "Chebi Substance" .
+ns1:Exploitatielocatie
+        rdf:type           "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString";
+        ogcgs:hasGeometry  "rdfs:Resource";
+        ns6:identifier     ns6:Identifier .
 
-chebi:Chebi_biological_activity
-        rdfs:label                      "Chebi biological activity" .
+ns1:Onttrekkingspunt  rdf:type  "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/2001/XMLSchema#string";
+        ogcgs:hasGeometry  "rdfs:Resource";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie .
+
+ns6:Identifier  rdf:type  "rdfs:Resource";
+        skos:notation  "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#KboVestigingsnummer" .
+
+ns1:Filter  rdf:type       "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/2001/XMLSchema#string";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie .
+
+
+ns1:Exploitatie  rdf:type       "rdfs:Resource";
+        rdfs:Label              "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" , "http://www.w3.org/2001/XMLSchema#string";
+        ns2:deployedOnPlatform   ns1:Exploitatielocatie;
+        ns2:deployedSystem      ns1:Meetpunt , ns1:Onttrekkingspunt , ns2:System , ns1:Emissiepunt .
+
+ns1:Emissiepunt  rdf:type  "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString" , "http://www.w3.org/2001/XMLSchema#string";
+        ogcgs:hasGeometry  "rdfs:Resource";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie;
+        ns2:hasSubSystem   ns2:System .
+
+ns1:Meetpunt  rdf:type     "rdfs:Resource";
+        rdfs:Label         "http://www.w3.org/2001/XMLSchema#string";
+        ogcgs:hasGeometry  "rdfs:Resource";
+        sosa:isHostedBy     ns1:Exploitatielocatie;
+        ns2:hasDeployment  ns1:Exploitatie .
