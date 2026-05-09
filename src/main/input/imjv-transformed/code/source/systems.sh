@@ -9,8 +9,10 @@ function set_virtuoso_env {
 function query {
   #let x=1
   #for uri in `cat systems` ; do
-  let x=27
-  for uri in `cat observaties` ; do
+  #let x=27
+  #for uri in `cat observaties` ; do
+  let x=104
+  for uri in `cat zuiveringsapparaat` ; do
     echo "construct { ?s ?p ?o .  ?x ?y ?z . }  where {VALUES ?s { <$uri>  }  VALUES ?z { <$uri>  } ?s ?p ?o .   optional{ ?x ?y ?z .}}" > query.rq
   	. /tmp/${1}
     curl -u ${virtuoso_rw_username}:${virtuoso_rw_password}\

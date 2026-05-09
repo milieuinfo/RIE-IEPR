@@ -26,15 +26,6 @@ construct
         prov:wasAttributedTo  ?emissiepuntToestand ;
         pplan:correspondsToVariable ?emissieVar .
 
-    # Emissiepunt en meetpunt
-    ?emissiepuntToestand a riepr:Emissiepunt ;
-        prov:wasRevisionOf ?emissiepunt ;
-        ssn:hasDeployment ?exploitatiestaat ;
-        ssn:hasSubSystem ?meetput .
-
-    ?meetput a riepr:Meetpunt ;
-        ssn:hasDeployment ?exploitatiestaat .
-
     # Massa-emissie observaties per stof
     ?obs a sosa:Observation ;
         sosa:hasFeatureOfInterest ?emissie ;
@@ -199,8 +190,6 @@ where
         "_", ?medium)) AS ?emissieVar)
 
     # Afgeleide IRIs
-    BIND(IRI(REPLACE(STR(?emissiepuntToestand), "/jaar/[0-9]+$", "")) AS ?emissiepunt)
-    BIND(IRI(REPLACE(STR(?emissiepuntToestand), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result)
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue)
     BIND(IF(BOUND(?concentratie), IRI(REPLACE(STR(?concentratie), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_concentratie)

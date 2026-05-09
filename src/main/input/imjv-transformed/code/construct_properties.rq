@@ -1,0 +1,49 @@
+PREFIX imjv:   <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX sosa:   <http://www.w3.org/ns/sosa/>
+PREFIX qudt:   <http://qudt.org/schema/qudt/>
+PREFIX sdmxa:  <http://purl.org/linked-data/sdmx/2009/attribute#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+construct
+{
+    ?waarde a sosa:Observation ;
+        sosa:hasFeatureOfInterest ?parent ;
+        sosa:observedProperty ?property ;
+        sosa:hasResult ?result .
+
+    ?result a sosa:Result ;
+        qudt:quantityValue ?qv .
+
+    ?qv a qudt:QuantityValue ;
+        qudt:numericValue ?value ;
+        qudt:hasUnit ?unit .
+
+    ?property a sosa:Property , sosa:ObservableProperty .
+}
+where
+{
+    VALUES ?cbb {
+        <https://data.cbb.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
+    }
+    {
+        ?parent imjv:exploitatie ?cbb ; imjv:hoogte ?waarde .
+        BIND(imjv:hoogte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diameter ?waarde .
+        BIND(imjv:diameter AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diepte ?waarde .
+        BIND(imjv:diepte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:lengte ?waarde .
+        BIND(imjv:lengte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diepteOnderkant ?waarde .
+        BIND(imjv:diepteOnderkant AS ?property)
+    }
+    FILTER (CONTAINS(STR(?parent), "/2021"))
+    ?waarde rdf:value ?value ;
+            sdmxa:unitMeasure ?unit .
+    BIND(IRI(CONCAT(STR(?waarde), "/result")) AS ?result)
+    BIND(IRI(CONCAT(STR(?waarde), "/qv"))     AS ?qv)
+}

@@ -12,7 +12,8 @@ function query {
 		--data 'format=text/turtle'\
 		--data-urlencode query@construct_plan.rq \
 		--output '/tmp/mjv_plan.ttl'
-	riot --formatted=turtle '/tmp/mjv_plan.ttl' > '../mjv_plan.ttl'
+	riot '/tmp/mjv_plan.ttl'  > '/tmp/mjv.nt'
+  riot --formatted=turtle source/prefix.ttl '/tmp/mjv.nt' > '../mjv_plan.ttl'
 }
 
 

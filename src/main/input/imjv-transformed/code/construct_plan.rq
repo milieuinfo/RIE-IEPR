@@ -43,6 +43,14 @@ construct
         pplan:hasOutputVar ?procesVar ;
         sosa:implementedBy ?systeem .
 
+    # Zuiveringsapparaat-sub-proces — één per zuiveringsapparaat van een emissiepunt
+    ?zuiveringsapparaatProces a riepr:Proces ;
+        rdfs:label ?zuivering_naam ;
+        dct:type riepr:zuiveringsProces ;
+        pplan:isStepOfPlan ?systeemProces ;
+        pplan:hasInputVar ?procesVar ;
+        sosa:implementedBy ?zuiveringsApparatuur .
+
     # Pompput-sub-proces — één per pompput
     ?pompputProces a riepr:Proces ;
         rdfs:label ?pompput_naam ;
@@ -123,6 +131,29 @@ where
              ?exploitatieID, "_", ?systeemPrefix, "_", ?systeemID)) AS ?systeemProces)
     BIND(IF(BOUND(?activiteit_label_raw), STRLANG(REPLACE(STR(?activiteit_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?activiteit_naam)
     BIND(IF(BOUND(?systeem_label_raw), STRLANG(REPLACE(STR(?systeem_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?systeemProces_label)
+
+    # Blok 2b — zuiveringsapparaten gekoppeld aan emissiepunten
+    OPTIONAL {
+        SELECT DISTINCT ?systeem ?zuiveringsApparatuur ?zuiveringsApparatuur_label ?zuiveringsApparaatID
+        WHERE {
+            VALUES ?expl {
+                <https://data.cbb.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                     imjv:zuiveringsApparatuur ?zuiveringsApparatuur .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            ?zuiveringsApparatuur rdfs:label ?zuiveringsApparatuur_label .
+            BIND(REPLACE(STR(?zuiveringsApparatuur), "^.*/", "") AS ?zuiveringsApparaatID)
+        }
+    }
+
+    BIND(IF(BOUND(?zuiveringsApparaatID),
+        IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+            ?exploitatieID, "_zuivering_", STR(?zuiveringsApparaatID))),
+        ?noop) AS ?zuiveringsapparaatProces)
+    BIND(IF(BOUND(?zuiveringsApparatuur_label),
+        STRLANG(REPLACE(STR(?zuiveringsApparatuur_label), "^.+ : ", ""), "nl"),
+        ?noop) AS ?zuivering_naam)
 
     # Blok 3 — grondwatersystemen (OPTIONAL UNION van pompputten en peilput)
     # Geen gedeelde variabele met blok 2 → cartesiaans product 10 × 6 = 60 rijen (acceptabel)

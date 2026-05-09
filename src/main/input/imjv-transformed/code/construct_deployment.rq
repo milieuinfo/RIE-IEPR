@@ -40,7 +40,9 @@ construct
         sosa:isHostedBy ?exploitatielocatie ;
         rdfs:label ?systeem_label ;
         geo:hasGeometry ?systeem_geometrie ;
+        prov:wasRevisionOf ?systeem_base ;
         ssn:hasSubSystem ?zuiveringsApparatuur ;
+        ssn:hasSubSystem ?meetput ;
         ssn:hasDeployment ?exploitatie .
 
     ?gekoppeldeActiviteit a :Installatie ;
@@ -53,6 +55,9 @@ construct
         rdfs:label ?zuiveringsApparatuur_label ;
         ssn:hasDeployment ?exploitatie ;
         sosa:isHostedBy ?exploitatielocatie .
+
+    ?meetput a :Meetpunt ;
+        ssn:hasDeployment ?exploitatie .
 
     ?systeem_geometrie geo:asWKT ?systeem_wkt .
 
@@ -128,6 +133,9 @@ where {
             }
         }
     }
+
+    BIND(IRI(REPLACE(STR(?systeem), "/jaar/[0-9]+$", "")) AS ?systeem_base)
+    BIND(IRI(REPLACE(STR(?systeem), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
 
     OPTIONAL {
         SELECT ?systeem ?zuiveringsApparatuur ?zuiveringsApparatuur_label

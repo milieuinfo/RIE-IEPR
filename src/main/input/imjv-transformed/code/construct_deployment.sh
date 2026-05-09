@@ -12,7 +12,8 @@ function query {
 		--data 'format=text/turtle'\
 		--data-urlencode query@construct_deployment.rq \
 		--output '/tmp/mjv.ttl'
-	riot --formatted=turtle '/tmp/mjv.ttl' > '../mjv_deployment.ttl'
+	riot '/tmp/mjv.ttl'  > '/tmp/mjv.nt'
+  riot --formatted=turtle source/prefix.ttl '/tmp/mjv.nt' > '../mjv_deployment.ttl'
 }
 
 
