@@ -34,15 +34,20 @@ Virtuoso slaat de toestandsresources op als versies per jaar (patroon `/jaar/202
 | IMJV-klasse | Aantal (2021) | RIEPR-doelklasse |
 |---|---|---|
 | `imjv:EmissiepuntStaat` | 8 | `:Emissiepunt` |
-| `imjv:LozingspuntStaat` | 4 | `:Emissiepunt` |
+| `imjv:LozingspuntStaat` met `meetputType = oppompend` | 1 | `:Onttrekkingspunt` |
+| `imjv:LozingspuntStaat` overige | 3 | `:Emissiepunt` |
 | `imjv:PompputStaat` | 5 | `:Onttrekkingspunt` |
 | `imjv:PeilputStaat` | 1 | `:Meetpunt` |
 | `imjv:PompfilterStaat` | 5 | `:Filter` |
 | `imjv:PeilfilterStaat` | 3 | `:Filter` |
 
+Lozingspunt 2400019 ("OPGENOMEN KANAALWATER") heeft `imjv:meetputType = oppompend` en wordt daarom geclassificeerd als `:Onttrekkingspunt`. De overige drie lozingspunten (2400006, 2400007, 9991095) krijgen `:Emissiepunt`.
+
 Twee lozingspunten (2400019 "OPGENOMEN KANAALWATER" en 9991095 "LP07 INDUSTRIEEL COATER") hebben geen geometrie in IMJV. Ze verschijnen wel als `ssn:deployedSystem` maar krijgen geen `geo:hasGeometry`-triple.
 
 De CBB-URI is de ankervariabele voor alle lookups (`imjv:exploitatie ?expl`).
+
+Elk emissiepunt- of lozingspunt-subject is een jaarversie (`/jaar/2021`). Via `prov:wasRevisionOf` wordt de tijdloze basis-IRI gelinkt zodat meerdere jaarsversies te vergelijken zijn. Via `ssn:hasSubSystem` wordt een bijhorend `:Meetpunt` aangemaakt waarvan de IRI het type-segment (`emissiepunt`/`lozingspunt`) vervangt door `meetpunt`.
 
 ---
 
@@ -65,18 +70,33 @@ Geeft 27 rijen terug. Levert `?systeem` als gedeelde joinvariabele voor de volge
 ### Blok 2 — emissiepunten en lozingspunten
 
 ```sparql
-SELECT ?systeem ?myType ?gekoppeldeActiviteit ?gekoppeldeActiviteit_label WHERE {
+SELECT ?systeem ?gekoppeldeActiviteit ?myType ?gekoppeldeActiviteit_label WHERE {
     VALUES ?expl { <cbb-uri> }
     VALUES ?type { imjv:EmissiepuntStaat  imjv:LozingspuntStaat }
-    VALUES ?myType { :Emissiepunt }
     ?systeem a ?type ; imjv:exploitatie ?expl .
     FILTER (CONTAINS(STR(?systeem), "/2021"))
+    OPTIONAL { ?systeem imjv:meetputType ?meetputType }
+    BIND(IF(?type = imjv:EmissiepuntStaat,
+            :Emissiepunt,
+            IF(?meetputType = <.../concept/oppompend>,
+               :Onttrekkingspunt,
+               :Emissiepunt)) AS ?myType)
     OPTIONAL { ?systeem imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit .
                ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label . }
 }
 ```
 
-Inner join op `?systeem` met blok 1 → reduceert tot 10 rijen.
+Inner join op `?systeem` met blok 1. `EmissiepuntStaat` → altijd `:Emissiepunt`. `LozingspuntStaat` → `:Onttrekkingspunt` als `meetputType = oppompend`, anders `:Emissiepunt`.
+
+Na blok 2 berekent de query twee bijkomende bindingen:
+
+```sparql
+BIND(IRI(REPLACE(STR(?systeem), "/jaar/[0-9]+$", "")) AS ?systeem_base)
+BIND(IRI(REPLACE(STR(?systeem), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
+```
+
+- `?systeem_base`: de tijdloze basis-IRI van de toestand (zonder `/jaar/2021`), wordt gebruikt voor `prov:wasRevisionOf`.
+- `?meetput`: een afgeleid meetpunt-IRI waarbij het type-segment (`emissiepunt` of `lozingspunt`) vervangen wordt door `meetpunt`. Elk emissiepunt en lozingspunt krijgt zo een bijhorend `:Meetpunt`-resource via `ssn:hasSubSystem`.
 
 ### Blok 3 — zuiveringsapparatuur (OPTIONAL)
 
@@ -154,11 +174,13 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 
 ## Resultaat
 
-`mjv_deployment.ttl` bevat 60 subjects:
+`mjv_deployment.ttl` bevat 72 subjects:
 
 | Resource | Klasse | Aantal |
 |---|--|---|
-| emissiepunten / lozingspunten | `:Emissiepunt`, `ssn:System` | 12 |
+| emissiepunten (toestand) | `:Emissiepunt`, `ssn:System` | 8 |
+| lozingspunten (toestand) | `:Emissiepunt` of `:Onttrekkingspunt`, `ssn:System` | 4 (3 + 1) |
+| meetpunten (afgeleid van emis-/lozingspunten) | `:Meetpunt` | 12 |
 | pompputten | `:Onttrekkingspunt`, `ssn:System` | 5 |
 | peilput | `:Meetpunt`, `ssn:System` | 1 |
 | pompfilters + peilfilters | `:Filter`, `ssn:System` | 8 |
@@ -169,4 +191,8 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 | geometrie-nodes | `geo:Geometry` | 17 |
 | identifier-node | `adms:Identifier` | 1 |
 
-Resources met locatiedata hebben een `geo:hasGeometry`-node met `geo:asWKT`. Lozingspunten 2400019 en 9991095 hebben geen geometrie in IMJV en krijgen dus geen geometrie-node. Filters hebben ook geen geometrie. De exploitatie heeft `ssn:deployedSystem` voor alle 18 emissiepunten/lozingspunten/pompputten/peilput; `ssn:deployedOnPlatform` naar de exploitatielocatie.
+Resources met locatiedata hebben een `geo:hasGeometry`-node met `geo:asWKT`. Lozingspunten 2400019 en 9991095 hebben geen geometrie in IMJV en krijgen dus geen geometrie-node. Filters hebben ook geen geometrie. De exploitatie heeft `ssn:deployedSystem` voor alle emissiepunten/lozingspunten/pompputten/peilput; `ssn:deployedOnPlatform` naar de exploitatielocatie.
+
+Elk emissiepunt en lozingspunt heeft nu ook:
+- `prov:wasRevisionOf` naar de tijdloze basis-IRI (zonder `/jaar/2021`)
+- `ssn:hasSubSystem` naar een afgeleid `:Meetpunt` met IRI-patroon `/id/meetpunt/…`
