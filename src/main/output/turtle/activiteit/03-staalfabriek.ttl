@@ -14,6 +14,7 @@
 @prefix dct:                <http://purl.org/dc/terms/> .
 @prefix dcterms:            <http://purl.org/dc/terms/> .
 @prefix dctype:             <http://purl.org/dc/dcmitype/> .
+@prefix dossier:            <https://data.vlaanderen.be/ns/dossier#> .
 @prefix dqv:                <http://www.w3.org/ns/dqv#> .
 @prefix emissiepunt:        <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix ent:                <https://example.org/entity/> .
@@ -33,6 +34,7 @@
 @prefix nace:               <http://data.europa.eu/ux2/nace2.1/> .
 @prefix ns5:                <http://mappings.dbpedia.org/index.php/OntologyProperty:> .
 @prefix ns6:                <http://mappings.dbpedia.org/index.php/OntologyClass:> .
+@prefix oa:                 <http://www.w3.org/ns/oa#> .
 @prefix observation:        <https://data.riepr.omgeving.vlaanderen.be/id/observation/> .
 @prefix ogc:                <http://www.opengis.net/ont/geosparql#> .
 @prefix org:                <http://www.w3.org/ns/org#> .
@@ -313,45 +315,32 @@ var:apparaat_0400123123_6851234567_0007
 var:gedec_staal  rdf:type    pplan:Variable;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
 
+installatie:0400123123_6851234567_0000004
+        rdf:type           geo:SpatialObject , riepr:Installatie , ssn:System;
+        rdfs:label         "AOD-installatie"@nl;
+        dct:created        "2020-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued         "2020-07-30"^^xsd:date;
+        dct:valid          "2030-12-31"^^xsd:date;
+        adms:status        riepr:Actief;
+        sosa:hasSubSystem  apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000003;
+        sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
+        ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
+        ssn:hasProperty    [ rdf:type           ssn:Property , riepr:SysteemEigenschap;
+                             dct:type           <http://codelijst/installatie/vermogen>;
+                             qudt:hasUnit       unit:Watt;
+                             qudt:numericValue  5000;
+                             ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
+                           ];
+        ssn:hasProperty    [ rdf:type           ssn:Property , riepr:SysteemEigenschap;
+                             dct:type           <http://codelijst/installatie/capaciteit>;
+                             qudt:hasUnit       unit:tonnePerDay;
+                             qudt:numericValue  100;
+                             ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
+                           ] .
+
 var:vloeibaar_staal  rdf:type  pplan:Variable;
         pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 .
-
-installatie:0400123123_6851234567_0000004
-        rdf:type                        geo:SpatialObject , riepr:Installatie , ssn:System;
-        rdfs:label                      "AOD-installatie"@nl;
-        dct:created                     "2020-01-01T00:00:00"^^xsd:dateTime;
-        dct:issued                      "2020-07-30"^^xsd:date;
-        dct:valid                       "2030-12-31"^^xsd:date;
-        adms:status                     riepr:Actief;
-        sosa:hasSubSystem               apparaat:0400123123_6851234567_0004 , emissiepunt:0400123123_6851234567_0000003;
-        sosa:isHostedBy                 exploitatielocatie:0400123123_6851234567;
-        ssn:hasDeployment               exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
-        ssn:hasProperty                 [ rdf:type           ssn:systemsSystemProperty;
-                                          dct:type           <http://codelijst/installatie/capaciteit>;
-                                          qudt:hasUnit       unit:tonnePerDay;
-                                          qudt:numericValue  100;
-                                          ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
-                                        ];
-        ssn:hasProperty                 [ rdf:type           ssn:systemsSystemProperty;
-                                          dct:type           <http://codelijst/installatie/vermogen>;
-                                          qudt:hasUnit       unit:Watt;
-                                          qudt:numericValue  5000;
-                                          ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
-                                        ];
-        ssn:systemshasSystemCapability  [ rdf:type                      ssn:systemsSystemCapability;
-                                          ssn:systemshasSystemProperty  [ rdf:type           ssn:systemsSystemProperty;
-                                                                          dct:type           <http://codelijst/installatie/vermogen>;
-                                                                          qudt:hasUnit       unit:Watt;
-                                                                          qudt:numericValue  5000
-                                                                        ];
-                                          ssn:systemshasSystemProperty  [ rdf:type           ssn:systemsSystemProperty;
-                                                                          dct:type           <http://codelijst/installatie/capaciteit>;
-                                                                          qudt:hasUnit       unit:tonnePerDay;
-                                                                          qudt:numericValue  100
-                                                                        ];
-                                          ssn:systemsinCondition        <http://todo/conditie/normaal>
-                                        ] .
 
 entity:vloeibaar_staal2026-01-01T10:00:00Z
         rdf:type                     pplan:Entity , prov:Entity;
@@ -992,6 +981,8 @@ actuation:0400123123_6851234567_00021999-01-01T00:00:00Z
         sosa:madeBySystem        apparaat:0400123123_6851234567_0002;
         sosa:startTime           "1999-01-01T00:00:00Z"^^xsd:dateTime .
 
+riepr:Actief  rdf:type  skos:Concept .
+
 emissiepunt:0400123123_6851234567_0000001
         rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
         rdfs:comment        "Afzuiging en ontstoffing van de toevoeginstallatie"@nl;
@@ -1027,8 +1018,6 @@ entity:gezuiverd_staal2020-07-30T10:00:00Z
         prov:hadDerivation           entity:afgewerkt_staal2020-07-30T10:00:00Z;
         prov:influenced              actuation:0400123123_6851234567_00072020-07-30T10:00:00Z , entity:afgewerkt_staal2020-07-30T10:00:00Z;
         prov:wasUsedBy               actuation:0400123123_6851234567_00072020-07-30T10:00:00Z .
-
-riepr:Actief  rdf:type  skos:Concept .
 
 actuation:0400123123_6851234567_00032026-01-01T10:00:00Z
         rdf:type                 sosa:Execution , pplan:Activity , sosa:Actuation , prov:Activity;
@@ -1423,6 +1412,10 @@ stof:vloeibaar_staal  rdf:type  pplan:Variable , riepr:ProcesVariabele;
         rdfs:label          "Vloeibaar staal"@nl;
         pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0007 .
 
+var:schroot  rdf:type        pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0003 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0003 .
+
 entity:rookgas2026-01-01T10:00:00Z
         rdf:type                     riepr:Emissie , sosa:Result , prov:Entity , pplan:Entity;
         rdfs:label                   "Rookgas"@nl;
@@ -1436,12 +1429,8 @@ entity:rookgas2026-01-01T10:00:00Z
         sosa:isFeatureOfInterestOf   observation:0400123123_6851234567_00000052026-01-01T10:00:00Z;
         sosa:isResultOf              actuation:0400123123_6851234567_00000022026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000052026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000032026-01-01T10:00:00Z .
 
-var:schroot  rdf:type        pplan:Variable;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0003 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0003 .
-
 exploitatielocatie:0400123123_6851234567
-        rdf:type              geo:Feature , geo:SpatialObject , prov:Entity , sosa:Platform , riepr:ExploitatieLocatie;
+        rdf:type              geo:Feature , geo:SpatialObject , prov:Entity , riepr:ExploitatieLocatie;
         rdfs:label            "Hoofdzetel Staalfabriek NV"@nl;
         dct:created           "2020-07-30T10:00:00Z"^^xsd:dateTime;
         dct:issued            "2020-07-30"^^xsd:date;
