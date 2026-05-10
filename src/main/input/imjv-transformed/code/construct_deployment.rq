@@ -9,11 +9,13 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX adms: <http://www.w3.org/ns/adms#>
 PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
 PREFIX imjv: <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX : <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX qudt:   <http://qudt.org/schema/qudt/>
+
 PREFIX sdmxa: <http://purl.org/linked-data/sdmx/2009/attribute#>
 
 
@@ -39,6 +41,10 @@ construct
     ?hoofdproces a :Proces .
 
     ?systeem  a ssn:System , ?myType ;
+        dct:modified "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:created "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+        dcterms:issued "2010-01-01"^^xsd:date;
+        adms:status st:in_gebruik ;
         sosa:isHostedBy ?exploitatielocatie ;
         rdfs:label ?systeem_label ;
         geo:hasGeometry ?systeem_geometrie ;
@@ -47,25 +53,45 @@ construct
         ssn:hasSubSystem ?meetput ;
         ssn:hasDeployment ?exploitatie .
 
-    ?systeem_base  a ssn:System , ?myType .
+    ?systeem_base  dct:modified "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+        dct:created "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        adms:status st:in_gebruik ;
+        a ssn:System , ?myType .
 
     ?gekoppeldeActiviteit a :Installatie ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?gekoppeldeActiviteit_label ;
         sosa:isHostedBy ?exploitatielocatie ;
         ssn:hasSubSystem ?systeem ;
         ssn:hasDeployment ?exploitatie .
 
     ?zuiveringsApparatuur  a ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?zuiveringsApparatuur_label ;
         ssn:hasDeployment ?exploitatie ;
         sosa:isHostedBy ?exploitatielocatie .
 
     ?meetput a ?meetpuntType , ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         ssn:hasDeployment ?exploitatie .
 
     ?systeem_geometrie geo:asWKT ?systeem_wkt .
 
     ?pompput a :Onttrekkingspunt , ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?pompput_label ;
         sosa:isHostedBy ?exploitatielocatie ;
         geo:hasGeometry ?pompput_geometrie ;
@@ -74,11 +100,19 @@ construct
     ?pompput_geometrie geo:asWKT ?pompput_wkt .
 
     ?pompfilter a :Filter , ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?pompfilter_label ;
         sosa:isHostedBy ?exploitatielocatie ;
         ssn:hasDeployment ?exploitatie .
 
     ?peilput a :Meetpunt , ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?peilput_label ;
         sosa:isHostedBy ?exploitatielocatie ;
         geo:hasGeometry ?peilput_geometrie ;
@@ -87,9 +121,15 @@ construct
     ?peilput_geometrie geo:asWKT ?peilput_wkt .
 
     ?peilfilter a :Filter , ssn:System ;
+        dcterms:created     "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dcterms:issued      "2010-01-01"^^xsd:date;
+        dcterms:modified    "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status     st:in_gebruik ;
         rdfs:label ?peilfilter_label ;
         sosa:isHostedBy ?exploitatielocatie ;
         ssn:hasDeployment ?exploitatie .
+
+    st:in_gebruik a adms:Status, skos:Concept .
 
 }
 where {
@@ -103,6 +143,7 @@ where {
                 rdfs:label ?systeem_label ;
                 a ?type.
             FILTER (CONTAINS(STR(?systeem), "/2021"))
+
         }
     }
 
