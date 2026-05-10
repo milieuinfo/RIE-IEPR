@@ -15,6 +15,7 @@
 @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix concept: <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix dct:    <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
@@ -1593,27 +1594,27 @@
 # Individuals
 # --------------------------------------- #
 # Status concepten voor adms:status
-concept:in_gebruik a adms:Status, skos:Concept ;
+st:in_gebruik a adms:Status, skos:Concept ;
     rdfs:label "In gebruik"@nl ;
     rdfs:comment "De status 'In gebruik' geeft aan dat een entiteit momenteel in gebruik is."@nl ;
     skos:prefLabel "In gebruik"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Completed> .
-concept:tijdelijk_uit_dienst a adms:Status, skos:Concept ;
+st:tijdelijk_uit_dienst a adms:Status, skos:Concept ;
     rdfs:label "Tijdelijk uit dienst"@nl ;
     rdfs:comment "De status 'Tijdelijk uit dienst' geeft aan dat een entiteit momenteel niet in gebruik is."@nl ;
     skos:prefLabel "Tijdelijk uit dienst"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Deprecated> .
-concept:definitief_uit_dienst a adms:Status, skos:Concept ;
+st:definitief_uit_dienst a adms:Status, skos:Concept ;
     rdfs:label "Definitief uit dienst"@nl ;
     rdfs:comment "De status 'Definitief uit dienst' geeft aan dat een entiteit permanent buiten gebruik is gesteld."@nl ;
     skos:prefLabel "Definitief uit dienst"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Withdrawn> .
-concept:ontmanteld a adms:Status, skos:Concept ;
+st:ontmanteld a adms:Status, skos:Concept ;
     rdfs:label "Ontmanteld"@nl ;
     rdfs:comment "De status 'Ontmanteld' geeft aan dat een entiteit is afgebroken of verwijderd."@nl ;
     skos:prefLabel "Ontmanteld"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/Withdrawn> .
-concept:voorgesteld a adms:Status, skos:Concept ;
+st:voorgesteld a adms:Status, skos:Concept ;
     rdfs:label "Voorgesteld"@nl ;
     rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is."@nl ;
     skos:prefLabel "Voorgesteld"@nl ;
