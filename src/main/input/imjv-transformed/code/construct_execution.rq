@@ -1,6 +1,7 @@
 PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 PREFIX stof:    <https://data.riepr.omgeving.vlaanderen.be/id/stof/>
 PREFIX agent:    <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
+PREFIX concept: <https://data.imjv.omgeving.vlaanderen.be/id/concept/>
 PREFIX pplan:   <http://purl.org/net/p-plan#>
 PREFIX prov:    <http://www.w3.org/ns/prov#>
 PREFIX ssn:     <http://www.w3.org/ns/ssn/>
@@ -13,6 +14,8 @@ PREFIX sosa:    <http://www.w3.org/ns/sosa/>
 PREFIX qudt:    <http://qudt.org/schema/qudt/>
 PREFIX sdmxa:   <http://purl.org/linked-data/sdmx/2009/attribute#>
 PREFIX schema:  <http://schema.org/>
+PREFIX time:    <http://www.w3.org/2006/time#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 
 construct
 {
@@ -24,18 +27,33 @@ construct
     #stof:proceswater a riepr:ProcesVariabele ; rdfs:label "Proceswater"@nl .
 
     # Emissie — FeatureOfInterest én instantie van de planvariabele
-    ?emissie a riepr:Emissie ;
+    ?emissie a riepr:Emissie , sosa:FeatureOfInterest;
+        sosa:isFeatureOfInterestOf ?obs , ?concentratie , ?debiet , ?emissieDuur ;
         dct:type ?emissie_type ;
+        ssn:hasProperty ?substantie , concept:debiet  , concept:emissieduur  ;
         rdfs:label ?emissie_label ;
         prov:wasAttributedTo  ?emissiepuntToestand ;
         pplan:correspondsToVariable ?emissieVar .
 
+    # Gedeeld tijdinterval voor het rapportagejaar
+    ?tijdInterval a time:Interval ;
+        time:hasBeginning ?tijdBegin ;
+        time:hasEnd ?tijdEinde .
+    ?tijdBegin a time:Instant ;
+        time:inXSDDateTime ?beginDT .
+    ?tijdEinde a time:Instant ;
+        time:inXSDDateTime ?eindeDT .
+
+
+
     # Massa-emissie observaties per stof
-    ?obs a sosa:Observation ;
+    ?obs a sosa:Observation  , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
         sosa:hasResult ?result ;
+        sosa:phenomenonTime ?tijdInterval ;
+        sosa:resultTime ?resultTime ;
         rdfs:label ?obs_label ;
         qb:dataSet ?dataset ;
         sosa:usedProcedure ?procedure .
@@ -44,7 +62,7 @@ construct
 
     ?procedure  a sosa:Procedure  , sosa:ObservingProcedure.
 
-    ?substantie a sosa:Property , sosa:ObservableProperty .
+    ?substantie a sosa:Property , sosa:ObservableProperty , ssn:Property.
 
     ?result a sosa:Result ;
         qudt:quantityValue ?quantityValue .
@@ -54,11 +72,13 @@ construct
         qudt:hasUnit ?unitMeasure .
 
     # Concentratie-observaties (OPTIONAL)
-    ?concentratie a sosa:Observation ;
+    ?concentratie a sosa:Observation  , sosa:Execution ;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
         sosa:hasResult ?result_concentratie ;
+        sosa:phenomenonTime ?tijdInterval ;
+        sosa:resultTime ?resultTime ;
         rdfs:label ?concentratie_label ;
         sosa:usedProcedure ?procedure .
 
@@ -72,13 +92,15 @@ construct
         qudt:hasUnit ?unitMeasure_concentratie .
 
     # Debiet-observaties (OPTIONAL, alleen voor luchtemissies)
-    ?debiet a sosa:Observation ;
+    ?debiet a sosa:Observation  , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
-        sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/debiet> ;
+        sosa:observedProperty  concept:debiet ;
         sosa:hasResult ?result_debiet ;
+        sosa:phenomenonTime ?tijdInterval ;
+        sosa:resultTime ?resultTime ;
         rdfs:label ?debiet_label ;
-        sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/debietmeting> .
+        sosa:usedProcedure concept:debietmeting .
 
     ?result_debiet sosa:isResultOf ?debiet .
 
@@ -90,13 +112,15 @@ construct
         qudt:hasUnit ?unitMeasure_debiet .
 
     # Emissieduur-observaties (OPTIONAL, alleen voor luchtemissies)
-    ?emissieDuur a sosa:Observation ;
+    ?emissieDuur a sosa:Observation , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
-        sosa:observedProperty <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduur> ;
+        sosa:observedProperty concept:emissieduur ;
         sosa:hasResult ?result_emissieDuur ;
+        sosa:phenomenonTime ?tijdInterval ;
+        sosa:resultTime ?resultTime ;
         rdfs:label ?emissieDuur_label ;
-        sosa:usedProcedure <https://data.imjv.omgeving.vlaanderen.be/id/concept/emissieduurmeting> .
+        sosa:usedProcedure concept:emissieduurmeting .
 
     ?result_emissieDuur sosa:isResultOf ?emissieDuur .
 
@@ -196,6 +220,16 @@ where
         "_activiteit_",
         REPLACE(STR(?activiteit), "^.*/", ""),
         "_", ?medium)) AS ?emissieVar)
+
+    # Tijdinterval afgeleid van het rapportagejaar
+    BIND(REPLACE(STR(?emissiepuntToestand), "^.*/([0-9]{4})$", "$1") AS ?jaar)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar)) AS ?tijdInterval)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/begin")) AS ?tijdBegin)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/einde")) AS ?tijdEinde)
+    BIND(STRDT(CONCAT(?jaar, "-01-01T00:00:00"), xsd:dateTime) AS ?beginDT)
+    BIND(STRDT(CONCAT(?jaar, "-12-31T23:59:59"), xsd:dateTime) AS ?eindeDT)
+    BIND(xsd:integer(?jaar) + 1 AS ?volgendJaar)
+    BIND(STRDT(CONCAT(STR(?volgendJaar), "-01-01T00:00:00"), xsd:dateTime) AS ?resultTime)
 
     # Afgeleide IRIs
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result)
