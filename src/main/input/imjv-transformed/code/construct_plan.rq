@@ -7,6 +7,8 @@ PREFIX dct:     <http://purl.org/dc/terms/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+PREFIX adms: <http://www.w3.org/ns/adms#>
 
 construct
 {
@@ -18,8 +20,11 @@ construct
 
     # Hoofdproces — één per exploitatie
     ?hoofdproces a riepr:Proces ;
-        rdfs:label ?hoofdproces_label ;
-        dct:created "2021-01-01T00:00:00Z"^^xsd:dateTime .
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        rdfs:label ?hoofdproces_label .
 
     # Grondwatergroep-proces — sub-proces van het hoofdproces
     ?grondwaterProces a riepr:Proces ;
@@ -191,4 +196,13 @@ where
              ?exploitatieID, "_monitoring_", STR(?peilput_id))), ?noop) AS ?peilputProces)
     BIND(IF(BOUND(?pompput_label_raw), STRLANG(REPLACE(STR(?pompput_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?pompput_naam)
     BIND(IF(BOUND(?peilput_label_raw), STRLANG(REPLACE(STR(?peilput_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?peilput_naam)
+
+    BIND(REPLACE(STR(?systeem), "^.*/([0-9]{4})$", "$1") AS ?jaar)
+    BIND(STRDT(CONCAT(?jaar, "-01-01"), xsd:date) AS ?beginDate)
+    BIND(STRDT(CONCAT(?jaar, "-01-01T00:00:00"), xsd:dateTime) AS ?beginDT)
+    BIND(STRDT(CONCAT(?jaar, "-12-31T23:59:59"), xsd:dateTime) AS ?eindeDT)
+    BIND("2010-01-01T00:00:00Z"^^xsd:dateTime  AS ?dateTime)
+    BIND("2010-01-01"^^xsd:date  AS ?date)
+    BIND(st:in_gebruik  AS ?status)
+
 }
