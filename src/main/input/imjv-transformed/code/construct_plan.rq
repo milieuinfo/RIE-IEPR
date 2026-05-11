@@ -9,14 +9,18 @@ PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
 PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 construct
 {
     # Procesvariabelen — één per (activiteit, medium)-combinatie
-    ?procesVar a riepr:ProcesVariabele ; rdfs:label ?procesVar_label .
+    ?procesVar a riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label ?procesVar_label .
+
+
 
     # Globale grondwater-variabele (niet activiteitsspecifiek)
-    stof:grondwater  a riepr:ProcesVariabele ; rdfs:label "Grondwater"@nl .
+    stof:grondwater  a riepr:ProcesVariabele , pplan:Variable ; rdfs:label "Grondwater"@nl .
 
     # Hoofdproces — één per exploitatie
     ?hoofdproces a riepr:Proces ;
@@ -29,12 +33,20 @@ construct
     # Grondwatergroep-proces — sub-proces van het hoofdproces
     ?grondwaterProces a riepr:Proces ;
         rdfs:label "Grondwateronttrekking en -monitoring"@nl ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         pplan:isStepOfPlan ?hoofdproces ;
         pplan:hasInputVar stof:grondwater .
 
     # Activiteits-sub-proces — één per gekoppeldeActiviteit
     ?activiteitProces a riepr:Proces ;
         rdfs:label ?activiteit_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         pplan:isStepOfPlan ?hoofdproces ;
         pplan:hasOutputVar ?procesVar ;
         sosa:implementedBy ?activiteit .
@@ -42,6 +54,10 @@ construct
     # Uitstoot- of lozing-sub-proces — één per emissiepunt of lozingspunt
     ?systeemProces a riepr:Proces ;
         rdfs:label ?systeemProces_label ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         dct:type riepr:uitstootProces ;
         pplan:isStepOfPlan ?activiteitProces ;
         pplan:hasInputVar ?procesVar ;
@@ -51,6 +67,10 @@ construct
     # Zuiveringsapparaat-sub-proces — één per zuiveringsapparaat van een emissiepunt
     ?zuiveringsapparaatProces a riepr:Proces ;
         rdfs:label ?zuivering_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         dct:type riepr:zuiveringsProces ;
         pplan:isStepOfPlan ?systeemProces ;
         pplan:hasInputVar ?procesVar ;
@@ -60,6 +80,10 @@ construct
     ?pompputProces a riepr:Proces ;
         rdfs:label ?pompput_naam ;
         dct:type riepr:onttrekkingsProces ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         pplan:isStepOfPlan ?grondwaterProces ;
         pplan:hasInputVar stof:grondwater ;
         sosa:implementedBy ?pompput .
@@ -67,10 +91,20 @@ construct
     # Peilput-sub-proces — één per peilput
     ?peilputProces a riepr:Proces ;
         rdfs:label ?peilput_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
         dct:type riepr:meetProces ;
         pplan:isStepOfPlan ?grondwaterProces ;
         pplan:hasInputVar stof:grondwater ;
         sosa:implementedBy ?peilput .
+
+    st:in_gebruik a adms:Status, skos:Concept .
+    riepr:meetProces a sosa:Procedure , skos:Concept .
+    riepr:onttrekkingsProces a sosa:Procedure , skos:Concept .
+    riepr:zuiveringsProces a sosa:Procedure , skos:Concept .
+    riepr:uitstootProces a sosa:Procedure , skos:Concept .
 }
 where
 {

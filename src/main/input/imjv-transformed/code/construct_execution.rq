@@ -16,11 +16,15 @@ PREFIX sdmxa:   <http://purl.org/linked-data/sdmx/2009/attribute#>
 PREFIX schema:  <http://schema.org/>
 PREFIX time:    <http://www.w3.org/2006/time#>
 PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 construct
 {
     # de mens fo het labo of de sensor die de observaties doet
-    agent:labo_mens_sensor_x a sosa:Sensor, prov:Agent .
+    agent:labo_mens_sensor_x a sosa:Sensor, prov:Agent ;
+        ssn:implements riepr:meetProces .
+
+    riepr:meetProces a sosa:Procedure , skos:Concept .
 
     # Procesvariabelen
     #stof:rookgas     a riepr:ProcesVariabele ; rdfs:label "Rookgas"@nl .

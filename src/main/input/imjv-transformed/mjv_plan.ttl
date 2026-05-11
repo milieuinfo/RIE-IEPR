@@ -1,4 +1,5 @@
 PREFIX adms:    <http://www.w3.org/ns/adms#>
+PREFIX adres:   <https://data.vlaanderen.be/ns/adres#>
 PREFIX agent:   <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
 PREFIX concept: <https://data.imjv.omgeving.vlaanderen.be/id/concept/>
 PREFIX dct:     <http://purl.org/dc/terms/>
@@ -27,296 +28,427 @@ PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_13179>
         rdf:type            riepr:Proces;
         rdfs:label          "Wastoren etslijn 2 (gaswasser)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:zuiveringsProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19105_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_13005>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_9159>
         rdf:type            riepr:Proces;
         rdfs:label          "NAVERBRANDER (KATALYTISCHE NAVERBRANDER)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:zuiveringsProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_10581_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_8058>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_9158>
         rdf:type            riepr:Proces;
         rdfs:label          "ELECTROFILTER (ELECTROFILTER)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:zuiveringsProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9158> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_4062>
         rdf:type            riepr:Proces;
         rdfs:label          "WASTOREN etsafdeling (NATTE STOFVANGER OF GASWASSER)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:zuiveringsProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_1178_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2271>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_12782>
         rdf:type            riepr:Proces;
         rdfs:label          "SCR (reductie NOx)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:zuiveringsProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/12782> .
 
+riepr:zuiveringsProces
+        rdf:type  sosa:Procedure , skos:Concept .
+
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Proceswater"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19105_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13241_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13239_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_1178_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_10581_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    pplan:Variable , riepr:ProcesVariabele;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19242_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    riepr:ProcesVariabele , pplan:Variable;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19241_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    riepr:ProcesVariabele , pplan:Variable;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>
-        rdf:type    riepr:ProcesVariabele;
+        rdf:type    riepr:ProcesVariabele , pplan:Variable;
         rdfs:label  "Rookgas"@nl .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_monitoring_2020-095507>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - PEILPUT (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:meetProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043751>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - 3 (VT VERZENDING) (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:onttrekkingsProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043750>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - 2 (ONDERHOUD) (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:onttrekkingsProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043749>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - 1 (FL KOELTOREN) (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:onttrekkingsProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043748>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - 5 (KG VERZENDING) (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:onttrekkingsProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043747>
         rdf:type            riepr:Proces;
         rdfs:label          "AGC GLASS EUROPE VESTIGING MOL - 4 (KG ATELIER) (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:onttrekkingsProces;
         pplan:hasInputVar   stof:grondwater;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400019>
         rdf:type            riepr:Proces;
         rdfs:label          "OPGENOMEN KANAALWATER (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400007>
         rdf:type            riepr:Proces;
         rdfs:label          "LP02 INDUSTRIEEL KEMPENGLAS (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_9991095>
         rdf:type            riepr:Proces;
         rdfs:label          "LP07 INDUSTRIEEL COATER (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400006>
         rdf:type            riepr:Proces;
         rdfs:label          "LP01 INDUSTRIEEL GLASFABRIEK (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19105>
         rdf:type            riepr:Proces;
         rdfs:label          "ETSLIJN 2 etsafdeling"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19105_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19105> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323>
         rdf:type            riepr:Proces;
         rdfs:label          "Vormen en bewerken van vlakglas"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/323> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_13241>
         rdf:type            riepr:Proces;
         rdfs:label          "VACUUMPOMPEN"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13241_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13241> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_13239>
         rdf:type            riepr:Proces;
         rdfs:label          "STOOKINSTALLATIES EN STOOMKETELS"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13239_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13239> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_1178>
         rdf:type            riepr:Proces;
         rdfs:label          "ETSLIJN 1 etsafdeling"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_1178_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/1178> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_10581>
         rdf:type            riepr:Proces;
         rdfs:label          "ELEKTRISCHE DROOGOVEN MET NAVERBRANDER"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_10581_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/10581> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19242>
         rdf:type            riepr:Proces;
         rdfs:label          "Steam reformer rechts"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19242_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19242> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19241>
         rdf:type            riepr:Proces;
         rdfs:label          "Steam reformer links"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19241_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19241> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19240>
         rdf:type            riepr:Proces;
         rdfs:label          "GLASOVEN"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19240> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_13005>
         rdf:type            riepr:Proces;
         rdfs:label          "ETSLIJN 2 ETSAFDELING (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19105_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19105_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19105>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_6295>
         rdf:type            riepr:Proces;
         rdfs:label          "VACUUMPOMPEN (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13241_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13241_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_13241>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_8059>
         rdf:type            riepr:Proces;
         rdfs:label          "STOOKINSTALLATIES (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13239_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_13239_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_13239>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2271>
         rdf:type            riepr:Proces;
         rdfs:label          "ETSLIJN 1ETSAFDELING (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_1178_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_1178_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_1178>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_8058>
         rdf:type            riepr:Proces;
         rdfs:label          "SCHOUW NAVERBRANDER (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_10581_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_10581_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_10581>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_13144>
         rdf:type            riepr:Proces;
         rdfs:label          "STEAM REFORMER RECHTS (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19242_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19242_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19242>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_13143>
         rdf:type            riepr:Proces;
         rdfs:label          "STEAM REFORMER LINKS (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19241_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19241_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19241>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269>
         rdf:type            riepr:Proces;
         rdfs:label          "SCHOUW GLASOVEN (2021)"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         dcterms:type        riepr:uitstootProces;
         pplan:hasInputVar   <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>;
         pplan:hasOutputVar  <https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas>;
         pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_19240>;
+        adms:status         st:in_gebruik;
         sosa:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>
@@ -330,8 +462,21 @@ PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater>
         rdf:type            riepr:Proces;
         rdfs:label          "Grondwateronttrekking en -monitoring"@nl;
+        dcterms:created     "2021-01-01T00:00:00"^^xsd:dateTime;
+        dcterms:issued      "2021-01-01"^^xsd:date;
+        dcterms:modified    "2021-01-01T00:00:00"^^xsd:dateTime;
         pplan:hasInputVar   stof:grondwater;
-        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021> .
+        pplan:isStepOfPlan  <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>;
+        adms:status         st:in_gebruik .
 
-stof:grondwater  rdf:type  riepr:ProcesVariabele;
+riepr:meetProces  rdf:type  skos:Concept , sosa:Procedure .
+
+riepr:onttrekkingsProces
+        rdf:type  skos:Concept , sosa:Procedure .
+
+riepr:uitstootProces  rdf:type  skos:Concept , sosa:Procedure .
+
+stof:grondwater  rdf:type  riepr:ProcesVariabele , pplan:Variable;
         rdfs:label  "Grondwater"@nl .
+
+st:in_gebruik  rdf:type  skos:Concept , adms:Status .
