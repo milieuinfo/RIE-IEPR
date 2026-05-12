@@ -47,7 +47,7 @@ Twee lozingspunten (2400019 "OPGENOMEN KANAALWATER" en 9991095 "LP07 INDUSTRIEEL
 
 De CBB-URI is de ankervariabele voor alle lookups (`imjv:exploitatie ?expl`).
 
-Elk emissiepunt- of lozingspunt-subject is een jaarversie (`/jaar/2021`). Via `prov:wasRevisionOf` wordt de tijdloze basis-IRI gelinkt zodat meerdere jaarsversies te vergelijken zijn. Via `ssn:hasSubSystem` wordt een bijhorend `:Meetpunt` aangemaakt waarvan de IRI het type-segment (`emissiepunt`/`lozingspunt`) vervangt door `meetpunt`.
+Elk emissiepunt- of lozingspunt-subject is een jaarversie (`/jaar/2021`). Via `prov:wasRevisionOf` wordt de tijdloze basis-IRI gelinkt zodat meerdere jaarsversies te vergelijken zijn (die basis-IRI is zelf ook een volwaardig subject in het resultaatbestand). Via `ssn:hasSubSystem` wordt een afgeleid meetpunt-resource aangemaakt waarvan de IRI het type-segment (`emissiepunt`/`lozingspunt`) vervangt door `meetpunt`. Dit meetpunt-resource krijgt type `:Meetpunt` voor gewone emissie-/lozingspunten, maar type `:Filter` voor het lozingspunt dat als `:Onttrekkingspunt` geclassificeerd is (lozingspunt 2400019).
 
 ---
 
@@ -174,13 +174,15 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 
 ## Resultaat
 
-`mjv_deployment.ttl` bevat 72 subjects:
+`mjv_deployment.ttl` bevat 84 CONSTRUCT-gegenereerde subjects (plus extra subjects door OWL-inferentie in de Scala-pijplijn):
 
 | Resource | Klasse | Aantal |
 |---|--|---|
-| emissiepunten (toestand) | `:Emissiepunt`, `ssn:System` | 8 |
-| lozingspunten (toestand) | `:Emissiepunt` of `:Onttrekkingspunt`, `ssn:System` | 4 (3 + 1) |
-| meetpunten (afgeleid van emis-/lozingspunten) | `:Meetpunt` | 12 |
+| emissiepunten (toestand `/jaar/2021`) | `:Emissiepunt`, `ssn:System` | 8 |
+| lozingspunten (toestand `/jaar/2021`) | `:Emissiepunt` of `:Onttrekkingspunt`, `ssn:System` | 4 (3 + 1) |
+| emissiepunten + lozingspunten (tijdloos, basis-IRI) | `:Emissiepunt`/`:Onttrekkingspunt`, `ssn:System` | 12 |
+| meetpunten (afgeleid van emissiepunten en `:Emissiepunt`-lozingspunten) | `:Meetpunt`, `ssn:System` | 11 |
+| meetpunt (afgeleid van het `:Onttrekkingspunt`-lozingspunt 2400019) | `:Filter`, `ssn:System` | 1 |
 | pompputten | `:Onttrekkingspunt`, `ssn:System` | 5 |
 | peilput | `:Meetpunt`, `ssn:System` | 1 |
 | pompfilters + peilfilters | `:Filter`, `ssn:System` | 8 |
@@ -194,5 +196,5 @@ De CONSTRUCT-clausule genereert correct triples per rij: een rij met gebonden `?
 Resources met locatiedata hebben een `geo:hasGeometry`-node met `geo:asWKT`. Lozingspunten 2400019 en 9991095 hebben geen geometrie in IMJV en krijgen dus geen geometrie-node. Filters hebben ook geen geometrie. De exploitatie heeft `ssn:deployedSystem` voor alle emissiepunten/lozingspunten/pompputten/peilput; `ssn:deployedOnPlatform` naar de exploitatielocatie.
 
 Elk emissiepunt en lozingspunt heeft nu ook:
-- `prov:wasRevisionOf` naar de tijdloze basis-IRI (zonder `/jaar/2021`)
-- `ssn:hasSubSystem` naar een afgeleid `:Meetpunt` met IRI-patroon `/id/meetpunt/…`
+- `prov:wasRevisionOf` naar de tijdloze basis-IRI (zonder `/jaar/2021`). Die basis-IRI is zelf ook een volwaardig subject met `rdf:type`, `adms:status` en `dct:created/modified`.
+- `ssn:hasSubSystem` naar een afgeleid meetpunt-resource met IRI-patroon `/id/meetpunt/…`. Het type van deze resource is `:Meetpunt` voor gewone emissie-/lozingspunten, maar `:Filter` voor het lozingspunt dat als `:Onttrekkingspunt` geclassificeerd is (lozingspunt 2400019 "OPGENOMEN KANAALWATER").

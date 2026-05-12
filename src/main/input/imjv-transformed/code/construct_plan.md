@@ -38,6 +38,7 @@ proces:01787986000160_uitstoot_2269
 Hoofdproces (1)
 ├── Activiteits-sub-processen (9)  — één per ns1:Installatie
 │   └── Uitstoot-/lozing-sub-processen  — één per emissiepunt/lozingspunt
+│       └── Zuiverings-sub-processen (0–n)  — één per gekoppeld zuiveringsapparaat
 └── Grondwaterproces (1)
     ├── Onttrekkings-sub-processen (5)  — één per pompput
     └── Monitorings-sub-proces (1)      — peilput
@@ -64,9 +65,10 @@ https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021         
 https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_activiteit_323              # activiteits-sub-proces
 https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_uitstoot_2269               # uitstoot-sub-proces
 https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_lozing_2400006              # lozing-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_zuivering_9158              # zuiverings-sub-proces
 https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_grondwater                  # grondwaterproces
 https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_onttrekking_2019-043747     # pompput-sub-proces
-https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_monitoring_peilput          # peilput-sub-proces
+https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_monitoring_2020-095507      # peilput-sub-proces (suffix = IMJV-ID van de peilput)
 https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_19240_rookgas    # activiteitsspecifieke procesvariabele (lucht)
 https://data.riepr.omgeving.vlaanderen.be/id/variabele/01787986000160_activiteit_323_proceswater  # activiteitsspecifieke procesvariabele (water)
 https://data.riepr.omgeving.vlaanderen.be/id/stof/grondwater                                   # globale procesvariabele (grondwater)
@@ -82,6 +84,7 @@ https://data.riepr.omgeving.vlaanderen.be/id/stof/grondwater                    
 | `pplan:hasInputVar` / `pplan:hasOutputVar` | In-/uitvoerstof van het proces |
 | `sosa:implementedBy` | Abstracte processtap wordt uitgevoerd door concrete resource |
 | `dct:type riepr:uitstootProces` | Emissie of lozing naar lucht/water |
+| `dct:type riepr:zuiveringsProces` | Zuivering van een rookgas of proceswater stroom |
 | `dct:type riepr:onttrekkingsProces` | Grondwateronttrekking |
 | `dct:type riepr:meetProces` | Grondwaterstandmonitoring |
 
@@ -97,10 +100,11 @@ https://data.riepr.omgeving.vlaanderen.be/id/stof/grondwater                    
 | `riepr:Proces` (activiteits-sub-processen) | 9 |
 | `riepr:Proces` (uitstoot lucht) | 8 |
 | `riepr:Proces` (lozing water) | 4 |
+| `riepr:Proces` (zuivering) | 5 |
 | `riepr:Proces` (grondwater) | 1 |
 | `riepr:Proces` (pompput-onttrekking) | 5 |
 | `riepr:Proces` (peilput-monitoring) | 1 |
 | `riepr:ProcesVariabele` (activiteitsspecifiek lucht) | 8 |
 | `riepr:ProcesVariabele` (activiteitsspecifiek water) | 1 |
 | `riepr:ProcesVariabele` (globaal grondwater) | 1 |
-| **Totaal subjects** | **39** |
+| **Totaal RIEPR-subjects** | **44** |
