@@ -1,0 +1,42 @@
+PREFIX adms:    <http://www.w3.org/ns/adms#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX imjv:    <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX st:      <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+construct
+{
+    ?systeem_base rdfs:label ?systeem_label .
+
+    ?meetput rdfs:label ?systeem_label .
+
+    ?hoofdproces rdfs:label ?hoofdproces_label ;
+        adms:status ?status ;
+        dcterms:created ?dateTime ;
+        dcterms:modified ?dateTime .
+}
+where {
+    VALUES ?expl {
+        <___exploitatie___>
+    }
+    ?systeem imjv:exploitatie ?expl ;
+             rdfs:label ?systeem_label .
+    FILTER (CONTAINS(STR(?systeem), "/2021"))
+
+    BIND(IRI(REPLACE(STR(?systeem), "/jaar/[0-9]+$", "")) AS ?systeem_base)
+    BIND(IRI(REPLACE(STR(?systeem), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
+
+    BIND(IRI(REPLACE(STR(?expl),
+        "https://data.cbb.omgeving.vlaanderen.be/",
+        "https://data.imjv.omgeving.vlaanderen.be/")) AS ?exploitatielocatie)
+    ?exploitatielocatie rdfs:label ?exploitatielocatie_label .
+
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+        REPLACE(STR(?expl), "^.*/", ""), "_2021")) AS ?hoofdproces)
+    BIND(STRLANG(CONCAT(STR(?exploitatielocatie_label), " 2021"), "nl") AS ?hoofdproces_label)
+
+    BIND(st:in_gebruik AS ?status)
+    BIND("2010-01-01T00:00:00Z"^^xsd:dateTime AS ?dateTime)
+}

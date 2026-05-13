@@ -1,0 +1,242 @@
+PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX stof:    <https://data.riepr.omgeving.vlaanderen.be/id/stof/>
+PREFIX imjv:    <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX pplan:   <http://purl.org/net/p-plan#>
+PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+PREFIX dct:     <http://purl.org/dc/terms/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+construct
+{
+    # Procesvariabelen — één per (activiteit, medium)-combinatie
+    ?procesVar a riepr:ProcesVariabele , pplan:Variable ;
+        rdfs:label ?procesVar_label .
+
+
+
+    # Globale grondwater-variabele (niet activiteitsspecifiek)
+    stof:grondwater  a riepr:ProcesVariabele , pplan:Variable ; rdfs:label "Grondwater"@nl .
+
+    # Hoofdproces — één per exploitatie
+    ?hoofdproces a riepr:Proces ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        rdfs:label ?hoofdproces_label .
+
+    # Grondwatergroep-proces — sub-proces van het hoofdproces
+    ?grondwaterProces a riepr:Proces ;
+        rdfs:label "Grondwateronttrekking en -monitoring"@nl ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        pplan:isStepOfPlan ?hoofdproces ;
+        pplan:hasInputVar stof:grondwater .
+
+    # Activiteits-sub-proces — één per gekoppeldeActiviteit
+    ?activiteitProces a riepr:Proces ;
+        rdfs:label ?activiteit_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        pplan:isStepOfPlan ?hoofdproces ;
+        pplan:hasOutputVar ?procesVar ;
+        sosa:implementedBy ?activiteit .
+
+    # Uitstoot- of lozing-sub-proces — één per emissiepunt of lozingspunt
+    ?systeemProces a riepr:Proces ;
+        rdfs:label ?systeemProces_label ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        dct:type riepr:uitstootProces ;
+        pplan:isStepOfPlan ?activiteitProces ;
+        pplan:hasInputVar ?procesVar ;
+        pplan:hasOutputVar ?procesVar ;
+        sosa:implementedBy ?systeem .
+
+    # Zuiveringsapparaat-sub-proces — één per zuiveringsapparaat van een emissiepunt
+    ?zuiveringsapparaatProces a riepr:Proces ;
+        rdfs:label ?zuivering_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        dct:type riepr:zuiveringsProces ;
+        pplan:isStepOfPlan ?systeemProces ;
+        pplan:hasInputVar ?procesVar ;
+        sosa:implementedBy ?zuiveringsApparatuur .
+
+    # Pompput-sub-proces — één per pompput
+    ?pompputProces a riepr:Proces ;
+        rdfs:label ?pompput_naam ;
+        dct:type riepr:onttrekkingsProces ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        pplan:isStepOfPlan ?grondwaterProces ;
+        pplan:hasInputVar stof:grondwater ;
+        sosa:implementedBy ?pompput .
+
+    # Peilput-sub-proces — één per peilput
+    ?peilputProces a riepr:Proces ;
+        rdfs:label ?peilput_naam ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        dct:type riepr:meetProces ;
+        pplan:isStepOfPlan ?grondwaterProces ;
+        pplan:hasInputVar stof:grondwater ;
+        sosa:implementedBy ?peilput .
+
+    st:in_gebruik a adms:Status, skos:Concept .
+    riepr:meetProces a sosa:Procedure , skos:Concept .
+    riepr:onttrekkingsProces a sosa:Procedure , skos:Concept .
+    riepr:zuiveringsProces a sosa:Procedure , skos:Concept .
+    riepr:uitstootProces a sosa:Procedure , skos:Concept .
+}
+where
+{
+    # Blok 1 — anker: exploitatielocatie-naam voor het hoofdproces-label (1 rij via LIMIT 1)
+    {
+        SELECT ?expl ?exploitatielocatie_label
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            BIND(IRI(REPLACE(STR(?expl),
+                "https://data.cbb.omgeving.vlaanderen.be/",
+                "https://data.imjv.omgeving.vlaanderen.be/")) AS ?exploitatielocatie)
+            ?exploitatielocatie rdfs:label ?exploitatielocatie_label .
+            FILTER (!STRSTARTS(STR(?exploitatielocatie_label), "exploitatie"))
+        }
+        LIMIT 1
+    }
+
+    BIND(REPLACE(STR(?expl), "^.*/", "") AS ?exploitatieID)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_2021")) AS ?hoofdproces)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_grondwater")) AS ?grondwaterProces)
+    BIND(IF(BOUND(?exploitatielocatie_label), STRLANG(CONCAT(STR(?exploitatielocatie_label), " 2021"), "nl"), ?noop) AS ?hoofdproces_label)
+
+    # Blok 2 — emissiepunten en lozingspunten met hun gekoppeldeActiviteit
+    # Inner join op ?systeem met blok 1 (cartesiaans product 1 × 10 = 10 rijen)
+    {
+        SELECT DISTINCT ?systeem ?type ?activiteit ?activiteit_label_raw ?systeem_label_raw
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            VALUES ?type {
+                imjv:EmissiepuntStaat
+                imjv:LozingspuntStaat
+            }
+            ?systeem a ?type ;
+                imjv:exploitatie ?expl ;
+                imjv:gekoppeldeActiviteit ?activiteit ;
+                rdfs:label ?systeem_label_raw .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            ?activiteit rdfs:label ?activiteit_label_raw .
+            FILTER (!STRSTARTS(STR(?activiteit_label_raw), "RWZI"))
+            FILTER (
+                ?type = imjv:LozingspuntStaat ||
+                NOT EXISTS { ?systeem a imjv:LozingspuntStaat }
+            )
+        }
+    }
+
+    BIND(REPLACE(STR(?activiteit), "^.*/", "") AS ?activiteitID)
+    BIND(REPLACE(STR(?systeem), "^.*/([^/]+)/jaar/[0-9]+$", "$1") AS ?systeemID)
+    BIND(IF(?type = imjv:LozingspuntStaat, "lozing", "uitstoot") AS ?systeemPrefix)
+    BIND(IF(?type = imjv:LozingspuntStaat, "proceswater", "rookgas") AS ?medium)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/variabele/",
+             ?exploitatieID, "_activiteit_", ?activiteitID, "_", ?medium)) AS ?procesVar)
+    BIND(STRLANG(IF(?type = imjv:LozingspuntStaat, "Proceswater", "Rookgas"), "nl") AS ?procesVar_label)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_activiteit_", ?activiteitID)) AS ?activiteitProces)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_", ?systeemPrefix, "_", ?systeemID)) AS ?systeemProces)
+    BIND(IF(BOUND(?activiteit_label_raw), STRLANG(REPLACE(STR(?activiteit_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?activiteit_naam)
+    BIND(IF(BOUND(?systeem_label_raw), STRLANG(REPLACE(STR(?systeem_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?systeemProces_label)
+
+    # Blok 2b — zuiveringsapparaten gekoppeld aan emissiepunten
+    OPTIONAL {
+        SELECT DISTINCT ?systeem ?zuiveringsApparatuur ?zuiveringsApparatuur_label ?zuiveringsApparaatID
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                     imjv:zuiveringsApparatuur ?zuiveringsApparatuur .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            ?zuiveringsApparatuur rdfs:label ?zuiveringsApparatuur_label .
+            BIND(REPLACE(STR(?zuiveringsApparatuur), "^.*/", "") AS ?zuiveringsApparaatID)
+        }
+    }
+
+    BIND(IF(BOUND(?zuiveringsApparaatID),
+        IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+            ?exploitatieID, "_zuivering_", STR(?zuiveringsApparaatID))),
+        ?noop) AS ?zuiveringsapparaatProces)
+    BIND(IF(BOUND(?zuiveringsApparatuur_label),
+        STRLANG(REPLACE(STR(?zuiveringsApparatuur_label), "^.+ : ", ""), "nl"),
+        ?noop) AS ?zuivering_naam)
+
+    # Blok 3 — grondwatersystemen (OPTIONAL UNION van pompputten en peilput)
+    # Geen gedeelde variabele met blok 2 → cartesiaans product 10 × 6 = 60 rijen (acceptabel)
+    OPTIONAL {
+        SELECT ?pompput ?pompput_label_raw ?pompput_id ?peilput ?peilput_label_raw ?peilput_id
+        WHERE {
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?pompput a imjv:PompputStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?pompput_label_raw .
+                FILTER (CONTAINS(STR(?pompput), "/2021"))
+                BIND(REPLACE(STR(?pompput), "^.*/([^/]+)/jaar/[0-9]+$", "$1") AS ?pompput_id)
+            }
+            UNION
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?peilput a imjv:PeilputStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?peilput_label_raw .
+                FILTER (CONTAINS(STR(?peilput), "/2021"))
+                BIND(REPLACE(STR(?peilput), "^.*/([^/]+)/jaar/[0-9]+$", "$1") AS ?peilput_id)
+            }
+        }
+    }
+
+    # IF(BOUND(...)) voorkomt dat Virtuoso STRLANG/IRI aanroept met een NULL argument
+    BIND(IF(BOUND(?pompput_id), IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_onttrekking_", STR(?pompput_id))), ?noop) AS ?pompputProces)
+    BIND(IF(BOUND(?peilput_id), IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/",
+             ?exploitatieID, "_monitoring_", STR(?peilput_id))), ?noop) AS ?peilputProces)
+    BIND(IF(BOUND(?pompput_label_raw), STRLANG(REPLACE(STR(?pompput_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?pompput_naam)
+    BIND(IF(BOUND(?peilput_label_raw), STRLANG(REPLACE(STR(?peilput_label_raw), "^.+ : ", ""), "nl"), ?noop) AS ?peilput_naam)
+
+    BIND(REPLACE(STR(?systeem), "^.*/([0-9]{4})$", "$1") AS ?jaar)
+    BIND(STRDT(CONCAT(?jaar, "-01-01"), xsd:date) AS ?beginDate)
+    BIND(STRDT(CONCAT(?jaar, "-01-01T00:00:00"), xsd:dateTime) AS ?beginDT)
+    BIND(STRDT(CONCAT(?jaar, "-12-31T23:59:59"), xsd:dateTime) AS ?eindeDT)
+    BIND("2010-01-01T00:00:00Z"^^xsd:dateTime  AS ?dateTime)
+    BIND("2010-01-01"^^xsd:date  AS ?date)
+    BIND(st:in_gebruik  AS ?status)
+
+}

@@ -1,0 +1,300 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ssn: <http://www.w3.org/ns/ssn/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+PREFIX imjv: <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX : <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX qudt:   <http://qudt.org/schema/qudt/>
+
+PREFIX sdmxa: <http://purl.org/linked-data/sdmx/2009/attribute#>
+
+
+construct
+{
+    ?exploitatielocatie a :Exploitatielocatie , sosa:Platform;
+        dct:modified ?dateTime ;
+        dct:created ?dateTime ;
+        dcterms:issued ?date;
+        adms:status ?status ;
+        rdfs:label ?exploitatielocatie_label ;
+        adms:identifier ?id ;
+        geo:hasGeometry ?geometry .
+
+    ?id a adms:Identifier ;
+        skos:notation ?vestigingsnummer .
+
+    ?geometry a geo:Geometry  ;
+        geo:asWKT ?wkt .
+
+    ?exploitatie a ssn:Deployment, :Exploitatie ;
+        dct:modified ?beginDT ;
+        dct:created ?beginDT ;
+        dcterms:issued ?beginDate;
+        adms:status ?status ;
+        rdfs:label ?exploitatie_label ;
+        ssn:implements ?hoofdproces ;
+        ssn:deployedSystem ?systeem , ?pompput , ?peilput ;
+        ssn:deployedOnPlatform ?exploitatielocatie .
+
+    ?hoofdproces a :Proces .
+
+    ?systeem  a ssn:System , ?myType ;
+        dct:modified ?dateTime ;
+        dct:created ?dateTime ;
+        dcterms:issued ?date;
+        adms:status ?status ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        rdfs:label ?systeem_label ;
+        geo:hasGeometry ?systeem_geometrie ;
+        prov:wasRevisionOf ?systeem_base ;
+        ssn:hasSubSystem ?zuiveringsApparatuur ;
+        ssn:hasSubSystem ?meetput ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?systeem_base  dct:modified ?dateTime ;
+        dct:created ?dateTime ;
+        dcterms:issued      ?date;
+        adms:status ?status ;
+        a ssn:System , ?myType .
+
+    ?gekoppeldeActiviteit a :Installatie ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?gekoppeldeActiviteit_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        ssn:hasSubSystem ?systeem ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?zuiveringsApparatuur  a ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?zuiveringsApparatuur_label ;
+        ssn:hasDeployment ?exploitatie ;
+        sosa:isHostedBy ?exploitatielocatie .
+
+    ?meetput a ?meetpuntType , ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?systeem_geometrie a geo:Geometry  ;
+        geo:asWKT ?systeem_wkt .
+
+    ?pompput a :Onttrekkingspunt , ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?pompput_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        geo:hasGeometry ?pompput_geometrie ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?pompput_geometrie a geo:Geometry  ;
+        geo:asWKT ?pompput_wkt .
+
+    ?pompfilter a :Filter , ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?pompfilter_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?peilput a :Meetpunt , ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?peilput_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        geo:hasGeometry ?peilput_geometrie ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?peilput_geometrie a geo:Geometry  ;
+        geo:asWKT ?peilput_wkt .
+
+    ?peilfilter a :Filter , ssn:System ;
+        dcterms:created     ?dateTime;
+        dcterms:issued      ?date;
+        dcterms:modified    ?dateTime;
+        adms:status     ?status ;
+        rdfs:label ?peilfilter_label ;
+        sosa:isHostedBy ?exploitatielocatie ;
+        ssn:hasDeployment ?exploitatie .
+
+    ?status a adms:Status, skos:Concept .
+
+}
+where {
+    {
+        SELECT ?systeem ?type ?expl ?systeem_label
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                rdfs:label ?systeem_label ;
+                a ?type.
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+
+        }
+    }
+
+    BIND(IRI(REPLACE(STR(?expl), "https://data.cbb.omgeving.vlaanderen.be/", "https://data.imjv.omgeving.vlaanderen.be/")) AS ?exploitatielocatie)
+    ?exploitatielocatie rdfs:seeAlso ?vestnr ;
+        rdfs:label ?exploitatielocatie_label ;
+        locn:geometry ?wkt .
+    FILTER (STRSTARTS(STR(?vestnr), "http://data.kbodata.be/organisation"))
+    ?exploitatie dcterms:isVersionOf ?exploitatielocatie ;
+        rdfs:label ?exploitatie_label .
+    FILTER (CONTAINS(STR(?exploitatie), "/2021"))
+
+    {
+        SELECT ?systeem ?gekoppeldeActiviteit ?myType ?gekoppeldeActiviteit_label
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            VALUES ?type {
+                <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#EmissiepuntStaat>
+                <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#LozingspuntStaat>
+            }
+            ?systeem a ?type ;
+                imjv:exploitatie ?expl .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            OPTIONAL { ?systeem imjv:meetputType ?meetputType }
+            BIND(IF(?type = imjv:EmissiepuntStaat,
+                    :Emissiepunt,
+                    IF(?meetputType = <https://data.imjv.omgeving.vlaanderen.be/id/concept/oppompend>,
+                        :Onttrekkingspunt,
+                        :Emissiepunt)) AS ?myType)
+            OPTIONAL {
+                ?systeem imjv:gekoppeldeActiviteit ?gekoppeldeActiviteit .
+                ?gekoppeldeActiviteit rdfs:label ?gekoppeldeActiviteit_label .
+            }
+        }
+    }
+
+    BIND(IRI(REPLACE(STR(?systeem), "/jaar/[0-9]+$", "")) AS ?systeem_base)
+    BIND(IRI(REPLACE(STR(?systeem), "/id/lozingspunt/|/id/emissiepunt/", "/id/meetpunt/")) AS ?meetput)
+    BIND(IF(?myType = :Onttrekkingspunt, :Filter, :Meetpunt) AS ?meetpuntType)
+
+    OPTIONAL {
+        SELECT ?systeem ?zuiveringsApparatuur ?zuiveringsApparatuur_label
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                     imjv:zuiveringsApparatuur ?zuiveringsApparatuur .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            ?zuiveringsApparatuur rdfs:label ?zuiveringsApparatuur_label .
+        }
+    }
+
+    OPTIONAL {
+        SELECT ?systeem ?systeem_geometrie ?systeem_wkt
+        WHERE {
+            VALUES ?expl {
+                <___exploitatie___>
+            }
+            ?systeem imjv:exploitatie ?expl ;
+                     locn:geometry ?systeem_wkt .
+            FILTER (CONTAINS(STR(?systeem), "/2021"))
+            BIND(IRI(REPLACE(STR(?systeem), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/geometry/")) AS ?systeem_geometrie)
+        }
+    }
+
+    OPTIONAL {
+        SELECT ?pompput ?pompput_label ?pompput_wkt ?pompput_geometrie
+               ?pompfilter ?pompfilter_label
+               ?peilput ?peilput_label ?peilput_wkt ?peilput_geometrie
+               ?peilfilter ?peilfilter_label
+        WHERE {
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?pompput a imjv:PompputStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?pompput_label ;
+                    locn:geometry ?pompput_wkt .
+                FILTER (CONTAINS(STR(?pompput), "/2021"))
+                BIND(IRI(REPLACE(STR(?pompput),
+                    "https://data.imjv.omgeving.vlaanderen.be/id/",
+                    "https://data.imjv.omgeving.vlaanderen.be/id/geometry/")) AS ?pompput_geometrie)
+            }
+            UNION
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?pompfilter a imjv:PompfilterStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?pompfilter_label .
+                FILTER (CONTAINS(STR(?pompfilter), "/2021"))
+            }
+            UNION
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?peilput a imjv:PeilputStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?peilput_label ;
+                    locn:geometry ?peilput_wkt .
+                FILTER (CONTAINS(STR(?peilput), "/2021"))
+                BIND(IRI(REPLACE(STR(?peilput),
+                    "https://data.imjv.omgeving.vlaanderen.be/id/",
+                    "https://data.imjv.omgeving.vlaanderen.be/id/geometry/")) AS ?peilput_geometrie)
+            }
+            UNION
+            {
+                VALUES ?expl {
+                    <___exploitatie___>
+                }
+                ?peilfilter a imjv:PeilfilterStaat ;
+                    imjv:exploitatie ?expl ;
+                    rdfs:label ?peilfilter_label .
+                FILTER (CONTAINS(STR(?peilfilter), "/2021"))
+            }
+        }
+    }
+
+    BIND(STRDT(REPLACE(REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""), "_|#id", ""), :KboVestigingsnummer) AS ?vestigingsnummer)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", STR(?vestigingsnummer))) as ?id)
+    BIND(IRI(CONCAT("https://data.vlaanderen.be/id/geometry/", STR(?vestigingsnummer))) as ?geometry)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/proces/", REPLACE(STR(?expl), "^.*/", ""), "_2021")) AS ?hoofdproces)
+
+
+
+    BIND("2010-01-01T00:00:00Z"^^xsd:dateTime  AS ?dateTime)
+    BIND("2010-01-01"^^xsd:date  AS ?date)
+    BIND(st:in_gebruik  AS ?status)
+
+    BIND(REPLACE(STR(?systeem), "^.*/([0-9]{4})$", "$1") AS ?jaar)
+    BIND(STRDT(CONCAT(?jaar, "-01-01"), xsd:date) AS ?beginDate)
+    BIND(STRDT(CONCAT(?jaar, "-01-01T00:00:00"), xsd:dateTime) AS ?beginDT)
+    BIND(STRDT(CONCAT(?jaar, "-12-31T23:59:59"), xsd:dateTime) AS ?eindeDT)
+
+
+
+}

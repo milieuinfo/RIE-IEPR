@@ -1,0 +1,77 @@
+PREFIX imjv:   <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+PREFIX sosa:   <http://www.w3.org/ns/sosa/>
+PREFIX qudt:   <http://qudt.org/schema/qudt/>
+PREFIX sdmxa:  <http://purl.org/linked-data/sdmx/2009/attribute#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX agent:    <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
+PREFIX time:   <http://www.w3.org/2006/time#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX ssn:     <http://www.w3.org/ns/ssn/>
+
+construct
+{
+    ?tijdInterval a time:Interval ;
+        time:hasBeginning ?tijdBegin ;
+        time:hasEnd ?tijdEinde .
+    ?tijdBegin a time:Instant ;
+        time:inXSDDateTime ?beginDT .
+    ?tijdEinde a time:Instant ;
+        time:inXSDDateTime ?eindeDT .
+
+    ?waarde a sosa:Observation , sosa:Execution ;
+        sosa:madeBySensor  agent:labo_mens_sensor_x ;
+        sosa:hasFeatureOfInterest ?parent ;
+        sosa:observedProperty ?property ;
+        sosa:hasResult ?result ;
+        sosa:phenomenonTime ?tijdInterval ;
+        sosa:resultTime ?resultTime .
+
+    ?parent a sosa:FeatureOfInterest ;
+        sosa:isFeatureOfInterestOf ?waarde ;
+        ssn:hasProperty ?property .
+
+    ?result a sosa:Result ;
+        qudt:quantityValue ?qv ;
+        sosa:isResultOf ?waarde .
+
+    ?qv a qudt:QuantityValue ;
+        qudt:numericValue ?value ;
+        qudt:hasUnit ?unit .
+
+    ?property a sosa:Property , sosa:ObservableProperty , ssn:Property.
+}
+where
+{
+    VALUES ?cbb {
+        <___exploitatie___>
+    }
+    {
+        ?parent imjv:exploitatie ?cbb ; imjv:hoogte ?waarde .
+        BIND(imjv:hoogte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diameter ?waarde .
+        BIND(imjv:diameter AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diepte ?waarde .
+        BIND(imjv:diepte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:lengte ?waarde .
+        BIND(imjv:lengte AS ?property)
+    } UNION {
+        ?parent imjv:exploitatie ?cbb ; imjv:diepteOnderkant ?waarde .
+        BIND(imjv:diepteOnderkant AS ?property)
+    }
+    FILTER (CONTAINS(STR(?parent), "/2021"))
+    ?waarde rdf:value ?value ;
+            sdmxa:unitMeasure ?unit .
+    BIND(IRI(CONCAT(STR(?waarde), "/result")) AS ?result)
+    BIND(IRI(CONCAT(STR(?waarde), "/qv"))     AS ?qv)
+    BIND(REPLACE(STR(?parent), "^.*/jaar/([0-9]{4})$", "$1") AS ?jaar)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar)) AS ?tijdInterval)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/begin")) AS ?tijdBegin)
+    BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/einde")) AS ?tijdEinde)
+    BIND(STRDT(CONCAT(?jaar, "-01-01T00:00:00"), xsd:dateTime) AS ?beginDT)
+    BIND(STRDT(CONCAT(?jaar, "-12-31T23:59:59"), xsd:dateTime) AS ?eindeDT)
+    BIND(xsd:integer(?jaar) + 1 AS ?volgendJaar)
+    BIND(STRDT(CONCAT(STR(?volgendJaar), "-01-01T00:00:00"), xsd:dateTime) AS ?resultTime)
+}
