@@ -43,10 +43,7 @@ function query2 {
 
 
 set_virtuoso_env virtuoso-imjv-pr-1.vm.cumuli.be
-
 query_labels virtuoso-imjv-pr-1.vm.cumuli.be
 query        virtuoso-imjv-pr-1.vm.cumuli.be
-
 set_virtuoso_env virtuoso-cbb-pr-1.vm.cumuli.be
-
 query2 virtuoso-cbb-pr-1.vm.cumuli.be
