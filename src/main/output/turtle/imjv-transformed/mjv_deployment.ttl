@@ -1,9 +1,10 @@
 @prefix :            <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix activiteit:  <https://example.org/concept/activiteit/> .
 @prefix adms:        <http://www.w3.org/ns/adms#> .
+@prefix adres:       <https://data.vlaanderen.be/ns/adres#> .
 @prefix agent:       <https://data.riepr.omgeving.vlaanderen.be/id/agent/> .
 @prefix attr:        <https://example.org/attribution/> .
-@prefix concept:     <https://data.riepr.omgeving.vlaanderen.be/id/concept/> .
+@prefix concept:     <https://data.imjv.omgeving.vlaanderen.be/id/concept/> .
 @prefix dbo:         <http://dbpedia.org/ontology/> .
 @prefix dc:          <http://purl.org/dc/elements/1.1/> .
 @prefix dcat:        <http://www.w3.org/ns/dcat#> .
@@ -60,6 +61,7 @@
 @prefix ssn-obs:     <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:     <http://www.w3.org/ns/ssn/sam/> .
 @prefix ssn-system:  <http://www.w3.org/ns/ssn/systems/> .
+@prefix st:          <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/> .
 @prefix step:        <https://example.org/step/> .
 @prefix stof:        <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 @prefix terms:       <http://purl.org/dc/terms/> .
@@ -75,10 +77,17 @@
 @prefix xml:         <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083959>
+        rdfs:label  "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021>
         rdf:type              ssn:System , riepr:Emissiepunt , geo:SpatialObject , prov:Entity , geo:Feature;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : VACUUMPOMPEN (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/6295/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295>;
@@ -87,19 +96,27 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/6295/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/10581>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           ssn:System , geo:SpatialObject , riepr:Installatie;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ELEKTRISCHE DROOGOVEN MET NAVERBRANDER";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13143/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
+<https://data.vlaanderen.be/id/identifier/0413638187>
+        rdf:type       adms:Identifier;
+        skos:notation  "0413638187"^^riepr:KboOndernemingsnummer .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13005/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
@@ -110,55 +127,96 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159>
         rdf:type           ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : NAVERBRANDER (KATALYTISCHE NAVERBRANDER)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13144/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER RECHTS (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/waterbalans/01787986000160>
+        rdfs:label  "Waterbalans AGC GLASS EUROPE VESTIGING MOL 2021" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8058/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : SCHOUW NAVERBRANDER (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1989-083961/jaar/2021>
         rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
         rdfs:label         "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 2 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099954>
+        rdfs:label  "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021>
-        rdf:type           geo:SpatialObject , riepr:Filter , ssn:System;
+        rdf:type           ssn:System , riepr:Filter , geo:SpatialObject;
         rdfs:label         "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 2 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19241>
         rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : Steam reformer links";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13144/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005>
-        rdf:type            prov:Entity;
+        rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 2 ETSAFDELING (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043748/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1663518903359 51.194138856343)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1663518903359 51.194138856343)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021>
         rdf:type              geo:SpatialObject , ssn:System , prov:Entity , riepr:Onttrekkingspunt;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : OPGENOMEN KANAALWATER (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019>;
@@ -169,7 +227,11 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021>
         rdf:type              prov:Entity , ssn:System , geo:SpatialObject , geo:Feature , riepr:Emissiepunt;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : STOOKINSTALLATIES (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/8059/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059>;
@@ -178,18 +240,27 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8059/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099956/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdf:type           ssn:System , riepr:Filter , geo:SpatialObject;
         rdfs:label         "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 3 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/2271/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1570274715823 51.195163302581)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1570274715823 51.195163302581)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058>
-        rdf:type            prov:Entity;
+        rdf:type            geo:SpatialObject , prov:Entity , ssn:System , riepr:Emissiepunt;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : SCHOUW NAVERBRANDER (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> .
@@ -197,7 +268,11 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021>
         rdf:type              geo:SpatialObject , ssn:System , riepr:Emissiepunt , geo:Feature , prov:Entity;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 1ETSAFDELING (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/2271/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271>;
@@ -205,21 +280,31 @@
         ssn:hasDeployment     <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2271/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083962>
+        rdfs:label  "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 3 (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/6295/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1666839560072 51.192644438329)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1666839560072 51.192644438329)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043749/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1588484179879 51.195402822342)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1588484179879 51.195402822342)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099954/jaar/2021>
-        rdf:type           geo:SpatialObject , riepr:Filter , ssn:System;
+        rdf:type           riepr:Filter , geo:SpatialObject , ssn:System;
         rdfs:label         "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955>
+        rdfs:label  "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 2 (2021)" .
 
 <https://data.vlaanderen.be/id/geometry/2142813934>
         rdf:type              geo:SpatialObject , geo:Geometry;
@@ -227,20 +312,41 @@
         geo:hasSerialization  "POINT(5.1620617637536 51.193957868225)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19242>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           riepr:Installatie , ssn:System , geo:SpatialObject;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : Steam reformer rechts";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> .
 
+<https://data.vlaanderen.be/id/onderneming/0413638187>
+        rdf:type          prov:Agent , riepr:Exploitant;
+        rdfs:label        "AGC GLASS EUROPE"@nl , "AGCGLASS EUROPE"@nl;
+        dct:created       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued        "2010-01-01"^^xsd:date;
+        dct:modified      "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:identifier   <https://data.vlaanderen.be/id/identifier/0413638187>;
+        adms:status       st:in_gebruik;
+        locn:address      <https://data.cbb.omgeving.vlaanderen.be/id/address/.well-known/genid/be1451909>;
+        prov:contributed  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
+        prov:influenced   <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
+        imjv:kbonummer    "0413.638.187"^^imjv:KBONummer .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/8058/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1665555318256 51.193499261453)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1665555318256 51.193499261453)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021>
         rdf:type              prov:Entity , geo:SpatialObject , riepr:Emissiepunt , ssn:System;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : LP07 INDUSTRIEEL COATER (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095>;
@@ -249,20 +355,29 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/9991095/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019>
-        rdf:type            prov:Entity;
+        rdf:type            geo:SpatialObject , prov:Entity , riepr:Onttrekkingspunt , ssn:System;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : OPGENOMEN KANAALWATER (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043747/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1638699423821 51.192888148939)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1638699423821 51.192888148939)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021>
         rdf:type              geo:Feature , geo:SpatialObject , riepr:Emissiepunt , prov:Entity , ssn:System;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : SCHOUW NAVERBRANDER (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/8058/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058>;
@@ -271,88 +386,150 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8058/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006>
-        rdf:type            prov:Entity;
+        rdf:type            riepr:Emissiepunt , ssn:System , geo:SpatialObject , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)"@nl , "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/lozingspunt/01787986000160/2400006/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1568275 51.1943377)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1568275 51.1943377)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295>
-        rdf:type            prov:Entity;
+        rdf:type            geo:SpatialObject , prov:Entity , ssn:System , riepr:Emissiepunt;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : VACUUMPOMPEN (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1989-083961>
+        rdfs:label  "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 2 (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Onttrekkingspunt;
+        rdf:type           ssn:System , riepr:Onttrekkingspunt , geo:Feature , geo:SpatialObject;
         rdfs:label         "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 1 (FL KOELTOREN) (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043749/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059>
-        rdf:type            prov:Entity;
+        rdf:type            ssn:System , geo:SpatialObject , riepr:Emissiepunt , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : STOOKINSTALLATIES (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/peilput/01787986000160/2020-095507/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.16575695193 51.194484455946)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.16575695193 51.194484455946)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/8059/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1554534179774 51.188360145244)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13239>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           riepr:Installatie , ssn:System , geo:SpatialObject;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : STOOKINSTALLATIES EN STOOMKETELS";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400019/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : OPGENOMEN KANAALWATER (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1988-083960>
+        rdfs:label  "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)" .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099956>
+        rdfs:label  "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 3 (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/lozingspunt/01787986000160/2400007/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1639699 51.1928785)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1639699 51.1928785)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747>
+        rdfs:label  "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 4 (KG ATELIER) (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13241>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           riepr:Installatie , geo:SpatialObject , ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : VACUUMPOMPEN";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095>
-        rdf:type            prov:Entity;
+        rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : LP07 INDUSTRIEEL COATER (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2269/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : SCHOUW GLASOVEN (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083958/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdf:type           ssn:System , geo:SpatialObject , riepr:Filter;
         rdfs:label         "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021>
         rdf:type              geo:Feature , geo:SpatialObject , riepr:Emissiepunt , prov:Entity , ssn:System;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 2 ETSAFDELING (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13005/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005>;
@@ -361,56 +538,95 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13005/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043751/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1627718692674 51.195610215171)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1627718692674 51.195610215171)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/waterbalans/01787986000160/jaar/2021>
+        rdfs:label  "Waterbalans AGC GLASS EUROPE VESTIGING MOL 2021" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/323>
         rdf:type           riepr:Installatie , ssn:System , geo:SpatialObject;
-        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : Vormen en bewerken van vlakglas" , "AGC GLASS EUROPE VESTIGING MOL : Vormen en bewerken van vlakglas"@nl;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : Vormen en bewerken van vlakglas"@nl , "AGC GLASS EUROPE VESTIGING MOL : Vormen en bewerken van vlakglas";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269>
-        rdf:type            prov:Entity;
+        rdf:type            riepr:Emissiepunt , prov:Entity , geo:SpatialObject , ssn:System;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : SCHOUW GLASOVEN (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007>
-        rdf:type            prov:Entity;
+        rdf:type            ssn:System , riepr:Emissiepunt , geo:SpatialObject , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)" , "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)"@nl;
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Onttrekkingspunt;
+        rdf:type           ssn:System , geo:Feature , riepr:Onttrekkingspunt , geo:SpatialObject;
         rdfs:label         "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 5 (KG VERZENDING) (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043748/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271>
-        rdf:type            prov:Entity;
+        rdf:type            ssn:System , geo:SpatialObject , prov:Entity , riepr:Emissiepunt;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 1ETSAFDELING (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/9991095/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : LP07 INDUSTRIEEL COATER (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083959/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdf:type           geo:SpatialObject , riepr:Filter , ssn:System;
         rdfs:label         "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021>
         rdf:type              geo:Feature , geo:SpatialObject , riepr:Emissiepunt , prov:Entity , ssn:System;
-        rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)"@nl , "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)";
+        rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)" , "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)"@nl;
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/lozingspunt/01787986000160/2400007/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007>;
@@ -421,6 +637,10 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>
         rdf:type                riepr:Exploitatie , ssn:Deployment;
         rdfs:label              "exploitatie - 01787986000160 - exploitatie naam - AGC GLASS EUROPE VESTIGING MOL - rapporteringsjaar - 2021" , "AGC GLASS EUROPE VESTIGING MOL (2021)"@nl;
+        dct:created             "2021-01-01T00:00:00"^^xsd:dateTime;
+        dct:issued              "2021-01-01"^^xsd:date;
+        dct:modified            "2021-01-01T00:00:00"^^xsd:dateTime;
+        adms:status             st:in_gebruik;
         ssn:deployedOnPlatform  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:deployedSystem      <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19241> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400006/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/323> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/6295/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083962/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1988-083960/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13005/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083958/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1989-083961/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/9991095/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2269/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099954/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099956/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400007/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19242> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/10581> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13144/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2271/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19240> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13241> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8058/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13239> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8059/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13143/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400019/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/1178> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9158> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083959/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19105> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/12782>;
         ssn:implements          <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021> .
@@ -428,7 +648,11 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021>
         rdf:type              prov:Entity , riepr:Emissiepunt , geo:Feature , ssn:System , geo:SpatialObject;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER RECHTS (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13144/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144>;
@@ -439,41 +663,73 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179>
         rdf:type           ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : Wastoren etslijn 2 (gaswasser)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1988-083960/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdf:type           geo:SpatialObject , riepr:Filter , ssn:System;
         rdfs:label         "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748>
+        rdfs:label  "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 5 (KG VERZENDING) (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143>
-        rdf:type            prov:Entity;
+        rdf:type            geo:SpatialObject , ssn:System , riepr:Emissiepunt , prov:Entity;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER LINKS (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043750/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1606843519075 51.193997228708)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1606843519075 51.193997228708)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
+<https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750>
+        rdfs:label  "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 2 (ONDERHOUD) (2021)" .
+
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2271/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 1ETSAFDELING (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Onttrekkingspunt;
+        rdf:type           riepr:Onttrekkingspunt , ssn:System , geo:SpatialObject , geo:Feature;
         rdfs:label         "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 4 (KG ATELIER) (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043747/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021>
         rdf:type              geo:SpatialObject , prov:Entity , ssn:System , riepr:Emissiepunt , geo:Feature;
-        rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)"@nl , "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)";
+        rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)" , "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)"@nl;
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/lozingspunt/01787986000160/2400006/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006>;
@@ -484,7 +740,11 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021>
         rdf:type              ssn:System , geo:Feature , geo:SpatialObject , riepr:Emissiepunt , prov:Entity;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : SCHOUW GLASOVEN (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/2269/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269>;
@@ -495,7 +755,11 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021>
         rdf:type              riepr:Emissiepunt , prov:Entity , geo:Feature , geo:SpatialObject , ssn:System;
         rdfs:label            "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER LINKS (2021)";
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry       <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/13143/jaar/2021>;
+        adms:status           st:in_gebruik;
         prov:wasDerivedFrom   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143>;
         prov:wasInfluencedBy  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143>;
         prov:wasRevisionOf    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143>;
@@ -504,83 +768,174 @@
         ssn:hasSubSystem      <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13143/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/6295/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : VACUUMPOMPEN (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.riepr.omgeving.vlaanderen.be/id/proces/01787986000160_2021>
+        rdf:type           pplan:Entity , prov:Plan , pplan:Step , pplan:Plan , riepr:Proces , prov:Entity , sosa:Procedure;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL 2021"@nl , "exploitatie - 01787986000160 - exploitatie naam - AGC GLASS EUROPE VESTIGING MOL - rapporteringsjaar - 2025 2021"@nl;
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:implementedBy  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Meetpunt;
+        rdf:type           riepr:Meetpunt , geo:SpatialObject , ssn:System , geo:Feature;
         rdfs:label         "PEILPUT : AGC GLASS EUROPE VESTIGING MOL - PEILPUT (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/peilput/01787986000160/2020-095507/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/1178>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           ssn:System , geo:SpatialObject , riepr:Installatie;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 1 etsafdeling" , "RWZI Lozen : waterzuivering"@nl;
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Onttrekkingspunt;
+        rdf:type           riepr:Onttrekkingspunt , ssn:System , geo:SpatialObject , geo:Feature;
         rdfs:label         "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 2 (ONDERHOUD) (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043750/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>
-        rdf:type          riepr:Exploitatielocatie , geo:SpatialObject , sosa:Platform , geo:Feature , prov:Entity;
-        rdfs:label        "exploitatie - 01787986000160 - exploitatie naam - AGC GLASS EUROPE VESTIGING MOL - rapporteringsjaar - 2025"@nl , "AGC GLASS EUROPE VESTIGING MOL"@nl;
-        geo:hasGeometry   <https://data.vlaanderen.be/id/geometry/2142813934>;
-        adms:identifier   <https://data.vlaanderen.be/id/identifier/2142813934>;
-        sosa:hosts        <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1988-083960/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13239> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099954/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19240> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/1178> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1989-083961/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19242> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099956/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/10581> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083959/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19105> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13241> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9158> , <https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19241> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/323> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083958/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/12782> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083962/jaar/2021>;
-        ssn:inDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
+        rdf:type              riepr:Exploitatielocatie , geo:SpatialObject , sosa:Platform , geo:Feature , prov:Entity;
+        rdfs:label            "exploitatie - 01787986000160 - exploitatie naam - AGC GLASS EUROPE VESTIGING MOL - rapporteringsjaar - 2025"@nl , "AGC GLASS EUROPE VESTIGING MOL"@nl;
+        dct:created           "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued            "2010-01-01"^^xsd:date;
+        dct:modified          "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        geo:hasGeometry       <https://data.vlaanderen.be/id/geometry/2142813934>;
+        adms:identifier       <https://data.vlaanderen.be/id/identifier/2142813934>;
+        adms:status           st:in_gebruik;
+        locn:address          <https://data.cbb.omgeving.vlaanderen.be/id/address/.well-known/genid/be1451909>;
+        prov:wasAttributedTo  <https://data.vlaanderen.be/id/onderneming/0413638187>;
+        prov:wasInfluencedBy  <https://data.vlaanderen.be/id/onderneming/0413638187>;
+        sosa:hosts            <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1988-083960/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13239> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099954/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19240> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8059/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/1178> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9159> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/8058/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1989-083961/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19242> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/13179> , <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099956/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/10581> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/9991095/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083959/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19105> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/13241> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13143/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043747/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9158> , <https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19241> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400019/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/6295/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400006/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2271/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/lozingspunt/01787986000160/2400007/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/323> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083958/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/12782> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043748/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043750/jaar/2021> , <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083962/jaar/2021>;
+        ssn:inDeployment      <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/peilput/01787986000160/2020-095507>
+        rdfs:label  "PEILPUT : AGC GLASS EUROPE VESTIGING MOL - PEILPUT (2021)" .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043749>
+        rdfs:label  "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 1 (FL KOELTOREN) (2021)" .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400007/jaar/2021>
+        rdf:type           ssn:System , geo:SpatialObject , riepr:Meetpunt;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)"@nl , "AGC GLASS EUROPE VESTIGING MOL : LP02 INDUSTRIEEL KEMPENGLAS (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
+        ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144>
-        rdf:type            prov:Entity;
+        rdf:type            prov:Entity , riepr:Emissiepunt , ssn:System , geo:SpatialObject;
+        rdfs:label          "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER RECHTS (2021)";
+        dct:created         "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued          "2010-01-01"^^xsd:date;
+        dct:modified        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status         st:in_gebruik;
         prov:hadDerivation  <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021>;
         prov:hadRevision    <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021>;
         prov:influenced     <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13144/jaar/2021> .
 
-<https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400007/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
-        ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
+<https://data.cbb.omgeving.vlaanderen.be/id/address/.well-known/genid/be1451909>
+        rdf:type                locn:Address;
+        rdfs:label              "Voortstraat 27, 2400 Mol, België"@nl;
+        dbo:nisCode             "13025";
+        locn:fullAddress        "Voortstraat 27, 2400 Mol, België"@nl;
+        locn:locatorDesignator  "27";
+        locn:postCode           "2400";
+        locn:postName           "Mol";
+        locn:thoroughfare       "Voortstraat";
+        adres:Adresvoorstelling.huisnummer
+                "27";
+        adres:gemeentenaam      "Mol" .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083958>
+        rdfs:label  "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 1 (2021)" .
+
+<https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751>
+        rdfs:label  "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 3 (VT VERZENDING) (2021)" .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompput/01787986000160/2019-043751/jaar/2021>
-        rdf:type           geo:SpatialObject , geo:Feature , ssn:System , riepr:Onttrekkingspunt;
+        rdf:type           geo:SpatialObject , riepr:Onttrekkingspunt , ssn:System , geo:Feature;
         rdfs:label         "POMPPUT : AGC GLASS EUROPE VESTIGING MOL - 3 (VT VERZENDING) (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
         geo:hasGeometry    <https://data.imjv.omgeving.vlaanderen.be/id/geometry/pompput/01787986000160/2019-043751/jaar/2021>;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
+
+st:in_gebruik  rdf:type  skos:Concept , adms:Status .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/9158>
         rdf:type           ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ELECTROFILTER (ELECTROFILTER)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/pompfilter/1990-083962/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Filter;
+        rdf:type           ssn:System , geo:SpatialObject , riepr:Filter;
         rdfs:label         "POMPFILTER : AGC GLASS EUROPE VESTIGING MOL - 3 (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/12782>
         rdf:type           ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : SCR (reductie NOx)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/8059/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : STOOKINSTALLATIES (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19240>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           ssn:System , riepr:Installatie , geo:SpatialObject;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : GLASOVEN";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/2269/jaar/2021> .
@@ -588,29 +943,52 @@
 <https://data.imjv.omgeving.vlaanderen.be/id/zuiveringsapparaat/4062>
         rdf:type           ssn:System;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : WASTOREN etsafdeling (NATTE STOFVANGER OF GASWASSER)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/geometry/emissiepunt/01787986000160/2269/jaar/2021>
-        rdf:type              geo:Geometry , geo:SpatialObject;
+        rdf:type              geo:SpatialObject , geo:Geometry;
         geo:asWKT             "POINT(5.1581343998592 51.194634545718)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry>;
         geo:hasSerialization  "POINT(5.1581343998592 51.194634545718)"^^<http://www.openlinksw.com/schemas/virtrdf#Geometry> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/activiteit/19105>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Installatie;
+        rdf:type           riepr:Installatie , ssn:System , geo:SpatialObject;
         rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 2 etsafdeling";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         sosa:isHostedBy    <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160>;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021>;
         ssn:hasSubSystem   <https://data.imjv.omgeving.vlaanderen.be/id/emissiepunt/01787986000160/13005/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13143/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : STEAM REFORMER LINKS (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/2400006/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           riepr:Meetpunt , ssn:System , geo:SpatialObject;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)" , "AGC GLASS EUROPE VESTIGING MOL : LP01 INDUSTRIEEL GLASFABRIEK (2021)"@nl;
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
 
 <https://data.imjv.omgeving.vlaanderen.be/id/meetpunt/01787986000160/13005/jaar/2021>
-        rdf:type           geo:SpatialObject , ssn:System , riepr:Meetpunt;
+        rdf:type           geo:SpatialObject , riepr:Meetpunt , ssn:System;
+        rdfs:label         "AGC GLASS EUROPE VESTIGING MOL : ETSLIJN 2 ETSAFDELING (2021)";
+        dct:created        "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        dct:issued         "2010-01-01"^^xsd:date;
+        dct:modified       "2010-01-01T00:00:00Z"^^xsd:dateTime;
+        adms:status        st:in_gebruik;
         ssn:hasDeployment  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> .
