@@ -361,7 +361,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatie heeft een status"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -429,7 +429,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     ] ;
     skos:example [ a :Proces ;
         rdfs:label "Verwerking van grondstoffen"@nl ;
-        dct:type [ a :VerwerkingProcedure ]
+        dct:type concept:verwerkingsprocedure
     ] ;
     rdfs:subClassOf pplan:Plan, pplan:Step, sosa:Procedure ;
     owl:equivalentClass [ a owl:Class ;
@@ -491,7 +491,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -690,7 +690,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -733,6 +733,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty ssn:hasProperty ;
         owl:someValuesFrom :SysteemEigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een installatie kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Emissiepunt a owl:Class ;
@@ -807,7 +814,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -859,6 +866,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty ssn:hasProperty ;
         owl:someValuesFrom :SysteemEigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een emissiepunt kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :SysteemEigenschap a owl:Class ;
@@ -961,7 +975,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1021,6 +1035,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty ssn:hasProperty ;
         owl:someValuesFrom :SysteemEigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een onttrekkingspunt kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :AbstractEmissiepunt a owl:Class ;
@@ -1104,7 +1125,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1161,6 +1182,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty ssn:hasProperty ;
         owl:someValuesFrom :SysteemEigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetpunt kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :MeetInstrument a owl:Class ;
@@ -1216,7 +1244,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetinstrument moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1252,6 +1280,19 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetinstrument kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] .
 
 :Filter a owl:Class ;
@@ -1307,7 +1348,7 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem moet een enkele status hebben"@nl ;
         owl:onProperty adms:status ;
-        owl:someValuesFrom adms:Status ;
+        owl:someValuesFrom skos:Concept ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1343,6 +1384,19 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty dct:type ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een filter kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] .
 
 # Proces Procedures
@@ -1383,10 +1437,67 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    rdfs:subClassOf [ a owl:Restriction ; 
+    rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatie moet een resultaat hebben."@nl ;
         owl:onProperty sosa:hasResult ;
         owl:someValuesFrom sosa:Result ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een resultaat tijdstip hebben"@nl ;
+        owl:onProperty sosa:resultTime ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een verschijnsel tijdsinterval hebben"@nl ;
+        owl:onProperty sosa:phenomenonTime ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een geobserveerde eigenschap hebben"@nl ;
+        owl:onProperty sosa:observedProperty ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een gebruikte procedure hebben"@nl ;
+        owl:onProperty sosa:usedProcedure ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan gedaan zijn door een sensor"@nl ;
+        owl:onProperty sosa:madeBySensor ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een benaming hebben"@nl ;
+        owl:onProperty rdfs:label ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een creatie datum hebben"@nl ;
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een geldigheid start hebben"@nl ;
+        owl:onProperty dct:issued ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan een modificatie datum hebben"@nl ;
+        owl:onProperty dct:modified ;
+        owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
@@ -1411,6 +1522,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty sosa:isResultOf ;
         owl:someValuesFrom sosa:Observation ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een onttrekking heeft een hoeveelheidswaarde"@nl ;
+        owl:onProperty qudt:quantityValue ;
+        owl:someValuesFrom :HoeveelheidWaarde ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Emissie a owl:Class ;
@@ -1433,6 +1551,13 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty sosa:isResultOf ;
         owl:someValuesFrom sosa:Observation ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een emissie heeft een hoeveelheidswaarde"@nl ;
+        owl:onProperty qudt:quantityValue ;
+        owl:someValuesFrom :HoeveelheidWaarde ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Productievolume a owl:Class ;
@@ -1455,6 +1580,43 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
         owl:onProperty sosa:isResultOf ;
         owl:someValuesFrom sosa:Observation ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een productievolume heeft een hoeveelheidswaarde"@nl ;
+        owl:onProperty qudt:quantityValue ;
+        owl:someValuesFrom :HoeveelheidWaarde ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:HoeveelheidWaarde a owl:Class ;
+    rdfs:label "Hoeveelheid Waarde"@nl ;
+    rdfs:comment "Een hoeveelheid waarde is een numerieke waarde met een eenheid, gebruikt om de grootte van een emissie, onttrekking of productievolume uit te drukken."@nl ;
+    rdfs:subClassOf qudt:QuantityValue ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een hoeveelheid waarde heeft een numerieke waarde"@nl ;
+        owl:onProperty qudt:numericValue ;
+        owl:someValuesFrom xsd:decimal ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een hoeveelheid waarde heeft een eenheid"@nl ;
+        owl:onProperty qudt:hasUnit ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ZuiveringsApparaat a owl:Class ;
+    rdfs:label "Zuiveringsapparaat"@nl ;
+    rdfs:comment "Een zuiveringsapparaat is een installatie die schadelijke stoffen verwijdert of vermindert in emissies."@nl ;
+    rdfs:subClassOf ssn:System ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een zuiveringsapparaat kan gehost worden door een exploitatielocatie"@nl ;
+        owl:onProperty sosa:isHostedBy ;
+        owl:someValuesFrom :Exploitatielocatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Rubriek a owl:Class ;
@@ -1590,6 +1752,43 @@ PREFIX st: <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
     rdfs:comment "Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften."@nl ;
     rdfs:range xsd:string .
 
+:notatietype a owl:DatatypeProperty ;
+    rdfs:label "Notatie Type"@nl ;
+    rdfs:comment "Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden."@nl ;
+    rdfs:domain adms:Identifier ;
+    rdfs:range xsd:anyURI .
+
+# Expliciete restricties op adms:Identifier voor notatie en notatie-datatype (M5)
+adms:Identifier rdfs:subClassOf [ a owl:Restriction ;
+    rdfs:comment "Een externe identificator heeft een notatie waarde"@nl ;
+    owl:onProperty skos:notation ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] ;
+rdfs:subClassOf [ a owl:Restriction ;
+    rdfs:comment "Een externe identificator heeft een notatie type (het datatype-IRI van de skos:notation typed literal)"@nl ;
+    owl:onProperty :notatietype ;
+    owl:someValuesFrom xsd:anyURI ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+# Expliciete restricties op locn:Address voor ontbrekende adresvelden (M6)
+locn:Address rdfs:subClassOf [ a owl:Restriction ;
+    rdfs:comment "Een adres kan een volledig adres hebben als vrije tekst"@nl ;
+    owl:onProperty locn:fullAddress ;
+    owl:someValuesFrom xsd:string ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] ;
+rdfs:subClassOf [ a owl:Restriction ;
+    rdfs:comment "Een adres kan een huisnummer of locatieaanduiding hebben"@nl ;
+    owl:onProperty locn:locatorDesignator ;
+    owl:someValuesFrom xsd:string ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] .
+
 # --------------------------------------- #
 # Individuals
 # --------------------------------------- #
@@ -1619,6 +1818,28 @@ st:voorgesteld a adms:Status, skos:Concept ;
     rdfs:comment "De voorgestelde status geeft aan dat een entiteit is voorgesteld door de overheid maar nog niet bevestigd is."@nl ;
     skos:prefLabel "Voorgesteld"@nl ;
     rdfs:equivalentClass <http://purl.org/adms/status/UnderDevelopment> .
+
+# Procedure concept-individuals (named instances van de procedure-klassen)
+concept:emissieprocedure a :EmissieProcedure , skos:Concept ;
+    rdfs:label "Emissieprocedure"@nl ;
+    rdfs:comment "Een benoemde instantie van EmissieProcedure voor gebruik als dct:type op processen."@nl ;
+    skos:prefLabel "Emissieprocedure"@nl .
+concept:onttrekkingprocedure a :OnttrekkingProcedure , skos:Concept ;
+    rdfs:label "Onttrekkingprocedure"@nl ;
+    rdfs:comment "Een benoemde instantie van OnttrekkingProcedure voor gebruik als dct:type op processen."@nl ;
+    skos:prefLabel "Onttrekkingprocedure"@nl .
+concept:transportprocedure a :TransportProcedure , skos:Concept ;
+    rdfs:label "Transportprocedure"@nl ;
+    rdfs:comment "Een benoemde instantie van TransportProcedure voor gebruik als dct:type op processen."@nl ;
+    skos:prefLabel "Transportprocedure"@nl .
+concept:verwerkingsprocedure a :VerwerkingProcedure , skos:Concept ;
+    rdfs:label "Verwerkingsprocedure"@nl ;
+    rdfs:comment "Een benoemde instantie van VerwerkingProcedure voor gebruik als dct:type op processen."@nl ;
+    skos:prefLabel "Verwerkingsprocedure"@nl .
+concept:meetprocedure a :MeetProcedure , skos:Concept ;
+    rdfs:label "Meetprocedure"@nl ;
+    rdfs:comment "Een benoemde instantie van MeetProcedure voor gebruik als dct:type op processen."@nl ;
+    skos:prefLabel "Meetprocedure"@nl .
 
 # --------------------------------------- #
 # Axioms
