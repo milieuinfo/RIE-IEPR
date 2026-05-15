@@ -32,7 +32,7 @@ construct
 
     # Emissie — FeatureOfInterest én instantie van de planvariabele
     ?emissie a riepr:Emissie , sosa:FeatureOfInterest;
-        sosa:isFeatureOfInterestOf ?obs , ?concentratie , ?debiet , ?emissieDuur ;
+        sosa:isFeatureOfInterestOf ?obs , ?concentratie_iri , ?debiet , ?emissieDuur ;
         dct:type ?emissie_type ;
         ssn:hasProperty ?substantie , concept:debiet  , concept:emissieduur  ;
         rdfs:label ?emissie_label ;
@@ -76,7 +76,7 @@ construct
         qudt:hasUnit ?unitMeasure .
 
     # Concentratie-observaties (OPTIONAL)
-    ?concentratie a sosa:Observation  , sosa:Execution ;
+    ?concentratie_iri a sosa:Observation  , sosa:Execution ;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
@@ -86,7 +86,7 @@ construct
         rdfs:label ?concentratie_label ;
         sosa:usedProcedure ?procedure .
 
-    ?result_concentratie sosa:isResultOf ?concentratie .
+    ?result_concentratie sosa:isResultOf ?concentratie_iri .
 
     ?result_concentratie a sosa:Result ;
         qudt:quantityValue ?quantityValue_concentratie .
@@ -238,8 +238,9 @@ where
     # Afgeleide IRIs
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result)
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue)
-    BIND(IF(BOUND(?concentratie), IRI(REPLACE(STR(?concentratie), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_concentratie)
-    BIND(IF(BOUND(?concentratie), IRI(REPLACE(STR(?concentratie), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")), ?noop) AS ?quantityValue_concentratie)
+    BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie")), ?_undef) AS ?concentratie_iri)
+    BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie/result")), ?_undef) AS ?result_concentratie)
+    BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie/quantityvalue")), ?_undef) AS ?quantityValue_concentratie)
     BIND(IF(BOUND(?debiet), IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_debiet)
     BIND(IF(BOUND(?debiet), IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")), ?noop) AS ?quantityValue_debiet)
     BIND(IF(BOUND(?emissieDuur), IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_emissieDuur)

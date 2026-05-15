@@ -34,7 +34,7 @@ construct
         skos:notation ?vestigingsnummer .
 
     ?geometry a geo:Geometry  ;
-        geo:asWKT ?wkt .
+        geo:asWKT ?wkt_c .
 
     ?exploitatie a ssn:Deployment, :Exploitatie ;
         dct:modified ?beginDT ;
@@ -77,7 +77,7 @@ construct
         ssn:hasSubSystem ?systeem ;
         ssn:hasDeployment ?exploitatie .
 
-    ?zuiveringsApparatuur  a ssn:System ;
+    ?zuiveringsApparatuur  a ssn:System , :ZuiveringsApparaat ;
         dcterms:created     ?dateTime;
         dcterms:issued      ?date;
         dcterms:modified    ?dateTime;
@@ -94,7 +94,7 @@ construct
         ssn:hasDeployment ?exploitatie .
 
     ?systeem_geometrie a geo:Geometry  ;
-        geo:asWKT ?systeem_wkt .
+        geo:asWKT ?systeem_wkt_c .
 
     ?pompput a :Onttrekkingspunt , ssn:System ;
         dcterms:created     ?dateTime;
@@ -107,7 +107,7 @@ construct
         ssn:hasDeployment ?exploitatie .
 
     ?pompput_geometrie a geo:Geometry  ;
-        geo:asWKT ?pompput_wkt .
+        geo:asWKT ?pompput_wkt_c .
 
     ?pompfilter a :Filter , ssn:System ;
         dcterms:created     ?dateTime;
@@ -129,7 +129,7 @@ construct
         ssn:hasDeployment ?exploitatie .
 
     ?peilput_geometrie a geo:Geometry  ;
-        geo:asWKT ?peilput_wkt .
+        geo:asWKT ?peilput_wkt_c .
 
     ?peilfilter a :Filter , ssn:System ;
         dcterms:created     ?dateTime;
@@ -278,6 +278,11 @@ where {
             }
         }
     }
+
+    BIND(STRDT(bif:st_astext(?wkt), geo:wktLiteral) AS ?wkt_c)
+    OPTIONAL { BIND(STRDT(bif:st_astext(?systeem_wkt), geo:wktLiteral) AS ?systeem_wkt_c) }
+    OPTIONAL { BIND(STRDT(bif:st_astext(?pompput_wkt), geo:wktLiteral) AS ?pompput_wkt_c) }
+    OPTIONAL { BIND(STRDT(bif:st_astext(?peilput_wkt), geo:wktLiteral) AS ?peilput_wkt_c) }
 
     BIND(STRDT(REPLACE(REPLACE(STR(?vestnr), "^http://data.kbodata.be/organisation/", ""), "_|#id", ""), :KboVestigingsnummer) AS ?vestigingsnummer)
     BIND(IRI(CONCAT("https://data.vlaanderen.be/id/identifier/", STR(?vestigingsnummer))) as ?id)

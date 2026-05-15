@@ -26,4 +26,8 @@ where
 {
     ?s a <___type___> ;
         ?p ?o .
+    FILTER NOT EXISTS {
+        ?s a ?_excl .
+        VALUES ?_excl { ___excluded_types___ }
+    }
 }
