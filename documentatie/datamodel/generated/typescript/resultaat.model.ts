@@ -1,8 +1,10 @@
+import { Observation } from './observation.interface';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
  * Resultaat
- * @see {@link http://www.w3.org/ns/sosa/Result}
+ * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat}
+ * Een resultaat is de gemeten of berekende waarde van een observatie.
  */
 @jsonObject
 export class Resultaat {
@@ -23,11 +25,26 @@ export class Resultaat {
 	uri?: string;
 
 	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
+	 * hasUnit
+	 * @see {@link http://qudt.org/schema/qudt/hasUnit}
+	 * Een resultaat heeft een eenheid
 	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
+	@jsonMember({ name: 'hasUnit' })
+	eenheid?: string;
+
+	/**
+	 * numericValue
+	 * @see {@link http://qudt.org/schema/qudt/numericValue}
+	 * Een resultaat heeft een numerieke waarde
+	 */
+	@jsonMember({ name: 'numericValue' })
+	waarde?: number;
+
+	/**
+	 * isResultOf
+	 * @see {@link http://www.w3.org/ns/sosa/isResultOf}
+	 */
+	@jsonArrayMember(() => Observation, { name: 'isResultOf' })
+	isResultOf?: Observation[];
 
 }

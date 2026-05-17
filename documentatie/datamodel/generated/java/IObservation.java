@@ -2,10 +2,10 @@ package be.vlaanderen.omgeving.riepr.model.structuur;
 
 
 /**
- * Systeem
- * <a href="http://www.w3.org/ns/ssn/System">System</a>
+ * IObservation
+ * <a href="http://www.w3.org/ns/sosa/Observation">Observation</a>
  **/
-public class Systeem {
+public interface IObservation {
 	// <a href="http://example.org/vocab/uri">uri</a>
 	String getUri();
 	void setUri(String uri);

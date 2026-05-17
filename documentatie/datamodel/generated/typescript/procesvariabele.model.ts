@@ -1,3 +1,4 @@
+import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -24,20 +25,19 @@ export class ProcesVariabele {
 	uri?: string;
 
 	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
-	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
-
-	/**
 	 * type
 	 * @see {@link http://purl.org/dc/terms/type}
 	 * Een proces variabele kan een typering hebben via dct:type
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;
+
+	/**
+	 * isInputVarOf
+	 * @see {@link http://purl.org/net/p-plan#isInputVarOf}
+	 */
+	@jsonArrayMember(() => Proces, { name: 'isInputVarOf' })
+	isInputVarOf?: Proces[];
 
 	/**
 	 * hasUnit

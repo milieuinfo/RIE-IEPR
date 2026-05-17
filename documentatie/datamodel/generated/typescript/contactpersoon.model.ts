@@ -1,3 +1,5 @@
+import { Exploitant } from './exploitant.model';
+import { Exploitatie } from './exploitatie.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -16,20 +18,12 @@ export class Contactpersoon {
 	uuid: string;
 
 	/**
-	 * uri
-	 * @see {@link http://example.org/vocab/uri}
-	 * URI
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een exploitant contactpersoon kan een geldigheid start hebben
 	 */
-	@jsonMember({ name: 'uri' })
-	uri?: string;
-
-	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
-	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan: Date;
 
 	/**
 	 * created
@@ -40,12 +34,12 @@ export class Contactpersoon {
 	aangemaaktOp: Date;
 
 	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een exploitant contactpersoon kan een geldigheid start hebben
+	 * uri
+	 * @see {@link http://example.org/vocab/uri}
+	 * URI
 	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
+	@jsonMember({ name: 'uri' })
+	uri?: string;
 
 	/**
 	 * valid
@@ -86,6 +80,13 @@ export class Contactpersoon {
 	 */
 	@jsonMember({ name: 'hasRole' })
 	functie?: string;
+
+	/**
+	 * memberOf
+	 * @see {@link http://www.w3.org/ns/org#memberOf}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'memberOf' })
+	contactpersoonVan?: (Exploitatie | Exploitant)[];
 
 	/**
 	 * mbox

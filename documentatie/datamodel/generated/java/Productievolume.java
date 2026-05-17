@@ -25,49 +25,23 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * ProcesVariabele
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele">ProcesVariabele</a>
+ * Productievolume
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume">Productievolume</a>
  **/
 @Getter
 @Setter
-@Entity(name = "ProcesVariabele")
+@Entity(name = "Productievolume")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "proces_variabele")
-public class ProcesVariabele {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
-	@Id
-	@Column(name = "uuid", nullable = false)
-	@JsonProperty("uuid")
-	private String uuid;
+@Table(name = "productievolume")
+public class Productievolume {
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/type">type</a>
-	@Column(name = "type", nullable = true)
-	@JsonProperty("type")
-	private String type;
-	// <a href="http://purl.org/net/p-plan#isInputVarOf">isInputVarOf</a>
-	@ManyToMany
-	@JoinTable(
-		name = "proces_variabele_proces",
-		joinColumns = @JoinColumn(name = "source_uuid"),
-		inverseJoinColumns = @JoinColumn(name = "target_uuid")
-	)
-	@JsonProperty("isInputVarOf")
-	private List<Proces> isInputVarOf;
 	// <a href="http://qudt.org/schema/qudt/hasUnit">hasUnit</a>
 	@Column(name = "eenheid", nullable = true)
 	@JsonProperty("hasUnit")
 	private String eenheid;
-	// <a href="http://qudt.org/schema/qudt/numericValue">numericValue</a>
-	@Column(name = "waarde", nullable = true)
-	@JsonProperty("numericValue")
-	private Double waarde;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
-	@Column(name = "benaming", nullable = true)
-	@JsonProperty("label")
-	private String benaming;
 }

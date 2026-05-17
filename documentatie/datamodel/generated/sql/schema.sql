@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-05-15T17:21:22.017447912+02:00[Europe/Amsterdam]
+-- Generated: 2026-05-17T21:04:51.623159469+02:00[Europe/Amsterdam]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -200,15 +200,55 @@ COMMENT ON COLUMN contactpersoon_identity.uuid IS 'https://data.riepr.omgeving.v
 
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 CREATE TABLE emissie (
+  uuid VARCHAR,
   uri VARCHAR,
-  quantity_value VARCHAR,
-  is_result_of VARCHAR
+  is_feature_of_interest_of VARCHAR,
+  heeft_eigenschap VARCHAR,
+  PRIMARY KEY (uuid)
 );
 
 COMMENT ON TABLE emissie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie';
+COMMENT ON COLUMN emissie.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN emissie.uri IS 'http://example.org/vocab/uri';
-COMMENT ON COLUMN emissie.quantity_value IS 'http://qudt.org/schema/qudt/quantityValue';
-COMMENT ON COLUMN emissie.is_result_of IS 'http://www.w3.org/ns/sosa/isResultOf';
+COMMENT ON COLUMN emissie.is_feature_of_interest_of IS 'http://www.w3.org/ns/sosa/isFeatureOfInterestOf';
+COMMENT ON COLUMN emissie.heeft_eigenschap IS 'http://www.w3.org/ns/ssn/hasProperty';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieObservatie
+CREATE TABLE emissie_observatie (
+  uuid VARCHAR,
+  uri VARCHAR,
+  aangemaakt_op TIMESTAMP,
+  geldig_van DATE,
+  aangepast_op TIMESTAMP,
+  benaming VARCHAR,
+  -- Foreign key referencing emissie(uuid)
+  heeft_aandachtspunt VARCHAR,
+  -- Foreign key referencing resultaat(uuid)
+  heeft_resultaat VARCHAR,
+  made_by_sensor VARCHAR,
+  observed_property VARCHAR,
+  phenomenon_time VARCHAR,
+  result_time TIMESTAMP,
+  used_procedure VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE emissie_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieObservatie';
+COMMENT ON COLUMN emissie_observatie.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN emissie_observatie.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN emissie_observatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN emissie_observatie.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN emissie_observatie.aangepast_op IS 'http://purl.org/dc/terms/modified';
+COMMENT ON COLUMN emissie_observatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN emissie_observatie.heeft_aandachtspunt IS 'http://www.w3.org/ns/sosa/hasFeatureOfInterest';
+COMMENT ON COLUMN emissie_observatie.heeft_resultaat IS 'http://www.w3.org/ns/sosa/hasResult';
+COMMENT ON COLUMN emissie_observatie.made_by_sensor IS 'http://www.w3.org/ns/sosa/madeBySensor';
+COMMENT ON COLUMN emissie_observatie.observed_property IS 'http://www.w3.org/ns/sosa/observedProperty';
+COMMENT ON COLUMN emissie_observatie.phenomenon_time IS 'http://www.w3.org/ns/sosa/phenomenonTime';
+COMMENT ON COLUMN emissie_observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTime';
+COMMENT ON COLUMN emissie_observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedProcedure';
 
 ----------------------------------------------------------------------
 
@@ -789,7 +829,6 @@ CREATE TABLE meetpunt (
   identifier VARCHAR,
   status VARCHAR,
   revisie_van VARCHAR,
-  -- Foreign key referencing exploitatielocatie_identity(uuid)
   locatie VARCHAR,
   heeft_eigenschap VARCHAR,
   -- Foreign key referencing aangifte(uuid)
@@ -882,9 +921,10 @@ CREATE TABLE observatie (
   geldig_van DATE,
   aangepast_op TIMESTAMP,
   benaming VARCHAR,
-  -- Foreign key referencing meetpunt_identity(uuid)
   heeft_aandachtspunt VARCHAR,
+  -- Foreign key referencing resultaat(uuid)
   heeft_resultaat VARCHAR,
+  -- Foreign key referencing meet_instrument_identity(uuid)
   made_by_sensor VARCHAR,
   observed_property VARCHAR,
   phenomenon_time VARCHAR,
@@ -910,17 +950,67 @@ COMMENT ON COLUMN observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedPr
 
 ----------------------------------------------------------------------
 
+-- http://www.w3.org/ns/sosa/Observation
+CREATE TABLE observation (
+  uri VARCHAR
+);
+
+COMMENT ON TABLE observation IS 'http://www.w3.org/ns/sosa/Observation';
+COMMENT ON COLUMN observation.uri IS 'http://example.org/vocab/uri';
+
+----------------------------------------------------------------------
+
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 CREATE TABLE onttrekking (
+  uuid VARCHAR,
   uri VARCHAR,
-  quantity_value VARCHAR,
-  is_result_of VARCHAR
+  is_feature_of_interest_of VARCHAR,
+  heeft_eigenschap VARCHAR,
+  PRIMARY KEY (uuid)
 );
 
 COMMENT ON TABLE onttrekking IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking';
+COMMENT ON COLUMN onttrekking.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN onttrekking.uri IS 'http://example.org/vocab/uri';
-COMMENT ON COLUMN onttrekking.quantity_value IS 'http://qudt.org/schema/qudt/quantityValue';
-COMMENT ON COLUMN onttrekking.is_result_of IS 'http://www.w3.org/ns/sosa/isResultOf';
+COMMENT ON COLUMN onttrekking.is_feature_of_interest_of IS 'http://www.w3.org/ns/sosa/isFeatureOfInterestOf';
+COMMENT ON COLUMN onttrekking.heeft_eigenschap IS 'http://www.w3.org/ns/ssn/hasProperty';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingObservatie
+CREATE TABLE onttrekking_observatie (
+  uuid VARCHAR,
+  uri VARCHAR,
+  aangemaakt_op TIMESTAMP,
+  geldig_van DATE,
+  aangepast_op TIMESTAMP,
+  benaming VARCHAR,
+  -- Foreign key referencing onttrekking(uuid)
+  heeft_aandachtspunt VARCHAR,
+  -- Foreign key referencing resultaat(uuid)
+  heeft_resultaat VARCHAR,
+  made_by_sensor VARCHAR,
+  observed_property VARCHAR,
+  phenomenon_time VARCHAR,
+  result_time TIMESTAMP,
+  used_procedure VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE onttrekking_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingObservatie';
+COMMENT ON COLUMN onttrekking_observatie.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN onttrekking_observatie.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN onttrekking_observatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN onttrekking_observatie.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN onttrekking_observatie.aangepast_op IS 'http://purl.org/dc/terms/modified';
+COMMENT ON COLUMN onttrekking_observatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN onttrekking_observatie.heeft_aandachtspunt IS 'http://www.w3.org/ns/sosa/hasFeatureOfInterest';
+COMMENT ON COLUMN onttrekking_observatie.heeft_resultaat IS 'http://www.w3.org/ns/sosa/hasResult';
+COMMENT ON COLUMN onttrekking_observatie.made_by_sensor IS 'http://www.w3.org/ns/sosa/madeBySensor';
+COMMENT ON COLUMN onttrekking_observatie.observed_property IS 'http://www.w3.org/ns/sosa/observedProperty';
+COMMENT ON COLUMN onttrekking_observatie.phenomenon_time IS 'http://www.w3.org/ns/sosa/phenomenonTime';
+COMMENT ON COLUMN onttrekking_observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTime';
+COMMENT ON COLUMN onttrekking_observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedProcedure';
 
 ----------------------------------------------------------------------
 
@@ -1088,6 +1178,29 @@ COMMENT ON COLUMN proces_identity.uuid IS 'https://data.riepr.omgeving.vlaandere
 
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 -- Table type: JOIN
+-- Original relation: has_step_proces
+CREATE TABLE proces_proces_has_step (
+  -- Foreign key referencing proces_identity(uuid)
+  source_uuid VARCHAR,
+  -- Foreign key referencing proces_identity(uuid)
+  target_uuid VARCHAR,
+  geldig_van DATE,
+  aangemaakt_op TIMESTAMP,
+  geldig_tot DATE,
+  PRIMARY KEY (source_uuid, target_uuid, geldig_van, aangemaakt_op)
+);
+
+COMMENT ON TABLE proces_proces_has_step IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
+COMMENT ON COLUMN proces_proces_has_step.source_uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN proces_proces_has_step.target_uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN proces_proces_has_step.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN proces_proces_has_step.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN proces_proces_has_step.geldig_tot IS 'http://purl.org/dc/terms/valid';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
+-- Table type: JOIN
 -- Original relation: volgt_op_proces
 CREATE TABLE proces_proces_volgt_op (
   -- Foreign key referencing proces_identity(uuid)
@@ -1147,27 +1260,88 @@ COMMENT ON COLUMN proces_variabele_proces.target_uuid IS 'https://data.riepr.omg
 
 ----------------------------------------------------------------------
 
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productie
+CREATE TABLE productie (
+  uuid VARCHAR,
+  uri VARCHAR,
+  is_feature_of_interest_of VARCHAR,
+  heeft_eigenschap VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE productie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productie';
+COMMENT ON COLUMN productie.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN productie.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN productie.is_feature_of_interest_of IS 'http://www.w3.org/ns/sosa/isFeatureOfInterestOf';
+COMMENT ON COLUMN productie.heeft_eigenschap IS 'http://www.w3.org/ns/ssn/hasProperty';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProductieObservatie
+CREATE TABLE productie_observatie (
+  uuid VARCHAR,
+  uri VARCHAR,
+  aangemaakt_op TIMESTAMP,
+  geldig_van DATE,
+  aangepast_op TIMESTAMP,
+  benaming VARCHAR,
+  -- Foreign key referencing productie(uuid)
+  heeft_aandachtspunt VARCHAR,
+  -- Foreign key referencing resultaat(uuid)
+  heeft_resultaat VARCHAR,
+  made_by_sensor VARCHAR,
+  observed_property VARCHAR,
+  phenomenon_time VARCHAR,
+  result_time TIMESTAMP,
+  used_procedure VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE productie_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProductieObservatie';
+COMMENT ON COLUMN productie_observatie.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN productie_observatie.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN productie_observatie.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN productie_observatie.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN productie_observatie.aangepast_op IS 'http://purl.org/dc/terms/modified';
+COMMENT ON COLUMN productie_observatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
+COMMENT ON COLUMN productie_observatie.heeft_aandachtspunt IS 'http://www.w3.org/ns/sosa/hasFeatureOfInterest';
+COMMENT ON COLUMN productie_observatie.heeft_resultaat IS 'http://www.w3.org/ns/sosa/hasResult';
+COMMENT ON COLUMN productie_observatie.made_by_sensor IS 'http://www.w3.org/ns/sosa/madeBySensor';
+COMMENT ON COLUMN productie_observatie.observed_property IS 'http://www.w3.org/ns/sosa/observedProperty';
+COMMENT ON COLUMN productie_observatie.phenomenon_time IS 'http://www.w3.org/ns/sosa/phenomenonTime';
+COMMENT ON COLUMN productie_observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTime';
+COMMENT ON COLUMN productie_observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedProcedure';
+
+----------------------------------------------------------------------
+
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume
 CREATE TABLE productievolume (
   uri VARCHAR,
-  quantity_value VARCHAR,
-  is_result_of VARCHAR
+  eenheid VARCHAR
 );
 
 COMMENT ON TABLE productievolume IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume';
 COMMENT ON COLUMN productievolume.uri IS 'http://example.org/vocab/uri';
-COMMENT ON COLUMN productievolume.quantity_value IS 'http://qudt.org/schema/qudt/quantityValue';
-COMMENT ON COLUMN productievolume.is_result_of IS 'http://www.w3.org/ns/sosa/isResultOf';
+COMMENT ON COLUMN productievolume.eenheid IS 'http://qudt.org/schema/qudt/hasUnit';
 
 ----------------------------------------------------------------------
 
--- http://www.w3.org/ns/sosa/Result
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat
 CREATE TABLE resultaat (
-  uri VARCHAR
+  uuid VARCHAR,
+  uri VARCHAR,
+  eenheid VARCHAR,
+  waarde DECIMAL,
+  is_result_of VARCHAR,
+  PRIMARY KEY (uuid)
 );
 
-COMMENT ON TABLE resultaat IS 'http://www.w3.org/ns/sosa/Result';
+COMMENT ON TABLE resultaat IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat';
+COMMENT ON COLUMN resultaat.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN resultaat.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN resultaat.eenheid IS 'http://qudt.org/schema/qudt/hasUnit';
+COMMENT ON COLUMN resultaat.waarde IS 'http://qudt.org/schema/qudt/numericValue';
+COMMENT ON COLUMN resultaat.is_result_of IS 'http://www.w3.org/ns/sosa/isResultOf';
 
 ----------------------------------------------------------------------
 
@@ -1260,6 +1434,8 @@ ALTER TABLE contactpersoon ADD FOREIGN KEY (uuid) REFERENCES contactpersoon_iden
 ALTER TABLE contactpersoon ADD FOREIGN KEY (uuid) REFERENCES contactpersoon_identity(uuid);
 ALTER TABLE contactpersoon_exploitant ADD FOREIGN KEY (source_uuid) REFERENCES contactpersoon_identity(uuid);
 ALTER TABLE contactpersoon_exploitatie ADD FOREIGN KEY (source_uuid) REFERENCES contactpersoon_identity(uuid);
+ALTER TABLE emissie_observatie ADD FOREIGN KEY (heeft_aandachtspunt) REFERENCES emissie(uuid);
+ALTER TABLE emissie_observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (uuid) REFERENCES emissiepunt_identity(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (uuid) REFERENCES emissiepunt_identity(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (locatie) REFERENCES exploitatielocatie_identity(uuid);
@@ -1298,11 +1474,13 @@ ALTER TABLE meet_instrument ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid)
 ALTER TABLE meet_instrument_exploitatie ADD FOREIGN KEY (source_uuid) REFERENCES meet_instrument_identity(uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (uuid) REFERENCES meetpunt_identity(uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (uuid) REFERENCES meetpunt_identity(uuid);
-ALTER TABLE meetpunt ADD FOREIGN KEY (locatie) REFERENCES exploitatielocatie_identity(uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE meetpunt_exploitatie ADD FOREIGN KEY (source_uuid) REFERENCES meetpunt_identity(uuid);
 ALTER TABLE meetpunt_meet_instrument ADD FOREIGN KEY (source_uuid) REFERENCES meetpunt_identity(uuid);
-ALTER TABLE observatie ADD FOREIGN KEY (heeft_aandachtspunt) REFERENCES meetpunt_identity(uuid);
+ALTER TABLE observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);
+ALTER TABLE observatie ADD FOREIGN KEY (made_by_sensor) REFERENCES meet_instrument_identity(uuid);
+ALTER TABLE onttrekking_observatie ADD FOREIGN KEY (heeft_aandachtspunt) REFERENCES onttrekking(uuid);
+ALTER TABLE onttrekking_observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (uuid) REFERENCES onttrekkingspunt_identity(uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (uuid) REFERENCES onttrekkingspunt_identity(uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (locatie) REFERENCES exploitatielocatie_identity(uuid);
@@ -1315,6 +1493,9 @@ ALTER TABLE proces ADD FOREIGN KEY (onderdeel_van) REFERENCES proces_identity(uu
 ALTER TABLE proces ADD FOREIGN KEY (revisie_van) REFERENCES proces_identity(uuid);
 ALTER TABLE proces ADD FOREIGN KEY (systeem) REFERENCES installatie_identity(uuid);
 ALTER TABLE proces ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
+ALTER TABLE proces_proces_has_step ADD FOREIGN KEY (source_uuid) REFERENCES proces_identity(uuid);
 ALTER TABLE proces_proces_volgt_op ADD FOREIGN KEY (source_uuid) REFERENCES proces_identity(uuid);
+ALTER TABLE productie_observatie ADD FOREIGN KEY (heeft_aandachtspunt) REFERENCES productie(uuid);
+ALTER TABLE productie_observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);
 ALTER TABLE transactie ADD FOREIGN KEY (genereert) REFERENCES aangifte(vlaanderen_id);
 ALTER TABLE zuiverings_apparaat ADD FOREIGN KEY (locatie) REFERENCES exploitatielocatie_identity(uuid);

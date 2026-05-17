@@ -44,6 +44,10 @@
       "@id" : "http://purl.org/net/p-plan#hasOutputVar",
       "@type" : "@id"
     },
+    "hasStep" : {
+      "@id" : "http://purl.org/net/p-plan#hasStep",
+      "@type" : "@id"
+    },
     "isInputVarOf" : {
       "@id" : "http://purl.org/net/p-plan#isInputVarOf",
       "@type" : "@id"
@@ -66,10 +70,6 @@
     },
     "numericValue" : {
       "@id" : "http://qudt.org/schema/qudt/numericValue",
-      "@type" : "@id"
-    },
-    "quantityValue" : {
-      "@id" : "http://qudt.org/schema/qudt/quantityValue",
       "@type" : "@id"
     },
     "hasGeometry" : {
@@ -170,6 +170,10 @@
     },
     "hasResult" : {
       "@id" : "http://www.w3.org/ns/sosa/hasResult",
+      "@type" : "@id"
+    },
+    "isFeatureOfInterestOf" : {
+      "@id" : "http://www.w3.org/ns/sosa/isFeatureOfInterestOf",
       "@type" : "@id"
     },
     "isHostedBy" : {
@@ -281,7 +285,7 @@
       "@type" : "@id"
     }
   },
-  "@type" : [ "http://www.w3.org/ns/adms#Identifier", "http://www.w3.org/ns/adms#Status", "http://www.w3.org/ns/locn#Address", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Adres", "https://data.riepr.omgeving.vlaanderen.be/id/concept/ExterneIdentificator", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Resultaat", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Status", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Systeem", "https://data.riepr.omgeving.vlaanderen.be/id/concept/SysteemEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#HoeveelheidWaarde", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Transactie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ZuiveringsApparaat" ],
+  "@type" : [ "http://www.w3.org/ns/adms#Identifier", "http://www.w3.org/ns/adms#Status", "http://www.w3.org/ns/locn#Address", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Adres", "https://data.riepr.omgeving.vlaanderen.be/id/concept/ExterneIdentificator", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Resultaat", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Status", "https://data.riepr.omgeving.vlaanderen.be/id/concept/Systeem", "https://data.riepr.omgeving.vlaanderen.be/id/concept/SysteemEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieObservatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#HoeveelheidWaarde", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingObservatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProductieObservatie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Transactie", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingProcedure", "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ZuiveringsApparaat" ],
   "@embed" : "@always",
   "depth" : {
     "@embed" : "@never",
@@ -327,6 +331,10 @@
     "@embed" : "@never",
     "@omitDefault" : true
   },
+  "hasStep" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
   "isInputVarOf" : {
     "@embed" : "@never",
     "@omitDefault" : true
@@ -348,10 +356,6 @@
     "@omitDefault" : true
   },
   "numericValue" : {
-    "@embed" : "@never",
-    "@omitDefault" : true
-  },
-  "quantityValue" : {
     "@embed" : "@never",
     "@omitDefault" : true
   },
@@ -452,6 +456,10 @@
     "@omitDefault" : true
   },
   "hasResult" : {
+    "@embed" : "@never",
+    "@omitDefault" : true
+  },
+  "isFeatureOfInterestOf" : {
     "@embed" : "@never",
     "@omitDefault" : true
   },

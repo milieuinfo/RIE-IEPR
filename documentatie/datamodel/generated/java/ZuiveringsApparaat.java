@@ -25,35 +25,23 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Rubriek
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek">Rubriek</a>
+ * ZuiveringsApparaat
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ZuiveringsApparaat">ZuiveringsApparaat</a>
  **/
 @Getter
 @Setter
-@Entity(name = "Rubriek")
+@Entity(name = "ZuiveringsApparaat")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rubriek")
-public class Rubriek {
+@Table(name = "zuiverings_apparaat")
+public class ZuiveringsApparaat implements ISysteem {
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/type">type</a>
-	@Column(name = "type", nullable = true)
-	@JsonProperty("type")
-	private String type;
-	// <a href="http://www.w3.org/2004/02/skos/core#definition">definition</a>
-	@Column(name = "definition", nullable = true)
-	@JsonProperty("definition")
-	private String definition;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
-	@Column(name = "datatype", nullable = false)
-	@JsonProperty("notation")
-	private String datatype;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
-	@Column(name = "datatype", nullable = false)
-	@JsonProperty("notation")
-	private String notatie;
+	// <a href="http://www.w3.org/ns/sosa/isHostedBy">isHostedBy</a>
+	@JoinColumn(name = "uuid", nullable = true)
+	@JsonProperty("isHostedBy")
+	private Exploitatielocatie locatie;
 }

@@ -1,5 +1,8 @@
+import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
+import { Exploitatielocatie } from './exploitatielocatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
-import { Status } from './status.enum';
+import { Rubriek } from './rubriek.model';
 import { Systeem } from './systeem.interface';
 import { SysteemEigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -20,20 +23,12 @@ export class Installatie implements Systeem {
 	uuid: string;
 
 	/**
-	 * uri
-	 * @see {@link http://example.org/vocab/uri}
-	 * URI
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een installatie moet een geldigheid start hebben
 	 */
-	@jsonMember({ name: 'uri' })
-	uri?: string;
-
-	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
-	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan: Date;
 
 	/**
 	 * created
@@ -44,12 +39,12 @@ export class Installatie implements Systeem {
 	aangemaaktOp: Date;
 
 	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een installatie moet een geldigheid start hebben
+	 * uri
+	 * @see {@link http://example.org/vocab/uri}
+	 * URI
 	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
+	@jsonMember({ name: 'uri' })
+	uri?: string;
 
 	/**
 	 * valid
@@ -112,8 +107,8 @@ export class Installatie implements Systeem {
 	 * @see {@link http://www.w3.org/ns/adms#status}
 	 * Een installatie moet een enkele status hebben
 	 */
-	@jsonMember(() => String, { name: 'status' })
-	status?: Status;
+	@jsonMember(() => Rubriek, { name: 'status' })
+	status?: Rubriek;
 
 	/**
 	 * wasRevisionOf
@@ -122,6 +117,21 @@ export class Installatie implements Systeem {
 	 */
 	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
 	revisieVan?: Systeem;
+
+	/**
+	 * isHostedBy
+	 * @see {@link http://www.w3.org/ns/sosa/isHostedBy}
+	 * Een installatie kan gehost worden door een exploitatielocatie
+	 */
+	@jsonMember(() => Exploitatielocatie, { name: 'isHostedBy' })
+	locatie?: Exploitatielocatie;
+
+	/**
+	 * hasDeployment
+	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
+	hasDeployment?: Exploitatie[];
 
 	/**
 	 * hasProperty
@@ -138,5 +148,21 @@ export class Installatie implements Systeem {
 	 */
 	@jsonArrayMember(() => Systeem, { name: 'hasSubSystem' })
 	heeftSubSysteem?: Systeem[];
+
+	/**
+	 * aangifte
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
+	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 */
+	@jsonMember(() => Aangifte, { name: 'aangifte' })
+	aangifte?: Aangifte;
+
+	/**
+	 * ingediend
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
+	 * Een installatie kan een referentie hebben naar een aangifte.
+	 */
+	@jsonArrayMember(() => string, { name: 'ingediend' })
+	ingediend?: string[];
 
 }

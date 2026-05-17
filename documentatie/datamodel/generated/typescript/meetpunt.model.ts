@@ -1,6 +1,8 @@
+import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { MeetInstrument } from './meetinstrument.model';
-import { Status } from './status.enum';
+import { Rubriek } from './rubriek.model';
 import { Systeem } from './systeem.interface';
 import { SysteemEigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -21,6 +23,22 @@ export class Meetpunt implements Systeem {
 	uuid: string;
 
 	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een meetpunt moet een geldigheid start hebben
+	 */
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan: Date;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een meetpunt moet een creatie datum hebben
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp: Date;
+
+	/**
 	 * uri
 	 * @see {@link http://example.org/vocab/uri}
 	 * URI
@@ -29,33 +47,9 @@ export class Meetpunt implements Systeem {
 	uri?: string;
 
 	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
-	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
-
-	/**
-	 * created
-	 * @see {@link http://purl.org/dc/terms/created}
-	 * Een systeem moet een creatie datum hebben
-	 */
-	@jsonMember(() => Date, { name: 'created' })
-	aangemaaktOp: Date;
-
-	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een systeem moet een geldigheid start hebben
-	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
-
-	/**
 	 * valid
 	 * @see {@link http://purl.org/dc/terms/valid}
-	 * Een systeem kan een geldigheid einde hebben
+	 * Een meetpunt kan een geldigheid einde hebben
 	 */
 	@jsonMember(() => Date, { name: 'valid' })
 	geldigTot?: Date;
@@ -63,7 +57,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * modified
 	 * @see {@link http://purl.org/dc/terms/modified}
-	 * Een systeem moet een modificatie datum hebben
+	 * Een meetpunt moet een modificatie datum hebben
 	 */
 	@jsonMember(() => Date, { name: 'modified' })
 	aangepastOp?: Date;
@@ -71,7 +65,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * type
 	 * @see {@link http://purl.org/dc/terms/type}
-	 * Een systeem kan een typering hebben via dct:type
+	 * Een meetpunt kan een typering hebben via dct:type
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;
@@ -79,7 +73,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * hasGeometry
 	 * @see {@link http://www.opengis.net/ont/geosparql#hasGeometry}
-	 * Een systeem mag max 1 geometrie hebben
+	 * Een meetpunt mag max 1 geometrie hebben
 	 */
 	@jsonMember({ name: 'hasGeometry' })
 	geometrie?: string;
@@ -87,7 +81,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * label
 	 * @see {@link http://www.w3.org/2000/01/rdf-schema#label}
-	 * Een systeem moet een benaming hebben
+	 * Een meetpunt moet een benaming hebben
 	 */
 	@jsonMember({ name: 'label' })
 	benaming?: string;
@@ -95,7 +89,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * identifier
 	 * @see {@link http://www.w3.org/ns/adms#identifier}
-	 * Een systeem heeft externe identificaties (optioneel)
+	 * Een meetpunt heeft externe identificaties (optioneel)
 	 */
 	@jsonArrayMember(() => ExterneIdentificator, { name: 'identifier' })
 	identifier?: ExterneIdentificator[];
@@ -103,18 +97,33 @@ export class Meetpunt implements Systeem {
 	/**
 	 * status
 	 * @see {@link http://www.w3.org/ns/adms#status}
-	 * Een systeem moet een enkele status hebben
+	 * Een meetpunt moet een enkele status hebben
 	 */
-	@jsonMember(() => String, { name: 'status' })
-	status?: Status;
+	@jsonMember(() => Rubriek, { name: 'status' })
+	status?: Rubriek;
 
 	/**
 	 * wasRevisionOf
 	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
-	 * Een systeem kan een revisie zijn van een andere systemen (optioneel)
+	 * Een meetpunt kan een revisie zijn van een andere systemen (optioneel)
 	 */
 	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
 	revisieVan?: Systeem;
+
+	/**
+	 * isHostedBy
+	 * @see {@link http://www.w3.org/ns/sosa/isHostedBy}
+	 * Een meetpunt is een subsysteem van het emissiepunt of onttrekkingspunt waarop het meet
+	 */
+	@jsonMember(() => Systeem, { name: 'isHostedBy' })
+	locatie?: Systeem;
+
+	/**
+	 * hasDeployment
+	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
+	hasDeployment?: Exploitatie[];
 
 	/**
 	 * hasProperty
@@ -131,5 +140,13 @@ export class Meetpunt implements Systeem {
 	 */
 	@jsonArrayMember(() => MeetInstrument, { name: 'hasSubSystem' })
 	heeftSubSysteem?: MeetInstrument[];
+
+	/**
+	 * aangifte
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
+	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 */
+	@jsonMember(() => Aangifte, { name: 'aangifte' })
+	aangifte?: Aangifte;
 
 }

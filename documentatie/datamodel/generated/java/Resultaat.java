@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.mjv.model.structuur;
+package be.vlaanderen.omgeving.riepr.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,9 +6,14 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
@@ -16,11 +21,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumns;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Resultaat
- * <a href="http://www.w3.org/ns/sosa/Result">Resultaat</a>
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat">Resultaat</a>
  **/
 @Getter
 @Setter
@@ -31,15 +37,23 @@ import java.util.List;
 @Table(name = "resultaat")
 public class Resultaat {
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
-	@Column(name = "uri", nullable = false)
+	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend">ingediend</a>
-	@Column(name = "ingediend", nullable = false)
-	@JsonProperty("ingediend")
-	private Boolean ingediend;
+	// <a href="http://qudt.org/schema/qudt/hasUnit">hasUnit</a>
+	@Column(name = "eenheid", nullable = true)
+	@JsonProperty("hasUnit")
+	private String eenheid;
+	// <a href="http://qudt.org/schema/qudt/numericValue">numericValue</a>
+	@Column(name = "waarde", nullable = true)
+	@JsonProperty("numericValue")
+	private Double waarde;
+	// <a href="http://www.w3.org/ns/sosa/isResultOf">isResultOf</a>
+	@JsonProperty("isResultOf")
+	private List<IObservation> isResultOf;
 }

@@ -1,5 +1,8 @@
+import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
+import { Exploitatielocatie } from './exploitatielocatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
-import { Status } from './status.enum';
+import { Rubriek } from './rubriek.model';
 import { Systeem } from './systeem.interface';
 import { SysteemEigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -20,6 +23,22 @@ export class Emissiepunt implements Systeem {
 	uuid: string;
 
 	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een emissiepunt moet een geldigheid start hebben
+	 */
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan: Date;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een emissiepunt moet een creatie datum hebben
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp: Date;
+
+	/**
 	 * uri
 	 * @see {@link http://example.org/vocab/uri}
 	 * URI
@@ -28,33 +47,9 @@ export class Emissiepunt implements Systeem {
 	uri?: string;
 
 	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
-	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
-
-	/**
-	 * created
-	 * @see {@link http://purl.org/dc/terms/created}
-	 * Een systeem moet een creatie datum hebben
-	 */
-	@jsonMember(() => Date, { name: 'created' })
-	aangemaaktOp: Date;
-
-	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een systeem moet een geldigheid start hebben
-	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
-
-	/**
 	 * valid
 	 * @see {@link http://purl.org/dc/terms/valid}
-	 * Een systeem kan een geldigheid einde hebben
+	 * Een emissiepunt kan een geldigheid einde hebben
 	 */
 	@jsonMember(() => Date, { name: 'valid' })
 	geldigTot?: Date;
@@ -62,7 +57,7 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * modified
 	 * @see {@link http://purl.org/dc/terms/modified}
-	 * Een systeem moet een modificatie datum hebben
+	 * Een emissiepunt moet een modificatie datum hebben
 	 */
 	@jsonMember(() => Date, { name: 'modified' })
 	aangepastOp?: Date;
@@ -70,7 +65,7 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * type
 	 * @see {@link http://purl.org/dc/terms/type}
-	 * Een systeem kan een typering hebben via dct:type
+	 * Een emissiepunt kan een typering hebben via dct:type
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;
@@ -78,7 +73,7 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * hasGeometry
 	 * @see {@link http://www.opengis.net/ont/geosparql#hasGeometry}
-	 * Een systeem mag max 1 geometrie hebben
+	 * Een emissiepunt mag max 1 geometrie hebben
 	 */
 	@jsonMember({ name: 'hasGeometry' })
 	geometrie?: string;
@@ -86,7 +81,7 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * label
 	 * @see {@link http://www.w3.org/2000/01/rdf-schema#label}
-	 * Een systeem moet een benaming hebben
+	 * Een emissiepunt moet een benaming hebben
 	 */
 	@jsonMember({ name: 'label' })
 	benaming?: string;
@@ -94,7 +89,7 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * identifier
 	 * @see {@link http://www.w3.org/ns/adms#identifier}
-	 * Een systeem heeft externe identificaties (optioneel)
+	 * Een emissiepunt heeft externe identificaties (optioneel)
 	 */
 	@jsonArrayMember(() => ExterneIdentificator, { name: 'identifier' })
 	identifier?: ExterneIdentificator[];
@@ -102,18 +97,33 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * status
 	 * @see {@link http://www.w3.org/ns/adms#status}
-	 * Een systeem moet een enkele status hebben
+	 * Een emissiepunt moet een enkele status hebben
 	 */
-	@jsonMember(() => String, { name: 'status' })
-	status?: Status;
+	@jsonMember(() => Rubriek, { name: 'status' })
+	status?: Rubriek;
 
 	/**
 	 * wasRevisionOf
 	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
-	 * Een systeem kan een revisie zijn van een andere systemen (optioneel)
+	 * Een emissiepunt kan een revisie zijn van een andere systemen (optioneel)
 	 */
 	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
 	revisieVan?: Systeem;
+
+	/**
+	 * isHostedBy
+	 * @see {@link http://www.w3.org/ns/sosa/isHostedBy}
+	 * Een emissiepunt kan gehost worden door een exploitatielocatie
+	 */
+	@jsonMember(() => Exploitatielocatie, { name: 'isHostedBy' })
+	locatie?: Exploitatielocatie;
+
+	/**
+	 * hasDeployment
+	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
+	hasDeployment?: Exploitatie[];
 
 	/**
 	 * hasProperty
@@ -126,9 +136,17 @@ export class Emissiepunt implements Systeem {
 	/**
 	 * hasSubSystem
 	 * @see {@link http://www.w3.org/ns/ssn/hasSubSystem}
-	 * Een systeem kan meerdere objecten bevatten.
+	 * Een emissiepunt kan meerdere objecten bevatten.
 	 */
 	@jsonArrayMember(() => Systeem, { name: 'hasSubSystem' })
 	heeftSubSysteem?: Systeem[];
+
+	/**
+	 * aangifte
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
+	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 */
+	@jsonMember(() => Aangifte, { name: 'aangifte' })
+	aangifte?: Aangifte;
 
 }

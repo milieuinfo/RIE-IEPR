@@ -1,19 +1,21 @@
+import { Exploitatie } from './exploitatie.model';
+import { Observatie } from './observatie.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
  * Aangifte
  * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte}
- * Een aangifte is een specifieke gebeurtenis waarbij een aanvraag of melding wordt ingediend bij de overheid.
+ * Een aangifte is een document dat wordt ingediend bij de overheid.
  */
 @jsonObject
 export class Aangifte {
 	/**
-	 * uuid
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
-	 * UUID
+	 * vlaanderenId
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId}
+	 * Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften.
 	 */
-	@jsonMember({ name: 'uuid' })
-	uuid: string;
+	@jsonMember({ name: 'vlaanderenId' })
+	vlaanderenId: string;
 
 	/**
 	 * uri
@@ -24,19 +26,43 @@ export class Aangifte {
 	uri?: string;
 
 	/**
-	 * ingediend
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend}
-	 * Indicates whether the entity is ingediend (posted) or not (draft)
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een aangifte heeft een datum van indiening.
 	 */
-	@jsonMember({ name: 'ingediend' })
-	ingediend?: boolean;
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp?: Date;
 
 	/**
-	 * hadPart
-	 * @see {@link http://www.w3.org/ns/prov#hadPart}
-	 * Een aangifte heeft meerdere stukken
+	 * isPartOf
+	 * @see {@link http://purl.org/dc/terms/isPartOf}
+	 * Een aangifte kan deel zijn van een andere aangifte.
 	 */
-	@jsonArrayMember(() => Stuk, { name: 'hadPart' })
-	hadPart?: Stuk[];
+	@jsonMember(() => Aangifte, { name: 'isPartOf' })
+	onderdeelVan?: Aangifte;
+
+	/**
+	 * subject
+	 * @see {@link http://purl.org/dc/terms/subject}
+	 * Een aangifte heeft betrekking tot een concept.
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'subject' })
+	subject?: (Exploitatie | Observatie)[];
+
+	/**
+	 * wasAssociatedWith
+	 * @see {@link http://www.w3.org/ns/prov#wasAssociatedWith}
+	 * Een aangifte heeft optioneel een auteur (die verschillend kan zijn dan de indiener).
+	 */
+	@jsonMember({ name: 'wasAssociatedWith' })
+	verantwoordelijke?: string;
+
+	/**
+	 * informatieclassificatie
+	 * @see {@link https://data.vlaanderen.be/ns/dossier#informatieclassificatie}
+	 * Een aangifte heeft een informatie classificatie.
+	 */
+	@jsonMember({ name: 'informatieclassificatie' })
+	informatieclassificatie?: string;
 
 }
