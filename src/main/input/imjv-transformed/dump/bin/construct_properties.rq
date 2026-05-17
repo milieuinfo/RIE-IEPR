@@ -1,3 +1,4 @@
+PREFIX riepr:  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 PREFIX imjv:   <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
 PREFIX sosa:   <http://www.w3.org/ns/sosa/>
 PREFIX qudt:   <http://qudt.org/schema/qudt/>
@@ -18,7 +19,7 @@ construct
     ?tijdEinde a time:Instant ;
         time:inXSDDateTime ?eindeDT .
 
-    ?waarde_iri a sosa:Observation , sosa:Execution ;
+    ?waarde_iri a riepr:Observatie , sosa:Execution ;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?parent ;
         sosa:observedProperty ?property ;
@@ -30,13 +31,10 @@ construct
         sosa:isFeatureOfInterestOf ?waarde_iri ;
         ssn:hasProperty ?property .
 
-    ?result a sosa:Result ;
-        qudt:quantityValue ?qv ;
-        sosa:isResultOf ?waarde_iri .
-
-    ?qv a qudt:QuantityValue ;
+    ?result a riepr:Resultaat ;
         qudt:numericValue ?value ;
-        qudt:hasUnit ?unit .
+        qudt:hasUnit ?unit ;
+        sosa:isResultOf ?waarde_iri .
 
     ?property a sosa:Property , sosa:ObservableProperty , ssn:Property.
 }
@@ -66,7 +64,6 @@ where
             sdmxa:unitMeasure ?unit .
     BIND(IRI(CONCAT(STR(?parent), "/", REPLACE(STR(?property), "^.*/", ""))) AS ?waarde_iri)
     BIND(IRI(CONCAT(STR(?waarde_iri), "/result")) AS ?result)
-    BIND(IRI(CONCAT(STR(?waarde_iri), "/qv"))     AS ?qv)
     BIND(REPLACE(STR(?parent), "^.*/jaar/([0-9]{4})$", "$1") AS ?jaar)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar)) AS ?tijdInterval)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/begin")) AS ?tijdBegin)

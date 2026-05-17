@@ -51,7 +51,7 @@ construct
 
 
     # Massa-emissie observaties per stof
-    ?obs a sosa:Observation  , sosa:Execution;
+    ?obs a riepr:EmissieObservatie , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
@@ -68,15 +68,12 @@ construct
 
     ?substantie a sosa:Property , sosa:ObservableProperty , ssn:Property.
 
-    ?result a sosa:Result ;
-        qudt:quantityValue ?quantityValue .
-
-    ?quantityValue a qudt:QuantityValue ;
+    ?result a riepr:Resultaat ;
         qudt:numericValue ?hoeveelheid ;
         qudt:hasUnit ?unitMeasure .
 
     # Concentratie-observaties (OPTIONAL)
-    ?concentratie_iri a sosa:Observation  , sosa:Execution ;
+    ?concentratie_iri a riepr:EmissieObservatie , sosa:Execution ;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty ?substantie ;
@@ -88,15 +85,12 @@ construct
 
     ?result_concentratie sosa:isResultOf ?concentratie_iri .
 
-    ?result_concentratie a sosa:Result ;
-        qudt:quantityValue ?quantityValue_concentratie .
-
-    ?quantityValue_concentratie a qudt:QuantityValue ;
+    ?result_concentratie a riepr:Resultaat ;
         qudt:numericValue ?hoeveelheid_concentratie ;
         qudt:hasUnit ?unitMeasure_concentratie .
 
     # Debiet-observaties (OPTIONAL, alleen voor luchtemissies)
-    ?debiet a sosa:Observation  , sosa:Execution;
+    ?debiet a riepr:EmissieObservatie , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty  concept:debiet ;
@@ -108,15 +102,12 @@ construct
 
     ?result_debiet sosa:isResultOf ?debiet .
 
-    ?result_debiet a sosa:Result ;
-        qudt:quantityValue ?quantityValue_debiet .
-
-    ?quantityValue_debiet a qudt:QuantityValue ;
+    ?result_debiet a riepr:Resultaat ;
         qudt:numericValue ?hoeveelheid_debiet ;
         qudt:hasUnit ?unitMeasure_debiet .
 
     # Emissieduur-observaties (OPTIONAL, alleen voor luchtemissies)
-    ?emissieDuur a sosa:Observation , sosa:Execution;
+    ?emissieDuur a riepr:EmissieObservatie , sosa:Execution;
         sosa:madeBySensor  agent:labo_mens_sensor_x ;
         sosa:hasFeatureOfInterest ?emissie ;
         sosa:observedProperty concept:emissieduur ;
@@ -128,10 +119,7 @@ construct
 
     ?result_emissieDuur sosa:isResultOf ?emissieDuur .
 
-    ?result_emissieDuur a sosa:Result ;
-        qudt:quantityValue ?quantityValue_emissieDuur .
-
-    ?quantityValue_emissieDuur a qudt:QuantityValue ;
+    ?result_emissieDuur a riepr:Resultaat ;
         qudt:numericValue ?hoeveelheid_emissieDuur ;
         qudt:hasUnit ?unitMeasure_emissieDuur .
 
@@ -237,12 +225,8 @@ where
 
     # Afgeleide IRIs
     BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")) AS ?result)
-    BIND(IRI(REPLACE(STR(?obs), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")) AS ?quantityValue)
     BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie")), ?_undef) AS ?concentratie_iri)
     BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie/result")), ?_undef) AS ?result_concentratie)
-    BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie/quantityvalue")), ?_undef) AS ?quantityValue_concentratie)
     BIND(IF(BOUND(?debiet), IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_debiet)
-    BIND(IF(BOUND(?debiet), IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")), ?noop) AS ?quantityValue_debiet)
     BIND(IF(BOUND(?emissieDuur), IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_emissieDuur)
-    BIND(IF(BOUND(?emissieDuur), IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/quantityvalue/")), ?noop) AS ?quantityValue_emissieDuur)
 }

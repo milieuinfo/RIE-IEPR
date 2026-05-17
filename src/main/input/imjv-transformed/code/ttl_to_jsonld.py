@@ -38,6 +38,8 @@ DEFAULT_OUT    = SCRIPT_DIR / "../dump/jsonld"
 # ---------------------------------------------------------------------------
 
 CLASS_ALIASES = {
+    "http://www.w3.org/ns/sosa/Result":
+        "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat",
     "http://www.w3.org/ns/sosa/Observation":
         "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie",
     "http://www.w3.org/ns/sosa/Execution":
@@ -56,6 +58,13 @@ EMBED_PREDICATES = {
 }
 
 GEO_AS_WKT = URIRef("http://www.opengis.net/ont/geosparql#asWKT")
+
+# qudt:quantityValue-indirectie: resultaat.waarde/eenheid zitten op de QV-node
+QUDT_QUANTITYVALUE_PRED = URIRef("http://qudt.org/schema/qudt/quantityValue")
+BRIDGE_VIA_QV = frozenset({
+    "http://qudt.org/schema/qudt/numericValue",
+    "http://qudt.org/schema/qudt/hasUnit",
+})
 
 # ---------------------------------------------------------------------------
 # Fase 1: frame.json inlezen
@@ -171,6 +180,23 @@ def build_record(g: Graph, subject_uri: str, uri_to_term: dict[str, str]) -> dic
                 seen[term] = [existing, val]
         else:
             seen[term] = val
+
+    # Inline qudt:numericValue en qudt:hasUnit via qudt:quantityValue-indirectie
+    for qv in g.objects(subject, QUDT_QUANTITYVALUE_PRED):
+        for bridge_pred_str in BRIDGE_VIA_QV:
+            term = uri_to_term.get(bridge_pred_str)
+            if term is None:
+                continue
+            for bridge_val in g.objects(qv, URIRef(bridge_pred_str)):
+                val = coerce_literal(bridge_val) if isinstance(bridge_val, Literal) else str(bridge_val)
+                if term in seen:
+                    existing = seen[term]
+                    if isinstance(existing, list):
+                        existing.append(val)
+                    else:
+                        seen[term] = [existing, val]
+                else:
+                    seen[term] = val
 
     rec.update(seen)
     return rec

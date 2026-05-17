@@ -38,17 +38,26 @@ STATUS_PRED      = "http://www.w3.org/ns/adms#status"
 
 # Klasse-aliassen: data-klasse → schema-klasse
 CLASS_ALIASES = {
+    "http://www.w3.org/ns/sosa/Result":
+        "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat",
     "http://www.w3.org/ns/sosa/Observation":
+        "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie",
+    "http://www.w3.org/ns/sosa/Execution":
         "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie",
     "http://qudt.org/schema/qudt/QuantityValue":
         "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#HoeveelheidWaarde",
-    "http://www.w3.org/ns/sosa/Execution":
-        "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie",
     "http://www.w3.org/ns/ssn/Deployment":
         "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie",
     "http://www.w3.org/ns/sosa/Platform":
         "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie",
 }
+
+# qudt:quantityValue-indirectie: resultaat.waarde/eenheid zitten op de QV-node
+QUDT_QUANTITYVALUE_PRED = "http://qudt.org/schema/qudt/quantityValue"
+BRIDGE_VIA_QV = frozenset({
+    "http://qudt.org/schema/qudt/numericValue",
+    "http://qudt.org/schema/qudt/hasUnit",
+})
 
 # JOIN-tabel predicaat-mapping: original_relation → (predikaat-URI, richting)
 # richting "forward": subject van bronklasse heeft pred → doel
@@ -288,6 +297,18 @@ def get_value(
     if pred_uri == "http://www.w3.org/2000/01/rdf-schema#label":
         v = pick_label(g, subject)
         return v if v is not None else "NULL"
+
+    # Volg qudt:quantityValue-indirectie voor waarde/eenheid op resultaat
+    if pred_uri in BRIDGE_VIA_QV:
+        qv_objs = list(g.objects(subject, URIRef(QUDT_QUANTITYVALUE_PRED)))
+        if not qv_objs:
+            return "NULL"
+        qv = qv_objs[0]
+        bridge_objs = list(g.objects(qv, URIRef(pred_uri)))
+        if not bridge_objs:
+            return "NULL"
+        obj = bridge_objs[0]
+        return coerce_literal(obj) if isinstance(obj, Literal) else sql_escape(str(obj))
 
     pred = URIRef(pred_uri)
     objs = list(g.objects(subject, pred))
