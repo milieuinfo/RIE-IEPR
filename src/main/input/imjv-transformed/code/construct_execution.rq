@@ -69,6 +69,8 @@ construct
     ?substantie a sosa:Property , sosa:ObservableProperty , ssn:Property.
 
     ?result a riepr:Resultaat ;
+        qudt:quantityValue ?qv .
+    ?qv a qudt:QuantityValue ;
         qudt:numericValue ?hoeveelheid ;
         qudt:hasUnit ?unitMeasure .
 
@@ -86,6 +88,8 @@ construct
     ?result_concentratie sosa:isResultOf ?concentratie_iri .
 
     ?result_concentratie a riepr:Resultaat ;
+        qudt:quantityValue ?qv_concentratie .
+    ?qv_concentratie a qudt:QuantityValue ;
         qudt:numericValue ?hoeveelheid_concentratie ;
         qudt:hasUnit ?unitMeasure_concentratie .
 
@@ -103,6 +107,8 @@ construct
     ?result_debiet sosa:isResultOf ?debiet .
 
     ?result_debiet a riepr:Resultaat ;
+        qudt:quantityValue ?qv_debiet .
+    ?qv_debiet a qudt:QuantityValue ;
         qudt:numericValue ?hoeveelheid_debiet ;
         qudt:hasUnit ?unitMeasure_debiet .
 
@@ -120,6 +126,8 @@ construct
     ?result_emissieDuur sosa:isResultOf ?emissieDuur .
 
     ?result_emissieDuur a riepr:Resultaat ;
+        qudt:quantityValue ?qv_emissieDuur .
+    ?qv_emissieDuur a qudt:QuantityValue ;
         qudt:numericValue ?hoeveelheid_emissieDuur ;
         qudt:hasUnit ?unitMeasure_emissieDuur .
 
@@ -229,4 +237,10 @@ where
     BIND(IF(BOUND(?concentratie), IRI(CONCAT(STR(?obs), "/concentratie/result")), ?_undef) AS ?result_concentratie)
     BIND(IF(BOUND(?debiet), IRI(REPLACE(STR(?debiet), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_debiet)
     BIND(IF(BOUND(?emissieDuur), IRI(REPLACE(STR(?emissieDuur), "https://data.imjv.omgeving.vlaanderen.be/id/", "https://data.imjv.omgeving.vlaanderen.be/id/result/")), ?noop) AS ?result_emissieDuur)
+
+    # QuantityValue IRIs — één per resultaat-IRI, geen blank nodes
+    BIND(IRI(CONCAT(STR(?result), "/qv")) AS ?qv)
+    BIND(IF(BOUND(?result_concentratie), IRI(CONCAT(STR(?result_concentratie), "/qv")), ?_undef) AS ?qv_concentratie)
+    BIND(IF(BOUND(?result_debiet), IRI(CONCAT(STR(?result_debiet), "/qv")), ?_undef) AS ?qv_debiet)
+    BIND(IF(BOUND(?result_emissieDuur), IRI(CONCAT(STR(?result_emissieDuur), "/qv")), ?_undef) AS ?qv_emissieDuur)
 }

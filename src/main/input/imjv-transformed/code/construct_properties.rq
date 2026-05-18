@@ -32,9 +32,12 @@ construct
         ssn:hasProperty ?property .
 
     ?result a riepr:Resultaat ;
-        qudt:numericValue ?value ;
-        qudt:hasUnit ?unit ;
+        qudt:quantityValue ?qv ;
         sosa:isResultOf ?waarde_iri .
+
+    ?qv a qudt:QuantityValue ;
+        qudt:numericValue ?value ;
+        qudt:hasUnit ?unit .
 
     ?property a sosa:Property , sosa:ObservableProperty , ssn:Property.
 }
@@ -64,6 +67,7 @@ where
             sdmxa:unitMeasure ?unit .
     BIND(IRI(CONCAT(STR(?parent), "/", REPLACE(STR(?property), "^.*/", ""))) AS ?waarde_iri)
     BIND(IRI(CONCAT(STR(?waarde_iri), "/result")) AS ?result)
+    BIND(IRI(CONCAT(STR(?result), "/qv")) AS ?qv)
     BIND(REPLACE(STR(?parent), "^.*/jaar/([0-9]{4})$", "$1") AS ?jaar)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar)) AS ?tijdInterval)
     BIND(IRI(CONCAT("https://data.riepr.omgeving.vlaanderen.be/id/tijd/jaar/", ?jaar, "/begin")) AS ?tijdBegin)
