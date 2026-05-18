@@ -298,8 +298,13 @@ def get_value(
         v = pick_label(g, subject)
         return v if v is not None else "NULL"
 
-    # Volg qudt:quantityValue-indirectie voor waarde/eenheid op resultaat
+    # Waarde/eenheid op resultaat: directe triple heeft voorkeur (nieuwe data);
+    # qudt:quantityValue-indirectie als fallback (oude data)
     if pred_uri in BRIDGE_VIA_QV:
+        direct = list(g.objects(subject, URIRef(pred_uri)))
+        if direct:
+            obj = direct[0]
+            return coerce_literal(obj) if isinstance(obj, Literal) else sql_escape(str(obj))
         qv_objs = list(g.objects(subject, URIRef(QUDT_QUANTITYVALUE_PRED)))
         if not qv_objs:
             return "NULL"
