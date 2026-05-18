@@ -1,0 +1,152 @@
+services:
+  ldes-server:
+    image: openldes/ldes-server:4.1.1
+    environment:
+      - SPRING_CONFIG_LOCATION=/config/
+    volumes:
+      - ./server/application.yaml:/config/application.yaml:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - ldes-server
+      - ldio
+    depends_on:
+      - postgres
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080 || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 500
+      start_period: 10s
+
+  postgres:
+    container_name: ldes-postgres
+    image: postgres:16-alpine
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=ldesserver
+    networks:
+      - ldes-server
+
+  create-eventstreams:
+    image: alpine/curl:latest
+    volumes:
+      - ./server:/config/server:ro
+    depends_on:
+      ldes-server:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - |
+        export SERVER_URL=http://ldes-server:8080
+        export STREAMS="
+        resultaat
+        observatie
+        emissieobservatie
+        "
+        post_to_admin() {
+          echo "creating $$1 with body content of file $$2"
+          curl -X POST "$${SERVER_URL}/$$1" \
+            -H "Content-Type: text/turtle" \
+            -d @/config/server/$$2 \
+            -w "\nHTTP status: %{http_code}\n" \
+            --fail-with-body || echo "Warning: failed to create $$1 (it may already exist)"
+        }
+        echo "Waiting for LDES server to be ready..."
+        until curl -sf "$${SERVER_URL}/" 2>/dev/null | grep -q 'PREFIX ldes:'; do
+          echo "LDES server not yet returning expected content, retrying in 5s..."
+          sleep 5
+        done
+        echo "LDES server is ready. $${SERVER_URL}"
+        
+        while IFS= read -r i; do
+        [ -z "$$i" ] && continue
+          post_to_admin "admin/api/v1/eventstreams" "$$i-stream.ttl"
+        
+          if [ -f /config/server/$$i-by-page.ttl ]; then
+            post_to_admin "admin/api/v1/eventstreams/$$i/views" "$$i-by-page.ttl"
+          fi
+          if [ -f /config/server/$$i-by-time.ttl ]; then
+            post_to_admin "admin/api/v1/eventstreams/$$i/views" "$$i-by-time.ttl"
+          fi
+        done <<EOF
+        $$STREAMS
+        EOF
+    networks:
+      - ldes-server
+
+  ingest-data:
+    image: alpine/curl:latest
+    volumes:
+      - ./server:/config/server:ro
+    depends_on:
+      ldes-server:
+        condition: service_healthy
+      create-eventstreams:
+        condition: service_completed_successfully
+    command:
+      - /bin/sh
+      - -c
+      - |
+        export SERVER_URL=http://ldes-server:8080
+        export STREAMS="
+        resultaat
+        observatie
+        emissieobservatie
+        "
+        post_to_ingest() {
+          echo "ingesting $$1 with body content of file $$2"
+          curl -X POST "$${SERVER_URL}/$$1" \
+            -H "Content-Type: text/turtle" \
+            -d @/config/server/$$2 \
+            -w "\nHTTP status: %{http_code}\n" \
+            --fail-with-body || echo "Warning: failed to create $$1 (it may already exist)"
+        }
+        while IFS= read -r i; do
+        [ -z "$$i" ] && continue
+          post_to_ingest "$$i" "$$i-data.ttl"
+        done <<EOF
+        $$STREAMS
+        EOF
+    networks:
+      - ldes-server
+
+  postgres-ldio-rdb-out:
+    container_name: postgres-ldio-rdb-out
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=ldio-rdb-out
+    volumes:
+      - ./ldio/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - ldio
+
+  ldio:
+    container_name: ldio
+    image: openldes/ldi-orchestrator:3.1.1
+    volumes:
+      - ./ldio/application.yml:/ldio/application.yml:ro
+      - ./ldio/pipelines/:/ldio/pipelines/:ro
+    ports:
+      - 8090:8080
+    networks:
+      - ldio
+      - ldes-server
+    depends_on:
+      ingest-data:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://ldio:8080/actuator/health" ]
+
+
+networks:
+  ldes-server:
+  ldio:
