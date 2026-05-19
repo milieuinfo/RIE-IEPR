@@ -60,6 +60,7 @@
 @prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
 @prefix ssn-system:         <http://www.w3.org/ns/ssn/systems/> .
+@prefix st:                 <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
 @prefix step:               <https://example.org/step/> .
 @prefix stof:               <https://example.org/concept/stof/> .
 @prefix terms:              <http://purl.org/dc/terms/> .
@@ -74,10 +75,6 @@
 @prefix xhv:                <http://www.w3.org/1999/xhtml/vocab#> .
 @prefix xml:                <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd:                <http://www.w3.org/2001/XMLSchema#> .
-
-<file:///home/gehau/git/RIE-IEPR/...>
-        rdf:type            geo:Geometry , geo:SpatialObject;
-        sosa:isSubSystemOf  installatie:GPBV_12345 .
 
 meetpunt:MP_001  rdf:type  riepr:Meetpunt , geo:SpatialObject , ssn:System , geo:Feature;
         rdfs:label       "Meetpunt Luchtkwaliteit 1"@nl;
@@ -99,10 +96,10 @@ installatie:GPBV_12345
         dct:issued         "2020-01-01"^^xsd:date;
         dct:valid          "2030-12-31"^^xsd:date;
         adms:identifier    [ rdf:type       adms:Identifier;
-                             skos:notation  "BE.VL.000000001.INSTALLATION"
+                             skos:notation  "20260101-0001"
                            ];
         adms:identifier    [ rdf:type       adms:Identifier;
-                             skos:notation  "20260101-0001"
+                             skos:notation  "BE.VL.000000001.INSTALLATION"
                            ];
         adms:status        riepr:Actief;
         sosa:hasSubSystem  <file:///home/gehau/git/RIE-IEPR/...>;
@@ -139,3 +136,7 @@ emissiepunt:EP_001  rdf:type  geo:SpatialObject , riepr:Emissiepunt , geo:Featur
         adms:status      riepr:Actief;
         sosa:hasProxy    meetpunt:MP_001;
         sosa:isHostedBy  exploitatielocatie:EX .
+
+<file:///home/gehau/git/RIE-IEPR/...>
+        rdf:type            geo:Geometry , geo:SpatialObject;
+        sosa:isSubSystemOf  installatie:GPBV_12345 .
