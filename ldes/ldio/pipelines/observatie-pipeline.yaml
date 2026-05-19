@@ -1,0 +1,48 @@
+# This is a pipeline for demonstrating the consuming of an LDES stream and storing the data in a database using the RDF to Database component (LdioRdbOut).
+name: observatie-pipeline
+description: "Synchronizes the observatie LDES stream with a postgres database table."
+input:
+  name: Ldio:LdesClient
+  config:
+    urls:
+      - http://ldes-server:8080/observatie/by-page
+    sourceFormat: text/turtle
+    retries:
+      enabled: true
+outputs:
+  - name: Ldio:ConsoleOut
+  - name: Ldio:LdioRdbOut
+    config:
+      table-name: observatie
+      sparql-select-query: |-
+        PREFIX qudt:    <http://qudt.org/schema/qudt/>
+        PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+        PREFIX agent:   <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
+        PREFIX eenheid: <https://data.imjv.omgeving.vlaanderen.be/id/concept/eenheid/>
+        PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+        PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX terms:   <http://purl.org/dc/terms/>
+        PREFIX schema:  <http://schema.org/>
+        PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+        PREFIX dct:     <http://purl.org/dc/terms/>
+          
+        SELECT ?uuid ?uri ?aangemaakt_op ?geldig_van ?aangepast_op ?benaming ?heeft_aandachtspunt
+        ?heeft_resultaat ?made_by_sensor ?observed_property ?phenomenon_time ?result_time ?used_procedure
+          
+        WHERE {
+          ?uri rdf:type riepr:Observatie .
+          BIND (?uri AS ?uuid) .
+          OPTIONAL { ?uri dct:created ?aangemaakt_op . }
+          OPTIONAL { ?uri dct:issued ?geldig_van . }
+          OPTIONAL { ?uri dct:modified ?aangepast_op . }
+          OPTIONAL { ?uri rdfs:label ?benaming . }
+          OPTIONAL { ?uri sosa:hasFeatureOfInterest ?heeft_aandachtspunt . }
+          OPTIONAL { ?uri sosa:hasResult ?heeft_resultaat . }
+          OPTIONAL { ?uri sosa:madeBySensor ?made_by_sensor . }
+          OPTIONAL { ?uri sosa:observedProperty ?observed_property . }
+          OPTIONAL { ?uri sosa:phenomenonTime ?phenomenon_time . }
+          OPTIONAL { ?uri sosa:resultTime ?result_time . }
+          OPTIONAL { ?uri sosa:usedProcedure ?used_procedure . }
+        }
+      ignore-duplicate-key-exception: true
