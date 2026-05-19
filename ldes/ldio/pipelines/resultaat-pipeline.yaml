@@ -1,0 +1,37 @@
+# This is a pipeline for demonstrating the consuming of an LDES stream and storing the data in a database using the RDF to Database component (LdioRdbOut).
+name: resultaat-pipeline
+description: "Synchronizes the resultaat LDES stream with a postgres database table."
+input:
+  name: Ldio:LdesClient
+  config:
+    urls:
+      - http://ldes-server:8080/resultaat/by-page
+    sourceFormat: text/turtle
+    retries:
+      enabled: true
+outputs:
+  - name: Ldio:ConsoleOut
+  - name: Ldio:LdioRdbOut
+    config:
+      table-name: resultaat
+      sparql-select-query: |-
+        PREFIX qudt:    <http://qudt.org/schema/qudt/>
+        PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+        PREFIX agent:   <https://data.riepr.omgeving.vlaanderen.be/id/agent/>
+        PREFIX eenheid: <https://data.imjv.omgeving.vlaanderen.be/id/concept/eenheid/>
+        PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX terms: <http://purl.org/dc/terms/>
+        PREFIX schema: <http://schema.org/>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+        SELECT ?uuid ?uri ?eenheid ?waarde ?is_result_of
+        WHERE {
+            ?uri rdf:type riepr:Resultaat .
+            BIND (?uri AS ?uuid) .
+            OPTIONAL { ?uri qudt:hasUnit ?eenheid . }
+            OPTIONAL { ?uri qudt:numericValue ?waarde . }
+            OPTIONAL { ?uri sosa:isResultOf ?is_result_of . }
+        }
+      ignore-duplicate-key-exception: true
