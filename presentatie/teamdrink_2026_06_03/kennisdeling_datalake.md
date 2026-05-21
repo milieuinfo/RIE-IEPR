@@ -256,14 +256,14 @@ graph LR
 
 ### Wat betekent dit concreet?
 
-| | Capterend systeem | Afnemend systeem |
-|---|---|---|
-| **Definitie** | Creëert en beheert de data | Gebruikt de data van elders |
-| **Masterdata onderneming** | VKBO (extern) | MJV applicatie |
-| **Masterdata emissiepunt** | MJV applicatie | Alle andere applicaties |
-| **Operationele data (observaties)** | MJV applicatie | Rapporteringstools, open data |
+| | Capterend systeem | Afnemend systeem                         |
+|---|---|------------------------------------------|
+| **Definitie** | Creëert en beheert de data | Gebruikt de data van elders              |
+| **Masterdata onderneming** | VKBO (extern) | MJV applicatie                           |
+| **Masterdata emissiepunt** | MJV applicatie | MJV applicatie + Alle andere applicaties |
+| **Operationele data (observaties)** | MJV applicatie | Rapporteringstools, open data            |
 
-> **Kernregel:** wanneer een observatie verwijst naar een onderneming of adres, gebruikt ze **altijd de consumer-aligned URI** (`https://data.vlaanderen.be/id/onderneming/0413638187`), nooit een interne database-ID.
+> **Kernregel:** wanneer een object verwijst naar een onderneming of adres, gebruikt ze **altijd de consumer-aligned URI** (`https://data.vlaanderen.be/id/onderneming/0413638187`), nooit een interne database-ID.
 
 ---
 
