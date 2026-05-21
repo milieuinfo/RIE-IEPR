@@ -43,6 +43,7 @@ graph TD
     OD -->|"sosa:hasFeatureOfInterest"| MD1
     OD -->|"sosa:observedProperty"| RD
     MD1 -->|"adms:status"| RD
+    MD1 -->|"dct:type"| RD
     MD1 -->|"ssn:hasProperty"| RD
 ```
 
