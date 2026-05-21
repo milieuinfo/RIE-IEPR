@@ -315,55 +315,61 @@ sequenceDiagram
 ## 5. High-level architectuur dataplatform
 
 ```mermaid
-graph TD
-    subgraph "Capterende systemen"
-        MJV["MJV Applicatie<br/>IMJV rapportering"]
-        ARMOS["ARMOS<br/>Bodemonderzoek"]
-        EXT["Externe bronnen<br/>VKBO · CRAB · ..."]
+graph LR
+    subgraph CAP["Capterende systemen"]
+        DSI["DSI"]
+        subgraph ARMOS_APP["ARMOS"]
+            ARMOS_MD["Master Data\nvaste gegevens"]
+            ARMOS_OD["Operationele Data\nobservaties"]
+        end
     end
 
-    subgraph "Dataplatform — Ingest"
-        LDES_IN["LDES Event Streams<br/>(linked data event stream)"]
-        ETL["Transformatie &amp; Validatie<br/>SHACL · Reasoner"]
+    subgraph DP["Dataplatform  —  bucket prefix: datalake-"]
+        subgraph PA["Producer Aligned Buckets\n(applicatief gebaseerd)"]
+            subgraph PA_DSI["datalake-DSI"]
+                DSI_RAW["raw"] --> DSI_PROC["processed"]
+            end
+            subgraph PA_ARMOS["datalake-ARMOS"]
+                ARMOS_RAW["raw"] --> ARMOS_PROC["processed"]
+            end
+        end
+
+        subgraph CA["Consumer Aligned Buckets\n(domein gebaseerd)"]
+            subgraph STEDEN["stedenbouw"]
+                BA_S["business aligned\ndata model"]
+                MERC_M["mercator\ndata model"]
+                DAV_M["dav\ndata model"]
+                BA_S --> MERC_M
+                BA_S --> DAV_M
+            end
+            subgraph MILUE["milue"]
+                BA_M["business aligned\ndata model"]
+                HAND_M["handhaving\nvisualisatie"]
+                LDES_M["LDES ready\ndata model"]
+                BA_M --> HAND_M
+                BA_M --> LDES_M
+            end
+        end
     end
 
-    subgraph "Dataplatform — Opslag"
-        TRIPLE["Triplestore<br/>Linked Data"]
-        SQL["Relationele DB<br/>PostgreSQL"]
-        LAKE["Data Lake<br/>Parquet / Delta"]
+    subgraph AFN["Afnemende systemen"]
+        MERCATOR["Mercator"]
+        DAV["DAV"]
+        VIS["VIS"]
+        LDES["LDES"]
     end
 
-    subgraph "Dataplatform — Ontsluiting"
-        SPARQL["SPARQL Endpoint"]
-        API["REST / GraphQL API"]
-        LDES_OUT["LDES<br/>Consumer Streams"]
-        DCAT_CAT["DCAT Catalogus<br/>Metadata &amp; Vindbaarheid"]
-    end
+    DSI --> DSI_RAW
+    ARMOS_MD --> ARMOS_RAW
+    ARMOS_OD --> ARMOS_RAW
 
-    subgraph "Afnemende systemen"
-        PORTAL["Open Data Portaal<br/>data.omgeving.be"]
-        REPORT["Rapporteringstools<br/>Tableau · Power BI"]
-        OTHER["Andere applicaties<br/>intern &amp; extern"]
-    end
+    DSI_PROC --> BA_S
+    ARMOS_PROC --> BA_M
 
-    MJV -->|"producer-aligned TTL"| LDES_IN
-    ARMOS -->|"producer-aligned TTL"| LDES_IN
-    EXT -->|"pull / API"| LDES_IN
-
-    LDES_IN --> ETL
-    ETL --> TRIPLE
-    ETL --> SQL
-    ETL --> LAKE
-
-    TRIPLE --> SPARQL
-    SQL --> API
-    LAKE --> LDES_OUT
-    TRIPLE --> DCAT_CAT
-
-    SPARQL --> PORTAL
-    API --> REPORT
-    LDES_OUT --> OTHER
-    DCAT_CAT --> PORTAL
+    MERC_M --> MERCATOR
+    DAV_M --> DAV
+    HAND_M --> VIS
+    LDES_M --> LDES
 ```
 
 **Separation of concerns — samengevat:**
@@ -371,10 +377,9 @@ graph TD
 | Laag | Verantwoordelijkheid |
 |---|---|
 | Capterende systemen | Creëren correcte data met URI's; scheiden master- van operationele data |
-| Ingest & Validatie | Controleert SHACL-conformiteit; verrijkt met metadata |
-| Opslag | Meerdere representaties voor verschillende use cases |
-| Ontsluiting | Consumer-aligned views; DCAT-beschrijvingen voor vindbaarheid |
-| Afnemende systemen | Consumeren via stabiele URI's; muteren niét |
+| Producer Aligned Buckets | Ruwe + getransformeerde data per applicatie; applicatief gebaseerd |
+| Consumer Aligned Buckets | Domein-georiënteerde views; één business aligned model per domein |
+| Afnemende systemen | Consumeren via stabiele, domein-specifieke modellen; muteren niét |
 
 ---
 
