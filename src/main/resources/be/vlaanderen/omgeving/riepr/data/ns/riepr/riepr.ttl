@@ -1950,10 +1950,15 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een aangifte heeft betrekking tot een concept."@nl ;
+        rdfs:comment "Een aangifte heeft betrekking tot meerdere observaties."@nl ;
         owl:onProperty dct:subject ;
-        # Unie van Exploitatie of Obseratie(s)
-        owl:someValuesFrom (:Exploitatie :Observatie)
+        owl:someValuesFrom :Observatie
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een aangifte heeft betrekking tot een enkele exploitatie."@nl ;
+        owl:onProperty dct:subject ;
+        owl:onClass :Exploitatie ;
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een aangifte heeft een datum van indiening."@nl ;
