@@ -3,47 +3,46 @@ title: "Staalproductieproces van Staalfabriek NV op 2020 (transport as edges)"
 ---
 flowchart LR
 subgraph proces_0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020["Decarburisatie"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_001["Toevoegen van stoffen
-Apparaat: Toevoeginstallatie VOD"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_002["Zuivering van stoffen
-Apparaat: Zuiveringsapparaat Toevoeginstallatie"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_004["Afwerking van staal
-Apparaat: Afwerkstand"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_005["Zuivering van afgewerkt staal
-Apparaat: Zuiveringsapparaat Afwerkstand"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_001["Toevoegen van stoffen"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_002["Zuivering van stoffen"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_004["Afwerking van staal"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_005["Zuivering van afgewerkt staal"]
 end
 subgraph installatie_0400123123_6851234567_0000001["Stroomboogoven"]
 emissiepunt_0400123123_6851234567_0000001["Schouw 1"]
 emissiepunt_0400123123_6851234567_0000002["Schouw 2"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0004["Staalproductie in stroomboogoven
-Apparaat: Stroomboogoven"]
+apparaat_0400123123_6851234567_0001["Stroomboogoven"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0004["Staalproductie in stroomboogoven"]
 end
 subgraph installatie_0400123123_6851234567_0000002["Gieterij"]
 emissiepunt_0400123123_6851234567_0000005["Schouw 5"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0011["Gieten en afkoelen
-Apparaat: Gieterijmachine"]
+apparaat_0400123123_6851234567_0002["Gieterijmachine"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0011["Gieten en afkoelen"]
 end
 subgraph installatie_0400123123_6851234567_0000003["VOD-installatie"]
 emissiepunt_0400123123_6851234567_0000004["Schoorsteen Ketels"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_001["Toevoegen van stoffen
-Apparaat: Toevoeginstallatie VOD"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_005["Zuivering van afgewerkt staal
-Apparaat: Zuiveringsapparaat Afwerkstand"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_004["Afwerking van staal
-Apparaat: Afwerkstand"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0009_002["Zuivering van stoffen
-Apparaat: Zuiveringsapparaat Toevoeginstallatie"]
+apparaat_0400123123_6851234567_0003["Toevoeginstallatie VOD"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_001["Toevoegen van stoffen"]
+apparaat_0400123123_6851234567_0008["Zuiveringsapparaat Afwerkstand"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_005["Zuivering van afgewerkt staal"]
+apparaat_0400123123_6851234567_0007["Afwerkstand"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_004["Afwerking van staal"]
+apparaat_0400123123_6851234567_0005["Zuiveringsapparaat Toevoeginstallatie"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_002["Zuivering van stoffen"]
 end
 subgraph installatie_0400123123_6851234567_0000004["AOD-installatie"]
 emissiepunt_0400123123_6851234567_0000003["Schouw 3"]
-proces_0400123123_6851234567_ACTIVITEIT_1_0007["Argon-zuurstofontkoling
-Apparaat: Argon-zuurstofontkoling"]
+apparaat_0400123123_6851234567_0004["Argon-zuurstofontkoling"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0007["Argon-zuurstofontkoling"]
 end
 proces_0400123123_6851234567_ACTIVITEIT_1_0001["Toevoeging van grondstoffen"]
-installatie_0400123123_6851234567_0000001["Stroomboogoven"]
-installatie_0400123123_6851234567_0000002["Gieterij"]
-installatie_0400123123_6851234567_0000003["VOD-installatie"]
-installatie_0400123123_6851234567_0000004["AOD-installatie"]
+proces_0400123123_6851234567_ACTIVITEIT_1_0004 --> apparaat_0400123123_6851234567_0001
+proces_0400123123_6851234567_ACTIVITEIT_1_0007 --> apparaat_0400123123_6851234567_0004
+proces_0400123123_6851234567_ACTIVITEIT_1_0011 --> apparaat_0400123123_6851234567_0002
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_001 --> apparaat_0400123123_6851234567_0003
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_002 --> apparaat_0400123123_6851234567_0005
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_004 --> apparaat_0400123123_6851234567_0007
+proces_0400123123_6851234567_ACTIVITEIT_1_0009_005 --> apparaat_0400123123_6851234567_0008
 proces_0400123123_6851234567_ACTIVITEIT_1_0009_001 --> proces_0400123123_6851234567_ACTIVITEIT_1_0009_002
 proces_0400123123_6851234567_ACTIVITEIT_1_0009_004 --> proces_0400123123_6851234567_ACTIVITEIT_1_0009_005
 proces_0400123123_6851234567_ACTIVITEIT_1_0001 -- "Schroot" --> proces_0400123123_6851234567_ACTIVITEIT_1_0004

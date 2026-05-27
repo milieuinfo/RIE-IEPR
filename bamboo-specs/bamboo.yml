@@ -63,7 +63,8 @@ build-specificatie:
         # ensure artifact folder exists even when generation failed
         mkdir -p build-artifact
         if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
-        echo "Build and package stage completed. index.html copied to build-artifact if it existed."
+        if [ -f documentatie/bin/visualisatie/index.html ]; then cp -f documentatie/bin/visualisatie/index.html build-artifact/visualisatie.html; else echo "visualisatie index.html not found; visualisatie.html will be missing"; fi
+          echo "Build and package stage completed. index.html copied to build-artifact if it existed."
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
@@ -101,17 +102,29 @@ release-and-publish:
         GITHUB_REPO='milieuinfo/RIE-IEPR'
         export SECRET_GITHUB_TOKEN
         export GITHUB_REPO
-        # minimal site files: copy artifact into index.html or fail
+        mkdir -p docs
+        # site files: publish specs and visualisation to docs/
         if [ -f build-artifact/index.html ]; then
-          echo "Found index.html in build-artifact; copying to workspace root"
-          cp -f build-artifact/index.html index.html
-        elif [ -f index.html ]; then
-          echo "Found index.html in workspace root; using that"
+          echo "Found index.html in build-artifact; copying to docs/index.html"
+          cp -f build-artifact/index.html docs/index.html
+        elif [ -f docs/index.html ]; then
+          echo "Found docs/index.html in workspace; using that"
         else
           echo "Required artifact missing: build-artifact/index.html"
           exit 1
         fi
-        git add index.html .nojekyll
+
+        if [ -f build-artifact/visualisatie.html ]; then
+          echo "Found visualisatie.html in build-artifact; copying to docs/visualisatie.html"
+          cp -f build-artifact/visualisatie.html docs/visualisatie.html
+        elif [ -f docs/visualisatie.html ]; then
+          echo "Found docs/visualisatie.html in workspace; using that"
+        else
+          echo "Required artifact missing: build-artifact/visualisatie.html"
+          exit 1
+        fi
+
+        git add docs/index.html docs/visualisatie.html .nojekyll
         echo "Committing and pushing to gh-pages branch of ${GITHUB_REPO}"
         git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force

@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RIE-IEPR Visualisatie</title>
+  <script src="https://unpkg.com/n3@1.17.2/browser/n3.min.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Top bar ───────────────────────────────────────────────── */
+    #topbar {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    #topbar h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0f6ff;
+      margin-right: auto;
+      white-space: nowrap;
+    }
+
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ctrl-group label {
+      font-size: 0.8rem;
+      color: #d1d9e0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    input[type="file"] { font-size: 0.8rem; color: #c9d1d9; }
+
+    input[type="checkbox"] { cursor: pointer; accent-color: #2f81f7; }
+
+    button {
+      padding: 6px 14px;
+      border: 1px solid #5b6673;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      background: #2d3742;
+      color: #f3f4f6;
+      font-weight: 600;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    button:hover { background: #3a4552; }
+    button.primary { background: #2f81f7; border-color: #58a6ff; color: #ffffff; }
+    button.primary:hover { background: #58a6ff; }
+
+    /* ── Main layout ───────────────────────────────────────────── */
+    #container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #networkContainer {
+      flex: 1;
+      position: relative;
+      background: #0d1117;
+      overflow: hidden;
+    }
+
+    #network {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* vis-network controls: enforce clear contrast in dark mode */
+    #network .vis-navigation {
+      background: rgba(13, 17, 23, 0.82);
+      border: 1px solid #5b6673;
+      border-radius: 10px;
+      padding: 4px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    #network .vis-button {
+      background-color: #1f6feb;
+      border: 1px solid #8bb8ff;
+      border-radius: 8px;
+      margin: 2px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+      background-image: none !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    #network .vis-button:hover {
+      background-color: #58a6ff;
+      border-color: #c5ddff;
+    }
+
+    #network .vis-button:active {
+      background-color: #1f6feb;
+      transform: translateY(1px);
+    }
+
+    #network .vis-button::before {
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+      font-weight: 800;
+      font-size: 21px;
+      line-height: 1;
+      content: '';
+    }
+
+    #network .vis-button.vis-up::before { content: '↑'; }
+    #network .vis-button.vis-down::before { content: '↓'; }
+    #network .vis-button.vis-left::before { content: '←'; }
+    #network .vis-button.vis-right::before { content: '→'; }
+    #network .vis-button.vis-zoomIn::before { content: '+'; }
+    #network .vis-button.vis-zoomOut::before { content: '−'; }
+    #network .vis-button.vis-zoomExtends::before {
+      content: '⤢';
+      font-size: 18px;
+    }
+
+    #networkContainer.drag-over {
+      outline: 2px dashed #58a6ff;
+      outline-offset: -10px;
+      background: rgba(88, 166, 255, 0.08);
+    }
+
+    #dropHint {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      color: #58a6ff;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+    }
+
+    #networkContainer.drag-over #dropHint {
+      display: flex;
+    }
+
+    /* ── Sidebar ───────────────────────────────────────────────── */
+    #sidebar {
+      width: 290px;
+      min-width: 220px;
+      background: #161b22;
+      border-left: 1px solid #30363d;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sb-section {
+      padding: 12px 14px;
+      border-bottom: 1px solid #30363d;
+      flex-shrink: 0;
+    }
+
+    .sb-section h2 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+
+    /* Legend */
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-size: 0.76rem;
+      color: #c9d1d9;
+    }
+
+    .legend-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* Detail panel */
+    #detailPanel {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+    }
+
+    #detailPanel h2 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+
+    .placeholder {
+      color: #484f58;
+      font-size: 0.78rem;
+      font-style: italic;
+    }
+
+    .detail-row { margin-bottom: 10px; }
+
+    .detail-key {
+      font-size: 0.68rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    .detail-val {
+      font-size: 0.76rem;
+      color: #c9d1d9;
+      word-break: break-all;
+      background: #0d1117;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border-left: 2px solid #30363d;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #21262d;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 1px 2px;
+      color: #79c0ff;
+    }
+
+    /* ── Status bar ────────────────────────────────────────────── */
+    #statusBar {
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      padding: 4px 16px;
+      font-size: 0.72rem;
+      color: #8b949e;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+<div id="topbar">
+  <h1>RIE-IEPR Visualisatie</h1>
+
+  <div class="ctrl-group">
+    <label>TTL bestand:</label>
+    <input type="file" id="fileInput" accept=".ttl,.turtle" />
+  </div>
+
+  <div class="ctrl-group">
+    <label title="Toon installaties, emissiepunten, onttrekkingspunten en meetpunten als aparte knopen">
+      <input type="checkbox" id="chkSystems" checked /> Toon systemen
+    </label>
+  </div>
+
+  <div class="ctrl-group">
+    <label><input type="checkbox" id="chkCtxNodes" checked /> Contextknopen</label>
+    <label><input type="checkbox" id="chkProcNodes" checked /> Procesknopen</label>
+  </div>
+
+  <div class="ctrl-group">
+    <label><input type="checkbox" id="chkEdgeLocation" checked /> Relaties locatie</label>
+    <label><input type="checkbox" id="chkEdgeSequence" checked /> Relaties volgorde</label>
+    <label><input type="checkbox" id="chkEdgeHierarchy" checked /> Relaties hiërarchie</label>
+    <label><input type="checkbox" id="chkEdgeImplementation" checked /> Relaties implementatie</label>
+    <label><input type="checkbox" id="chkEdgeStructure" checked /> Relaties structuur</label>
+  </div>
+
+  <div class="ctrl-group">
+    <label title="Gebruik een hiërarchische links-rechts layout in plaats van force-directed">
+      <input type="checkbox" id="chkHierarchy" /> Hiërarchisch
+    </label>
+  </div>
+
+  <button class="primary" id="btnFit">↔ Scherm vullen</button>
+</div>
+
+<!-- ── Main ────────────────────────────────────────────────────────────── -->
+<div id="container">
+
+  <div id="networkContainer">
+    <div id="network"></div>
+    <div id="dropHint">Sleep je TTL bestand hierheen</div>
+  </div>
+
+  <div id="sidebar">
+
+    <div class="sb-section">
+      <h2>Legenda</h2>
+      <div id="legend"></div>
+    </div>
+
+    <div id="detailPanel">
+      <h2>Details</h2>
+      <p class="placeholder" id="detailPlaceholder">Klik op een knoop voor details.</p>
+      <div id="detailContent" style="display:none;"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Status bar ──────────────────────────────────────────────────────── -->
+<div id="statusBar">Gereed. Laad een TTL bestand of wacht op automatisch laden…</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Namespace constants
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const RDF   = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+const RDFS  = 'http://www.w3.org/2000/01/rdf-schema#';
+const DCT   = 'http://purl.org/dc/terms/';
+const OWL   = 'http://www.w3.org/2002/07/owl#';
+const PPLAN = 'http://purl.org/net/p-plan#';
+const SOSA  = 'http://www.w3.org/ns/sosa/';
+const SSN   = 'http://www.w3.org/ns/ssn/';
+const PROV  = 'http://www.w3.org/ns/prov#';
+const SKOS  = 'http://www.w3.org/2004/02/skos/core#';
+const RIEPR = 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#';
+
+// Known riepr class URIs
+const T = {
+  Exploitant:          RIEPR + 'Exploitant',
+  Exploitatielocatie:  RIEPR + 'Exploitatielocatie',
+  Exploitatie:         RIEPR + 'Exploitatie',
+  Proces:              RIEPR + 'Proces',
+  Installatie:         RIEPR + 'Installatie',
+  Emissiepunt:         RIEPR + 'Emissiepunt',
+  AbstractEmissiepunt: RIEPR + 'AbstractEmissiepunt',
+  Onttrekkingspunt:    RIEPR + 'Onttrekkingspunt',
+  Meetpunt:            RIEPR + 'Meetpunt',
+};
+
+// Process-type suffix → colour
+const PROC_COLORS = {
+  verwerking:  '#e67e22',
+  emissie:     '#e74c3c',
+  onttrekking: '#00bcd4',
+  meting:      '#d4ac0d',
+};
+
+// Node style per entity type
+const NODE_STYLES = {
+  Exploitant:         { bg: '#7d3c98', fg: '#fff', border: '#5b2c6f', shape: 'ellipse' },
+  Exploitatielocatie: { bg: '#1a5276', fg: '#fff', border: '#1f618d', shape: 'database' },
+  Exploitatie:        { bg: '#1e8449', fg: '#fff', border: '#196f3d', shape: 'box' },
+  Proces:             { bg: '#e67e22', fg: '#fff', border: '#d35400', shape: 'box' },
+  Installatie:        { bg: '#4a4a4a', fg: '#ddd', border: '#2c2c2c', shape: 'box' },
+  Emissiepunt:        { bg: '#922b21', fg: '#fff', border: '#7b241c', shape: 'box' },
+  Onttrekkingspunt:   { bg: '#1a5276', fg: '#fff', border: '#154360', shape: 'box' },
+  Meetpunt:           { bg: '#7d6608', fg: '#fff', border: '#6e5c07', shape: 'box' },
+};
+
+// Legend definition
+const LEGEND = [
+  { color: '#7d3c98', label: 'Exploitant' },
+  { color: '#1a5276', label: 'Exploitatielocatie' },
+  { color: '#1e8449', label: 'Exploitatie' },
+  { color: '#e67e22', label: 'Proces – verwerking' },
+  { color: '#e74c3c', label: 'Proces – emissie' },
+  { color: '#00bcd4', label: 'Proces – onttrekking' },
+  { color: '#d4ac0d', label: 'Proces – meting' },
+  { color: '#4a4a4a', label: 'Installatie' },
+  { color: '#922b21', label: 'Emissiepunt' },
+  { color: '#1a5276', label: 'Onttrekkingspunt' },
+  { color: '#7d6608', label: 'Meetpunt' },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let network   = null;
+let allQuads  = [];
+let entityMap = new Map();
+let schemaLabels = {
+  classByUri: new Map(),
+  propertyByUri: new Map(),
+  conceptByUri: new Map(),
+};
+
+function readFilters() {
+  return {
+    showSystems: document.getElementById('chkSystems').checked,
+    showContextNodes: document.getElementById('chkCtxNodes').checked,
+    showProcessNodes: document.getElementById('chkProcNodes').checked,
+    showEdgeLocation: document.getElementById('chkEdgeLocation').checked,
+    showEdgeSequence: document.getElementById('chkEdgeSequence').checked,
+    showEdgeHierarchy: document.getElementById('chkEdgeHierarchy').checked,
+    showEdgeImplementation: document.getElementById('chkEdgeImplementation').checked,
+    showEdgeStructure: document.getElementById('chkEdgeStructure').checked,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Utility helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Extract local name from a URI (after last # or /). */
+function uriLocal(uri) {
+  if (!uri) return '';
+  const h = uri.lastIndexOf('#');
+  const s = uri.lastIndexOf('/');
+  return uri.substring(Math.max(h, s) + 1);
+}
+
+function chooseLabel(candidates) {
+  if (!candidates || !candidates.length) return null;
+  const nl = candidates.find(c => c.lang === 'nl');
+  if (nl) return nl.value;
+  const noLang = candidates.find(c => !c.lang);
+  if (noLang) return noLang.value;
+  return candidates[0].value;
+}
+
+function mergeMap(target, source) {
+  for (const [k, v] of source.entries()) {
+    if (!target.has(k) && v) target.set(k, v);
+  }
+}
+
+function getPropertyLabel(uri, fallback) {
+  return schemaLabels.propertyByUri.get(uri)
+    || schemaLabels.conceptByUri.get(uri)
+    || fallback
+    || uriLocal(uri);
+}
+
+function getClassLabel(uri, fallback) {
+  return schemaLabels.classByUri.get(uri)
+    || schemaLabels.conceptByUri.get(uri)
+    || fallback
+    || uriLocal(uri);
+}
+
+function getConceptLabel(uri, fallback) {
+  return schemaLabels.conceptByUri.get(uri)
+    || fallback
+    || uriLocal(uri);
+}
+
+/** Shorten a UUID-style string to first 8 chars + ellipsis. */
+function shortId(id) {
+  if (!id) return '';
+  if (id.length > 12 && id.includes('-')) return id.substring(0, 8) + '…';
+  return id;
+}
+
+/** Get process-type label from dct:type URI. */
+function procTypeLabel(dctUri) {
+  return dctUri ? getConceptLabel(dctUri, uriLocal(dctUri)) : 'proces';
+}
+
+/** Get process-type colour from dct:type URI. */
+function procTypeColor(dctUri) {
+  return PROC_COLORS[procTypeLabel(dctUri)] || '#95a5a6';
+}
+
+/** Darken a hex colour by a factor (0–1). */
+function darkenHex(hex, f = 0.75) {
+  const [r, g, b] = hexToRgb(hex);
+  return rgbToHex(r * f, g * f, b * f);
+}
+function hexToRgb(hex) {
+  return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+}
+function rgbToHex(r, g, b) {
+  return '#' + [r, g, b]
+    .map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TTL Parsing  (N3.js)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function parseTTL(content) {
+  return new Promise((resolve, reject) => {
+    const parser = new N3.Parser();
+    const quads  = [];
+    parser.parse(content, (err, quad) => {
+      if (err)   return reject(err);
+      if (quad)  quads.push(quad);
+      else       resolve(quads);
+    });
+  });
+}
+
+function buildSchemaLabels(quads) {
+  const prefLabels = new Map();
+  const rdfsLabels = new Map();
+  const typesBySubject = new Map();
+  const eqProperties = [];
+  const eqClasses = [];
+  const exactMatches = [];
+
+  function pushLabel(map, subject, literal) {
+    if (literal.termType !== 'Literal') return;
+    if (!map.has(subject)) map.set(subject, []);
+    map.get(subject).push({ value: literal.value, lang: literal.language || '' });
+  }
+
+  for (const q of quads) {
+    if (q.subject.termType !== 'NamedNode') continue;
+    const s = q.subject.value;
+    const p = q.predicate.value;
+    const o = q.object;
+
+    if (p === RDF + 'type' && o.termType === 'NamedNode') {
+      if (!typesBySubject.has(s)) typesBySubject.set(s, new Set());
+      typesBySubject.get(s).add(o.value);
+    } else if (p === SKOS + 'prefLabel') {
+      pushLabel(prefLabels, s, o);
+    } else if (p === RDFS + 'label') {
+      pushLabel(rdfsLabels, s, o);
+    } else if (p === OWL + 'equivalentProperty' && o.termType === 'NamedNode') {
+      eqProperties.push([s, o.value]);
+    } else if (p === OWL + 'equivalentClass' && o.termType === 'NamedNode') {
+      eqClasses.push([s, o.value]);
+    } else if (p === SKOS + 'exactMatch' && o.termType === 'NamedNode') {
+      exactMatches.push([s, o.value]);
+    }
+  }
+
+  const labelsBySubject = new Map();
+  for (const [s, vals] of prefLabels.entries()) labelsBySubject.set(s, chooseLabel(vals));
+  for (const [s, vals] of rdfsLabels.entries()) {
+    if (!labelsBySubject.has(s)) labelsBySubject.set(s, chooseLabel(vals));
+  }
+
+  const classByUri = new Map();
+  const propertyByUri = new Map();
+  const conceptByUri = new Map();
+
+  for (const [s, label] of labelsBySubject.entries()) {
+    if (label) conceptByUri.set(s, label);
+  }
+
+  for (const [s, tset] of typesBySubject.entries()) {
+    const label = labelsBySubject.get(s);
+    if (!label) continue;
+    if (tset.has(OWL + 'Class')) classByUri.set(s, label);
+    if (tset.has(OWL + 'ObjectProperty') || tset.has(OWL + 'DatatypeProperty')) {
+      propertyByUri.set(s, label);
+    }
+  }
+
+  for (const [s, p] of eqProperties) {
+    const label = labelsBySubject.get(s);
+    if (label && !propertyByUri.has(p)) propertyByUri.set(p, label);
+  }
+
+  for (const [s, c] of eqClasses) {
+    const label = labelsBySubject.get(s);
+    if (label && !classByUri.has(c)) classByUri.set(c, label);
+  }
+
+  for (const [s, m] of exactMatches) {
+    const label = labelsBySubject.get(s);
+    if (!label) continue;
+    if (!propertyByUri.has(m)) propertyByUri.set(m, label);
+    if (!classByUri.has(m)) classByUri.set(m, label);
+  }
+
+  return { classByUri, propertyByUri, conceptByUri };
+}
+
+async function ingestSchemaContent(content, sourceName) {
+  const quads = await parseTTL(normalizeTTL(content));
+  const labels = buildSchemaLabels(quads);
+  mergeMap(schemaLabels.classByUri, labels.classByUri);
+  mergeMap(schemaLabels.propertyByUri, labels.propertyByUri);
+  mergeMap(schemaLabels.conceptByUri, labels.conceptByUri);
+  setStatus(`Schema geladen (${sourceName}): ${labels.conceptByUri.size} conceptlabels`);
+}
+
+async function tryAutoLoadSchema() {
+  const candidates = [
+    './riepr-concept.ttl',
+    './riepr-ontologie.ttl',
+  ];
+
+  let loaded = 0;
+  for (const url of candidates) {
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) continue;
+      const text = await resp.text();
+      await ingestSchemaContent(text, url.split('/').slice(-1)[0]);
+      loaded += 1;
+    } catch {
+      // Ignore and continue with next candidate.
+    }
+  }
+
+  if (!loaded) {
+    setStatus('Lokale schema-bestanden niet gevonden (riepr-concept.ttl, riepr-ontologie.ttl). Visualisatie werkt met fallback labels.');
+  }
+}
+
+/**
+ * Injecteer een default ':' prefix als die ontbreekt, zodat Turtle met ':parameter'
+ * toch parsebaar blijft. We gebruiken de gekende RIEPR namespace als fallback.
+ */
+function normalizeTTL(content) {
+  const hasEmptyPrefix = /@prefix\s*:\s*<[^>]+>\s*\./i.test(content)
+    || /PREFIX\s*:\s*<[^>]+>/i.test(content);
+
+  if (hasEmptyPrefix) return content;
+
+  return `@prefix : <${RIEPR}> .\n${content}`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Graph model builder
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function buildGraph(quads, filters) {
+  const showSystems = filters.showSystems;
+
+  // ── Pass 1: collect entity attributes from triples ──────────────────────────
+  const entities = new Map();
+
+  function ent(uri) {
+    if (!entities.has(uri)) {
+      entities.set(uri, {
+        uri,
+        types:          new Set(),
+        labels:         [],
+        dctType:        null,
+        implementedBy:  null,  // sosa:implementedBy (for Proces)
+        implLabel:      null,  // resolved label of implementedBy
+        isStepOf:       null,  // pplan:isStepOfPlan
+        precededBy:     [],    // pplan:isPrecededBy
+        hostedBy:       null,  // sosa:isHostedBy
+        deployedOn:     null,  // ssn:deployedOnPlatform (Exploitatie)
+        deployedSystems:[],    // ssn:deployedSystem (Exploitatie)
+        subSystems:     [],    // ssn:hasSubSystem (Installatie)
+        wasAttributedTo:null,  // prov:wasAttributedTo (Locatie)
+        implements_:    null,  // ssn:implements (Exploitatie)
+      });
+    }
+    return entities.get(uri);
+  }
+
+  for (const q of quads) {
+    // Skip blank-node subjects (anonymous resources like adms:Identifier, etc.)
+    if (q.subject.termType === 'BlankNode') continue;
+
+    const s = q.subject.value;
+    const p = q.predicate.value;
+    const o = q.object;
+    const e = ent(s);
+
+    if      (p === RDF  + 'type')                e.types.add(o.value);
+    else if (p === RDFS + 'label')               e.labels.push(o.value);
+    else if (p === DCT  + 'type')                e.dctType = o.value;
+    else if (p === SOSA + 'implementedBy')       e.implementedBy = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === PPLAN + 'isStepOfPlan')       e.isStepOf = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === PPLAN + 'isPrecededBy')       { if (o.termType !== 'BlankNode') e.precededBy.push(o.value); }
+    else if (p === SOSA + 'isHostedBy')          e.hostedBy = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === SSN  + 'deployedOnPlatform')  e.deployedOn = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === SSN  + 'deployedSystem')      { if (o.termType !== 'BlankNode') e.deployedSystems.push(o.value); }
+    else if (p === SSN  + 'hasSubSystem')        { if (o.termType !== 'BlankNode') e.subSystems.push(o.value); }
+    else if (p === PROV + 'wasAttributedTo')     e.wasAttributedTo = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === SSN  + 'implements')          e.implements_ = o.termType !== 'BlankNode' ? o.value : null;
+  }
+
+  // ── Pass 2: resolve implementedBy labels ────────────────────────────────────
+  for (const [, e] of entities) {
+    if (e.implementedBy && entities.has(e.implementedBy)) {
+      const sys = entities.get(e.implementedBy);
+      e.implLabel = sys.labels[0] || uriLocal(e.implementedBy);
+    }
+  }
+
+  // Expose for detail panel
+  entityMap = entities;
+
+  // ── Pass 3: build vis nodes & edges ─────────────────────────────────────────
+  const visNodes = [];
+  const visEdges = [];
+  const nodeIds  = new Set();
+  const edgeKeys = new Set();
+
+  function addNode(uri, label, typeKey, dctTypeUri, classUri) {
+    if (nodeIds.has(uri)) return;
+    nodeIds.add(uri);
+
+    const style = NODE_STYLES[typeKey] || { bg: '#444', fg: '#fff', border: '#222', shape: 'box' };
+    let bg = style.bg;
+    let bd = style.border;
+
+    if (typeKey === 'Proces') {
+      bg = procTypeColor(dctTypeUri);
+      bd = darkenHex(bg);
+    }
+
+    const localId  = uriLocal(uri);
+    const typeDisp = typeKey === 'Proces'
+      ? procTypeLabel(dctTypeUri)
+      : getClassLabel(classUri, typeKey);
+
+    // Node label: type / name / short-id (multi-line)
+    const dispLabel = label || localId;
+    const nodeLabel = `${typeDisp}\n${dispLabel}\n${shortId(localId)}`;
+
+    visNodes.push({
+      id:    uri,
+      label: nodeLabel,
+      title: uri,
+      shape: style.shape,
+      color: {
+        background: bg,
+        border:     bd,
+        highlight:  { background: bg, border: '#fff' },
+        hover:      { background: bg, border: '#aaa' },
+      },
+      font: {
+        color: style.fg,
+        size:  12,
+        face:  'Segoe UI, Tahoma, sans-serif',
+        multi: false,
+      },
+      margin: 10,
+      widthConstraint: { minimum: 130, maximum: 210 },
+    });
+  }
+
+  function addEdge(from, to, label, color, dashes = false) {
+    const key = `${from}→${to}→${label}`;
+    if (edgeKeys.has(key)) return;
+    if (!nodeIds.has(from) || !nodeIds.has(to)) return;
+    edgeKeys.add(key);
+    visEdges.push({
+      from, to,
+      label,
+      arrows: 'to',
+      dashes,
+      color: { color, opacity: 0.75 },
+      font:  { color: '#8b949e', size: 10, align: 'middle', strokeWidth: 2, strokeColor: '#0d1117' },
+      smooth: { type: 'curvedCW', roundness: 0.1 },
+      width: dashes ? 1 : 1.5,
+    });
+  }
+
+  // ── Add nodes ────────────────────────────────────────────────────────────────
+
+  for (const [uri, e] of entities) {
+    if (e.types.has(T.Exploitant)) {
+      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitant', null, T.Exploitant);
+    }
+    else if (e.types.has(T.Exploitatielocatie)) {
+      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitatielocatie', null, T.Exploitatielocatie);
+    }
+    else if (e.types.has(T.Exploitatie)) {
+      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitatie', null, T.Exploitatie);
+    }
+    else if (e.types.has(T.Proces)) {
+      // Process name = label of the system it implements (or own label)
+      const label = e.implLabel || e.labels[0] || uriLocal(uri);
+      if (filters.showProcessNodes) addNode(uri, label, 'Proces', e.dctType, T.Proces);
+    }
+    else if (showSystems) {
+      if      (e.types.has(T.Installatie))         addNode(uri, e.labels[0] || uriLocal(uri), 'Installatie', null, T.Installatie);
+      else if (e.types.has(T.Emissiepunt) ||
+               e.types.has(T.AbstractEmissiepunt)) addNode(uri, e.labels[0] || uriLocal(uri), 'Emissiepunt', null, T.Emissiepunt);
+      else if (e.types.has(T.Onttrekkingspunt))    addNode(uri, e.labels[0] || uriLocal(uri), 'Onttrekkingspunt', null, T.Onttrekkingspunt);
+      else if (e.types.has(T.Meetpunt))            addNode(uri, e.labels[0] || uriLocal(uri), 'Meetpunt', null, T.Meetpunt);
+    }
+  }
+
+  // ── Add edges ────────────────────────────────────────────────────────────────
+
+  for (const [uri, e] of entities) {
+    if (!nodeIds.has(uri)) continue;
+
+    // Exploitatielocatie ← Exploitant (reversed wasAttributedTo)
+    if (filters.showEdgeLocation && e.types.has(T.Exploitatielocatie) && e.wasAttributedTo) {
+      addEdge(e.wasAttributedTo, uri, getPropertyLabel(PROV + 'wasAttributedTo', 'toegewezen aan'), '#7d3c98', true);
+    }
+
+    // Exploitatie → Locatie
+    if (e.types.has(T.Exploitatie)) {
+      if (filters.showEdgeLocation && e.deployedOn) {
+        addEdge(uri, e.deployedOn, getPropertyLabel(SSN + 'deployedOnPlatform', 'locatie'), '#1e8449', true);
+      }
+      if (filters.showEdgeImplementation && e.implements_) {
+        addEdge(uri, e.implements_, getPropertyLabel(SSN + 'implements', 'implementeert proces'), '#1e8449');
+      }
+      if (showSystems) {
+        for (const sys of e.deployedSystems) {
+          if (filters.showEdgeImplementation) {
+            addEdge(uri, sys, getPropertyLabel(SSN + 'deployedSystem', 'inzetbaar systeem'), '#555', true);
+          }
+        }
+      }
+    }
+
+    // Proces hierarchy & sequence
+    if (e.types.has(T.Proces)) {
+      // Parent plan → this step (dashed, subdued)
+      if (filters.showEdgeHierarchy && e.isStepOf && nodeIds.has(e.isStepOf)) {
+        addEdge(e.isStepOf, uri, getPropertyLabel(PPLAN + 'isStepOfPlan', 'onderdeel van'), '#444', true);
+      }
+      // Sequence: prev → this
+      if (filters.showEdgeSequence) {
+        for (const prev of e.precededBy) {
+          if (nodeIds.has(prev)) {
+            addEdge(prev, uri, getPropertyLabel(PPLAN + 'isPrecededBy', 'volgt op'), '#e67e22');
+          }
+        }
+      }
+      // Proces → System (if systems shown)
+      if (showSystems && filters.showEdgeImplementation && e.implementedBy && nodeIds.has(e.implementedBy)) {
+        addEdge(e.implementedBy, uri, getPropertyLabel(SOSA + 'implementedBy', 'geimplementeerd door'), '#888', true);
+      }
+    }
+
+    // Installatie → SubSystem
+    if (showSystems && filters.showEdgeStructure && e.subSystems.length) {
+      for (const sub of e.subSystems) {
+        addEdge(uri, sub, getPropertyLabel(SSN + 'hasSubSystem', 'heeft subsysteem'), '#555', true);
+      }
+    }
+
+    // System → Locatie (isHostedBy) — only when systems are shown, thin
+    if (showSystems && filters.showEdgeLocation && e.hostedBy && nodeIds.has(e.hostedBy) && !e.types.has(T.Exploitatie)) {
+      addEdge(uri, e.hostedBy, getPropertyLabel(SOSA + 'isHostedBy', 'locatie'), '#1a5276', true);
+    }
+  }
+
+  return { nodes: visNodes, edges: visEdges };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// vis-network rendering
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function renderGraph(quads, filters, hierarchical) {
+  const { nodes, edges } = buildGraph(quads, filters);
+  setStatus(`${nodes.length} knopen · ${edges.length} verbindingen geladen`);
+
+  const container = document.getElementById('network');
+  const data = {
+    nodes: new vis.DataSet(nodes),
+    edges: new vis.DataSet(edges),
+  };
+
+  const options = {
+    layout: hierarchical
+      ? {
+          hierarchical: {
+            direction:       'LR',
+            sortMethod:      'directed',
+            levelSeparation: 260,
+            nodeSpacing:     140,
+            treeSpacing:     200,
+          }
+        }
+      : { randomSeed: 7 },
+
+    physics: hierarchical
+      ? { enabled: false }
+      : {
+          enabled: true,
+          solver:  'barnesHut',
+          barnesHut: {
+            gravitationalConstant: -14000,
+            springLength:           220,
+            springConstant:         0.04,
+            damping:                0.3,
+            avoidOverlap:           0.5,
+          },
+          stabilization: { iterations: 250 },
+        },
+
+    interaction: {
+      hover:             true,
+      tooltipDelay:      200,
+      navigationButtons: true,
+      keyboard:          true,
+      multiselect:       false,
+    },
+
+    nodes: {
+      borderWidth: 1.5,
+      shadow:      { enabled: true, color: 'rgba(0,0,0,0.6)', size: 6, x: 2, y: 2 },
+    },
+
+    edges: {
+      width:          1.5,
+      shadow:         false,
+      selectionWidth: 3,
+    },
+  };
+
+  if (network) { network.destroy(); network = null; }
+  network = new vis.Network(container, data, options);
+
+  network.on('click', ({ nodes: sel }) => {
+    if (sel.length > 0) showDetails(sel[0]);
+    else                clearDetails();
+  });
+
+  network.once('stabilizationIterationsDone', () => {
+    network.fit({ animation: { duration: 900, easingFunction: 'easeInOutQuad' } });
+  });
+
+  // If hierarchical (physics off) – fit immediately
+  if (hierarchical) {
+    setTimeout(() => {
+      network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
+    }, 100);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Detail panel
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function showDetails(uri) {
+  const e = entityMap.get(uri);
+  if (!e) return;
+
+  document.getElementById('detailPlaceholder').style.display = 'none';
+  const content = document.getElementById('detailContent');
+  content.style.display = 'block';
+
+  // Build rows
+  const typesBadges = [...e.types]
+    .map(t => `<span class="badge">${uriLocal(t)}</span>`)
+    .join('');
+
+  const rows = [
+    { k: 'URI',   v: `<small>${uri}</small>` },
+    { k: 'Type',  v: typesBadges || '—' },
+    e.labels.length ? { k: 'Label', v: e.labels.join('<br>') } : null,
+    e.dctType ? { k: 'DCT Type', v: uriLocal(e.dctType) } : null,
+    e.implementedBy ? {
+      k: 'Implementeert systeem',
+      v: `${e.implLabel ? `<strong>${e.implLabel}</strong><br>` : ''}<small>${e.implementedBy}</small>`,
+    } : null,
+    e.isStepOf  ? { k: 'Stap van plan',      v: `<small>${e.isStepOf}</small>` } : null,
+    e.precededBy.length ? {
+      k: 'Voorafgegaan door',
+      v: e.precededBy.map(p => `<small>${uriLocal(p)}</small>`).join('<br>'),
+    } : null,
+    e.implements_ ? { k: 'Implementeert (Exploitatie)', v: `<small>${e.implements_}</small>` } : null,
+    e.deployedOn  ? { k: 'Locatie (deployedOn)',        v: `<small>${e.deployedOn}</small>` } : null,
+    e.wasAttributedTo ? { k: 'Toegewezen aan',          v: `<small>${e.wasAttributedTo}</small>` } : null,
+    e.deployedSystems.length ? {
+      k: 'Uitgerolde systemen',
+      v: e.deployedSystems.map(s => `<small>${uriLocal(s)}</small>`).join('<br>'),
+    } : null,
+  ].filter(Boolean);
+
+  content.innerHTML = rows
+    .map(r => `<div class="detail-row"><div class="detail-key">${r.k}</div><div class="detail-val">${r.v}</div></div>`)
+    .join('');
+}
+
+function clearDetails() {
+  document.getElementById('detailPlaceholder').style.display = '';
+  document.getElementById('detailContent').style.display   = 'none';
+  document.getElementById('detailContent').innerHTML = '';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Legend
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function buildLegend() {
+  document.getElementById('legend').innerHTML = LEGEND
+    .map(item => `
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${item.color};"></div>
+        <span>${item.label}</span>
+      </div>`)
+    .join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Status bar helper
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function setStatus(msg) {
+  document.getElementById('statusBar').textContent = msg;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Load & render pipeline
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function loadContent(content) {
+  setStatus('TTL parseren…');
+  try {
+    const normalizedContent = normalizeTTL(content);
+    allQuads = await parseTTL(normalizedContent);
+    setStatus(`${allQuads.length} triples geladen — graaf opbouwen…`);
+    const filters = readFilters();
+    const hierarchical = document.getElementById('chkHierarchy').checked;
+    renderGraph(allQuads, filters, hierarchical);
+  } catch (err) {
+    setStatus(`Fout bij verwerken: ${err.message}`);
+    console.error(err);
+  }
+}
+
+/** Try to fetch the TTL file from the parent directory (works when served via HTTP). */
+async function tryAutoLoad() {
+  try {
+    const resp = await fetch('../agc-glass_MJV.ttl');
+    if (resp.ok) {
+      const text = await resp.text();
+      setStatus('TTL bestand automatisch geladen.');
+      await loadContent(text);
+    } else {
+      setStatus('Selecteer een TTL bestand via de knop hierboven.');
+    }
+  } catch {
+    setStatus('Automatisch laden mislukt — selecteer een TTL bestand via de knop hierboven.');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Event listeners
+// ═══════════════════════════════════════════════════════════════════════════════
+
+document.getElementById('fileInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => loadContent(ev.target.result);
+  reader.readAsText(file);
+});
+
+const networkContainer = document.getElementById('networkContainer');
+
+['dragenter', 'dragover'].forEach(evt => {
+  networkContainer.addEventListener(evt, e => {
+    e.preventDefault();
+    e.stopPropagation();
+    networkContainer.classList.add('drag-over');
+  });
+});
+
+['dragleave', 'dragend', 'drop'].forEach(evt => {
+  networkContainer.addEventListener(evt, e => {
+    e.preventDefault();
+    e.stopPropagation();
+    networkContainer.classList.remove('drag-over');
+  });
+});
+
+networkContainer.addEventListener('drop', e => {
+  const files = e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files : [];
+  if (!files.length) return;
+
+  const file = files[0];
+  const isTtl = /\.(ttl|turtle)$/i.test(file.name);
+  if (!isTtl) {
+    setStatus(`Bestand niet ondersteund: ${file.name}. Gebruik .ttl of .turtle`);
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = ev => loadContent(ev.target.result);
+  reader.onerror = () => setStatus(`Kon bestand niet lezen: ${file.name}`);
+  reader.readAsText(file);
+});
+
+['chkSystems', 'chkHierarchy', 'chkCtxNodes', 'chkProcNodes', 'chkEdgeLocation', 'chkEdgeSequence', 'chkEdgeHierarchy', 'chkEdgeImplementation', 'chkEdgeStructure'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    if (!allQuads.length) return;
+    clearDetails();
+    const filters = readFilters();
+    renderGraph(
+      allQuads,
+      filters,
+      document.getElementById('chkHierarchy').checked,
+    );
+  });
+});
+
+document.getElementById('btnFit').addEventListener('click', () => {
+  if (network) network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function init() {
+  buildLegend();
+  await tryAutoLoadSchema();
+  await tryAutoLoad();
+}
+
+init();
+</script>
+</body>
+</html>
