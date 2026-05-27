@@ -280,7 +280,6 @@
 </head>
 <body>
 
-<!-- ── Top bar ─────────────────────────────────────────────────────────── -->
 <div id="topbar">
   <h1>RIE-IEPR Visualisatie</h1>
 
@@ -317,7 +316,6 @@
   <button class="primary" id="btnFit">↔ Scherm vullen</button>
 </div>
 
-<!-- ── Main ────────────────────────────────────────────────────────────── -->
 <div id="container">
 
   <div id="networkContainer">
@@ -341,15 +339,10 @@
   </div>
 </div>
 
-<!-- ── Status bar ──────────────────────────────────────────────────────── -->
 <div id="statusBar">Gereed. Laad een TTL bestand of wacht op automatisch laden…</div>
 
 <script>
 'use strict';
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Namespace constants
-// ═══════════════════════════════════════════════════════════════════════════════
 
 const RDF   = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 const RDFS  = 'http://www.w3.org/2000/01/rdf-schema#';
@@ -362,7 +355,6 @@ const PROV  = 'http://www.w3.org/ns/prov#';
 const SKOS  = 'http://www.w3.org/2004/02/skos/core#';
 const RIEPR = 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#';
 
-// Known riepr class URIs
 const T = {
   Exploitant:          RIEPR + 'Exploitant',
   Exploitatielocatie:  RIEPR + 'Exploitatielocatie',
@@ -375,7 +367,19 @@ const T = {
   Meetpunt:            RIEPR + 'Meetpunt',
 };
 
-// Process-type suffix → colour
+const CONTEXT_NODE_TYPES = [
+  { typeUri: T.Exploitant,         typeKey: 'Exploitant' },
+  { typeUri: T.Exploitatielocatie, typeKey: 'Exploitatielocatie' },
+  { typeUri: T.Exploitatie,        typeKey: 'Exploitatie' },
+];
+
+const SYSTEM_NODE_TYPES = [
+  { typeUris: [T.Installatie],                         typeKey: 'Installatie' },
+  { typeUris: [T.Emissiepunt, T.AbstractEmissiepunt], typeKey: 'Emissiepunt' },
+  { typeUris: [T.Onttrekkingspunt],                    typeKey: 'Onttrekkingspunt' },
+  { typeUris: [T.Meetpunt],                            typeKey: 'Meetpunt' },
+];
+
 const PROC_COLORS = {
   verwerking:  '#e67e22',
   emissie:     '#e74c3c',
@@ -383,7 +387,6 @@ const PROC_COLORS = {
   meting:      '#d4ac0d',
 };
 
-// Node style per entity type
 const NODE_STYLES = {
   Exploitant:         { bg: '#7d3c98', fg: '#fff', border: '#5b2c6f', shape: 'ellipse' },
   Exploitatielocatie: { bg: '#1a5276', fg: '#fff', border: '#1f618d', shape: 'database' },
@@ -395,7 +398,6 @@ const NODE_STYLES = {
   Meetpunt:           { bg: '#7d6608', fg: '#fff', border: '#6e5c07', shape: 'box' },
 };
 
-// Legend definition
 const LEGEND = [
   { color: '#7d3c98', label: 'Exploitant' },
   { color: '#1a5276', label: 'Exploitatielocatie' },
@@ -410,10 +412,6 @@ const LEGEND = [
   { color: '#7d6608', label: 'Meetpunt' },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// State
-// ═══════════════════════════════════════════════════════════════════════════════
-
 let network   = null;
 let allQuads  = [];
 let entityMap = new Map();
@@ -423,24 +421,46 @@ let schemaLabels = {
   conceptByUri: new Map(),
 };
 
+const UI = {
+  fileInput: document.getElementById('fileInput'),
+  networkContainer: document.getElementById('networkContainer'),
+  chkSystems: document.getElementById('chkSystems'),
+  chkCtxNodes: document.getElementById('chkCtxNodes'),
+  chkProcNodes: document.getElementById('chkProcNodes'),
+  chkEdgeLocation: document.getElementById('chkEdgeLocation'),
+  chkEdgeSequence: document.getElementById('chkEdgeSequence'),
+  chkEdgeHierarchy: document.getElementById('chkEdgeHierarchy'),
+  chkEdgeImplementation: document.getElementById('chkEdgeImplementation'),
+  chkEdgeStructure: document.getElementById('chkEdgeStructure'),
+  chkHierarchy: document.getElementById('chkHierarchy'),
+  btnFit: document.getElementById('btnFit'),
+};
+
+const FILTER_IDS = [
+  'chkSystems',
+  'chkHierarchy',
+  'chkCtxNodes',
+  'chkProcNodes',
+  'chkEdgeLocation',
+  'chkEdgeSequence',
+  'chkEdgeHierarchy',
+  'chkEdgeImplementation',
+  'chkEdgeStructure',
+];
+
 function readFilters() {
   return {
-    showSystems: document.getElementById('chkSystems').checked,
-    showContextNodes: document.getElementById('chkCtxNodes').checked,
-    showProcessNodes: document.getElementById('chkProcNodes').checked,
-    showEdgeLocation: document.getElementById('chkEdgeLocation').checked,
-    showEdgeSequence: document.getElementById('chkEdgeSequence').checked,
-    showEdgeHierarchy: document.getElementById('chkEdgeHierarchy').checked,
-    showEdgeImplementation: document.getElementById('chkEdgeImplementation').checked,
-    showEdgeStructure: document.getElementById('chkEdgeStructure').checked,
+    showSystems: UI.chkSystems.checked,
+    showContextNodes: UI.chkCtxNodes.checked,
+    showProcessNodes: UI.chkProcNodes.checked,
+    showEdgeLocation: UI.chkEdgeLocation.checked,
+    showEdgeSequence: UI.chkEdgeSequence.checked,
+    showEdgeHierarchy: UI.chkEdgeHierarchy.checked,
+    showEdgeImplementation: UI.chkEdgeImplementation.checked,
+    showEdgeStructure: UI.chkEdgeStructure.checked,
   };
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Utility helpers
-// ═══════════════════════════════════════════════════════════════════════════════
-
-/** Extract local name from a URI (after last # or /). */
 function uriLocal(uri) {
   if (!uri) return '';
   const h = uri.lastIndexOf('#');
@@ -463,44 +483,40 @@ function mergeMap(target, source) {
   }
 }
 
+function firstOfMaps(key, maps) {
+  for (const map of maps) {
+    const v = map.get(key);
+    if (v) return v;
+  }
+  return null;
+}
+
 function getPropertyLabel(uri, fallback) {
-  return schemaLabels.propertyByUri.get(uri)
-    || schemaLabels.conceptByUri.get(uri)
-    || fallback
-    || uriLocal(uri);
+  return firstOfMaps(uri, [schemaLabels.propertyByUri, schemaLabels.conceptByUri]) || fallback || uriLocal(uri);
 }
 
 function getClassLabel(uri, fallback) {
-  return schemaLabels.classByUri.get(uri)
-    || schemaLabels.conceptByUri.get(uri)
-    || fallback
-    || uriLocal(uri);
+  return firstOfMaps(uri, [schemaLabels.classByUri, schemaLabels.conceptByUri]) || fallback || uriLocal(uri);
 }
 
 function getConceptLabel(uri, fallback) {
-  return schemaLabels.conceptByUri.get(uri)
-    || fallback
-    || uriLocal(uri);
+  return schemaLabels.conceptByUri.get(uri) || fallback || uriLocal(uri);
 }
 
-/** Shorten a UUID-style string to first 8 chars + ellipsis. */
 function shortId(id) {
   if (!id) return '';
   if (id.length > 12 && id.includes('-')) return id.substring(0, 8) + '…';
   return id;
 }
 
-/** Get process-type label from dct:type URI. */
 function procTypeLabel(dctUri) {
   return dctUri ? getConceptLabel(dctUri, uriLocal(dctUri)) : 'proces';
 }
 
-/** Get process-type colour from dct:type URI. */
 function procTypeColor(dctUri) {
   return PROC_COLORS[procTypeLabel(dctUri)] || '#95a5a6';
 }
 
-/** Darken a hex colour by a factor (0–1). */
 function darkenHex(hex, f = 0.75) {
   const [r, g, b] = hexToRgb(hex);
   return rgbToHex(r * f, g * f, b * f);
@@ -513,10 +529,6 @@ function rgbToHex(r, g, b) {
     .map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0'))
     .join('');
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// TTL Parsing  (N3.js)
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function parseTTL(content) {
   return new Promise((resolve, reject) => {
@@ -633,7 +645,6 @@ async function tryAutoLoadSchema() {
       await ingestSchemaContent(text, url.split('/').slice(-1)[0]);
       loaded += 1;
     } catch {
-      // Ignore and continue with next candidate.
     }
   }
 
@@ -642,10 +653,6 @@ async function tryAutoLoadSchema() {
   }
 }
 
-/**
- * Injecteer een default ':' prefix als die ontbreekt, zodat Turtle met ':parameter'
- * toch parsebaar blijft. We gebruiken de gekende RIEPR namespace als fallback.
- */
 function normalizeTTL(content) {
   const hasEmptyPrefix = /@prefix\s*:\s*<[^>]+>\s*\./i.test(content)
     || /PREFIX\s*:\s*<[^>]+>/i.test(content);
@@ -655,14 +662,8 @@ function normalizeTTL(content) {
   return `@prefix : <${RIEPR}> .\n${content}`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Graph model builder
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function buildGraph(quads, filters) {
   const showSystems = filters.showSystems;
-
-  // ── Pass 1: collect entity attributes from triples ──────────────────────────
   const entities = new Map();
 
   function ent(uri) {
@@ -672,23 +673,22 @@ function buildGraph(quads, filters) {
         types:          new Set(),
         labels:         [],
         dctType:        null,
-        implementedBy:  null,  // sosa:implementedBy (for Proces)
-        implLabel:      null,  // resolved label of implementedBy
-        isStepOf:       null,  // pplan:isStepOfPlan
-        precededBy:     [],    // pplan:isPrecededBy
-        hostedBy:       null,  // sosa:isHostedBy
-        deployedOn:     null,  // ssn:deployedOnPlatform (Exploitatie)
-        deployedSystems:[],    // ssn:deployedSystem (Exploitatie)
-        subSystems:     [],    // ssn:hasSubSystem (Installatie)
-        wasAttributedTo:null,  // prov:wasAttributedTo (Locatie)
-        implements_:    null,  // ssn:implements (Exploitatie)
+        implementedBy:  null,
+        implLabel:      null,
+        isStepOf:       null,
+        precededBy:     [],
+        hostedBy:       null,
+        deployedOn:     null,
+        deployedSystems:[],
+        subSystems:     [],
+        wasAttributedTo:null,
+        implements_:    null,
       });
     }
     return entities.get(uri);
   }
 
   for (const q of quads) {
-    // Skip blank-node subjects (anonymous resources like adms:Identifier, etc.)
     if (q.subject.termType === 'BlankNode') continue;
 
     const s = q.subject.value;
@@ -710,7 +710,6 @@ function buildGraph(quads, filters) {
     else if (p === SSN  + 'implements')          e.implements_ = o.termType !== 'BlankNode' ? o.value : null;
   }
 
-  // ── Pass 2: resolve implementedBy labels ────────────────────────────────────
   for (const [, e] of entities) {
     if (e.implementedBy && entities.has(e.implementedBy)) {
       const sys = entities.get(e.implementedBy);
@@ -718,10 +717,8 @@ function buildGraph(quads, filters) {
     }
   }
 
-  // Expose for detail panel
   entityMap = entities;
 
-  // ── Pass 3: build vis nodes & edges ─────────────────────────────────────────
   const visNodes = [];
   const visEdges = [];
   const nodeIds  = new Set();
@@ -788,66 +785,69 @@ function buildGraph(quads, filters) {
     });
   }
 
-  // ── Add nodes ────────────────────────────────────────────────────────────────
-
-  for (const [uri, e] of entities) {
-    if (e.types.has(T.Exploitant)) {
-      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitant', null, T.Exploitant);
-    }
-    else if (e.types.has(T.Exploitatielocatie)) {
-      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitatielocatie', null, T.Exploitatielocatie);
-    }
-    else if (e.types.has(T.Exploitatie)) {
-      if (filters.showContextNodes) addNode(uri, e.labels[0] || uriLocal(uri), 'Exploitatie', null, T.Exploitatie);
-    }
-    else if (e.types.has(T.Proces)) {
-      // Process name = label of the system it implements (or own label)
-      const label = e.implLabel || e.labels[0] || uriLocal(uri);
-      if (filters.showProcessNodes) addNode(uri, label, 'Proces', e.dctType, T.Proces);
-    }
-    else if (showSystems) {
-      if      (e.types.has(T.Installatie))         addNode(uri, e.labels[0] || uriLocal(uri), 'Installatie', null, T.Installatie);
-      else if (e.types.has(T.Emissiepunt) ||
-               e.types.has(T.AbstractEmissiepunt)) addNode(uri, e.labels[0] || uriLocal(uri), 'Emissiepunt', null, T.Emissiepunt);
-      else if (e.types.has(T.Onttrekkingspunt))    addNode(uri, e.labels[0] || uriLocal(uri), 'Onttrekkingspunt', null, T.Onttrekkingspunt);
-      else if (e.types.has(T.Meetpunt))            addNode(uri, e.labels[0] || uriLocal(uri), 'Meetpunt', null, T.Meetpunt);
-    }
+  function addTypedNode(uri, e, typeUri, typeKey) {
+    addNode(uri, e.labels[0] || uriLocal(uri), typeKey, null, typeUri);
   }
 
-  // ── Add edges ────────────────────────────────────────────────────────────────
+  function addFilteredEdge(enabled, condition, from, to, labelUri, fallback, color, dashes = false) {
+    if (!enabled || !condition) return;
+    addEdge(from, to, getPropertyLabel(labelUri, fallback), color, dashes);
+  }
+
+  for (const [uri, e] of entities) {
+    const contextCfg = CONTEXT_NODE_TYPES.find(cfg => e.types.has(cfg.typeUri));
+    if (contextCfg) {
+      if (filters.showContextNodes) addTypedNode(uri, e, contextCfg.typeUri, contextCfg.typeKey);
+      continue;
+    }
+
+    if (e.types.has(T.Proces)) {
+      const label = e.implLabel || e.labels[0] || uriLocal(uri);
+      if (filters.showProcessNodes) addNode(uri, label, 'Proces', e.dctType, T.Proces);
+      continue;
+    }
+
+    if (showSystems) {
+      const systemCfg = SYSTEM_NODE_TYPES.find(cfg => cfg.typeUris.some(typeUri => e.types.has(typeUri)));
+      if (systemCfg) addTypedNode(uri, e, systemCfg.typeUris[0], systemCfg.typeKey);
+    }
+  }
 
   for (const [uri, e] of entities) {
     if (!nodeIds.has(uri)) continue;
 
-    // Exploitatielocatie ← Exploitant (reversed wasAttributedTo)
-    if (filters.showEdgeLocation && e.types.has(T.Exploitatielocatie) && e.wasAttributedTo) {
-      addEdge(e.wasAttributedTo, uri, getPropertyLabel(PROV + 'wasAttributedTo', 'toegewezen aan'), '#7d3c98', true);
-    }
+    addFilteredEdge(
+      filters.showEdgeLocation,
+      e.types.has(T.Exploitatielocatie) && e.wasAttributedTo,
+      e.wasAttributedTo,
+      uri,
+      PROV + 'wasAttributedTo',
+      'toegewezen aan',
+      '#7d3c98',
+      true,
+    );
 
-    // Exploitatie → Locatie
     if (e.types.has(T.Exploitatie)) {
-      if (filters.showEdgeLocation && e.deployedOn) {
-        addEdge(uri, e.deployedOn, getPropertyLabel(SSN + 'deployedOnPlatform', 'locatie'), '#1e8449', true);
-      }
-      if (filters.showEdgeImplementation && e.implements_) {
-        addEdge(uri, e.implements_, getPropertyLabel(SSN + 'implements', 'implementeert proces'), '#1e8449');
-      }
+      addFilteredEdge(filters.showEdgeLocation, e.deployedOn, uri, e.deployedOn, SSN + 'deployedOnPlatform', 'locatie', '#1e8449', true);
+      addFilteredEdge(filters.showEdgeImplementation, e.implements_, uri, e.implements_, SSN + 'implements', 'implementeert proces', '#1e8449');
       if (showSystems) {
         for (const sys of e.deployedSystems) {
-          if (filters.showEdgeImplementation) {
-            addEdge(uri, sys, getPropertyLabel(SSN + 'deployedSystem', 'inzetbaar systeem'), '#555', true);
-          }
+          addFilteredEdge(filters.showEdgeImplementation, true, uri, sys, SSN + 'deployedSystem', 'inzetbaar systeem', '#555', true);
         }
       }
     }
 
-    // Proces hierarchy & sequence
     if (e.types.has(T.Proces)) {
-      // Parent plan → this step (dashed, subdued)
-      if (filters.showEdgeHierarchy && e.isStepOf && nodeIds.has(e.isStepOf)) {
-        addEdge(e.isStepOf, uri, getPropertyLabel(PPLAN + 'isStepOfPlan', 'onderdeel van'), '#444', true);
-      }
-      // Sequence: prev → this
+      addFilteredEdge(
+        filters.showEdgeHierarchy,
+        e.isStepOf && nodeIds.has(e.isStepOf),
+        e.isStepOf,
+        uri,
+        PPLAN + 'isStepOfPlan',
+        'onderdeel van',
+        '#444',
+        true,
+      );
       if (filters.showEdgeSequence) {
         for (const prev of e.precededBy) {
           if (nodeIds.has(prev)) {
@@ -855,31 +855,38 @@ function buildGraph(quads, filters) {
           }
         }
       }
-      // Proces → System (if systems shown)
-      if (showSystems && filters.showEdgeImplementation && e.implementedBy && nodeIds.has(e.implementedBy)) {
-        addEdge(e.implementedBy, uri, getPropertyLabel(SOSA + 'implementedBy', 'geimplementeerd door'), '#888', true);
-      }
+      addFilteredEdge(
+        showSystems && filters.showEdgeImplementation,
+        e.implementedBy && nodeIds.has(e.implementedBy),
+        e.implementedBy,
+        uri,
+        SOSA + 'implementedBy',
+        'geimplementeerd door',
+        '#888',
+        true,
+      );
     }
 
-    // Installatie → SubSystem
     if (showSystems && filters.showEdgeStructure && e.subSystems.length) {
       for (const sub of e.subSystems) {
         addEdge(uri, sub, getPropertyLabel(SSN + 'hasSubSystem', 'heeft subsysteem'), '#555', true);
       }
     }
 
-    // System → Locatie (isHostedBy) — only when systems are shown, thin
-    if (showSystems && filters.showEdgeLocation && e.hostedBy && nodeIds.has(e.hostedBy) && !e.types.has(T.Exploitatie)) {
-      addEdge(uri, e.hostedBy, getPropertyLabel(SOSA + 'isHostedBy', 'locatie'), '#1a5276', true);
-    }
+    addFilteredEdge(
+      showSystems && filters.showEdgeLocation,
+      e.hostedBy && nodeIds.has(e.hostedBy) && !e.types.has(T.Exploitatie),
+      uri,
+      e.hostedBy,
+      SOSA + 'isHostedBy',
+      'locatie',
+      '#1a5276',
+      true,
+    );
   }
 
   return { nodes: visNodes, edges: visEdges };
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// vis-network rendering
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function renderGraph(quads, filters, hierarchical) {
   const { nodes, edges } = buildGraph(quads, filters);
@@ -951,17 +958,12 @@ function renderGraph(quads, filters, hierarchical) {
     network.fit({ animation: { duration: 900, easingFunction: 'easeInOutQuad' } });
   });
 
-  // If hierarchical (physics off) – fit immediately
   if (hierarchical) {
     setTimeout(() => {
       network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
     }, 100);
   }
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Detail panel
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function showDetails(uri) {
   const e = entityMap.get(uri);
@@ -971,7 +973,6 @@ function showDetails(uri) {
   const content = document.getElementById('detailContent');
   content.style.display = 'block';
 
-  // Build rows
   const typesBadges = [...e.types]
     .map(t => `<span class="badge">${uriLocal(t)}</span>`)
     .join('');
@@ -1010,10 +1011,6 @@ function clearDetails() {
   document.getElementById('detailContent').innerHTML = '';
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Legend
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function buildLegend() {
   document.getElementById('legend').innerHTML = LEGEND
     .map(item => `
@@ -1024,17 +1021,23 @@ function buildLegend() {
     .join('');
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Status bar helper
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function setStatus(msg) {
   document.getElementById('statusBar').textContent = msg;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Load & render pipeline
-// ═══════════════════════════════════════════════════════════════════════════════
+function renderCurrentGraph() {
+  if (!allQuads.length) return;
+  renderGraph(allQuads, readFilters(), UI.chkHierarchy.checked);
+}
+
+function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = ev => resolve(ev.target.result);
+    reader.onerror = () => reject(new Error(`Kon bestand niet lezen: ${file.name}`));
+    reader.readAsText(file);
+  });
+}
 
 async function loadContent(content) {
   setStatus('TTL parseren…');
@@ -1042,16 +1045,13 @@ async function loadContent(content) {
     const normalizedContent = normalizeTTL(content);
     allQuads = await parseTTL(normalizedContent);
     setStatus(`${allQuads.length} triples geladen — graaf opbouwen…`);
-    const filters = readFilters();
-    const hierarchical = document.getElementById('chkHierarchy').checked;
-    renderGraph(allQuads, filters, hierarchical);
+    renderCurrentGraph();
   } catch (err) {
     setStatus(`Fout bij verwerken: ${err.message}`);
     console.error(err);
   }
 }
 
-/** Try to fetch the TTL file from the parent directory (works when served via HTTP). */
 async function tryAutoLoad() {
   try {
     const resp = await fetch('../agc-glass_MJV.ttl');
@@ -1067,37 +1067,34 @@ async function tryAutoLoad() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Event listeners
-// ═══════════════════════════════════════════════════════════════════════════════
-
-document.getElementById('fileInput').addEventListener('change', e => {
+UI.fileInput.addEventListener('change', async e => {
   const file = e.target.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => loadContent(ev.target.result);
-  reader.readAsText(file);
+  try {
+    const content = await readFileAsText(file);
+    await loadContent(content);
+  } catch (err) {
+    setStatus(err.message);
+  }
 });
 
-const networkContainer = document.getElementById('networkContainer');
-
 ['dragenter', 'dragover'].forEach(evt => {
-  networkContainer.addEventListener(evt, e => {
+  UI.networkContainer.addEventListener(evt, e => {
     e.preventDefault();
     e.stopPropagation();
-    networkContainer.classList.add('drag-over');
+    UI.networkContainer.classList.add('drag-over');
   });
 });
 
 ['dragleave', 'dragend', 'drop'].forEach(evt => {
-  networkContainer.addEventListener(evt, e => {
+  UI.networkContainer.addEventListener(evt, e => {
     e.preventDefault();
     e.stopPropagation();
-    networkContainer.classList.remove('drag-over');
+    UI.networkContainer.classList.remove('drag-over');
   });
 });
 
-networkContainer.addEventListener('drop', e => {
+UI.networkContainer.addEventListener('drop', async e => {
   const files = e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files : [];
   if (!files.length) return;
 
@@ -1108,32 +1105,24 @@ networkContainer.addEventListener('drop', e => {
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = ev => loadContent(ev.target.result);
-  reader.onerror = () => setStatus(`Kon bestand niet lezen: ${file.name}`);
-  reader.readAsText(file);
+  try {
+    const content = await readFileAsText(file);
+    await loadContent(content);
+  } catch (err) {
+    setStatus(err.message);
+  }
 });
 
-['chkSystems', 'chkHierarchy', 'chkCtxNodes', 'chkProcNodes', 'chkEdgeLocation', 'chkEdgeSequence', 'chkEdgeHierarchy', 'chkEdgeImplementation', 'chkEdgeStructure'].forEach(id => {
-  document.getElementById(id).addEventListener('change', () => {
-    if (!allQuads.length) return;
+FILTER_IDS.forEach(id => {
+  UI[id].addEventListener('change', () => {
     clearDetails();
-    const filters = readFilters();
-    renderGraph(
-      allQuads,
-      filters,
-      document.getElementById('chkHierarchy').checked,
-    );
+    renderCurrentGraph();
   });
 });
 
-document.getElementById('btnFit').addEventListener('click', () => {
+UI.btnFit.addEventListener('click', () => {
   if (network) network.fit({ animation: { duration: 600, easingFunction: 'easeInOutQuad' } });
 });
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Init
-// ═══════════════════════════════════════════════════════════════════════════════
 
 async function init() {
   buildLegend();
