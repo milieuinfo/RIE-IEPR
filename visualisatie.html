@@ -295,8 +295,8 @@
   </div>
 
   <div class="ctrl-group">
-    <label><input type="checkbox" id="chkCtxNodes" checked /> Contextknopen</label>
-    <label><input type="checkbox" id="chkProcNodes" checked /> Procesknopen</label>
+    <label><input type="checkbox" id="chkCtxNodes" checked /> Toon exploitatie</label>
+    <label><input type="checkbox" id="chkProcNodes" checked /> Toon processen</label>
   </div>
 
   <div class="ctrl-group">
@@ -353,6 +353,7 @@ const SOSA  = 'http://www.w3.org/ns/sosa/';
 const SSN   = 'http://www.w3.org/ns/ssn/';
 const PROV  = 'http://www.w3.org/ns/prov#';
 const SKOS  = 'http://www.w3.org/2004/02/skos/core#';
+const ADMS  = 'http://www.w3.org/ns/adms#';
 const RIEPR = 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#';
 
 const T = {
@@ -415,6 +416,7 @@ const LEGEND = [
 let network   = null;
 let allQuads  = [];
 let entityMap = new Map();
+let edgeMap   = new Map();
 let schemaLabels = {
   classByUri: new Map(),
   propertyByUri: new Map(),
@@ -464,8 +466,17 @@ function readFilters() {
 function uriLocal(uri) {
   if (!uri) return '';
   const h = uri.lastIndexOf('#');
-  const s = uri.lastIndexOf('/');
-  return uri.substring(Math.max(h, s) + 1);
+  if (h >= 0) return uri.substring(h + 1);
+
+  const parts = uri.split('/').filter(Boolean);
+  if (!parts.length) return '';
+
+  const isDate = v => /^\d{4}-\d{2}-\d{2}$/.test(v);
+  const isDateTime = v => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(v);
+
+  let i = parts.length - 1;
+  while (i >= 0 && (isDate(parts[i]) || isDateTime(parts[i]))) i--;
+  return i >= 0 ? parts[i] : parts[parts.length - 1];
 }
 
 function chooseLabel(candidates) {
@@ -507,6 +518,11 @@ function shortId(id) {
   if (!id) return '';
   if (id.length > 12 && id.includes('-')) return id.substring(0, 8) + '…';
   return id;
+}
+
+function displayNodeLabel(uri) {
+  const e = entityMap.get(uri);
+  return (e && e.labels && e.labels[0]) || uriLocal(uri);
 }
 
 function procTypeLabel(dctUri) {
@@ -683,17 +699,40 @@ function buildGraph(quads, filters) {
         subSystems:     [],
         wasAttributedTo:null,
         implements_:    null,
+        identifierRefs: [],
+        identifiers:    [],
       });
     }
     return entities.get(uri);
   }
 
-  for (const q of quads) {
-    if (q.subject.termType === 'BlankNode') continue;
+  function getIdentifierNode(id) {
+    if (!id) return null;
+    if (!identifierNodes.has(id)) {
+      identifierNodes.set(id, { scheme: null, value: null, datatype: null });
+    }
+    return identifierNodes.get(id);
+  }
 
-    const s = q.subject.value;
+  const identifierNodes = new Map();
+
+  for (const q of quads) {
+    const sTerm = q.subject;
     const p = q.predicate.value;
     const o = q.object;
+
+    if (sTerm.termType === 'BlankNode') {
+      const idNode = getIdentifierNode(sTerm.value);
+      if (!idNode) continue;
+      if (p === ADMS + 'scheme') idNode.scheme = o.value;
+      else if (p === RDF + 'value') {
+        idNode.value = o.value;
+        idNode.datatype = o.datatype ? o.datatype.value : null;
+      }
+      continue;
+    }
+
+    const s = sTerm.value;
     const e = ent(s);
 
     if      (p === RDF  + 'type')                e.types.add(o.value);
@@ -708,6 +747,14 @@ function buildGraph(quads, filters) {
     else if (p === SSN  + 'hasSubSystem')        { if (o.termType !== 'BlankNode') e.subSystems.push(o.value); }
     else if (p === PROV + 'wasAttributedTo')     e.wasAttributedTo = o.termType !== 'BlankNode' ? o.value : null;
     else if (p === SSN  + 'implements')          e.implements_ = o.termType !== 'BlankNode' ? o.value : null;
+    else if (p === ADMS + 'identifier')          e.identifierRefs.push(o.value);
+  }
+
+  for (const [, e] of entities) {
+    e.identifiers = e.identifierRefs
+      .map(ref => identifierNodes.get(ref))
+      .filter(Boolean)
+      .filter(id => id.scheme || id.value);
   }
 
   for (const [, e] of entities) {
@@ -723,6 +770,12 @@ function buildGraph(quads, filters) {
   const visEdges = [];
   const nodeIds  = new Set();
   const edgeKeys = new Set();
+  const localEdgeMap = new Map();
+
+  function ensureEdgeEntry(id) {
+    if (!localEdgeMap.has(id)) localEdgeMap.set(id, { incoming: [], outgoing: [] });
+    return localEdgeMap.get(id);
+  }
 
   function addNode(uri, label, typeKey, dctTypeUri, classUri) {
     if (nodeIds.has(uri)) return;
@@ -783,6 +836,8 @@ function buildGraph(quads, filters) {
       smooth: { type: 'curvedCW', roundness: 0.1 },
       width: dashes ? 1 : 1.5,
     });
+    ensureEdgeEntry(from).outgoing.push({ node: to, label });
+    ensureEdgeEntry(to).incoming.push({ node: from, label });
   }
 
   function addTypedNode(uri, e, typeUri, typeKey) {
@@ -858,8 +913,8 @@ function buildGraph(quads, filters) {
       addFilteredEdge(
         showSystems && filters.showEdgeImplementation,
         e.implementedBy && nodeIds.has(e.implementedBy),
-        e.implementedBy,
         uri,
+        e.implementedBy,
         SOSA + 'implementedBy',
         'geimplementeerd door',
         '#888',
@@ -884,6 +939,8 @@ function buildGraph(quads, filters) {
       true,
     );
   }
+
+  edgeMap = localEdgeMap;
 
   return { nodes: visNodes, edges: visEdges };
 }
@@ -956,6 +1013,8 @@ function renderGraph(quads, filters, hierarchical) {
 
   network.once('stabilizationIterationsDone', () => {
     network.fit({ animation: { duration: 900, easingFunction: 'easeInOutQuad' } });
+    network.setOptions({ physics: { enabled: false } });
+    network.stopSimulation();
   });
 
   if (hierarchical) {
@@ -997,6 +1056,29 @@ function showDetails(uri) {
     e.deployedSystems.length ? {
       k: 'Uitgerolde systemen',
       v: e.deployedSystems.map(s => `<small>${uriLocal(s)}</small>`).join('<br>'),
+    } : null,
+    e.identifiers && e.identifiers.length ? {
+      k: 'ADMS identifiers',
+      v: e.identifiers
+        .map(id => {
+          const scheme = id.scheme || 'onbekend';
+          const value = id.value || '—';
+          const datatype = id.datatype ? ` <em>^^${uriLocal(id.datatype)}</em>` : '';
+          return `<span class="badge">${scheme}</span> <small>${value}${datatype}</small>`;
+        })
+        .join('<br>'),
+    } : null,
+    edgeMap.get(uri) && edgeMap.get(uri).incoming.length ? {
+      k: 'Inkomende verbindingen',
+      v: edgeMap.get(uri).incoming
+        .map(link => `<span class="badge">${link.label}</span> ${displayNodeLabel(link.node)} <small>(${shortId(uriLocal(link.node))})</small>`)
+        .join('<br>'),
+    } : null,
+    edgeMap.get(uri) && edgeMap.get(uri).outgoing.length ? {
+      k: 'Uitgaande verbindingen',
+      v: edgeMap.get(uri).outgoing
+        .map(link => `<span class="badge">${link.label}</span> ${displayNodeLabel(link.node)} <small>(${shortId(uriLocal(link.node))})</small>`)
+        .join('<br>'),
     } : null,
   ].filter(Boolean);
 
