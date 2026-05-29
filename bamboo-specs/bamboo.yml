@@ -64,7 +64,16 @@ build-specificatie:
         mkdir -p build-artifact
         if [ -f documentatie/bin/specificatie/index.html ]; then cp -f documentatie/bin/specificatie/index.html build-artifact/; else echo "index.html not found; build-artifact will be empty"; fi
         if [ -f documentatie/bin/visualisatie/index.html ]; then cp -f documentatie/bin/visualisatie/index.html build-artifact/visualisatie.html; else echo "visualisatie index.html not found; visualisatie.html will be missing"; fi
-          echo "Build and package stage completed. index.html copied to build-artifact if it existed."
+        # schema TTL en SHACL cache meepubliceren naast de visualisatie
+        for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
+          if [ -f "documentatie/bin/visualisatie/$f" ]; then
+            cp -f "documentatie/bin/visualisatie/$f" "build-artifact/$f"
+            echo "Gekopieerd: $f"
+          else
+            echo "Waarschuwing: documentatie/bin/visualisatie/$f niet gevonden; wordt overgeslagen."
+          fi
+        done
+        echo "Build and package stage completed. index.html copied to build-artifact if it existed."
   artifacts:
     - name: artifact-specificatie
       location: build-artifact
@@ -123,7 +132,17 @@ release-and-publish:
           exit 1
         fi
 
-        git add index.html visualisatie.html .nojekyll
+        # schema TTL en SHACL cache overzetten vanuit artifact
+        for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
+          if [ -f "build-artifact/$f" ]; then
+            cp -f "build-artifact/$f" "$f"
+            echo "Gekopieerd naar gh-pages root: $f"
+          else
+            echo "Waarschuwing: build-artifact/$f niet gevonden; wordt overgeslagen."
+          fi
+        done
+
+        git add index.html visualisatie.html .nojekyll riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json
         echo "Committing and pushing to gh-pages branch of ${GITHUB_REPO}"
         git diff --cached --quiet && echo "Nothing changed; skipping commit." || git commit -m "Update spec site from Bamboo ${bamboo.buildNumber}"
         git push "https://${SECRET_GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" HEAD:gh-pages --force

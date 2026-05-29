@@ -39,8 +39,8 @@
     dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatielocaties binnen het kader van het RIE-IEPR systeem."@nl ;
     dct:description "The RIE-IEPR ontology defines a data model for describing industrial processes, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
     dct:license <https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0> ;
-    dct:issued "2026-04-09"^^xsd:date ;
-    dct:modified "2026-04-09"^^xsd:date ;
+    dct:issued "2026-05-29"^^xsd:date ;
+    dct:modified "2026-05-29"^^xsd:date ;
     owl:versionInfo "1.0.0" ;
     vann:preferredNamespacePrefix "riepr" ;
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
@@ -56,7 +56,7 @@
     rdfs:label "Exploitant"@nl ;
     rdfs:comment "Een exploitant is een entiteit die een milieuimpact heeft."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "ondernemingsnummer" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -122,12 +122,6 @@
         owl:someValuesFrom locn:Address ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een exploitant kan een hoofdactiviteit hebben"@nl ;
-        owl:onProperty org:classification ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Contactpersoon a owl:Class ;
@@ -135,7 +129,7 @@
     rdfs:comment "Een exploitant contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
     rdfs:subClassOf foaf:Person ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -212,7 +206,7 @@
     rdfs:label "Exploitatielocatie"@nl ;
     rdfs:comment "Een exploitatielocatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/Exploitatielocatie/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/Exploitatielocatie/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -321,7 +315,7 @@
     rdfs:comment "Een exploitatie is de uitrol van middelen door een exploitant op een exploitatie locatie leidend tot een milieueffect."@nl ;
     rdfs:subClassOf ssn:Deployment ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -406,13 +400,19 @@
         owl:onProperty org:hasMember ;
         owl:someValuesFrom :Contactpersoon ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatie kan een hoofdactiviteit hebben"@nl ;
+        owl:onProperty org:classification ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Proces a owl:Class ;
     rdfs:label "Proces"@nl ;
     rdfs:comment "Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "localId" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -559,7 +559,7 @@
         ] ;
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf pplan:Variable ;
@@ -613,12 +613,26 @@
         ]
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een installatie moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een installatie kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
@@ -753,6 +767,20 @@
         ## ----- Systeem restricties ------
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
     rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een emissiepunt moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een emissiepunt kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
         owl:someValuesFrom adms:Identifier ;
@@ -850,7 +878,7 @@
         owl:disjointWith :Onttrekkingspunt
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -914,12 +942,26 @@
         rdfs:label "Onttrekking 1"@nl
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een onttrekkingspunt moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een onttrekkingspunt kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
@@ -1012,12 +1054,6 @@
         owl:disjointWith :Emissiepunt
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een onttrekkingspunt kan een diepte hebben"@nl ;
-        owl:onProperty dbo:depth ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
         # *..* relation with the inverse of ssn:hasSubSystem
         rdfs:comment "Een onttrekkingspunt kan filters hebben"@nl ;
         owl:onProperty ssn:hasSubSystem ;
@@ -1055,7 +1091,7 @@
     rdfs:label "Meetpunt"@nl ;
     rdfs:comment "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -1070,6 +1106,20 @@
         ]
     ] ;
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetpunt moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetpunt kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
@@ -1190,6 +1240,20 @@
     rdfs:comment "Een meetinstrument is een specifiek apparaat of systeem dat wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
     rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetinstrument moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een meetinstrument kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetinstrument heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
         owl:someValuesFrom adms:Identifier ;
@@ -1283,7 +1347,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/meetinstrument/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -1293,6 +1357,20 @@
     rdfs:label "Filter"@nl ;
     rdfs:comment "Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen."@nl ;
     rdfs:subClassOf ssn:System, ogc:SpatialObject ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een filter moet een datum inGebruikVanaf hebben"@nl ;
+        owl:onProperty :inGebruikVanaf ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een filter kan een datum inGebruikTot hebben"@nl ;
+        owl:onProperty :inGebruikTot ;
+        owl:someValuesFrom xsd:date ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem heeft externe identificaties (optioneel)"@nl ;
         owl:onProperty adms:identifier ;
@@ -1387,7 +1465,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
@@ -1421,7 +1499,7 @@
     rdfs:comment "Een observatie is een waarneming of meting uitgevoerd op een emissie via een meetinstrument."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/observatie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1502,7 +1580,7 @@
     rdfs:comment "Een observatie op een emissie — meting van een stof of eigenschap op een lozing."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissie-observatie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissie-observatie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1572,7 +1650,7 @@
     rdfs:comment "Een observatie op een onttrekking — meting van een stof of eigenschap op een wateronttrekking."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekking-observatie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking-observatie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1642,7 +1720,7 @@
     rdfs:comment "Een observatie van het geproduceerde volume bij een exploitatie."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/productie-observatie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/productie-observatie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1714,7 +1792,7 @@
     rdfs:comment "Een onttrekking is een specifiek onttrekkingsevent dat betrekking heeft op het winnen of bemonsteren van grondstoffen aan onttrekkingspunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf sosa:FeatureOfInterest, prov:Entity ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/onttrekking/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -1746,7 +1824,7 @@
     rdfs:comment "Een emissie is een specifiek emissieevent dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf sosa:FeatureOfInterest, prov:Entity ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/emissie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -1789,7 +1867,7 @@
     rdfs:comment "Een productie is een specifiek productie-event bij een exploitatie over een bepaalde periode."@nl ;
     rdfs:subClassOf sosa:FeatureOfInterest, prov:Entity ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/productie/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/productie/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -1839,7 +1917,7 @@
     rdfs:comment "Een resultaat is de gemeten of berekende waarde van een observatie."@nl ;
     rdfs:subClassOf sosa:Result, prov:Entity ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1927,7 +2005,7 @@
     rdfs:label "Aangifte"@nl ;
     rdfs:comment "Een aangifte is een document dat wordt ingediend bij de overheid."@nl ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.riepr.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "vlaanderenId" ; hydra:property :vlaanderenId ; hydra:required true ]
     ] ;
     rdfs:subClassOf dossier:Stuk ;
@@ -2022,6 +2100,16 @@
     rdfs:comment "Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden."@nl ;
     rdfs:domain adms:Identifier ;
     rdfs:range xsd:anyURI .
+
+:inGebruikVanaf a owl:DatatypeProperty ;
+    rdfs:label "in gebruik vanaf"@nl ;
+    rdfs:comment "De niet-functionele datum waarop een entiteit in gebruik is genomen."@nl ;
+    rdfs:range xsd:date .
+
+:inGebruikTot a owl:DatatypeProperty ;
+    rdfs:label "in gebruik tot"@nl ;
+    rdfs:comment "De niet-functionele datum waarop een entiteit buiten gebruik is gesteld."@nl ;
+    rdfs:range xsd:date .
 
 # Expliciete restricties op adms:Identifier voor notatie en notatie-datatype (M5)
 adms:Identifier rdfs:subClassOf [ a owl:Restriction ;
