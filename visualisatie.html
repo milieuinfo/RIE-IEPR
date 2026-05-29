@@ -188,6 +188,10 @@
       flex-shrink: 0;
     }
 
+    .sb-section:last-child {
+      border-bottom: 0;
+    }
+
     .sb-section h2 {
       font-size: 0.72rem;
       font-weight: 600;
@@ -234,6 +238,79 @@
       color: #484f58;
       font-size: 0.78rem;
       font-style: italic;
+    }
+
+    .validation-summary {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    .validation-summary strong {
+      color: #f0f6ff;
+    }
+
+    .validation-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .validation-pill.ok {
+      background: rgba(46, 160, 67, 0.18);
+      color: #7ee787;
+      border: 1px solid rgba(46, 160, 67, 0.35);
+    }
+
+    .validation-pill.bad {
+      background: rgba(248, 81, 73, 0.16);
+      color: #ff7b72;
+      border: 1px solid rgba(248, 81, 73, 0.35);
+    }
+
+    .validation-pill.neutral {
+      background: rgba(139, 148, 158, 0.14);
+      color: #c9d1d9;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+    }
+
+    #validationIssues {
+      display: grid;
+      gap: 8px;
+    }
+
+    .validation-issue {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #0d1117;
+      border-left: 3px solid #30363d;
+      font-size: 0.74rem;
+      line-height: 1.45;
+    }
+
+    .validation-issue.viol {
+      border-left-color: #f85149;
+    }
+
+    .validation-issue.warn {
+      border-left-color: #d29922;
+    }
+
+    .validation-issue small {
+      color: #8b949e;
     }
 
     .detail-row { margin-bottom: 10px; }
@@ -326,6 +403,15 @@
   <div id="sidebar">
 
     <div class="sb-section">
+      <h2>SHACL validatie</h2>
+      <div id="validationSummary" class="validation-summary">
+        <div class="validation-pill neutral">Runtime</div>
+        <div id="validationSummaryText">Runtime validatie wordt voorbereid.</div>
+      </div>
+      <div id="validationIssues"></div>
+    </div>
+
+    <div class="sb-section">
       <h2>Legenda</h2>
       <div id="legend"></div>
     </div>
@@ -355,6 +441,9 @@ const PROV  = 'http://www.w3.org/ns/prov#';
 const SKOS  = 'http://www.w3.org/2004/02/skos/core#';
 const ADMS  = 'http://www.w3.org/ns/adms#';
 const RIEPR = 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#';
+const SH    = 'http://www.w3.org/ns/shacl#';
+const XSD   = 'http://www.w3.org/2001/XMLSchema#';
+const INFERENCE_CACHE_KEY = 'riepr-ontology-inference-cache-v1';
 
 const T = {
   Exploitant:          RIEPR + 'Exploitant',
@@ -423,6 +512,13 @@ let schemaLabels = {
   conceptByUri: new Map(),
 };
 
+let validationCache = null;
+let ontologySchemaQuads = [];
+let runtimeValidationReady = false;
+let runtimeNodeShapes = [];
+let runtimeInferenceCache = null;
+let runtimeShapeTriples = 0;
+
 const UI = {
   fileInput: document.getElementById('fileInput'),
   networkContainer: document.getElementById('networkContainer'),
@@ -461,6 +557,12 @@ function readFilters() {
     showEdgeImplementation: UI.chkEdgeImplementation.checked,
     showEdgeStructure: UI.chkEdgeStructure.checked,
   };
+}
+
+function getValidationLevel(entry = {}) {
+  const severity = (entry.severity || entry.level || entry.resultSeverity || '').toString().toLowerCase();
+  if (severity.includes('warning')) return 'warn';
+  return 'viol';
 }
 
 function uriLocal(uri) {
@@ -558,6 +660,388 @@ function parseTTL(content) {
   });
 }
 
+function stableKey(subject, predicate, object) {
+  return `${subject}|${predicate}|${object}`;
+}
+
+function fingerprintQuads(quads) {
+  const keys = [];
+  for (const q of quads) {
+    if (q.subject.termType !== 'NamedNode') continue;
+    keys.push(stableKey(q.subject.value, q.predicate.value, q.object.value));
+  }
+  keys.sort();
+  return `${keys.length}:${keys.slice(0, 200).join('||')}`;
+}
+
+function buildBidirectionalClosure(edges) {
+  const adjacency = new Map();
+  const connect = (a, b) => {
+    if (!adjacency.has(a)) adjacency.set(a, new Set());
+    if (!adjacency.has(b)) adjacency.set(b, new Set());
+    adjacency.get(a).add(b);
+    adjacency.get(b).add(a);
+  };
+
+  edges.forEach(([a, b]) => connect(a, b));
+
+  const out = new Map();
+  for (const start of adjacency.keys()) {
+    const seen = new Set([start]);
+    const queue = [start];
+    while (queue.length) {
+      const current = queue.shift();
+      for (const next of adjacency.get(current) || []) {
+        if (!seen.has(next)) {
+          seen.add(next);
+          queue.push(next);
+        }
+      }
+    }
+    out.set(start, seen);
+  }
+  return out;
+}
+
+function buildDirectedClosure(edges) {
+  const adjacency = new Map();
+  for (const [a, b] of edges) {
+    if (!adjacency.has(a)) adjacency.set(a, new Set());
+    adjacency.get(a).add(b);
+  }
+
+  const out = new Map();
+  for (const start of adjacency.keys()) {
+    const seen = new Set([start]);
+    const queue = [start];
+    while (queue.length) {
+      const current = queue.shift();
+      for (const next of adjacency.get(current) || []) {
+        if (!seen.has(next)) {
+          seen.add(next);
+          queue.push(next);
+        }
+      }
+    }
+    out.set(start, seen);
+  }
+  return out;
+}
+
+function serializeSetMap(setMap) {
+  const obj = {};
+  for (const [k, v] of setMap.entries()) obj[k] = [...v];
+  return obj;
+}
+
+function deserializeSetMap(obj) {
+  const map = new Map();
+  for (const [k, arr] of Object.entries(obj || {})) map.set(k, new Set(arr));
+  return map;
+}
+
+function buildInferenceCacheFromOntology(quads) {
+  const eqClasses = [];
+  const eqProperties = [];
+  const subClasses = [];
+
+  for (const q of quads) {
+    if (q.subject.termType !== 'NamedNode' || q.object.termType !== 'NamedNode') continue;
+    const s = q.subject.value;
+    const p = q.predicate.value;
+    const o = q.object.value;
+
+    if (p === OWL + 'equivalentClass') eqClasses.push([s, o]);
+    else if (p === OWL + 'equivalentProperty') eqProperties.push([s, o]);
+    else if (p === RDFS + 'subClassOf') subClasses.push([s, o]);
+  }
+
+  return {
+    classEq: buildBidirectionalClosure(eqClasses),
+    classSuper: buildDirectedClosure(subClasses),
+    propertyEq: buildBidirectionalClosure(eqProperties),
+  };
+}
+
+function parseShapes(quads) {
+  const nodeShapeMap = new Map();
+  const propertyShapeMap = new Map();
+
+  const ensureNodeShape = node => {
+    if (!nodeShapeMap.has(node)) nodeShapeMap.set(node, { targetClasses: [], properties: [] });
+    return nodeShapeMap.get(node);
+  };
+
+  const ensurePropertyShape = node => {
+    if (!propertyShapeMap.has(node)) {
+      propertyShapeMap.set(node, { path: null, minCount: null, maxCount: null, classUri: null, datatypeUri: null });
+    }
+    return propertyShapeMap.get(node);
+  };
+
+  for (const q of quads) {
+    const s = q.subject.value;
+    const p = q.predicate.value;
+    const o = q.object;
+
+    if (p === RDF + 'type' && o.termType === 'NamedNode' && o.value === SH + 'NodeShape') {
+      ensureNodeShape(s);
+    } else if (p === SH + 'targetClass' && o.termType === 'NamedNode') {
+      ensureNodeShape(s).targetClasses.push(o.value);
+    } else if (p === SH + 'property') {
+      const nodeShape = ensureNodeShape(s);
+      nodeShape.properties.push(o.value);
+      ensurePropertyShape(o.value);
+    }
+
+    if (!propertyShapeMap.has(s)) continue;
+    const prop = propertyShapeMap.get(s);
+
+    if (p === SH + 'path' && o.termType === 'NamedNode') prop.path = o.value;
+    else if (p === SH + 'minCount' && o.termType === 'Literal') prop.minCount = Number(o.value);
+    else if (p === SH + 'maxCount' && o.termType === 'Literal') prop.maxCount = Number(o.value);
+    else if (p === SH + 'class' && o.termType === 'NamedNode') prop.classUri = o.value;
+    else if (p === SH + 'datatype' && o.termType === 'NamedNode') prop.datatypeUri = o.value;
+  }
+
+  const parsed = [];
+  for (const [shapeUri, shape] of nodeShapeMap.entries()) {
+    if (!shape.targetClasses.length) continue;
+    const props = shape.properties
+      .map(p => propertyShapeMap.get(p))
+      .filter(p => p && p.path);
+    parsed.push({ shapeUri, targetClasses: shape.targetClasses, properties: props });
+  }
+  return parsed;
+}
+
+function buildTypeIndex(quads, inferenceCache) {
+  const types = new Map();
+  const ensure = node => {
+    if (!types.has(node)) types.set(node, new Set());
+    return types.get(node);
+  };
+
+  for (const q of quads) {
+    if (q.subject.termType !== 'NamedNode' || q.object.termType !== 'NamedNode') continue;
+    if (q.predicate.value !== RDF + 'type') continue;
+    ensure(q.subject.value).add(q.object.value);
+  }
+
+  for (const [, typeSet] of types.entries()) {
+    const additions = new Set(typeSet);
+    for (const t of typeSet) {
+      (inferenceCache.classEq.get(t) || new Set()).forEach(x => additions.add(x));
+      (inferenceCache.classSuper.get(t) || new Set()).forEach(x => additions.add(x));
+    }
+    additions.forEach(x => typeSet.add(x));
+  }
+
+  return types;
+}
+
+function buildPredicateObjectIndex(quads) {
+  const idx = new Map();
+  const ensureSubject = s => {
+    if (!idx.has(s)) idx.set(s, new Map());
+    return idx.get(s);
+  };
+
+  for (const q of quads) {
+    if (q.subject.termType !== 'NamedNode') continue;
+    const sm = ensureSubject(q.subject.value);
+    const p = q.predicate.value;
+    if (!sm.has(p)) sm.set(p, []);
+    sm.get(p).push(q.object);
+  }
+
+  return idx;
+}
+
+function getObjectsForPath(subject, pathUri, index, inferenceCache) {
+  const values = [];
+  const predicates = new Set([pathUri]);
+  (inferenceCache.propertyEq.get(pathUri) || new Set()).forEach(p => predicates.add(p));
+  const sm = index.get(subject);
+  if (!sm) return values;
+  predicates.forEach(p => {
+    const arr = sm.get(p);
+    if (arr && arr.length) values.push(...arr);
+  });
+  return values;
+}
+
+function datatypeMatches(term, datatypeUri) {
+  if (!term || term.termType !== 'Literal') return false;
+  if (!datatypeUri) return true;
+  if (datatypeUri === XSD + 'string') {
+    return !term.datatype || term.datatype.value === XSD + 'string';
+  }
+  return term.datatype && term.datatype.value === datatypeUri;
+}
+
+function makeValidationEntry(focusNode, path, message) {
+  return {
+    focusNode,
+    resultPath: path,
+    message,
+    severity: SH + 'Violation',
+  };
+}
+
+function validateRuntimeShacl(quads, sourceName) {
+  if (!runtimeValidationReady) return null;
+
+  const entries = [];
+  const typeIndex = buildTypeIndex(quads, runtimeInferenceCache);
+  const poIndex = buildPredicateObjectIndex(quads);
+
+  const allSubjects = new Set();
+  for (const q of quads) {
+    if (q.subject.termType === 'NamedNode') allSubjects.add(q.subject.value);
+  }
+
+  for (const shape of runtimeNodeShapes) {
+    const focusNodes = [];
+    allSubjects.forEach(node => {
+      const t = typeIndex.get(node);
+      if (!t) return;
+      if (shape.targetClasses.some(c => t.has(c))) focusNodes.push(node);
+    });
+
+    for (const focusNode of focusNodes) {
+      for (const prop of shape.properties) {
+        const values = getObjectsForPath(focusNode, prop.path, poIndex, runtimeInferenceCache);
+
+        if (typeof prop.minCount === 'number' && values.length < prop.minCount) {
+          entries.push(makeValidationEntry(
+            focusNode,
+            prop.path,
+            `minCount[${prop.minCount}]: Invalid cardinality: expected min ${prop.minCount}: Got count = ${values.length}`
+          ));
+        }
+
+        if (typeof prop.maxCount === 'number' && values.length > prop.maxCount) {
+          entries.push(makeValidationEntry(
+            focusNode,
+            prop.path,
+            `maxCount[${prop.maxCount}]: Invalid cardinality: expected max ${prop.maxCount}: Got count = ${values.length}`
+          ));
+        }
+
+        if (prop.classUri) {
+          for (const v of values) {
+            if (v.termType !== 'NamedNode') {
+              entries.push(makeValidationEntry(
+                focusNode,
+                prop.path,
+                `ClassConstraint[<${prop.classUri}>]: Expected class :<${prop.classUri}> for ${v.value || v.id || v.termType}`
+              ));
+              continue;
+            }
+
+            const targetTypes = typeIndex.get(v.value) || new Set();
+            if (!targetTypes.has(prop.classUri)) {
+              entries.push(makeValidationEntry(
+                focusNode,
+                prop.path,
+                `ClassConstraint[<${prop.classUri}>]: Expected class :<${prop.classUri}> for <${v.value}>`
+              ));
+            }
+          }
+        }
+
+        if (prop.datatypeUri) {
+          for (const v of values) {
+            if (!datatypeMatches(v, prop.datatypeUri)) {
+              entries.push(makeValidationEntry(
+                focusNode,
+                prop.path,
+                `DatatypeConstraint[<${prop.datatypeUri}>]: Expected datatype <${prop.datatypeUri}> for ${v.value || v.id || v.termType}`
+              ));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    generatedAt: new Date().toISOString(),
+    sourceData: sourceName || 'upload',
+    sourceOntology: 'runtime-cached-inference',
+    inferenceMode: 'owl-mini-cached',
+    conforms: entries.length === 0,
+    dataTriples: quads.length,
+    ontologyTriples: ontologySchemaQuads.length,
+    shapeTriples: runtimeShapeTriples,
+    entryCount: entries.length,
+    entries,
+  };
+}
+
+async function prepareRuntimeValidation() {
+  try {
+    const shapeCandidates = ['./generated-shapes.ttl'];
+    let shapeQuads = null;
+
+    for (const url of shapeCandidates) {
+      try {
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (!resp.ok) continue;
+        const text = await resp.text();
+        shapeQuads = await parseTTL(normalizeTTL(text));
+        break;
+      } catch {
+      }
+    }
+
+    if (!shapeQuads || !shapeQuads.length || !ontologySchemaQuads.length) {
+      runtimeValidationReady = false;
+      runtimeShapeTriples = 0;
+      return;
+    }
+
+    const ontologyFingerprint = fingerprintQuads(ontologySchemaQuads);
+    let cache = null;
+    try {
+      const raw = localStorage.getItem(INFERENCE_CACHE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.fingerprint === ontologyFingerprint) {
+          cache = {
+            classEq: deserializeSetMap(parsed.classEq),
+            classSuper: deserializeSetMap(parsed.classSuper),
+            propertyEq: deserializeSetMap(parsed.propertyEq),
+          };
+        }
+      }
+    } catch {
+    }
+
+    if (!cache) {
+      cache = buildInferenceCacheFromOntology(ontologySchemaQuads);
+      try {
+        localStorage.setItem(INFERENCE_CACHE_KEY, JSON.stringify({
+          fingerprint: ontologyFingerprint,
+          classEq: serializeSetMap(cache.classEq),
+          classSuper: serializeSetMap(cache.classSuper),
+          propertyEq: serializeSetMap(cache.propertyEq),
+        }));
+      } catch {
+      }
+    }
+
+    runtimeInferenceCache = cache;
+    runtimeNodeShapes = parseShapes(shapeQuads);
+    runtimeShapeTriples = shapeQuads.length;
+    runtimeValidationReady = runtimeNodeShapes.length > 0;
+  } catch {
+    runtimeValidationReady = false;
+    runtimeShapeTriples = 0;
+  }
+}
+
 function buildSchemaLabels(quads) {
   const prefLabels = new Map();
   const rdfsLabels = new Map();
@@ -639,11 +1123,72 @@ function buildSchemaLabels(quads) {
 
 async function ingestSchemaContent(content, sourceName) {
   const quads = await parseTTL(normalizeTTL(content));
+  ontologySchemaQuads = ontologySchemaQuads.concat(quads);
   const labels = buildSchemaLabels(quads);
   mergeMap(schemaLabels.classByUri, labels.classByUri);
   mergeMap(schemaLabels.propertyByUri, labels.propertyByUri);
   mergeMap(schemaLabels.conceptByUri, labels.conceptByUri);
   setStatus(`Schema geladen (${sourceName}): ${labels.conceptByUri.size} conceptlabels`);
+}
+
+function renderValidationReport(report) {
+  validationCache = report;
+
+  const summary = document.getElementById('validationSummary');
+  const issues = document.getElementById('validationIssues');
+
+  if (!report) {
+    if (runtimeValidationReady) {
+      summary.innerHTML = '<div class="validation-pill neutral">Runtime klaar</div><div>Upload een TTL-bestand om SHACL-validatie op runtime uit te voeren.</div>';
+    } else {
+      summary.innerHTML = '<div class="validation-pill neutral">Runtime niet klaar</div><div>Controleer of schema en generated-shapes.ttl beschikbaar zijn voor runtime validatie.</div>';
+    }
+    issues.innerHTML = '';
+    return;
+  }
+
+  const conforms = Boolean(report.conforms);
+  const entries = Array.isArray(report.entries) ? report.entries : [];
+  const total = typeof report.entryCount === 'number' ? report.entryCount : entries.length;
+  const dataTriples = report.dataTriples ?? 'onbekend';
+  const shapeTriples = report.shapeTriples ?? 'onbekend';
+  const inferenceMode = report.inferenceMode || 'owl-mini';
+  const maxRenderedEntries = 50;
+  const visibleEntries = entries.slice(0, maxRenderedEntries);
+
+  summary.innerHTML = `
+    <div class="validation-pill ${conforms ? 'ok' : 'bad'}">${conforms ? 'Conform' : 'Niet conform'}</div>
+    <strong>${conforms ? 'De data is SHACL-conform.' : 'De data bevat SHACL-schendingen.'}</strong><br>
+    Rapportdatum: <small>${report.generatedAt || 'onbekend'}</small><br>
+    Bron: <small>${report.sourceData || 'onbekend'}</small><br>
+    Inference: <small>${inferenceMode}</small><br>
+    Data triples: <small>${dataTriples}</small> · Shapes: <small>${shapeTriples}</small> · Meldingen: <small>${total}</small>
+  `;
+
+  if (!entries.length) {
+    issues.innerHTML = '<div class="validation-issue"><strong>Geen meldingen</strong><br><small>Runtime validatie vond geen detailmeldingen.</small></div>';
+    return;
+  }
+
+  const renderedIssues = visibleEntries.map(entry => {
+    const level = getValidationLevel(entry);
+    const focusNode = entry.focusNode || 'onbekend focus node';
+    const path = entry.resultPath || entry.path || 'geen path';
+    const message = entry.message || 'Geen bericht beschikbaar.';
+    return `
+      <div class="validation-issue ${level}">
+        <strong>${focusNode}</strong><br>
+        <small>${path}</small><br>
+        ${message}
+      </div>
+    `;
+  }).join('');
+
+  const overflow = entries.length > visibleEntries.length
+    ? `<div class="validation-issue"><strong>+${entries.length - visibleEntries.length} extra meldingen</strong><br><small>Alleen de eerste ${visibleEntries.length} meldingen worden getoond; het rapport bevat in totaal ${entries.length} regels.</small></div>`
+    : '';
+
+  issues.innerHTML = renderedIssues + overflow;
 }
 
 async function tryAutoLoadSchema() {
@@ -1128,6 +1673,12 @@ async function loadContent(content) {
     allQuads = await parseTTL(normalizedContent);
     setStatus(`${allQuads.length} triples geladen — graaf opbouwen…`);
     renderCurrentGraph();
+    if (runtimeValidationReady) {
+      const runtimeReport = validateRuntimeShacl(allQuads, 'runtime-upload');
+      if (runtimeReport) {
+        renderValidationReport(runtimeReport);
+      }
+    }
   } catch (err) {
     setStatus(`Fout bij verwerken: ${err.message}`);
     console.error(err);
@@ -1135,18 +1686,7 @@ async function loadContent(content) {
 }
 
 async function tryAutoLoad() {
-  try {
-    const resp = await fetch('../agc-glass_MJV.ttl');
-    if (resp.ok) {
-      const text = await resp.text();
-      setStatus('TTL bestand automatisch geladen.');
-      await loadContent(text);
-    } else {
-      setStatus('Selecteer een TTL bestand via de knop hierboven.');
-    }
-  } catch {
-    setStatus('Automatisch laden mislukt — selecteer een TTL bestand via de knop hierboven.');
-  }
+  setStatus('Selecteer een TTL bestand via de knop hierboven.');
 }
 
 UI.fileInput.addEventListener('change', async e => {
@@ -1209,6 +1749,8 @@ UI.btnFit.addEventListener('click', () => {
 async function init() {
   buildLegend();
   await tryAutoLoadSchema();
+  await prepareRuntimeValidation();
+  renderValidationReport(null);
   await tryAutoLoad();
 }
 
