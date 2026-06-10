@@ -21,7 +21,7 @@ export const NAMESPACES = {
     exploitant: 'https://data.riepr.omgeving.vlaanderen.be/id/exploitant/',
     exploitatielocatie: 'https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/',
     emissiepunt: 'https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/',
-    onttrekkingspunt: 'https://data.riepr.omgeving.vlaanderen.be/id/ontrekkingspunt/',
+    onttrekkingspunt: 'https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/',
     installatie: 'https://data.riepr.omgeving.vlaanderen.be/id/installatie/',
     apparaat: 'https://data.riepr.omgeving.vlaanderen.be/id/apparaat/',
     meetpunt: 'https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/',
