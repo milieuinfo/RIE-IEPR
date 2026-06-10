@@ -1,5 +1,6 @@
 package be.vlaanderen.omgeving.riepr
 
+import be.vlaanderen.omgeving.rdfvalidator.{OwlToShaclGenerator, ShaclValidator}
 import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.riot.RDFDataMgr
 

@@ -263,13 +263,6 @@ prop:state-butter-chocolate
         sosa:isPropertyOf  ent:mixture_001;
         sosa:wasActedOnBy  exec:melting-2026-02-10 .
 
-step:stir_until_homogeneous_liquid_mixture
-        rdf:type            prov:Plan , prov:Entity , pplan:Step , sosa:Procedure;
-        rdfs:label          "Stir until homogeneous mixture"@en , "Roer tot een homogeen mengsel"@nl;
-        pplan:isPrecededBy  step:heat_pan;
-        pplan:isStepOfPlan  plan:melting;
-        sosa:implementedBy  inst:whisk-geert .
-
 intermediateproduct:batter
         rdf:type    skos:Concept;
         rdfs:label  "Batter"@en , "Beslag"@nl .
@@ -282,6 +275,13 @@ var:chopped-walnuts  rdf:type   pplan:Variable;
         pplan:isVariableOfPlan  plan:nigella-brownies;
         sosa:inputFor           plan:mixing;
         sosa:outputFor          plan:chopping .
+
+step:stir_until_homogeneous_liquid_mixture
+        rdf:type            prov:Plan , prov:Entity , pplan:Step , sosa:Procedure;
+        rdfs:label          "Stir until homogeneous mixture"@en , "Roer tot een homogeen mengsel"@nl;
+        pplan:isPrecededBy  step:heat_pan;
+        pplan:isStepOfPlan  plan:melting;
+        sosa:implementedBy  inst:whisk-geert .
 
 intermediateproduct:chopped-walnuts
         rdf:type    skos:Concept;
@@ -677,16 +677,6 @@ ent:eggs_001  rdf:type               prov:Entity , pplan:Entity;
         prov:wasMemberOf             ent:mixture_002;
         prov:wasUsedBy               exec:mixing-2026-02-10 .
 
-inst:gas-stove-geert  rdf:type  prov:Entity , sosa:System , prov:Agent;
-        rdfs:label            "Gas stove in Geert's kitchen."@en , "Gasfornuis in Geerts keuken."@nl;
-        prov:actedOnBehalfOf  agent:geert;
-        prov:influenced       exec:heating-2026-02-10;
-        prov:wasAssociateFor  exec:heating-2026-02-10;
-        prov:wasInfluencedBy  agent:geert;
-        sosa:hasDeployment    exec:brownies-baking-for-demo-on-wednesday;
-        sosa:implements       step:heat_pan;
-        sosa:isSubSystemOf    inst:melting-system-geert .
-
 ent:flour_001  rdf:type              pplan:Entity , prov:Entity;
         rdfs:label                   "Bloem"@nl , "Flour"@en;
         dct:type                     ingredient:flour;
@@ -698,6 +688,19 @@ ent:flour_001  rdf:type              pplan:Entity , prov:Entity;
         prov:influenced              ent:batter_001 , exec:mixing-2026-02-10 , ent:mixture_002;
         prov:wasMemberOf             ent:mixture_002;
         prov:wasUsedBy               exec:mixing-2026-02-10 .
+
+plan:remove_from_oven_and_cool_down
+        sosa:hasInput  var:colour .
+
+inst:gas-stove-geert  rdf:type  prov:Entity , sosa:System , prov:Agent;
+        rdfs:label            "Gas stove in Geert's kitchen."@en , "Gasfornuis in Geerts keuken."@nl;
+        prov:actedOnBehalfOf  agent:geert;
+        prov:influenced       exec:heating-2026-02-10;
+        prov:wasAssociateFor  exec:heating-2026-02-10;
+        prov:wasInfluencedBy  agent:geert;
+        sosa:hasDeployment    exec:brownies-baking-for-demo-on-wednesday;
+        sosa:implements       step:heat_pan;
+        sosa:isSubSystemOf    inst:melting-system-geert .
 
 var:eggs  rdf:type              pplan:Variable;
         rdfs:label              "Eggs"@en , "Eieren"@nl;
@@ -731,9 +734,6 @@ var:dark-chocolate  rdf:type    pplan:Variable;
                                   qudt:numericValue  375
                                 ];
         sosa:inputFor           plan:melting .
-
-plan:remove_from_oven_and_cool_down
-        sosa:hasInput  var:colour .
 
 plan:mixing  rdf:type          sosa:Procedure , pplan:Entity , pplan:Plan , prov:Plan , prov:Entity , sosa:ActuatingProcedure;
         rdfs:label             "Mix all ingredients"@en , "Alle ingrediënten mengen"@nl;

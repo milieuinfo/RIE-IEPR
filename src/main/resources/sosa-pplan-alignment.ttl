@@ -1,0 +1,38 @@
+PREFIX dbo:         <http://dbpedia.org/ontology/>
+PREFIX dc:          <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms:     <http://purl.org/dc/terms/>
+PREFIX foaf:        <http://xmlns.com/foaf/0.1/>
+PREFIX geo:         <http://www.opengis.net/ont/geosparql#>
+PREFIX ns5:         <http://mappings.dbpedia.org/index.php/OntologyProperty:>
+PREFIX ns6:         <http://mappings.dbpedia.org/index.php/OntologyClass:>
+PREFIX owl:         <http://www.w3.org/2002/07/owl#>
+PREFIX p-plan:      <http://purl.org/net/p-plan#>
+PREFIX prov:        <http://www.w3.org/ns/prov#>
+PREFIX rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema:      <http://schema.org/>
+PREFIX skos:        <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:        <http://www.w3.org/ns/sosa/>
+PREFIX sosa-act:    <http://www.w3.org/ns/sosa/act/>
+PREFIX sosa-common: <http://www.w3.org/ns/sosa/common/>
+PREFIX sosa-dep:    <http://www.w3.org/ns/sosa/dep/>
+PREFIX sosa-obs:    <http://www.w3.org/ns/sosa/obs/>
+PREFIX sosa-sam:    <http://www.w3.org/ns/sosa/sam/>
+PREFIX sp:          <http://www.w3.org/ns/sosa/prov/>
+PREFIX ssn:         <http://www.w3.org/ns/ssn/>
+PREFIX ssn-act:     <http://www.w3.org/ns/ssn/act/>
+PREFIX ssn-common:  <http://www.w3.org/ns/ssn/common/>
+PREFIX ssn-dep:     <http://www.w3.org/ns/ssn/dep/>
+PREFIX ssn-obs:     <http://www.w3.org/ns/ssn/obs/>
+PREFIX ssn-sam:     <http://www.w3.org/ns/ssn/sam/>
+PREFIX time:        <http://www.w3.org/2006/time#>
+PREFIX vann:        <http://purl.org/vocab/vann/>
+PREFIX wikidata:    <http://www.wikidata.org/entity/>
+PREFIX xsd:         <http://www.w3.org/2001/XMLSchema#>
+
+sosa:inputFor  rdf:type       owl:ObjectProperty;
+    rdfs:isDefinedBy      sosa-common:;
+    rdfs:label            "input for"@en;
+    schema:rangeIncludes  sosa:Procedure;
+    owl:inverseOf         sosa:hasInput;
+    skos:definition       "\n  relation from an input to a Procedure that uses it in an Execution\n  "@en .

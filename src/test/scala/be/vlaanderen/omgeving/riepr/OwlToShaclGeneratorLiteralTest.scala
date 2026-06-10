@@ -1,5 +1,6 @@
 package be.vlaanderen.omgeving.riepr
 
+import be.vlaanderen.omgeving.rdfvalidator.OwlToShaclGenerator
 import org.apache.jena.rdf.model._
 import org.apache.jena.vocabulary.{OWL, RDF, RDFS, XSD}
 import org.scalatest.funsuite.AnyFunSuite
