@@ -2,6 +2,7 @@ package be.vlaanderen.omgeving.riepr
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import be.vlaanderen.omgeving.rdfvalidator.ShaclValidator
 import org.apache.jena.rdf.model.{Model, ModelFactory}
 import org.apache.jena.riot.{Lang, RDFDataMgr}
 import org.apache.jena.vocabulary.RDF
