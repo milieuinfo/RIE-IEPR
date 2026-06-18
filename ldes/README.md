@@ -1,9 +1,10 @@
 This project contains a small POC with these components:
 
-* `ldes-server`: An LDES server, that is initialized with 3 LDES streams:
+* `ldes-server`: An LDES server, that is initialized with different LDES streams:
     * resultaat
     * observatie
     * emissieobservatie
+    * filters
 * `postgres`: The Postgres database for this LDES server
 * `create-eventstreams`: A container that creates the event streams. You can find the configuration
   of the event streams in

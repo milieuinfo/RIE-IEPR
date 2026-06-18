@@ -51,3 +51,19 @@ COMMENT ON COLUMN observatie.observed_property IS 'http://www.w3.org/ns/sosa/obs
 COMMENT ON COLUMN observatie.phenomenon_time IS 'http://www.w3.org/ns/sosa/phenomenonTime';
 COMMENT ON COLUMN observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTime';
 COMMENT ON COLUMN observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedProcedure';
+
+
+-- Filter table with JSONB for multi-values
+CREATE TABLE filter_jsonb (
+    id TEXT PRIMARY KEY,
+    types JSONB,
+    "label" JSONB,
+    "created" TEXT,
+    "issued" TEXT,
+    "modified" TEXT,
+    "status" TEXT,
+    "hasDeployment" TEXT,
+    "isFeatureOfInterestOf" JSONB,
+    "isHostedBy" TEXT,
+    "hasProperty" JSONB
+);
