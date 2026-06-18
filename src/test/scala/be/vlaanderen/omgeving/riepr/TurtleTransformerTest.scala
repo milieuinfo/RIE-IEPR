@@ -1,5 +1,6 @@
 package be.vlaanderen.omgeving.riepr
 
+import be.vlaanderen.omgeving.rdfvalidator.RdfUtils
 import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.vocabulary.{OWL, RDF, RDFS}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -26,7 +27,7 @@ ex:TestSubject a ex:TestClass ;
     writer.write(turtleContent)
     writer.close()
     
-    val model = TurtleTransformer.parseTurtle(tempFile)
+    val model = RdfUtils.parseTurtle(tempFile)
     
     assert(model != null)
     assert(model.size() > 0)
@@ -57,7 +58,7 @@ ex:TestSubject a ex:TestClass ;
     txtFile.createNewFile()
     txtFile.deleteOnExit()
     
-    val turtleFiles = TurtleTransformer.listTurtleFiles(tempDir)
+    val turtleFiles = RdfUtils.listTurtleFiles(tempDir)
     
     assert(turtleFiles.size == 2)
     assert(turtleFiles.contains(turtleFile1))
@@ -83,7 +84,7 @@ ex:TestSubject a ex:TestClass ;
     writer.write(ontologyContent)
     writer.close()
     
-    val ontology = TurtleTransformer.loadOntology(tempFile.getAbsolutePath)
+    val ontology = RdfUtils.loadOntology(tempFile.getAbsolutePath)
     
     assert(ontology != null)
     assert(ontology.size() > 0)
@@ -110,7 +111,7 @@ ex:TestSubject a ex:TestClass ;
     )
     reasoner.setDerivationLogging(true)
     
-    val inferredModel = TurtleTransformer.inferTriples(dataModel, ontology, reasoner)
+    val inferredModel = RdfUtils.inferTriples(dataModel, ontology, reasoner)
     
     assert(inferredModel != null)
     // The inferred model should contain the original data plus any inferred triples
@@ -125,7 +126,7 @@ ex:TestSubject a ex:TestClass ;
     
     subject.addProperty(predicate, objectResource)
     
-    val jsonLd = TurtleTransformer.modelToJsonLd(model)
+    val jsonLd = RdfUtils.modelToJsonLd(model)
     
     assert(jsonLd != null)
     assert(jsonLd.isDefined)
@@ -135,7 +136,7 @@ ex:TestSubject a ex:TestClass ;
   it should "return None for empty model in modelToJsonLd" in {
     val emptyModel = ModelFactory.createDefaultModel()
     
-    val jsonLd = TurtleTransformer.modelToJsonLd(emptyModel)
+    val jsonLd = RdfUtils.modelToJsonLd(emptyModel)
     
     jsonLd shouldBe None
   }
@@ -156,10 +157,10 @@ ex:TestSubject a ex:TestClass ;
 }
 """
     
-    val jsonLd = TurtleTransformer.mapper.readTree(jsonLdString)
-    
-    val graph = TurtleTransformer.extractGraph(jsonLd)
-    
+    val jsonLd = RdfUtils.mapper.readTree(jsonLdString)
+
+    val graph = RdfUtils.extractGraph(jsonLd)
+
     assert(graph != null)
     assert(graph.isDefined)
     assert(graph.get.isArray)
@@ -174,10 +175,10 @@ ex:TestSubject a ex:TestClass ;
   }
 }
 """
-    
-    val jsonLd = TurtleTransformer.mapper.readTree(jsonLdString)
-    
-    val graph = TurtleTransformer.extractGraph(jsonLd)
+
+    val jsonLd = RdfUtils.mapper.readTree(jsonLdString)
+
+    val graph = RdfUtils.extractGraph(jsonLd)
     
     assert(graph.isEmpty)
   }
@@ -197,7 +198,7 @@ ex:TestSubject a ex:TestClass ;
     val owlReasoner = org.apache.jena.reasoner.ReasonerRegistry.getOWLMiniReasoner
     val owlReasonerWithSchema = owlReasoner.bindSchema(ontology)
     
-    val validationResult = TurtleTransformer.validateModel(validModel, owlReasonerWithSchema)
+    val validationResult = RdfUtils.validateModel(validModel, owlReasonerWithSchema)
     
     assert(validationResult != null)
     // For a simple valid model, validation should pass

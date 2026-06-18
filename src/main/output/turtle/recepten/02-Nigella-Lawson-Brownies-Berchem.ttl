@@ -65,6 +65,7 @@
 @prefix ssn-obs:             <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:             <http://www.w3.org/ns/ssn/sam/> .
 @prefix ssn-system:          <http://www.w3.org/ns/ssn/systems/> .
+@prefix st:                  <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
 @prefix step:                <https://example.org/step/> .
 @prefix stof:                <https://example.org/concept/stof/> .
 @prefix terms:               <http://purl.org/dc/terms/> .
@@ -262,13 +263,6 @@ prop:state-butter-chocolate
         sosa:isPropertyOf  ent:mixture_001;
         sosa:wasActedOnBy  exec:melting-2026-02-10 .
 
-step:stir_until_homogeneous_liquid_mixture
-        rdf:type            prov:Plan , prov:Entity , pplan:Step , sosa:Procedure;
-        rdfs:label          "Stir until homogeneous mixture"@en , "Roer tot een homogeen mengsel"@nl;
-        pplan:isPrecededBy  step:heat_pan;
-        pplan:isStepOfPlan  plan:melting;
-        sosa:implementedBy  inst:whisk-geert .
-
 intermediateproduct:batter
         rdf:type    skos:Concept;
         rdfs:label  "Batter"@en , "Beslag"@nl .
@@ -281,6 +275,13 @@ var:chopped-walnuts  rdf:type   pplan:Variable;
         pplan:isVariableOfPlan  plan:nigella-brownies;
         sosa:inputFor           plan:mixing;
         sosa:outputFor          plan:chopping .
+
+step:stir_until_homogeneous_liquid_mixture
+        rdf:type            prov:Plan , prov:Entity , pplan:Step , sosa:Procedure;
+        rdfs:label          "Stir until homogeneous mixture"@en , "Roer tot een homogeen mengsel"@nl;
+        pplan:isPrecededBy  step:heat_pan;
+        pplan:isStepOfPlan  plan:melting;
+        sosa:implementedBy  inst:whisk-geert .
 
 intermediateproduct:chopped-walnuts
         rdf:type    skos:Concept;

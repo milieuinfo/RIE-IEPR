@@ -67,17 +67,11 @@
       <version>${scala.version}</version>
     </dependency>
 
-    <!-- Apache Spark (SQL includes core) -->
+    <!-- rdf-validator library -->
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_${scala.compat.version}</artifactId>
-      <version>${spark.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-slf4j2-impl</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>be.vlaanderen.omgeving</groupId>
+      <artifactId>rdf-validator</artifactId>
+      <version>0.1.0</version>
     </dependency>
 
     <!-- Apache Jena (RDF / SHACL / SPARQL) -->
@@ -149,6 +143,13 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-scala_2.12</artifactId>
       <version>2.15.2</version>
+    </dependency>
+
+    <!-- commons-codec >= 1.13 nodig door ScalaTest 3.2.x (MurmurHash3) -->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.16.0</version>
     </dependency>
 
     <!-- Testing -->

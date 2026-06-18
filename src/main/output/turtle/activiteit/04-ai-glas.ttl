@@ -73,6 +73,7 @@
 @prefix ssn-obs:              <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:              <http://www.w3.org/ns/ssn/sam/> .
 @prefix ssn-system:           <http://www.w3.org/ns/ssn/systems/> .
+@prefix st:                   <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
 @prefix step:                 <https://example.org/step/> .
 @prefix stof:                 <https://example.org/concept/stof/> .
 @prefix stuk:                 <https://data.riepr.omgeving.vlaanderen.be/id/stuk/> .
@@ -262,6 +263,10 @@ meetprocedure:EX_MEETPROC_002
         dct:identifier  "EN-14181:2014";
         dct:type        <https://data.riepr.omgeving.vlaanderen.be/id/concept/meetproceduretype/automatisch> .
 
+var:ijzererts  rdf:type     riepr:ProcesVariabele , pplan:Variable;
+        rdfs:label          "IJzererts"@nl;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
+
 exploitant:EX_EXP_001
         rdf:type          riepr:Exploitant , prov:Agent , org:Organization , foaf:Agent;
         rdfs:label        "Industriebedrijf NV"@nl;
@@ -277,10 +282,6 @@ exploitant:EX_EXP_001
         org:hasMember     contactpersoon:EX_CP_001 , contactpersoon:EX_CP_002;
         prov:contributed  <https://data.riepr.omgeving.vlaanderen.be/id/aangifte/EX_ANG_001> , exploitatielocatie:EX_LOC_001 , exploitatielocatie:EX_LOC_002;
         prov:influenced   <https://data.riepr.omgeving.vlaanderen.be/id/aangifte/EX_ANG_001> , exploitatielocatie:EX_LOC_001 , exploitatielocatie:EX_LOC_002 .
-
-var:ijzererts  rdf:type     riepr:ProcesVariabele , pplan:Variable;
-        rdfs:label          "IJzererts"@nl;
-        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
 
 onttrekkingspunt:EX_OTP_002
         rdf:type          riepr:Onttrekkingspunt , geo:Feature , ssn:System , geo:SpatialObject;
@@ -369,6 +370,12 @@ filter:EX_FILT_001  rdf:type  geo:Feature , geo:SpatialObject , riepr:Filter , s
                          ];
         adms:status      riepr:Actief .
 
+verwerkingprocedure:EX_VWKPROC_001
+        rdf:type        sosa:Procedure , prov:Plan , prov:Entity , riepr:VerwerkingProcedure;
+        rdfs:comment    "Procedure voor het smelten van schroot en grondstoffen tot vloeibaar staal via een elektrische stroomboogoven. Omvat toevoeging van grondstoffen, verhitting en afgassing."@nl;
+        rdfs:label      "Smelten van staal in stroomboogoven"@nl;
+        dct:identifier  "PROC-EAF-001" .
+
 exploitant:EX_EXP_002
         rdf:type            prov:Agent , foaf:Agent , org:Organization , riepr:Exploitant;
         rdfs:label          "Afvalverwerking BV"@nl;
@@ -382,12 +389,6 @@ exploitant:EX_EXP_002
                               locn:thoroughfare       "Industrieweg"@nl
                             ];
         org:classification  nace:38.21 .
-
-verwerkingprocedure:EX_VWKPROC_001
-        rdf:type        sosa:Procedure , prov:Plan , prov:Entity , riepr:VerwerkingProcedure;
-        rdfs:comment    "Procedure voor het smelten van schroot en grondstoffen tot vloeibaar staal via een elektrische stroomboogoven. Omvat toevoeging van grondstoffen, verhitting en afgassing."@nl;
-        rdfs:label      "Smelten van staal in stroomboogoven"@nl;
-        dct:identifier  "PROC-EAF-001" .
 
 proces:0400123123_6851234567_ACTIVITEIT_1_0004
         rdf:type            pplan:Step , pplan:Plan , prov:Plan , pplan:Entity , sosa:Procedure , riepr:Proces , prov:Entity;

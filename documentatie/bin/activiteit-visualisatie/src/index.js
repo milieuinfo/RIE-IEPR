@@ -79,7 +79,7 @@ class MermaidRenderer {
 
 class ActiviteitVisualizer {
   constructor(options = {}) {
-    this.ttlPath = options.ttlPath || resolveProjectPath('src/main/input/activiteit/03-staalfabriek.ttl');
+    this.ttlPath = options.ttlPath || process.argv[2] || resolveProjectPath('src/main/input/activiteit/05-ai-crematorium.ttl');
     this.outDir = options.outDir || path.resolve(__dirname, '../diagrams');
     this.renderer = options.renderer || new MermaidRenderer();
   }
@@ -231,24 +231,102 @@ class ActiviteitVisualizer {
                 }
               }
               if (varUri.includes('onttrek') || /onttrekk/i.test(varLabel)) {
-                for (const q of quads) {
-                  if (q.predicate.value === PPLAN + 'isStepOfPlan') {
-                    const childId = literalValue(q.subject.id || q.subject.value || q.subject);
-                    const parentId = literalValue(q.object.id || q.object.value || q.object);
-                    // Only group children under parent plans that belong to the
-                    // current plan chain (planIds). This avoids showing unrelated
-                    // parent plans (e.g. 2026) inside other plan outputs (e.g. 2020).
-                    if (planIds.has(parentId) && nodes.has(childId)) {
-                      if (!parentChildren.has(parentId)) parentChildren.set(parentId, []);
-                      parentChildren.get(parentId).push(childId);
-                    }
+                for (const eq of store.getQuads(null, RDF_TYPE, RIEPR + 'Onttrekkingspunt', null)) {
+                  const opId = literalValue(eq.subject.id || eq.subject.value || eq.subject);
+                  if (!nodes.has(opId)) {
+                    const opLabel = this.getNodeLabel(store, eq.subject, opId);
+                    nodes.set(opId, { id: idFor(opId), label: opLabel, term: eq.subject });
                   }
+                  edges.push({ from: opId, to: stepId });
+                  if (!systemToSteps.has(opId)) systemToSteps.set(opId, []);
+                  systemToSteps.get(opId).push(stepId);
                 }
               }
             }
           }
 
+          // Handle pplan:hasOutputVar (same pattern as hasInputVar: rdf:value pointing to systems)
+          const outputVars = store.getQuads(step, PPLAN + 'hasOutputVar', null, null);
+          for (const ov of outputVars) {
+            const varNode = ov.object;
+            const valQuad = store.getQuads(varNode, RDF_VALUE, null, null)[0];
+            if (valQuad) {
+              const val = valQuad.object.value || literalValue(valQuad.object);
+              if (val && val.startsWith(EMISSIE_NS)) {
+                const epId = literalValue(valQuad.object.id || valQuad.object.value || valQuad.object);
+                if (!nodes.has(epId)) {
+                  const epLabelQuad = store.getQuads(valQuad.object, RDFS_LABEL, null, null)[0];
+                  const epLabel = epLabelQuad ? epLabelQuad.object.value : this.shortLabelFromUri(val);
+                  nodes.set(epId, { id: idFor(epId), label: epLabel });
+                }
+                edges.push({ from: stepId, to: epId });
+                if (!systemToSteps.has(epId)) systemToSteps.set(epId, []);
+                systemToSteps.get(epId).push(stepId);
+              }
+              if (val && val.startsWith(ONT_NS)) {
+                const opId = literalValue(valQuad.object.id || valQuad.object.value || valQuad.object);
+                if (!nodes.has(opId)) {
+                  const opLabelQuad = store.getQuads(valQuad.object, RDFS_LABEL, null, null)[0];
+                  const opLabel = opLabelQuad ? opLabelQuad.object.value : this.shortLabelFromUri(val);
+                  nodes.set(opId, { id: idFor(opId), label: opLabel });
+                }
+                edges.push({ from: opId, to: stepId });
+                if (!systemToSteps.has(opId)) systemToSteps.set(opId, []);
+                systemToSteps.get(opId).push(stepId);
+              }
+            }
+          }
+
+          // Handle ssn:implementedBy / sosa:implementedBy: ontology pattern linking a process step to its implementing system
+          for (const implPred of [SSN + 'implementedBy', NAMESPACES.sosa + 'implementedBy']) {
+            const implByQuads = store.getQuads(step, implPred, null, null);
+            for (const iq of implByQuads) {
+              const sysNode = iq.object;
+              const sysId = literalValue(sysNode.id || sysNode.value || sysNode);
+              if (!nodes.has(sysId)) {
+                const sysLabel = this.getNodeLabel(store, sysNode, sysId);
+                nodes.set(sysId, { id: idFor(sysId), label: sysLabel, term: sysNode });
+              }
+              const isOnttrek = store.getQuads(sysNode, RDF_TYPE, RIEPR + 'Onttrekkingspunt', null).length > 0;
+              if (isOnttrek) {
+                edges.push({ from: sysId, to: stepId });
+              } else {
+                edges.push({ from: stepId, to: sysId });
+              }
+              if (!systemToSteps.has(sysId)) systemToSteps.set(sysId, []);
+              systemToSteps.get(sysId).push(stepId);
+            }
+          }
+
           nodes.set(stepId, { id: idFor(stepId), label: finalLabel, term: step });
+        }
+
+        // Discover emission points and onttrekkingspunten from deployed systems that are not already process-step nodes
+        for (const depQuad of store.getQuads(exSubj, SSN + 'deployedSystem', null, null)) {
+          const sysNode = depQuad.object;
+          const sysId = literalValue(sysNode.id || sysNode.value || sysNode);
+          if (nodes.has(sysId)) continue;
+          const isEmissie = store.getQuads(sysNode, RDF_TYPE, RIEPR + 'Emissiepunt', null).length > 0;
+          const isOnttrek = store.getQuads(sysNode, RDF_TYPE, RIEPR + 'Onttrekkingspunt', null).length > 0;
+          if (isEmissie || isOnttrek) {
+            const sysLabel = this.getNodeLabel(store, sysNode, sysId);
+            nodes.set(sysId, { id: idFor(sysId), label: sysLabel, term: sysNode });
+          }
+          // Follow ssn:hasSubSystem from Installatie to discover child emission/onttrekkings-points
+          const isInstallatie = store.getQuads(sysNode, RDF_TYPE, RIEPR + 'Installatie', null).length > 0;
+          if (isInstallatie) {
+            for (const ssq of store.getQuads(sysNode, SSN + 'hasSubSystem', null, null)) {
+              const childNode = ssq.object;
+              const childId = literalValue(childNode.id || childNode.value || childNode);
+              if (nodes.has(childId)) continue;
+              const isChildEmissie = store.getQuads(childNode, RDF_TYPE, RIEPR + 'Emissiepunt', null).length > 0;
+              const isChildOnttrek = store.getQuads(childNode, RDF_TYPE, RIEPR + 'Onttrekkingspunt', null).length > 0;
+              if (isChildEmissie || isChildOnttrek) {
+                const childLabel = this.getNodeLabel(store, childNode, childId);
+                nodes.set(childId, { id: idFor(childId), label: childLabel, term: childNode });
+              }
+            }
+          }
         }
 
         for (const q of quads) {
@@ -272,6 +350,7 @@ class ActiviteitVisualizer {
         ];
 
         const parentChildren = new Map();
+        const childAssigned = new Set(); // prevent a node from appearing in multiple subgraphs
         for (const q of quads) {
           // group steps under parent plans
           if (q.predicate.value === PPLAN + 'isStepOfPlan') {
@@ -290,7 +369,8 @@ class ActiviteitVisualizer {
             if ((sosaHas && q.predicate.value === sosaHas) || q.predicate.value === ssnHas) {
               const parentId = literalValue(q.subject.id || q.subject.value || q.subject);
               const childId = literalValue(q.object.id || q.object.value || q.object);
-              if (nodes.has(childId)) {
+              if (nodes.has(childId) && !childAssigned.has(childId)) {
+                childAssigned.add(childId);
                 if (!parentChildren.has(parentId)) parentChildren.set(parentId, []);
                 parentChildren.get(parentId).push(childId);
                 // ensure parent installation node exists so it can be rendered as subgraph
@@ -429,6 +509,7 @@ class ActiviteitVisualizer {
           edgesV = deduped;
 
           const parentChildrenV = new Map();
+          const childAssignedV = new Set(); // prevent a node from appearing in multiple subgraphs in variant
           for (const q of quads) {
             if (q.predicate.value === PPLAN + 'isStepOfPlan') {
               const childId = literalValue(q.subject.id || q.subject.value || q.subject);
@@ -448,7 +529,8 @@ class ActiviteitVisualizer {
               if ((sosaHas && q.predicate.value === sosaHas) || q.predicate.value === ssnHas) {
                 const parentId = literalValue(q.subject.id || q.subject.value || q.subject);
                 const childId = literalValue(q.object.id || q.object.value || q.object);
-                if (nodesV.has(childId)) {
+                if (nodesV.has(childId) && !childAssignedV.has(childId)) {
+                  childAssignedV.add(childId);
                   if (!parentChildrenV.has(parentId)) parentChildrenV.set(parentId, []);
                   parentChildrenV.get(parentId).push(childId);
                   if (!nodesV.has(parentId)) {
@@ -519,6 +601,7 @@ class ActiviteitVisualizer {
           }
           for (const [k, v] of nodesV) {
             if (vemitted.has(k)) continue;
+            if (parentChildrenV.has(k)) continue;
             const safeLabel = v.label.replace(/"/g, '\\"');
             const nodeId = idForPrefixed(k);
             vlines.push(`${nodeId}["${safeLabel}"]`);

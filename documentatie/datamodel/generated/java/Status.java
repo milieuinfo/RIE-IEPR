@@ -28,9 +28,9 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/adms#Status">Status</a>
  **/
 public enum Status {
-	DEFINITIEF_UIT_DIENST = "https://data.imjv.omgeving.vlaanderen.be/id/concept/status/definitief_uit_dienst",
-	IN_GEBRUIK = "https://data.imjv.omgeving.vlaanderen.be/id/concept/status/in_gebruik",
-	ONTMANTELD = "https://data.imjv.omgeving.vlaanderen.be/id/concept/status/ontmanteld",
-	TIJDELIJK_UIT_DIENST = "https://data.imjv.omgeving.vlaanderen.be/id/concept/status/tijdelijk_uit_dienst",
-	VOORGESTELD = "https://data.imjv.omgeving.vlaanderen.be/id/concept/status/voorgesteld",
+	DEFINITIEF_UIT_DIENST = "https://data.riepr.omgeving.vlaanderen.be/id/concept/status/definitief_uit_dienst",
+	IN_GEBRUIK = "https://data.riepr.omgeving.vlaanderen.be/id/concept/status/in_gebruik",
+	ONTMANTELD = "https://data.riepr.omgeving.vlaanderen.be/id/concept/status/ontmanteld",
+	TIJDELIJK_UIT_DIENST = "https://data.riepr.omgeving.vlaanderen.be/id/concept/status/tijdelijk_uit_dienst",
+	VOORGESTELD = "https://data.riepr.omgeving.vlaanderen.be/id/concept/status/voorgesteld",
 }

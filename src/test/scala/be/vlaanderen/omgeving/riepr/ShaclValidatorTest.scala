@@ -1,5 +1,6 @@
 package be.vlaanderen.omgeving.riepr
 
+import be.vlaanderen.omgeving.rdfvalidator.ShaclValidator
 import org.apache.jena.rdf.model.ModelFactory
 import org.apache.jena.vocabulary.RDF
 import org.scalatest.flatspec.AnyFlatSpec

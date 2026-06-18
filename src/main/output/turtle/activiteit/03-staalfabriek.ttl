@@ -72,6 +72,7 @@
 @prefix ssn-obs:            <http://www.w3.org/ns/ssn/obs/> .
 @prefix ssn-sam:            <http://www.w3.org/ns/ssn/sam/> .
 @prefix ssn-system:         <http://www.w3.org/ns/ssn/systems> .
+@prefix st:                 <https://data.riepr.omgeving.vlaanderen.be/id/concept/status/> .
 @prefix step:               <https://example.org/step/> .
 @prefix stof:               <https://data.riepr.omgeving.vlaanderen.be/id/stof/> .
 @prefix terms:              <http://purl.org/dc/terms/> .
@@ -107,6 +108,10 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999
         prov:hadDerivation  proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
         prov:hadRevision    proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020;
         prov:influenced     proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 .
+
+var:rookgas  rdf:type        pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0002;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
 
 emissiepunt:0400123123_6851234567_0000003
         rdf:type              ssn:System , prov:Agent , riepr:Emissiepunt , geo:SpatialObject , geo:Feature;
@@ -295,9 +300,6 @@ emissiepunt:0400123123_6851234567_0000004
         sosa:madeExecution    actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000042026-01-01T10:00:00Z , actuation:0400123123_6851234567_00000042020-07-30T10:00:00Z;
         ssn:hasDeployment     exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 .
 
-var:vod_staal  rdf:type     pplan:Variable;
-        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
-
 proces:0400123123_6851234567_ACTIVITEIT_1_0002
         rdf:type            riepr:Proces , prov:Plan , pplan:Plan , pplan:Entity , prov:Entity , sosa:Procedure , pplan:Step;
         rdfs:label          "Afgassing"@nl;
@@ -308,12 +310,19 @@ proces:0400123123_6851234567_ACTIVITEIT_1_0002
         pplan:isStepOfPlan  proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026 , proces:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999;
         sosa:implementedBy  emissiepunt:0400123123_6851234567_0000001 .
 
+var:vod_staal  rdf:type     pplan:Variable;
+        pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_002 .
+
 var:apparaat_0400123123_6851234567_0007
         rdf:type            pplan:Variable;
         pplan:isInputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_004 .
 
 var:gedec_staal  rdf:type    pplan:Variable;
         pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0009_005 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE2020 , proces:0400123123_6851234567_ACTIVITEIT_1_0009_VERSIE1999 .
+
+var:vloeibaar_staal  rdf:type  pplan:Variable;
+        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006;
+        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 .
 
 installatie:0400123123_6851234567_0000004
         rdf:type           geo:SpatialObject , riepr:Installatie , ssn:System;
@@ -326,21 +335,17 @@ installatie:0400123123_6851234567_0000004
         sosa:isHostedBy    exploitatielocatie:0400123123_6851234567;
         ssn:hasDeployment  exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE1999 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2020 , exploitatie:0400123123_6851234567_ACTIVITEIT_1_VERSIE2026;
         ssn:hasProperty    [ rdf:type           ssn:Property , riepr:SysteemEigenschap;
-                             dct:type           <http://codelijst/installatie/vermogen>;
-                             qudt:hasUnit       unit:Watt;
-                             qudt:numericValue  5000;
-                             ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
-                           ];
-        ssn:hasProperty    [ rdf:type           ssn:Property , riepr:SysteemEigenschap;
                              dct:type           <http://codelijst/installatie/capaciteit>;
                              qudt:hasUnit       unit:tonnePerDay;
                              qudt:numericValue  100;
                              ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
+                           ];
+        ssn:hasProperty    [ rdf:type           ssn:Property , riepr:SysteemEigenschap;
+                             dct:type           <http://codelijst/installatie/vermogen>;
+                             qudt:hasUnit       unit:Watt;
+                             qudt:numericValue  5000;
+                             ssn:isPropertyOf   installatie:0400123123_6851234567_0000004
                            ] .
-
-var:vloeibaar_staal  rdf:type  pplan:Variable;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0006;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0006 , proces:0400123123_6851234567_ACTIVITEIT_1_0004 , proces:0400123123_6851234567_ACTIVITEIT_1_0004_VERSIE2026 .
 
 entity:vloeibaar_staal2026-01-01T10:00:00Z
         rdf:type                     pplan:Entity , prov:Entity;
@@ -1456,7 +1461,3 @@ entity:rookgas1999-01-01T00:00:00Z
         prov:wasInfluencedBy         entity:rookgas1999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z;
         prov:wasUsedBy               actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z;
         sosa:isResultOf              actuation:0400123123_6851234567_00000031999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000041999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000021999-01-01T00:00:00Z , actuation:0400123123_6851234567_00000051999-01-01T00:00:00Z .
-
-var:rookgas  rdf:type        pplan:Variable;
-        pplan:isInputVarOf   proces:0400123123_6851234567_ACTIVITEIT_1_0002;
-        pplan:isOutputVarOf  proces:0400123123_6851234567_ACTIVITEIT_1_0002 , proces:0400123123_6851234567_ACTIVITEIT_1_0001 .
