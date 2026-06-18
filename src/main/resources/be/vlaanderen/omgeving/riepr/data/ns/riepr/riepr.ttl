@@ -989,7 +989,10 @@
 :Uitwisselpunt a owl:Class ;
     rdfs:label "Uitwisselpunt"@nl ;
     rdfs:comment "Een uitwisselpunt is een bidirectioneel punt waar stoffen (m.n. grondwater) kunnen worden onttrokken of geïnjecteerd."@nl ;
-    rdfs:subClassOf :Onttrekkingspunt, :Emissiepunt ;
+    rdfs:subClassOf ssn:System, ogc:SpatialObject ;
+    owl:equivalentClass [
+        owl:intersectionOf ( :Emissiepunt :Onttrekkingspunt )
+    ] ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
