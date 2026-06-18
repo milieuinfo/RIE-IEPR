@@ -2046,7 +2046,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p data-fill-with="logo"></p>
    <h1 class="no-ref p-name" id="title">RIE-IEPR Ontologie</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">Living Document,
-    <time class="dt-updated" datetime="2026-06-10">10 June 2026</time></span></h2>
+    <time class="dt-updated" datetime="2026-06-18">18 June 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2061,7 +2061,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 10 June 2026,
+In addition, as of 18 June 2026,
 the editors have made this specification available under the
 <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
@@ -2071,7 +2071,7 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitatielocaties binnen het kader van het RIE-IEPR systeem.</p>
+   <p>De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitaties binnen het kader van het RIE-IEPR systeem.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -2090,13 +2090,13 @@ Parts of this work may be from another specification document.  If so, those par
      <ol class="toc">
       <li><a href="#class-hierarchy"><span class="secno">5.1</span> <span class="content">Klassenhiërarchie</span></a>
       <li><a href="#Aangifte"><span class="secno">5.2</span> <span class="content">Aangifte</span></a>
-      <li><a href="#Contactpersoon"><span class="secno">5.3</span> <span class="content">Contactpersoon</span></a>
+      <li><a href="#Contactgegevens"><span class="secno">5.3</span> <span class="content">Contactgegevens</span></a>
       <li><a href="#Emissie"><span class="secno">5.4</span> <span class="content">Emissie</span></a>
       <li><a href="#EmissieObservatie"><span class="secno">5.5</span> <span class="content">Emissie Observatie</span></a>
       <li>
        <a href="#Emissiepunt"><span class="secno">5.6</span> <span class="content">Emissiepunt</span></a>
        <ol class="toc">
-        <li><a href="#AbstractEmissiepunt"><span class="secno">5.6.1</span> <span class="content">Abstract Emissiepunt</span></a>
+        <li><a href="#Uitwisselpunt"><span class="secno">5.6.1</span> <span class="content">Uitwisselpunt</span></a>
        </ol>
       <li><a href="#Exploitant"><span class="secno">5.7</span> <span class="content">Exploitant</span></a>
       <li><a href="#Exploitatie"><span class="secno">5.8</span> <span class="content">Exploitatie</span></a>
@@ -2110,7 +2110,11 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#Observatie"><span class="secno">5.16</span> <span class="content">Observatie</span></a>
       <li><a href="#Onttrekking"><span class="secno">5.17</span> <span class="content">Onttrekking</span></a>
       <li><a href="#OnttrekkingObservatie"><span class="secno">5.18</span> <span class="content">Onttrekking Observatie</span></a>
-      <li><a href="#Onttrekkingspunt"><span class="secno">5.19</span> <span class="content">Onttrekkingspunt</span></a>
+      <li>
+       <a href="#Onttrekkingspunt"><span class="secno">5.19</span> <span class="content">Onttrekkingspunt</span></a>
+       <ol class="toc">
+        <li><a href="#Uitwisselpunt①"><span class="secno">5.19.1</span> <span class="content">Uitwisselpunt</span></a>
+       </ol>
       <li><a href="#Proces"><span class="secno">5.20</span> <span class="content">Proces</span></a>
       <li><a href="#ProcesVariabele"><span class="secno">5.21</span> <span class="content">Proces variabele</span></a>
       <li><a href="#Productie"><span class="secno">5.22</span> <span class="content">Productie</span></a>
@@ -2121,12 +2125,13 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#SysteemEigenschap"><span class="secno">5.27</span> <span class="content">Systeem Eigenschap</span></a>
       <li><a href="#Transactie"><span class="secno">5.28</span> <span class="content">Transactie</span></a>
       <li>
-       <a href="#TransportProcedure"><span class="secno">5.29</span> <span class="content">Transport Procedure</span></a>
+       <a href="#TransportProcedure"><span class="secno">5.29</span> <span class="content">Transportprocedure</span></a>
        <ol class="toc">
-        <li><a href="#EmissieProcedure"><span class="secno">5.29.1</span> <span class="content">Emissie Procedure</span></a>
-        <li><a href="#OnttrekkingProcedure"><span class="secno">5.29.2</span> <span class="content">Onttrekking Procedure</span></a>
+        <li><a href="#EmissieProcedure"><span class="secno">5.29.1</span> <span class="content">Emissieprocedure</span></a>
+        <li><a href="#OnttrekkingProcedure"><span class="secno">5.29.2</span> <span class="content">Onttrekkingprocedure</span></a>
        </ol>
-      <li><a href="#VerwerkingProcedure"><span class="secno">5.30</span> <span class="content">Verwerkings Procedure</span></a>
+      <li><a href="#UitwisselProcedure"><span class="secno">5.30</span> <span class="content">Uitwisselprocedure</span></a>
+      <li><a href="#VerwerkingProcedure"><span class="secno">5.31</span> <span class="content">Verwerkingsprocedure</span></a>
      </ol>
     <li>
      <a href="#properties"><span class="secno">6</span> <span class="content">Eigenschappen</span></a>
@@ -2231,7 +2236,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
 </pre>
    <h2 class="heading settled" data-level="4" id="overview"><span class="secno">4. </span><span class="content">Overzicht</span><a class="self-link" href="#overview"></a></h2>
-   <p>Deze ontologie definieert 32 klassen, 10 eigenschappen.</p>
+   <p>Deze ontologie definieert 33 klassen, 10 eigenschappen.</p>
    <h2 class="heading settled" data-level="5" id="classes"><span class="secno">5. </span><span class="content">Klassen</span><a class="self-link" href="#classes"></a></h2>
    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:false});</script>
@@ -2258,13 +2263,13 @@ Parts of this work may be from another specification document.  If so, those par
    <h3 class="heading settled" data-level="5.1" id="class-hierarchy"><span class="secno">5.1. </span><span class="content">Klassenhiërarchie</span><a class="self-link" href="#class-hierarchy"></a></h3>
    <ul>
     <li><a href="#Aangifte">Aangifte</a>
-    <li><a href="#Contactpersoon">Contactpersoon</a>
+    <li><a href="#Contactgegevens">Contactgegevens</a>
     <li><a href="#Emissie">Emissie</a>
     <li><a href="#EmissieObservatie">Emissie Observatie</a>
     <li>
      <a href="#Emissiepunt">Emissiepunt</a>
      <ul>
-      <li><a href="#AbstractEmissiepunt">Abstract Emissiepunt</a>
+      <li><a href="#Uitwisselpunt">Uitwisselpunt</a>
      </ul>
     <li><a href="#Exploitant">Exploitant</a>
     <li><a href="#Exploitatie">Exploitatie</a>
@@ -2278,7 +2283,11 @@ Parts of this work may be from another specification document.  If so, those par
     <li><a href="#Observatie">Observatie</a>
     <li><a href="#Onttrekking">Onttrekking</a>
     <li><a href="#OnttrekkingObservatie">Onttrekking Observatie</a>
-    <li><a href="#Onttrekkingspunt">Onttrekkingspunt</a>
+    <li>
+     <a href="#Onttrekkingspunt">Onttrekkingspunt</a>
+     <ul>
+      <li><a href="#Uitwisselpunt">Uitwisselpunt</a>
+     </ul>
     <li><a href="#Proces">Proces</a>
     <li><a href="#ProcesVariabele">Proces variabele</a>
     <li><a href="#Productie">Productie</a>
@@ -2289,12 +2298,13 @@ Parts of this work may be from another specification document.  If so, those par
     <li><a href="#SysteemEigenschap">Systeem Eigenschap</a>
     <li><a href="#Transactie">Transactie</a>
     <li>
-     <a href="#TransportProcedure">Transport Procedure</a>
+     <a href="#TransportProcedure">Transportprocedure</a>
      <ul>
-      <li><a href="#EmissieProcedure">Emissie Procedure</a>
-      <li><a href="#OnttrekkingProcedure">Onttrekking Procedure</a>
+      <li><a href="#EmissieProcedure">Emissieprocedure</a>
+      <li><a href="#OnttrekkingProcedure">Onttrekkingprocedure</a>
      </ul>
-    <li><a href="#VerwerkingProcedure">Verwerkings Procedure</a>
+    <li><a href="#UitwisselProcedure">Uitwisselprocedure</a>
+    <li><a href="#VerwerkingProcedure">Verwerkingsprocedure</a>
    </ul>
    <h3 class="heading settled" data-level="5.2" id="Aangifte"><span class="secno">5.2. </span><span class="content">Aangifte</span><a class="self-link" href="#Aangifte"></a></h3>
    <p><strong>IRI:</strong> <a href="#Aangifte">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte</a></p>
@@ -2314,18 +2324,18 @@ Parts of this work may be from another specification document.  If so, those par
     <li data-md>
      <p><strong>vlaanderenId</strong> -> <a href="#vlaanderenId">vlaanderenId</a> (required: true)</p>
    </ul>
-   <h3 class="heading settled" data-level="5.3" id="Contactpersoon"><span class="secno">5.3. </span><span class="content">Contactpersoon</span><a class="self-link" href="#Contactpersoon"></a></h3>
-   <p><strong>IRI:</strong> <a href="#Contactpersoon">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon</a></p>
-   <p><strong>Definitie:</strong> Een contactpersoon is een persoon die optreedt als contactpersoon voor een exploitant.</p>
-   <p><strong>Subklasse van:</strong> <a href="http://xmlns.com/foaf/0.1/Person">foaf:Person</a></p>
-   <p><strong>Constraints:</strong> label: min 1; mbox: min 0, max 1; phone: min 0, max 1; hasRole: min 0, max 1; modified: min 0, max 1 of dateTime; created: min 0, max 1 of dateTime; issued: min 0, max 1 of date; valid: min 0, max 1 of date; name: min 1; comment: min 0; memberOf: min 0 of Exploitatie</p>
+   <h3 class="heading settled" data-level="5.3" id="Contactgegevens"><span class="secno">5.3. </span><span class="content">Contactgegevens</span><a class="self-link" href="#Contactgegevens"></a></h3>
+   <p><strong>IRI:</strong> <a href="#Contactgegevens">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens</a></p>
+   <p><strong>Definitie:</strong> Contactgegevens zijn de gegevens van een persoon die optreedt als contactpersoon voor een exploitant.</p>
+   <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/oa#Annotation">oa:Annotation</a></p>
+   <p><strong>Constraints:</strong> phone: min 0, max 1; modified: min 0, max 1 of dateTime; name: min 1; comment: min 0; hasTarget: min 1, max 1 of Exploitatie</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkNvbnRhY3RwZXJzb29uWyJDb250YWN0cGVyc29vbiJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuZGF0ZVsiZGF0ZSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuQ29udGFjdHBlcnNvb24gLS0+fG1vZGlmaWVkfCBuZGF0ZVRpbWUKbkNvbnRhY3RwZXJzb29uIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkNvbnRhY3RwZXJzb29uIC0tPnxpc3N1ZWR8IG5kYXRlCm5Db250YWN0cGVyc29vbiAtLT58dmFsaWR8IG5kYXRlCm5Db250YWN0cGVyc29vbiAtLT58bWVtYmVyT2Z8IG5FeHBsb2l0YXRpZQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkNvbnRhY3RnZWdldmVuc1siQ29udGFjdGdlZ2V2ZW5zIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuQ29udGFjdGdlZ2V2ZW5zIC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5Db250YWN0Z2VnZXZlbnMgLS0+fGhhc1RhcmdldHwgbkV4cGxvaXRhdGll"></div>
    
 <strong>IRI template:</strong>
 
 
-<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{issued}/{created}
+<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/contactgegevens/{uuid}/{issued}/{created}
 </pre>
    <p><strong>Mappings:</strong></p>
    <ul>
@@ -2376,7 +2386,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Emissiepunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt</a></p>
    <p><strong>Definitie:</strong> Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; hasSubSystem: min 0 of System; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-142: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasProperty: min 0 of SysteemEigenschap; isHostedBy: min 0, max 1 of Exploitatielocatie</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; hasSubSystem: min 0 of System; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-131: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt></c-> <c- p>;</c->
@@ -2384,13 +2394,11 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Schouw 1 Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
   <c- nn>dct</c-><c- p>:</c-><c- f>valid</c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
   <c- nn>ogc</c-><c- p>:</c-><c- f>hasGeometry</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- nn>ogc</c-><c- p>:</c-><c- f>Geometry</c-> <c- p>;</c->
-  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4025 51.2194)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c-> <c- p>;</c->
-  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie></c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>]</c->
+  <c- nn>ogc</c-><c- p>:</c-><c- f>asWKT</c-> <c- s>"POINT(4.4025 51.2194)"</c-><c- p>^^</c-><c- nn>ogc</c-><c- p>:</c-><c- f>wktLiteral</c-> <c- p>]</c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5TeXN0ZWVtRWlnZW5zY2hhcFsiU3lzdGVlbSBFaWdlbnNjaGFwIl0KbkV4cGxvaXRhdGllbG9jYXRpZVsiRXhwbG9pdGF0aWVsb2NhdGllIl0KbkVtaXNzaWVwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxpbkdlYnJ1aWtUb3R8IG5kYXRlCm5FbWlzc2llcHVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkVtaXNzaWVwdW50IC0tPnxoYXNTdWJTeXN0ZW18IG5TeXN0ZW0KbkVtaXNzaWVwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5FbWlzc2llcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FbWlzc2llcHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuRW1pc3NpZXB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuRW1pc3NpZXB1bnQgLS0+fGFhbmdpZnRlfCBuQWFuZ2lmdGUKbkVtaXNzaWVwdW50IC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5FbWlzc2llcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuRW1pc3NpZXB1bnQgLS0+fGhhc0RlcGxveW1lbnR8IG5FeHBsb2l0YXRpZQpuRW1pc3NpZXB1bnQgLS0+fG4zLTE0MnwgblN5c3RlbQpuRW1pc3NpZXB1bnQgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXAKbkVtaXNzaWVwdW50IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVsb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5TeXN0ZWVtRWlnZW5zY2hhcFsiU3lzdGVlbSBFaWdlbnNjaGFwIl0KbkVtaXNzaWVwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbkVtaXNzaWVwdW50IC0tPnxpbkdlYnJ1aWtUb3R8IG5kYXRlCm5FbWlzc2llcHVudCAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkVtaXNzaWVwdW50IC0tPnxoYXNTdWJTeXN0ZW18IG5TeXN0ZW0KbkVtaXNzaWVwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5FbWlzc2llcHVudCAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FbWlzc2llcHVudCAtLT58aXNzdWVkfCBuZGF0ZQpuRW1pc3NpZXB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuRW1pc3NpZXB1bnQgLS0+fGFhbmdpZnRlfCBuQWFuZ2lmdGUKbkVtaXNzaWVwdW50IC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5FbWlzc2llcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuRW1pc3NpZXB1bnQgLS0+fGhhc0RlcGxveW1lbnR8IG5FeHBsb2l0YXRpZQpuRW1pc3NpZXB1bnQgLS0+fG4zLTEzMXwgblN5c3RlbQpuRW1pc3NpZXB1bnQgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXA="></div>
    
 <strong>IRI template:</strong>
 
@@ -2406,22 +2414,28 @@ Parts of this work may be from another specification document.  If so, those par
     <li data-md>
      <p><strong>created</strong> -> <a href="http://purl.org/dc/terms/created">dct:created</a> (required: true)</p>
    </ul>
-   <h4 class="heading settled" data-level="5.6.1" id="AbstractEmissiepunt"><span class="secno">5.6.1. </span><span class="content">Abstract Emissiepunt</span><a class="self-link" href="#AbstractEmissiepunt"></a></h4>
-   <p><strong>IRI:</strong> <a href="#AbstractEmissiepunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt</a></p>
-   <p><strong>Definitie:</strong> Een abstract emissiepunt is een conceptueel emissiepunt dat niet noodzakelijk een vaste locatie heeft, maar wel een functionele rol vervult in het proces.</p>
-   <p><strong>Subklasse van:</strong> <a href="#Emissiepunt">Emissiepunt</a></p>
-   <p><strong>Voorbeelden:</strong></p>
-<pre class="highlight language-turtle"><c- p>[</c->
-  <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt></c-> <c- p>;</c->
-  <c- nn>dct</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2020-01-01"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Gebouw uitstootpunt"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>dct</c-><c- p>:</c-><c- f>valid</c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie></c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
-<c- p>]</c->
-</pre>
+   <h4 class="heading settled" data-level="5.6.1" id="Uitwisselpunt"><span class="secno">5.6.1. </span><span class="content">Uitwisselpunt</span><a class="self-link" href="#Uitwisselpunt"></a></h4>
+   <p><strong>IRI:</strong> <a href="#Uitwisselpunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt</a></p>
+   <p><strong>Definitie:</strong> Een uitwisselpunt is een bidirectioneel punt waar stoffen (m.n. grondwater) kunnen worden onttrokken of geïnjecteerd.</p>
+   <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a>, <a href="#Emissiepunt">Emissiepunt</a>, <a href="#Onttrekkingspunt">Onttrekkingspunt</a></p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-187: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkFic3RyYWN0RW1pc3NpZXB1bnRbIkFic3RyYWN0IEVtaXNzaWVwdW50Il0KbkVtaXNzaWVwdW50WyJFbWlzc2llcHVudCJdCm5BYnN0cmFjdEVtaXNzaWVwdW50IC0tPnxzdWJDbGFzc09mfCBuRW1pc3NpZXB1bnQ="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblVpdHdpc3NlbHB1bnRbIlVpdHdpc3NlbHB1bnQiXQpuRW1pc3NpZXB1bnRbIkVtaXNzaWVwdW50Il0Kbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5BYW5naWZ0ZVsiQWFuZ2lmdGUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5VaXR3aXNzZWxwdW50IC0tPnxzdWJDbGFzc09mfCBuRW1pc3NpZXB1bnQKblVpdHdpc3NlbHB1bnQgLS0+fHN1YkNsYXNzT2Z8IG5PbnR0cmVra2luZ3NwdW50Cm5VaXR3aXNzZWxwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5VaXR3aXNzZWxwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5VaXR3aXNzZWxwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKblVpdHdpc3NlbHB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuVWl0d2lzc2VscHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuVWl0d2lzc2VscHVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuVWl0d2lzc2VscHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuVWl0d2lzc2VscHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5VaXR3aXNzZWxwdW50IC0tPnxuMy0xODd8IG5TeXN0ZW0KblVpdHdpc3NlbHB1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuVWl0d2lzc2VscHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcA=="></div>
+   
+<strong>IRI template:</strong>
+
+
+<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}
+</pre>
+   <p><strong>Mappings:</strong></p>
+   <ul>
+    <li data-md>
+     <p><strong>uuid</strong> -> <a href="#localId">localId</a> (required: true)</p>
+    <li data-md>
+     <p><strong>issued</strong> -> <a href="http://purl.org/dc/terms/issued">dct:issued</a> (required: true)</p>
+    <li data-md>
+     <p><strong>created</strong> -> <a href="http://purl.org/dc/terms/created">dct:created</a> (required: true)</p>
+   </ul>
    <h3 class="heading settled" data-level="5.7" id="Exploitant"><span class="secno">5.7. </span><span class="content">Exploitant</span><a class="self-link" href="#Exploitant"></a></h3>
    <p><strong>IRI:</strong> <a href="#Exploitant">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant</a></p>
    <p><strong>Definitie:</strong> Een exploitant is een entiteit die een milieuimpact heeft.</p>
@@ -2442,11 +2456,11 @@ Parts of this work may be from another specification document.  If so, those par
    </ul>
    <h3 class="heading settled" data-level="5.8" id="Exploitatie"><span class="secno">5.8. </span><span class="content">Exploitatie</span><a class="self-link" href="#Exploitatie"></a></h3>
    <p><strong>IRI:</strong> <a href="#Exploitatie">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie</a></p>
-   <p><strong>Definitie:</strong> Een exploitatie is de uitrol van middelen door een exploitant op een exploitatie locatie leidend tot een milieueffect.</p>
+   <p><strong>Definitie:</strong> Een exploitatie is de uitrol van middelen door een exploitant op een exploitatielocatie locatie leidend tot een milieueffect.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/Deployment">ssn:Deployment</a></p>
-   <p><strong>Constraints:</strong> label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; deployedSystem: min 0 of System; deployedOnPlatform: min 1, max 1 of Exploitatielocatie; status: min 1, max 1 of Concept; identifier: min 0 of Identifier; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; implements: min 1, max 1 of Proces; hasMember: min 0 of Contactpersoon; classification: min 0, max 1</p>
+   <p><strong>Constraints:</strong> label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; deployedSystem: min 0 of System; deployedOnPlatform: min 1, max 1 of Exploitatielocatie; status: min 1, max 1 of Concept; identifier: min 0 of Identifier; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; implements: min 1, max 1 of Proces; classification: min 0, max 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVsb2NhdGllWyJFeHBsb2l0YXRpZWxvY2F0aWUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVbImRhdGUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KblByb2Nlc1siUHJvY2VzIl0KbkNvbnRhY3RwZXJzb29uWyJDb250YWN0cGVyc29vbiJdCm5FeHBsb2l0YXRpZSAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuRXhwbG9pdGF0aWUgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuRXhwbG9pdGF0aWUgLS0+fGRlcGxveWVkU3lzdGVtfCBuU3lzdGVtCm5FeHBsb2l0YXRpZSAtLT58ZGVwbG95ZWRPblBsYXRmb3JtfCBuRXhwbG9pdGF0aWVsb2NhdGllCm5FeHBsb2l0YXRpZSAtLT58c3RhdHVzfCBuQ29uY2VwdApuRXhwbG9pdGF0aWUgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5FeHBsb2l0YXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuRXhwbG9pdGF0aWUgLS0+fHZhbGlkfCBuZGF0ZQpuRXhwbG9pdGF0aWUgLS0+fGFhbmdpZnRlfCBuQWFuZ2lmdGUKbkV4cGxvaXRhdGllIC0tPnxpbXBsZW1lbnRzfCBuUHJvY2VzCm5FeHBsb2l0YXRpZSAtLT58aGFzTWVtYmVyfCBuQ29udGFjdHBlcnNvb24="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVsb2NhdGllWyJFeHBsb2l0YXRpZWxvY2F0aWUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVbImRhdGUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KblByb2Nlc1siUHJvY2VzIl0KbkV4cGxvaXRhdGllIC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5FeHBsb2l0YXRpZSAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5FeHBsb2l0YXRpZSAtLT58ZGVwbG95ZWRTeXN0ZW18IG5TeXN0ZW0KbkV4cGxvaXRhdGllIC0tPnxkZXBsb3llZE9uUGxhdGZvcm18IG5FeHBsb2l0YXRpZWxvY2F0aWUKbkV4cGxvaXRhdGllIC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5FeHBsb2l0YXRpZSAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkV4cGxvaXRhdGllIC0tPnxpc3N1ZWR8IG5kYXRlCm5FeHBsb2l0YXRpZSAtLT58dmFsaWR8IG5kYXRlCm5FeHBsb2l0YXRpZSAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuRXhwbG9pdGF0aWUgLS0+fGltcGxlbWVudHN8IG5Qcm9jZXM="></div>
    
 <strong>IRI template:</strong>
 
@@ -2481,7 +2495,7 @@ Parts of this work may be from another specification document.  If so, those par
 <strong>IRI template:</strong>
 
 
-<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/Exploitatielocatie/{localId}/{issued}/{created}
+<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}
 </pre>
    <p><strong>Mappings:</strong></p>
    <ul>
@@ -2496,9 +2510,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Filter">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter</a></p>
    <p><strong>Definitie:</strong> Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-247: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; isHostedBy: min 0, max 1 of Exploitatielocatie</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-253: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkZpbHRlclsiRmlsdGVyIl0KbmRhdGVbImRhdGUiXQpuSWRlbnRpZmllclsiSWRlbnRpZmllciJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KbkNvbmNlcHRbIkNvbmNlcHQiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0KbkV4cGxvaXRhdGllbG9jYXRpZVsiRXhwbG9pdGF0aWVsb2NhdGllIl0KbkZpbHRlciAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5GaWx0ZXIgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKbkZpbHRlciAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkZpbHRlciAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuRmlsdGVyIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkZpbHRlciAtLT58aXNzdWVkfCBuZGF0ZQpuRmlsdGVyIC0tPnx2YWxpZHwgbmRhdGUKbkZpbHRlciAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuRmlsdGVyIC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5GaWx0ZXIgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0KbkZpbHRlciAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5GaWx0ZXIgLS0+fG4zLTI0N3wgblN5c3RlbQpuRmlsdGVyIC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVsb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkZpbHRlclsiRmlsdGVyIl0KbmRhdGVbImRhdGUiXQpuSWRlbnRpZmllclsiSWRlbnRpZmllciJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KbkNvbmNlcHRbIkNvbmNlcHQiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0KbkZpbHRlciAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5GaWx0ZXIgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKbkZpbHRlciAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkZpbHRlciAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuRmlsdGVyIC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbkZpbHRlciAtLT58aXNzdWVkfCBuZGF0ZQpuRmlsdGVyIC0tPnx2YWxpZHwgbmRhdGUKbkZpbHRlciAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuRmlsdGVyIC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5GaWx0ZXIgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0KbkZpbHRlciAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5GaWx0ZXIgLS0+fG4zLTI1M3wgblN5c3RlbQ=="></div>
    
 <strong>IRI template:</strong>
 
@@ -2525,7 +2539,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Installatie">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie</a></p>
    <p><strong>Definitie:</strong> Een installatie is infrastructuur of een verzameling van infrastructuur op een bepaalde locatie die een specifieke functie vervult.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; hasSubSystem: min 0 of System; label: min 1; comment: min 0; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; ingediend; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-120: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasProperty: min 0 of SysteemEigenschap; isHostedBy: min 0, max 1 of Exploitatielocatie</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; hasSubSystem: min 0 of System; label: min 1; comment: min 0; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; ingediend; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-111: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie></c-> <c- p>;</c->
@@ -2533,13 +2547,11 @@ Parts of this work may be from another specification document.  If so, those par
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen Installatie 1"</c-><c- o>@</c->nl <c- p>;</c->
   <c- nn>dct</c-><c- p>:</c-><c- f>created</c-> <c- s>"2020-01-01T00:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
   <c- nn>dct</c-><c- p>:</c-><c- f>valid</c-> <c- s>"2030-12-31"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>date</c-> <c- p>;</c->
-  <c- nn>adms</c-><c- p>:</c-><c- f>status</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#in_gebruik></c-> <c- p>;</c->
-  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie></c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
+  <c- nn>adms</c-><c- p>:</c-><c- f>status</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#in_gebruik></c->
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5TeXN0ZWVtRWlnZW5zY2hhcFsiU3lzdGVlbSBFaWdlbnNjaGFwIl0KbkV4cGxvaXRhdGllbG9jYXRpZVsiRXhwbG9pdGF0aWVsb2NhdGllIl0Kbkluc3RhbGxhdGllIC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxpbkdlYnJ1aWtUb3R8IG5kYXRlCm5JbnN0YWxsYXRpZSAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkluc3RhbGxhdGllIC0tPnxoYXNTdWJTeXN0ZW18IG5TeXN0ZW0Kbkluc3RhbGxhdGllIC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5JbnN0YWxsYXRpZSAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5JbnN0YWxsYXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuSW5zdGFsbGF0aWUgLS0+fHZhbGlkfCBuZGF0ZQpuSW5zdGFsbGF0aWUgLS0+fGFhbmdpZnRlfCBuQWFuZ2lmdGUKbkluc3RhbGxhdGllIC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5JbnN0YWxsYXRpZSAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGhhc0RlcGxveW1lbnR8IG5FeHBsb2l0YXRpZQpuSW5zdGFsbGF0aWUgLS0+fG4zLTEyMHwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXAKbkluc3RhbGxhdGllIC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVsb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkluc3RhbGxhdGllWyJJbnN0YWxsYXRpZSJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5TeXN0ZWVtRWlnZW5zY2hhcFsiU3lzdGVlbSBFaWdlbnNjaGFwIl0Kbkluc3RhbGxhdGllIC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbkluc3RhbGxhdGllIC0tPnxpbkdlYnJ1aWtUb3R8IG5kYXRlCm5JbnN0YWxsYXRpZSAtLT58aWRlbnRpZmllcnwgbklkZW50aWZpZXIKbkluc3RhbGxhdGllIC0tPnxoYXNTdWJTeXN0ZW18IG5TeXN0ZW0Kbkluc3RhbGxhdGllIC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5JbnN0YWxsYXRpZSAtLT58Y3JlYXRlZHwgbmRhdGVUaW1lCm5JbnN0YWxsYXRpZSAtLT58aXNzdWVkfCBuZGF0ZQpuSW5zdGFsbGF0aWUgLS0+fHZhbGlkfCBuZGF0ZQpuSW5zdGFsbGF0aWUgLS0+fGFhbmdpZnRlfCBuQWFuZ2lmdGUKbkluc3RhbGxhdGllIC0tPnxzdGF0dXN8IG5Db25jZXB0Cm5JbnN0YWxsYXRpZSAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGhhc0RlcGxveW1lbnR8IG5FeHBsb2l0YXRpZQpuSW5zdGFsbGF0aWUgLS0+fG4zLTExMXwgblN5c3RlbQpuSW5zdGFsbGF0aWUgLS0+fGhhc1Byb3BlcnR5fCBuU3lzdGVlbUVpZ2Vuc2NoYXA="></div>
    
 <strong>IRI template:</strong>
 
@@ -2559,9 +2571,9 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#MeetInstrument">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument</a></p>
    <p><strong>Definitie:</strong> Een meetinstrument is een specifiek apparaat of systeem dat wordt gebruikt om metingen uit te voeren op meetpunten.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-227: min 0 of System; type: min 0, max 1; isHostedBy: min 0, max 1 of Exploitatielocatie</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-234: min 0 of System; type: min 0, max 1</p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5FeHBsb2l0YXRpZWxvY2F0aWVbIkV4cGxvaXRhdGllbG9jYXRpZSJdCm5NZWV0SW5zdHJ1bWVudCAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5NZWV0SW5zdHJ1bWVudCAtLT58aW5HZWJydWlrVG90fCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5NZWV0SW5zdHJ1bWVudCAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuTWVldEluc3RydW1lbnQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuTWVldEluc3RydW1lbnQgLS0+fGlzc3VlZHwgbmRhdGUKbk1lZXRJbnN0cnVtZW50IC0tPnx2YWxpZHwgbmRhdGUKbk1lZXRJbnN0cnVtZW50IC0tPnxhYW5naWZ0ZXwgbkFhbmdpZnRlCm5NZWV0SW5zdHJ1bWVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuTWVldEluc3RydW1lbnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRJbnN0cnVtZW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRJbnN0cnVtZW50IC0tPnxuMy0yMjd8IG5TeXN0ZW0Kbk1lZXRJbnN0cnVtZW50IC0tPnxpc0hvc3RlZEJ5fCBuRXhwbG9pdGF0aWVsb2NhdGll"></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5kYXRlWyJkYXRlIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuZGF0ZVRpbWVbImRhdGVUaW1lIl0KbkFhbmdpZnRlWyJBYW5naWZ0ZSJdCm5Db25jZXB0WyJDb25jZXB0Il0KblN5c3RlbVsiU3lzdGVtIl0KbkV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZSJdCm5NZWV0SW5zdHJ1bWVudCAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5NZWV0SW5zdHJ1bWVudCAtLT58aW5HZWJydWlrVG90fCBuZGF0ZQpuTWVldEluc3RydW1lbnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5NZWV0SW5zdHJ1bWVudCAtLT58bW9kaWZpZWR8IG5kYXRlVGltZQpuTWVldEluc3RydW1lbnQgLS0+fGNyZWF0ZWR8IG5kYXRlVGltZQpuTWVldEluc3RydW1lbnQgLS0+fGlzc3VlZHwgbmRhdGUKbk1lZXRJbnN0cnVtZW50IC0tPnx2YWxpZHwgbmRhdGUKbk1lZXRJbnN0cnVtZW50IC0tPnxhYW5naWZ0ZXwgbkFhbmdpZnRlCm5NZWV0SW5zdHJ1bWVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuTWVldEluc3RydW1lbnQgLS0+fHdhc1JldmlzaW9uT2Z8IG5TeXN0ZW0Kbk1lZXRJbnN0cnVtZW50IC0tPnxoYXNEZXBsb3ltZW50fCBuRXhwbG9pdGF0aWUKbk1lZXRJbnN0cnVtZW50IC0tPnxuMy0yMzR8IG5TeXN0ZW0="></div>
    
 <strong>IRI template:</strong>
 
@@ -2585,7 +2597,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Meetpunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt</a></p>
    <p><strong>Definitie:</strong> Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; hasSubSystem: min 0 of Filter; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; hasProperty: min 0 of SysteemEigenschap; modified: min 0, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-206: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of MeetInstrument; hasProperty: min 0 of SysteemEigenschap; isHostedBy: min 0, max 1 of System</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; hasSubSystem: min 0 of Filter; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; hasProperty: min 0 of SysteemEigenschap; modified: min 0, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-214: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of MeetInstrument; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt></c-> <c- p>;</c->
@@ -2598,7 +2610,7 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5kYXRlWyJkYXRlIl0KbkZpbHRlclsiRmlsdGVyIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KbkNvbmNlcHRbIkNvbmNlcHQiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0Kbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5NZWV0cHVudCAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5NZWV0cHVudCAtLT58aGFzU3ViU3lzdGVtfCBuRmlsdGVyCm5NZWV0cHVudCAtLT58aW5HZWJydWlrVG90fCBuZGF0ZQpuTWVldHB1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5NZWV0cHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcApuTWVldHB1bnQgLS0+fG1vZGlmaWVkfCBuZGF0ZVRpbWUKbk1lZXRwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbk1lZXRwdW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5NZWV0cHVudCAtLT58dmFsaWR8IG5kYXRlCm5NZWV0cHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuTWVldHB1bnQgLS0+fHN0YXR1c3wgbkNvbmNlcHQKbk1lZXRwdW50IC0tPnx3YXNSZXZpc2lvbk9mfCBuU3lzdGVtCm5NZWV0cHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5NZWV0cHVudCAtLT58bjMtMjA2fCBuU3lzdGVtCm5NZWV0cHVudCAtLT58aGFzU3ViU3lzdGVtfCBuTWVldEluc3RydW1lbnQKbk1lZXRwdW50IC0tPnxoYXNQcm9wZXJ0eXwgblN5c3RlZW1FaWdlbnNjaGFwCm5NZWV0cHVudCAtLT58aXNIb3N0ZWRCeXwgblN5c3RlbQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk1lZXRwdW50WyJNZWV0cHVudCJdCm5kYXRlWyJkYXRlIl0KbkZpbHRlclsiRmlsdGVyIl0KbklkZW50aWZpZXJbIklkZW50aWZpZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5kYXRlVGltZVsiZGF0ZVRpbWUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KbkNvbmNlcHRbIkNvbmNlcHQiXQpuU3lzdGVtWyJTeXN0ZW0iXQpuRXhwbG9pdGF0aWVbIkV4cGxvaXRhdGllIl0Kbk1lZXRJbnN0cnVtZW50WyJNZWV0aW5zdHJ1bWVudCJdCm5NZWV0cHVudCAtLT58aW5HZWJydWlrVmFuYWZ8IG5kYXRlCm5NZWV0cHVudCAtLT58aGFzU3ViU3lzdGVtfCBuRmlsdGVyCm5NZWV0cHVudCAtLT58aW5HZWJydWlrVG90fCBuZGF0ZQpuTWVldHB1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5NZWV0cHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcApuTWVldHB1bnQgLS0+fG1vZGlmaWVkfCBuZGF0ZVRpbWUKbk1lZXRwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbk1lZXRwdW50IC0tPnxpc3N1ZWR8IG5kYXRlCm5NZWV0cHVudCAtLT58dmFsaWR8IG5kYXRlCm5NZWV0cHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuTWVldHB1bnQgLS0+fHN0YXR1c3wgbkNvbmNlcHQKbk1lZXRwdW50IC0tPnx3YXNSZXZpc2lvbk9mfCBuU3lzdGVtCm5NZWV0cHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5NZWV0cHVudCAtLT58bjMtMjE0fCBuU3lzdGVtCm5NZWV0cHVudCAtLT58aGFzU3ViU3lzdGVtfCBuTWVldEluc3RydW1lbnQKbk1lZXRwdW50IC0tPnxoYXNQcm9wZXJ0eXwgblN5c3RlZW1FaWdlbnNjaGFw"></div>
    
 <strong>IRI template:</strong>
 
@@ -2672,7 +2684,7 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>IRI:</strong> <a href="#Onttrekkingspunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt</a></p>
    <p><strong>Definitie:</strong> Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking).</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a></p>
-   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-176: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap; isHostedBy: min 0, max 1 of Exploitatielocatie</p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-164: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap</p>
    <p><strong>Voorbeelden:</strong></p>
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt></c-> <c- p>;</c->
@@ -2680,12 +2692,34 @@ Parts of this work may be from another specification document.  If so, those par
 <c- p>]</c->
 </pre>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5BYW5naWZ0ZVsiQWFuZ2lmdGUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5FeHBsb2l0YXRpZWxvY2F0aWVbIkV4cGxvaXRhdGllbG9jYXRpZSJdCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5PbnR0cmVra2luZ3NwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuT250dHJla2tpbmdzcHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuT250dHJla2tpbmdzcHVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuT250dHJla2tpbmdzcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuT250dHJla2tpbmdzcHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5PbnR0cmVra2luZ3NwdW50IC0tPnxuMy0xNzZ8IG5TeXN0ZW0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuT250dHJla2tpbmdzcHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcApuT250dHJla2tpbmdzcHVudCAtLT58aXNIb3N0ZWRCeXwgbkV4cGxvaXRhdGllbG9jYXRpZQ=="></div>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5BYW5naWZ0ZVsiQWFuZ2lmdGUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5PbnR0cmVra2luZ3NwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5PbnR0cmVra2luZ3NwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5PbnR0cmVra2luZ3NwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKbk9udHRyZWtraW5nc3B1bnQgLS0+fGlzc3VlZHwgbmRhdGUKbk9udHRyZWtraW5nc3B1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuT250dHJla2tpbmdzcHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuT250dHJla2tpbmdzcHVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuT250dHJla2tpbmdzcHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuT250dHJla2tpbmdzcHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5PbnR0cmVra2luZ3NwdW50IC0tPnxuMy0xNjR8IG5TeXN0ZW0Kbk9udHRyZWtraW5nc3B1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuT250dHJla2tpbmdzcHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcA=="></div>
    
 <strong>IRI template:</strong>
 
 
 <pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}
+</pre>
+   <p><strong>Mappings:</strong></p>
+   <ul>
+    <li data-md>
+     <p><strong>uuid</strong> -> <a href="#localId">localId</a> (required: true)</p>
+    <li data-md>
+     <p><strong>issued</strong> -> <a href="http://purl.org/dc/terms/issued">dct:issued</a> (required: true)</p>
+    <li data-md>
+     <p><strong>created</strong> -> <a href="http://purl.org/dc/terms/created">dct:created</a> (required: true)</p>
+   </ul>
+   <h4 class="heading settled" data-level="5.19.1" id="Uitwisselpunt①"><span class="secno">5.19.1. </span><span class="content">Uitwisselpunt</span><a class="self-link" href="#Uitwisselpunt①"></a></h4>
+   <p><strong>IRI:</strong> <a href="#Uitwisselpunt">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt</a></p>
+   <p><strong>Definitie:</strong> Een uitwisselpunt is een bidirectioneel punt waar stoffen (m.n. grondwater) kunnen worden onttrokken of geïnjecteerd.</p>
+   <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/System">ssn:System</a>, <a href="http://www.opengis.net/ont/geosparql#SpatialObject">ogc:SpatialObject</a>, <a href="#Emissiepunt">Emissiepunt</a>, <a href="#Onttrekkingspunt">Onttrekkingspunt</a></p>
+   <p><strong>Constraints:</strong> inGebruikVanaf: min 1, max 1 of date; inGebruikTot: min 0, max 1 of date; identifier: min 0 of Identifier; label: min 1; modified: min 1, max 1 of dateTime; created: min 1, max 1 of dateTime; issued: min 1, max 1 of date; valid: min 0, max 1 of date; aangifte: min 0, max 1 of Aangifte; status: min 1, max 1 of Concept; wasRevisionOf: min 0, max 1 of System; hasDeployment: min 0 of Exploitatie; n3-187: min 0 of System; hasGeometry: min 0, max 1; type: min 0, max 1; hasSubSystem: min 0 of Filter; hasProperty: min 0 of SysteemEigenschap</p>
+   <p><strong>Relaties:</strong></p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblVpdHdpc3NlbHB1bnRbIlVpdHdpc3NlbHB1bnQiXQpuRW1pc3NpZXB1bnRbIkVtaXNzaWVwdW50Il0Kbk9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQiXQpuZGF0ZVsiZGF0ZSJdCm5JZGVudGlmaWVyWyJJZGVudGlmaWVyIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5BYW5naWZ0ZVsiQWFuZ2lmdGUiXQpuQ29uY2VwdFsiQ29uY2VwdCJdCm5TeXN0ZW1bIlN5c3RlbSJdCm5FeHBsb2l0YXRpZVsiRXhwbG9pdGF0aWUiXQpuRmlsdGVyWyJGaWx0ZXIiXQpuU3lzdGVlbUVpZ2Vuc2NoYXBbIlN5c3RlZW0gRWlnZW5zY2hhcCJdCm5VaXR3aXNzZWxwdW50IC0tPnxzdWJDbGFzc09mfCBuRW1pc3NpZXB1bnQKblVpdHdpc3NlbHB1bnQgLS0+fHN1YkNsYXNzT2Z8IG5PbnR0cmVra2luZ3NwdW50Cm5VaXR3aXNzZWxwdW50IC0tPnxpbkdlYnJ1aWtWYW5hZnwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fGluR2VicnVpa1RvdHwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fGlkZW50aWZpZXJ8IG5JZGVudGlmaWVyCm5VaXR3aXNzZWxwdW50IC0tPnxtb2RpZmllZHwgbmRhdGVUaW1lCm5VaXR3aXNzZWxwdW50IC0tPnxjcmVhdGVkfCBuZGF0ZVRpbWUKblVpdHdpc3NlbHB1bnQgLS0+fGlzc3VlZHwgbmRhdGUKblVpdHdpc3NlbHB1bnQgLS0+fHZhbGlkfCBuZGF0ZQpuVWl0d2lzc2VscHVudCAtLT58YWFuZ2lmdGV8IG5BYW5naWZ0ZQpuVWl0d2lzc2VscHVudCAtLT58c3RhdHVzfCBuQ29uY2VwdApuVWl0d2lzc2VscHVudCAtLT58d2FzUmV2aXNpb25PZnwgblN5c3RlbQpuVWl0d2lzc2VscHVudCAtLT58aGFzRGVwbG95bWVudHwgbkV4cGxvaXRhdGllCm5VaXR3aXNzZWxwdW50IC0tPnxuMy0xODd8IG5TeXN0ZW0KblVpdHdpc3NlbHB1bnQgLS0+fGhhc1N1YlN5c3RlbXwgbkZpbHRlcgpuVWl0d2lzc2VscHVudCAtLT58aGFzUHJvcGVydHl8IG5TeXN0ZWVtRWlnZW5zY2hhcA=="></div>
+   
+<strong>IRI template:</strong>
+
+
+<pre class="highlight language-text">https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}
 </pre>
    <p><strong>Mappings:</strong></p>
    <ul>
@@ -2705,9 +2739,7 @@ Parts of this work may be from another specification document.  If so, those par
 <pre class="highlight language-turtle"><c- p>[</c->
   <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces></c-> <c- p>;</c->
   <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Productie van cement in een fabriek te Antwerpen"</c-><c- o>@</c->nl <c- p>;</c->
-  <c- nn>dct</c-><c- p>:</c-><c- f>created</c-> <c- s>"2024-01-15T10:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
-  <c- nn>sosa</c-><c- p>:</c-><c- f>isHostedBy</c-> <c- p>[</c-> <c- nn>rdf</c-><c- p>:</c-><c- f>type</c-> <c- g>&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie></c-> <c- p>;</c->
-  <c- nn>rdfs</c-><c- p>:</c-><c- f>label</c-> <c- s>"Cementfabriek Antwerpen"</c-><c- o>@</c->nl <c- p>]</c->
+  <c- nn>dct</c-><c- p>:</c-><c- f>created</c-> <c- s>"2024-01-15T10:00:00"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c->
 <c- p>]</c->
 </pre>
 <pre class="highlight language-turtle"><c- p>[</c->
@@ -2761,7 +2793,7 @@ Parts of this work may be from another specification document.  If so, those par
    </ul>
    <h3 class="heading settled" data-level="5.22" id="Productie"><span class="secno">5.22. </span><span class="content">Productie</span><a class="self-link" href="#Productie"></a></h3>
    <p><strong>IRI:</strong> <a href="#Productie">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productie</a></p>
-   <p><strong>Definitie:</strong> Een productie is een specifiek productie-event bij een exploitatie over een bepaalde periode.</p>
+   <p><strong>Definitie:</strong> Een productie is een specifiek productie-event bij een exploitatielocatie over een bepaalde periode.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/prov#Entity">prov:Entity</a>, <a href="http://www.w3.org/ns/sosa/FeatureOfInterest">sosa:FeatureOfInterest</a></p>
    <p><strong>Constraints:</strong> isFeatureOfInterestOf: min 0 of Observation; hasProperty: min 0 of Productievolume</p>
    <p><strong>Relaties:</strong></p>
@@ -2797,7 +2829,7 @@ Parts of this work may be from another specification document.  If so, those par
    </ul>
    <h3 class="heading settled" data-level="5.24" id="Productievolume"><span class="secno">5.24. </span><span class="content">Productievolume</span><a class="self-link" href="#Productievolume"></a></h3>
    <p><strong>IRI:</strong> <a href="#Productievolume">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume</a></p>
-   <p><strong>Definitie:</strong> Productievolume is het type eigenschap dat aangeeft hoeveel er geproduceerd werd bij een exploitatie over een bepaalde periode.</p>
+   <p><strong>Definitie:</strong> Productievolume is het type eigenschap dat aangeeft hoeveel er geproduceerd werd bij een exploitatielocatie over een bepaalde periode.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/ssn/Property">ssn:Property</a></p>
    <p><strong>Constraints:</strong> hasUnit: min 0, max 1</p>
    <h3 class="heading settled" data-level="5.25" id="Resultaat"><span class="secno">5.25. </span><span class="content">Resultaat</span><a class="self-link" href="#Resultaat"></a></h3>
@@ -2837,31 +2869,34 @@ Parts of this work may be from another specification document.  If so, those par
    <p><strong>Constraints:</strong> genereert: min 1 of Aangifte; startedAtTime: min 1, max 1 of dateTime; endedAtTime: min 0, max 1 of dateTime; wasAssociatedWith: min 1, max 1 of Agent</p>
    <p><strong>Relaties:</strong></p>
    <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKblRyYW5zYWN0aWVbIlRyYW5zYWN0aWUiXQpuQWFuZ2lmdGVbIkFhbmdpZnRlIl0KbmRhdGVUaW1lWyJkYXRlVGltZSJdCm5BZ2VudFsiQWdlbnQiXQpuVHJhbnNhY3RpZSAtLT58Z2VuZXJlZXJ0fCBuQWFuZ2lmdGUKblRyYW5zYWN0aWUgLS0+fHN0YXJ0ZWRBdFRpbWV8IG5kYXRlVGltZQpuVHJhbnNhY3RpZSAtLT58ZW5kZWRBdFRpbWV8IG5kYXRlVGltZQpuVHJhbnNhY3RpZSAtLT58d2FzQXNzb2NpYXRlZFdpdGh8IG5BZ2VudA=="></div>
-   <h3 class="heading settled" data-level="5.29" id="TransportProcedure"><span class="secno">5.29. </span><span class="content">Transport Procedure</span><a class="self-link" href="#TransportProcedure"></a></h3>
+   <h3 class="heading settled" data-level="5.29" id="TransportProcedure"><span class="secno">5.29. </span><span class="content">Transportprocedure</span><a class="self-link" href="#TransportProcedure"></a></h3>
    <p><strong>IRI:</strong> <a href="#TransportProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure</a></p>
-   <p><strong>Definitie:</strong> Een transport procedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.</p>
+   <p><strong>Definitie:</strong> Een transportprocedure is een specifieke procedure die betrekking heeft op het transport van stoffen binnen of buiten een proces.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/sosa/Procedure">sosa:Procedure</a></p>
-   <h4 class="heading settled" data-level="5.29.1" id="EmissieProcedure"><span class="secno">5.29.1. </span><span class="content">Emissie Procedure</span><a class="self-link" href="#EmissieProcedure"></a></h4>
+   <h4 class="heading settled" data-level="5.29.1" id="EmissieProcedure"><span class="secno">5.29.1. </span><span class="content">Emissieprocedure</span><a class="self-link" href="#EmissieProcedure"></a></h4>
    <p><strong>IRI:</strong> <a href="#EmissieProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure</a></p>
-   <p><strong>Definitie:</strong> Een emissie procedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.</p>
+   <p><strong>Definitie:</strong> Een emissieprocedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten.</p>
    <p><strong>Subklasse van:</strong> <a href="#TransportProcedure">TransportProcedure</a></p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVQcm9jZWR1cmVbIkVtaXNzaWUgUHJvY2VkdXJlIl0KblRyYW5zcG9ydFByb2NlZHVyZVsiVHJhbnNwb3J0IFByb2NlZHVyZSJdCm5FbWlzc2llUHJvY2VkdXJlIC0tPnxzdWJDbGFzc09mfCBuVHJhbnNwb3J0UHJvY2VkdXJl"></div>
-   <h4 class="heading settled" data-level="5.29.2" id="OnttrekkingProcedure"><span class="secno">5.29.2. </span><span class="content">Onttrekking Procedure</span><a class="self-link" href="#OnttrekkingProcedure"></a></h4>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbkVtaXNzaWVQcm9jZWR1cmVbIkVtaXNzaWVwcm9jZWR1cmUiXQpuVHJhbnNwb3J0UHJvY2VkdXJlWyJUcmFuc3BvcnRwcm9jZWR1cmUiXQpuRW1pc3NpZVByb2NlZHVyZSAtLT58c3ViQ2xhc3NPZnwgblRyYW5zcG9ydFByb2NlZHVyZQ=="></div>
+   <h4 class="heading settled" data-level="5.29.2" id="OnttrekkingProcedure"><span class="secno">5.29.2. </span><span class="content">Onttrekkingprocedure</span><a class="self-link" href="#OnttrekkingProcedure"></a></h4>
    <p><strong>IRI:</strong> <a href="#OnttrekkingProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingProcedure</a></p>
-   <p><strong>Definitie:</strong> Een onttrekking procedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces.</p>
+   <p><strong>Definitie:</strong> Een onttrekkingsprocedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <a href="#TransportProcedure">TransportProcedure</a></p>
    <p><strong>Relaties:</strong></p>
-   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nUHJvY2VkdXJlWyJPbnR0cmVra2luZyBQcm9jZWR1cmUiXQpuVHJhbnNwb3J0UHJvY2VkdXJlWyJUcmFuc3BvcnQgUHJvY2VkdXJlIl0Kbk9udHRyZWtraW5nUHJvY2VkdXJlIC0tPnxzdWJDbGFzc09mfCBuVHJhbnNwb3J0UHJvY2VkdXJl"></div>
-   <h3 class="heading settled" data-level="5.30" id="VerwerkingProcedure"><span class="secno">5.30. </span><span class="content">Verwerkings Procedure</span><a class="self-link" href="#VerwerkingProcedure"></a></h3>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKbk9udHRyZWtraW5nUHJvY2VkdXJlWyJPbnR0cmVra2luZ3Byb2NlZHVyZSJdCm5UcmFuc3BvcnRQcm9jZWR1cmVbIlRyYW5zcG9ydHByb2NlZHVyZSJdCm5PbnR0cmVra2luZ1Byb2NlZHVyZSAtLT58c3ViQ2xhc3NPZnwgblRyYW5zcG9ydFByb2NlZHVyZQ=="></div>
+   <h3 class="heading settled" data-level="5.30" id="UitwisselProcedure"><span class="secno">5.30. </span><span class="content">Uitwisselprocedure</span><a class="self-link" href="#UitwisselProcedure"></a></h3>
+   <p><strong>IRI:</strong> <a href="#UitwisselProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#UitwisselProcedure</a></p>
+   <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/sosa/Procedure">sosa:Procedure</a></p>
+   <h3 class="heading settled" data-level="5.31" id="VerwerkingProcedure"><span class="secno">5.31. </span><span class="content">Verwerkingsprocedure</span><a class="self-link" href="#VerwerkingProcedure"></a></h3>
    <p><strong>IRI:</strong> <a href="#VerwerkingProcedure">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingProcedure</a></p>
-   <p><strong>Definitie:</strong> Een verwerkings procedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.</p>
+   <p><strong>Definitie:</strong> Een verwerkingsprocedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces.</p>
    <p><strong>Subklasse van:</strong> <a href="http://www.w3.org/ns/sosa/Procedure">sosa:Procedure</a></p>
    <h2 class="heading settled" data-level="6" id="properties"><span class="secno">6. </span><span class="content">Eigenschappen</span><a class="self-link" href="#properties"></a></h2>
    <h3 class="heading settled" data-level="6.1" id="aangifte"><span class="secno">6.1. </span><span class="content">Aangifte</span><a class="self-link" href="#aangifte"></a></h3>
    <p><strong>IRI:</strong> <a href="#aangifte">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte</a></p>
    <p><strong>Type:</strong> ObjectProperty</p>
-   <p><strong>Definitie:</strong> De aangifte die gerelateerd is aan een exploitatie of observatie.</p>
+   <p><strong>Definitie:</strong> De aangifte die gerelateerd is aan een exploitatielocatie of observatie.</p>
    <p><strong>Bereik:</strong> <a href="#Aangifte">Aangifte</a></p>
    <h3 class="heading settled" data-level="6.2" id="datatype"><span class="secno">6.2. </span><span class="content">Datatype</span><a class="self-link" href="#datatype"></a></h3>
    <p><strong>IRI:</strong> <a href="#datatype">https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype</a></p>
