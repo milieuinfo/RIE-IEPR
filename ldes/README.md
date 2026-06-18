@@ -80,3 +80,42 @@ You'll see the members of the resultaat LDES stream. At the end, you'll see
 
 You can do the same test for the `observation` stream. This stream (and database table `observatie`)
 should contain 38 members (/rows)
+
+## Creatie van tussentabellen
+
+Er is een voorbeeld uitgewerkt waarbij iets complexere members worden ingelezen, en waarbij naar 2
+verschillende tabellen geschreven wordt:
+
+* filter
+* filter_is_feature_of_interest_of
+
+Een volgende member:
+
+```turtle
+
+<https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021>
+    rdf:type         sosa:FeatureOfInterest, riepr:Filter, ssn:System ;
+    rdfs:label       "PEILFILTER : AGC GLASS EUROPE VESTIGING MOL - 2 (2021)" ;
+    dcterms:issued   "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+    dcterms:valid    "2030-01-01T00:00:00Z"^^xsd:dateTime ;
+    dcterms:modified "2010-01-01T00:00:00Z"^^xsd:dateTime ;
+    adms:status      st:in_gebruik ;
+    sosa:isFeatureOfInterestOf
+                     <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021/imjv#diepteOnderkant>,
+                     <https://data.imjv.omgeving.vlaanderen.be/id/peilfilter/2019-099955/jaar/2021/imjv#lengte> ;
+    sosa:isHostedBy  <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160> ;
+    ssn:hasDeployment
+                     <https://data.imjv.omgeving.vlaanderen.be/id/exploitatie/01787986000160/jaar/2021> ;
+    ssn:hasProperty  imjv:diepteOnderkant, imjv:lengte .
+```
+
+Heeft een one-to-many relatie naar isFeatureOfInterestOf. De uri's van deze isFeatureOfInterestOf
+worden in de `filter_is_feature_of_interest_of`, samen met de uri van de parent member.
+Op deze manier is het mogelijk om "koppeltabellen" op te vullen.
+
+Zie `ldes/ldio/pipelines/filter-pipeline.yaml` voor de pipeline die dit verwezenlijkt: hierbij zijn
+meerdere `Ldio:LdioRdbOut` outputs gedefinieerd, elk met hun eigen tabelnaam en SPARQL SELECT query.
+
+Je kan dit voorbeeld ook uitvoeren op een grotere dataset, door `ldes/server/filter-data.tar.gz` uit
+te pakken en `ldes/server/filter-data.ttl` te overschrijven.
+Verwijder alle Docker compose services, verwijder alle volumes, en start docker compose opnieuw.

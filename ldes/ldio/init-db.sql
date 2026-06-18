@@ -1,11 +1,12 @@
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat
-CREATE TABLE resultaat (
-                           uuid VARCHAR,
-                           uri VARCHAR,
-                           eenheid VARCHAR,
-                           waarde DECIMAL,
-                           is_result_of VARCHAR,
-                           PRIMARY KEY (uuid)
+CREATE TABLE resultaat
+(
+    uuid         VARCHAR,
+    uri          VARCHAR,
+    eenheid      VARCHAR,
+    waarde       DECIMAL,
+    is_result_of VARCHAR,
+    PRIMARY KEY (uuid)
 );
 
 COMMENT ON TABLE resultaat IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat';
@@ -16,25 +17,25 @@ COMMENT ON COLUMN resultaat.waarde IS 'http://qudt.org/schema/qudt/numericValue'
 COMMENT ON COLUMN resultaat.is_result_of IS 'http://www.w3.org/ns/sosa/isResultOf';
 
 
-
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
-CREATE TABLE observatie (
-                            uuid VARCHAR,
-                            uri VARCHAR,
-                            aangemaakt_op TIMESTAMP,
-                            geldig_van DATE,
-                            aangepast_op TIMESTAMP,
-                            benaming VARCHAR,
-                            heeft_aandachtspunt VARCHAR,
+CREATE TABLE observatie
+(
+    uuid                VARCHAR,
+    uri                 VARCHAR,
+    aangemaakt_op       TIMESTAMP,
+    geldig_van          DATE,
+    aangepast_op        TIMESTAMP,
+    benaming            VARCHAR,
+    heeft_aandachtspunt VARCHAR,
     -- Foreign key referencing resultaat(uuid)
-                            heeft_resultaat VARCHAR,
+    heeft_resultaat     VARCHAR,
     -- Foreign key referencing meet_instrument_identity(uuid)
-                            made_by_sensor VARCHAR,
-                            observed_property VARCHAR,
-                            phenomenon_time VARCHAR,
-                            result_time TIMESTAMP,
-                            used_procedure VARCHAR,
-                            PRIMARY KEY (uuid)
+    made_by_sensor      VARCHAR,
+    observed_property   VARCHAR,
+    phenomenon_time     VARCHAR,
+    result_time         TIMESTAMP,
+    used_procedure      VARCHAR,
+    PRIMARY KEY (uuid)
 );
 
 COMMENT ON TABLE observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie';
@@ -53,17 +54,26 @@ COMMENT ON COLUMN observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTim
 COMMENT ON COLUMN observatie.used_procedure IS 'http://www.w3.org/ns/sosa/usedProcedure';
 
 
--- Filter table with JSONB for multi-values
-CREATE TABLE filter_jsonb (
-    id TEXT PRIMARY KEY,
-    types JSONB,
-    "label" JSONB,
-    "created" TEXT,
-    "issued" TEXT,
-    "modified" TEXT,
-    "status" TEXT,
-    "hasDeployment" TEXT,
-    "isFeatureOfInterestOf" JSONB,
-    "isHostedBy" TEXT,
-    "hasProperty" JSONB
+-- Filter table without multi-values
+CREATE TABLE filter
+(
+    systeem_uuid  VARCHAR PRIMARY KEY,
+    uri           VARCHAR,
+    ingediend     BOOLEAN,
+    aangemaakt_op TIMESTAMP,
+    geldig_van    TIMESTAMP,
+    geldig_tot    TIMESTAMP,
+    aangepast_op  TIMESTAMP,
+    type          VARCHAR,
+    geometrie     VARCHAR,
+    benaming      VARCHAR,
+    status        VARCHAR,
+    revisie_van   VARCHAR
+);
+
+
+CREATE TABLE filter_is_feature_of_interest_of (
+    filter_systeem_uuid VARCHAR,
+    feature_of_interest_of_uri VARCHAR,
+    PRIMARY KEY (filter_systeem_uuid, feature_of_interest_of_uri)
 );

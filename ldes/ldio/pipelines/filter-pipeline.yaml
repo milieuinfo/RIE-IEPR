@@ -1,0 +1,73 @@
+# This is a pipeline for demonstrating the consuming of an LDES stream and storing the data in a database using the RDF to Database component (LdioRdbOut).
+name: filter-pipeline
+description: "Synchronizes the filter LDES stream with a postgres database table."
+input:
+  name: Ldio:LdesClient
+  config:
+    urls:
+      - http://ldes-server:8080/filter/by-page
+    sourceFormat: text/turtle
+    retries:
+      enabled: true
+outputs:
+  - name: Ldio:ConsoleOut
+  - name: Ldio:LdioRdbOut
+    config:
+      table-name: filter
+      sparql-select-query: |-
+         PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+         PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+         PREFIX adms:    <http://www.w3.org/ns/adms#>
+         PREFIX dct: <http://purl.org/dc/terms/>
+         PREFIX imjv:    <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+         PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+         PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+         PREFIX ssn:     <http://www.w3.org/ns/ssn/>
+         PREFIX st:      <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+         PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+        
+         SELECT ?systeem_uuid ?uri ?ingediend ?aangemaakt_op ?geldig_van ?geldig_tot ?aangepast_op
+         (GROUP_CONCAT(STR(?type_part); separator=", ") AS ?type) ?benaming ?status 
+        
+         WHERE {
+           ?uri rdf:type riepr:Filter .
+           ?uri rdf:type ?type_part .
+           BIND (?uri AS ?systeem_uuid) .
+           BIND (true AS ?ingediend) .
+           OPTIONAL { ?uri dct:created ?aangemaakt_op . }
+           OPTIONAL { ?uri dct:issued ?geldig_van . }
+           OPTIONAL { ?uri dct:valid ?geldig_tot . }
+           OPTIONAL { ?uri dct:modified ?aangepast_op . }
+           OPTIONAL {
+             ?uri adms:status ?status_uri .
+             VALUES (?status_uri ?status) {
+               (st:in_gebruik        "In gebruik")
+               (st:niet_in_gebruik   "Niet in gebruik")
+             }
+           }
+           OPTIONAL { ?uri rdfs:label ?benaming . }
+         }
+         GROUP BY ?systeem_uuid ?uri ?ingediend ?aangemaakt_op ?geldig_van ?geldig_tot ?aangepast_op ?benaming ?status
+      ignore-duplicate-key-exception: true
+  - name: Ldio:LdioRdbOut
+    config:
+      table-name: filter_is_feature_of_interest_of
+      sparql-select-query: |-
+        PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX adms:    <http://www.w3.org/ns/adms#>
+        PREFIX dct: <http://purl.org/dc/terms/>
+        PREFIX imjv:    <https://data.imjv.omgeving.vlaanderen.be/ns/imjv#>
+        PREFIX riepr:   <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+        PREFIX sosa:    <http://www.w3.org/ns/sosa/>
+        PREFIX ssn:     <http://www.w3.org/ns/ssn/>
+        PREFIX st:      <https://data.imjv.omgeving.vlaanderen.be/id/concept/status/>
+        PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+        
+        SELECT ?filter_systeem_uuid ?feature_of_interest_of_uri 
+        
+        WHERE {
+          ?filter_systeem_uuid rdf:type riepr:Filter .
+          ?filter_systeem_uuid sosa:isFeatureOfInterestOf ?feature_of_interest_of_uri .
+        }
+      ignore-duplicate-key-exception: true
