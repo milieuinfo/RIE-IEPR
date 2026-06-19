@@ -31,6 +31,14 @@ services:
     networks:
       - ldes-server
 
+  sleep-ldes:
+    container_name: sleep-ldes
+    image: busybox
+    command: ["sh", "-c", "sleep 60"]
+    depends_on:
+      ldes-server:
+        condition: service_healthy
+
   create-eventstreams:
     image: alpine/curl:latest
     volumes:
@@ -38,6 +46,8 @@ services:
     depends_on:
       ldes-server:
         condition: service_healthy
+      sleep-ldes:
+        condition: service_completed_successfully
     command:
       - /bin/sh
       - -c
@@ -131,6 +141,14 @@ services:
     networks:
       - ldio
 
+  sleep-ldio:
+    container_name: sleep
+    image: busybox
+    command: ["sh", "-c", "sleep 120"]
+    depends_on:
+      ingest-data:
+        condition: service_completed_successfully
+
   ldio:
     container_name: ldio
     image: openldes/ldi-orchestrator:3.1.1
@@ -144,6 +162,8 @@ services:
       - ldes-server
     depends_on:
       ingest-data:
+        condition: service_completed_successfully
+      sleep-ldio:
         condition: service_completed_successfully
     healthcheck:
       test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://ldio:8080/actuator/health" ]
