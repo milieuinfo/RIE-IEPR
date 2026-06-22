@@ -4,9 +4,10 @@
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek>
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -16,73 +17,67 @@
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#hasStep>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#isStepOfPlan>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/implementedBy>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
+                          sh:path      <http://www.w3.org/ns/ssn/implementedBy>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/modified>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                          sh:path      <http://purl.org/net/p-plan#hasStep>
                         ];
         sh:property     [ sh:class     <http://purl.org/net/p-plan#Variable>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#hasInputVar>
+                          sh:path      <http://purl.org/net/p-plan#hasOutputVar>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/issued>
                         ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/net/p-plan#isStepOfPlan>
+                        ];
         sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:comment
                         ];
-        sh:property     [ sh:class     <http://purl.org/net/p-plan#Variable>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#hasOutputVar>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#status>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/implementedBy>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/net/p-plan#isPrecededBy>
+                        ];
+        sh:property     [ sh:class     <http://purl.org/net/p-plan#Variable>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/net/p-plan#hasInputVar>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
 
@@ -131,10 +126,6 @@
         a               sh:NodeShape;
         sh:targetClass  <http://www.w3.org/ns/prov#EmptyCollection> .
 
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepuntShape>
-        a               sh:NodeShape;
-        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AbstractEmissiepunt> .
-
 <http://www.w3.org/ns/sosa/FeatureOfInterestShape>
         a               sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Property>;
@@ -146,9 +137,6 @@
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/hasProperty>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasSample>
-                        ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:or        ( [ sh:class  <http://www.w3.org/ns/sosa/Deployment> ]
                                          [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
@@ -156,15 +144,13 @@
                                        );
                           sh:path      <http://www.w3.org/ns/sosa/isFeatureOfInterestOf>
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasSample>
+                        ];
         sh:targetClass  <http://www.w3.org/ns/sosa/FeatureOfInterest> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProductieObservatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -177,20 +163,17 @@
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productie>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -200,15 +183,23 @@
         sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:label
                         ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Productievolume>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
+                        ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasResult>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProductieObservatie> .
 
@@ -230,8 +221,20 @@
 
 <http://www.w3.org/ns/sosa/SampleShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampling>;
+                          sh:path   <http://www.w3.org/ns/sosa/isResultOf>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
                           sh:path   <http://www.w3.org/ns/sosa/hasOriginalSample>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/isResultOf>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   <http://www.w3.org/ns/sosa/isResultOfMadeBySampler>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/isSampleOfUltimateFOI>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/isSampleOf>
@@ -239,25 +242,13 @@
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
                           sh:path   <http://www.w3.org/ns/sosa/isResultOfUsedProcedure>
                         ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isSampleOf>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/isSampleOfUltimateFOI>
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/isResultOf>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampling>;
-                          sh:path   <http://www.w3.org/ns/sosa/isResultOf>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   <http://www.w3.org/ns/sosa/isResultOfMadeBySampler>
-                        ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isResultOf>
+                          sh:path      <http://www.w3.org/ns/sosa/isSampleOf>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sample> .
 
@@ -275,28 +266,28 @@
 
 <http://www.w3.org/ns/sosa/SystemShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   <http://www.w3.org/ns/sosa/forProperty>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasSubSystem>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   <http://www.w3.org/ns/sosa/isHostedBy>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
                           sh:path   <http://www.w3.org/ns/sosa/isSubSystemOf>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/implements>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
                           sh:path   <http://www.w3.org/ns/sosa/hasDeployment>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasSubSystem>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/implements>
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/madeExecution>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
-                          sh:path   <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   <http://www.w3.org/ns/sosa/forProperty>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/System> .
 
@@ -321,72 +312,77 @@
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/type>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/created>
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:path  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend> ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#status>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/valid>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
                         ];
+        sh:property     [ sh:path  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ingediend> ];
         sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:comment
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/issued>
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
+                          sh:path      <http://purl.org/dc/terms/valid>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#status>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
 
@@ -420,46 +416,6 @@
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
-                        ];
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
-                        ];
         sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -470,6 +426,46 @@
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasResult>
                         ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> .
 
 <http://www.w3.org/ns/prov#EndShape>
@@ -478,31 +474,37 @@
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetpuntShape>
         a               sh:NodeShape;
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
                         ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#status>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/hasProperty>
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                          sh:path      <http://purl.org/dc/terms/modified>
                         ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#status>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -510,117 +512,120 @@
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/valid>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                          sh:path      <http://purl.org/dc/terms/type>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> .
 
 <http://www.w3.org/ns/sosa/ObservationShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeBySensor>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservableProperty>;
-                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
+                          sh:path      <http://www.w3.org/ns/ssn/wasOriginatedBy>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Result>;
                           sh:path   <http://www.w3.org/ns/sosa/hasResult>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
                         ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasResult>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservableProperty>;
+                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/wasOriginatedBy>
+                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Stimulus>;
+                          sh:path   <http://www.w3.org/ns/ssn/wasOriginatedBy>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
+                          sh:path   <http://www.w3.org/ns/sosa/wasOriginatedBy>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/observedProperty>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Stimulus>;
-                          sh:path   <http://www.w3.org/ns/ssn/wasOriginatedBy>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeBySensor>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
-                          sh:path   <http://www.w3.org/ns/sosa/wasOriginatedBy>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/hasResult>
+                        ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Observation> .
 
 <http://www.w3.org/ns/sosa/ProcedureShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Output>;
-                          sh:path   <http://www.w3.org/ns/ssn/hasOutput>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/System>;
-                          sh:path   <http://www.w3.org/ns/ssn/implementedBy>
-                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Input>;
                           sh:path   <http://www.w3.org/ns/ssn/hasInput>
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Output>;
+                          sh:path   <http://www.w3.org/ns/ssn/hasOutput>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
                           sh:path   <http://www.w3.org/ns/sosa/implementedBy>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/System>;
+                          sh:path   <http://www.w3.org/ns/ssn/implementedBy>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
                           sh:path   <http://www.w3.org/ns/sosa/forProperty>
@@ -641,32 +646,22 @@
 
 <http://www.w3.org/ns/sosa/ActuationShape>
         a               sh:NodeShape;
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/actsOnProperty>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeByActuator>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   <http://www.w3.org/ns/sosa/actsOnProperty>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
                           sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeByActuator>
                         ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasResult>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                          sh:path      <http://www.w3.org/ns/sosa/madeByActuator>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Result>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasResult>
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatableProperty>;
                           sh:path   <http://www.w3.org/ns/sosa/actsOnProperty>
@@ -674,29 +669,39 @@
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   <http://www.w3.org/ns/sosa/actsOnProperty>
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeByActuator>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Result>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasResult>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
                           sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/actsOnProperty>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Actuation> .
 
 <http://www.w3.org/ns/sosa/PlatformShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Deployment>;
+                          sh:path   <http://www.w3.org/ns/ssn/inDeployment>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/ssn/System>;
                           sh:path   <http://www.w3.org/ns/sosa/hosts>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Deployment>;
-                          sh:path   <http://www.w3.org/ns/ssn/inDeployment>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
+                          sh:path   <http://www.w3.org/ns/sosa/inDeployment>
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/System> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/Platform> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/hosts>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Deployment>;
-                          sh:path   <http://www.w3.org/ns/sosa/inDeployment>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Platform> .
 
@@ -714,54 +719,33 @@
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#FilterShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+                          sh:path      <http://purl.org/dc/terms/valid>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/adms#status>
                         ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/created>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/valid>
+                          sh:path      <http://purl.org/dc/terms/type>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -771,7 +755,33 @@
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> .
 
@@ -785,6 +795,15 @@
 
 <http://www.w3.org/ns/sosa/ObservationCollectionShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeBySensor>
+                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
                                    );
@@ -792,15 +811,6 @@
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
-                          sh:path   <http://www.w3.org/ns/sosa/observedProperty>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeBySensor>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/ObservationCollection> .
 
@@ -818,61 +828,61 @@
 
 <http://www.w3.org/ns/sosa/ExecutionShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
                           sh:path   <http://www.w3.org/ns/sosa/madeBySystem>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
-                        ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Execution> .
 
 <http://www.w3.org/ns/prov#InsertionShape>
         a               sh:NodeShape;
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#insertedKeyEntityPair>
-                        ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#dictionary>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#insertedKeyEntityPair>
                         ];
         sh:targetClass  <http://www.w3.org/ns/prov#Insertion> .
 
 <http://www.w3.org/2006/time#GeneralDurationDescriptionShape>
         a               sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#hasTRS>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#days>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#seconds>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#years>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#hours>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#weeks>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#minutes>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#weeks>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#months>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#hours>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#hasTRS>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#years>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#days>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#GeneralDurationDescription> .
 
@@ -882,11 +892,16 @@
 
 <http://www.w3.org/ns/sosa/SensorShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Observation>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeObservation>
+        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Stimulus>;
+                          sh:path   <http://www.w3.org/ns/ssn/detects>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservableProperty>;
                           sh:path   <http://www.w3.org/ns/sosa/observes>
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  <http://www.w3.org/ns/sosa/madeObservation>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservingProcedure>;
                           sh:path   <http://www.w3.org/ns/sosa/implements>
@@ -894,19 +909,14 @@
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Stimulus>;
                           sh:path   <http://www.w3.org/ns/sosa/detects>
                         ];
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
-                                   );
-                          sh:path  <http://www.w3.org/ns/sosa/madeObservation>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ObservableProperty>;
-                          sh:path   <http://www.w3.org/ns/sosa/observes>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Stimulus>;
-                          sh:path   <http://www.w3.org/ns/ssn/detects>
-                        ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/implements>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Observation>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeObservation>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
+                          sh:path   <http://www.w3.org/ns/sosa/observes>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sensor> .
 
@@ -919,17 +929,21 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/2006/time#YearShape>
         a               sh:NodeShape;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#years>
+                        ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#minutes>
                         ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#months>
+                          sh:path      <http://www.w3.org/2006/time#weeks>
                         ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#years>
+        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#months>
                         ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -943,22 +957,18 @@ owl:ThingShape  a       sh:NodeShape;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#seconds>
                         ];
-        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#weeks>
-                        ];
         sh:targetClass  <http://www.w3.org/2006/time#Year> .
 
 <http://www.w3.org/ns/ssn/SystemShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   <http://www.w3.org/ns/sosa/isHostedBy>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/ssn/System>;
                           sh:path   <http://www.w3.org/ns/ssn/hasSubSystem>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/ssn/Deployment>;
                           sh:path   <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
-                          sh:path   <http://www.w3.org/ns/sosa/isHostedBy>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
                           sh:path   <http://www.w3.org/ns/ssn/implements>
@@ -967,19 +977,14 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/ActuatorShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuation>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeActuation>
-                        ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/implements>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatableProperty>;
                           sh:path   <http://www.w3.org/ns/ssn/forProperty>
                         ];
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
-                                   );
-                          sh:path  <http://www.w3.org/ns/sosa/madeActuation>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuation>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeActuation>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
                           sh:path   <http://www.w3.org/ns/sosa/implements>
@@ -987,27 +992,32 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
                           sh:path   <http://www.w3.org/ns/sosa/actsOn>
                         ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
+                                   );
+                          sh:path  <http://www.w3.org/ns/sosa/madeActuation>
+                        ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Actuator> .
 
 <http://dbpedia.org/ontology/CaseShape>
         a               sh:NodeShape;
         sh:targetClass  <http://dbpedia.org/ontology/Case> .
 
-<http://www.w3.org/ns/prov#UsageShape>
-        a               sh:NodeShape;
-        sh:targetClass  <http://www.w3.org/ns/prov#Usage> .
-
 <http://www.w3.org/2006/time#DurationShape>
         a               sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#unitType>
+                          sh:path      <http://www.w3.org/2006/time#numericDuration>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#numericDuration>
+                          sh:path      <http://www.w3.org/2006/time#unitType>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#Duration> .
+
+<http://www.w3.org/ns/prov#UsageShape>
+        a               sh:NodeShape;
+        sh:targetClass  <http://www.w3.org/ns/prov#Usage> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingShape>
         a               sh:NodeShape;
@@ -1023,27 +1033,27 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/PropertyShape>
         a               sh:NodeShape;
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
-                                   );
-                          sh:path  <http://www.w3.org/ns/sosa/wasObservedBy>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/isPropertyOf>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   <http://www.w3.org/ns/sosa/isObservedBy>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   <http://www.w3.org/ns/sosa/isActedOnBy>
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/wasActedOnBy>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
-                          sh:path   <http://www.w3.org/ns/sosa/isActedOnBy>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   <http://www.w3.org/ns/sosa/isObservedBy>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/isPropertyOf>
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
+                                   );
+                          sh:path  <http://www.w3.org/ns/sosa/wasObservedBy>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Property> .
 
@@ -1069,36 +1079,43 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/2006/time#DurationDescriptionShape>
         a               sh:NodeShape;
+        sh:property     [ sh:path  <http://www.w3.org/2006/time#hasTRS> ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
                           sh:path      <http://www.w3.org/2006/time#years>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
-                          sh:path      <http://www.w3.org/2006/time#hours>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
                           sh:path      <http://www.w3.org/2006/time#weeks>
-                        ];
-        sh:property     [ sh:path  <http://www.w3.org/2006/time#hasTRS> ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
-                          sh:path      <http://www.w3.org/2006/time#days>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
-                          sh:path      <http://www.w3.org/2006/time#seconds>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
                           sh:path      <http://www.w3.org/2006/time#minutes>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
+                          sh:path      <http://www.w3.org/2006/time#seconds>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
                           sh:path      <http://www.w3.org/2006/time#months>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
+                          sh:path      <http://www.w3.org/2006/time#days>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#decimal>;
+                          sh:path      <http://www.w3.org/2006/time#hours>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#DurationDescription> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschapShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     rdfs:Literal;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:class     rdfs:Datatype;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1109,14 +1126,10 @@ owl:ThingShape  a       sh:NodeShape;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:value
                         ];
-        sh:property     [ sh:class     rdfs:Datatype;
+        sh:property     [ sh:class     rdfs:Literal;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:range
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap> .
 
@@ -1132,9 +1145,6 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
                           sh:path   <http://www.w3.org/ns/sosa/hasResult>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeBySampler>
-                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
@@ -1142,6 +1152,9 @@ owl:ThingShape  a       sh:NodeShape;
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/hasMember>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeBySampler>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/SamplingCollection> .
 
@@ -1204,23 +1217,30 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingObservatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
+                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
+                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1231,22 +1251,15 @@ owl:ThingShape  a       sh:NodeShape;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
                         ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
+                          sh:path      <http://purl.org/dc/terms/issued>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1259,14 +1272,7 @@ owl:ThingShape  a       sh:NodeShape;
         a               sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://qudt.org/schema/qudt/numericValue>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/type>
-                        ];
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1274,42 +1280,45 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#isOutputVarOf>
+                          sh:path      <http://purl.org/net/p-plan#isInputVarOf>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://qudt.org/schema/qudt/numericValue>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/net/p-plan#isInputVarOf>
+                          sh:path      <http://purl.org/net/p-plan#isOutputVarOf>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele> .
 
 <http://www.w3.org/ns/sosa/SamplerShape>
         a               sh:NodeShape;
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/implements>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampling>;
                           sh:path   <http://www.w3.org/ns/sosa/madeSampling>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/implements>
                         ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sampling> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SamplingCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/madeSampling>
                         ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/implements>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/implements>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sampler> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitantShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/org#hasMember>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+        sh:property     [ sh:class     <http://www.w3.org/ns/locn#Address>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/valid>
+                          sh:path      <http://www.w3.org/ns/locn#address>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1319,29 +1328,15 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:label
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+        sh:property     [ sh:class     <http://www.w3.org/ns/org#Organization>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#hadPrimarySource>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/locn#Address>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/locn#address>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/org#classification>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> .
 
@@ -1351,12 +1346,10 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieObservatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1370,40 +1363,46 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySensor>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
+                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/modified>
                         ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/resultTime>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/observedProperty>
+                          sh:path      <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/phenomenonTime>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieObservatie> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#RubriekShape>
         a               sh:NodeShape;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#hadPrimarySource>
+                        ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/type>
@@ -1432,12 +1431,12 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/prov#RemovalShape>
         a               sh:NodeShape;
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#removedKey>
+                        ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#dictionary>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#removedKey>
                         ];
         sh:targetClass  <http://www.w3.org/ns/prov#Removal> .
 
@@ -1453,14 +1452,29 @@ owl:ThingShape  a       sh:NodeShape;
         a               sh:NodeShape;
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingProcedure> .
 
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ZuiveringsApparaatShape>
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ContactgegevensShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
+                          sh:path      <http://purl.org/dc/terms/modified>
                         ];
-        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ZuiveringsApparaat> .
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/oa#hasTarget>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:comment
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://xmlns.com/foaf/0.1/name>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://xmlns.com/foaf/0.1/phone>
+                        ];
+        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens> .
 
 <http://www.w3.org/ns/org#RoleShape>
         a               sh:NodeShape;
@@ -1468,13 +1482,14 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/2006/time#MonthOfYearShape>
         a               sh:NodeShape;
-        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#week>
-                        ];
+        sh:property     [ sh:path  <http://www.w3.org/2006/time#unitType> ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#day>
+                        ];
+        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#hour>
                         ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1482,91 +1497,86 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#hour>
+                          sh:path      <http://www.w3.org/2006/time#second>
+                        ];
+        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#year>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#month>
                         ];
-        sh:property     [ sh:path  <http://www.w3.org/2006/time#unitType> ];
         sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#year>
-                        ];
-        sh:property     [ sh:maxCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#second>
+                          sh:path      <http://www.w3.org/2006/time#week>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#MonthOfYear> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatielocatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/locn#Address>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/locn#address>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/valid>
                         ];
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:comment
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/org#Site>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#hadPrimarySource>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+                          sh:path      <http://purl.org/dc/terms/modified>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasInfluencedBy>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#wasAttributedTo>
                         ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/org#Site>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#hadPrimarySource>
+                        ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/inDeployment>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/locn#Address>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/locn#address>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                        ];
+        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:comment
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> .
 
@@ -1580,64 +1590,65 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrumentShape>
         a               sh:NodeShape;
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/valid>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/modified>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
+                          sh:path      <http://purl.org/dc/terms/type>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+                          sh:path      <http://purl.org/dc/terms/valid>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/adms#status>
                         ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument> .
 
@@ -1656,24 +1667,100 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/ObservingProcedure> .
 
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#UitwisselpuntShape>
+        a               sh:NodeShape;
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#status>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/valid>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> .
+
 <http://www.w3.org/ns/sosa/ExecutionCollectionShape>
         a               sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
-                        ];
-        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
-                                     [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
-                                   );
-                          sh:path  <http://www.w3.org/ns/sosa/hasMember>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
                           sh:path   <http://www.w3.org/ns/sosa/madeBySystem>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
                           sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Execution> ]
+                                     [ sh:class  <http://www.w3.org/ns/sosa/ExecutionCollection> ]
+                                   );
+                          sh:path  <http://www.w3.org/ns/sosa/hasMember>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasUltimateFeatureOfInterest>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/ExecutionCollection> .
 
@@ -1710,50 +1797,19 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#status>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/org#hasMember>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/deployedSystem>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/implements>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
+                          sh:path      <http://purl.org/dc/terms/created>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/ssn/deployedOnPlatform>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -1763,7 +1819,38 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
+                          sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#status>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/implements>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/org#classification>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/deployedSystem>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> .
 
@@ -1773,50 +1860,64 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingspuntShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/valid>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://dbpedia.org/ontology/depth>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/adms#status>
                         ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
+                        ];
         sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/adms#identifier>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
+                        ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
                         ];
         sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      rdfs:label
@@ -1826,23 +1927,10 @@ owl:ThingShape  a       sh:NodeShape;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> .
 
@@ -1890,16 +1978,16 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/ActuationCollectionShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
-                          sh:path   <http://www.w3.org/ns/sosa/madeByActuator>
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Actuation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ActuationCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/hasMember>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Actuator>;
+                          sh:path   <http://www.w3.org/ns/sosa/madeByActuator>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/ActuatingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
@@ -1948,11 +2036,12 @@ owl:ThingShape  a       sh:NodeShape;
         a               sh:NodeShape;
         sh:targetClass  <http://www.w3.org/ns/prov#SoftwareAgent> .
 
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#UitwisselProcedureShape>
+        a               sh:NodeShape;
+        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#UitwisselProcedure> .
+
 <http://www.w3.org/ns/sosa/StimulusShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
-                          sh:path   <http://www.w3.org/ns/sosa/isDetectedBy>
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Observation> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/ObservationCollection> ]
                                    );
@@ -1960,6 +2049,9 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Property>;
                           sh:path   <http://www.w3.org/ns/sosa/isProxyFor>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sensor>;
+                          sh:path   <http://www.w3.org/ns/sosa/isDetectedBy>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Stimulus> .
 
@@ -1991,106 +2083,111 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SamplingShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
-                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
-                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
                           sh:path   <http://www.w3.org/ns/sosa/hasResult>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/madeBySampler>
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/hasResult>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/sosa/resultTime>
                         ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/hasResult>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Procedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
+                          sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
                           sh:path   <http://www.w3.org/ns/sosa/madeBySampler>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/usedProcedure>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/sosa/madeBySampler>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Sampling> .
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissiepuntShape>
         a               sh:NodeShape;
-        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#status>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/type>
+                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
                         ];
         sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/ns/prov#wasRevisionOf>
                         ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/adms#identifier>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
-                        ];
-        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/sosa/isHostedBy>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
-                        ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte>
                         ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
                         ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/valid>
                         ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap>;
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/ssn/hasProperty>
+                          sh:path      <http://www.w3.org/ns/ssn/hasDeployment>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.opengis.net/ont/geosparql#hasGeometry>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/issued>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/modified>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot>
+                        ];
+        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      rdfs:label
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/adms#Identifier>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#identifier>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/2004/02/skos/core#Concept>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/adms#status>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf>
+                        ];
+        sh:property     [ sh:class     <http://www.w3.org/ns/ssn/System>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/ssn/hasSubSystem>
+                        ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
+                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/created>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
 
@@ -2101,55 +2198,6 @@ owl:ThingShape  a       sh:NodeShape;
 <http://xmlns.com/foaf/0.1/AgentShape>
         a               sh:NodeShape;
         sh:targetClass  <http://xmlns.com/foaf/0.1/Agent> .
-
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ContactpersoonShape>
-        a               sh:NodeShape;
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://xmlns.com/foaf/0.1/mbox>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:label
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/org#hasRole>
-                        ];
-        sh:property     [ sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      rdfs:comment
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/valid>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://xmlns.com/foaf/0.1/phone>
-                        ];
-        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/org#memberOf>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/modified>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/issued>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#dateTime>;
-                          sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://xmlns.com/foaf/0.1/name>
-                        ];
-        sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> .
 
 <http://www.opengis.net/ont/geosparql#FeatureShape>
         a               sh:NodeShape;
@@ -2170,41 +2218,41 @@ owl:ThingShape  a       sh:NodeShape;
 <http://www.w3.org/2006/time#GeneralDateTimeDescriptionShape>
         a               sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#hour>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#month>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#dayOfYear>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#minute>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#year>
+                          sh:path      <http://www.w3.org/2006/time#week>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#dayOfWeek>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#second>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#monthOfYear>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#timeZone>
-                        ];
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#week>
+                          sh:path      <http://www.w3.org/2006/time#day>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://www.w3.org/2006/time#unitType>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#second>
+                          sh:path      <http://www.w3.org/2006/time#dayOfYear>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#day>
+                          sh:path      <http://www.w3.org/2006/time#month>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/2006/time#dayOfWeek>
+                          sh:path      <http://www.w3.org/2006/time#hour>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#timeZone>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/2006/time#year>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#GeneralDateTimeDescription> .
 
@@ -2218,18 +2266,10 @@ owl:ThingShape  a       sh:NodeShape;
 
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AangifteShape>
         a               sh:NodeShape;
-        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#wasAssociatedWith>
-                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#date>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <http://purl.org/dc/terms/created>
-                        ];
-        sh:property     [ sh:class     [] ;
-                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://purl.org/dc/terms/subject>
                         ];
         sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte>;
                           sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
@@ -2238,7 +2278,20 @@ owl:ThingShape  a       sh:NodeShape;
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://www.w3.org/ns/prov#wasAssociatedWith>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "0"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:path      <https://data.vlaanderen.be/ns/dossier#informatieclassificatie>
+                        ];
+        sh:property     [ sh:path  <http://purl.org/dc/terms/subject> ];
+        sh:property     [ sh:class     <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/subject>
+                        ];
+        sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
+                          sh:path      <http://purl.org/dc/terms/type>
                         ];
         sh:targetClass  <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte> .
 
@@ -2272,30 +2325,30 @@ owl:ThingShape  a       sh:NodeShape;
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/FeatureOfInterest>;
                           sh:path   <http://www.w3.org/ns/sosa/hasFeatureOfInterest>
                         ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
+                          sh:path   <http://www.w3.org/ns/sosa/deployedSystem>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
+                          sh:path   <http://www.w3.org/ns/sosa/deployedOnPlatform>
+                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Platform> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/System> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/deployedAsset>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Platform>;
-                          sh:path   <http://www.w3.org/ns/sosa/deployedOnPlatform>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/System>;
-                          sh:path   <http://www.w3.org/ns/sosa/deployedSystem>
-                        ];
         sh:targetClass  <http://www.w3.org/ns/sosa/Deployment> .
 
 <http://www.w3.org/2006/time#DateTimeDescriptionShape>
         a               sh:NodeShape;
+        sh:property     [ sh:path  <http://www.w3.org/2006/time#hasTRS> ];
+        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#gDay>;
+                          sh:path      <http://www.w3.org/2006/time#day>
+                        ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#gMonth>;
                           sh:path      <http://www.w3.org/2006/time#month>
                         ];
-        sh:property     [ sh:path  <http://www.w3.org/2006/time#hasTRS> ];
         sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#gYear>;
                           sh:path      <http://www.w3.org/2006/time#year>
-                        ];
-        sh:property     [ sh:datatype  <http://www.w3.org/2001/XMLSchema#gDay>;
-                          sh:path      <http://www.w3.org/2006/time#day>
                         ];
         sh:targetClass  <http://www.w3.org/2006/time#DateTimeDescription> .
 
@@ -2315,11 +2368,11 @@ owl:ThingShape  a       sh:NodeShape;
         a               sh:NodeShape;
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#pairKey>
+                          sh:path      <http://www.w3.org/ns/prov#pairEntity>
                         ];
         sh:property     [ sh:maxCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
                           sh:minCount  "1"^^<http://www.w3.org/2001/XMLSchema#long>;
-                          sh:path      <http://www.w3.org/ns/prov#pairEntity>
+                          sh:path      <http://www.w3.org/ns/prov#pairKey>
                         ];
         sh:targetClass  <http://www.w3.org/ns/prov#KeyEntityPair> .
 
@@ -2329,6 +2382,9 @@ owl:ThingShape  a       sh:NodeShape;
 
 <http://www.w3.org/ns/sosa/SampleCollectionShape>
         a               sh:NodeShape;
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
+                          sh:path   <http://www.w3.org/ns/sosa/isResultOfUsedProcedure>
+                        ];
         sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sample>;
                           sh:path   <http://www.w3.org/ns/sosa/hasOriginalSample>
                         ];
@@ -2343,16 +2399,13 @@ owl:ThingShape  a       sh:NodeShape;
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/isResultOf>
                         ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
-                          sh:path   <http://www.w3.org/ns/sosa/isResultOfMadeBySampler>
-                        ];
-        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/SamplingProcedure>;
-                          sh:path   <http://www.w3.org/ns/sosa/isResultOfUsedProcedure>
-                        ];
         sh:property     [ sh:or    ( [ sh:class  <http://www.w3.org/ns/sosa/Sample> ]
                                      [ sh:class  <http://www.w3.org/ns/sosa/SampleCollection> ]
                                    );
                           sh:path  <http://www.w3.org/ns/sosa/hasMember>
+                        ];
+        sh:property     [ sh:class  <http://www.w3.org/ns/sosa/Sampler>;
+                          sh:path   <http://www.w3.org/ns/sosa/isResultOfMadeBySampler>
                         ];
         sh:targetClass  <http://www.w3.org/ns/sosa/SampleCollection> .
 
