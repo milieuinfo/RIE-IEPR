@@ -413,6 +413,8 @@ sosa:endTime  rdfs:subPropertyOf  prov:endedAtTime .
 sosa:observes  rdfs:subPropertyOf  sosa:forProperty;
         owl:inverseOf       sosa:isObservedBy .
 
+riepr:Proces  rdfs:subClassOf  p-plan:Step .
+
 prov:atTime  rdfs:domain  prov:InstantaneousEvent;
         rdfs:range   xsd:dateTime .
 
@@ -538,7 +540,8 @@ sosa:madeByActuator  rdfs:subPropertyOf
                 sosa:madeBySystem;
         owl:inverseOf       sosa:madeActuation .
 
-p-plan:isPrecededBy  rdfs:domain  p-plan:Step;
+p-plan:isPrecededBy  rdf:type  owl:TransitiveProperty;
+        rdfs:domain  p-plan:Step;
         rdfs:range   p-plan:Step .
 
 prov:hadPlan  rdfs:domain  prov:Association;
@@ -913,8 +916,6 @@ p-plan:isStepOfPlan  rdfs:domain  p-plan:Step;
 
 p-plan:Plan  rdfs:subClassOf  prov:Plan , riepr:IIOA , p-plan:Entity .
 
-riepr:Proces  rdfs:subClassOf  p-plan:Step .
-
 prov:qualifiedAssociation
         rdfs:domain         prov:Activity;
         rdfs:range          prov:Association;
@@ -978,7 +979,8 @@ prov:Creator  rdfs:subClassOf  prov:Contributor .
 sosa:madeSampling  rdfs:subPropertyOf  sosa:madeExecution;
         owl:inverseOf       sosa:madeBySampler .
 
-dbo:ResearchProject  rdfs:subClassOf  dbo:Project .
+dbo:ResearchProject  rdfs:subClassOf  dbo:Project;
+        owl:equivalentClass  wikidata:Q1298668 .
 
 geo:asGML  rdfs:domain      geo:Geometry;
         rdfs:range          geo:gmlLiteral;
