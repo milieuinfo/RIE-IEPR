@@ -926,11 +926,13 @@ Een **aangiftebundel** is een verzameling van aangiften. Het is eveneens een sub
     dct:title "Bundel RIE-IEPR aangiften 2026"@nl .
 ```
 
-Een bundel kan meerdere aangiften bevatten via `dossier:hasPart`:
+Een aangifte kan deel uitmaken van een aangiftebundel via `dct:isPartOf`:
 
 ```turtle
-<.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9>
-    dossier:hasPart <.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
+    dct:isPartOf <.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9> .
 ```
 
 ## 3. Transactie
@@ -952,14 +954,12 @@ Een transactie kan meerdere fasen hebben:
 
 ## 4. Relaties tussen entiteiten
 
-```
-Transactie (prov:Activity)
-  ├── used → Aangifte (dossier:Stuk)
-  └── wasAssociatedWith → Exploitant (riepr:Exploitant)
 
-Aangiftebundel (dossier:Stuk)
-  └── hasPart → Aangifte (dossier:Stuk)
-```
+graph LR
+    Transactie["Transactie<br/>(prov:Activity)"] -->|used| Aangifte["Aangifte<br/>(dossier:Stuk)"]
+    Transactie -->|wasAssociatedWith| Exploitant["Exploitant<br/>(riepr:Exploitant)"]
+    Aangifte -->|dct:isPartOf| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
+<div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIFRyYW5zYWN0aWVbIlRyYW5zYWN0aWU8YnIvPihwcm92OkFjdGl2aXR5KSJdIC0tPnx1c2VkfCBBYW5naWZ0ZVsiQWFuZ2lmdGU8YnIvPihkb3NzaWVyOlN0dWspIl0KICAgIFRyYW5zYWN0aWUgLS0+fHdhc0Fzc29jaWF0ZWRXaXRofCBFeHBsb2l0YW50WyJFeHBsb2l0YW50PGJyLz4ocmllcHI6RXhwbG9pdGFudCkiXQogICAgQWFuZ2lmdGUgLS0+fGRjdDppc1BhcnRPZnwgQnVuZGVsWyJBYW5naWZ0ZWJ1bmRlbDxici8+KGRvc3NpZXI6U3R1aykiXQ=="></div>
 
 ## 5. Integratie met data
 
@@ -1021,9 +1021,9 @@ De relatie tussen versie en identity wordt gelegd via `dct:isVersionOf`:
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> .
 ```
 
-### Feature of Interest vs. versieerbare entiteiten
+### Feature of Interest vs. versioneerbare entiteiten
 
-Niet alle entiteiten zijn versieerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet versieerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
+Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet geversioneerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
 
 ```turtle
 # Feature of Interest (geen versie)
@@ -1087,15 +1087,13 @@ Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een mee
 
 Observaties volgen het **SOSA/SSN**-patroon:
 
-```
-Observation → hasFeatureOfInterest → Emissie/Onttrekking/Uitwisseling
-       ↓
-    hasResult → Resultaat (met waarde)
-       ↓
-    observedProperty → wat werd gemeten
-       ↓
-    resultTime → wanneer werd gemeten
-```
+
+graph TD
+    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking/Uitwisseling<br/>(sosa:FeatureOfInterest)"]
+    Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br/>(met waarde + eenheid)"]
+    Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br/>(skos:Concept)"]
+    Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br/>(xsd:dateTime)"]
+<div class="riepr-mermaid" data-mermaid="Z3JhcGggVEQKICAgIE9ic2VydmF0aWVbInNvc2E6T2JzZXJ2YXRpb24iXSAtLT58c29zYTpoYXNGZWF0dXJlT2ZJbnRlcmVzdHwgRk9JWyJFbWlzc2llL09udHRyZWtraW5nL1VpdHdpc3NlbGluZzxici8+KHNvc2E6RmVhdHVyZU9mSW50ZXJlc3QpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6aGFzUmVzdWx0fCBSZXN1bHRhYXRbInNvc2E6UmVzdWx0PGJyLz4obWV0IHdhYXJkZSArIGVlbmhlaWQpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6b2JzZXJ2ZWRQcm9wZXJ0eXwgUHJvcGVydHlbIldhdCB3ZXJkIGdlbWV0ZW48YnIvPihza29zOkNvbmNlcHQpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6cmVzdWx0VGltZXwgVGlqZFsiV2FubmVlciB3ZXJkIGdlbWV0ZW48YnIvPih4c2Q6ZGF0ZVRpbWUpIl0="></div>
 
 Emissie, onttrekking en uitwisseling zijn **gebeurtenissen** (`riepr:Gebeurtenis`) en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" — ze zijn het **onderwerp** van de meting.
 
@@ -1190,7 +1188,7 @@ Er is **geen versiebeheer** voor exploitanten zelf — ze hebben geen `issued` o
 
 ## 2. Contactgegevens
 
-Contactgegevens worden voorgesteld als een `oa:Annotation` die een exploitatie target. Ze zijn gekoppeld aan een specifieke exploitatie (niet direct aan de exploitant).
+Contactgegevens worden voorgesteld als een `oa:Annotation` die een versie/toestand van een exploitatie target. Ze zijn gekoppeld aan een specifieke exploitatie-versie (niet direct aan de exploitant).
 
 ```turtle
 @prefix oa:    <http://www.w3.org/ns/oa#> .
@@ -1204,7 +1202,7 @@ Contactgegevens worden voorgesteld als een `oa:Annotation` die een exploitatie t
     foaf:mbox <mailto:info@example.com> .
 ```
 
-**Belangrijk:** `oa:hasTarget` verwijst naar een **exploitatie** (de versie URI), niet naar de exploitant. Dit maakt contactgegevens contextueel gebonden aan een specifieke exploitatie-toestand.
+**Belangrijk:** `oa:hasTarget` verwijst naar een **exploitatie-versie** (met `/uuid/issued/created` in de URI), niet naar de identity-URI van de exploitant of naar de exploitant zelf. Dit maakt contactgegevens contextueel gebonden aan een specifieke toestand van de exploitatie.
 
 ## 3. Exploitatielocatie
 
@@ -1224,7 +1222,7 @@ Een **exploitatielocatie** is een specifieke geografische locatie waar een explo
 
 ### URI-patroon
 
-Exploitatielocaties zijn **versieerbaar**:
+Exploitatielocaties zijn **versioneerbaar**:
 
 ```turtle
 @prefix ogc:  <http://www.opengis.net/ont/geosparql#> .
@@ -1344,18 +1342,18 @@ Een **proces** is een industrieel proces met hiërarchische stappen. Het is een 
 
 Processen kunnen genest zijn — een subprocess kan zelf weer subprocessen hebben:
 
-```
-Exploitatie
-  └── ssn:implements → Hoofdproces
-        ├── pplan:isStepOfPlan → Emissieproces 1
-        │      └── ssn:implementedBy → Emissiepunt A
-        ├── pplan:isStepOfPlan → Verwerkingsproces 1
-        │      └── ssn:implementedBy → Installatie X
-        ├── pplan:isStepOfPlan → Transportproces
-        │      └── isPrecededBy → Emissieproces 2
-        └── pplan:isStepOfPlan → Meetproces 1
-               └── ssn:implementedBy → Meetpunt M
-```
+
+graph LR
+    Exploitatie["Exploitatie<br/>(riepr:Exploitatie)"] -->|ssn:implements| HoofdProces["Hoofdproces<br/>(riepr:Proces)"]
+    HoofdProces -->|pplan:isStepOfPlan| Emissie1["Emissieproces 1"]
+    HoofdProces -->|pplan:isStepOfPlan| Verwerking1["Verwerkingsproces 1"]
+    HoofdProces -->|pplan:isStepOfPlan| Transport["Transportproces"]
+    HoofdProces -->|pplan:isStepOfPlan| Meet1["Meetproces 1"]
+    Emissie1 -->|ssn:implementedBy| EmissiepuntA["Emissiepunt A"]
+    Verwerking1 -->|ssn:implementedBy| InstallatieX["Installatie X"]
+    Transport -->|isPrecededBy| Emissie2["Emissieproces 2"]
+    Meet1 -->|ssn:implementedBy| MeetpuntM["Meetpunt M"]
+<div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIEV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZTxici8+KHJpZXByOkV4cGxvaXRhdGllKSJdIC0tPnxzc246aW1wbGVtZW50c3wgSG9vZmRQcm9jZXNbIkhvb2ZkcHJvY2VzPGJyLz4ocmllcHI6UHJvY2VzKSJdCiAgICBIb29mZFByb2NlcyAtLT58cHBsYW46aXNTdGVwT2ZQbGFufCBFbWlzc2llMVsiRW1pc3NpZXByb2NlcyAxIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IFZlcndlcmtpbmcxWyJWZXJ3ZXJraW5nc3Byb2NlcyAxIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IFRyYW5zcG9ydFsiVHJhbnNwb3J0cHJvY2VzIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IE1lZXQxWyJNZWV0cHJvY2VzIDEiXQogICAgRW1pc3NpZTEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBFbWlzc2llcHVudEFbIkVtaXNzaWVwdW50IEEiXQogICAgVmVyd2Vya2luZzEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBJbnN0YWxsYXRpZVhbIkluc3RhbGxhdGllIFgiXQogICAgVHJhbnNwb3J0IC0tPnxpc1ByZWNlZGVkQnl8IEVtaXNzaWUyWyJFbWlzc2llcHJvY2VzIDIiXQogICAgTWVldDEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBNZWV0cHVudE1bIk1lZXRwdW50IE0iXQ=="></div>
 
 ## Referenties
 
@@ -1439,7 +1437,16 @@ WHERE {
 
 > **Doel**: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.
 
-Observaties worden gekoppeld aan emissiepunten via `sosa:hasFeatureOfInterest`. Elke observatie heeft een resultaat dat de gemeten waarde bevat.
+Observaties worden gekoppeld aan emissiepunten via `sosa:hasFeatureOfInterest`. Elke observatie heeft een resultaat dat de gemeten waarde bevat. De relatie tussen emissiepunt, emissie-gebeurtenis en observatie ziet er als volgt uit:
+
+
+graph LR
+    Emissiepunt["Emissiepunt<br/>(sosa:System)"] -->|ssn:implementedBy| Proces["Proces<br/>(emissie-type)"]
+    Proces -->|sosa:hasFeatureOfInterest| Emissie["Emissie<br/>(sosa:FeatureOfInterest)"]
+    Observatie["Observatie<br/>(sosa:Observation)"] -->|sosa:hasFeatureOfInterest| Emissie
+    Observatie -->|sosa:hasResult| Resultaat["Resultaat<br/>(waarde + eenheid)"]
+    Observatie -->|sosa:madeBySensor| Meetinstrument["Meetinstrument"]
+<div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIEVtaXNzaWVwdW50WyJFbWlzc2llcHVudDxici8+KHNvc2E6U3lzdGVtKSJdIC0tPnxzc246aW1wbGVtZW50ZWRCeXwgUHJvY2VzWyJQcm9jZXM8YnIvPihlbWlzc2llLXR5cGUpIl0KICAgIFByb2NlcyAtLT58c29zYTpoYXNGZWF0dXJlT2ZJbnRlcmVzdHwgRW1pc3NpZVsiRW1pc3NpZTxici8+KHNvc2E6RmVhdHVyZU9mSW50ZXJlc3QpIl0KICAgIE9ic2VydmF0aWVbIk9ic2VydmF0aWU8YnIvPihzb3NhOk9ic2VydmF0aW9uKSJdIC0tPnxzb3NhOmhhc0ZlYXR1cmVPZkludGVyZXN0fCBFbWlzc2llCiAgICBPYnNlcnZhdGllIC0tPnxzb3NhOmhhc1Jlc3VsdHwgUmVzdWx0YWF0WyJSZXN1bHRhYXQ8YnIvPih3YWFyZGUgKyBlZW5oZWlkKSJdCiAgICBPYnNlcnZhdGllIC0tPnxzb3NhOm1hZGVCeVNlbnNvcnwgTWVldGluc3RydW1lbnRbIk1lZXRpbnN0cnVtZW50Il0="></div>
 
 ```turtle
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
@@ -1613,7 +1620,7 @@ Een **emissie** is een gebeurtenis waarbij stoffen de installatie verlaten (aan 
     a riepr:Emissie, sosa:FeatureOfInterest, prov:Entity .
 ```
 
-Emissies hebben een **twee-segment URI** (`{type}/{uuid}`) — ze worden niet versieerd.
+Emissies hebben een **twee-segment URI** (`{type}/{uuid}`) — ze worden niet geversioneerd.
 
 ### Onttrekking
 
@@ -1650,7 +1657,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 
 ### URI-patroon
 
-Observaties zijn **versieerbaar** met een twee-segment patroon (`{type}/{uuid}/{created}`):
+Observaties zijn **versioneerbaar** met een drie-segment patroon (`{type}/{uuid}/{created}`):
 
 ```turtle
 @prefix sosa:  <http://www.w3.org/ns/sosa/> .
@@ -1999,6 +2006,15 @@ Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en leng
 
 Systemen kunnen genest zijn — een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):
 
+
+graph TD
+    Installatie["Installatie<br/>(riepr:Installatie)"] -->|ssn:hasSubSystem| Emissiepunt["Emissiepunt<br/>(riepr:Emissiepunt)"]
+    Installatie -->|ssn:hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>(riepr:Onttrekkingspunt)"]
+    Installatie -->|ssn:hasSubSystem| Meetpunt["Meetpunt<br/>(riepr:Meetpunt)"]
+    Installatie -->|ssn:hasSubSystem| Filter["Filter<br/>(sosa:System)"]
+    Emissiepunt -->|ssn:hasSubSystem| MeetInstrument["Meetinstrument<br/>(riepr:MeetInstrument)"]
+<div class="riepr-mermaid" data-mermaid="Z3JhcGggVEQKICAgIEluc3RhbGxhdGllWyJJbnN0YWxsYXRpZTxici8+KHJpZXByOkluc3RhbGxhdGllKSJdIC0tPnxzc246aGFzU3ViU3lzdGVtfCBFbWlzc2llcHVudFsiRW1pc3NpZXB1bnQ8YnIvPihyaWVwcjpFbWlzc2llcHVudCkiXQogICAgSW5zdGFsbGF0aWUgLS0+fHNzbjpoYXNTdWJTeXN0ZW18IE9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQ8YnIvPihyaWVwcjpPbnR0cmVra2luZ3NwdW50KSJdCiAgICBJbnN0YWxsYXRpZSAtLT58c3NuOmhhc1N1YlN5c3RlbXwgTWVldHB1bnRbIk1lZXRwdW50PGJyLz4ocmllcHI6TWVldHB1bnQpIl0KICAgIEluc3RhbGxhdGllIC0tPnxzc246aGFzU3ViU3lzdGVtfCBGaWx0ZXJbIkZpbHRlcjxici8+KHNvc2E6U3lzdGVtKSJdCiAgICBFbWlzc2llcHVudCAtLT58c3NuOmhhc1N1YlN5c3RlbXwgTWVldEluc3RydW1lbnRbIk1lZXRpbnN0cnVtZW50PGJyLz4ocmllcHI6TWVldEluc3RydW1lbnQpIl0="></div>
+
 ```turtle
 # GPBV-installatie als bovenliggend systeem
 <.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z>
@@ -2079,7 +2095,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 
 ### Feature of Interest (geen versie)
 
-Emissies, onttrekkingen en uitwisselingen hebben een **twee-segment URI** zonder tijd — ze zijn geen versieerbare entiteiten:
+Emissies, onttrekkingen en uitwisselingen hebben een **twee-segment URI** zonder tijd — ze zijn geen versioneerbare entiteiten:
 
 ```
 https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}

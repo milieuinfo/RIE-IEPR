@@ -47,9 +47,9 @@ De relatie tussen versie en identity wordt gelegd via `dct:isVersionOf`:
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> .
 ```
 
-### Feature of Interest vs. versieerbare entiteiten
+### Feature of Interest vs. versioneerbare entiteiten
 
-Niet alle entiteiten zijn versieerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet versieerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
+Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet geversioneerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
 
 ```turtle
 # Feature of Interest (geen versie)
@@ -113,14 +113,12 @@ Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een mee
 
 Observaties volgen het **SOSA/SSN**-patroon:
 
-```
-Observation → hasFeatureOfInterest → Emissie/Onttrekking/Uitwisseling
-       ↓
-    hasResult → Resultaat (met waarde)
-       ↓
-    observedProperty → wat werd gemeten
-       ↓
-    resultTime → wanneer werd gemeten
+```mermaid
+graph TD
+    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking/Uitwisseling<br/>(sosa:FeatureOfInterest)"]
+    Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br/>(met waarde + eenheid)"]
+    Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br/>(skos:Concept)"]
+    Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br/>(xsd:dateTime)"]
 ```
 
 Emissie, onttrekking en uitwisseling zijn **gebeurtenissen** (`riepr:Gebeurtenis`) en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" — ze zijn het **onderwerp** van de meting.

@@ -71,7 +71,16 @@ WHERE {
 
 > **Doel**: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.
 
-Observaties worden gekoppeld aan emissiepunten via `sosa:hasFeatureOfInterest`. Elke observatie heeft een resultaat dat de gemeten waarde bevat.
+Observaties worden gekoppeld aan emissiepunten via `sosa:hasFeatureOfInterest`. Elke observatie heeft een resultaat dat de gemeten waarde bevat. De relatie tussen emissiepunt, emissie-gebeurtenis en observatie ziet er als volgt uit:
+
+```mermaid
+graph LR
+    Emissiepunt["Emissiepunt<br/>(sosa:System)"] -->|ssn:implementedBy| Proces["Proces<br/>(emissie-type)"]
+    Proces -->|sosa:hasFeatureOfInterest| Emissie["Emissie<br/>(sosa:FeatureOfInterest)"]
+    Observatie["Observatie<br/>(sosa:Observation)"] -->|sosa:hasFeatureOfInterest| Emissie
+    Observatie -->|sosa:hasResult| Resultaat["Resultaat<br/>(waarde + eenheid)"]
+    Observatie -->|sosa:madeBySensor| Meetinstrument["Meetinstrument"]
+```
 
 ```turtle
 @prefix sosa: <http://www.w3.org/ns/sosa/> .

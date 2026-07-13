@@ -27,11 +27,13 @@ Een **aangiftebundel** is een verzameling van aangiften. Het is eveneens een sub
     dct:title "Bundel RIE-IEPR aangiften 2026"@nl .
 ```
 
-Een bundel kan meerdere aangiften bevatten via `dossier:hasPart`:
+Een aangifte kan deel uitmaken van een aangiftebundel via `dct:isPartOf`:
 
 ```turtle
-<.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9>
-    dossier:hasPart <.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
+    dct:isPartOf <.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9> .
 ```
 
 ## 3. Transactie
@@ -53,13 +55,11 @@ Een transactie kan meerdere fasen hebben:
 
 ## 4. Relaties tussen entiteiten
 
-```
-Transactie (prov:Activity)
-  ├── used → Aangifte (dossier:Stuk)
-  └── wasAssociatedWith → Exploitant (riepr:Exploitant)
-
-Aangiftebundel (dossier:Stuk)
-  └── hasPart → Aangifte (dossier:Stuk)
+```mermaid
+graph LR
+    Transactie["Transactie<br/>(prov:Activity)"] -->|used| Aangifte["Aangifte<br/>(dossier:Stuk)"]
+    Transactie -->|wasAssociatedWith| Exploitant["Exploitant<br/>(riepr:Exploitant)"]
+    Aangifte -->|dct:isPartOf| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
 ```
 
 ## 5. Integratie met data

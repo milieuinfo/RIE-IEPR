@@ -190,6 +190,15 @@ Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en leng
 
 Systemen kunnen genest zijn — een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):
 
+```mermaid
+graph TD
+    Installatie["Installatie<br/>(riepr:Installatie)"] -->|ssn:hasSubSystem| Emissiepunt["Emissiepunt<br/>(riepr:Emissiepunt)"]
+    Installatie -->|ssn:hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>(riepr:Onttrekkingspunt)"]
+    Installatie -->|ssn:hasSubSystem| Meetpunt["Meetpunt<br/>(riepr:Meetpunt)"]
+    Installatie -->|ssn:hasSubSystem| Filter["Filter<br/>(sosa:System)"]
+    Emissiepunt -->|ssn:hasSubSystem| MeetInstrument["Meetinstrument<br/>(riepr:MeetInstrument)"]
+```
+
 ```turtle
 # GPBV-installatie als bovenliggend systeem
 <.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z>

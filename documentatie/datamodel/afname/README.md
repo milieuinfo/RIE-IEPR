@@ -31,7 +31,7 @@ De meeste entiteiten volgen een consistent URI-patroon:
 | Emissiepunt (versie) | `.../emissiepunt/{uuid}/{issued}/{created}` | `.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z` |
 | Observatie | `.../observatie/{uuid}/{created}` | `.../observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z` |
 
-Versieerbare entiteiten bevatten **drie** segmenten in de URI: een unieke identifier, de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`). De tijdsloze identity-uri (twee segmenten) is bereikbaar via `dct:isVersionOf`.
+Versioneerbare entiteiten bevatten **drie** segmenten in de URI: een unieke identifier, de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`). De tijdsloze identity-uri (twee segmenten) is bereikbaar via `dct:isVersionOf`.
 
 ## Externe standaarden
 

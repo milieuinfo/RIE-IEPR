@@ -33,7 +33,7 @@ Een **emissie** is een gebeurtenis waarbij stoffen de installatie verlaten (aan 
     a riepr:Emissie, sosa:FeatureOfInterest, prov:Entity .
 ```
 
-Emissies hebben een **twee-segment URI** (`{type}/{uuid}`) — ze worden niet versieerd.
+Emissies hebben een **twee-segment URI** (`{type}/{uuid}`) — ze worden niet geversioneerd.
 
 ### Onttrekking
 
@@ -70,7 +70,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 
 ### URI-patroon
 
-Observaties zijn **versieerbaar** met een twee-segment patroon (`{type}/{uuid}/{created}`):
+Observaties zijn **versioneerbaar** met een drie-segment patroon (`{type}/{uuid}/{created}`):
 
 ```turtle
 @prefix sosa:  <http://www.w3.org/ns/sosa/> .

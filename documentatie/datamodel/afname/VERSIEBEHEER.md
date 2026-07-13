@@ -28,7 +28,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 
 ### Feature of Interest (geen versie)
 
-Emissies, onttrekkingen en uitwisselingen hebben een **twee-segment URI** zonder tijd — ze zijn geen versieerbare entiteiten:
+Emissies, onttrekkingen en uitwisselingen hebben een **twee-segment URI** zonder tijd — ze zijn geen versioneerbare entiteiten:
 
 ```
 https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}

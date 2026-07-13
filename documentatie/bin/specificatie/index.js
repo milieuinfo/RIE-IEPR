@@ -906,7 +906,29 @@ function includeAfnameContent() {
         content += `## ${sectionTitle} ## {#${slug}}\n\n`;
         
         // Skip the first line (title) and include rest of content
-        const contentLines = lines.slice(1);
+        let contentLines = lines.slice(1);
+        
+        // Collect mermaid diagram blocks and encode them for Bikeshed compatibility
+        let inMermaid = false;
+        let currentBlock = [];
+        contentLines = contentLines.map(line => {
+          if (line.trim() === '```mermaid') {
+            inMermaid = true;
+            currentBlock = [];
+            return '';
+          }
+          if (inMermaid && line.trim() === '```') {
+            inMermaid = false;
+            const mermaidText = currentBlock.join('\n');
+            const b64 = Buffer.from(mermaidText, 'utf8').toString('base64');
+            return `<div class="riepr-mermaid" data-mermaid="${b64}"></div>`;
+          }
+          if (inMermaid) {
+            currentBlock.push(line);
+          }
+          return line;
+        });
+        
         content += contentLines.join('\n');
         content += "\n\n";
       } catch (e) {
