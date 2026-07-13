@@ -1,6 +1,5 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -37,7 +36,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "observatie")
-public class Observatie implements IObservation {
+public class Observatie {
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	@Id
 	@Column(name = "uuid", nullable = false)
@@ -47,31 +46,21 @@ public class Observatie implements IObservation {
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
-	@Column(name = "aangemaakt_op", nullable = true)
-	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/issued">issued</a>
-	@Column(name = "geldig_van", nullable = true)
-	@JsonProperty("issued")
-	private LocalDate geldigVan;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
-	@Column(name = "aangepast_op", nullable = true)
-	@JsonProperty("modified")
-	private LocalDateTime aangepastOp;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
-	@Column(name = "benaming", nullable = true)
-	@JsonProperty("label")
-	private String benaming;
 	// <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
+	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasFeatureOfInterest")
-	private ISysteem heeftAandachtspunt;
+	private IGebeurtenis betrekkingTot;
 	// <a href="http://www.w3.org/ns/sosa/hasResult">hasResult</a>
-	@JoinColumn(name = "uuid", nullable = true)
+	@ManyToMany
+	@JoinTable(
+		name = "observatie_resultaat",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
 	@JsonProperty("hasResult")
-	private Resultaat heeftResultaat;
+	private List<Resultaat> heeftResultaat;
 	// <a href="http://www.w3.org/ns/sosa/madeBySensor">madeBySensor</a>
-	@JoinColumn(name = "uuid", nullable = true)
+	@JoinColumn(name = "systeem_uuid", nullable = true)
 	@JsonProperty("madeBySensor")
 	private MeetInstrument madeBySensor;
 	// <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
@@ -90,4 +79,8 @@ public class Observatie implements IObservation {
 	@Column(name = "used_procedure", nullable = true)
 	@JsonProperty("usedProcedure")
 	private String usedProcedure;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	@JoinColumn(name = "uuid", nullable = true)
+	@JsonProperty("aangifte")
+	private Aangifte aangifte;
 }

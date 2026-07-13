@@ -1,5 +1,5 @@
+import { AangifteBundel } from './aangiftebundel.model';
 import { Exploitatie } from './exploitatie.model';
-import { Observatie } from './observatie.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -10,12 +10,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Aangifte {
 	/**
-	 * vlaanderenId
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId}
-	 * Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften.
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
 	 */
-	@jsonMember({ name: 'vlaanderenId' })
-	vlaanderenId: string;
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
+	 * uuid
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
+	 * UUID
+	 */
+	@jsonMember({ name: 'uuid' })
+	uuid?: string;
 
 	/**
 	 * uri
@@ -36,26 +43,34 @@ export class Aangifte {
 	/**
 	 * isPartOf
 	 * @see {@link http://purl.org/dc/terms/isPartOf}
-	 * Een aangifte kan deel zijn van een andere aangifte.
+	 * Een aangifte kan deel zijn van een andere bundel.
 	 */
-	@jsonMember(() => Aangifte, { name: 'isPartOf' })
-	onderdeelVan?: Aangifte;
+	@jsonMember(() => AangifteBundel, { name: 'isPartOf' })
+	onderdeelVan?: AangifteBundel;
+
+	/**
+	 * modified
+	 * @see {@link http://purl.org/dc/terms/modified}
+	 * Een aangifte kan een datum van goedkeuring hebben.
+	 */
+	@jsonMember(() => Date, { name: 'modified' })
+	aangepastOp?: Date;
 
 	/**
 	 * subject
 	 * @see {@link http://purl.org/dc/terms/subject}
-	 * Een aangifte heeft betrekking tot een concept.
+	 * Een aangifte heeft betrekking tot een enkele exploitatie.
 	 */
 	@jsonArrayMember(() => Exploitatie, { name: 'subject' })
-	subject?: (Exploitatie | Observatie)[];
+	onderwerp?: Exploitatie[];
 
 	/**
-	 * wasAssociatedWith
-	 * @see {@link http://www.w3.org/ns/prov#wasAssociatedWith}
-	 * Een aangifte heeft optioneel een auteur (die verschillend kan zijn dan de indiener).
+	 * vlaanderenId
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId}
+	 * Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften.
 	 */
-	@jsonMember({ name: 'wasAssociatedWith' })
-	verantwoordelijke?: string;
+	@jsonMember({ name: 'vlaanderenId' })
+	vlaanderenId?: string;
 
 	/**
 	 * informatieclassificatie

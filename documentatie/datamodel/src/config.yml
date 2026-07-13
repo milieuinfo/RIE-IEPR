@@ -1,0 +1,177 @@
+ontology:
+  ontology-file-path: "./ns/riepr/riepr.ttl"
+  concepts-file-path: "./id/concept/riepr/riepr.ttl"
+  enum-classes:
+    classes:
+      - "http://www.w3.org/ns/sosa/Procedure"
+      - "http://www.w3.org/ns/adms#Status"
+    trim-class-name-from-values: true
+  temporal-properties:
+    - "http://purl.org/dc/terms/created"
+    - "http://purl.org/dc/terms/issued"
+    - "http://purl.org/dc/terms/valid"
+  extra-properties:
+    # We want to use UUIDs as identifiers (including any identifiers from the IRI Template's)
+    - name: "uuid"
+      uri: "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+      comment: "UUID"
+      identifier: true
+      range: "http://www.w3.org/2001/XMLSchema#string"
+      cardinality:
+        max: 1
+        min: 1
+    # We want to keep the URI in the database for reference
+    - name: "uri"
+      uri: "http://example.org/vocab/uri"
+      comment: "URI"
+      range: "http://www.w3.org/2001/XMLSchema#string"
+      cardinality:
+        max: 1
+        min: 1
+  override-properties:
+    - uri: "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+      comment: "UUID"
+      name: "uuid"
+      identifier: true
+      range: "http://www.w3.org/2001/XMLSchema#string"
+      cardinality:
+        max: 1
+        min: 1
+    - uri: "http://www.w3.org/2000/01/rdf-schema#label"
+      cardinality:
+        max: 1
+      range: "http://www.w3.org/2001/XMLSchema#string"
+    - uri: "http://www.w3.org/2000/01/rdf-schema#comment"
+      cardinality:
+        max: 1
+      range: "http://www.w3.org/2001/XMLSchema#string"
+    - uri: "http://qudt.org/schema/qudt/numericValue"
+      cardinality:
+        max: 1
+      range: "http://www.w3.org/2001/XMLSchema#decimal"
+    # By setting the range to rdfs:Datatype, we create a new attribute for the datatype
+    - uri: "http://www.w3.org/2004/02/skos/core#notation"
+      range: "http://www.w3.org/2000/01/rdf-schema#Datatype"
+  override-datatypes:
+    - uri: "http://www.w3.org/2000/01/rdf-schema#Literal"
+      override: "http://www.w3.org/2001/XMLSchema#string"
+  surrogate-keys:
+    enabled: true
+    name: "id" # Om verwarring tegen te gaan noem ik het 'id' ipv uuid
+    datatype: "http://www.w3.org/2001/XMLSchema#string"
+generators:
+  class-diagram:
+    output-file: "../diagrammen/class-diagram.mmd"
+  er-diagram:
+    output-file: "../diagrammen/er-diagram.mmd"
+  sql-generator:
+    output-file: "../generated/sql/schema.sql"
+  shacl-generator:
+    output-file: "../generated/shacl/schema.ttl"
+  java-generator:
+    package-name: be.vlaanderen.omgeving.mjv.model.structuur
+    output-directory: "../generated/java"
+    cleanup-stale-files: true
+  typescript-generator:
+    output-directory: "../generated/typescript"
+    cleanup-stale-files: true
+  bikeshed-generator:
+    output-file: "target/test-cache/bikeshed/ontology.bs"
+    title: "RIE-IEPR Ontology"
+    status: "LS"
+    editor-name: "ODDToolkit"
+    editor-affiliation: "Vlaamse overheid"
+
+  schema-generator:
+    join-table-name-pattern: "{source_table}_{target_table}"
+    source-column-name-pattern: "{source_table}_id"
+    target-column-name-pattern: "{target_table}_id"
+
+    # Create stable identity tables for classes that have more than one primary key
+    identity-tables:
+      enabled: true
+      table-name-suffix: "identity"
+
+    # Merge join tables if two classes have multiple relations to each other,
+    # differentiated only by the property
+    merge-join-tables:
+      enabled: true
+      attribute-name: "relation_type"
+      excluded-pairs:
+        - source-uri: "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces"
+          target-uri: "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces"
+
+  diagram-generator:
+    styles:
+      - name: "system"
+        uri: "http://www.w3.org/ns/ssn/System"
+        props:
+          fill: "#4bde2a"
+          stroke: "#000000"
+      - name: "procedure"
+        uris:
+          - "http://www.w3.org/ns/sosa/Procedure"
+          - "http://purl.org/net/p-plan#Variable"
+        props:
+          fill: "#ccffcc"
+          stroke: "#000000"
+      - name: "result"
+        uri: "http://www.w3.org/ns/sosa/Result"
+        props:
+          fill: "#ccccff"
+          stroke: "#000000"
+      - name: "exploitant"
+        uris:
+          - "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant"
+          - "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ExploitatieLocatie"
+          - "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie"
+          - "http://xmlns.com/foaf/0.1/Person"
+        props:
+          fill: "#f6ff00"
+          stroke: "#000000"
+
+adapters:
+  ontology-reasoner:
+    enabled: true
+    rules-file: "./reasoner.rules"
+    reasoner-type: "owl"
+    reasoner-materialize: true
+    reasoner-timeout-ms: 0
+    inferred-output-enabled: true
+    inferred-output-path: ".cache/inferred/inferred.ttl"
+    inferred-cache-enabled: true
+    inferred-cache-ttl-ms: 3600000
+    inferred-cache-dir: ".cache/inferred"
+    inferred-cache-format: "TURTLE"
+  ontology-extract-external:
+    mirrors:
+      - uri: "http://www.w3.org/ns/prov#"
+        mirrors:
+          - "https://www.w3.org/ns/prov-o"
+      - uri: "http://purl.org/net/p-plan#"
+        mirrors:
+          - "https://dgarijo.github.io/Vocabularies/P-PLAN/Releases/Release12032014/p-plan.owl"
+      - uri: "http://www.w3.org/ns/sosa/prov"
+        mirrors:
+          - "https://raw.githubusercontent.com/w3c/sdw/refs/heads/gh-pages/ssn/rdf/sosa-prov-mapping.ttl"
+      - uri: "http://qudt.org/schema/qudt/"
+        mirrors:
+          - "https://raw.githubusercontent.com/qudt/qudt-public-repo/refs/heads/main/src/main/rdf/schema/SCHEMA_QUDT.ttl"
+      - uri: "http://xmlns.com/foaf/0.1/"
+        mirrors:
+          - "https://xmlns.com/foaf/spec/index.rdf"
+      - uri: "http://www.w3.org/ns/locn#"
+        mirrors:
+          - "https://www.w3.org/ns/legacy_locn.ttl"
+      - uri: "http://www.w3.org/ns/adms#"
+        mirrors:
+          - "https://www.w3.org/ns/legacy_adms.ttl"
+      - uri: "http://dbpedia.org/ontology/"
+        mirrors:
+          - "https://downloads.dbpedia.org/2016-10/dbpedia_2016-10.nt"
+      - uri: "http://www.opengis.net/ont/geosparql#"
+        mirrors:
+          - "https://raw.githubusercontent.com/opengeospatial/ogc-geosparql/refs/heads/master/vocabularies/geo.ttl"
+    cache-dir: ".cache/external"
+    cache-ttl-ms: 3600000
+    cache-enabled: true

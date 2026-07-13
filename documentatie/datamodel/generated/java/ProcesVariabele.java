@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -49,15 +49,6 @@ public class ProcesVariabele {
 	@Column(name = "type", nullable = true)
 	@JsonProperty("type")
 	private String type;
-	// <a href="http://purl.org/net/p-plan#isInputVarOf">isInputVarOf</a>
-	@ManyToMany
-	@JoinTable(
-		name = "proces_variabele_proces",
-		joinColumns = @JoinColumn(name = "source_uuid"),
-		inverseJoinColumns = @JoinColumn(name = "target_uuid")
-	)
-	@JsonProperty("isInputVarOf")
-	private List<Proces> isInputVarOf;
 	// <a href="http://qudt.org/schema/qudt/hasUnit">hasUnit</a>
 	@Column(name = "eenheid", nullable = true)
 	@JsonProperty("hasUnit")

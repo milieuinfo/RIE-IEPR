@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -25,17 +25,22 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * SysteemEigenschap
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap">SysteemEigenschap</a>
+ * Systeemeigenschap
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap">Systeemeigenschap</a>
  **/
 @Getter
 @Setter
-@Entity(name = "SysteemEigenschap")
+@Entity(name = "Systeemeigenschap")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "systeem_eigenschap")
-public class SysteemEigenschap {
+@Table(name = "systeemeigenschap")
+public class Systeemeigenschap {
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Id
+	@Column(name = "uuid", nullable = false)
+	@JsonProperty("uuid")
+	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
@@ -48,18 +53,22 @@ public class SysteemEigenschap {
 	@Column(name = "eenheid", nullable = true)
 	@JsonProperty("hasUnit")
 	private String eenheid;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#range">range</a>
-	@Column(name = "datatype", nullable = false)
-	@JsonProperty("range")
-	private String datatype;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#range">range</a>
-	@Column(name = "datatype", nullable = false)
-	@JsonProperty("range")
-	private String range;
+	// <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
+	@Column(name = "benaming", nullable = true)
+	@JsonProperty("label")
+	private String benaming;
 	// <a href="http://www.w3.org/2000/01/rdf-schema#value">value</a>
 	@Column(name = "value", nullable = true)
 	@JsonProperty("value")
 	private String value;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype">datatype</a>
+	@Column(name = "datatype", nullable = true)
+	@JsonProperty("datatype")
+	private String datatype;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype">datatype</a>
+	@Column(name = "datatype", nullable = true)
+	@JsonProperty("datatype")
+	private String datatype_datatype;
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter">parameter</a>
 	@Column(name = "parameter", nullable = true)
 	@JsonProperty("parameter")

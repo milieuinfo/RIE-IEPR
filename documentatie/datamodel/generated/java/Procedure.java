@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,9 +28,9 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/sosa/Procedure">Procedure</a>
  **/
 public enum Procedure {
-	EMISSIE = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#EmissieProcedure",
-	MEET = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetProcedure",
-	ONTTREKKING = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#OnttrekkingProcedure",
-	TRANSPORT = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#TransportProcedure",
-	VERWERKING = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#VerwerkingProcedure",
+	EMISSIE = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#emissieProcedure",
+	MEET = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#meetProcedure",
+	ONTTREKKING = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#onttrekkingProcedure",
+	UITWISSEL = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitwisselProcedure",
+	VERWERKING = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#verwerkingProcedure",
 }

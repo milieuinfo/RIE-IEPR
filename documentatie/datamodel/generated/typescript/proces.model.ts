@@ -1,5 +1,4 @@
 import { Aangifte } from './aangifte.model';
-import { Installatie } from './installatie.model';
 import { Procedure } from './procedure.enum';
 import { ProcesVariabele } from './procesvariabele.model';
 import { Rubriek } from './rubriek.model';
@@ -14,28 +13,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Proces {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
-
-	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een proces kan een geldigheid start hebben
-	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
-
-	/**
-	 * created
-	 * @see {@link http://purl.org/dc/terms/created}
-	 * Een proces moet een datum hebben waarop het is ingegeven
-	 */
-	@jsonMember(() => Date, { name: 'created' })
-	aangemaaktOp: Date;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -44,6 +34,22 @@ export class Proces {
 	 */
 	@jsonMember({ name: 'uri' })
 	uri?: string;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een proces moet een datum hebben waarop het is ingegeven
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp?: Date;
+
+	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een proces kan een geldigheid start hebben
+	 */
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan?: Date;
 
 	/**
 	 * valid
@@ -125,14 +131,6 @@ export class Proces {
 	benaming?: string;
 
 	/**
-	 * status
-	 * @see {@link http://www.w3.org/ns/adms#status}
-	 * Een proces moet een enkele status hebben
-	 */
-	@jsonMember(() => Rubriek, { name: 'status' })
-	status?: Rubriek;
-
-	/**
 	 * wasRevisionOf
 	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
 	 * Een proces kan een revisie zijn van een ander proces (optioneel)
@@ -143,15 +141,15 @@ export class Proces {
 	/**
 	 * implementedBy
 	 * @see {@link http://www.w3.org/ns/ssn/implementedBy}
-	 * Een proces kan optioneel een variable die een systeem representeert gebruiken
+	 * Een proces kan het gebruik van een systeem representeren
 	 */
 	@jsonMember(() => Systeem, { name: 'implementedBy' })
-	systeem?: (Systeem | Installatie);
+	systeem: Systeem;
 
 	/**
 	 * aangifte
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
-	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@jsonMember(() => Aangifte, { name: 'aangifte' })
 	aangifte?: Aangifte;

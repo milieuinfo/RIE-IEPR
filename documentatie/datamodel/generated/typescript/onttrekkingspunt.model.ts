@@ -1,11 +1,9 @@
 import { Aangifte } from './aangifte.model';
-import { Exploitatie } from './exploitatie.model';
-import { Exploitatielocatie } from './exploitatielocatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Filter } from './filter.model';
-import { Rubriek } from './rubriek.model';
+import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
-import { SysteemEigenschap } from './systeemeigenschap.model';
+import { Systeemeigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -16,28 +14,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Onttrekkingspunt implements Systeem {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
-
-	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een onttrekkingspunt moet een geldigheid start hebben
-	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
-
-	/**
-	 * created
-	 * @see {@link http://purl.org/dc/terms/created}
-	 * Een onttrekkingspunt moet een creatie datum hebben
-	 */
-	@jsonMember(() => Date, { name: 'created' })
-	aangemaaktOp: Date;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -48,20 +37,28 @@ export class Onttrekkingspunt implements Systeem {
 	uri?: string;
 
 	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een onttrekkingspunt moet een creatie datum hebben
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp?: Date;
+
+	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een onttrekkingspunt moet een geldigheid start hebben
+	 */
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan?: Date;
+
+	/**
 	 * valid
 	 * @see {@link http://purl.org/dc/terms/valid}
 	 * Een onttrekkingspunt kan een geldigheid einde hebben
 	 */
 	@jsonMember(() => Date, { name: 'valid' })
 	geldigTot?: Date;
-
-	/**
-	 * depth
-	 * @see {@link http://dbpedia.org/ontology/depth}
-	 * Een onttrekkingspunt kan een diepte hebben
-	 */
-	@jsonMember({ name: 'depth' })
-	depth?: string;
 
 	/**
 	 * modified
@@ -108,8 +105,8 @@ export class Onttrekkingspunt implements Systeem {
 	 * @see {@link http://www.w3.org/ns/adms#status}
 	 * Een onttrekkingspunt moet een enkele status hebben
 	 */
-	@jsonMember(() => Rubriek, { name: 'status' })
-	status?: Rubriek;
+	@jsonMember(() => String, { name: 'status' })
+	status?: Status;
 
 	/**
 	 * wasRevisionOf
@@ -120,27 +117,12 @@ export class Onttrekkingspunt implements Systeem {
 	revisieVan?: Systeem;
 
 	/**
-	 * isHostedBy
-	 * @see {@link http://www.w3.org/ns/sosa/isHostedBy}
-	 * Een onttrekkingspunt kan gehost worden door een exploitatielocatie
-	 */
-	@jsonMember(() => Exploitatielocatie, { name: 'isHostedBy' })
-	locatie?: Exploitatielocatie;
-
-	/**
-	 * hasDeployment
-	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
-	 */
-	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
-	hasDeployment?: Exploitatie[];
-
-	/**
 	 * hasProperty
 	 * @see {@link http://www.w3.org/ns/ssn/hasProperty}
 	 * Een onttrekkingspunt kan meerdere eigenschappen hebben
 	 */
-	@jsonArrayMember(() => SysteemEigenschap, { name: 'hasProperty' })
-	heeftEigenschap?: SysteemEigenschap[];
+	@jsonArrayMember(() => Systeemeigenschap, { name: 'hasProperty' })
+	heeftEigenschap?: Systeemeigenschap[];
 
 	/**
 	 * hasSubSystem
@@ -153,9 +135,25 @@ export class Onttrekkingspunt implements Systeem {
 	/**
 	 * aangifte
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
-	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@jsonMember(() => Aangifte, { name: 'aangifte' })
 	aangifte?: Aangifte;
+
+	/**
+	 * inGebruikTot
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot}
+	 * De niet-functionele datum waarop een entiteit buiten gebruik is gesteld.
+	 */
+	@jsonMember(() => Date, { name: 'inGebruikTot' })
+	inGebruikTot?: Date;
+
+	/**
+	 * inGebruikVanaf
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf}
+	 * De niet-functionele datum waarop een entiteit in gebruik is genomen.
+	 */
+	@jsonMember(() => Date, { name: 'inGebruikVanaf' })
+	inGebruikVanaf?: Date;
 
 }

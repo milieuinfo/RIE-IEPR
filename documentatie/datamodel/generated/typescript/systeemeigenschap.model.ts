@@ -1,12 +1,20 @@
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
- * SysteemEigenschap
- * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap}
- * Een systeem eigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw.
+ * Systeemeigenschap
+ * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap}
+ * Een systeemeigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw.
  */
 @jsonObject
-export class SysteemEigenschap {
+export class Systeemeigenschap {
+	/**
+	 * uuid
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
+	 * UUID
+	 */
+	@jsonMember({ name: 'uuid' })
+	uuid: string;
+
 	/**
 	 * uri
 	 * @see {@link http://example.org/vocab/uri}
@@ -32,20 +40,12 @@ export class SysteemEigenschap {
 	eenheid?: string;
 
 	/**
-	 * range
-	 * @see {@link http://www.w3.org/2000/01/rdf-schema#range}
-	 * Een systeem eigenschap moet een datatype hebben
+	 * label
+	 * @see {@link http://www.w3.org/2000/01/rdf-schema#label}
+	 * Een systeem eigenschap kan een benaming hebben
 	 */
-	@jsonMember({ name: 'range' })
-	datatype: string;
-
-	/**
-	 * range
-	 * @see {@link http://www.w3.org/2000/01/rdf-schema#range}
-	 * Een systeem eigenschap moet een datatype hebben
-	 */
-	@jsonMember({ name: 'range' })
-	range?: string;
+	@jsonMember({ name: 'label' })
+	benaming?: string;
 
 	/**
 	 * value
@@ -54,6 +54,22 @@ export class SysteemEigenschap {
 	 */
 	@jsonMember({ name: 'value' })
 	value?: string;
+
+	/**
+	 * datatype
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype}
+	 * Het datatype van de waarde van een systeem eigenschap.
+	 */
+	@jsonMember({ name: 'datatype' })
+	datatype?: string;
+
+	/**
+	 * datatype
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#datatype}
+	 * Het datatype van de waarde van een systeem eigenschap.
+	 */
+	@jsonMember({ name: 'datatype' })
+	datatype_datatype: string;
 
 	/**
 	 * parameter

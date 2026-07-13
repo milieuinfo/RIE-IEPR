@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -35,21 +35,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "emissie")
-public class Emissie {
+public class Emissie implements IGebeurtenis {
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	@Id
-	@Column(name = "uuid", nullable = false)
+	@Column(name = "gebeurtenis_uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://www.w3.org/ns/sosa/isFeatureOfInterestOf">isFeatureOfInterestOf</a>
-	@JsonProperty("isFeatureOfInterestOf")
-	private List<IObservation> isFeatureOfInterestOf;
-	// <a href="http://www.w3.org/ns/ssn/hasProperty">hasProperty</a>
-	@Column(name = "heeft_eigenschap", nullable = true)
-	@JsonProperty("hasProperty")
-	private List<ObservableProperty> heeftEigenschap;
+	// <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
+	@ManyToMany
+	@JoinTable(
+		name = "emissie_proces",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("hasFeatureOfInterest")
+	private List<Proces> betrekkingTot;
 }

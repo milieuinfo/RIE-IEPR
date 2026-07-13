@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -45,15 +45,4 @@ public class Resultaat {
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://qudt.org/schema/qudt/hasUnit">hasUnit</a>
-	@Column(name = "eenheid", nullable = true)
-	@JsonProperty("hasUnit")
-	private String eenheid;
-	// <a href="http://qudt.org/schema/qudt/numericValue">numericValue</a>
-	@Column(name = "waarde", nullable = true)
-	@JsonProperty("numericValue")
-	private Double waarde;
-	// <a href="http://www.w3.org/ns/sosa/isResultOf">isResultOf</a>
-	@JsonProperty("isResultOf")
-	private List<IObservation> isResultOf;
 }

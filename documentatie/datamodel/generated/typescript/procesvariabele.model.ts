@@ -1,4 +1,3 @@
-import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -31,13 +30,6 @@ export class ProcesVariabele {
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;
-
-	/**
-	 * isInputVarOf
-	 * @see {@link http://purl.org/net/p-plan#isInputVarOf}
-	 */
-	@jsonArrayMember(() => Proces, { name: 'isInputVarOf' })
-	isInputVarOf?: Proces[];
 
 	/**
 	 * hasUnit

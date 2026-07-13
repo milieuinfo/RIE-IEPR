@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,6 +37,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "transactie")
 public class Transactie {
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Id
+	@Column(name = "uuid", nullable = false)
+	@JsonProperty("uuid")
+	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
@@ -50,9 +55,16 @@ public class Transactie {
 	@JsonProperty("startedAtTime")
 	private LocalDateTime startdatum;
 	// <a href="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a>
+	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("wasAssociatedWith")
 	private Exploitant verantwoordelijke;
 	// <a href="https://data.vlaanderen.be/ns/dossier#genereert">genereert</a>
+	@ManyToMany
+	@JoinTable(
+		name = "transactie_aangifte_bundel",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
 	@JsonProperty("genereert")
-	private List<Aangifte> genereert;
+	private List<AangifteBundel> genereert;
 }

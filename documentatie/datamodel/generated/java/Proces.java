@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,27 +37,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "proces")
-@IdClass(Proces.Id.class)
 public class Proces {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
 	@Id
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://purl.org/dc/terms/issued">issued</a>
-	@Id
-	@Column(name = "geldig_van", nullable = false)
-	@JsonProperty("issued")
-	private LocalDate geldigVan;
-	// <a href="http://purl.org/dc/terms/created">created</a>
-	@Id
-	@Column(name = "aangemaakt_op", nullable = false)
-	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
+	// <a href="http://purl.org/dc/terms/created">created</a>
+	@Column(name = "aangemaakt_op", nullable = false)
+	@JsonProperty("created")
+	private LocalDateTime aangemaaktOp;
+	// <a href="http://purl.org/dc/terms/issued">issued</a>
+	@Column(name = "geldig_van", nullable = false)
+	@JsonProperty("issued")
+	private LocalDate geldigVan;
 	// <a href="http://purl.org/dc/terms/valid">valid</a>
 	@Column(name = "geldig_tot", nullable = true)
 	@JsonProperty("valid")
@@ -70,9 +71,21 @@ public class Proces {
 	@JsonProperty("type")
 	private Procedure type;
 	// <a href="http://purl.org/net/p-plan#hasInputVar">hasInputVar</a>
+	@ManyToMany
+	@JoinTable(
+		name = "proces_proces_variabele",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
 	@JsonProperty("hasInputVar")
 	private List<ProcesVariabele> heeftInvoer;
 	// <a href="http://purl.org/net/p-plan#hasOutputVar">hasOutputVar</a>
+	@ManyToMany
+	@JoinTable(
+		name = "proces_proces_variabele",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
 	@JsonProperty("hasOutputVar")
 	private List<ProcesVariabele> heeftUitvoer;
 	// <a href="http://purl.org/net/p-plan#hasStep">hasStep</a>
@@ -105,9 +118,6 @@ public class Proces {
 	@Column(name = "benaming", nullable = true)
 	@JsonProperty("label")
 	private String benaming;
-	// <a href="http://www.w3.org/ns/adms#status">status</a>
-	@JsonProperty("status")
-	private Rubriek status;
 	// <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("wasRevisionOf")
@@ -115,24 +125,18 @@ public class Proces {
 	// <a href="http://www.w3.org/ns/ssn/implementedBy">implementedBy</a>
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("implementedBy")
-	private Installatie systeem;
+	private ISysteem systeem;
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
 	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek">rubriek</a>
+	@ManyToMany
+	@JoinTable(
+		name = "proces_rubriek",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
 	@JsonProperty("rubriek")
 	private List<Rubriek> rubriek;
-
-	/** Composite primary-key class. */
-	@Embeddable
-	@Getter
-	@EqualsAndHashCode
-	@NoArgsConstructor
-	@AllArgsConstructor
-	public static class Id implements Serializable {
-		private String uuid;
-		private LocalDate geldigVan;
-		private LocalDateTime aangemaaktOp;
-	}
 }

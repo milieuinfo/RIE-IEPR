@@ -1,10 +1,10 @@
 import { Aangifte } from './aangifte.model';
-import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
+import { Filter } from './filter.model';
 import { MeetInstrument } from './meetinstrument.model';
-import { Rubriek } from './rubriek.model';
+import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
-import { SysteemEigenschap } from './systeemeigenschap.model';
+import { Systeemeigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -15,28 +15,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Meetpunt implements Systeem {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
-
-	/**
-	 * issued
-	 * @see {@link http://purl.org/dc/terms/issued}
-	 * Een meetpunt moet een geldigheid start hebben
-	 */
-	@jsonMember(() => Date, { name: 'issued' })
-	geldigVan: Date;
-
-	/**
-	 * created
-	 * @see {@link http://purl.org/dc/terms/created}
-	 * Een meetpunt moet een creatie datum hebben
-	 */
-	@jsonMember(() => Date, { name: 'created' })
-	aangemaaktOp: Date;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -45,6 +36,22 @@ export class Meetpunt implements Systeem {
 	 */
 	@jsonMember({ name: 'uri' })
 	uri?: string;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een meetpunt moet een creatie datum hebben
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp?: Date;
+
+	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 * Een meetpunt moet een geldigheid start hebben
+	 */
+	@jsonMember(() => Date, { name: 'issued' })
+	geldigVan?: Date;
 
 	/**
 	 * valid
@@ -57,7 +64,7 @@ export class Meetpunt implements Systeem {
 	/**
 	 * modified
 	 * @see {@link http://purl.org/dc/terms/modified}
-	 * Een meetpunt moet een modificatie datum hebben
+	 * Een meetpunt kan een modificatie datum hebben
 	 */
 	@jsonMember(() => Date, { name: 'modified' })
 	aangepastOp?: Date;
@@ -99,8 +106,8 @@ export class Meetpunt implements Systeem {
 	 * @see {@link http://www.w3.org/ns/adms#status}
 	 * Een meetpunt moet een enkele status hebben
 	 */
-	@jsonMember(() => Rubriek, { name: 'status' })
-	status?: Rubriek;
+	@jsonMember(() => String, { name: 'status' })
+	status?: Status;
 
 	/**
 	 * wasRevisionOf
@@ -111,27 +118,12 @@ export class Meetpunt implements Systeem {
 	revisieVan?: Systeem;
 
 	/**
-	 * isHostedBy
-	 * @see {@link http://www.w3.org/ns/sosa/isHostedBy}
-	 * Een meetpunt is een subsysteem van het emissiepunt of onttrekkingspunt waarop het meet
-	 */
-	@jsonMember(() => Systeem, { name: 'isHostedBy' })
-	locatie?: Systeem;
-
-	/**
-	 * hasDeployment
-	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
-	 */
-	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
-	hasDeployment?: Exploitatie[];
-
-	/**
 	 * hasProperty
 	 * @see {@link http://www.w3.org/ns/ssn/hasProperty}
 	 * Een meetpunt kan meerdere eigenschappen hebben
 	 */
-	@jsonArrayMember(() => SysteemEigenschap, { name: 'hasProperty' })
-	heeftEigenschap?: SysteemEigenschap[];
+	@jsonArrayMember(() => Systeemeigenschap, { name: 'hasProperty' })
+	heeftEigenschap?: Systeemeigenschap[];
 
 	/**
 	 * hasSubSystem
@@ -139,14 +131,30 @@ export class Meetpunt implements Systeem {
 	 * Een meetpunt kan meetinstrumenten hebben
 	 */
 	@jsonArrayMember(() => MeetInstrument, { name: 'hasSubSystem' })
-	heeftSubSysteem?: MeetInstrument[];
+	heeftSubSysteem?: (MeetInstrument | Filter)[];
 
 	/**
 	 * aangifte
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte}
-	 * De aangifte die gerelateerd is aan een exploitatie of observatie.
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@jsonMember(() => Aangifte, { name: 'aangifte' })
 	aangifte?: Aangifte;
+
+	/**
+	 * inGebruikTot
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot}
+	 * De niet-functionele datum waarop een entiteit buiten gebruik is gesteld.
+	 */
+	@jsonMember(() => Date, { name: 'inGebruikTot' })
+	inGebruikTot?: Date;
+
+	/**
+	 * inGebruikVanaf
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf}
+	 * De niet-functionele datum waarop een entiteit in gebruik is genomen.
+	 */
+	@jsonMember(() => Date, { name: 'inGebruikVanaf' })
+	inGebruikVanaf?: Date;
 
 }
