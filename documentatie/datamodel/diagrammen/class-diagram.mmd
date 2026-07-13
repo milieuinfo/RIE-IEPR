@@ -74,7 +74,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
 	  Aangifte aangifte
 	}
@@ -85,7 +85,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Emissiepunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Emissiepunt --> SysteemEigenschap : heeftEigenschap
+	Emissiepunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Emissiepunt --> Systeem : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -211,7 +211,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
 	  Aangifte aangifte
 	  String[] ingediend
@@ -223,7 +223,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Installatie --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Installatie --> SysteemEigenschap : heeftEigenschap
+	Installatie --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Installatie --> Systeem : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -268,7 +268,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  MeetInstrument[] heeftSubSysteem
 	  Aangifte aangifte
 	}
@@ -279,7 +279,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Meetpunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Meetpunt --> SysteemEigenschap : heeftEigenschap
+	Meetpunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Meetpunt --> MeetInstrument : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -300,7 +300,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Filter[] heeftSubSysteem
 	  Aangifte aangifte
 	}
@@ -311,7 +311,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Onttrekkingspunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Onttrekkingspunt --> SysteemEigenschap : heeftEigenschap
+	Onttrekkingspunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Onttrekkingspunt --> Filter : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -376,8 +376,8 @@ classDiagram
 	  String datatype
 	  String notatie
 	}
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap
-	class SysteemEigenschap {
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap
+	class Systeemeigenschap {
 	  +String uuid
 	  String uri
 	  String type
