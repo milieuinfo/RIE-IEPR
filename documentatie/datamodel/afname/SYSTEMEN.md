@@ -192,11 +192,11 @@ Systemen kunnen genest zijn — een installatie kan subsystemen bevatten (emissi
 
 ```mermaid
 graph TD
-    Installatie["Installatie<br/>(riepr:Installatie)"] -->|ssn:hasSubSystem| Emissiepunt["Emissiepunt<br/>(riepr:Emissiepunt)"]
-    Installatie -->|ssn:hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>(riepr:Onttrekkingspunt)"]
-    Installatie -->|ssn:hasSubSystem| Meetpunt["Meetpunt<br/>(riepr:Meetpunt)"]
-    Installatie -->|ssn:hasSubSystem| Filter["Filter<br/>(sosa:System)"]
-    Emissiepunt -->|ssn:hasSubSystem| MeetInstrument["Meetinstrument<br/>(riepr:MeetInstrument)"]
+    Installatie["Installatie<br/>System"] -->|hasSubSystem| Emissiepunt["Emissiepunt<br/>System"]
+    Installatie -->|hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>System"]
+    Installatie -->|hasSubSystem| Meetpunt["Meetpunt<br/>System"]
+    Installatie -->|hasSubSystem| Filter["Filter<br/>System"]
+    Emissiepunt -->|hasSubSystem| Meetinstrument["Meetinstrument<br/>System"]
 ```
 
 ```turtle
@@ -238,6 +238,110 @@ Elk systeem is rechtstreeks gekoppeld aan een exploitatielocatie via `sosa:isHos
 
 <.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z>
     sosa:isHostedBy <.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> .
+```
+
+## 10. Uitgebreide systeemrelaties
+
+Hieronder een overzicht van alle belangrijke relaties tussen systemen en andere entiteiten:
+
+```mermaid
+classDiagram
+    %% System classes
+    class Installatie {
+      +String uuid
+      String uri
+    }
+    class Emissiepunt {
+      +String uuid
+      String uri
+    }
+    class Onttrekkingspunt {
+      +String uuid
+      String uri
+    }
+    class Meetpunt {
+      +String uuid
+      String uri
+    }
+    class Uitwisselpunt {
+      +String uuid
+      String uri
+    }
+    class Filter {
+      +String uuid
+      String uri
+    }
+    class Meetinstrument {
+      +String uuid
+      String uri
+    }
+    
+    %% Process classes
+    class Proces {
+      +String uuid
+      String uri
+    }
+    class Emissie {
+      +String uuid
+      String uri
+    }
+    class Onttrekking {
+      +String uuid
+      String uri
+    }
+    class Uitwisseling {
+      +String uuid
+      String uri
+    }
+    class Exploitatielocatie {
+      +String uuid
+      String uri
+    }
+    
+    %% System hierarchy (subclasses)
+    Installatie <|-- Emissiepunt
+    Installatie <|-- Onttrekkingspunt
+    Installatie <|-- Meetpunt
+    Installatie <|-- Filter
+    Installatie <|-- Uitwisselpunt
+    Emissiepunt <|-- Meetinstrument
+    
+    %% System → Process links (implementedBy)
+    Proces --> Emissiepunt : implementedBy
+    Proces --> Installatie : implementedBy
+    Proces --> Meetpunt : implementedBy
+    Proces --> Onttrekkingspunt : implementedBy
+    Proces --> Uitwisselpunt : implementedBy
+    
+    %% Process → Feature links (hasFeatureOfInterest)
+    Proces --> Emissie : hasFeatureOfInterest
+    Proces --> Onttrekking : hasFeatureOfInterest
+    Proces --> Uitwisseling : hasFeatureOfInterest
+    
+    %% System → Location links (isHostedBy)
+    Installatie --> Exploitatielocatie : isHostedBy
+    Emissiepunt --> Exploitatielocatie : isHostedBy
+    Onttrekkingspunt --> Exploitatielocatie : isHostedBy
+    Meetpunt --> Exploitatielocatie : isHostedBy
+    Uitwisselpunt --> Exploitatielocatie : isHostedBy
+    Filter --> Exploitatielocatie : isHostedBy
+    
+    %% System → System links (hasSubSystem)
+    Installatie --> Emissiepunt : hasSubSystem
+    Installatie --> Onttrekkingspunt : hasSubSystem
+    Installatie --> Meetpunt : hasSubSystem
+    Installatie --> Filter : hasSubSystem
+    Emissiepunt --> Meetinstrument : hasSubSystem
+```
+    "Installatie" --> "Emissiepunt" : ssn:hasSubSystem
+    "Installatie" --> "Onttrekkingspunt" : ssn:hasSubSystem
+    "Installatie" --> "Meetpunt" : ssn:hasSubSystem
+    "Installatie" --> "Filter" : ssn:hasSubSystem
+    "Emissiepunt" --> "Meetinstrument" : ssn:hasSubSystem
+    
+    %% Exploitatie links
+    "Exploitatie" -- "Proces" : ssn:implements
+    "Exploitatie" -- "Exploitatielocatie" : sosa:hasPlatform
 ```
 
 ## Referenties

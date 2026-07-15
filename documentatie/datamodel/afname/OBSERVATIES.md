@@ -127,7 +127,7 @@ De `sosa:observedProperty` geeft aan **wat** er werd gemeten. In het RIE-IEPR-mo
 
 ## 6. Meetinstrumenten
 
-Observaties worden gemaakt door meetinstrumenten (`riepr:MeetInstrument`). De relatie wordt gelegd via `sosa:madeBySensor`:
+Observaties worden gemaakt door meetinstrumenten (`riepr:Meetinstrument`). De relatie wordt gelegd via `sosa:madeBySensor`:
 
 ```turtle
 <.../observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
@@ -138,7 +138,7 @@ Meetinstrumenten zijn systemen met eigen eigenschappen (serienummer, type, ...):
 
 ```turtle
 <.../meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z>
-    a riepr:MeetInstrument, sosa:System ;
+    a riepr:Meetinstrument, sosa:System ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetinstrument-type/CEMS> ;
     rdfs:label "CEMS analyser voor schoorsteen 1"@nl .
 ```
@@ -182,7 +182,7 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
 
 # --- Meetinstrument ---
 <https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z>
-    a riepr:MeetInstrument, sosa:System ;
+    a riepr:Meetinstrument, sosa:System ;
     rdfs:label "CEMS analyser"@nl .
 
 # --- Observatie ---
@@ -216,6 +216,87 @@ Een **emissiepunt** (het fysieke systeem) is niet hetzelfde als een **emissie** 
 # Observatie koppelt emissiepunt (via het proces) aan de emissie-gebeurtenis
 <.../observatie/...>
     sosa:hasFeatureOfInterest <.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c> .
+```
+
+## 10. Volledig observatiepatroon
+
+Hieronder een overzicht van het volledige SOSA/SSN observatiepatroon met alle gekoppelde entiteiten:
+
+```mermaid
+classDiagram
+    %% System classes
+    class Installatie {
+      +String uuid
+      String uri
+    }
+    class Emissiepunt {
+      +String uuid
+      String uri
+    }
+    class Meetpunt {
+      +String uuid
+      String uri
+    }
+    class Meetinstrument {
+      +String uuid
+      String uri
+    }
+    
+    %% Process classes
+    class Proces {
+      +String uuid
+      String uri
+    }
+    
+    %% Feature of Interest classes
+    class Emissie {
+      +String uuid
+      String uri
+    }
+    class Onttrekking {
+      +String uuid
+      String uri
+    }
+    class Uitwisseling {
+      +String uuid
+      String uri
+    }
+    
+    %% Observation classes
+    class Observatie {
+      +String uuid
+      +String resultTime
+      String uri
+    }
+    class Resultaat {
+      +NumericValue
+      +Unit
+      String uri
+    }
+    
+    %% System hierarchy
+    Installatie <|-- Emissiepunt
+    Installatie <|-- Meetpunt
+    Emissiepunt <|-- Meetinstrument
+    
+    %% Process links
+    Proces --> Emissiepunt : implementedBy
+    Proces --> Meetpunt : implementedBy
+    Proces --> Emissie : hasFeatureOfInterest
+    Proces --> Onttrekking : hasFeatureOfInterest
+    Proces --> Uitwisseling : hasFeatureOfInterest
+    
+    %% Observation links
+    Observatie --> Emissie : hasFeatureOfInterest
+    Observatie --> Onttrekking : hasFeatureOfInterest
+    Observatie --> Uitwisseling : hasFeatureOfInterest
+    Observatie --> Resultaat : hasResult
+    Observatie --> Meetinstrument : madeBySensor
+    Observatie --> Proces : usedProcedure
+    
+    %% System location links
+    Emissiepunt --> Exploitatielocatie : isHostedBy
+    Meetpunt --> Exploitatielocatie : isHostedBy
 ```
 
 ## Referenties

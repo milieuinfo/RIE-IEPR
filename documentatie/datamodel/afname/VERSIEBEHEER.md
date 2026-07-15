@@ -167,6 +167,86 @@ De exploitatie heeft een specifiek versiebeheerpatroon met **twee lagen**:
     dct:isVersionOf <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> .
 ```
 
+## 7. Versiebeheerpatroon in diagram
+
+```mermaid
+classDiagram
+    %% Identity URIs (tijdsloos)
+    class ExploitantIdentity {
+      +String uuid
+      String uri
+    }
+    class ExploitatieIdentity {
+      +String uuid
+      String uri
+    }
+    class InstallatieIdentity {
+      +String uuid
+      String uri
+    }
+    class EmissiepuntIdentity {
+      +String uuid
+      String uri
+    }
+    class ProcesIdentity {
+      +String uuid
+      String uri
+    }
+    
+    %% Version URIs (met tijd)
+    class ExploitatieVersion1 {
+      +String uuid
+      +String issued
+      +String created
+      String uri
+    }
+    class ExploitatieVersion2 {
+      +String uuid
+      +String issued
+      +String created
+      String uri
+    }
+    class InstallatieVersion1 {
+      +String uuid
+      +String issued
+      +String created
+      String uri
+    }
+    class InstallatieVersion2 {
+      +String uuid
+      +String issued
+      +String created
+      String uri
+    }
+    
+    %% Feature of Interest (geen versie)
+    class Emissie {
+      +String uuid
+      String uri
+    }
+    
+    %% Links between identity and version URIs
+    ExploitatieIdentity <|-- ExploitatieVersion1 : isVersionOf
+    ExploitatieIdentity <|-- ExploitatieVersion2 : isVersionOf
+    InstallatieIdentity <|-- InstallatieVersion1 : isVersionOf
+    InstallatieIdentity <|-- InstallatieVersion2 : isVersionOf
+    
+    %% Version attributes
+    class VersionAttributes {
+      issued : date (geldigheid)
+      created : dateTime (aanmaak)
+      modified : dateTime (wijziging)
+      status : skos:Concept
+      wasAttributedTo : Agent
+    }
+    
+    %% Note about versioning
+    note1 .. ExploitatieVersion1 : Multiple versions can point to same identity
+    note1 .. ExploitatieVersion2 : with different issued dates
+    note2 .. Emissie : Feature of Interest has NO versioning
+    note2 .. EmissieIdentity : only two-segment URI
+```
+
 ## Referenties
 
 - [Basisaannames](./BASISAANNAME.md) — URI-patronen, exploitatie twee lagen

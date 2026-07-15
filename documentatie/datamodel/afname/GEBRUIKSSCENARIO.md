@@ -75,11 +75,11 @@ Observaties worden gekoppeld aan emissiepunten via `sosa:hasFeatureOfInterest`. 
 
 ```mermaid
 graph LR
-    Emissiepunt["Emissiepunt<br/>(sosa:System)"] -->|ssn:implementedBy| Proces["Proces<br/>(emissie-type)"]
-    Proces -->|sosa:hasFeatureOfInterest| Emissie["Emissie<br/>(sosa:FeatureOfInterest)"]
-    Observatie["Observatie<br/>(sosa:Observation)"] -->|sosa:hasFeatureOfInterest| Emissie
-    Observatie -->|sosa:hasResult| Resultaat["Resultaat<br/>(waarde + eenheid)"]
-    Observatie -->|sosa:madeBySensor| Meetinstrument["Meetinstrument"]
+    Emissiepunt["Emissiepunt<br/>System"] -->|implementedBy| Proces["Proces<br/>emissie-type"]
+    Proces -->|hasFeatureOfInterest| Emissie["Emissie<br/>FeatureOfInterest"]
+    Observatie["Observatie<br/>Observation"] -->|hasFeatureOfInterest| Emissie
+    Observatie -->|hasResult| Resultaat["Resultaat<br/>waarde + eenheid"]
+    Observatie -->|madeBySensor| Meetinstrument["Meetinstrument"]
 ```
 
 ```turtle
