@@ -45,20 +45,27 @@ pipeline {
               sh '''
                 set -e
                 export NPM_CONFIG_LOGLEVEL=warn
-                git config --global init.defaultBranch main || true
-
                 # run in the specificatie subfolder where package.json lives
-                docker run --rm -v "$PWD":/app -w /app/documentatie/bin/specificatie node:24-alpine sh -c '
+                cd documentatie/bin/specificatie
                   if [ -f package-lock.json ]; then
                     npm ci --no-audit --no-fund || exit 1
                   else
                     npm install --no-audit --no-fund --no-optional || exit 1
                   fi
                   npm run generate:bikeshed
-                '
+              '''
+            }
 
-                # build:docker expects Docker on the host; ensure it is present
-                (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
+            container('maven') {
+              sh '''
+                set -e
+
+                # build:docker expects Docker on the host; keep it best-effort as in Bamboo
+                if command -v docker >/dev/null 2>&1; then
+                  (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
+                else
+                  echo "docker is not available in this container; skipping build:docker"
+                fi
 
                 # ensure artifact folder exists even when generation failed
                 mkdir -p build-artifact
