@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync } from "fs";
-import { resolve, dirname } from "path";
+import { readFileSync, writeFileSync, readdirSync, statSync } from "fs";
+import { resolve, dirname, join } from "path";
 import { fileURLToPath } from 'url';
-import { PATHS, NAMESPACES } from '../common/src/config.js';
+import { PATHS, NAMESPACES, PROJECT_ROOT } from '../common/src/config.js';
 import { Parser, Store, DataFactory } from "n3";
 
 const { namedNode, blankNode } = DataFactory;
@@ -247,12 +247,18 @@ function collectClasses(store, isInternalResource) {
   const classUris = collectSubjectsByTypes(store, [NAMESPACES.owl + 'Class']);
 
   // Filter out blank nodes and restriction classes
+  const allClassIds = new Set(
+    classUris.filter(isInternalResource).map(uri => localName(uri))
+  );
+
   return classUris
     .filter(isInternalResource)
     .map((uri) => {
       const superClasses = urisFor(store, uri, namedNode(NAMESPACES.rdfs + 'subClassOf'))
         .filter(sc => !sc.startsWith('_:'))
-        .filter(sc => !sc.startsWith('http://www.w3.org/2002/07/owl#Restriction'));
+        .filter(sc => !sc.startsWith('http://www.w3.org/2002/07/owl#Restriction'))
+        // Only include superClasses that are actually defined as classes in the ontology
+        .filter(sc => allClassIds.has(localName(sc)));
       
       const exampleQuads = store.getQuads(namedNode(uri), namedNode(NAMESPACES.skos + 'example'), null, null);
       const examples = exampleQuads.map(q => {
@@ -518,7 +524,7 @@ function generateMermaidForClass(cls, allClasses, properties, maxNodes = 12) {
   return `<div class="riepr-mermaid" data-mermaid="${b64}"></div>`;
 }
 
-function generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates = []) {
+function generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates = [], afnameContent = "") {
   // Ensure prefixUri uses the provided prefixes
   filePrefixes = Object.assign({}, filePrefixes || {}, prefixes || {});
 
@@ -844,7 +850,97 @@ Deze sectie beschrijft de voorgedefinieerde datatypes in de ontologie.
 * [JSON-LD formaat](https://data.riepr.omgeving.vlaanderen.be/ns/riepr.jsonld)
 `;
 
+  // Append afname markdown content if present
+  if (afnameContent) {
+    output += `\n${afnameContent}`;
+  }
+
   return output;
+}
+
+function includeAfnameContent() {
+  // Resolve afname directory relative to project root
+  const afnameDir = resolve(PROJECT_ROOT, "documentatie", "datamodel", "afname");
+  
+  try {
+    const files = readdirSync(afnameDir);
+    const mdFiles = files.filter(f => f.endsWith('.md') && f !== 'README.md');
+    
+    if (mdFiles.length === 0) {
+      console.log("Geen afname-markdown bestanden gevonden.");
+      return "";
+    }
+    
+    let content = "# Afname Documentatie # {#afname}\n\n";
+    content += "Deze sectie bevat de afnamedocumentatie voor het RIE-IEPR-datamodel, gericht op Linked Open Data (LOD)-afnemers.\n\n";
+    
+    // Helper: generate a Bikeshed-safe slug from a string
+    function toSlug(str) {
+      return str
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')  // remove non-alphanumeric except spaces and hyphens
+        .replace(/\s+/g, '-')           // spaces to hyphens
+        .replace(/-+/g, '-')            // collapse multiple hyphens
+        .replace(/^-|-$/g, '');         // trim leading/trailing hyphens
+    }
+    
+    // Add navigation index
+    content += "## Navigatie ##\n\n";
+    mdFiles.forEach(file => {
+      const slug = toSlug(file.replace('.md', ''));
+      content += `- [${file.replace('.md', '')}](#${slug})\n`;
+    });
+    content += "\n";
+    
+    // Add each markdown file's content
+    mdFiles.forEach(file => {
+      const filePath = resolve(afnameDir, file);
+      try {
+        const mdContent = readFileSync(filePath, "utf8");
+        // Extract title from first line and use as section heading
+        const lines = mdContent.split('\n');
+        const titleLine = lines.find(l => l.startsWith('# '));
+        const sectionTitle = titleLine ? titleLine.replace('# ', '') : file.replace('.md', '');
+        const slug = toSlug(file.replace('.md', ''));
+        
+        content += `## ${sectionTitle} ## {#${slug}}\n\n`;
+        
+        // Skip the first line (title) and include rest of content
+        let contentLines = lines.slice(1);
+        
+        // Collect mermaid diagram blocks and encode them for Bikeshed compatibility
+        let inMermaid = false;
+        let currentBlock = [];
+        contentLines = contentLines.map(line => {
+          if (line.trim() === '```mermaid') {
+            inMermaid = true;
+            currentBlock = [];
+            return '';
+          }
+          if (inMermaid && line.trim() === '```') {
+            inMermaid = false;
+            const mermaidText = currentBlock.join('\n');
+            const b64 = Buffer.from(mermaidText, 'utf8').toString('base64');
+            return `<div class="riepr-mermaid" data-mermaid="${b64}"></div>`;
+          }
+          if (inMermaid) {
+            currentBlock.push(line);
+          }
+          return line;
+        });
+        
+        content += contentLines.join('\n');
+        content += "\n\n";
+      } catch (e) {
+        console.warn(`Waarschuwing: kon ${file} niet inlezen: ${e.message}`);
+      }
+    });
+    
+    return content;
+  } catch (e) {
+    console.warn(`Waarschuwing: kon afname directory niet lezen: ${e.message}`);
+    return "";
+  }
 }
 
 function build() {
@@ -883,8 +979,11 @@ function build() {
   
   console.log(`Gevonden: ${classes.length} klassen, ${properties.length} eigenschappen, ${concepts.length} concepten, ${datatypes.length} datatypes`);
   
+  // Include afname markdown content
+  const afnameContent = includeAfnameContent();
+  
   console.log("Genereren van Bikeshed specificatie...");
-  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates);
+  const bikeshed = generateBikeshed(ontologyMeta, classes, properties, concepts, datatypes, prefixes, templates, afnameContent);
   
   // Write the generated Bikeshed spec into this package directory so Docker builds include it
   const outPath = resolve(__dirname, "ontologie.bs");

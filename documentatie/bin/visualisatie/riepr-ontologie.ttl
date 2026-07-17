@@ -739,7 +739,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie kan meerdere eigenschappen hebben"@nl ;
         owl:onProperty ssn:hasProperty ;
-        owl:someValuesFrom :SysteemEigenschap ;
+        owl:someValuesFrom :Systeemeigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -886,7 +886,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt kan meerdere eigenschappen hebben"@nl ;
         owl:onProperty ssn:hasProperty ;
-        owl:someValuesFrom :SysteemEigenschap ;
+        owl:someValuesFrom :Systeemeigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -897,7 +897,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-:SysteemEigenschap a owl:Class ;
+:Systeemeigenschap a owl:Class ;
     rdfs:label "Systeem Eigenschap"@nl ;
     rdfs:comment "Een systeem eigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw."@nl ;
     rdfs:subClassOf ssn:Property ;
@@ -1063,7 +1063,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekkingspunt kan meerdere eigenschappen hebben"@nl ;
         owl:onProperty ssn:hasProperty ;
-        owl:someValuesFrom :SysteemEigenschap ;
+        owl:someValuesFrom :Systeemeigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1224,7 +1224,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt kan meerdere eigenschappen hebben"@nl ;
         owl:onProperty ssn:hasProperty ;
-        owl:someValuesFrom :SysteemEigenschap ;
+        owl:someValuesFrom :Systeemeigenschap ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -2062,13 +2062,13 @@
 :parameter a owl:ObjectProperty ;
     rdfs:label "Parameter"@nl ;
     rdfs:comment "De parameter die wordt gebruikt bij een eigenschap of meting."@nl ;
-    rdfs:domain :SysteemEigenschap ;
+    rdfs:domain :Systeemeigenschap ;
     rdfs:range pplan:Variable .
 
 :datatype a owl:ObjectProperty ;
     rdfs:label "Datatype"@nl ;
     rdfs:comment "Het datatype van de waarde van een systeem eigenschap."@nl ;
-    rdfs:domain :SysteemEigenschap ;
+    rdfs:domain :Systeemeigenschap ;
     rdfs:range rdfs:Datatype .
 
 :aangifte a owl:ObjectProperty ;

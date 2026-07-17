@@ -74,7 +74,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
 	  Aangifte aangifte
 	}
@@ -85,7 +85,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Emissiepunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Emissiepunt --> SysteemEigenschap : heeftEigenschap
+	Emissiepunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Emissiepunt --> Systeem : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -211,7 +211,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
 	  Aangifte aangifte
 	  String[] ingediend
@@ -223,37 +223,12 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Installatie --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Installatie --> SysteemEigenschap : heeftEigenschap
+	Installatie --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Installatie --> Systeem : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Installatie --> Aangifte : aangifte
 	Systeem <|-- Installatie
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
-	class MeetInstrument:::system {
-	  +String uuid
-	  String uri
-	  DateTime aangemaaktOp
-	  Date geldigVan
-	  Date geldigTot
-	  DateTime aangepastOp
-	  String type
-	  String geometrie
-	  String benaming
-	  ExterneIdentificator[] identifier
-	  Status status
-	  Systeem revisieVan
-	  Aangifte aangifte
-	}
-	%% http://www.w3.org/ns/adms#identifier
-	MeetInstrument --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/adms#status
-	MeetInstrument --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	MeetInstrument --> Systeem : revisieVan
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
-	MeetInstrument --> Aangifte : aangifte
-	Systeem <|-- MeetInstrument
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	class Meetpunt:::system {
 	  +String uuid
@@ -268,8 +243,8 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
-	  MeetInstrument[] heeftSubSysteem
+	  Systeemeigenschap[] heeftEigenschap
+	  Filter[] heeftSubSysteem
 	  Aangifte aangifte
 	}
 	%% http://www.w3.org/ns/adms#identifier
@@ -279,9 +254,9 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Meetpunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Meetpunt --> SysteemEigenschap : heeftEigenschap
+	Meetpunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
-	Meetpunt --> MeetInstrument : heeftSubSysteem
+	Meetpunt --> Filter : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Meetpunt --> Aangifte : aangifte
 	Systeem <|-- Meetpunt
@@ -300,7 +275,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Systeem revisieVan
-	  SysteemEigenschap[] heeftEigenschap
+	  Systeemeigenschap[] heeftEigenschap
 	  Filter[] heeftSubSysteem
 	  Aangifte aangifte
 	}
@@ -311,7 +286,7 @@ classDiagram
 	%% http://www.w3.org/ns/prov#wasRevisionOf
 	Onttrekkingspunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasProperty
-	Onttrekkingspunt --> SysteemEigenschap : heeftEigenschap
+	Onttrekkingspunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
 	Onttrekkingspunt --> Filter : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -376,8 +351,8 @@ classDiagram
 	  String datatype
 	  String notatie
 	}
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#SysteemEigenschap
-	class SysteemEigenschap {
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap
+	class Systeemeigenschap {
 	  +String uuid
 	  String uri
 	  String type

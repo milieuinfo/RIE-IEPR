@@ -53,6 +53,41 @@ src/test/scala/
 
 ```
 
+## Documentatie
+
+De documentatie bevindt zich in `documentatie/datamodel/` en is onderverdeeld in meerdere secties:
+
+| Sectie | Beschrijving |
+|---|---|
+| `documentatie/datamodel/applicatief/` | Technische datamodel-documentatie (datastructuur, versionering, identificatie, codelijsten) |
+| `documentatie/datamodel/afname/` | Afname/gebruik documentatie voor LOD/LDES-afnemers — beschrijft **wat** er als Linked Open Data beschikbaar is |
+| `documentatie/datamodel/datavoorbeelden/` | Realistische datavoorbeelden (Turtle) gebaseerd op AGC Glass Europe |
+| `documentatie/datamodel/generated/` | Gegenereerde modellen (Java, TypeScript, SQL, SHACL) |
+| `documentatie/datamodel/src/` | Bronontologie (`riepr.ttl`), configuratie en oddtoolkit tools |
+| `documentatie/bin/specificatie/` | Bikeshed-gegenereerde specificatie (HTML) uit de ontologie |
+
+### Afname-documentatie (LOD/LDES)
+
+Voor data-afnemers die het model raadplegen via SPARQL, LDES of andere LOD-technologieën, bevat `documentatie/datamodel/afname/` gedetailleerde documentatie:
+
+- **Gebruiksscenario's** — concrete SPARQL-query's en Turtle-snippets
+- **Basisaannames** — URI-patronen, proces-skelet, OWL-axioma's
+- **Exploitant- en exploitatiemodel** — organisaties, locaties, activiteiten
+- **Installaties en emissiepunten** — systemen, subsystemen, eigenschappen
+- **Observaties en emissies** — metingen, gebeurtenissen (emissie/onttrekking/uitwisseling)
+- **Aangifte en dossier** — documentbeheer via de Dossier-ontologie
+- **Versiebeheer en tijdsrecht** — versies, geldigheid, historische query's
+
+De afname-documentatie beschrijft uitsluitend wat er als LOD/LDES beschikbaar is, niet hoe het gegenereerd wordt.
+
+### Codelijsten
+
+Het model maakt uitgebreid gebruik van gecontroleerde vocabulaires (SKOS concepten), beheerd in het aparte repository [**milieuinfo/codelijst-rie-iepr**](https://github.com/milieuinfo/codelijst-rie-iepr/). Deze codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/) en omvatten onder meer: installatie_type, emissiepunt_type, procedure_type, status_type, rubriek_type, en eigenschaps-koppelingen.
+
+### Externe standaarden
+
+Het RIE-IEPR-datamodel bouwt voort op W3C-standaarden zoals **SOSA/SSN** (observaties/systemen), **PROV-O** (provenance/versiebeheer), **GeoSPARQL** (geospatiale data) en **P-Plan** (processen). Zie de [afname-documentatie](./documentatie/datamodel/afname/) voor gedetailleerde uitleg.
+
 ## Workflow
 
 The application follows this conversion workflow:

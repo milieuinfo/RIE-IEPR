@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr" rel="canonical">
-  <meta content="229ffaa2e03c2180a2c7ea4959a3f94d6c6f34d3" name="revision">
+  <meta content="b5f04b91d96abe39daa6697c382a4cbb11c0b6ef" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2157,7 +2157,7 @@ Parts of this work may be from another specification document.  If so, those par
        <a href="#2-uri-ontwerp-en-versiebeheer"><span class="secno">9.11</span> <span class="content">2. URI-ontwerp en versiebeheer</span></a>
        <ol class="toc">
         <li><a href="#identity-uri-vs-versie-uri"><span class="secno">9.11.1</span> <span class="content">Identity URI vs. versie URI</span></a>
-        <li><a href="#feature-of-interest-vs-versieerbare-entiteiten"><span class="secno">9.11.2</span> <span class="content">Feature of Interest vs. versieerbare entiteiten</span></a>
+        <li><a href="#feature-of-interest-vs-versioneerbare-entiteiten"><span class="secno">9.11.2</span> <span class="content">Feature of Interest vs. versioneerbare entiteiten</span></a>
        </ol>
       <li><a href="#3-exploitatie-twee-lagen"><span class="secno">9.12</span> <span class="content">3. Exploitatie: twee lagen</span></a>
       <li><a href="#4-proces-procedure-koppels-owl-axiomas"><span class="secno">9.13</span> <span class="content">4. Proces-procedure koppels (OWL-axioma’s)</span></a>
@@ -3011,9 +3011,11 @@ Parts of this work may be from another specification document.  If so, those par
     <c- b>a</c-> <c- nn>dossier</c-><c- p>:</c-><c- f>Stuk</c-> <c- p>;</c->
     <c- nn>dct</c-><c- p>:</c-><c- f>title</c-> <c- s>"Bundel RIE-IEPR aangiften 2026"</c-><c- o>@</c->nl <c- p>.</c->
 </pre>
-   <p>Een bundel kan meerdere aangiften bevatten via <code>dossier:hasPart</code>:</p>
-<pre class="highlight language-turtle"><c- g>&lt;.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9></c->
-    <c- nn>dossier</c-><c- p>:</c-><c- f>hasPart</c-> <c- g>&lt;.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8></c-> <c- p>.</c->
+   <p>Een aangifte kan deel uitmaken van een aangiftebundel via <code>dct:isPartOf</code>:</p>
+<pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>dct:</c-> <c- g>&lt;http://purl.org/dc/terms/></c-> <c- p>.</c->
+
+<c- g>&lt;.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8></c->
+    <c- nn>dct</c-><c- p>:</c-><c- f>isPartOf</c-> <c- g>&lt;.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9></c-> <c- p>.</c->
 </pre>
    <h3 class="heading settled" data-level="9.5" id="3-transactie"><span class="secno">9.5. </span><span class="content">3. Transactie</span><a class="self-link" href="#3-transactie"></a></h3>
    <p>Een <strong>transactie</strong> is het proces van indienen, verwerken en goedkeuren van een aangifte. Het is een subklasse van <code>prov:Activity</code>.</p>
@@ -3033,13 +3035,11 @@ Parts of this work may be from another specification document.  If so, those par
      <p><strong>Goedkeuren</strong> — de aangifte wordt goedgekeurd</p>
    </ul>
    <h3 class="heading settled" data-level="9.6" id="4-relaties-tussen-entiteiten"><span class="secno">9.6. </span><span class="content">4. Relaties tussen entiteiten</span><a class="self-link" href="#4-relaties-tussen-entiteiten"></a></h3>
-<pre>Transactie (prov:Activity)
-  ├── used → Aangifte (dossier:Stuk)
-  └── wasAssociatedWith → Exploitant (riepr:Exploitant)
-
-Aangiftebundel (dossier:Stuk)
-  └── hasPart → Aangifte (dossier:Stuk)
-</pre>
+   <p>graph LR
+    Transactie["Transactie<br>(prov:Activity)"] --><var>used</var> Aangifte["Aangifte<br>(dossier:Stuk)"]
+    Transactie --><var>wasAssociatedWith</var> Exploitant["Exploitant<br>(riepr:Exploitant)"]
+    Aangifte -->|dct:isPartOf| Bundel["Aangiftebundel<br>(dossier:Stuk)"]</p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIFRyYW5zYWN0aWVbIlRyYW5zYWN0aWU8YnIvPihwcm92OkFjdGl2aXR5KSJdIC0tPnx1c2VkfCBBYW5naWZ0ZVsiQWFuZ2lmdGU8YnIvPihkb3NzaWVyOlN0dWspIl0KICAgIFRyYW5zYWN0aWUgLS0+fHdhc0Fzc29jaWF0ZWRXaXRofCBFeHBsb2l0YW50WyJFeHBsb2l0YW50PGJyLz4ocmllcHI6RXhwbG9pdGFudCkiXQogICAgQWFuZ2lmdGUgLS0+fGRjdDppc1BhcnRPZnwgQnVuZGVsWyJBYW5naWZ0ZWJ1bmRlbDxici8+KGRvc3NpZXI6U3R1aykiXQ=="></div>
    <h3 class="heading settled" data-level="9.7" id="5-integratie-met-data"><span class="secno">9.7. </span><span class="content">5. Integratie met data</span><a class="self-link" href="#5-integratie-met-data"></a></h3>
    <p>Aangiften zijn gekoppeld aan de RIE-IEPR-data — ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.</p>
    <h3 class="heading settled" data-level="9.8" id="referenties"><span class="secno">9.8. </span><span class="content">Referenties</span><a class="self-link" href="#referenties"></a></h3>
@@ -3089,8 +3089,8 @@ Aangiftebundel (dossier:Stuk)
 <pre class="highlight language-turtle"><c- g>&lt;.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z></c->
     <c- nn>dct</c-><c- p>:</c-><c- f>isVersionOf</c-> <c- g>&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37></c-> <c- p>.</c->
 </pre>
-   <h4 class="heading settled" data-level="9.11.2" id="feature-of-interest-vs-versieerbare-entiteiten"><span class="secno">9.11.2. </span><span class="content">Feature of Interest vs. versieerbare entiteiten</span><a class="self-link" href="#feature-of-interest-vs-versieerbare-entiteiten"></a></h4>
-   <p>Niet alle entiteiten zijn versieerbaar. <strong>Feature of Interest</strong> entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een <strong>twee-segment URI</strong> (<code>{type}/{uuid}</code>) en worden niet versieerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.</p>
+   <h4 class="heading settled" data-level="9.11.2" id="feature-of-interest-vs-versioneerbare-entiteiten"><span class="secno">9.11.2. </span><span class="content">Feature of Interest vs. versioneerbare entiteiten</span><a class="self-link" href="#feature-of-interest-vs-versioneerbare-entiteiten"></a></h4>
+   <p>Niet alle entiteiten zijn versioneerbaar. <strong>Feature of Interest</strong> entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een <strong>twee-segment URI</strong> (<code>{type}/{uuid}</code>) en worden niet geversioneerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.</p>
 <pre class="highlight language-turtle"><c- c># Feature of Interest (geen versie)</c->
 <c- g>&lt;.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c></c->
     <c- b>a</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissie</c-><c- p>,</c-> <c- nn>sosa</c-><c- p>:</c-><c- f>FeatureOfInterest</c-> <c- p>.</c->
@@ -3144,14 +3144,12 @@ Aangiftebundel (dossier:Stuk)
    <p>Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt — nooit twee tegelijk. Het <strong>Uitwisselpunt</strong> is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).</p>
    <h3 class="heading settled" data-level="9.15" id="6-observaties-en-features-of-interest"><span class="secno">9.15. </span><span class="content">6. Observaties en Features of Interest</span><a class="self-link" href="#6-observaties-en-features-of-interest"></a></h3>
    <p>Observaties volgen het <strong>SOSA/SSN</strong>-patroon:</p>
-<pre>Observation → hasFeatureOfInterest → Emissie/Onttrekking/Uitwisseling
-       ↓
-    hasResult → Resultaat (met waarde)
-       ↓
-    observedProperty → wat werd gemeten
-       ↓
-    resultTime → wanneer werd gemeten
-</pre>
+   <p>graph TD
+    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking/Uitwisseling<br>(sosa:FeatureOfInterest)"]
+    Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br>(met waarde + eenheid)"]
+    Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br>(skos:Concept)"]
+    Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br>(xsd:dateTime)"]</p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggVEQKICAgIE9ic2VydmF0aWVbInNvc2E6T2JzZXJ2YXRpb24iXSAtLT58c29zYTpoYXNGZWF0dXJlT2ZJbnRlcmVzdHwgRk9JWyJFbWlzc2llL09udHRyZWtraW5nL1VpdHdpc3NlbGluZzxici8+KHNvc2E6RmVhdHVyZU9mSW50ZXJlc3QpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6aGFzUmVzdWx0fCBSZXN1bHRhYXRbInNvc2E6UmVzdWx0PGJyLz4obWV0IHdhYXJkZSArIGVlbmhlaWQpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6b2JzZXJ2ZWRQcm9wZXJ0eXwgUHJvcGVydHlbIldhdCB3ZXJkIGdlbWV0ZW48YnIvPihza29zOkNvbmNlcHQpIl0KICAgIE9ic2VydmF0aWUgLS0+fHNvc2E6cmVzdWx0VGltZXwgVGlqZFsiV2FubmVlciB3ZXJkIGdlbWV0ZW48YnIvPih4c2Q6ZGF0ZVRpbWUpIl0="></div>
    <p>Emissie, onttrekking en uitwisseling zijn <strong>gebeurtenissen</strong> (<code>riepr:Gebeurtenis</code>) en fungeren als <code>sosa:FeatureOfInterest</code>. Ze worden niet zelf "gemeten" — ze zijn het <strong>onderwerp</strong> van de meting.</p>
 <pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>sosa:</c-> <c- g>&lt;http://www.w3.org/ns/sosa/></c-> <c- p>.</c->
 
@@ -3229,7 +3227,7 @@ Aangiftebundel (dossier:Stuk)
 </pre>
    <p>Er is <strong>geen versiebeheer</strong> voor exploitanten zelf — ze hebben geen <code>issued</code> of <code>created</code> segment in de URI.</p>
    <h3 class="heading settled" data-level="9.21" id="2-contactgegevens"><span class="secno">9.21. </span><span class="content">2. Contactgegevens</span><a class="self-link" href="#2-contactgegevens"></a></h3>
-   <p>Contactgegevens worden voorgesteld als een <code>oa:Annotation</code> die een exploitatie target. Ze zijn gekoppeld aan een specifieke exploitatie (niet direct aan de exploitant).</p>
+   <p>Contactgegevens worden voorgesteld als een <code>oa:Annotation</code> die een versie/toestand van een exploitatie target. Ze zijn gekoppeld aan een specifieke exploitatie-versie (niet direct aan de exploitant).</p>
 <pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>oa:</c->    <c- g>&lt;http://www.w3.org/ns/oa#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>foaf:</c->  <c- g>&lt;http://xmlns.com/foaf/0.1/></c-> <c- p>.</c->
 
@@ -3240,7 +3238,7 @@ Aangiftebundel (dossier:Stuk)
     <c- nn>foaf</c-><c- p>:</c-><c- f>name</c-> <c- s>"John Doe"</c-><c- o>@</c->nl <c- p>;</c->
     <c- nn>foaf</c-><c- p>:</c-><c- f>mbox</c-> <c- g>&lt;mailto:info@example.com></c-> <c- p>.</c->
 </pre>
-   <p><strong>Belangrijk:</strong> <code>oa:hasTarget</code> verwijst naar een <strong>exploitatie</strong> (de versie URI), niet naar de exploitant. Dit maakt contactgegevens contextueel gebonden aan een specifieke exploitatie-toestand.</p>
+   <p><strong>Belangrijk:</strong> <code>oa:hasTarget</code> verwijst naar een <strong>exploitatie-versie</strong> (met <code>/uuid/issued/created</code> in de URI), niet naar de identity-URI van de exploitant of naar de exploitant zelf. Dit maakt contactgegevens contextueel gebonden aan een specifieke toestand van de exploitatie.</p>
    <h3 class="heading settled" data-level="9.22" id="3-exploitatielocatie"><span class="secno">9.22. </span><span class="content">3. Exploitatielocatie</span><a class="self-link" href="#3-exploitatielocatie"></a></h3>
    <p>Een <strong>exploitatielocatie</strong> is een specifieke geografische locatie waar een exploitant zijn processen uitvoert. Het is een subklasse van <code>sosa:Platform</code>, <code>prov:Entity</code> en <code>ogc:Feature</code>.</p>
    <h4 class="heading settled" data-level="9.22.1" id="kenmerken①"><span class="secno">9.22.1. </span><span class="content">Kenmerken</span><a class="self-link" href="#kenmerken①"></a></h4>
@@ -3254,7 +3252,7 @@ Aangiftebundel (dossier:Stuk)
 | <code>locn:address</code> | locn:Address | Nee | Adresgegevens |
 | <code>ogc:hasGeometry</code> | ogc:Geometry | Nee | Geografische coördinaten (WKT) |</p>
    <h4 class="heading settled" data-level="9.22.2" id="uri-patroon①"><span class="secno">9.22.2. </span><span class="content">URI-patroon</span><a class="self-link" href="#uri-patroon①"></a></h4>
-   <p>Exploitatielocaties zijn <strong>versieerbaar</strong>:</p>
+   <p>Exploitatielocaties zijn <strong>versioneerbaar</strong>:</p>
 <pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>ogc:</c->  <c- g>&lt;http://www.opengis.net/ont/geosparql#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>locn:</c-> <c- g>&lt;http://www.w3.org/ns/locn#></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>adms:</c-> <c- g>&lt;http://www.w3.org/ns/adms#></c-> <c- p>.</c->
@@ -3354,17 +3352,17 @@ Aangiftebundel (dossier:Stuk)
 </pre>
    <h4 class="heading settled" data-level="9.24.2" id="proces-hirarchie-via-pplanisstepofplan"><span class="secno">9.24.2. </span><span class="content">Proces hiërarchie via <code>pplan:isStepOfPlan</code></span><a class="self-link" href="#proces-hirarchie-via-pplanisstepofplan"></a></h4>
    <p>Processen kunnen genest zijn — een subprocess kan zelf weer subprocessen hebben:</p>
-<pre>Exploitatie
-  └── ssn:implements → Hoofdproces
-        ├── pplan:isStepOfPlan → Emissieproces 1
-        │      └── ssn:implementedBy → Emissiepunt A
-        ├── pplan:isStepOfPlan → Verwerkingsproces 1
-        │      └── ssn:implementedBy → Installatie X
-        ├── pplan:isStepOfPlan → Transportproces
-        │      └── isPrecededBy → Emissieproces 2
-        └── pplan:isStepOfPlan → Meetproces 1
-               └── ssn:implementedBy → Meetpunt M
-</pre>
+   <p>graph LR
+    Exploitatie["Exploitatie<br>(riepr:Exploitatie)"] -->|ssn:implements| HoofdProces["Hoofdproces<br>(riepr:Proces)"]
+    HoofdProces -->|pplan:isStepOfPlan| Emissie1["Emissieproces 1"]
+    HoofdProces -->|pplan:isStepOfPlan| Verwerking1["Verwerkingsproces 1"]
+    HoofdProces -->|pplan:isStepOfPlan| Transport["Transportproces"]
+    HoofdProces -->|pplan:isStepOfPlan| Meet1["Meetproces 1"]
+    Emissie1 -->|ssn:implementedBy| EmissiepuntA["Emissiepunt A"]
+    Verwerking1 -->|ssn:implementedBy| InstallatieX["Installatie X"]
+    Transport --><var>isPrecededBy</var> Emissie2["Emissieproces 2"]
+    Meet1 -->|ssn:implementedBy| MeetpuntM["Meetpunt M"]</p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIEV4cGxvaXRhdGllWyJFeHBsb2l0YXRpZTxici8+KHJpZXByOkV4cGxvaXRhdGllKSJdIC0tPnxzc246aW1wbGVtZW50c3wgSG9vZmRQcm9jZXNbIkhvb2ZkcHJvY2VzPGJyLz4ocmllcHI6UHJvY2VzKSJdCiAgICBIb29mZFByb2NlcyAtLT58cHBsYW46aXNTdGVwT2ZQbGFufCBFbWlzc2llMVsiRW1pc3NpZXByb2NlcyAxIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IFZlcndlcmtpbmcxWyJWZXJ3ZXJraW5nc3Byb2NlcyAxIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IFRyYW5zcG9ydFsiVHJhbnNwb3J0cHJvY2VzIl0KICAgIEhvb2ZkUHJvY2VzIC0tPnxwcGxhbjppc1N0ZXBPZlBsYW58IE1lZXQxWyJNZWV0cHJvY2VzIDEiXQogICAgRW1pc3NpZTEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBFbWlzc2llcHVudEFbIkVtaXNzaWVwdW50IEEiXQogICAgVmVyd2Vya2luZzEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBJbnN0YWxsYXRpZVhbIkluc3RhbGxhdGllIFgiXQogICAgVHJhbnNwb3J0IC0tPnxpc1ByZWNlZGVkQnl8IEVtaXNzaWUyWyJFbWlzc2llcHJvY2VzIDIiXQogICAgTWVldDEgLS0+fHNzbjppbXBsZW1lbnRlZEJ5fCBNZWV0cHVudE1bIk1lZXRwdW50IE0iXQ=="></div>
    <h3 class="heading settled" data-level="9.25" id="referenties②"><span class="secno">9.25. </span><span class="content">Referenties</span><a class="self-link" href="#referenties②"></a></h3>
    <ul>
     <li data-md>
@@ -3436,7 +3434,14 @@ Aangiftebundel (dossier:Stuk)
    <blockquote>
     <p><strong>Doel</strong>: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.</p>
    </blockquote>
-   <p>Observaties worden gekoppeld aan emissiepunten via <code>sosa:hasFeatureOfInterest</code>. Elke observatie heeft een resultaat dat de gemeten waarde bevat.</p>
+   <p>Observaties worden gekoppeld aan emissiepunten via <code>sosa:hasFeatureOfInterest</code>. Elke observatie heeft een resultaat dat de gemeten waarde bevat. De relatie tussen emissiepunt, emissie-gebeurtenis en observatie ziet er als volgt uit:</p>
+   <p>graph LR
+    Emissiepunt["Emissiepunt<br>(sosa:System)"] -->|ssn:implementedBy| Proces["Proces<br>(emissie-type)"]
+    Proces -->|sosa:hasFeatureOfInterest| Emissie["Emissie<br>(sosa:FeatureOfInterest)"]
+    Observatie["Observatie<br>(sosa:Observation)"] -->|sosa:hasFeatureOfInterest| Emissie
+    Observatie -->|sosa:hasResult| Resultaat["Resultaat<br>(waarde + eenheid)"]
+    Observatie -->|sosa:madeBySensor| Meetinstrument["Meetinstrument"]</p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggTFIKICAgIEVtaXNzaWVwdW50WyJFbWlzc2llcHVudDxici8+KHNvc2E6U3lzdGVtKSJdIC0tPnxzc246aW1wbGVtZW50ZWRCeXwgUHJvY2VzWyJQcm9jZXM8YnIvPihlbWlzc2llLXR5cGUpIl0KICAgIFByb2NlcyAtLT58c29zYTpoYXNGZWF0dXJlT2ZJbnRlcmVzdHwgRW1pc3NpZVsiRW1pc3NpZTxici8+KHNvc2E6RmVhdHVyZU9mSW50ZXJlc3QpIl0KICAgIE9ic2VydmF0aWVbIk9ic2VydmF0aWU8YnIvPihzb3NhOk9ic2VydmF0aW9uKSJdIC0tPnxzb3NhOmhhc0ZlYXR1cmVPZkludGVyZXN0fCBFbWlzc2llCiAgICBPYnNlcnZhdGllIC0tPnxzb3NhOmhhc1Jlc3VsdHwgUmVzdWx0YWF0WyJSZXN1bHRhYXQ8YnIvPih3YWFyZGUgKyBlZW5oZWlkKSJdCiAgICBPYnNlcnZhdGllIC0tPnxzb3NhOm1hZGVCeVNlbnNvcnwgTWVldGluc3RydW1lbnRbIk1lZXRpbnN0cnVtZW50Il0="></div>
 <pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>sosa:</c-> <c- g>&lt;http://www.w3.org/ns/sosa/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>qudt:</c-> <c- g>&lt;http://qudt.org/schema/qudt/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>unit:</c-> <c- g>&lt;http://qudt.org/vocab/unit/></c-> <c- p>.</c->
@@ -3580,7 +3585,7 @@ Aangiftebundel (dossier:Stuk)
 <c- g>&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c></c->
     <c- b>a</c-> <c- nn>riepr</c-><c- p>:</c-><c- f>Emissie</c-><c- p>,</c-> <c- nn>sosa</c-><c- p>:</c-><c- f>FeatureOfInterest</c-><c- p>,</c-> <c- nn>prov</c-><c- p>:</c-><c- f>Entity</c-> <c- p>.</c->
 </pre>
-   <p>Emissies hebben een <strong>twee-segment URI</strong> (<code>{type}/{uuid}</code>) — ze worden niet versieerd.</p>
+   <p>Emissies hebben een <strong>twee-segment URI</strong> (<code>{type}/{uuid}</code>) — ze worden niet geversioneerd.</p>
    <h4 class="heading settled" data-level="9.37.2" id="onttrekking"><span class="secno">9.37.2. </span><span class="content">Onttrekking</span><a class="self-link" href="#onttrekking"></a></h4>
    <p>Een <strong>onttrekking</strong> is een gebeurtenis waarbij grondstoffen gewonnen worden (aan een onttrekkingspunt).</p>
 <pre class="highlight language-turtle"><c- g>&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/019eaca0-b8c6-7096-886c-103c3e21466d></c->
@@ -3603,7 +3608,7 @@ Aangiftebundel (dossier:Stuk)
 | <code>sosa:madeBySensor</code> | System | Het meetinstrument dat de meting uitvoerde |
 | <code>sosa:usedProcedure</code> | Procedure | De gebruikte meetprocedure |</p>
    <h4 class="heading settled" data-level="9.38.2" id="uri-patroon②"><span class="secno">9.38.2. </span><span class="content">URI-patroon</span><a class="self-link" href="#uri-patroon②"></a></h4>
-   <p>Observaties zijn <strong>versieerbaar</strong> met een twee-segment patroon (<code>{type}/{uuid}/{created}</code>):</p>
+   <p>Observaties zijn <strong>versioneerbaar</strong> met een drie-segment patroon (<code>{type}/{uuid}/{created}</code>):</p>
 <pre class="highlight language-turtle"><c- k>@prefix</c-> <c- nn>sosa:</c->  <c- g>&lt;http://www.w3.org/ns/sosa/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>qudt:</c->  <c- g>&lt;http://qudt.org/schema/qudt/></c-> <c- p>.</c->
 <c- k>@prefix</c-> <c- nn>unit:</c->  <c- g>&lt;http://qudt.org/vocab/unit/></c-> <c- p>.</c->
@@ -3881,6 +3886,13 @@ Aangiftebundel (dossier:Stuk)
 </pre>
    <h3 class="heading settled" data-level="9.53" id="7-systeemhirarchie-via-ssnhassubsystem"><span class="secno">9.53. </span><span class="content">7. Systeemhiërarchie via <code>ssn:hasSubSystem</code></span><a class="self-link" href="#7-systeemhirarchie-via-ssnhassubsystem"></a></h3>
    <p>Systemen kunnen genest zijn — een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):</p>
+   <p>graph TD
+    Installatie["Installatie<br>(riepr:Installatie)"] -->|ssn:hasSubSystem| Emissiepunt["Emissiepunt<br>(riepr:Emissiepunt)"]
+    Installatie -->|ssn:hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br>(riepr:Onttrekkingspunt)"]
+    Installatie -->|ssn:hasSubSystem| Meetpunt["Meetpunt<br>(riepr:Meetpunt)"]
+    Installatie -->|ssn:hasSubSystem| Filter["Filter<br>(sosa:System)"]
+    Emissiepunt -->|ssn:hasSubSystem| MeetInstrument["Meetinstrument<br>(riepr:MeetInstrument)"]</p>
+   <div class="riepr-mermaid" data-mermaid="Z3JhcGggVEQKICAgIEluc3RhbGxhdGllWyJJbnN0YWxsYXRpZTxici8+KHJpZXByOkluc3RhbGxhdGllKSJdIC0tPnxzc246aGFzU3ViU3lzdGVtfCBFbWlzc2llcHVudFsiRW1pc3NpZXB1bnQ8YnIvPihyaWVwcjpFbWlzc2llcHVudCkiXQogICAgSW5zdGFsbGF0aWUgLS0+fHNzbjpoYXNTdWJTeXN0ZW18IE9udHRyZWtraW5nc3B1bnRbIk9udHRyZWtraW5nc3B1bnQ8YnIvPihyaWVwcjpPbnR0cmVra2luZ3NwdW50KSJdCiAgICBJbnN0YWxsYXRpZSAtLT58c3NuOmhhc1N1YlN5c3RlbXwgTWVldHB1bnRbIk1lZXRwdW50PGJyLz4ocmllcHI6TWVldHB1bnQpIl0KICAgIEluc3RhbGxhdGllIC0tPnxzc246aGFzU3ViU3lzdGVtfCBGaWx0ZXJbIkZpbHRlcjxici8+KHNvc2E6U3lzdGVtKSJdCiAgICBFbWlzc2llcHVudCAtLT58c3NuOmhhc1N1YlN5c3RlbXwgTWVldEluc3RydW1lbnRbIk1lZXRpbnN0cnVtZW50PGJyLz4ocmllcHI6TWVldEluc3RydW1lbnQpIl0="></div>
 <pre class="highlight language-turtle"><c- c># GPBV-installatie als bovenliggend systeem</c->
 <c- g>&lt;.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z></c->
     <c- nn>ssn</c-><c- p>:</c-><c- f>hasSubSystem</c-> <c- g>&lt;.../emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z></c-> <c- p>;</c->
@@ -3939,7 +3951,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 </pre>
    <h4 class="heading settled" data-level="9.58.3" id="feature-of-interest-geen-versie"><span class="secno">9.58.3. </span><span class="content">Feature of Interest (geen versie)</span><a class="self-link" href="#feature-of-interest-geen-versie"></a></h4>
-   <p>Emissies, onttrekkingen en uitwisselingen hebben een <strong>twee-segment URI</strong> zonder tijd — ze zijn geen versieerbare entiteiten:</p>
+   <p>Emissies, onttrekkingen en uitwisselingen hebben een <strong>twee-segment URI</strong> zonder tijd — ze zijn geen versioneerbare entiteiten:</p>
 <pre>https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/uitwisseling/{uuid}
