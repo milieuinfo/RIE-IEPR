@@ -229,31 +229,6 @@ classDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Installatie --> Aangifte : aangifte
 	Systeem <|-- Installatie
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
-	class MeetInstrument:::system {
-	  +String uuid
-	  String uri
-	  DateTime aangemaaktOp
-	  Date geldigVan
-	  Date geldigTot
-	  DateTime aangepastOp
-	  String type
-	  String geometrie
-	  String benaming
-	  ExterneIdentificator[] identifier
-	  Status status
-	  Systeem revisieVan
-	  Aangifte aangifte
-	}
-	%% http://www.w3.org/ns/adms#identifier
-	MeetInstrument --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/adms#status
-	MeetInstrument --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	MeetInstrument --> Systeem : revisieVan
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
-	MeetInstrument --> Aangifte : aangifte
-	Systeem <|-- MeetInstrument
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	class Meetpunt:::system {
 	  +String uuid
@@ -269,7 +244,7 @@ classDiagram
 	  Status status
 	  Systeem revisieVan
 	  Systeemeigenschap[] heeftEigenschap
-	  MeetInstrument[] heeftSubSysteem
+	  Filter[] heeftSubSysteem
 	  Aangifte aangifte
 	}
 	%% http://www.w3.org/ns/adms#identifier
@@ -281,7 +256,7 @@ classDiagram
 	%% http://www.w3.org/ns/ssn/hasProperty
 	Meetpunt --> Systeemeigenschap : heeftEigenschap
 	%% http://www.w3.org/ns/ssn/hasSubSystem
-	Meetpunt --> MeetInstrument : heeftSubSysteem
+	Meetpunt --> Filter : heeftSubSysteem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Meetpunt --> Aangifte : aangifte
 	Systeem <|-- Meetpunt

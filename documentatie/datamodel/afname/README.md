@@ -5,19 +5,19 @@ Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van e
 
 ## Inhoud
 
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) — concrete voorbeelden van data-afname met SPARQL-query's
-- [Basisaannames](./BASISAANNAME.md) — de modellen en aannames die ten grondslag liggen aan het datamodel
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) — organisaties, locaties en activiteiten
-- [Systemen: installaties, emissiepunten en meetpunten](./SYSTEMEN.md) — systemen, subsystemen en eigenschappen
-- [Observaties en emissies](./OBSERVATIES.md) — metingen, observaties en gebeurtenissen (emissie, onttrekking, uitwisseling)
-- [Aangifte en dossier](./AANGIFTE.md) — documenten en transacties gekoppeld aan de data
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) — versiebeheer, geldigheid en historische query's
+- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) concrete voorbeelden van data-afname met SPARQL-query's
+- [Basisaannames](./BASISAANNAME.md) de modellen en aannames die ten grondslag liggen aan het datamodel
+- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) organisaties, locaties en activiteiten
+- [Systemen: installaties, emissiepunten en meetpunten](./SYSTEMEN.md) systemen, subsystemen en eigenschappen
+- [Observaties en emissies](./OBSERVATIES.md) metingen, observaties en gebeurtenissen (emissie, onttrekking)
+- [Aangifte en dossier](./AANGIFTE.md) documenten en transacties gekoppeld aan de data
+- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) versiebeheer, geldigheid en historische query's
 
 > **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
 
 ## Hoe deze documentatie gebruiken
 
-Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gebaseerd op realistische data van AGC Glass Europe. De Turtle-snippets tonen hoe de data eruitziet in RDF-formaat — direct bruikbaar voor LOD-afnemers die SPARQL of RDF-libraries gebruiken.
+Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gebaseerd op realistische data van AGC Glass Europe. De Turtle-snippets tonen hoe de data eruitziet in RDF-formaat. Direct bruikbaar voor LOD-afnemers die SPARQL of RDF-libraries gebruiken.
 
 ### URI-patronen
 
@@ -37,10 +37,10 @@ Versioneerbare entiteiten bevatten **drie** segmenten in de URI: een unieke iden
 
 Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 
-- **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) — systemen, observaties, metingen
-- **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) — herkomst, versiebeheer
-- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) — geospatiale objecten
-- **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) — processen en stappen
+- **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
+- **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
+- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geospatiale objecten
+- **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
 
 Zie ook de [gegenereerde specificatie](../bin/specificatie/) voor een volledig overzicht van klassen, eigenschappen en concepten.
 
@@ -58,9 +58,7 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 | **emissiepunt_type** | `…/concept/riepr/emissiepunt-type/` | Typen emissiepunten (schoorsteen, lozingspunt, …) |
 | **onttrekkingspunt_type** | `…/concept/riepr/onttrekkingspunt-type/` | Typen onttrekkingspunten (grondwaterput, …) |
 | **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (meetput, controle-inrichting, …) |
-| **meetinstrument_type** | `…/concept/riepr/meetinstrument-type/` | Typen meetinstrumenten (debietmeter, …) |
 | **filter_type** | `…/concept/riepr/filter-type/` | Typen filters |
-| **uitwisselpunt_type** | `…/concept/riepr/uitwisselpunt-type/` | Typen uitwisselpunten |
 | **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (emissie, onttrekking, verwerking, meet, uitwissel) |
 | **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Hoofdactiviteit van een exploitant |
 | **status_type** | `…/concept/riepr/status-type/` | Statussen (in_dienst, ontmanteld, …) |

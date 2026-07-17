@@ -475,67 +475,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	installatie_systeemeigenschap many to one systeemeigenschap : heeft_eigenschap_systeemeigenschap
 	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
-	meet_instrument {
-	  id VARCHAR PK
-	  uri VARCHAR 
-	  aangemaakt_op TIMESTAMP 
-	  geldig_van DATE 
-	  geldig_tot DATE 
-	  aangepast_op TIMESTAMP 
-	  type VARCHAR 
-	  benaming VARCHAR 
-	  status VARCHAR 
-	  revisie_van VARCHAR FK
-	  aangifte VARCHAR FK
-	  in_gebruik_tot DATE 
-	  in_gebruik_vanaf DATE 
-	}
-	
-	class meet_instrument system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
-	meet_instrument many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	meet_instrument many to one systeem : revisie_van_systeem
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meet_instrument many to one meet_instrument_identity : uuid_meet_instrument
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meet_instrument many to one meet_instrument_identity : ""
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
-	meet_instrument_externe_identificator {
-	  meet_instrument_id VARCHAR PK,FK
-	  externe_identificator_id VARCHAR PK,FK
-	  aangemaakt_op TIMESTAMP 
-	  geldig_van DATE 
-	  geldig_tot DATE 
-	}
-	
-	class meet_instrument_externe_identificator system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meet_instrument_externe_identificator many to one externe_identificator : identifier_externe_identificator
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meet_instrument_externe_identificator many to one meet_instrument_identity : identifier_externe_identificator
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#MeetInstrument
-	meet_instrument_identity {
-	  systeem_uuid VARCHAR PK,FK
-	}
-	
-	class meet_instrument_identity system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meet_instrument_identity one to many systeem : ""
-	
-	%% http://www.w3.org/ns/sosa/madeBySensor
-	meetinstrument {
-	  uuid VARCHAR PK
-	  uri VARCHAR 
-	  made_by_sensor VARCHAR 
-	}
+
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	meetpunt {
@@ -961,27 +901,6 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	transactie_aangifte_bundel many to one transactie : genereert_aangifte_bundel
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisseling
-	uitwisseling {
-	  gebeurtenis_uuid VARCHAR PK,FK
-	  uri VARCHAR 
-	}
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	uitwisseling one to many gebeurtenis : ""
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisseling
-	uitwisseling_proces {
-	  uitwisseling_id VARCHAR PK,FK
-	  proces_id VARCHAR FK
-	}
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	uitwisseling_proces many to one proces : betrekking_tot_proces
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	uitwisseling_proces many to one uitwisseling : betrekking_tot_proces
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt
 	uitwisselpunt {

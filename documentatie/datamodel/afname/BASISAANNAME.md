@@ -49,7 +49,7 @@ De relatie tussen versie en identity wordt gelegd via `dct:isVersionOf`:
 
 ### Feature of Interest vs. versioneerbare entiteiten
 
-Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking, Uitwisseling) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet geversioneerd — ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
+Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet geversioneerd - ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
 
 ```turtle
 # Feature of Interest (geen versie)
@@ -65,8 +65,8 @@ Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Em
 
 Een exploitatie bestaat uit **twee lagen**:
 
-1. **De tijdsloze exploitatie** (identity URI) — representeert het abstracte concept van de exploitatie
-2. **De versies/toestanden** (versie URI) — beschrijven een specifieke toestand met geldigheid, status en inhoud
+1. **De tijdsloze exploitatie** (identity URI) - representeert het abstracte concept van de exploitatie
+2. **De versies/toestanden** (versie URI) - beschrijven een specifieke toestand met geldigheid, status en inhoud
 
 ```turtle
 # Laag 1: tijdsloze exploitatie (identity)
@@ -107,7 +107,7 @@ Enkele klassen zijn onderling **disjoint**: een entiteit kan niet tegelijkertijd
 - `riepr:Onttrekkingspunt`
 - `riepr:Meetpunt`
 
-Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt — nooit twee tegelijk. Het **Uitwisselpunt** is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).
+Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt - nooit twee tegelijk. Het **Uitwisselpunt** is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).
 
 ## 6. Observaties en Features of Interest
 
@@ -115,13 +115,13 @@ Observaties volgen het **SOSA/SSN**-patroon:
 
 ```mermaid
 graph TD
-    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking/Uitwisseling<br/>(sosa:FeatureOfInterest)"]
+    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking<br/>(sosa:FeatureOfInterest)"]
     Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br/>(met waarde + eenheid)"]
     Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br/>(skos:Concept)"]
     Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br/>(xsd:dateTime)"]
 ```
 
-Emissie, onttrekking en uitwisseling zijn **gebeurtenissen** (`riepr:Gebeurtenis`) en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" — ze zijn het **onderwerp** van de meting.
+Emissie en onttrekking zijn **gebeurtenissen** en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" - ze zijn het **onderwerp** van de meting.
 
 ```turtle
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
@@ -141,14 +141,16 @@ Emissie, onttrekking en uitwisseling zijn **gebeurtenissen** (`riepr:Gebeurtenis
 Systeemeigenschappen (`riepr:Systeemeigenschap`) zijn eigenschappen die betrekking hebben op een systeem (installatie, emissiepunt, meetpunt, ...). Ze worden gekoppeld via `ssn:hasProperty`.
 
 Elke systeemeigenschap heeft twee kenmerken:
-- **`riepr:parameter`** — de naam van de parameter (bijv. "verwijderingsrendement")
-- **`riepr:datatype`** — het datatype van de waarde (bijv. `xsd:decimal`)
+- **`riepr:parameter`** - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
+- **`riepr:datatype`** - het datatype van de waarde (bijv. `xsd:decimal`)
 
 ```turtle
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "verwijderingsrendement"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
+    rdfs:value "0"^^xsd:decimal ;
+    qudt:unit unit:Percent ;
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
 ```
 
 ## 8. Provenance en herkomst
@@ -169,6 +171,6 @@ Elke entiteit kan een primaire bron hebben via `prov:hadPrimarySource`. Dit trac
 
 ## Referenties
 
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) — concrete voorbeelden van data-afname
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) — organisaties, locaties, activiteiten
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) — versies, geldigheid, historische query's
+- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) - concrete voorbeelden van data-afname
+- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) - organisaties, locaties, activiteiten
+- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) - versies, geldigheid, historische query's

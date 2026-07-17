@@ -1,7 +1,7 @@
 # Observaties en emissies
 
 
-Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, uitwisseling) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C.
+Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C.
 
 ## 1. Het SOSA/SSN observatiepatroon
 
@@ -9,16 +9,16 @@ Het model gebruikt het standaard SOSA-patroon voor observaties:
 
 ```
 Observation
-  ├── hasFeatureOfInterest → Emissie / Onttrekking / Uitwisseling
+  ├── hasFeatureOfInterest → Emissie / Onttrekking
   ├── observedProperty     → Wat werd gemeten (stof, parameter)
   ├── resultTime           → Wanneer werd gemeten
   └── hasResult            → Resultaat
         └── NumericValue   → De gemeten waarde + eenheid
 ```
 
-## 2. Gebeurtenissen: Emissie, Onttrekking, Uitwisseling
+## 2. Gebeurtenissen: Emissie, Onttrekking
 
-Emissie, onttrekking en uitwisseling zijn **gebeurtenissen** (`riepr:Gebeurtenis`) en fungeren als `sosa:FeatureOfInterest`. Ze vertegenwoordigen een tijdsloos concept — de gebeurtenis zelf heeft geen timestamp. De tijd wordt toegevoegd via de gekoppelde observatie.
+Emissie en onttrekking zijn **gebeurtenissen** en fungeren als `sosa:FeatureOfInterest`. Ze vertegenwoordigen een tijdsloos concept. De gebeurtenis zelf heeft geen timestamp. De tijd wordt toegevoegd via de gekoppelde observatie.
 
 ### Emissie
 
@@ -33,7 +33,7 @@ Een **emissie** is een gebeurtenis waarbij stoffen de installatie verlaten (aan 
     a riepr:Emissie, sosa:FeatureOfInterest, prov:Entity .
 ```
 
-Emissies hebben een **twee-segment URI** (`{type}/{uuid}`) — ze worden niet geversioneerd.
+Emissies hebben een **twee-segment URI** (`{type}/{uuid}`). Ze worden niet geversioneerd.
 
 ### Onttrekking
 
@@ -44,14 +44,7 @@ Een **onttrekking** is een gebeurtenis waarbij grondstoffen gewonnen worden (aan
     a riepr:Onttrekking, sosa:FeatureOfInterest, prov:Entity .
 ```
 
-### Uitwisseling
-
-Een **uitwisseling** is een gebeurtenis waarbij stoffen worden uitgewisseld (aan een uitwisselpunt).
-
-```turtle
-<https://data.mjv.omgeving.vlaanderen.be/id/uitwisseling/019eaca0-b8c6-7096-886c-103c3e21466e>
-    a riepr:Uitwisseling, sosa:FeatureOfInterest, prov:Entity .
-```
+> **Opmerking**: De klasse `Uitwisseling` is verwijderd uit de ontologie. Uitwisselingen worden nu rechtstreeks gekoppeld aan `Uitwisselpunt` via het procesmodel.
 
 ## 3. Observaties
 
@@ -65,7 +58,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 | `sosa:observedProperty` | Concept | Wat werd gemeten (stof, parameter) |
 | `sosa:resultTime` | dateTime | Wanneer werd de meting uitgevoerd |
 | `sosa:hasResult` | Resultaat | Het resultaat van de meting |
-| `sosa:madeBySensor` | System | Het meetinstrument dat de meting uitvoerde |
+| `sosa:madeBySensor` | System | Het meetpunt/systeem dat de meting uitvoerde |
 | `sosa:usedProcedure` | Procedure | De gebruikte meetprocedure |
 
 ### URI-patroon
@@ -105,9 +98,9 @@ sosa:hasResult [
 
 QUDT (Quantities, Units, Types and Dimensions) biedt een gestandaardiseerd systeem voor eenheden:
 
-- `unit:PPM` — parts per million
-- `unit:MG-PER-M3` — milligram per kubieke meter
-- `unit:LITER-PER-SEC` — liter per seconde
+- `unit:PPM` parts per million
+- `unit:MG-PER-M3` milligram per kubieke meter
+- `unit:LITER-PER-SEC` liter per seconde
 - etc.
 
 ## 5. Geobserveerde eigenschappen (observedProperty)
@@ -125,25 +118,7 @@ De `sosa:observedProperty` geeft aan **wat** er werd gemeten. In het RIE-IEPR-mo
 <.../observatie/...> sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/TSP> .
 ```
 
-## 6. Meetinstrumenten
-
-Observaties worden gemaakt door meetinstrumenten (`riepr:Meetinstrument`). De relatie wordt gelegd via `sosa:madeBySensor`:
-
-```turtle
-<.../observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
-    sosa:madeBySensor <https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z> .
-```
-
-Meetinstrumenten zijn systemen met eigen eigenschappen (serienummer, type, ...):
-
-```turtle
-<.../meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z>
-    a riepr:Meetinstrument, sosa:System ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetinstrument-type/CEMS> ;
-    rdfs:label "CEMS analyser voor schoorsteen 1"@nl .
-```
-
-## 7. Meetprocedures
+## 6. Meetprocedures
 
 Elke observatie kan een procedure hebben via `sosa:usedProcedure`. Het model definieert specifieke meetprocedures:
 
@@ -180,11 +155,6 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
     a riepr:Meetpunt, sosa:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded> .
 
-# --- Meetinstrument ---
-<https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z>
-    a riepr:Meetinstrument, sosa:System ;
-    rdfs:label "CEMS analyser"@nl .
-
 # --- Observatie ---
 <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
     a sosa:Observation ;
@@ -192,7 +162,7 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
     sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    sosa:madeBySensor <https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/019edc4a-1a38-7eq6-lp7i-q2rnn0njni7/2026-01-01/2026-01-01T10:00:00Z> ;
+    sosa:madeBySensor <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
     sosa:hasResult [
         a sosa:Result, prov:Entity ;
         qudt:numericValue "45.2"^^qudt:NumericValue ;
@@ -237,10 +207,6 @@ classDiagram
       +String uuid
       String uri
     }
-    class Meetinstrument {
-      +String uuid
-      String uri
-    }
     
     %% Process classes
     class Proces {
@@ -254,10 +220,6 @@ classDiagram
       String uri
     }
     class Onttrekking {
-      +String uuid
-      String uri
-    }
-    class Uitwisseling {
       +String uuid
       String uri
     }
@@ -277,21 +239,17 @@ classDiagram
     %% System hierarchy
     Installatie <|-- Emissiepunt
     Installatie <|-- Meetpunt
-    Emissiepunt <|-- Meetinstrument
     
     %% Process links
     Proces --> Emissiepunt : implementedBy
     Proces --> Meetpunt : implementedBy
     Proces --> Emissie : hasFeatureOfInterest
     Proces --> Onttrekking : hasFeatureOfInterest
-    Proces --> Uitwisseling : hasFeatureOfInterest
     
     %% Observation links
     Observatie --> Emissie : hasFeatureOfInterest
     Observatie --> Onttrekking : hasFeatureOfInterest
-    Observatie --> Uitwisseling : hasFeatureOfInterest
     Observatie --> Resultaat : hasResult
-    Observatie --> Meetinstrument : madeBySensor
     Observatie --> Proces : usedProcedure
     
     %% System location links
@@ -301,7 +259,7 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) — Feature of Interest, SOSA/SSN patroon
-- [Installaties en emissiepunten](./SYSTEMEN.md) — fysieke systemen
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) — SPARQL-query's voor observaties
+- [Basisaannames](./BASISAANNAME.md) Feature of Interest, SOSA/SSN patroon
+- [Installaties en emissiepunten](./SYSTEMEN.md) fysieke systemen
+- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) SPARQL-query's voor observaties
 - **Codelijsten**: De `observedProperty` waarden en andere categorisaties verwijzen naar SKOS concepten uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

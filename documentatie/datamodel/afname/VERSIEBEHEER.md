@@ -28,15 +28,14 @@ https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 
 ### Feature of Interest (geen versie)
 
-Emissies, onttrekkingen en uitwisselingen hebben een **twee-segment URI** zonder tijd — ze zijn geen versioneerbare entiteiten:
+Emissies en onttrekkingen hebben een **twee-segment URI** zonder tijd. Ze zijn geen versioneerbare entiteiten:
 
 ```
 https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
-https://data.mjv.omgeving.vlaanderen.be/id/uitwisseling/{uuid}
 ```
 
-## `dct:isVersionOf` — de link tussen versie en identity
+## `dct:isVersionOf` de link tussen versie en identity
 
 De relatie `dct:isVersionOf` koppelt een versie aan haar identity URI:
 
@@ -51,7 +50,7 @@ De relatie `dct:isVersionOf` koppelt een versie aan haar identity URI:
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> .
 ```
 
-Meerdere versies kunnen naar dezelfde identity verwijzen — ze beschrijven verschillende toestanden van hetzelfde object.
+Meerdere versies kunnen naar dezelfde identity verwijzen. Ze beschrijven verschillende toestanden van hetzelfde object.
 
 ## 3. Geldigheid: `dct:issued` en `adms:status`
 
@@ -149,8 +148,8 @@ ORDER BY ?issued, ?created
 
 De exploitatie heeft een specifiek versiebeheerpatroon met **twee lagen**:
 
-1. **Identity laag** — de tijdsloze exploitatie (geen `issued`, geen `created`)
-2. **Versie laag** — toestanden van de exploitatie (met `issued` en `created`)
+1. **Identity laag** de tijdsloze exploitatie (geen `issued`, geen `created`)
+2. **Versie laag** toestanden van de exploitatie (met `issued` en `created`)
 
 ```turtle
 # Laag 1: identity (geen tijd)
@@ -249,6 +248,6 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) — URI-patronen, exploitatie twee lagen
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) — SPARQL-query's voor versiebeheer
-- [Aangifte en dossier](./AANGIFTE.md) — relatie tussen indienen en versies
+- [Basisaannames](./BASISAANNAME.md) URI-patronen, exploitatie twee lagen
+- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) SPARQL-query's voor versiebeheer
+- [Aangifte en dossier](./AANGIFTE.md) relatie tussen indienen en versies

@@ -1,11 +1,11 @@
 # Systemen: installaties, emissiepunten en meetpunten
 
 
-Dit document beschrijft systemen — installaties, emissiepunten, onttrekkingspunten, meetpunten, uitwisselpunten, filters en meetinstrumenten — en hun onderlinge relaties in het RIE-IEPR-datamodel.
+Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunten, meetpunten en filters - en hun onderlinge relaties in het RIE-IEPR-datamodel.
 
 ## 1. Systemen: een gemeenschappelijk patroon
 
-Installaties, emissiepunten, onttrekkingspunten, meetpunten, uitwisselpunten en filters zijn allemaal **systemen**. Ze delen een gemeenschappelijk basispatroon:
+Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn allemaal **systemen**. Ze delen een gemeenschappelijk basispatroon:
 
 | Eigenschap | Type | Beschrijving |
 |---|---|---|
@@ -54,34 +54,39 @@ Een **installatie** is een infrastructuur voor een specifieke functie. Het type 
 Installaties kunnen verschillende eigenschappen hebben, zoals:
 
 ```turtle
-# Verwijderingsrendement
+# Verwijderingsrendement (met parameter als concept)
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "verwijderingsrendement"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
+    rdfs:value "0"^^xsd:decimal ;
+    qudt:unit unit:Percent ;
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
 
 # Geïnstalleerd vermogen
 <.../systeemeigenschap/019edc4a-1a2b-71f3-8c45-d9e8f7a6b5c4>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "geinstalleerd_vermogen"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerd_vermogen> ;
+    rdfs:value "1500"^^xsd:decimal ;
+    qudt:unit unit:KiloW .
 
 # Geïnstalleerde productiecapaciteit
 <.../systeemeigenschap/019edc4a-1a2c-72e4-9d56-e0f9g8b7c6d5>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "geinstalleerde_productiecapaciteit"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerde_productiecapaciteit> ;
+    rdfs:value "100"^^xsd:decimal ;
+    qudt:unit unit:TonnePerYear .
 
-# Waterzuiveringstechniek
+# Waterzuiveringstechniek (met parameter als concept)
 <.../systeemeigenschap/019edc4a-1a2d-73f5-ae67-f1gad9c8d7e6>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "waterzuiveringstechniek"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#string> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/waterzuiveringstechniek> ;
+    rdfs:value "ultrafiltratie"@nl ;
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/IJGRMHOSHXDMSA-UHFFFAOYSA-N> .
 ```
 
 ## 3. Emissiepunten
 
-Een **emissiepunt** is een punt waar stoffen de installatie verlaten. Het is een subklasse van `riepr:Emissiepunt`, `sosa:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met onttrekkingspunten en meetpunten. Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
+Een **emissiepunt** is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van `riepr:Emissiepunt`, `sosa:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met onttrekkingspunten en meetpunten. Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
 
 ### Types emissiepunten
 
@@ -125,7 +130,7 @@ Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equ
 
 ## 4. Onttrekkingspunten
 
-Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden of bemonsterd. Het is een subklasse van `riepr:Onttrekkingspunt`, `sosa:System` en `ogc:SpatialObject`.
+Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `riepr:Onttrekkingspunt`, `sosa:System` en `ogc:SpatialObject`.
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -158,14 +163,24 @@ Een **meetpunt** is een punt waar metingen worden uitgevoerd. Het is een subklas
     rdfs:label "Meetpunt 1"@nl .
 ```
 
-## 6. Filters en Meetinstrumenten
+## 6. Filters
 
-Filters en meetinstrumenten zijn ook systemen, maar worden niet visueel weergegeven als aparte structurele elementen. Ze zijn gekoppeld aan een bovenliggend systeem via `ssn:hasSubSystem`.
+Filters zijn ook systemen, maar worden niet visueel weergegeven als aparte structurele elementen. Ze zijn gekoppeld aan een bovenliggend systeem via `ssn:hasSubSystem`.
+
+### Filter als subsysteem
+
+Filters kunnen gekoppeld zijn aan:
+- **Onttrekkingspunten** (voor grondwaterwinning)
+- **Meetpunten** (voor bemonstering)
 
 ```turtle
-# Filter als subsysteem van een installatie
-<.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z>
-    ssn:hasSubSystem <.../emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z> .
+# Filter als subsysteem van een onttrekkingspunt
+<.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>
+    ssn:hasSubSystem <.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> .
+
+# Filter als subsysteem van een meetpunt
+<.../meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z>
+    ssn:hasSubSystem <.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
 ### Filter-eigenschappen
@@ -176,19 +191,20 @@ Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en leng
 # Watervoerende laag
 <.../systeemeigenschap/019edc4a-1a36-7co4-jn5g-o0pkl8lhlg5>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "watervoerendeLaag"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#string> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    rdfs:value "Kalksteen"@nl .
 
 # Lengte
 <.../systeemeigenschap/019edc4a-1a37-7dp5-k o6h-p1qmm9mimh6>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "lengte"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    rdfs:value "2.5"^^xsd:decimal ;
+    qudt:unit unit:M .
 ```
 
 ## 7. Systeemhiërarchie via `ssn:hasSubSystem`
 
-Systemen kunnen genest zijn — een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):
+Systemen kunnen genest zijn - een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):
 
 ```mermaid
 graph TD
@@ -196,7 +212,8 @@ graph TD
     Installatie -->|hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>System"]
     Installatie -->|hasSubSystem| Meetpunt["Meetpunt<br/>System"]
     Installatie -->|hasSubSystem| Filter["Filter<br/>System"]
-    Emissiepunt -->|hasSubSystem| Meetinstrument["Meetinstrument<br/>System"]
+    Onttrekkingspunt -->|hasSubSystem| Filter["Filter<br/>System"]
+    Meetpunt -->|hasSubSystem| Filter["Filter<br/>System"]
 ```
 
 ```turtle
@@ -271,10 +288,6 @@ classDiagram
       +String uuid
       String uri
     }
-    class Meetinstrument {
-      +String uuid
-      String uri
-    }
     
     %% Process classes
     class Proces {
@@ -289,10 +302,6 @@ classDiagram
       +String uuid
       String uri
     }
-    class Uitwisseling {
-      +String uuid
-      String uri
-    }
     class Exploitatielocatie {
       +String uuid
       String uri
@@ -304,19 +313,17 @@ classDiagram
     Installatie <|-- Meetpunt
     Installatie <|-- Filter
     Installatie <|-- Uitwisselpunt
-    Emissiepunt <|-- Meetinstrument
     
     %% System → Process links (implementedBy)
-    Proces --> Emissiepunt : implementedBy
-    Proces --> Installatie : implementedBy
-    Proces --> Meetpunt : implementedBy
-    Proces --> Onttrekkingspunt : implementedBy
-    Proces --> Uitwisselpunt : implementedBy
+    Emissiepunt --> Proces : implementedBy
+    Installatie --> Proces : implementedBy
+    Meetpunt --> Proces : implementedBy
+    Onttrekkingspunt --> Proces : implementedBy
+    Uitwisselpunt --> Proces : implementedBy
     
-    %% Process → Feature links (hasFeatureOfInterest)
-    Proces --> Emissie : hasFeatureOfInterest
-    Proces --> Onttrekking : hasFeatureOfInterest
-    Proces --> Uitwisseling : hasFeatureOfInterest
+    %% Feature → Process links (hasFeatureOfInterest)
+    Emissie --> Proces : hasFeatureOfInterest
+    Onttrekking --> Proces : hasFeatureOfInterest
     
     %% System → Location links (isHostedBy)
     Installatie --> Exploitatielocatie : isHostedBy
@@ -331,22 +338,13 @@ classDiagram
     Installatie --> Onttrekkingspunt : hasSubSystem
     Installatie --> Meetpunt : hasSubSystem
     Installatie --> Filter : hasSubSystem
-    Emissiepunt --> Meetinstrument : hasSubSystem
-```
-    "Installatie" --> "Emissiepunt" : ssn:hasSubSystem
-    "Installatie" --> "Onttrekkingspunt" : ssn:hasSubSystem
-    "Installatie" --> "Meetpunt" : ssn:hasSubSystem
-    "Installatie" --> "Filter" : ssn:hasSubSystem
-    "Emissiepunt" --> "Meetinstrument" : ssn:hasSubSystem
-    
-    %% Exploitatie links
-    "Exploitatie" -- "Proces" : ssn:implements
-    "Exploitatie" -- "Exploitatielocatie" : sosa:hasPlatform
+    Onttrekkingspunt --> Filter : hasSubSystem
+    Meetpunt --> Filter : hasSubSystem
 ```
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) — proces-procedure koppels, disjoint classes
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) — exploitatie → systeem relatie
-- [Observaties en emissies](./OBSERVATIES.md) — metingen op meetpunten
-- **Codelijsten**: De `dct:type` waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type, meetinstrument_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
+- [Basisaannames](./BASISAANNAME.md) - proces-procedure koppels, disjoint classes
+- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) - exploitatie -> systeem relatie
+- [Observaties en emissies](./OBSERVATIES.md) - metingen op meetpunten
+- **Codelijsten**: De `dct:type` waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

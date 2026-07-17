@@ -49,9 +49,9 @@ Een **transactie** is het proces van indienen, verwerken en goedkeuren van een a
 ```
 
 Een transactie kan meerdere fasen hebben:
-- **Indienen** — de plichtige dient de aangifte in
-- **Verwerken** — de overheid verwerkt de aangifte
-- **Goedkeuren** — de aangifte wordt goedgekeurd
+- **Indienen** De plichtige dient de aangifte in
+- **Verwerken** De overheid verwerkt de aangifte
+- **Goedkeuren** De aangifte wordt goedgekeurd
 
 ## 4. Relaties tussen entiteiten
 
@@ -64,9 +64,9 @@ graph LR
 
 ## 5. Integratie met data
 
-Aangiften zijn gekoppeld aan de RIE-IEPR-data — ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.
+Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) — PROV-O provenance patroon
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) — relatie tussen indienen en versies
+- [Basisaannames](./BASISAANNAME.md) PROV-O provenance patroon
+- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) relatie tussen indienen en versies

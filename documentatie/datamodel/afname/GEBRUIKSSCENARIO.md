@@ -1,7 +1,7 @@
 # Gebruiksscenario's
 
 
-Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Alle voorbeelden zijn gebaseerd op de data van AGC Glass Europe.
+Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Alle voorbeelden zijn gebaseerd op een enkel voorbeeldbestand.
 
 ## Scenario 1: Een exploitant identificeren en contacteren
 
@@ -79,7 +79,7 @@ graph LR
     Proces -->|hasFeatureOfInterest| Emissie["Emissie<br/>FeatureOfInterest"]
     Observatie["Observatie<br/>Observation"] -->|hasFeatureOfInterest| Emissie
     Observatie -->|hasResult| Resultaat["Resultaat<br/>waarde + eenheid"]
-    Observatie -->|madeBySensor| Meetinstrument["Meetinstrument"]
+    Observatie -->|madeBySensor| Meetpunt["Meetpunt"]
 ```
 
 ```turtle
@@ -116,7 +116,7 @@ ORDER BY DESC(?datum)
 
 ## Scenario 4: Processen en hun hiërarchie doorzoeken
 
-> **Doel**: Het doel is om de proceshiërarchie van een exploitatie in te zien — welke stappen bij elkaar horen.
+> **Doel**: Het doel is om de proceshiërarchie van een exploitatie in te zien. Welke stappen bij elkaar horen?
 
 Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoofdactiviteit) wordt geïmplementeerd door de exploitatie. Subprocessen zijn verbonden via `pplan:isStepOfPlan`.
 
@@ -212,7 +212,7 @@ Meetpunten fungeren als Feature of Interest voor observaties. De `sosa:hasFeatur
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) — modellen en aannames achter het datamodel
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) — organisaties, locaties, activiteiten
-- [Installaties en emissiepunten](./SYSTEMEN.md) — systemen en subsystemen
-- [Observaties en emissies](./OBSERVATIES.md) — metingen en gebeurtenissen
+- [Basisaannames](./BASISAANNAME.md) modellen en aannames achter het datamodel
+- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) organisaties, locaties, activiteiten
+- [Installaties en emissiepunten](./SYSTEMEN.md) systemen en subsystemen
+- [Observaties en emissies](./OBSERVATIES.md) metingen en gebeurtenissen
