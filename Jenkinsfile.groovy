@@ -45,6 +45,8 @@ pipeline {
               sh '''
                 set -e
                 export NPM_CONFIG_LOGLEVEL=warn
+                export PUPPETEER_SKIP_DOWNLOAD=true
+                export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
                 # run in the specificatie subfolder where package.json lives
                 cd documentatie/bin/specificatie
                   if [ -f package-lock.json ]; then
