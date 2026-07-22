@@ -21,7 +21,7 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'jenkins-jenkins-agent'
-      yaml podBuilder.from([maven.podSpec(25), nodePodSpec])
+      yaml podBuilder.from([dind.podSpec(), nodePodSpec])
     }
   }
 
