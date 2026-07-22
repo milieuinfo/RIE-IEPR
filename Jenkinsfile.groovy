@@ -58,11 +58,11 @@ pipeline {
               '''
             }
 
-            container('maven') {
+            container('dind') {
               sh '''
                 set -e
 
-                # build:docker expects Docker on the host; keep it best-effort as in Bamboo
+                # build:docker expects Docker on the host
                 if command -v docker >/dev/null 2>&1; then
                   (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
                 else
