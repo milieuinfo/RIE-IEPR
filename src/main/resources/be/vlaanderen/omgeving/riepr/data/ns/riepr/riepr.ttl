@@ -1436,7 +1436,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekking moet gekoppeld zijn aan een proces"@nl ;
-        owl:onProperty sosa:hasFeatureOfInterest ;
+        owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :Proces ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1457,7 +1457,7 @@
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissie moet gekoppeld zijn aan een proces"@nl ;
-        owl:onProperty sosa:hasFeatureOfInterest ;
+        owl:onProperty prov:wasDerivedFrom ;
         owl:someValuesFrom :Proces ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1495,7 +1495,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatie is gekoppeld aan een Emissie of Onttrekking"@nl ;
         owl:onProperty sosa:hasFeatureOfInterest ;
-        owl:someValuesFrom :Gebeurtenis ;
+        owl:someValuesFrom sosa:FeatureOfInterest ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;

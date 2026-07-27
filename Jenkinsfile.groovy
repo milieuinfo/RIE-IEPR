@@ -33,10 +33,6 @@ pipeline {
   stages {
 
     stage('CI') {
-      when {
-        expression { git.notSkipCi() }
-      }
-
       stages {
 
         stage('Build Specificatie') {
