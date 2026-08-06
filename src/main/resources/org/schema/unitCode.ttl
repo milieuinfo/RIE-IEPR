@@ -1,0 +1,33 @@
+PREFIX brick:    <https://brickschema.org/schema/Brick#>
+PREFIX csvw:     <http://www.w3.org/ns/csvw#>
+PREFIX dc:       <http://purl.org/dc/elements/1.1/>
+PREFIX dcam:     <http://purl.org/dc/dcam/>
+PREFIX dcat:     <http://www.w3.org/ns/dcat#>
+PREFIX dcmitype: <http://purl.org/dc/dcmitype/>
+PREFIX dcterms:  <http://purl.org/dc/terms/>
+PREFIX doap:     <http://usefulinc.com/ns/doap#>
+PREFIX foaf:     <http://xmlns.com/foaf/0.1/>
+PREFIX odrl:     <http://www.w3.org/ns/odrl/2/>
+PREFIX org:      <http://www.w3.org/ns/org#>
+PREFIX owl:      <http://www.w3.org/2002/07/owl#>
+PREFIX prof:     <http://www.w3.org/ns/dx/prof/>
+PREFIX prov:     <http://www.w3.org/ns/prov#>
+PREFIX qb:       <http://purl.org/linked-data/cube#>
+PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema:   <https://schema.org/>
+PREFIX sh:       <http://www.w3.org/ns/shacl#>
+PREFIX skos:     <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:     <http://www.w3.org/ns/sosa/>
+PREFIX ssn:      <http://www.w3.org/ns/ssn/>
+PREFIX time:     <http://www.w3.org/2006/time#>
+PREFIX vann:     <http://purl.org/vocab/vann/>
+PREFIX void:     <http://rdfs.org/ns/void#>
+PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
+
+schema:unitCode  rdf:type      rdf:Property;
+        rdfs:comment           "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.";
+        rdfs:label             "unitCode";
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:TypeAndQuantityNode , schema:QuantitativeValue , schema:UnitPriceSpecification , schema:PropertyValue;
+        schema:rangeIncludes   schema:URL , schema:Text .

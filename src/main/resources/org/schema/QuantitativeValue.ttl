@@ -1,0 +1,194 @@
+PREFIX brick:    <https://brickschema.org/schema/Brick#>
+PREFIX csvw:     <http://www.w3.org/ns/csvw#>
+PREFIX dc:       <http://purl.org/dc/elements/1.1/>
+PREFIX dcam:     <http://purl.org/dc/dcam/>
+PREFIX dcat:     <http://www.w3.org/ns/dcat#>
+PREFIX dcmitype: <http://purl.org/dc/dcmitype/>
+PREFIX dcterms:  <http://purl.org/dc/terms/>
+PREFIX doap:     <http://usefulinc.com/ns/doap#>
+PREFIX foaf:     <http://xmlns.com/foaf/0.1/>
+PREFIX odrl:     <http://www.w3.org/ns/odrl/2/>
+PREFIX org:      <http://www.w3.org/ns/org#>
+PREFIX owl:      <http://www.w3.org/2002/07/owl#>
+PREFIX prof:     <http://www.w3.org/ns/dx/prof/>
+PREFIX prov:     <http://www.w3.org/ns/prov#>
+PREFIX qb:       <http://purl.org/linked-data/cube#>
+PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema:   <https://schema.org/>
+PREFIX sh:       <http://www.w3.org/ns/shacl#>
+PREFIX skos:     <http://www.w3.org/2004/02/skos/core#>
+PREFIX sosa:     <http://www.w3.org/ns/sosa/>
+PREFIX ssn:      <http://www.w3.org/ns/ssn/>
+PREFIX time:     <http://www.w3.org/2006/time#>
+PREFIX vann:     <http://purl.org/vocab/vann/>
+PREFIX void:     <http://rdfs.org/ns/void#>
+PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
+
+schema:valueReference
+        rdf:type               rdf:Property;
+        rdfs:comment           "A secondary value that provides additional information on the original value, e.g. a reference temperature or a type of measurement.";
+        rdfs:label             "valueReference";
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:PropertyValue , schema:QualitativeValue , schema:QuantitativeValue;
+        schema:rangeIncludes   schema:Text , schema:MeasurementTypeEnumeration , schema:DefinedTerm , schema:StructuredValue , schema:PropertyValue , schema:QualitativeValue , schema:QuantitativeValue , schema:Enumeration .
+
+schema:value  rdf:type         rdf:Property;
+        rdfs:comment           "The value of a [[QuantitativeValue]] (including [[Observation]]) or property value node.\\n\\n* For [[QuantitativeValue]] and [[MonetaryAmount]], the recommended type for values is 'Number'.\\n* For [[PropertyValue]], it can be 'Text', 'Number', 'Boolean', or 'StructuredValue'.\\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similar Unicode symbols.\\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.";
+        rdfs:label             "value";
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:PropertyValue , schema:QuantitativeValue , schema:MonetaryAmount;
+        schema:rangeIncludes   schema:Text , schema:StructuredValue , schema:Boolean , schema:Number .
+
+schema:url  rdf:type            rdf:Property;
+        rdfs:comment            "URL of the item.";
+        rdfs:label              "url";
+        owl:equivalentProperty  <http://ogp.me/ns#url>;
+        schema:domainIncludes   schema:Thing;
+        schema:rangeIncludes    schema:URL .
+
+schema:unitText  rdf:type      rdf:Property;
+        rdfs:comment           "A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code for\n<a href='unitCode'>unitCode</a>.";
+        rdfs:label             "unitText";
+        schema:domainIncludes  schema:UnitPriceSpecification , schema:PropertyValue , schema:TypeAndQuantityNode , schema:QuantitativeValue;
+        schema:rangeIncludes   schema:Text .
+
+schema:unitCode  rdf:type      rdf:Property;
+        rdfs:comment           "The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.";
+        rdfs:label             "unitCode";
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:TypeAndQuantityNode , schema:QuantitativeValue , schema:UnitPriceSpecification , schema:PropertyValue;
+        schema:rangeIncludes   schema:URL , schema:Text .
+
+schema:subjectOf  rdf:type     rdf:Property;
+        rdfs:comment           "A CreativeWork or Event about this Thing.";
+        rdfs:label             "subjectOf";
+        schema:domainIncludes  schema:Thing;
+        schema:inverseOf       schema:about;
+        schema:rangeIncludes   schema:CreativeWork , schema:Event;
+        schema:source          <https://github.com/schemaorg/schemaorg/issues/1670> .
+
+schema:sameAs  rdf:type        rdf:Property;
+        rdfs:comment           "URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website.";
+        rdfs:label             "sameAs";
+        schema:domainIncludes  schema:Thing;
+        schema:rangeIncludes   schema:URL .
+
+schema:potentialAction
+        rdf:type               rdf:Property;
+        rdfs:comment           "Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.";
+        rdfs:label             "potentialAction";
+        schema:domainIncludes  schema:Thing;
+        schema:rangeIncludes   schema:Action .
+
+schema:owner  rdf:type         rdf:Property;
+        rdfs:comment           "A person or organization who owns this Thing.";
+        rdfs:label             "owner";
+        schema:domainIncludes  schema:Thing;
+        schema:inverseOf       schema:owns;
+        schema:rangeIncludes   schema:Organization , schema:Person;
+        schema:source          <https://github.com/schemaorg/schemaorg/issues/4603> .
+
+schema:name  rdf:type           rdf:Property;
+        rdfs:comment            "The name of the item.";
+        rdfs:label              "name";
+        rdfs:subPropertyOf      rdfs:label;
+        owl:equivalentProperty  <http://ogp.me/ns#title> , <https://www.omg.org/spec/Commons/Text/hasName> , dcterms:title;
+        schema:domainIncludes   schema:Thing;
+        schema:rangeIncludes    schema:Text .
+
+schema:minValue  rdf:type      rdf:Property;
+        rdfs:comment           "The lower value of some characteristic or property.";
+        rdfs:label             "minValue";
+        rdfs:subPropertyOf     <https://www.omg.org/spec/Commons/Quantities/hasLowerBound>;
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:PropertyValueSpecification , schema:QuantitativeValue , schema:MonetaryAmount , schema:PropertyValue;
+        schema:rangeIncludes   schema:Number .
+
+schema:maxValue  rdf:type      rdf:Property;
+        rdfs:comment           "The upper value of some characteristic or property.";
+        rdfs:label             "maxValue";
+        rdfs:subPropertyOf     <https://www.omg.org/spec/Commons/Quantities/hasUpperBound>;
+        schema:contributor     <https://schema.org/docs/collab/GoodRelationsTerms>;
+        schema:domainIncludes  schema:PropertyValue , schema:PropertyValueSpecification , schema:QuantitativeValue , schema:MonetaryAmount;
+        schema:rangeIncludes   schema:Number .
+
+schema:mainEntityOfPage
+        rdf:type               rdf:Property;
+        rdfs:comment           "Indicates a page (or other CreativeWork) for which this thing is the main entity being described. See [background notes](/docs/datamodel.html#mainEntityBackground) for details.";
+        rdfs:label             "mainEntityOfPage";
+        schema:domainIncludes  schema:Thing;
+        schema:inverseOf       schema:mainEntity;
+        schema:rangeIncludes   schema:CreativeWork , schema:URL .
+
+schema:image  rdf:type          rdf:Property;
+        rdfs:comment            "An image of the item. This can be a [[URL]] or a fully described [[ImageObject]].";
+        rdfs:label              "image";
+        owl:equivalentProperty  <http://ogp.me/ns#image>;
+        schema:domainIncludes   schema:Thing;
+        schema:rangeIncludes    schema:URL , schema:ImageObject .
+
+schema:identifier  rdf:type     rdf:Property;
+        rdfs:comment            "The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.\n        ";
+        rdfs:label              "identifier";
+        owl:equivalentProperty  dcterms:identifier , <https://www.omg.org/spec/Commons/Identifiers/identifiedBy>;
+        schema:domainIncludes   schema:Thing;
+        schema:rangeIncludes    schema:URL , schema:Text , schema:PropertyValue .
+
+schema:disambiguatingDescription
+        rdf:type               rdf:Property;
+        rdfs:comment           "A sub property of description. A short description of the item used to disambiguate from other, similar items. Information from other properties (in particular, name) may be necessary for the description to be useful for disambiguation.";
+        rdfs:label             "disambiguatingDescription";
+        rdfs:subPropertyOf     schema:description;
+        schema:domainIncludes  schema:Thing;
+        schema:rangeIncludes   schema:Text .
+
+schema:description  rdf:type    rdf:Property;
+        rdfs:comment            "A description of the item.";
+        rdfs:label              "description";
+        owl:equivalentProperty  <http://ogp.me/ns#description> , dcterms:description;
+        schema:domainIncludes   schema:Thing;
+        schema:rangeIncludes    schema:TextObject , schema:Text .
+
+schema:alternateName  rdf:type  rdf:Property;
+        rdfs:comment           "An alias for the item.";
+        rdfs:label             "alternateName";
+        schema:domainIncludes  schema:Thing;
+        schema:rangeIncludes   schema:Text .
+
+schema:additionalType
+        rdf:type               rdf:Property;
+        rdfs:comment           "An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in. Typically the value is a URI-identified RDF class, and in this case corresponds to the\n    use of rdf:type in RDF. Text values can be used sparingly, for cases where useful information can be added without their being an appropriate schema to reference. In the case of text values, the class label should follow the schema.org <a href=\"https://schema.org/docs/styleguide.html\">style guide</a>.";
+        rdfs:label             "additionalType";
+        rdfs:subPropertyOf     rdf:type;
+        schema:domainIncludes  schema:Thing;
+        schema:rangeIncludes   schema:URL , schema:Text .
+
+schema:additionalProperty
+        rdf:type               rdf:Property;
+        rdfs:comment           "A property-value pair representing an additional characteristic of the entity, e.g. a product feature or another characteristic for which there is no matching property in schema.org.\\n\\nNote: Publishers should be aware that applications designed to use specific schema.org properties (e.g. https://schema.org/width, https://schema.org/color, https://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.\n";
+        rdfs:label             "additionalProperty";
+        schema:domainIncludes  schema:QualitativeValue , schema:QuantitativeValue , schema:Product , schema:Offer , schema:Place , schema:MerchantReturnPolicy;
+        schema:rangeIncludes   schema:PropertyValue .
+
+schema:Thing  rdf:type  rdfs:Class;
+        rdfs:comment  "The most generic type of item.";
+        rdfs:label    "Thing" .
+
+schema:StructuredValue
+        rdf:type         rdfs:Class;
+        rdfs:comment     "Structured values are used when the value of a property has a more complex structure than simply being a textual value or a reference to another thing.";
+        rdfs:label       "StructuredValue";
+        rdfs:subClassOf  schema:Intangible .
+
+schema:QuantitativeValue
+        rdf:type            rdfs:Class;
+        rdfs:comment        " A point value or interval for product characteristics and other purposes.";
+        rdfs:label          "QuantitativeValue";
+        rdfs:subClassOf     schema:StructuredValue;
+        schema:contributor  <https://blog.schema.org/2012/11/08/good-relations-and-schema-org/> .
+
+schema:Intangible  rdf:type  rdfs:Class;
+        rdfs:comment     "A utility class that serves as the umbrella for a number of 'intangible' things such as quantities, structured values, etc.";
+        rdfs:label       "Intangible";
+        rdfs:subClassOf  schema:Thing .
