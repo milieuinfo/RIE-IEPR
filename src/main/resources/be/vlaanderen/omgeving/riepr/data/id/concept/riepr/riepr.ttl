@@ -69,7 +69,7 @@
     skos:prefLabel "contact van"@nl ;
     skos:definition "De eigenschap die de relatie tussen een natuurlijk persoon en haar exploitant beschrijft."@nl ;
     owl:equivalentProperty org:memberOf ;
-    skos:inScheme <> . 
+    skos:inScheme <> .
 
 :heeftContactpersoon a skos:Concept ;
     skos:prefLabel "heeft contactpersoon"@nl ;
@@ -305,6 +305,16 @@
     skos:inScheme <> .
 
 # ---------------------------------------- #
+# Gebeurtenis (Feature of Interest)
+# ---------------------------------------- #
+
+:Gebeurtenis a skos:Concept ;
+    skos:prefLabel "gebeurtenis"@nl ;
+    skos:definition "Een tijdsgebonden voorval dat betrekking heeft op emissie, onttrekking of uitwisseling van stoffen."@nl ;
+    owl:equivalentClass sosa:FeatureOfInterest ;
+    skos:inScheme <> .
+
+# ---------------------------------------- #
 # Observatie
 # ---------------------------------------- #
 
@@ -320,10 +330,19 @@
     owl:equivalentProperty sosa:hasResult ;
     skos:inScheme <> .
 
-:heeftAandachtspunt a skos:Concept ;
-    skos:prefLabel "heeft aandachtspunt"@nl ;
-    skos:definition "De eigenschap die de relatie tussen een proces en een aandachtspunt beschrijft."@nl ;
+:betrekkingTot a skos:Concept ;
+    skos:prefLabel "betrekking tot"@nl ;
+    skos:definition "De eigenschap die de relatie tussen een proces en een gebeurtenis beschrijft."@nl ;
     owl:equivalentProperty sosa:hasFeatureOfInterest ;
+    skos:inScheme <> .
+
+# ---------------------------------------- #
+# Observatie
+# ---------------------------------------- #
+:eigenschap a skos:Concept ;
+    skos:prefLabel "eigenschap"@nl ;
+    skos:definition "Een eigenschap die gemeten wordt bij de uitvoering van een observatie."@nl ;
+    owl:equivalentProperty sosa:observedProperty ;
     skos:inScheme <> .
 
 # ---------------------------------------- #

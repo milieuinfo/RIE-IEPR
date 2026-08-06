@@ -8,6 +8,14 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Rubriek {
 	/**
+	 * uuid
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
+	 * UUID
+	 */
+	@jsonMember({ name: 'uuid' })
+	uuid: string;
+
+	/**
 	 * uri
 	 * @see {@link http://example.org/vocab/uri}
 	 * URI
@@ -37,7 +45,7 @@ export class Rubriek {
 	 * Een rubriek moet een code hebben
 	 */
 	@jsonMember({ name: 'notation' })
-	datatype: string;
+	notatie?: string;
 
 	/**
 	 * notation
@@ -45,6 +53,14 @@ export class Rubriek {
 	 * Een rubriek moet een code hebben
 	 */
 	@jsonMember({ name: 'notation' })
-	notatie?: string;
+	notatie_datatype: string;
+
+	/**
+	 * hadPrimarySource
+	 * @see {@link http://www.w3.org/ns/prov#hadPrimarySource}
+	 * Een rubriek kan een primaire bron hebben (VITO, ...)
+	 */
+	@jsonMember({ name: 'hadPrimarySource' })
+	primaireBron?: string;
 
 }

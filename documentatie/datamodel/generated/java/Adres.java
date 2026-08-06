@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -36,6 +36,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "adres")
 public class Adres {
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Id
+	@Column(name = "uuid", nullable = false)
+	@JsonProperty("uuid")
+	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
@@ -48,4 +53,16 @@ public class Adres {
 	@Column(name = "locator_designator", nullable = true)
 	@JsonProperty("locatorDesignator")
 	private String locatorDesignator;
+	// <a href="http://www.w3.org/ns/locn#postCode">postCode</a>
+	@Column(name = "postcode", nullable = true)
+	@JsonProperty("postCode")
+	private String postcode;
+	// <a href="http://www.w3.org/ns/locn#postName">postName</a>
+	@Column(name = "stad", nullable = true)
+	@JsonProperty("postName")
+	private String stad;
+	// <a href="http://www.w3.org/ns/locn#thoroughfare">thoroughfare</a>
+	@Column(name = "straat", nullable = true)
+	@JsonProperty("thoroughfare")
+	private String straat;
 }

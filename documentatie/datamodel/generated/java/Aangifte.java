@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,11 +37,15 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "aangifte")
 public class Aangifte {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
 	@Id
-	@Column(name = "vlaanderen_id", nullable = false)
-	@JsonProperty("vlaanderenId")
-	private String vlaanderenId;
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Column(name = "uuid", nullable = false)
+	@JsonProperty("uuid")
+	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
@@ -51,9 +55,13 @@ public class Aangifte {
 	@JsonProperty("created")
 	private LocalDate aangemaaktOp;
 	// <a href="http://purl.org/dc/terms/isPartOf">isPartOf</a>
-	@JoinColumn(name = "vlaanderen_id", nullable = true)
+	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("isPartOf")
-	private Aangifte onderdeelVan;
+	private AangifteBundel onderdeelVan;
+	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	@Column(name = "aangepast_op", nullable = true)
+	@JsonProperty("modified")
+	private LocalDate aangepastOp;
 	// <a href="http://purl.org/dc/terms/subject">subject</a>
 	@ManyToMany
 	@JoinTable(
@@ -61,20 +69,12 @@ public class Aangifte {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
-	@JsonProperty("subject_exploitatie")
-	private List<Exploitatie> subjectExploitatie;
-	@ManyToMany
-	@JoinTable(
-		name = "aangifte_observatie",
-		joinColumns = @JoinColumn(name = "source_uuid"),
-		inverseJoinColumns = @JoinColumn(name = "target_uuid")
-	)
-	@JsonProperty("subject_observatie")
-	private List<Observatie> subjectObservatie;
-	// <a href="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a>
-	@Column(name = "verantwoordelijke", nullable = true)
-	@JsonProperty("wasAssociatedWith")
-	private String verantwoordelijke;
+	@JsonProperty("subject")
+	private List<Exploitatie> onderwerp;
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	@Column(name = "vlaanderen_id", nullable = false)
+	@JsonProperty("vlaanderenId")
+	private String vlaanderenId;
 	// <a href="https://data.vlaanderen.be/ns/dossier#informatieclassificatie">informatieclassificatie</a>
 	@Column(name = "informatieclassificatie", nullable = true)
 	@JsonProperty("informatieclassificatie")

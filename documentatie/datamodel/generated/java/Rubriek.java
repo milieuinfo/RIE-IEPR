@@ -1,4 +1,4 @@
-package be.vlaanderen.omgeving.riepr.model.structuur;
+package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -36,6 +36,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "rubriek")
 public class Rubriek {
+	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	@Id
+	@Column(name = "uuid", nullable = false)
+	@JsonProperty("uuid")
+	private String uuid;
 	// <a href="http://example.org/vocab/uri">uri</a>
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
@@ -49,11 +54,15 @@ public class Rubriek {
 	@JsonProperty("definition")
 	private String definition;
 	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
-	@Column(name = "datatype", nullable = false)
-	@JsonProperty("notation")
-	private String datatype;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
-	@Column(name = "datatype", nullable = false)
+	@Column(name = "notatie", nullable = true)
 	@JsonProperty("notation")
 	private String notatie;
+	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	@Column(name = "notatie", nullable = true)
+	@JsonProperty("notation")
+	private String notatie_datatype;
+	// <a href="http://www.w3.org/ns/prov#hadPrimarySource">hadPrimarySource</a>
+	@Column(name = "primaire_bron", nullable = true)
+	@JsonProperty("hadPrimarySource")
+	private String primaireBron;
 }
