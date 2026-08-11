@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Contactgegevens
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens">Contactgegevens</a>
+ * Contactgegevens zijn de gegevens van een persoon die optreedt als contactpersoon voor een exploitant.
  **/
 @Getter
 @Setter
@@ -37,44 +38,81 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "contactgegevens")
 public class Contactgegevens {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
 	@Column(name = "id", nullable = false)
 	@JsonProperty("id")
 	private String id;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
 	private LocalDateTime aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/issued">issued</a>
+	/**
+	 * issued
+	 * <a href="http://purl.org/dc/terms/issued">issued</a>
+	 */
 	@Column(name = "geldig_van", nullable = false)
 	@JsonProperty("issued")
 	private String geldigVan;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	/**
+	 * modified
+	 * <a href="http://purl.org/dc/terms/modified">modified</a>
+	 * Contactgegevens kunnen een modificatie datum hebben
+	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
 	private LocalDateTime aangepastOp;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+	/**
+	 * comment
+	 * <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+	 * Contactgegevens kunnen een opmerking hebben
+	 */
 	@Column(name = "beschrijving", nullable = true)
 	@JsonProperty("comment")
 	private String beschrijving;
-	// <a href="http://www.w3.org/ns/oa#hasTarget">hasTarget</a>
+	/**
+	 * hasTarget
+	 * <a href="http://www.w3.org/ns/oa#hasTarget">hasTarget</a>
+	 * Contactgegevens moeten gekoppeld zijn aan exact één exploitant
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasTarget")
 	private Exploitatie hasTarget;
-	// <a href="http://xmlns.com/foaf/0.1/name">name</a>
+	/**
+	 * name
+	 * <a href="http://xmlns.com/foaf/0.1/name">name</a>
+	 * Contactgegevens moeten een naam hebben
+	 */
 	@Column(name = "name", nullable = true)
 	@JsonProperty("name")
 	private List<String> name;
-	// <a href="http://xmlns.com/foaf/0.1/phone">phone</a>
+	/**
+	 * phone
+	 * <a href="http://xmlns.com/foaf/0.1/phone">phone</a>
+	 * Contactgegevens kunnen een telefoonnummer hebben
+	 */
 	@Column(name = "telefoonnummer", nullable = true)
 	@JsonProperty("phone")
 	private String telefoonnummer;

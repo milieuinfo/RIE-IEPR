@@ -26,50 +26,86 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * AangifteBundel
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AangifteBundel">AangifteBundel</a>
+ * Aangiftebundel
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel">Aangiftebundel</a>
+ * Een aangiftebundel is een verzameling van aangiften die samen worden ingediend bij de overheid door een enkele exploitant.
  **/
 @Getter
 @Setter
-@Entity(name = "AangifteBundel")
+@Entity(name = "Aangiftebundel")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "aangifte_bundel")
-public class AangifteBundel {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+@Table(name = "aangiftebundel")
+public class Aangiftebundel {
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
 	@Column(name = "id", nullable = false)
 	@JsonProperty("id")
 	private String id;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 * Een aangifte bundel heeft een datum van indiening.
+	 */
 	@Column(name = "aangemaakt_op", nullable = true)
 	@JsonProperty("created")
 	private LocalDate aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/creator">creator</a>
+	/**
+	 * creator
+	 * <a href="http://purl.org/dc/terms/creator">creator</a>
+	 * Een aangiftebundel is gelinkt aan de exploitant
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("creator")
 	private Exploitant creator;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	/**
+	 * modified
+	 * <a href="http://purl.org/dc/terms/modified">modified</a>
+	 * Een aangifte kan een datum van goedkeuring hebben.
+	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
 	private LocalDate aangepastOp;
-	// <a href="http://purl.org/dc/terms/type">type</a>
+	/**
+	 * type
+	 * <a href="http://purl.org/dc/terms/type">type</a>
+	 * Een aangifte bundel heeft een typering.
+	 */
 	@Column(name = "type", nullable = true)
 	@JsonProperty("type")
 	private String type;
-	// <a href="http://www.w3.org/ns/adms#status">status</a>
+	/**
+	 * status
+	 * <a href="http://www.w3.org/ns/adms#status">status</a>
+	 * Een aangifte heeft een status.
+	 */
 	@JsonProperty("status")
 	private Status status;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	/**
+	 * vlaanderenId
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	 * Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften.
+	 */
 	@Column(name = "vlaanderen_id", nullable = false)
 	@JsonProperty("vlaanderenId")
 	private String vlaanderenId;

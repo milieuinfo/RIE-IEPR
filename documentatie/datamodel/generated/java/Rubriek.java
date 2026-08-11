@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Rubriek
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek">Rubriek</a>
+ * Een rubriek is een specifieke classificatie die wordt gebruikt om activiteiten te categoriseren volgens de regelgeving.
  **/
 @Getter
 @Setter
@@ -36,32 +37,60 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "rubriek")
 public class Rubriek {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/type">type</a>
+	/**
+	 * type
+	 * <a href="http://purl.org/dc/terms/type">type</a>
+	 * Een rubriek kan een typering hebben via dct:type
+	 */
 	@Column(name = "type", nullable = true)
 	@JsonProperty("type")
 	private String type;
-	// <a href="http://www.w3.org/2004/02/skos/core#definition">definition</a>
+	/**
+	 * definition
+	 * <a href="http://www.w3.org/2004/02/skos/core#definition">definition</a>
+	 * Een rubriek kan een beschrijving hebben
+	 */
 	@Column(name = "definition", nullable = true)
 	@JsonProperty("definition")
 	private String definition;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	/**
+	 * notation
+	 * <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	 * Een rubriek moet een code hebben
+	 */
 	@Column(name = "notatie", nullable = true)
 	@JsonProperty("notation")
 	private String notatie;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	/**
+	 * notation
+	 * <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	 * Een rubriek moet een code hebben
+	 */
 	@Column(name = "notatie", nullable = true)
 	@JsonProperty("notation")
 	private String notatie_datatype;
-	// <a href="http://www.w3.org/ns/prov#hadPrimarySource">hadPrimarySource</a>
+	/**
+	 * hadPrimarySource
+	 * <a href="http://www.w3.org/ns/prov#hadPrimarySource">hadPrimarySource</a>
+	 * Een rubriek kan een primaire bron hebben (VITO, ...)
+	 */
 	@Column(name = "primaire_bron", nullable = true)
 	@JsonProperty("hadPrimarySource")
 	private String primaireBron;

@@ -36,33 +36,37 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "adres")
 public class Adres {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://www.w3.org/ns/locn#fullAddress">fullAddress</a>
+	/**
+	 * fullAddress
+	 * <a href="http://www.w3.org/ns/locn#fullAddress">fullAddress</a>
+	 * Een adres kan een volledig adres hebben als vrije tekst
+	 */
 	@Column(name = "full_address", nullable = true)
 	@JsonProperty("fullAddress")
 	private String fullAddress;
-	// <a href="http://www.w3.org/ns/locn#locatorDesignator">locatorDesignator</a>
+	/**
+	 * locatorDesignator
+	 * <a href="http://www.w3.org/ns/locn#locatorDesignator">locatorDesignator</a>
+	 * Een adres kan een huisnummer of locatieaanduiding hebben
+	 */
 	@Column(name = "locator_designator", nullable = true)
 	@JsonProperty("locatorDesignator")
 	private String locatorDesignator;
-	// <a href="http://www.w3.org/ns/locn#postCode">postCode</a>
-	@Column(name = "postcode", nullable = true)
-	@JsonProperty("postCode")
-	private String postcode;
-	// <a href="http://www.w3.org/ns/locn#postName">postName</a>
-	@Column(name = "stad", nullable = true)
-	@JsonProperty("postName")
-	private String stad;
-	// <a href="http://www.w3.org/ns/locn#thoroughfare">thoroughfare</a>
-	@Column(name = "straat", nullable = true)
-	@JsonProperty("thoroughfare")
-	private String straat;
 }

@@ -36,28 +36,44 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "externe_identificator")
 public class ExterneIdentificator {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	/**
+	 * notation
+	 * <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	 * Een externe identificator heeft een notatie waarde
+	 */
 	@Column(name = "notatie", nullable = true)
 	@JsonProperty("notation")
 	private String notatie;
-	// <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	/**
+	 * notation
+	 * <a href="http://www.w3.org/2004/02/skos/core#notation">notation</a>
+	 * Een externe identificator heeft een notatie waarde
+	 */
 	@Column(name = "notatie", nullable = true)
 	@JsonProperty("notation")
 	private String notatie_datatype;
-	// <a href="http://www.w3.org/ns/adms#schemeAgency">schemeAgency</a>
-	@Column(name = "schema", nullable = true)
-	@JsonProperty("schemeAgency")
-	private String schema;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype">notatietype</a>
+	/**
+	 * notatietype
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype">notatietype</a>
+	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
+	 */
 	@Column(name = "notatietype", nullable = true)
 	@JsonProperty("notatietype")
 	private AnyURI notatietype;

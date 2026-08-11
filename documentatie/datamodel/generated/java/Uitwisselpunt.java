@@ -29,6 +29,7 @@ import java.util.List;
 /**
  * Uitwisselpunt
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt">Uitwisselpunt</a>
+ * Een uitwisselpunt is een bi-directioneel punt waar stoffen (m.n. grondwater) kunnen worden onttrokken of geïnjecteerd.
  **/
 @Getter
 @Setter
@@ -38,48 +39,91 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "uitwisselpunt")
 public class Uitwisselpunt implements ISysteem {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
 	@Column(name = "id", nullable = false)
 	@JsonProperty("id")
 	private String id;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "systeem_uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 * Een uitwisselpunt moet een creatie datum hebben
+	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
 	private LocalDateTime aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/issued">issued</a>
+	/**
+	 * issued
+	 * <a href="http://purl.org/dc/terms/issued">issued</a>
+	 * Een uitwisselpunt moet een geldigheid start hebben
+	 */
 	@Column(name = "geldig_van", nullable = false)
 	@JsonProperty("issued")
 	private LocalDate geldigVan;
-	// <a href="http://purl.org/dc/terms/valid">valid</a>
+	/**
+	 * valid
+	 * <a href="http://purl.org/dc/terms/valid">valid</a>
+	 * Een uitwisselpunt kan een geldigheid einde hebben
+	 */
 	@Column(name = "geldig_tot", nullable = true)
 	@JsonProperty("valid")
 	private LocalDate geldigTot;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	/**
+	 * modified
+	 * <a href="http://purl.org/dc/terms/modified">modified</a>
+	 * Een uitwisselpunt moet een modificatie datum hebben
+	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
 	private LocalDateTime aangepastOp;
-	// <a href="http://purl.org/dc/terms/type">type</a>
+	/**
+	 * type
+	 * <a href="http://purl.org/dc/terms/type">type</a>
+	 * Een uitwisselpunt kan een typering hebben via dct:type
+	 */
 	@Column(name = "type", nullable = true)
 	@JsonProperty("type")
 	private String type;
-	// <a href="http://www.opengis.net/ont/geosparql#hasGeometry">hasGeometry</a>
+	/**
+	 * hasGeometry
+	 * <a href="http://www.opengis.net/ont/geosparql#hasGeometry">hasGeometry</a>
+	 * Een uitwisselpunt mag max 1 geometrie hebben
+	 */
 	@Column(name = "geometrie", nullable = true)
 	@JsonProperty("hasGeometry")
 	private String geometrie;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
+	/**
+	 * label
+	 * <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
+	 * Een uitwisselpunt moet een benaming hebben
+	 */
 	@Column(name = "benaming", nullable = true)
 	@JsonProperty("label")
 	private String benaming;
-	// <a href="http://www.w3.org/ns/adms#identifier">identifier</a>
+	/**
+	 * identifier
+	 * <a href="http://www.w3.org/ns/adms#identifier">identifier</a>
+	 * Een uitwisselpunt heeft externe identificaties (optioneel)
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "uitwisselpunt_externe_identificator",
@@ -88,14 +132,38 @@ public class Uitwisselpunt implements ISysteem {
 	)
 	@JsonProperty("identifier")
 	private List<ExterneIdentificator> identifier;
-	// <a href="http://www.w3.org/ns/adms#status">status</a>
+	/**
+	 * status
+	 * <a href="http://www.w3.org/ns/adms#status">status</a>
+	 * Een uitwisselpunt moet een enkele status hebben
+	 */
 	@JsonProperty("status")
 	private Status status;
-	// <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
+	/**
+	 * wasRevisionOf
+	 * <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
+	 * Een uitwisselpunt kan een revisie zijn van een andere systemen (optioneel)
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("wasRevisionOf")
 	private ISysteem revisieVan;
-	// <a href="http://www.w3.org/ns/ssn/hasProperty">hasProperty</a>
+	/**
+	 * hasDeployment
+	 * <a href="http://www.w3.org/ns/ssn/hasDeployment">hasDeployment</a>
+	 */
+	@ManyToMany
+	@JoinTable(
+		name = "uitwisselpunt_exploitatie",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("hasDeployment")
+	private List<Exploitatie> hasDeployment;
+	/**
+	 * hasProperty
+	 * <a href="http://www.w3.org/ns/ssn/hasProperty">hasProperty</a>
+	 * Een uitwisselpunt kan meerdere eigenschappen hebben
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "uitwisselpunt_systeemeigenschap",
@@ -104,7 +172,11 @@ public class Uitwisselpunt implements ISysteem {
 	)
 	@JsonProperty("hasProperty")
 	private List<Systeemeigenschap> heeftEigenschap;
-	// <a href="http://www.w3.org/ns/ssn/hasSubSystem">hasSubSystem</a>
+	/**
+	 * hasSubSystem
+	 * <a href="http://www.w3.org/ns/ssn/hasSubSystem">hasSubSystem</a>
+	 * Een uitwisselpunt kan filters hebben
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "uitwisselpunt_filter",
@@ -113,15 +185,27 @@ public class Uitwisselpunt implements ISysteem {
 	)
 	@JsonProperty("hasSubSystem")
 	private List<Filter> heeftSubSysteem;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	/**
+	 * aangifte
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot">inGebruikTot</a>
+	/**
+	 * inGebruikTot
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot">inGebruikTot</a>
+	 * De niet-functionele datum waarop een entiteit buiten gebruik is gesteld.
+	 */
 	@Column(name = "in_gebruik_tot", nullable = true)
 	@JsonProperty("inGebruikTot")
 	private LocalDate inGebruikTot;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf">inGebruikVanaf</a>
+	/**
+	 * inGebruikVanaf
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf">inGebruikVanaf</a>
+	 * De niet-functionele datum waarop een entiteit in gebruik is genomen.
+	 */
 	@Column(name = "in_gebruik_vanaf", nullable = true)
 	@JsonProperty("inGebruikVanaf")
 	private LocalDate inGebruikVanaf;

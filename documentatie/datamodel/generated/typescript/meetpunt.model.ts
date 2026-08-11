@@ -1,7 +1,7 @@
 import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Filter } from './filter.model';
-import { MeetInstrument } from './meetinstrument.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
 import { Systeemeigenschap } from './systeemeigenschap.model';
@@ -118,6 +118,13 @@ export class Meetpunt implements Systeem {
 	revisieVan?: Systeem;
 
 	/**
+	 * hasDeployment
+	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
+	hasDeployment?: Exploitatie[];
+
+	/**
 	 * hasProperty
 	 * @see {@link http://www.w3.org/ns/ssn/hasProperty}
 	 * Een meetpunt kan meerdere eigenschappen hebben
@@ -128,10 +135,10 @@ export class Meetpunt implements Systeem {
 	/**
 	 * hasSubSystem
 	 * @see {@link http://www.w3.org/ns/ssn/hasSubSystem}
-	 * Een meetpunt kan meetinstrumenten hebben
+	 * Een meetpunt kan filters hebben
 	 */
-	@jsonArrayMember(() => MeetInstrument, { name: 'hasSubSystem' })
-	heeftSubSysteem?: (MeetInstrument | Filter)[];
+	@jsonArrayMember(() => Filter, { name: 'hasSubSystem' })
+	heeftSubSysteem?: Filter[];
 
 	/**
 	 * aangifte

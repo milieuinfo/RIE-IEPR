@@ -3,12 +3,12 @@ import { Status } from './status.enum';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
- * AangifteBundel
- * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#AangifteBundel}
- * Een aangifte bundel is een verzameling van aangiften die samen worden ingediend bij de overheid door een enkele exploitant.
+ * Aangiftebundel
+ * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel}
+ * Een aangiftebundel is een verzameling van aangiften die samen worden ingediend bij de overheid door een enkele exploitant.
  */
 @jsonObject
-export class AangifteBundel {
+export class Aangiftebundel {
 	/**
 	 * id
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
@@ -43,7 +43,7 @@ export class AangifteBundel {
 	/**
 	 * creator
 	 * @see {@link http://purl.org/dc/terms/creator}
-	 * Een aangifte bundel is gelinked aan de exploitant
+	 * Een aangiftebundel is gelinkt aan de exploitant
 	 */
 	@jsonMember(() => Exploitant, { name: 'creator' })
 	creator?: Exploitant;

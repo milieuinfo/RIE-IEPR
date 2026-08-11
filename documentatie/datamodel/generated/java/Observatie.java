@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Observatie
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie">Observatie</a>
+ * Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking.
  **/
 @Getter
 @Setter
@@ -37,49 +38,91 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "observatie")
 public class Observatie {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 * Een observatie moet een creatie datum hebben
+	 */
+	@Column(name = "aangemaakt_op", nullable = false)
+	@JsonProperty("created")
+	private LocalDateTime aangemaaktOp;
+	/**
+	 * hasFeatureOfInterest
+	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
+	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasFeatureOfInterest")
 	private IGebeurtenis betrekkingTot;
-	// <a href="http://www.w3.org/ns/sosa/hasResult">hasResult</a>
-	@ManyToMany
-	@JoinTable(
-		name = "observatie_resultaat",
-		joinColumns = @JoinColumn(name = "source_uuid"),
-		inverseJoinColumns = @JoinColumn(name = "target_uuid")
-	)
+	/**
+	 * hasResult
+	 * <a href="http://www.w3.org/ns/sosa/hasResult">hasResult</a>
+	 * Een observatie heeft één resultaat.
+	 */
+	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasResult")
-	private List<Resultaat> heeftResultaat;
-	// <a href="http://www.w3.org/ns/sosa/madeBySensor">madeBySensor</a>
-	@JoinColumn(name = "systeem_uuid", nullable = true)
-	@JsonProperty("madeBySensor")
-	private MeetInstrument madeBySensor;
-	// <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
-	@Column(name = "observed_property", nullable = true)
+	private Resultaat heeftResultaat;
+	/**
+	 * observedProperty
+	 * <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
+	 * Een observatie kan een geobserveerde eigenschap hebben
+	 */
+	@Column(name = "eigenschap", nullable = true)
 	@JsonProperty("observedProperty")
-	private String observedProperty;
-	// <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenonTime</a>
+	private String eigenschap;
+	/**
+	 * phenomenonTime
+	 * <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenonTime</a>
+	 * Een observatie kan een verschijnsel tijdsinterval hebben
+	 */
 	@Column(name = "phenomenon_time", nullable = true)
 	@JsonProperty("phenomenonTime")
 	private String phenomenonTime;
-	// <a href="http://www.w3.org/ns/sosa/resultTime">resultTime</a>
+	/**
+	 * resultTime
+	 * <a href="http://www.w3.org/ns/sosa/resultTime">resultTime</a>
+	 * Een observatie kan een resultaat tijdstip hebben
+	 */
 	@Column(name = "result_time", nullable = true)
 	@JsonProperty("resultTime")
 	private LocalDateTime resultTime;
-	// <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
+	/**
+	 * usedProcedure
+	 * <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
+	 * Een observatie kan een gebruikte bepalingsmethode hebben
+	 */
 	@Column(name = "used_procedure", nullable = true)
 	@JsonProperty("usedProcedure")
 	private String usedProcedure;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	/**
+	 * aangifte
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;

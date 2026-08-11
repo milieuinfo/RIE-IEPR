@@ -1,6 +1,6 @@
 import { Aangifte } from './aangifte.model';
 import { Procedure } from './procedure.enum';
-import { ProcesVariabele } from './procesvariabele.model';
+import { Procesvariabele } from './procesvariabele.model';
 import { Rubriek } from './rubriek.model';
 import { Systeem } from './systeem.interface';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
@@ -80,16 +80,16 @@ export class Proces {
 	 * @see {@link http://purl.org/net/p-plan#hasInputVar}
 	 * Een proces mag minstens één inputvariabele hebben (stof)
 	 */
-	@jsonArrayMember(() => ProcesVariabele, { name: 'hasInputVar' })
-	heeftInvoer?: ProcesVariabele[];
+	@jsonArrayMember(() => Procesvariabele, { name: 'hasInputVar' })
+	heeftInvoer?: Procesvariabele[];
 
 	/**
 	 * hasOutputVar
 	 * @see {@link http://purl.org/net/p-plan#hasOutputVar}
 	 * Een proces mag minstens één outputvariabele hebben (stof)
 	 */
-	@jsonArrayMember(() => ProcesVariabele, { name: 'hasOutputVar' })
-	heeftUitvoer?: ProcesVariabele[];
+	@jsonArrayMember(() => Procesvariabele, { name: 'hasOutputVar' })
+	heeftUitvoer?: Procesvariabele[];
 
 	/**
 	 * hasStep
@@ -144,7 +144,7 @@ export class Proces {
 	 * Een proces kan het gebruik van een systeem representeren
 	 */
 	@jsonMember(() => Systeem, { name: 'implementedBy' })
-	systeem: Systeem;
+	systeem?: Systeem;
 
 	/**
 	 * aangifte

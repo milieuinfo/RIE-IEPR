@@ -1,4 +1,5 @@
 import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
@@ -122,6 +123,13 @@ export class Installatie implements Systeem {
 	 */
 	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
 	revisieVan?: Systeem;
+
+	/**
+	 * hasDeployment
+	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
+	 */
+	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
+	hasDeployment?: Exploitatie[];
 
 	/**
 	 * hasProperty

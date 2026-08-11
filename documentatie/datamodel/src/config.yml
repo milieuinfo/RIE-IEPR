@@ -1,6 +1,16 @@
 ontology:
-  ontology-file-path: "./ns/riepr/riepr.ttl"
-  concepts-file-path: "./id/concept/riepr/riepr.ttl"
+  # Repointed to the ontology copy actually published via the `riepr` Maven jar and consumed by
+  # imjvtomjv (src/main/resources/.../riepr.ttl), which has continued to receive real changes
+  # (e.g. Emissie/Onttrekking modeled as prov:wasDerivedFrom from the Proces, confirmed correct)
+  # while this file's previous target (./ns/riepr/riepr.ttl, kept alongside for reference) had
+  # gone stale since 2026-07-13. See imjvtomjv's CLAUDE.md for the fuller drift writeup.
+  # NOTE: all relative paths in this file are resolved against the process's working directory at
+  # invocation time (ODDToolkit's OntologyLoadAdapter does `model.read(configuredPath)`, Jena's
+  # relative-path handling is CWD-based) -- these paths are root-relative because RIE-IEPR's Maven
+  # build (exec-maven-plugin's `java` goal, which cannot change its working directory) invokes this
+  # config from the repo root, not from this file's own directory.
+  ontology-file-path: "src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
+  concepts-file-path: "src/main/resources/be/vlaanderen/omgeving/riepr/data/id/concept/riepr/riepr.ttl"
   enum-classes:
     classes:
       - "http://www.w3.org/ns/sosa/Procedure"
@@ -61,19 +71,19 @@ ontology:
     datatype: "http://www.w3.org/2001/XMLSchema#string"
 generators:
   class-diagram:
-    output-file: "../diagrammen/class-diagram.mmd"
+    output-file: "documentatie/datamodel/diagrammen/class-diagram.mmd"
   er-diagram:
-    output-file: "../diagrammen/er-diagram.mmd"
+    output-file: "documentatie/datamodel/diagrammen/er-diagram.mmd"
   sql-generator:
-    output-file: "../generated/sql/schema.sql"
+    output-file: "documentatie/datamodel/generated/sql/schema.sql"
   shacl-generator:
-    output-file: "../generated/shacl/schema.ttl"
+    output-file: "documentatie/datamodel/generated/shacl/schema.ttl"
   java-generator:
     package-name: be.vlaanderen.omgeving.mjv.model.structuur
-    output-directory: "../generated/java"
+    output-directory: "documentatie/datamodel/generated/java"
     cleanup-stale-files: true
   typescript-generator:
-    output-directory: "../generated/typescript"
+    output-directory: "documentatie/datamodel/generated/typescript"
     cleanup-stale-files: true
   bikeshed-generator:
     output-file: "target/test-cache/bikeshed/ontology.bs"
@@ -132,7 +142,12 @@ generators:
 
 adapters:
   ontology-reasoner:
-    enabled: true
+    # Disabled per AGENTS.md: the OWL reasoner hangs past ~55,000 inferred statements on the
+    # merged external-ontology union. Confirmed safe for schema/SQL generation specifically --
+    # SchemaGenerator/SQLGenerator never consume the inferred model, only some external-class
+    # resolution (e.g. locn:Address) and the SHACL generator benefit from it. Already the setting
+    # in the untracked odd-config.yml; kept here too now that this file is the canonical config.
+    enabled: false
     rules-file: "./reasoner.rules"
     reasoner-type: "owl"
     reasoner-materialize: true

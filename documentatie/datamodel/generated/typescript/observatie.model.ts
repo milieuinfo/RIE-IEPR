@@ -1,23 +1,29 @@
 import { Aangifte } from './aangifte.model';
 import { Gebeurtenis } from './gebeurtenis.interface';
-import { MeetInstrument } from './meetinstrument.model';
 import { Resultaat } from './resultaat.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
  * Observatie
  * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie}
- * Een observatie is een waarneming of meting uitgevoerd op een emissie via een meetinstrument.
+ * Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking.
  */
 @jsonObject
 export class Observatie {
+	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
 	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -28,9 +34,17 @@ export class Observatie {
 	uri?: string;
 
 	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 * Een observatie moet een creatie datum hebben
+	 */
+	@jsonMember(() => Date, { name: 'created' })
+	aangemaaktOp?: Date;
+
+	/**
 	 * hasFeatureOfInterest
 	 * @see {@link http://www.w3.org/ns/sosa/hasFeatureOfInterest}
-	 * Een observatie is gekoppeld aan een Emissie, Onttrekking of Uitwisseling
+	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
 	 */
 	@jsonMember(() => Gebeurtenis, { name: 'hasFeatureOfInterest' })
 	betrekkingTot?: Gebeurtenis;
@@ -38,18 +52,10 @@ export class Observatie {
 	/**
 	 * hasResult
 	 * @see {@link http://www.w3.org/ns/sosa/hasResult}
-	 * Een observatie heeft minstens één resultaat.
+	 * Een observatie heeft één resultaat.
 	 */
-	@jsonArrayMember(() => Resultaat, { name: 'hasResult' })
-	heeftResultaat?: Resultaat[];
-
-	/**
-	 * madeBySensor
-	 * @see {@link http://www.w3.org/ns/sosa/madeBySensor}
-	 * Een observatie kan gedaan zijn door een meetinstrument
-	 */
-	@jsonMember(() => MeetInstrument, { name: 'madeBySensor' })
-	madeBySensor?: MeetInstrument;
+	@jsonMember(() => Resultaat, { name: 'hasResult' })
+	heeftResultaat?: Resultaat;
 
 	/**
 	 * observedProperty
@@ -57,7 +63,7 @@ export class Observatie {
 	 * Een observatie kan een geobserveerde eigenschap hebben
 	 */
 	@jsonMember({ name: 'observedProperty' })
-	observedProperty?: string;
+	eigenschap?: string;
 
 	/**
 	 * phenomenonTime

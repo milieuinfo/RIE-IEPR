@@ -1,4 +1,5 @@
 import { Gebeurtenis } from './gebeurtenis.interface';
+import { Observatie } from './observatie.model';
 import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
@@ -26,11 +27,18 @@ export class Onttrekking implements Gebeurtenis {
 	uri?: string;
 
 	/**
-	 * hasFeatureOfInterest
-	 * @see {@link http://www.w3.org/ns/sosa/hasFeatureOfInterest}
+	 * wasDerivedFrom
+	 * @see {@link http://www.w3.org/ns/prov#wasDerivedFrom}
 	 * Een onttrekking moet gekoppeld zijn aan een proces
 	 */
-	@jsonArrayMember(() => Proces, { name: 'hasFeatureOfInterest' })
-	betrekkingTot?: Proces[];
+	@jsonArrayMember(() => Proces, { name: 'wasDerivedFrom' })
+	wasDerivedFrom?: Proces[];
+
+	/**
+	 * isFeatureOfInterestOf
+	 * @see {@link http://www.w3.org/ns/sosa/isFeatureOfInterestOf}
+	 */
+	@jsonArrayMember(() => Observatie, { name: 'isFeatureOfInterestOf' })
+	isFeatureOfInterestOf?: Observatie[];
 
 }

@@ -21,81 +21,190 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'jenkins-jenkins-agent'
-      yaml podBuilder.from([dind.podSpec(), nodePodSpec])
+      yaml podBuilder.from([maven.podSpec(25), dind.podSpec(), sonar, trivy, nodePodSpec])
     }
   }
 
   environment {
-    GH_PAGES_BRANCH         = 'gh-pages'
-    GITHUB_REPO             = 'milieuinfo/RIE-IEPR'
+    SONAR_PROJECT_KEY = 'be.vlaanderen.omgeving:riepr'
+    GH_PAGES_BRANCH    = 'gh-pages'
+    GITHUB_REPO        = 'milieuinfo/RIE-IEPR'
   }
 
   stages {
 
-    stage('CI') {
-      stages {
-
-        stage('Build Specificatie') {
-          steps {
-            container('node') {
-              sh '''
-                set -e
-                export NPM_CONFIG_LOGLEVEL=warn
-                export PUPPETEER_SKIP_DOWNLOAD=true
-                export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-                # run in the specificatie subfolder where package.json lives
-                cd documentatie/bin/specificatie
-                  if [ -f package-lock.json ]; then
-                    npm ci --no-audit --no-fund || exit 1
-                  else
-                    npm install --no-audit --no-fund --no-optional || exit 1
-                  fi
-                  npm run generate:bikeshed
-              '''
+    stage("Setup") {
+      steps {
+        script {
+          if (env.BRANCH_IS_PRIMARY) {
+            properties([versions.releaseParameters()])
+            def currentVersion = maven.version()
+            if (versions.isRelease()) {
+              def version = versions.bump(currentVersion)
+              git.validateTag(version)
+              maven.validateVersion(version)
+              env.VERSION = version
             }
+          } else {
+            properties([parameters([
+                booleanParam(name: 'DEPLOY', defaultValue: false, description: 'If true, runs mvn deploy instead of mvn verify.')
+            ])])
+          }
+        }
+      }
+    }
 
-            container('dind') {
-              sh '''
-                set -e
+    stage('Build Specificatie') {
+      steps {
+        container('node') {
+          sh '''
+            set -e
+            export NPM_CONFIG_LOGLEVEL=warn
+            export PUPPETEER_SKIP_DOWNLOAD=true
+            export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+            # run in the specificatie subfolder where package.json lives
+            cd documentatie/bin/specificatie
+              if [ -f package-lock.json ]; then
+                npm ci --no-audit --no-fund || exit 1
+              else
+                npm install --no-audit --no-fund --no-optional || exit 1
+              fi
+              npm run generate:bikeshed
+          '''
+        }
 
-                # build:docker expects Docker on the host
-                if command -v docker >/dev/null 2>&1; then
-                  (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
-                else
-                  echo "docker is not available in this container; skipping build:docker"
-                fi
+        container('dind') {
+          sh '''
+            set -e
 
-                # ensure artifact folder exists even when generation failed
-                mkdir -p build-artifact
-                if [ -f documentatie/bin/specificatie/index.html ]; then
-                  cp -f documentatie/bin/specificatie/index.html build-artifact/
-                fi
-                if [ -f documentatie/bin/visualisatie/index.html ]; then
-                  cp -f documentatie/bin/visualisatie/index.html build-artifact/visualisatie.html
-                fi
+            # build:docker expects Docker on the host
+            if command -v docker >/dev/null 2>&1; then
+              (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
+            else
+              echo "docker is not available in this container; skipping build:docker"
+            fi
 
-                # schema TTL en SHACL cache meepubliceren naast de visualisatie
-                for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
-                  if [ -f "documentatie/bin/visualisatie/$f" ]; then
-                    cp -f "documentatie/bin/visualisatie/$f" "build-artifact/$f"
-                  fi
-                done
+            # ensure artifact folder exists even when generation failed
+            mkdir -p build-artifact
+            if [ -f documentatie/bin/specificatie/index.html ]; then
+              cp -f documentatie/bin/specificatie/index.html build-artifact/
+            fi
+            if [ -f documentatie/bin/visualisatie/index.html ]; then
+              cp -f documentatie/bin/visualisatie/index.html build-artifact/visualisatie.html
+            fi
 
-                echo "Build and package stage completed."
-              '''
+            # schema TTL en SHACL cache meepubliceren naast de visualisatie
+            for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
+              if [ -f "documentatie/bin/visualisatie/$f" ]; then
+                cp -f "documentatie/bin/visualisatie/$f" "build-artifact/$f"
+              fi
+            done
+
+            echo "Build and package stage completed."
+          '''
+        }
+      }
+      post {
+        always {
+          archiveArtifacts artifacts: 'build-artifact/**', allowEmptyArchive: true, fingerprint: true
+        }
+      }
+    }
+
+    stage("Non-primary branch") {
+      when {
+        allOf {
+          not { expression { env.BRANCH_IS_PRIMARY } }
+          expression { git.notSkipCi() }
+        }
+      }
+      parallel {
+        stage("Trivy scan") {
+          steps {
+            script {
+              trivy.scanFilesystem([targetPath: 'pom.xml'])
             }
           }
-          post {
-            always {
-              archiveArtifacts artifacts: 'build-artifact/**', allowEmptyArchive: true, fingerprint: true
+        }
+        stage("Maven verify") {
+          when {
+            expression { !(params.DEPLOY ?: false) }
+          }
+          steps {
+            script {
+              maven.goal([goal: 'verify'])
+            }
+          }
+        }
+        stage("Maven deploy") {
+          when {
+            expression { params.DEPLOY ?: false }
+          }
+          steps {
+            script {
+              maven.goal([goal: 'deploy'])
+            }
+          }
+        }
+      }
+    }
+
+    stage("Primary branch") {
+      when {
+        allOf {
+          expression { env.BRANCH_IS_PRIMARY }
+          expression { git.notSkipCi() }
+        }
+      }
+      stages {
+        stage("Maven prepare") {
+          when {
+            expression { versions.isRelease() }
+          }
+          steps {
+            script {
+              maven.goal([goal     : 'release:clean release:prepare',
+                          version  : env.VERSION,
+                          skipTests: true
+              ])
+            }
+          }
+        }
+        stage("Maven deploy") {
+          when {
+            expression { !versions.isRelease() }
+          }
+          steps {
+            script {
+              maven.goal([goal: 'deploy'])
+            }
+          }
+        }
+        stage("Sonar scan") {
+          steps {
+            script {
+              sonar.scanMaven([
+                      projectKey        : env.SONAR_PROJECT_KEY,
+                      tolerateBadQuality: true
+              ])
+            }
+          }
+        }
+        stage("Maven release") {
+          when {
+            expression { versions.isRelease() }
+          }
+          steps {
+            script {
+              maven.goal([goal     : 'release:perform',
+                          version  : env.VERSION,
+                          skipTests: true
+              ])
             }
           }
         }
 
         stage('Deploy docs to GitHub Pages') {
-          when {
-            branch 'main'
-          }
           steps {
             container('jnlp') {
               script {
@@ -160,6 +269,14 @@ pipeline {
             echo "gh-pages branch verified successfully"
           '''
         }
+      }
+    }
+  }
+
+  post {
+    always {
+      script {
+        pipelineSummary([sonarProjectKey: env.BRANCH_IS_PRIMARY ? env.SONAR_PROJECT_KEY : null])
       }
     }
   }

@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Aangifte
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte">Aangifte</a>
+ * Een aangifte is een document dat wordt ingediend bij de overheid.
  **/
 @Getter
 @Setter
@@ -37,32 +38,59 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "aangifte")
 public class Aangifte {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
 	@Column(name = "id", nullable = false)
 	@JsonProperty("id")
 	private String id;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 * Een aangifte heeft een datum van indiening.
+	 */
 	@Column(name = "aangemaakt_op", nullable = true)
 	@JsonProperty("created")
 	private LocalDate aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/isPartOf">isPartOf</a>
+	/**
+	 * isPartOf
+	 * <a href="http://purl.org/dc/terms/isPartOf">isPartOf</a>
+	 * Een aangifte kan deel zijn van een andere bundel.
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("isPartOf")
-	private AangifteBundel onderdeelVan;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	private Aangiftebundel onderdeelVan;
+	/**
+	 * modified
+	 * <a href="http://purl.org/dc/terms/modified">modified</a>
+	 * Een aangifte kan een datum van goedkeuring hebben.
+	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
 	private LocalDate aangepastOp;
-	// <a href="http://purl.org/dc/terms/subject">subject</a>
+	/**
+	 * subject
+	 * <a href="http://purl.org/dc/terms/subject">subject</a>
+	 * Een aangifte heeft betrekking tot een enkele exploitatie.
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "aangifte_exploitatie",
@@ -71,11 +99,19 @@ public class Aangifte {
 	)
 	@JsonProperty("subject")
 	private List<Exploitatie> onderwerp;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	/**
+	 * vlaanderenId
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId">vlaanderenId</a>
+	 * Een unieke identificatie binnen de context van Vlaanderen, gebruikt voor het identificeren van entiteiten zoals aangiften.
+	 */
 	@Column(name = "vlaanderen_id", nullable = false)
 	@JsonProperty("vlaanderenId")
 	private String vlaanderenId;
-	// <a href="https://data.vlaanderen.be/ns/dossier#informatieclassificatie">informatieclassificatie</a>
+	/**
+	 * informatieclassificatie
+	 * <a href="https://data.vlaanderen.be/ns/dossier#informatieclassificatie">informatieclassificatie</a>
+	 * Een aangifte heeft een informatie classificatie.
+	 */
 	@Column(name = "informatieclassificatie", nullable = true)
 	@JsonProperty("informatieclassificatie")
 	private String informatieclassificatie;

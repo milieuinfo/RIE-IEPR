@@ -5,10 +5,23 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>be.milieuinfo</groupId>
+    <artifactId>acd-parent</artifactId>
+    <version>1.1.8</version>
+  </parent>
+
   <groupId>be.vlaanderen.omgeving</groupId>
   <artifactId>riepr</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
+
+  <scm>
+    <connection>scm:git:https://github.com/milieuinfo/RIE-IEPR.git</connection>
+    <developerConnection>scm:git:https://github.com/milieuinfo/RIE-IEPR.git</developerConnection>
+    <url>https://github.com/milieuinfo/RIE-IEPR.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <!-- ========================= -->
   <!-- Properties -->
@@ -178,6 +191,7 @@
       <version>4.2.1</version>
     </dependency>
 
+
   </dependencies>
 
   <!-- ========================= -->
@@ -194,6 +208,19 @@
   <!-- Build -->
   <!-- ========================= -->
   <build>
+    <!-- Default src/main/resources must be re-declared explicitly: a custom <resources> list
+         replaces rather than extends it. The second entry packages ODDToolkit's generated output
+         (see the exec-maven-plugin executions below) straight into the jar's classpath root, e.g.
+         documentatie/datamodel/generated/sql/schema.sql -> classpath resource "sql/schema.sql",
+         the same resource path imjvtomjv's RieSqlSchemaMeta already expects. -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>documentatie/datamodel/generated</directory>
+      </resource>
+    </resources>
     <plugins>
 
 
@@ -255,6 +282,95 @@
           <mainClass>be.vlaanderen.omgeving.riepr.TurtleTransformer</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
+        <!-- ODDToolkit code-generation, bound to generate-resources so the output lands under
+             documentatie/datamodel/generated/ before the additional <resource> above packages it
+             into the jar. One execution per generator (ODDToolkit's CLI only accepts a single
+             "generator" argument per invocation); each run's ontology owl:imports fetches are cached
+             under .cache/external/ (1h TTL), so only the first execution in a build pays that cost.
+
+             ODDToolkit is declared as a dependency of *this plugin* (below), not of the riepr
+             project itself, and each execution sets includeProjectDependencies=false /
+             includePluginDependencies=true: ODDToolkit needs Jackson 2.20.x, which conflicts at
+             runtime (NoSuchMethodError in YAMLParser) with riepr's own pinned Jackson 2.15.2 if both
+             end up on the same classpath. Isolating it as a plugin dependency keeps ODDToolkit's
+             (much newer/heavier: Jackson 2.20.x, Jena 4.9.0, Playwright, flexmark, ...) dependency
+             tree from ever touching riepr's own compile/runtime classpath.
+
+             Requires `oddtoolkit` installed locally first (`mvn install` in its checkout); not yet
+             published to a shared repository. -->
+        <dependencies>
+          <dependency>
+            <groupId>be.vlaanderen.omgeving</groupId>
+            <artifactId>oddtoolkit</artifactId>
+            <version>0.0.1</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>oddtoolkit-sql</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=sql</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>oddtoolkit-shacl</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=shacl</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>oddtoolkit-java</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=java</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>oddtoolkit-typescript</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=typescript</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>

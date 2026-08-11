@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Onttrekking
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking">Onttrekking</a>
+ * Een onttrekking is een specifiek onttrekkingsevent dat betrekking heeft op het winnen of bemonsteren van grondstoffen aan onttrekkingspunten over of op een bepaalde periode of momentopname.
  **/
 @Getter
 @Setter
@@ -36,22 +37,46 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "onttrekking")
 public class Onttrekking implements IGebeurtenis {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Id
 	@Column(name = "gebeurtenis_uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
+	/**
+	 * wasDerivedFrom
+	 * <a href="http://www.w3.org/ns/prov#wasDerivedFrom">wasDerivedFrom</a>
+	 * Een onttrekking moet gekoppeld zijn aan een proces
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "onttrekking_proces",
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
-	@JsonProperty("hasFeatureOfInterest")
-	private List<Proces> betrekkingTot;
+	@JsonProperty("wasDerivedFrom")
+	private List<Proces> wasDerivedFrom;
+	/**
+	 * isFeatureOfInterestOf
+	 * <a href="http://www.w3.org/ns/sosa/isFeatureOfInterestOf">isFeatureOfInterestOf</a>
+	 */
+	@ManyToMany
+	@JoinTable(
+		name = "onttrekking_observatie",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("isFeatureOfInterestOf")
+	private List<Observatie> isFeatureOfInterestOf;
 }

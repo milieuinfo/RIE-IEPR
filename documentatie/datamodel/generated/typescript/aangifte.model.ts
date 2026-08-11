@@ -1,4 +1,4 @@
-import { AangifteBundel } from './aangiftebundel.model';
+import { Aangiftebundel } from './aangiftebundel.model';
 import { Exploitatie } from './exploitatie.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
@@ -45,8 +45,8 @@ export class Aangifte {
 	 * @see {@link http://purl.org/dc/terms/isPartOf}
 	 * Een aangifte kan deel zijn van een andere bundel.
 	 */
-	@jsonMember(() => AangifteBundel, { name: 'isPartOf' })
-	onderdeelVan?: AangifteBundel;
+	@jsonMember(() => Aangiftebundel, { name: 'isPartOf' })
+	onderdeelVan?: Aangiftebundel;
 
 	/**
 	 * modified

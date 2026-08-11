@@ -1,3 +1,4 @@
+import { Rubriek } from './rubriek.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -76,7 +77,7 @@ export class Systeemeigenschap {
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter}
 	 * De parameter die wordt gebruikt bij een eigenschap of meting.
 	 */
-	@jsonMember({ name: 'parameter' })
-	parameter?: string;
+	@jsonMember(() => Rubriek, { name: 'parameter' })
+	parameter?: Rubriek;
 
 }

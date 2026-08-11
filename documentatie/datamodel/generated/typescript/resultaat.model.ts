@@ -23,4 +23,28 @@ export class Resultaat {
 	@jsonMember({ name: 'uri' })
 	uri?: string;
 
+	/**
+	 * numericValue
+	 * @see {@link http://qudt.org/schema/qudt/numericValue}
+	 * Een resultaat kan een numerieke waarde hebben
+	 */
+	@jsonMember({ name: 'numericValue' })
+	waarde?: number;
+
+	/**
+	 * unit
+	 * @see {@link http://qudt.org/schema/qudt/unit}
+	 * Een resultaat kan een eenheid hebben
+	 */
+	@jsonMember({ name: 'unit' })
+	eenheid?: string;
+
+	/**
+	 * comment
+	 * @see {@link http://www.w3.org/2000/01/rdf-schema#comment}
+	 * Een resultaat kan een tekstuele waarde hebben
+	 */
+	@jsonMember({ name: 'comment' })
+	beschrijving?: string;
+
 }

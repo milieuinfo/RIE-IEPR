@@ -29,6 +29,7 @@ import java.util.List;
 /**
  * Proces
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces">Proces</a>
+ * Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen.
  **/
 @Getter
 @Setter
@@ -38,57 +39,99 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "proces")
 public class Proces {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
 	@Id
 	@Column(name = "id", nullable = false)
 	@JsonProperty("id")
 	private String id;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
-	// <a href="http://purl.org/dc/terms/created">created</a>
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 * Een proces moet een datum hebben waarop het is ingegeven
+	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
 	private LocalDateTime aangemaaktOp;
-	// <a href="http://purl.org/dc/terms/issued">issued</a>
+	/**
+	 * issued
+	 * <a href="http://purl.org/dc/terms/issued">issued</a>
+	 * Een proces kan een geldigheid start hebben
+	 */
 	@Column(name = "geldig_van", nullable = false)
 	@JsonProperty("issued")
 	private LocalDate geldigVan;
-	// <a href="http://purl.org/dc/terms/valid">valid</a>
+	/**
+	 * valid
+	 * <a href="http://purl.org/dc/terms/valid">valid</a>
+	 * Een proces kan een geldigheid einde hebben
+	 */
 	@Column(name = "geldig_tot", nullable = true)
 	@JsonProperty("valid")
 	private LocalDate geldigTot;
-	// <a href="http://purl.org/dc/terms/modified">modified</a>
+	/**
+	 * modified
+	 * <a href="http://purl.org/dc/terms/modified">modified</a>
+	 * Een proces moet een modificatie datum hebben
+	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
 	private LocalDateTime aangepastOp;
-	// <a href="http://purl.org/dc/terms/type">type</a>
+	/**
+	 * type
+	 * <a href="http://purl.org/dc/terms/type">type</a>
+	 * Een proces kan zijn afgeleid van een (generieke) procedure (optioneel). Max 1 omdat een proces slechts van 1 procedure afgeleid kan zijn en deze procedure een verzameling van andere procedures zou moeten zijn.
+	 */
 	@JsonProperty("type")
 	private Procedure type;
-	// <a href="http://purl.org/net/p-plan#hasInputVar">hasInputVar</a>
+	/**
+	 * hasInputVar
+	 * <a href="http://purl.org/net/p-plan#hasInputVar">hasInputVar</a>
+	 * Een proces mag minstens één inputvariabele hebben (stof)
+	 */
 	@ManyToMany
 	@JoinTable(
-		name = "proces_proces_variabele",
+		name = "proces_procesvariabele",
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
 	@JsonProperty("hasInputVar")
-	private List<ProcesVariabele> heeftInvoer;
-	// <a href="http://purl.org/net/p-plan#hasOutputVar">hasOutputVar</a>
+	private List<Procesvariabele> heeftInvoer;
+	/**
+	 * hasOutputVar
+	 * <a href="http://purl.org/net/p-plan#hasOutputVar">hasOutputVar</a>
+	 * Een proces mag minstens één outputvariabele hebben (stof)
+	 */
 	@ManyToMany
 	@JoinTable(
-		name = "proces_proces_variabele",
+		name = "proces_procesvariabele",
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
 	@JsonProperty("hasOutputVar")
-	private List<ProcesVariabele> heeftUitvoer;
-	// <a href="http://purl.org/net/p-plan#hasStep">hasStep</a>
+	private List<Procesvariabele> heeftUitvoer;
+	/**
+	 * hasStep
+	 * <a href="http://purl.org/net/p-plan#hasStep">hasStep</a>
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "proces_proces_has_step",
@@ -97,7 +140,11 @@ public class Proces {
 	)
 	@JsonProperty("hasStep")
 	private List<Proces> hasStep;
-	// <a href="http://purl.org/net/p-plan#isPrecededBy">isPrecededBy</a>
+	/**
+	 * isPrecededBy
+	 * <a href="http://purl.org/net/p-plan#isPrecededBy">isPrecededBy</a>
+	 * Een proces mag een of meer andere processen als voorgaande stap hebben.
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "proces_proces_volgt_op",
@@ -106,31 +153,59 @@ public class Proces {
 	)
 	@JsonProperty("isPrecededBy")
 	private List<Proces> volgtOp;
-	// <a href="http://purl.org/net/p-plan#isStepOfPlan">isStepOfPlan</a>
+	/**
+	 * isStepOfPlan
+	 * <a href="http://purl.org/net/p-plan#isStepOfPlan">isStepOfPlan</a>
+	 * Een proces kan deel uitmaken van een ander proces
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("isStepOfPlan")
 	private Proces onderdeelVan;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+	/**
+	 * comment
+	 * <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+	 * Een proces kan een beschrijving hebben
+	 */
 	@Column(name = "beschrijving", nullable = true)
 	@JsonProperty("comment")
 	private String beschrijving;
-	// <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
+	/**
+	 * label
+	 * <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>
+	 * Een proces moet een benaming hebben
+	 */
 	@Column(name = "benaming", nullable = true)
 	@JsonProperty("label")
 	private String benaming;
-	// <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
+	/**
+	 * wasRevisionOf
+	 * <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
+	 * Een proces kan een revisie zijn van een ander proces (optioneel)
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("wasRevisionOf")
 	private Proces revisieVan;
-	// <a href="http://www.w3.org/ns/ssn/implementedBy">implementedBy</a>
+	/**
+	 * implementedBy
+	 * <a href="http://www.w3.org/ns/ssn/implementedBy">implementedBy</a>
+	 * Een proces kan het gebruik van een systeem representeren
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("implementedBy")
 	private ISysteem systeem;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	/**
+	 * aangifte
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>
+	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
+	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek">rubriek</a>
+	/**
+	 * rubriek
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek">rubriek</a>
+	 * De rubriek die van toepassing is op een proces of installatie.
+	 */
 	@ManyToMany
 	@JoinTable(
 		name = "proces_rubriek",

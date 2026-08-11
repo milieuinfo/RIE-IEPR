@@ -1,12 +1,13 @@
+import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
- * ProcesVariabele
- * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ProcesVariabele}
- * Een proces variabele is een variabel gegeven die als input of output van een proces dient.
+ * Procesvariabele
+ * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele}
+ * Een procesvariabele is een variabel gegeven die als input of output van een proces dient.
  */
 @jsonObject
-export class ProcesVariabele {
+export class Procesvariabele {
 	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
@@ -30,6 +31,13 @@ export class ProcesVariabele {
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;
+
+	/**
+	 * isInputVarOf
+	 * @see {@link http://purl.org/net/p-plan#isInputVarOf}
+	 */
+	@jsonArrayMember(() => Proces, { name: 'isInputVarOf' })
+	isInputVarOf?: Proces[];
 
 	/**
 	 * hasUnit

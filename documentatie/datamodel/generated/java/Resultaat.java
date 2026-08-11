@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Resultaat
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat">Resultaat</a>
+ * Een resultaat is de waarde van een observatie.
  **/
 @Getter
 @Setter
@@ -36,13 +37,45 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "resultaat")
 public class Resultaat {
-	// <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	/**
+	 * uuid
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
+	 * UUID
+	 */
 	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
-	// <a href="http://example.org/vocab/uri">uri</a>
+	/**
+	 * uri
+	 * <a href="http://example.org/vocab/uri">uri</a>
+	 * URI
+	 */
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
+	/**
+	 * numericValue
+	 * <a href="http://qudt.org/schema/qudt/numericValue">numericValue</a>
+	 * Een resultaat kan een numerieke waarde hebben
+	 */
+	@Column(name = "waarde", nullable = true)
+	@JsonProperty("numericValue")
+	private Double waarde;
+	/**
+	 * unit
+	 * <a href="http://qudt.org/schema/qudt/unit">unit</a>
+	 * Een resultaat kan een eenheid hebben
+	 */
+	@Column(name = "eenheid", nullable = true)
+	@JsonProperty("unit")
+	private String eenheid;
+	/**
+	 * comment
+	 * <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+	 * Een resultaat kan een tekstuele waarde hebben
+	 */
+	@Column(name = "beschrijving", nullable = true)
+	@JsonProperty("comment")
+	private String beschrijving;
 }
