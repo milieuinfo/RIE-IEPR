@@ -1,4 +1,4 @@
-@Library('Cumulus@1.2-stable') _
+@Library('Cumulus@1.3-stable') _
 
 def nodePodSpec = '''
 spec:
