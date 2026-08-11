@@ -157,6 +157,17 @@ pipeline {
         }
       }
       stages {
+        stage("Reset workspace") {
+          steps {
+            container('jnlp') {
+              sh '''
+                # Build Specificatie regenereert gecommitte bestanden (bv. ontologie.bs);
+                # release:prepare weigert te starten met vuile working tree.
+                git checkout -- . || true
+              '''
+            }
+          }
+        }
         stage("Maven prepare") {
           when {
             expression { versions.isRelease() }
