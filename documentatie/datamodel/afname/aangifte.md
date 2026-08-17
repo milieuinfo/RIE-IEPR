@@ -68,5 +68,5 @@ Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitat
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) PROV-O provenance patroon
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) relatie tussen indienen en versies
+- [Basisaannames](./basisaanname.md) PROV-O provenance patroon
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) relatie tussen indienen en versies

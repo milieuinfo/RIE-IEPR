@@ -259,7 +259,7 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) Feature of Interest, SOSA/SSN patroon
-- [Installaties en emissiepunten](./SYSTEMEN.md) fysieke systemen
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) SPARQL-query's voor observaties
+- [Basisaannames](./basisaanname.md) Feature of Interest, SOSA/SSN patroon
+- [Installaties en emissiepunten](./systemen.md) fysieke systemen
+- [Gebruiksscenario's](./gebruiksscenario.md) SPARQL-query's voor observaties
 - **Codelijsten**: De `observedProperty` waarden en andere categorisaties verwijzen naar SKOS concepten uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

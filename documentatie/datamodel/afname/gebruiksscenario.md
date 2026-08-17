@@ -212,7 +212,7 @@ Meetpunten fungeren als Feature of Interest voor observaties. De `sosa:hasFeatur
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) modellen en aannames achter het datamodel
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) organisaties, locaties, activiteiten
-- [Installaties en emissiepunten](./SYSTEMEN.md) systemen en subsystemen
-- [Observaties en emissies](./OBSERVATIES.md) metingen en gebeurtenissen
+- [Basisaannames](./basisaanname.md) modellen en aannames achter het datamodel
+- [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties, activiteiten
+- [Installaties en emissiepunten](./systemen.md) systemen en subsystemen
+- [Observaties en emissies](./observaties.md) metingen en gebeurtenissen

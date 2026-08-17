@@ -173,6 +173,6 @@ Elke entiteit kan een primaire bron hebben via `prov:hadPrimarySource`. Dit trac
 
 ## Referenties
 
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) - concrete voorbeelden van data-afname
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) - organisaties, locaties, activiteiten
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) - versies, geldigheid, historische query's
+- [Gebruiksscenario's](./gebruiksscenario.md) - concrete voorbeelden van data-afname
+- [Exploitant- en exploitatiemodel](./exploitant.md) - organisaties, locaties, activiteiten
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) - versies, geldigheid, historische query's

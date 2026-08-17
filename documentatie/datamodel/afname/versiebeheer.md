@@ -248,6 +248,6 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) URI-patronen, exploitatie twee lagen
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) SPARQL-query's voor versiebeheer
-- [Aangifte en dossier](./AANGIFTE.md) relatie tussen indienen en versies
+- [Basisaannames](./basisaanname.md) URI-patronen, exploitatie twee lagen
+- [Gebruiksscenario's](./gebruiksscenario.md) SPARQL-query's voor versiebeheer
+- [Aangifte en dossier](./aangifte.md) relatie tussen indienen en versies

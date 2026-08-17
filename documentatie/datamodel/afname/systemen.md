@@ -348,7 +348,7 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./BASISAANNAME.md) - proces-procedure koppels, disjoint classes
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) - exploitatie -> systeem relatie
-- [Observaties en emissies](./OBSERVATIES.md) - metingen op meetpunten
+- [Basisaannames](./basisaanname.md) - proces-procedure koppels, disjoint classes
+- [Exploitant- en exploitatiemodel](./exploitant.md) - exploitatie -> systeem relatie
+- [Observaties en emissies](./observaties.md) - metingen op meetpunten
 - **Codelijsten**: De `dct:type` waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

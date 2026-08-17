@@ -83,7 +83,7 @@ pipeline {
           '''
         }
         container('dind') {
-          sh '''
+            sh '''
             set -e
             mkdir -p site/combined
             # combine mkdocs site with widoco ontologie already copied into mkdocs
@@ -93,7 +93,11 @@ pipeline {
             # ensure ontologie folder is present
             if [ -d site/mkdocs/ontologie ]; then
               mkdir -p site/combined/ontologie
-              cp -r site/mkdocs/ontologie/* site/combined/ontologie/
+              if [ "$(ls -A site/mkdocs/ontologie 2>/dev/null)" ]; then
+                cp -r site/mkdocs/ontologie/* site/combined/ontologie/
+              else
+                echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Ontologie</title></head><body><h1>Ontologie documentatie wordt gegenereerd</h1></body></html>' > site/combined/ontologie/index.html
+              fi
             fi
             # create build artifact for docs
             mkdir -p build-artifact/docs

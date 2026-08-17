@@ -5,13 +5,13 @@ Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van e
 
 ## Inhoud
 
-- [Gebruiksscenario's](./GEBRUIKSSCENARIO.md) concrete voorbeelden van data-afname met SPARQL-query's
-- [Basisaannames](./BASISAANNAME.md) de modellen en aannames die ten grondslag liggen aan het datamodel
-- [Exploitant- en exploitatiemodel](./EXPLOITANT.md) organisaties, locaties en activiteiten
-- [Systemen: installaties, emissiepunten en meetpunten](./SYSTEMEN.md) systemen, subsystemen en eigenschappen
-- [Observaties en emissies](./OBSERVATIES.md) metingen, observaties en gebeurtenissen (emissie, onttrekking)
-- [Aangifte en dossier](./AANGIFTE.md) documenten en transacties gekoppeld aan de data
-- [Versiebeheer en tijdsrecht](./VERSIEBEHEER.md) versiebeheer, geldigheid en historische query's
+- [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
+- [Basisaannames](./basisaanname.md) de modellen en aannames die ten grondslag liggen aan het datamodel
+- [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
+- [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) systemen, subsystemen en eigenschappen
+- [Observaties en emissies](./observaties.md) metingen, observaties en gebeurtenissen (emissie, onttrekking)
+- [Aangifte en dossier](./aangifte.md) documenten en transacties gekoppeld aan de data
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) versiebeheer, geldigheid en historische query's
 
 > **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
 

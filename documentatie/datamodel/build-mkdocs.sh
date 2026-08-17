@@ -23,7 +23,12 @@ java -jar "$WIDOCO_JAR" \
 # Copy Widoco output into MkDocs site_dir for integration
 SITE_DIR="$ROOT/site/mkdocs"
 mkdir -p "$SITE_DIR/ontologie"
-cp -r "$WIDOCO_OUT"/* "$SITE_DIR/ontologie/" 2>/dev/null || true
+if [ "$(ls -A "$WIDOCO_OUT" 2>/dev/null)" ]; then
+  cp -r "$WIDOCO_OUT"/* "$SITE_DIR/ontologie/"
+else
+  echo "Widoco output empty, creating placeholder"
+  echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Ontologie</title></head><body><h1>Ontologie documentatie wordt gegenereerd</h1><p>Widoco kon de documentatie niet genereren in deze omgeving. Raadpleeg de lokale build.</p></body></html>' > "$SITE_DIR/ontologie/index.html"
+fi
 if [ -f "$SITE_DIR/ontologie/index-nl.html" ] && [ ! -f "$SITE_DIR/ontologie/index.html" ]; then
   cp "$SITE_DIR/ontologie/index-nl.html" "$SITE_DIR/ontologie/index.html"
 fi
@@ -36,7 +41,12 @@ fi
 
 # Ensure ontology static files are present after mkdocs clean
 mkdir -p "$SITE_DIR/ontologie"
-cp -r "$WIDOCO_OUT"/* "$SITE_DIR/ontologie/" 2>/dev/null || true
+if [ "$(ls -A "$WIDOCO_OUT" 2>/dev/null)" ]; then
+  cp -r "$WIDOCO_OUT"/* "$SITE_DIR/ontologie/"
+else
+  echo "Widoco output empty, ensuring placeholder exists"
+  [ -f "$SITE_DIR/ontologie/index.html" ] || echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Ontologie</title></head><body><h1>Ontologie documentatie wordt gegenereerd</h1><p>Widoco kon de documentatie niet genereren in deze omgeving. Raadpleeg de lokale build.</p></body></html>' > "$SITE_DIR/ontologie/index.html"
+fi
 if [ -f "$SITE_DIR/ontologie/index-nl.html" ] && [ ! -f "$SITE_DIR/ontologie/index.html" ]; then
   cp "$SITE_DIR/ontologie/index-nl.html" "$SITE_DIR/ontologie/index.html"
 fi
