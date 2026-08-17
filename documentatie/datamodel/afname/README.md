@@ -42,8 +42,6 @@ Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 - **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geospatiale objecten
 - **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
 
-Zie ook de [gegenereerde specificatie](../bin/specificatie/) voor een volledig overzicht van klassen, eigenschappen en concepten.
-
 ## Codelijsten (SKOS concepten)
 
 Het RIE-IEPR-datamodel maakt uitgebreid gebruik van **gecontroleerde vocabulaires** (codelijsten), voorgesteld als [SKOS concepten](https://www.w3.org/TR/skos-reference/). Deze codelijsten worden beheerd in een apart repository: **[milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)**.

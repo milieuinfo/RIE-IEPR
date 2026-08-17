@@ -144,12 +144,14 @@ Elke systeemeigenschap heeft twee kenmerken:
 - **`riepr:parameter`** - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
 - **`riepr:datatype`** - het datatype van de waarde (bijv. `xsd:decimal`)
 
+De eenheid wordt vastgelegd via `qudt:hasUnit` conform de ontologie; in praktijkvoorbeelden wordt vaak `qudt:unit` gebruikt voor leesbaarheid.
+
 ```turtle
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
     rdfs:value "0"^^xsd:decimal ;
-    qudt:unit unit:Percent ;
+    qudt:hasUnit unit:Percent ;
     riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
 ```
 

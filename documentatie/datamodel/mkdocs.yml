@@ -1,0 +1,73 @@
+site_name: RIE-IEPR Datamodel
+site_url: https://milieuinfo.github.io/RIE-IEPR/
+repo_url: https://github.com/milieuinfo/RIE-IEPR
+repo_name: milieuinfo/RIE-IEPR
+
+extra_css:
+  - extra/omgeving.css
+
+extra_javascript:
+  - assets/js/mermaid.min.js
+  - extra/mermaid-init.js
+
+theme:
+  name: material
+  logo: assets/logo-omgeving.png
+  favicon: assets/favicon.png
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - content.code.annotate
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.inlinehilite
+  - pymdownx.highlight
+  - pymdownx.tabbed
+  - pymdownx.superfences
+  - pymdownx.arithmatex
+  - md_in_html
+
+docs_dir: afname
+site_dir: site/mkdocs
+
+nav:
+  - Overzicht: readme.md
+  - Gebruiksscenario's: gebruiksscenario.md
+  - Basisaannames: basisaanname.md
+  - Exploitant en exploitatie: exploitant.md
+  - Systemen: systemen.md
+  - Observaties en emissies: observaties.md
+  - Aangifte en dossier: aangifte.md
+  - Ontologie: /ontologie/
+  - Versiebeheer: versiebeheer.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/milieuinfo/RIE-IEPR
+  generator: false

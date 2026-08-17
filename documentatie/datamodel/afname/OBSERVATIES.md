@@ -71,9 +71,9 @@ Observaties zijn **versioneerbaar** met een drie-segment patroon (`{type}/{uuid}
 @prefix unit:  <http://qudt.org/vocab/unit/> .
 @prefix dct:   <http://purl.org/dc/terms/> .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
     a sosa:Observation ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4> ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4> ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
     sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -156,9 +156,9 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded> .
 
 # --- Observatie ---
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
     a sosa:Observation ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4> ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4> ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
     sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;

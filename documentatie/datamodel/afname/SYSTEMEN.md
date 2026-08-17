@@ -20,6 +20,8 @@ Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn alle
 
 Alle systemen zijn subklassen van `sosa:System` en `ogc:SpatialObject`.
 
+> **Codelijsten en Systeemeigenschappen**: Het `dct:type` van een systeem (bijv. `installatie_type`, `emissiepunt_type`) bepaalt welke `Systeemeigenschap`-concepten relevant zijn. De codelijsten in [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) bevatten per eigenschap metadata zoals `relevantDataType`, `relevantUnit`, `isVerplicht` en `isMeervoudig`, en koppelen eigenschappen aan systeemtypes via `relevantRiepr`. Dit maakt het mogelijk om te weten welke eigenschappen verplicht zijn voor een bepaald systeemtype en welk datatype/eenheid verwacht wordt.
+
 ## 2. Installaties
 
 Een **installatie** is een infrastructuur voor een specifieke functie. Het type wordt bepaald door de codelijst **`installatie_type`** ([beheerd in milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)). In het AGC Glass-voorbeeld vinden we verschillende types:
@@ -70,14 +72,14 @@ Installaties kunnen verschillende eigenschappen hebben, zoals:
     qudt:unit unit:KiloW .
 
 # Geïnstalleerde productiecapaciteit
-<.../systeemeigenschap/019edc4a-1a2c-72e4-9d56-e0f9g8b7c6d5>
+<.../systeemeigenschap/019edc4a-1a2c-72e4-9d56-e0f9a8b7c6d5>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerde_productiecapaciteit> ;
     rdfs:value "100"^^xsd:decimal ;
     qudt:unit unit:TonnePerYear .
 
 # Waterzuiveringstechniek (met parameter als concept)
-<.../systeemeigenschap/019edc4a-1a2d-73f5-ae67-f1gad9c8d7e6>
+<.../systeemeigenschap/019edc4a-1a2d-73f5-ae67-f1a9d8c7e6f5>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/waterzuiveringstechniek> ;
     rdfs:value "ultrafiltratie"@nl ;
@@ -139,17 +141,18 @@ Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is e
     a riepr:Onttrekkingspunt, sosa:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99> ;
     rdfs:label "1 (FL koeltoren)"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/grondwaterput> .
 ```
 
 ### Onttrekkingspunt-eigenschappen
 
 ```turtle
 # Diepte van het onttrekkingspunt
-<.../systeemeigenschap/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4>
+<.../systeemeigenschap/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "diepte"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    rdfs:value "45.5"^^xsd:decimal ;
+    qudt:unit unit:M .
 ```
 
 ## 5. Meetpunten
@@ -189,13 +192,13 @@ Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en leng
 
 ```turtle
 # Watervoerende laag
-<.../systeemeigenschap/019edc4a-1a36-7co4-jn5g-o0pkl8lhlg5>
+<.../systeemeigenschap/019edc4a-1a36-7c04-8f5a-0a0b1c2d3e4f>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
     rdfs:value "Kalksteen"@nl .
 
 # Lengte
-<.../systeemeigenschap/019edc4a-1a37-7dp5-k o6h-p1qmm9mimh6>
+<.../systeemeigenschap/019edc4a-1a37-7d45-8f6a-1b1c2d3e4f5a>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
     rdfs:value "2.5"^^xsd:decimal ;
@@ -308,11 +311,12 @@ classDiagram
     }
     
     %% System hierarchy (subclasses)
-    Installatie <|-- Emissiepunt
-    Installatie <|-- Onttrekkingspunt
-    Installatie <|-- Meetpunt
-    Installatie <|-- Filter
-    Installatie <|-- Uitwisselpunt
+    ssn:System <|-- Installatie
+    ssn:System <|-- Emissiepunt
+    ssn:System <|-- Onttrekkingspunt
+    ssn:System <|-- Meetpunt
+    ssn:System <|-- Filter
+    ssn:System <|-- Uitwisselpunt
     
     %% System → Process links (implementedBy)
     Emissiepunt --> Proces : implementedBy

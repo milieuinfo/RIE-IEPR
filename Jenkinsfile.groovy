@@ -16,12 +16,28 @@ spec:
           memory: "2Gi"
 '''
 
+def pythonPodSpec = '''
+spec:
+  containers:
+    - name: python
+      image: acd-docker.repository.milieuinfo.be/library/python:3.11-slim
+      command:
+        - cat
+      tty: true
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
+'''
+
 pipeline {
 
   agent {
     kubernetes {
       inheritFrom 'jenkins-jenkins-agent'
-      yaml podBuilder.from([maven.podSpec(25), dind.podSpec(), sonar, trivy, nodePodSpec])
+      yaml podBuilder.from([maven.podSpec(25), dind.podSpec(), sonar, trivy, nodePodSpec, pythonPodSpec])
     }
   }
 
@@ -101,6 +117,43 @@ pipeline {
             done
 
             echo "Build and package stage completed."
+          '''
+        }
+      }
+      post {
+        always {
+          archiveArtifacts artifacts: 'build-artifact/**', allowEmptyArchive: true, fingerprint: true
+        }
+      }
+    }
+
+    stage('Build Widoco & MkDocs') {
+      steps {
+        container('python') {
+          sh '''
+            set -e
+            cd documentatie/datamodel
+            bash build-mkdocs.sh
+          '''
+        }
+        container('dind') {
+          sh '''
+            set -e
+            mkdir -p site/combined
+            # combine mkdocs site with widoco ontologie already copied into mkdocs
+            if [ -d site/mkdocs ]; then
+              cp -r site/mkdocs/* site/combined/
+            fi
+            # ensure ontologie folder is present
+            if [ -d site/mkdocs/ontologie ]; then
+              mkdir -p site/combined/ontologie
+              cp -r site/mkdocs/ontologie/* site/combined/ontologie/
+            fi
+            # create build artifact for docs
+            mkdir -p build-artifact/docs
+            cp -r site/combined/* build-artifact/docs/
+            # simple index redirect
+            echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=docs/index.html" /></head><body>Redirecting...</body></html>' > build-artifact/index.html
           '''
         }
       }
@@ -237,6 +290,10 @@ pipeline {
                     if [ -f ../build-artifact/visualisatie.html ]; then
                       cp -f ../build-artifact/visualisatie.html visualisatie.html
                     fi
+                    # copy MkDocs + Widoco site
+                    if [ -d ../build-artifact/docs ]; then
+                      cp -r ../build-artifact/docs/* .
+                    fi
 
                     # schema TTL en SHACL cache
                     for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
@@ -246,7 +303,11 @@ pipeline {
                     done
 
                     touch .nojekyll
-                    git add index.html visualisatie.html .nojekyll riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json
+                    git add .nojekyll index.html visualisatie.html riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json
+                    # add all files from docs deploy
+                    if [ -d ../build-artifact/docs ]; then
+                      find . -type f ! -name '.git*' -exec git add {} +
+                    fi
                     if ! git diff --cached --quiet; then
                       git config user.email "$GIT_USER_EMAIL"
                       git config user.name "$GIT_USER_NAME"
