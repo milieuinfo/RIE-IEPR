@@ -24,6 +24,14 @@ spec:
       command:
         - cat
       tty: true
+      env:
+        - name: ARTIFACTORY_USER
+          value: "jenkins-systeemgebruiker"
+        - name: ARTIFACTORY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: "artifactory_password"
+              name: "jenkins-secrets"
       resources:
         requests:
           memory: "512Mi"
@@ -75,9 +83,17 @@ pipeline {
         container('maven') {
           sh '''
             set -e
-            export PIP_INDEX_URL="http://repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple"
+            cd documentatie/datamodel
+            bash build-widoco.sh
+          '''
+        }
+        container('python') {
+          sh '''
+            set -e
             export PIP_TRUSTED_HOST="repo.omgeving.vlaanderen.be"
-            export PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
+            export PIP_DISABLE_PIP_VERSION_CHECK="1"
+            printf 'url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\\n' "$ARTIFACTORY_USER" "$ARTIFACTORY_PASSWORD" > /tmp/pip.conf
+            export PIP_CONFIG_FILE=/tmp/pip.conf
             cd documentatie/datamodel
             bash build-mkdocs.sh
           '''
