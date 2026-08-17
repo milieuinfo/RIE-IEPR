@@ -100,7 +100,7 @@ pipeline {
               -e PIP_TRUSTED_HOST=repo.omgeving.vlaanderen.be \
               -e PIP_DISABLE_PIP_VERSION_CHECK=1 \
               acd-docker.repository.milieuinfo.be/library/python:3.11-slim \
-              bash documentatie/datamodel/build-mkdocs.sh
+              bash documentatie/datamodel/run-mkdocs-docker.sh
           '''
         }
         container('dind') {
