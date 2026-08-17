@@ -75,6 +75,9 @@ pipeline {
         container('python') {
           sh '''
             set -e
+            export PIP_INDEX_URL="https://repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple"
+            export PIP_TRUSTED_HOST="repo.omgeving.vlaanderen.be"
+            export PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
             cd documentatie/datamodel
             bash build-mkdocs.sh
           '''
