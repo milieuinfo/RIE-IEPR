@@ -10,7 +10,7 @@ pip install -q --break-system-packages -r requirements-mkdocs.txt || echo "pip i
 # Build Widoco ontology documentation
 WIDOCO_JAR="$ROOT/documentatie/bin/widoco/widoco.jar"
 WIDOCO_CONFIG="$ROOT/documentatie/bin/widoco/widoco-config.ttl"
-ONTOLOGY_SRC="$ROOT/documentatie/datamodel/src/ns/riepr/riepr.ttl"
+ONTOLOGY_SRC="$ROOT/src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
 WIDOCO_OUT="$ROOT/site/ontology"
 
 mkdir -p "$WIDOCO_OUT"
@@ -28,7 +28,11 @@ if [ -f "$SITE_DIR/ontologie/index-nl.html" ] && [ ! -f "$SITE_DIR/ontologie/ind
   cp "$SITE_DIR/ontologie/index-nl.html" "$SITE_DIR/ontologie/index.html"
 fi
 
-mkdocs build --site-dir "$SITE_DIR"
+if command -v mkdocs >/dev/null 2>&1; then
+  mkdocs build --site-dir "$SITE_DIR"
+else
+  echo "mkdocs not found, skipping MkDocs build"
+fi
 
 # Ensure ontology static files are present after mkdocs clean
 mkdir -p "$SITE_DIR/ontologie"
