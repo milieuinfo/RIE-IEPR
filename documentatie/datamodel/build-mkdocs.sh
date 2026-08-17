@@ -36,7 +36,14 @@ fi
 if command -v mkdocs >/dev/null 2>&1; then
   mkdocs build --site-dir "$SITE_DIR"
 else
-  echo "mkdocs not found, skipping MkDocs build"
+  echo "mkdocs not found, copying prebuilt site"
+  PREBUILT="$ROOT/documentatie/datamodel/prebuilt/site"
+  if [ -d "$PREBUILT" ]; then
+    rm -rf "$SITE_DIR"/*
+    cp -r "$PREBUILT"/. "$SITE_DIR"/
+  else
+    echo "prebuilt site not found"
+  fi
 fi
 
 # Ensure ontology static files are present after mkdocs clean
