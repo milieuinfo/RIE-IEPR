@@ -64,7 +64,6 @@ De documentatie bevindt zich in `documentatie/datamodel/` en is onderverdeeld in
 | `documentatie/datamodel/datavoorbeelden/` | Realistische datavoorbeelden (Turtle) gebaseerd op AGC Glass Europe |
 | `documentatie/datamodel/generated/` | Gegenereerde modellen (Java, TypeScript, SQL, SHACL) |
 | `documentatie/datamodel/src/` | Bronontologie (`riepr.ttl`), configuratie en oddtoolkit tools |
-| `documentatie/bin/specificatie/` | Bikeshed-gegenereerde specificatie (HTML) uit de ontologie |
 
 ### Afname-documentatie (LOD/LDES)
 

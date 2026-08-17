@@ -70,63 +70,6 @@ pipeline {
       }
     }
 
-    stage('Build Specificatie') {
-      steps {
-        container('node') {
-          sh '''
-            set -e
-            export NPM_CONFIG_LOGLEVEL=warn
-            export PUPPETEER_SKIP_DOWNLOAD=true
-            export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-            # run in the specificatie subfolder where package.json lives
-            cd documentatie/bin/specificatie
-              if [ -f package-lock.json ]; then
-                npm ci --no-audit --no-fund || exit 1
-              else
-                npm install --no-audit --no-fund --no-optional || exit 1
-              fi
-              npm run generate:bikeshed
-          '''
-        }
-
-        container('dind') {
-          sh '''
-            set -e
-
-            # build:docker expects Docker on the host
-            if command -v docker >/dev/null 2>&1; then
-              (cd documentatie/bin/specificatie && docker build -t specificatie:latest . && docker run -v "$PWD":/app specificatie:latest) || true
-            else
-              echo "docker is not available in this container; skipping build:docker"
-            fi
-
-            # ensure artifact folder exists even when generation failed
-            mkdir -p build-artifact
-            if [ -f documentatie/bin/specificatie/index.html ]; then
-              cp -f documentatie/bin/specificatie/index.html build-artifact/
-            fi
-            if [ -f documentatie/bin/visualisatie/index.html ]; then
-              cp -f documentatie/bin/visualisatie/index.html build-artifact/visualisatie.html
-            fi
-
-            # schema TTL en SHACL cache meepubliceren naast de visualisatie
-            for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
-              if [ -f "documentatie/bin/visualisatie/$f" ]; then
-                cp -f "documentatie/bin/visualisatie/$f" "build-artifact/$f"
-              fi
-            done
-
-            echo "Build and package stage completed."
-          '''
-        }
-      }
-      post {
-        always {
-          archiveArtifacts artifacts: 'build-artifact/**', allowEmptyArchive: true, fingerprint: true
-        }
-      }
-    }
-
     stage('Build Widoco & MkDocs') {
       steps {
         container('python') {
