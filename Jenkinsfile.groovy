@@ -92,7 +92,7 @@ pipeline {
             set -e
             export PIP_TRUSTED_HOST="repo.omgeving.vlaanderen.be"
             export PIP_DISABLE_PIP_VERSION_CHECK="1"
-            printf 'url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\\n' "$ARTIFACTORY_USER" "$ARTIFACTORY_PASSWORD" > /tmp/pip.conf
+            printf '[global]\nurl = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$ARTIFACTORY_USER" "$ARTIFACTORY_PASSWORD" > /tmp/pip.conf
             export PIP_CONFIG_FILE=/tmp/pip.conf
             cd documentatie/datamodel
             bash build-mkdocs.sh

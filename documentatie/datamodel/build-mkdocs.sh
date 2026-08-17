@@ -4,7 +4,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT/documentatie/datamodel"
 
-pip install -q --break-system-packages -r requirements-mkdocs.txt >/dev/null 2>&1 || echo "pip install skipped / already satisfied"
+if ! pip install -q --break-system-packages -r requirements-mkdocs.txt >/dev/null 2>&1; then
+  echo "pip install failed, showing error output:"
+  pip install --break-system-packages -r requirements-mkdocs.txt 2>&1 | tail -n 30
+fi
 
 SITE_DIR="$ROOT/site/mkdocs"
 WIDOCO_OUT="$ROOT/site/ontology"
