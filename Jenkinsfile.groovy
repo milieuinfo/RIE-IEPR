@@ -83,19 +83,24 @@ pipeline {
         container('maven') {
           sh '''
             set -e
-            cd documentatie/datamodel
-            bash build-widoco.sh
-          '''
-        }
-        container('python') {
-          sh '''
-            set -e
-            export PIP_TRUSTED_HOST="repo.omgeving.vlaanderen.be"
-            export PIP_DISABLE_PIP_VERSION_CHECK="1"
-            printf '[global]\nurl = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$ARTIFACTORY_USER" "$ARTIFACTORY_PASSWORD" > /tmp/pip.conf
-            export PIP_CONFIG_FILE=/tmp/pip.conf
-            cd documentatie/datamodel
-            bash build-mkdocs.sh
+            ROOT="$(pwd)"
+            bash "$ROOT/documentatie/datamodel/build-widoco.sh"
+
+            # pip config for Artifactory (credentials from env, written to file to avoid logging)
+            printf '[global]\nurl = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" > "$ROOT/.pip-artifactory.conf"
+            trap 'rm -f "$ROOT/.pip-artifactory.conf"' EXIT
+
+            # mkdocs needs python+pip; the python pod container has no network, so run it
+            # in a python image via the dind daemon (shares the maven pod network).
+            docker run --rm \
+              -v "$ROOT":/workspace \
+              -w /workspace \
+              -v "$ROOT/.pip-artifactory.conf":/tmp/pip-artifactory.conf:ro \
+              -e PIP_CONFIG_FILE=/tmp/pip-artifactory.conf \
+              -e PIP_TRUSTED_HOST=repo.omgeving.vlaanderen.be \
+              -e PIP_DISABLE_PIP_VERSION_CHECK=1 \
+              acd-docker.repository.milieuinfo.be/library/python:3.11-slim \
+              bash documentatie/datamodel/build-mkdocs.sh
           '''
         }
         container('dind') {
