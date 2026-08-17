@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT/documentatie/datamodel"
 
 # pip install may fail offline; try but continue if already present
-pip install -q --break-system-packages -r requirements-mkdocs.txt || echo "pip install skipped / already satisfied"
+pip install -q --break-system-packages -r requirements-mkdocs.txt >/dev/null 2>&1 || echo "pip install skipped / already satisfied"
 
 # Build Widoco ontology documentation
 WIDOCO_JAR="$ROOT/documentatie/bin/widoco/widoco.jar"
