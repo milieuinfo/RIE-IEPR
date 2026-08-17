@@ -253,7 +253,12 @@ pipeline {
                     done
 
                     touch .nojekyll
-                    git add .nojekyll index.html visualisatie.html riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json
+                    git add .nojekyll index.html
+                    [ -f visualisatie.html ] && git add visualisatie.html || true
+                    [ -f riepr-ontologie.ttl ] && git add riepr-ontologie.ttl || true
+                    [ -f riepr-concept.ttl ] && git add riepr-concept.ttl || true
+                    [ -f generated-shapes.ttl ] && git add generated-shapes.ttl || true
+                    [ -f validation-report.json ] && git add validation-report.json || true
                     # add all files from docs deploy
                     if [ -d ../build-artifact/docs ]; then
                       find . -type f ! -name '.git*' -exec git add {} +
