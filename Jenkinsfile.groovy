@@ -222,6 +222,7 @@ pipeline {
           steps {
             container('jnlp') {
               script {
+                // Force pipeline reload
                 git.withGitAuth {
                   sh '''
                     set -e
