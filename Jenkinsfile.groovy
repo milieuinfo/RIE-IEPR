@@ -72,10 +72,10 @@ pipeline {
 
     stage('Build Widoco & MkDocs') {
       steps {
-        container('python') {
+        container('jnlp') {
           sh '''
             set -e
-            export PIP_INDEX_URL="https://repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple"
+            export PIP_INDEX_URL="http://repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple"
             export PIP_TRUSTED_HOST="repo.omgeving.vlaanderen.be"
             export PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
             cd documentatie/datamodel
