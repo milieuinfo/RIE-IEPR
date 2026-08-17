@@ -5,16 +5,19 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT/documentatie/datamodel"
 
 WIDOCO_JAR="$ROOT/documentatie/bin/widoco/widoco.jar"
-WIDOCO_CONFIG="$ROOT/documentatie/bin/widoco/widoco-config.ttl"
 ONTOLOGY_SRC="$ROOT/src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
 WIDOCO_OUT="$ROOT/site/ontology"
 SITE_DIR="$ROOT/site/mkdocs"
 
 mkdir -p "$WIDOCO_OUT" "$SITE_DIR/ontologie"
+
+# Note: Widoco 1.4.25 crashes (NullPointerException) when a -confFile is used.
+# The ontology itself carries all metadata (dct:title, dct:creator, ...).
 java -jar "$WIDOCO_JAR" \
   -ontFile "$ONTOLOGY_SRC" \
   -outFolder "$WIDOCO_OUT" \
-  -confFile "$WIDOCO_CONFIG" \
+  -lang nl \
+  -webVowl \
   -rewriteAll > /dev/null 2>&1 || true
 
 if [ "$(ls -A "$WIDOCO_OUT" 2>/dev/null)" ]; then

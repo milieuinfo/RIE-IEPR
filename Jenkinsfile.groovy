@@ -130,6 +130,72 @@ pipeline {
       }
     }
 
+    stage('Deploy docs to GitHub Pages') {
+      when {
+        allOf {
+          expression { env.BRANCH_IS_PRIMARY }
+          expression { git.notSkipCi() }
+        }
+      }
+      steps {
+        container('jnlp') {
+          script {
+            git.withGitAuth {
+              sh '''
+                set -e
+                rm -rf .gh-pages-deploy
+                git clone --depth 1 --branch "$GH_PAGES_BRANCH" "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy \
+                    || git clone --depth 1 "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy
+
+                cd .gh-pages-deploy
+                git checkout -B "$GH_PAGES_BRANCH"
+                find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+
+                # copy site files from build artifact
+                if [ -f ../build-artifact/index.html ]; then
+                  cp -f ../build-artifact/index.html index.html
+                fi
+                if [ -f ../build-artifact/visualisatie.html ]; then
+                  cp -f ../build-artifact/visualisatie.html visualisatie.html
+                fi
+                # copy MkDocs + Widoco site
+                if [ -d ../build-artifact/docs ]; then
+                  cp -r ../build-artifact/docs/* .
+                fi
+
+                # schema TTL en SHACL cache
+                for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
+                  if [ -f "../build-artifact/$f" ]; then
+                    cp -f "../build-artifact/$f" "$f"
+                  fi
+                done
+
+                touch .nojekyll
+                git add .nojekyll index.html
+                [ -f visualisatie.html ] && git add visualisatie.html || true
+                [ -f riepr-ontologie.ttl ] && git add riepr-ontologie.ttl || true
+                [ -f riepr-concept.ttl ] && git add riepr-concept.ttl || true
+                [ -f generated-shapes.ttl ] && git add generated-shapes.ttl || true
+                [ -f validation-report.json ] && git add validation-report.json || true
+                # add all files from docs deploy
+                if [ -d ../build-artifact/docs ]; then
+                  find . -type f ! -name '.git*' -exec git add {} +
+                fi
+                if ! git diff --cached --quiet; then
+                  git config user.email "$GIT_USER_EMAIL"
+                  git config user.name "$GIT_USER_NAME"
+                  git commit -m "docs: deploy from ${BUILD_TAG}"
+                  git push origin "$GH_PAGES_BRANCH"
+                else
+                  echo "No changes to deploy"
+                fi
+              '''
+            }
+          }
+        }
+      }
+    }
+
     stage("Non-primary branch") {
       when {
         allOf {
@@ -230,67 +296,6 @@ pipeline {
                           version  : env.VERSION,
                           skipTests: true
               ])
-            }
-          }
-        }
-
-        stage('Deploy docs to GitHub Pages') {
-          steps {
-            container('jnlp') {
-              script {
-                // Force pipeline reload
-                git.withGitAuth {
-                  sh '''
-                    set -e
-                    rm -rf .gh-pages-deploy
-                    git clone --depth 1 --branch "$GH_PAGES_BRANCH" "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy \
-                        || git clone --depth 1 "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy
-
-                    cd .gh-pages-deploy
-                    git checkout -B "$GH_PAGES_BRANCH"
-                    find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-
-                    # copy site files from build artifact
-                    if [ -f ../build-artifact/index.html ]; then
-                      cp -f ../build-artifact/index.html index.html
-                    fi
-                    if [ -f ../build-artifact/visualisatie.html ]; then
-                      cp -f ../build-artifact/visualisatie.html visualisatie.html
-                    fi
-                    # copy MkDocs + Widoco site
-                    if [ -d ../build-artifact/docs ]; then
-                      cp -r ../build-artifact/docs/* .
-                    fi
-
-                    # schema TTL en SHACL cache
-                    for f in riepr-ontologie.ttl riepr-concept.ttl generated-shapes.ttl validation-report.json; do
-                      if [ -f "../build-artifact/$f" ]; then
-                        cp -f "../build-artifact/$f" "$f"
-                      fi
-                    done
-
-                    touch .nojekyll
-                    git add .nojekyll index.html
-                    [ -f visualisatie.html ] && git add visualisatie.html || true
-                    [ -f riepr-ontologie.ttl ] && git add riepr-ontologie.ttl || true
-                    [ -f riepr-concept.ttl ] && git add riepr-concept.ttl || true
-                    [ -f generated-shapes.ttl ] && git add generated-shapes.ttl || true
-                    [ -f validation-report.json ] && git add validation-report.json || true
-                    # add all files from docs deploy
-                    if [ -d ../build-artifact/docs ]; then
-                      find . -type f ! -name '.git*' -exec git add {} +
-                    fi
-                    if ! git diff --cached --quiet; then
-                      git config user.email "$GIT_USER_EMAIL"
-                      git config user.name "$GIT_USER_NAME"
-                      git commit -m "docs: deploy from ${BUILD_TAG}"
-                      git push origin "$GH_PAGES_BRANCH"
-                    else
-                      echo "No changes to deploy"
-                    fi
-                  '''
-                }
-              }
             }
           }
         }
