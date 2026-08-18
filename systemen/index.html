@@ -1,0 +1,1402 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://milieuinfo.github.io/RIE-IEPR/systemen/">
+      
+      
+        <link rel="prev" href="../exploitant/">
+      
+      
+        <link rel="next" href="../observaties/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Systemen - RIE-IEPR Datamodel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra/omgeving.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#systemen-installaties-emissiepunten-en-meetpunten" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RIE-IEPR Datamodel" class="md-header__button md-logo" aria-label="RIE-IEPR Datamodel" data-md-component="logo">
+      
+  <img src="../assets/logo-omgeving.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RIE-IEPR Datamodel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Systemen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/milieuinfo/RIE-IEPR" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milieuinfo/RIE-IEPR
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../readme/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overzicht
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../uri-patterns/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  URI-patronen & Hydra
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../gebruiksscenario/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Gebruiksscenario's
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../basisaanname/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Basisaannames
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../exploitant/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Exploitant en exploitatie
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Systemen
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observaties/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Observaties en emissies
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../aangifte/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Aangifte en dossier
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="/ontologie/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Ontologie
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../versiebeheer/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Versiebeheer
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RIE-IEPR Datamodel" class="md-nav__button md-logo" aria-label="RIE-IEPR Datamodel" data-md-component="logo">
+      
+  <img src="../assets/logo-omgeving.png" alt="logo">
+
+    </a>
+    RIE-IEPR Datamodel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milieuinfo/RIE-IEPR" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milieuinfo/RIE-IEPR
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overzicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uri-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URI-patronen & Hydra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gebruiksscenario/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gebruiksscenario's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basisaanname/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basisaannames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploitant en exploitatie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemen
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-systemen-een-gemeenschappelijk-patroon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Systemen: een gemeenschappelijk patroon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-installaties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installaties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Installaties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installatie-eigenschappen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installatie-eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-emissiepunten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Emissiepunten
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Emissiepunten">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-emissiepunten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types emissiepunten
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emissiepunt-eigenschappen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emissiepunt-eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-onttrekkingspunten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Onttrekkingspunten
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Onttrekkingspunten">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#onttrekkingspunt-eigenschappen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Onttrekkingspunt-eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-meetpunten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Meetpunten
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Filters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-als-subsysteem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter als subsysteem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-eigenschappen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter-eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-systeemhierarchie-via-ssnhassubsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Systeemhiërarchie via ssn:hasSubSystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-relatie-tussen-processen-en-systemen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Relatie tussen processen en systemen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-systeem-exploitatielocatie-relatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Systeem → Exploitatielocatie relatie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-uitgebreide-systeemrelaties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Uitgebreide systeemrelaties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referenties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referenties
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observaties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observaties en emissies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aangifte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aangifte en dossier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/ontologie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ontologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../versiebeheer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versiebeheer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="systemen-installaties-emissiepunten-en-meetpunten">Systemen: installaties, emissiepunten en meetpunten</h1>
+<p>Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunten, meetpunten en filters - en hun onderlinge relaties in het RIE-IEPR-datamodel.</p>
+<h2 id="1-systemen-een-gemeenschappelijk-patroon">1. Systemen: een gemeenschappelijk patroon</h2>
+<p>Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn allemaal <strong>systemen</strong>. Ze delen een gemeenschappelijk basispatroon:</p>
+<table>
+<thead>
+<tr>
+<th>Eigenschap</th>
+<th>Type</th>
+<th>Beschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rdfs:label</code></td>
+<td>string</td>
+<td>Naam van het systeem</td>
+</tr>
+<tr>
+<td><code>dct:type</code></td>
+<td>skos:Concept</td>
+<td>Type (codelijst, bijv. "schoorsteen_verticale_uitstroom")</td>
+</tr>
+<tr>
+<td><code>dct:issued</code></td>
+<td>date</td>
+<td>Geldigheidsdatum</td>
+</tr>
+<tr>
+<td><code>dct:created</code></td>
+<td>dateTime</td>
+<td>Aanmaakdatum</td>
+</tr>
+<tr>
+<td><code>adms:status</code></td>
+<td>skos:Concept</td>
+<td>Status (in_dienst, ontmanteld)</td>
+</tr>
+<tr>
+<td><code>ssn:isHostedBy</code></td>
+<td>Exploitatielocatie</td>
+<td>Locatie waar het systeem gehost wordt</td>
+</tr>
+<tr>
+<td><code>riepr:inGebruikVanaf</code></td>
+<td>date</td>
+<td>Datum waarop het systeem operationeel werd</td>
+</tr>
+<tr>
+<td><code>ssn:hasProperty</code></td>
+<td>Systeemeigenschap</td>
+<td>Eigenschappen van het systeem</td>
+</tr>
+</tbody>
+</table>
+<p>Alle systemen zijn subklassen van <code>sosa:System</code> en <code>ogc:SpatialObject</code>.</p>
+<blockquote>
+<p><strong>Codelijsten en Systeemeigenschappen</strong>: Het <code>dct:type</code> van een systeem (bijv. <code>installatie_type</code>, <code>emissiepunt_type</code>) bepaalt welke <code>Systeemeigenschap</code>-concepten relevant zijn. De codelijsten in <a href="https://github.com/milieuinfo/codelijst-rie-iepr">milieuinfo/codelijst-rie-iepr</a> bevatten per eigenschap metadata zoals <code>relevantDataType</code>, <code>relevantUnit</code>, <code>isVerplicht</code> en <code>isMeervoudig</code>, en koppelen eigenschappen aan systeemtypes via <code>relevantRiepr</code>. Dit maakt het mogelijk om te weten welke eigenschappen verplicht zijn voor een bepaald systeemtype en welk datatype/eenheid verwacht wordt.</p>
+</blockquote>
+<h2 id="2-installaties">2. Installaties</h2>
+<p>Een <strong>installatie</strong> is een infrastructuur voor een specifieke functie. Het type wordt bepaald door de codelijst <strong><code>installatie_type</code></strong> (<a href="https://github.com/milieuinfo/codelijst-rie-iepr/">beheerd in milieuinfo/codelijst-rie-iepr</a>). In het AGC Glass-voorbeeld vinden we verschillende types:</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">   </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">adms:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/adms#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="c"># Waterzuiveringsinstallatie</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"waterzuiveringsinstallatie"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/waterzuivering&gt;</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">inGebruikVanaf</span> <span class="s">"1970-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">.</span>
+
+<span class="c"># GPBV-installatie</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"AGC Glass Mol"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv-installatie&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p><strong>Opmerking:</strong> GPBV-installaties gebruiken een andere identifier (GPBV-identificator) in plaats van een UUID.</p>
+<h3 id="installatie-eigenschappen">Installatie-eigenschappen</h3>
+<p>Installaties kunnen verschillende eigenschappen hebben, zoals:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Verwijderingsrendement (met parameter als concept)</span>
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"0"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">Percent</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N&gt;</span> <span class="p">.</span>
+
+<span class="c"># Geïnstalleerd vermogen</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a2b-71f3-8c45-d9e8f7a6b5c4&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerd_vermogen&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"1500"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">KiloW</span> <span class="p">.</span>
+
+<span class="c"># Geïnstalleerde productiecapaciteit</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a2c-72e4-9d56-e0f9a8b7c6d5&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerde_productiecapaciteit&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"100"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">TonnePerYear</span> <span class="p">.</span>
+
+<span class="c"># Waterzuiveringstechniek (met parameter als concept)</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a2d-73f5-ae67-f1a9d8c7e6f5&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/waterzuiveringstechniek&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"ultrafiltratie"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/IJGRMHOSHXDMSA-UHFFFAOYSA-N&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="3-emissiepunten">3. Emissiepunten</h2>
+<p>Een <strong>emissiepunt</strong> is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van <code>riepr:Emissiepunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>. Emissiepunten zijn <strong>disjoint</strong> met onttrekkingspunten en meetpunten. Het type wordt bepaald door de codelijst <strong><code>emissiepunt_type</code></strong>.</p>
+<h3 id="types-emissiepunten">Types emissiepunten</h3>
+<p>In het AGC Glass-voorbeeld komen verschillende types voor, zoals <code>schoorsteen_verticale_uitstroom</code> en <code>lozingspunt</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Schoorsteen (lucht)</span>
+<span class="nv">&lt;.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom&gt;</span> <span class="p">.</span>
+
+<span class="c"># Lozingspunt (water)</span>
+<span class="nv">&lt;.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="emissiepunt-eigenschappen">Emissiepunt-eigenschappen</h3>
+<p>Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equivalente diameter:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Aantal punten</span>
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-7fc8-a1ea-2e029966f763&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="s">"aantalpunten"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">datatype</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#integer&gt;</span> <span class="p">.</span>
+
+<span class="c"># Hoogte (in meter)</span>
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-7bf2-b175-a3a609e6f04b&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="s">"hoogte"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">datatype</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;</span> <span class="p">.</span>
+
+<span class="c"># Equivalente diameter (in meter)</span>
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-7b3b-b30d-9009ac3ad4a1&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="s">"equivalente-diameter"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">datatype</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="4-onttrekkingspunten">4. Onttrekkingspunten</h2>
+<p>Een <strong>onttrekkingspunt</strong> is een punt waar grondstoffen gewonnen worden. Het is een subklasse van <code>riepr:Onttrekkingspunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekkingspunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"1 (FL koeltoren)"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/grondwaterput&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="onttrekkingspunt-eigenschappen">Onttrekkingspunt-eigenschappen</h3>
+<div class="highlight"><pre><span></span><code><span class="c"># Diepte van het onttrekkingspunt</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"45.5"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="5-meetpunten">5. Meetpunten</h2>
+<p>Een <strong>meetpunt</strong> is een punt waar metingen worden uitgevoerd. Het is een subklasse van <code>riepr:Meetpunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>. Meetpunten zijn <strong>disjoint</strong> met emissiepunten en onttrekkingspunten.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meetpunt 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="6-filters">6. Filters</h2>
+<p>Filters zijn ook systemen, maar worden niet visueel weergegeven als aparte structurele elementen. Ze zijn gekoppeld aan een bovenliggend systeem via <code>ssn:hasSubSystem</code>.</p>
+<h3 id="filter-als-subsysteem">Filter als subsysteem</h3>
+<p>Filters kunnen gekoppeld zijn aan:
+- <strong>Onttrekkingspunten</strong> (voor grondwaterwinning)
+- <strong>Meetpunten</strong> (voor bemonstering)</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Filter als subsysteem van een onttrekkingspunt</span>
+<span class="nv">&lt;.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Filter als subsysteem van een meetpunt</span>
+<span class="nv">&lt;.../meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="filter-eigenschappen">Filter-eigenschappen</h3>
+<p>Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en lengte:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Watervoerende laag</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a36-7c04-8f5a-0a0b1c2d3e4f&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"Kalksteen"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
+
+<span class="c"># Lengte</span>
+<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a37-7d45-8f6a-1b1c2d3e4f5a&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2.5"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="7-systeemhierarchie-via-ssnhassubsystem">7. Systeemhiërarchie via <code>ssn:hasSubSystem</code></h2>
+<p>Systemen kunnen genest zijn - een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):</p>
+<div class="mermaid">graph TD
+    Installatie["Installatie&lt;br/&gt;System"] --&gt;|hasSubSystem| Emissiepunt["Emissiepunt&lt;br/&gt;System"]
+    Installatie --&gt;|hasSubSystem| Onttrekkingspunt["Onttrekkingspunt&lt;br/&gt;System"]
+    Installatie --&gt;|hasSubSystem| Meetpunt["Meetpunt&lt;br/&gt;System"]
+    Installatie --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]
+    Onttrekkingspunt --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]
+    Meetpunt --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]</div>
+<div class="highlight"><pre><span></span><code><span class="c"># GPBV-installatie als bovenliggend systeem</span>
+<span class="nv">&lt;.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../meetpunt/019e9271-145f-75f2-8222-342e7028bb37/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="8-relatie-tussen-processen-en-systemen">8. Relatie tussen processen en systemen</h2>
+<p>Processen koppelen aan systemen via <code>ssn:implementedBy</code>. Dit is een <strong>OWL-axioma</strong> in de ontologie:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Emissieproces → emissiepunt</span>
+<span class="nv">&lt;.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Verwerkingsproces → installatie</span>
+<span class="nv">&lt;.../proces/019eaca0-b8c6-7351-bd77-c8942e32577d/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Meetproces → meetpunt</span>
+<span class="nv">&lt;.../proces/019eaca0-b8c6-7462-ce88-d9a53f43688e/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="9-systeem-exploitatielocatie-relatie">9. Systeem → Exploitatielocatie relatie</h2>
+<p>Elk systeem is rechtstreeks gekoppeld aan een exploitatielocatie via <code>sosa:isHostedBy</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nv">&lt;.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="nv">&lt;.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nv">&lt;.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="10-uitgebreide-systeemrelaties">10. Uitgebreide systeemrelaties</h2>
+<p>Hieronder een overzicht van alle belangrijke relaties tussen systemen en andere entiteiten:</p>
+<div class="mermaid">classDiagram
+    %% System classes
+    class Installatie {
+      +String uuid
+      String uri
+    }
+    class Emissiepunt {
+      +String uuid
+      String uri
+    }
+    class Onttrekkingspunt {
+      +String uuid
+      String uri
+    }
+    class Meetpunt {
+      +String uuid
+      String uri
+    }
+    class Uitwisselpunt {
+      +String uuid
+      String uri
+    }
+    class Filter {
+      +String uuid
+      String uri
+    }
+
+    %% Process classes
+    class Proces {
+      +String uuid
+      String uri
+    }
+    class Emissie {
+      +String uuid
+      String uri
+    }
+    class Onttrekking {
+      +String uuid
+      String uri
+    }
+    class Exploitatielocatie {
+      +String uuid
+      String uri
+    }
+
+    %% System hierarchy (subclasses)
+    ssn:System &lt;|-- Installatie
+    ssn:System &lt;|-- Emissiepunt
+    ssn:System &lt;|-- Onttrekkingspunt
+    ssn:System &lt;|-- Meetpunt
+    ssn:System &lt;|-- Filter
+    ssn:System &lt;|-- Uitwisselpunt
+
+    %% System → Process links (implementedBy)
+    Emissiepunt --&gt; Proces : implementedBy
+    Installatie --&gt; Proces : implementedBy
+    Meetpunt --&gt; Proces : implementedBy
+    Onttrekkingspunt --&gt; Proces : implementedBy
+    Uitwisselpunt --&gt; Proces : implementedBy
+
+    %% Feature → Process links (hasFeatureOfInterest)
+    Emissie --&gt; Proces : hasFeatureOfInterest
+    Onttrekking --&gt; Proces : hasFeatureOfInterest
+
+    %% System → Location links (isHostedBy)
+    Installatie --&gt; Exploitatielocatie : isHostedBy
+    Emissiepunt --&gt; Exploitatielocatie : isHostedBy
+    Onttrekkingspunt --&gt; Exploitatielocatie : isHostedBy
+    Meetpunt --&gt; Exploitatielocatie : isHostedBy
+    Uitwisselpunt --&gt; Exploitatielocatie : isHostedBy
+    Filter --&gt; Exploitatielocatie : isHostedBy
+
+    %% System → System links (hasSubSystem)
+    Installatie --&gt; Emissiepunt : hasSubSystem
+    Installatie --&gt; Onttrekkingspunt : hasSubSystem
+    Installatie --&gt; Meetpunt : hasSubSystem
+    Installatie --&gt; Filter : hasSubSystem
+    Onttrekkingspunt --&gt; Filter : hasSubSystem
+    Meetpunt --&gt; Filter : hasSubSystem</div>
+<h2 id="referenties">Referenties</h2>
+<ul>
+<li><a href="../basisaanname/">Basisaannames</a> - proces-procedure koppels, disjoint classes</li>
+<li><a href="../exploitant/">Exploitant- en exploitatiemodel</a> - exploitatie -&gt; systeem relatie</li>
+<li><a href="../observaties/">Observaties en emissies</a> - metingen op meetpunten</li>
+<li><strong>Codelijsten</strong>: De <code>dct:type</code> waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/milieuinfo/RIE-IEPR" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "toc.integrate", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../assets/js/mermaid.min.js"></script>
+      
+        <script src="../extra/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>
