@@ -86,8 +86,18 @@ pipeline {
             ROOT="$(pwd)"
             bash "$ROOT/documentatie/datamodel/build-widoco.sh"
 
+            # find a pypi repo that actually contains the packages
+            PYPY_REPO="pypi"
+            for repo in pypi pypi-virtual pypi-local; do
+              if curl -s --netrc -o /dev/null -w "%{http_code}" --max-time 20 "https://repo.omgeving.vlaanderen.be/artifactory/api/pypi/$repo/simple/mkdocs/" 2>/dev/null | grep -q "200"; then
+                PYPY_REPO="$repo"
+                break
+              fi
+            done
+            echo "Using Artifactory pypi repo: $PYPY_REPO"
+
             # pip config for Artifactory (credentials from env, written to file to avoid logging)
-            printf '[global]\nindex-url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" > "$ROOT/.pip-artifactory.conf"
+            printf '[global]\nindex-url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/%s/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" "$PYPY_REPO" > "$ROOT/.pip-artifactory.conf"
             trap 'rm -f "$ROOT/.pip-artifactory.conf"' EXIT
 
             # mkdocs needs python+pip; the python pod container has no network, so run it
@@ -100,7 +110,7 @@ pipeline {
               -e PIP_TRUSTED_HOST=repo.omgeving.vlaanderen.be \
               -e PIP_DISABLE_PIP_VERSION_CHECK=1 \
               acd-docker.repository.milieuinfo.be/library/python:3.11-slim \
-              bash documentatie/datamodel/run-mkdocs-docker.sh
+              bash documentatie/datamodel/build-mkdocs.sh
           '''
         }
         container('dind') {
