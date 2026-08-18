@@ -10,7 +10,7 @@ Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van e
 - [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
 - [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) systemen, subsystemen en eigenschappen
 - [Observaties en emissies](./observaties.md) metingen, observaties en gebeurtenissen (emissie, onttrekking)
-- [Aangifte en dossier](./aangifte.md) documenten en transacties gekoppeld aan de data
+- [Aangifte en dossier](./aangifte.md) documenten gekoppeld aan de data
 - [Versiebeheer en tijdsrecht](./versiebeheer.md) versiebeheer, geldigheid en historische query's
 
 > **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
@@ -39,7 +39,7 @@ Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 
 - **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
 - **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
-- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geospatiale objecten
+- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geografische objecten
 - **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
 
 ## Codelijsten (SKOS concepten)

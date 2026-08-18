@@ -119,6 +119,12 @@ graph TD
     Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br/>(met waarde + eenheid)"]
     Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br/>(skos:Concept)"]
     Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br/>(xsd:dateTime)"]
+    
+    style Observatie fill:#007A87,stroke:#005f6a,color:#fff
+    style FOI fill:#e6f4f5,stroke:#007A87,color:#000
+    style Resultaat fill:#b2e0e3,stroke:#007A87,color:#000
+    style Property fill:#e6f4f5,stroke:#007A87,color:#000
+    style Tijd fill:#b2e0e3,stroke:#007A87,color:#000
 ```
 
 Emissie en onttrekking zijn **gebeurtenissen** en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" - ze zijn het **onderwerp** van de meting.

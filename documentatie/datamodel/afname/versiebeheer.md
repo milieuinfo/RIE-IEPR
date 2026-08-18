@@ -244,6 +244,16 @@ classDiagram
     note1 .. ExploitatieVersion2 : with different issued dates
     note2 .. Emissie : Feature of Interest has NO versioning
     note2 .. EmissieIdentity : only two-segment URI
+    
+    classDef identity fill:#e6f4f5,stroke:#007A87,stroke-width:2px
+    classDef version fill:#b2e0e3,stroke:#007A87,stroke-width:2px
+    classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
+    classDef attributes fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    
+    class ExploitantIdentity,ExploitatieIdentity,InstallatieIdentity,EmissiepuntIdentity,ProcesIdentity identity
+    class ExploitatieVersion1,ExploitatieVersion2,InstallatieVersion1,InstallatieVersion2 version
+    class Emissie foi
+    class VersionAttributes attributes
 ```
 
 ## Referenties

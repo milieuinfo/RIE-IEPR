@@ -80,6 +80,13 @@ graph LR
     Observatie["Observatie<br/>Observation"] -->|hasFeatureOfInterest| Emissie
     Observatie -->|hasResult| Resultaat["Resultaat<br/>waarde + eenheid"]
     Observatie -->|madeBySensor| Meetpunt["Meetpunt"]
+    
+    style Emissiepunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Proces fill:#b2e0e3,stroke:#007A87,color:#000
+    style Emissie fill:#007A87,stroke:#005f6a,color:#fff
+    style Observatie fill:#fff3cd,stroke:#b8860b,color:#000
+    style Resultaat fill:#e6f4f5,stroke:#007A87,color:#000
+    style Meetpunt fill:#e6f4f5,stroke:#007A87,color:#000
 ```
 
 ```turtle
@@ -167,7 +174,7 @@ Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. Elke eigenschap hee
     riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
 ```
 
-## Scenario 6: Geospatiale data van een exploitatielocatie opvragen
+## Scenario 6: Geografische data van een exploitatielocatie opvragen
 
 > **Doel**: Het doel is om de geografische locatie en het adres van een exploitatie te vinden.
 

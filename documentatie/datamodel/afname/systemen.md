@@ -217,6 +217,12 @@ graph TD
     Installatie -->|hasSubSystem| Filter["Filter<br/>System"]
     Onttrekkingspunt -->|hasSubSystem| Filter["Filter<br/>System"]
     Meetpunt -->|hasSubSystem| Filter["Filter<br/>System"]
+    
+    style Installatie fill:#007A87,stroke:#005f6a,color:#fff
+    style Emissiepunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Onttrekkingspunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Meetpunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Filter fill:#b2e0e3,stroke:#007A87,color:#000
 ```
 
 ```turtle
@@ -344,6 +350,16 @@ classDiagram
     Installatie --> Filter : hasSubSystem
     Onttrekkingspunt --> Filter : hasSubSystem
     Meetpunt --> Filter : hasSubSystem
+    
+    classDef system fill:#e6f4f5,stroke:#007A87,stroke-width:2px
+    classDef process fill:#b2e0e3,stroke:#007A87,stroke-width:2px
+    classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
+    classDef location fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    
+    class Installatie,Emissiepunt,Onttrekkingspunt,Meetpunt,Uitwisselpunt,Filter system
+    class Proces process
+    class Emissie,Onttrekking foi
+    class Exploitatielocatie location
 ```
 
 ## Referenties

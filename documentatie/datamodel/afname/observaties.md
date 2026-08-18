@@ -255,6 +255,16 @@ classDiagram
     %% System location links
     Emissiepunt --> Exploitatielocatie : isHostedBy
     Meetpunt --> Exploitatielocatie : isHostedBy
+    
+    classDef system fill:#e6f4f5,stroke:#007A87,stroke-width:2px
+    classDef process fill:#b2e0e3,stroke:#007A87,stroke-width:2px
+    classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
+    classDef observation fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    
+    class Installatie,Emissiepunt,Meetpunt system
+    class Proces process
+    class Emissie,Onttrekking foi
+    class Observatie,Resultaat observation
 ```
 
 ## Referenties

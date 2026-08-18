@@ -1,7 +1,7 @@
 # Aangifte en dossier
 
 
-Dit document beschrijft hoe aangiften, dossiers en transacties gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de **Dossier**-ontologie van Vlaanderen voor documentbeheer.
+Dit document beschrijft hoe aangiften en dossiers gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de **Dossier**-ontologie van Vlaanderen voor documentbeheer.
 
 ## 1. Aangifte
 
@@ -36,33 +36,17 @@ Een aangifte kan deel uitmaken van een aangiftebundel via `dct:isPartOf`:
     dct:isPartOf <.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9> .
 ```
 
-## 3. Transactie
-
-Een **transactie** is het proces van indienen, verwerken en goedkeuren van een aangifte. Het is een subklasse van `prov:Activity`.
-
-```turtle
-@prefix prov: <http://www.w3.org/ns/prov#> .
-
-<https://data.mjv.omgeving.vlaanderen.be/id/transactie/019edc4a-1a3b-7ht9-os0l-t5uqq3qmrm0>
-    a prov:Activity ;
-    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
-```
-
-Een transactie kan meerdere fasen hebben:
-- **Indienen** De plichtige dient de aangifte in
-- **Verwerken** De overheid verwerkt de aangifte
-- **Goedkeuren** De aangifte wordt goedgekeurd
-
-## 4. Relaties tussen entiteiten
+## 3. Relaties tussen entiteiten
 
 ```mermaid
 graph LR
-    Transactie["Transactie<br/>(prov:Activity)"] -->|used| Aangifte["Aangifte<br/>(dossier:Stuk)"]
-    Transactie -->|wasAssociatedWith| Exploitant["Exploitant<br/>(riepr:Exploitant)"]
-    Aangifte -->|dct:isPartOf| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
+    Aangifte["Aangifte<br/>(dossier:Stuk)"] -->|dct:isPartOf| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
+    
+    style Aangifte fill:#007A87,stroke:#005f6a,color:#fff
+    style Bundel fill:#e6f4f5,stroke:#007A87,color:#000
 ```
 
-## 5. Integratie met data
+## 4. Integratie met data
 
 Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.
 
