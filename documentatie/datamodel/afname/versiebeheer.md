@@ -250,8 +250,15 @@ classDiagram
     classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
     classDef attributes fill:#fff3cd,stroke:#b8860b,stroke-width:2px
     
-    class ExploitantIdentity,ExploitatieIdentity,InstallatieIdentity,EmissiepuntIdentity,ProcesIdentity identity
-    class ExploitatieVersion1,ExploitatieVersion2,InstallatieVersion1,InstallatieVersion2 version
+    class ExploitantIdentity identity
+    class ExploitatieIdentity identity
+    class InstallatieIdentity identity
+    class EmissiepuntIdentity identity
+    class ProcesIdentity identity
+    class ExploitatieVersion1 version
+    class ExploitatieVersion2 version
+    class InstallatieVersion1 version
+    class InstallatieVersion2 version
     class Emissie foi
     class VersionAttributes attributes
 ```

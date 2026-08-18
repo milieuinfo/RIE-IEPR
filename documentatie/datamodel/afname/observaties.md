@@ -261,10 +261,14 @@ classDiagram
     classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
     classDef observation fill:#fff3cd,stroke:#b8860b,stroke-width:2px
     
-    class Installatie,Emissiepunt,Meetpunt system
+    class Installatie system
+    class Emissiepunt system
+    class Meetpunt system
     class Proces process
-    class Emissie,Onttrekking foi
-    class Observatie,Resultaat observation
+    class Emissie foi
+    class Onttrekking foi
+    class Observatie observation
+    class Resultaat observation
 ```
 
 ## Referenties

@@ -356,9 +356,15 @@ classDiagram
     classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
     classDef location fill:#fff3cd,stroke:#b8860b,stroke-width:2px
     
-    class Installatie,Emissiepunt,Onttrekkingspunt,Meetpunt,Uitwisselpunt,Filter system
+    class Installatie system
+    class Emissiepunt system
+    class Onttrekkingspunt system
+    class Meetpunt system
+    class Uitwisselpunt system
+    class Filter system
     class Proces process
-    class Emissie,Onttrekking foi
+    class Emissie foi
+    class Onttrekking foi
     class Exploitatielocatie location
 ```
 
