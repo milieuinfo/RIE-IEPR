@@ -28,6 +28,16 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/adms#Status">Status</a>
  **/
 public enum Status {
-	IN_GEBRUIK = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruik",
-	ONTMANTELD = "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ontmanteld",
+	IN_GEBRUIK("https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruik"),
+	ONTMANTELD("https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ontmanteld");
+
+	private final String uri;
+
+	Status(String uri) {
+		this.uri = uri;
+	}
+
+	public String getUri() {
+		return uri;
+	}
 }

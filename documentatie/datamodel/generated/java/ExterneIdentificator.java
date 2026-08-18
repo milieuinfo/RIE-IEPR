@@ -76,5 +76,13 @@ public class ExterneIdentificator {
 	 */
 	@Column(name = "notatietype", nullable = true)
 	@JsonProperty("notatietype")
-	private AnyURI notatietype;
+	private String notatietype;
+	/**
+	 * notatietype
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype">notatietype</a>
+	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
+	 */
+	@Column(name = "notatietype", nullable = true)
+	@JsonProperty("notatietype")
+	private String notatietype_datatype;
 }

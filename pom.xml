@@ -25,6 +25,12 @@
   <!-- ========================= -->
   <properties>
     <java.version>11</java.version>
+    <!-- java.version above isn't actually wired to the compiler plugin (acd-parent's default
+         compiler execution doesn't consult that property name), so without this the build just
+         used whatever JDK happened to run it (JDK 21, classfile version 65), which consumers
+         pinned to an older compiler release (e.g. imjv-migratie's maven.compiler.release=17)
+         can't read ("bad class file ... has wrong version 65.0, should be 61.0"). Pin explicitly. -->
+    <maven.compiler.release>17</maven.compiler.release>
     <jackson.version>2.15.2</jackson.version>
 
     <!-- Scala / Spark -->
@@ -188,6 +194,20 @@
       <version>4.2.1</version>
     </dependency>
 
+    <!-- Needed to compile the ODDToolkit-generated Java model (documentatie/datamodel/generated/java,
+         added as an extra source root below): the generated POJOs use jakarta.persistence
+         annotations (@Entity/@Table/@Column/...) and Lombok (@Getter/@Setter/@Builder/...).
+         Jackson (for @JsonProperty) is already a dependency above. -->
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.34</version>
+    </dependency>
 
   </dependencies>
 
@@ -220,6 +240,30 @@
     </resources>
     <plugins>
 
+      <!-- Adds the ODDToolkit-generated Java model as an extra source root, so it actually gets
+           compiled (and its .class files packaged) instead of only being copied in as a plain
+           classpath resource via the <resources> block above. Bound to process-resources (runs
+           after generate-resources, where the exec-maven-plugin executions below write the
+           generated .java files) so the files exist before this plugin registers the directory. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-java-model</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>documentatie/datamodel/generated/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- Scala compiler -->
       <plugin>
@@ -299,7 +343,7 @@
           <dependency>
             <groupId>be.vlaanderen.omgeving</groupId>
             <artifactId>oddtoolkit</artifactId>
-            <version>0.0.1</version>
+            <version>0.1.0</version>
           </dependency>
         </dependencies>
         <executions>
@@ -374,3 +418,11 @@
   </build>
 
 </project>
+        feat: Organisatie/Vestiging toevoegen aan datamodel, build-fixes voor generated Java
+     - Organisatie (org:Organization) en Vestiging (org:Site) concepten toegevoegd aan riepr.ttl, als primaire VKBO-bron voor exploitant/exploitatielocatie
+        - notatietype range gecorrigeerd van xsd:anyURI naar rdfs:Datatype
+        - org# en NACE 2.1-adapters toegevoegd aan ODDToolkit config.yml
+        - gegenereerde artefacten (Java, SQL, SHACL, TypeScript) herbouwd op basis van het aangepaste model
+        - pom.xml: maven.compiler.release=17 gepind (compileerde voorheen impliciet op JDK 21, wat classfile-versieproblemen gaf bij afnemers zoals imjv-migratie die op release 17 pinnen)
+        - pom.xml: jakarta.persistence-api en lombok toegevoegd, en build-helper-maven-plugin om documentatie/datamodel/generated/java als extra source root te compileren
+        - oddtoolkit-versie opgehoogd naar 0.1.0
