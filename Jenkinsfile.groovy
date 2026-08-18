@@ -84,7 +84,6 @@ pipeline {
           sh '''
             set -e
             ROOT="$(pwd)"
-            bash "$ROOT/documentatie/datamodel/build-widoco.sh"
 
             # find a pypi repo that actually contains the packages
             PYPY_REPO="pypi"
@@ -100,17 +99,27 @@ pipeline {
             printf '[global]\nindex-url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/%s/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" "$PYPY_REPO" > "$ROOT/.pip-artifactory.conf"
             trap 'rm -f "$ROOT/.pip-artifactory.conf"' EXIT
 
-            # mkdocs needs python+pip; the python pod container has no network, so run it
-            # in a python image via the dind daemon (shares the maven pod network).
-            docker run --rm \
-              -v "$ROOT":/workspace \
-              -w /workspace \
-              -v "$ROOT/.pip-artifactory.conf":/tmp/pip-artifactory.conf:ro \
-              -e PIP_CONFIG_FILE=/tmp/pip-artifactory.conf \
-              -e PIP_TRUSTED_HOST=repo.omgeving.vlaanderen.be \
-              -e PIP_DISABLE_PIP_VERSION_CHECK=1 \
-              acd-docker.repository.milieuinfo.be/library/python:3.11-slim \
-              bash documentatie/datamodel/build-mkdocs.sh
+            # The python pod container has no network, so python steps run in a
+            # python image via the dind daemon (shares the maven pod network).
+            docker_run() {
+              docker run --rm \
+                -v "$ROOT":/workspace \
+                -w /workspace \
+                -v "$ROOT/.pip-artifactory.conf":/tmp/pip-artifactory.conf:ro \
+                -e PIP_CONFIG_FILE=/tmp/pip-artifactory.conf \
+                -e PIP_TRUSTED_HOST=repo.omgeving.vlaanderen.be \
+                -e PIP_DISABLE_PIP_VERSION_CHECK=1 \
+                acd-docker.repository.milieuinfo.be/library/python:3.11-slim \
+                "$@"
+            }
+
+            # preprocess ontology for Widoco (strips owl:Restriction blocks OWLAPI cannot parse)
+            docker_run sh -c "pip install -q --break-system-packages rdflib && python3 documentatie/datamodel/prepare-widoco.py"
+
+            bash "$ROOT/documentatie/datamodel/build-widoco.sh"
+
+            # build the MkDocs site
+            docker_run bash documentatie/datamodel/build-mkdocs.sh
           '''
         }
         container('dind') {

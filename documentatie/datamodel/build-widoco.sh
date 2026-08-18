@@ -6,10 +6,18 @@ cd "$ROOT/documentatie/datamodel"
 
 WIDOCO_JAR="$ROOT/documentatie/bin/widoco/widoco.jar"
 ONTOLOGY_SRC="$ROOT/src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
+WIDOCO_INPUT="$ROOT/documentatie/datamodel/tmp/riepr-widoco.ttl"
 WIDOCO_OUT="$ROOT/site/ontology"
 SITE_DIR="$ROOT/site/mkdocs"
 
-mkdir -p "$WIDOCO_OUT" "$SITE_DIR/ontologie"
+mkdir -p "$WIDOCO_OUT" "$SITE_DIR/ontologie" "$ROOT/documentatie/datamodel/tmp"
+
+# Use the preprocessed ontology (strips owl:Restriction blocks that OWLAPI
+# cannot parse and replaces them with error entities) when available.
+if [ -f "$WIDOCO_INPUT" ]; then
+  ONTOLOGY_SRC="$WIDOCO_INPUT"
+  echo "Using preprocessed ontology for Widoco"
+fi
 
 # Note: Widoco 1.4.25 crashes (NullPointerException) when a -confFile is used.
 # The ontology itself carries all metadata (dct:title, dct:creator, ...).
