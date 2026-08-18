@@ -14,7 +14,7 @@
         <link rel="prev" href="../observaties/">
       
       
-        <link rel="next" href="../uri-patterns/">
+        <link rel="next" href="../technisch/">
       
       
         
@@ -242,7 +242,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../basisaanname/" class="md-tabs__link">
+        <a href="../datamodel/" class="md-tabs__link">
           
   
   
@@ -262,7 +262,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../uri-patterns/" class="md-tabs__link">
+        <a href="../technisch/" class="md-tabs__link">
           
   
   
@@ -282,7 +282,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../ontologie/index.html" class="md-tabs__link">
+        <a href="../referentie/" class="md-tabs__link">
           
   
   
@@ -521,6 +521,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../datamodel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datamodel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -715,10 +743,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-transactie" class="md-nav__link">
+  <a href="#3-relaties-tussen-entiteiten" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Transactie
+        3. Relaties tussen entiteiten
       
     </span>
   </a>
@@ -726,21 +754,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-relaties-tussen-entiteiten" class="md-nav__link">
+  <a href="#4-integratie-met-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Relaties tussen entiteiten
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-integratie-met-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Integratie met data
+        4. Integratie met data
       
     </span>
   </a>
@@ -827,6 +844,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technisch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technisch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -952,6 +997,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../referentie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referentie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ontologie/index.html" class="md-nav__link">
         
   
@@ -1001,7 +1074,7 @@
 
 
 <h1 id="aangifte-en-dossier">Aangifte en dossier</h1>
-<p>Dit document beschrijft hoe aangiften, dossiers en transacties gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de <strong>Dossier</strong>-ontologie van Vlaanderen voor documentbeheer.</p>
+<p>Dit document beschrijft hoe aangiften en dossiers gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de <strong>Dossier</strong>-ontologie van Vlaanderen voor documentbeheer.</p>
 <h2 id="1-aangifte">1. Aangifte</h2>
 <p>Een <strong>aangifte</strong> is een document ingediend bij de overheid. In de ontologie is het een subklasse van <code>dossier:Stuk</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dossier:</span><span class="w"> </span><span class="nv">&lt;https://data.vlaanderen.be/ns/dossier#&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1024,24 +1097,13 @@
 <span class="nv">&lt;.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isPartOf</span> <span class="nv">&lt;.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="3-transactie">3. Transactie</h2>
-<p>Een <strong>transactie</strong> is het proces van indienen, verwerken en goedkeuren van een aangifte. Het is een subklasse van <code>prov:Activity</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">prov:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/prov#&gt;</span><span class="w"> </span><span class="p">.</span>
-
-<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/transactie/019edc4a-1a3b-7ht9-os0l-t5uqq3qmrm0&gt;</span>
-    <span class="kt">a</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Activity</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
-</code></pre></div>
-<p>Een transactie kan meerdere fasen hebben:
-- <strong>Indienen</strong> De plichtige dient de aangifte in
-- <strong>Verwerken</strong> De overheid verwerkt de aangifte
-- <strong>Goedkeuren</strong> De aangifte wordt goedgekeurd</p>
-<h2 id="4-relaties-tussen-entiteiten">4. Relaties tussen entiteiten</h2>
+<h2 id="3-relaties-tussen-entiteiten">3. Relaties tussen entiteiten</h2>
 <div class="mermaid">graph LR
-    Transactie["Transactie&lt;br/&gt;(prov:Activity)"] --&gt;|used| Aangifte["Aangifte&lt;br/&gt;(dossier:Stuk)"]
-    Transactie --&gt;|wasAssociatedWith| Exploitant["Exploitant&lt;br/&gt;(riepr:Exploitant)"]
-    Aangifte --&gt;|dct:isPartOf| Bundel["Aangiftebundel&lt;br/&gt;(dossier:Stuk)"]</div>
-<h2 id="5-integratie-met-data">5. Integratie met data</h2>
+    Aangifte["Aangifte&lt;br/&gt;(dossier:Stuk)"] --&gt;|dct:isPartOf| Bundel["Aangiftebundel&lt;br/&gt;(dossier:Stuk)"]
+
+    style Aangifte fill:#007A87,stroke:#005f6a,color:#fff
+    style Bundel fill:#e6f4f5,stroke:#007A87,color:#000</div>
+<h2 id="4-integratie-met-data">4. Integratie met data</h2>
 <p>Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.</p>
 <h2 id="referenties">Referenties</h2>
 <ul>

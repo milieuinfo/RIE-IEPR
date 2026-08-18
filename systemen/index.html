@@ -242,7 +242,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../basisaanname/" class="md-tabs__link">
+        <a href="../datamodel/" class="md-tabs__link">
           
   
   
@@ -262,7 +262,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../uri-patterns/" class="md-tabs__link">
+        <a href="../technisch/" class="md-tabs__link">
           
   
   
@@ -282,7 +282,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../ontologie/index.html" class="md-tabs__link">
+        <a href="../referentie/" class="md-tabs__link">
           
   
   
@@ -513,6 +513,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datamodel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datamodel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -980,6 +1008,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../technisch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technisch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../uri-patterns/" class="md-nav__link">
         
   
@@ -1089,6 +1145,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../referentie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referentie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1355,7 +1439,13 @@
     Installatie --&gt;|hasSubSystem| Meetpunt["Meetpunt&lt;br/&gt;System"]
     Installatie --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]
     Onttrekkingspunt --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]
-    Meetpunt --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]</div>
+    Meetpunt --&gt;|hasSubSystem| Filter["Filter&lt;br/&gt;System"]
+
+    style Installatie fill:#007A87,stroke:#005f6a,color:#fff
+    style Emissiepunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Onttrekkingspunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Meetpunt fill:#e6f4f5,stroke:#007A87,color:#000
+    style Filter fill:#b2e0e3,stroke:#007A87,color:#000</div>
 <div class="highlight"><pre><span></span><code><span class="c"># GPBV-installatie als bovenliggend systeem</span>
 <span class="nv">&lt;.../installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
@@ -1467,7 +1557,17 @@
     Installatie --&gt; Meetpunt : hasSubSystem
     Installatie --&gt; Filter : hasSubSystem
     Onttrekkingspunt --&gt; Filter : hasSubSystem
-    Meetpunt --&gt; Filter : hasSubSystem</div>
+    Meetpunt --&gt; Filter : hasSubSystem
+
+    classDef system fill:#e6f4f5,stroke:#007A87,stroke-width:2px
+    classDef process fill:#b2e0e3,stroke:#007A87,stroke-width:2px
+    classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
+    classDef location fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+
+    class Installatie,Emissiepunt,Onttrekkingspunt,Meetpunt,Uitwisselpunt,Filter system
+    class Proces process
+    class Emissie,Onttrekking foi
+    class Exploitatielocatie location</div>
 <h2 id="referenties">Referenties</h2>
 <ul>
 <li><a href="../basisaanname/">Basisaannames</a> - proces-procedure koppels, disjoint classes</li>
