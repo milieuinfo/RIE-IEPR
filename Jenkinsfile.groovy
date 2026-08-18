@@ -87,7 +87,7 @@ pipeline {
             bash "$ROOT/documentatie/datamodel/build-widoco.sh"
 
             # pip config for Artifactory (credentials from env, written to file to avoid logging)
-            printf '[global]\nurl = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" > "$ROOT/.pip-artifactory.conf"
+            printf '[global]\nindex-url = https://%s:%s@repo.omgeving.vlaanderen.be/artifactory/api/pypi/pypi-local/simple\n' "$bamboo_artifactory_ro_user" "$bamboo_artifactory_ro_password" > "$ROOT/.pip-artifactory.conf"
             trap 'rm -f "$ROOT/.pip-artifactory.conf"' EXIT
 
             # mkdocs needs python+pip; the python pod container has no network, so run it
