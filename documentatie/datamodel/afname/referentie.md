@@ -1,3 +1,8 @@
+---
+hide:
+  - title
+---
+
 # Referentie
 
 Deze sectie bevat referentiemateriaal voor het RIE-IEPR-datamodel.

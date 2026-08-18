@@ -1,3 +1,8 @@
+---
+hide:
+  - title
+---
+
 # Datamodel
 
 Deze sectie beschrijft het RIE-IEPR-datamodel in detail. U vindt hier de modellen en aannames die ten grondslag liggen aan de data, evenals de belangrijkste entiteiten: exploitanten en exploitaties, systemen, observaties en emissies, en aangiften en dossiers.

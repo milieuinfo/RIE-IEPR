@@ -1,3 +1,8 @@
+---
+hide:
+  - title
+---
+
 # Technisch
 
 Deze sectie behandelt de technische aspecten van het RIE-IEPR-datamodel: de URI-patronen, Hydra templates, versiebeheer en tijdsrecht.

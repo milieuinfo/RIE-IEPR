@@ -1,8 +1,3 @@
-# How to use these functions:
-# run: `source functions.sh`
-# Then, call a function, for example:
-# post_to_ingest "filter" ./server/filter-data.ttl
-
 export SERVER_URL=http://localhost:8080
 export LDIO_URL=http://localhost:8090
 
