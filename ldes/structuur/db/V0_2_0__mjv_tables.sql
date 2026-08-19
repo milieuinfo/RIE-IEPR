@@ -135,12 +135,14 @@ CREATE TABLE mjv.systeem
 (
     id                      UUID NOT NULL
         PRIMARY KEY,
+    uri                     TEXT NOT NULL,
     aangemaakt_op           TIMESTAMPTZ NOT NULL DEFAULT now(),
     gewijzigd_op            TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 COMMENT ON TABLE mjv.systeem IS 'http://www.w3.org/ns/ssn/System';
 COMMENT ON COLUMN mjv.systeem.id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN mjv.systeem.uri IS '@id';
 COMMENT ON COLUMN mjv.systeem.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN mjv.systeem.gewijzigd_op IS 'http://purl.org/dc/terms/modified';
 
@@ -423,6 +425,10 @@ CREATE TABLE mjv.onttrekkingspunt_versie_systeemeigenschap
     PRIMARY KEY (onttrekkingspunt_versie_id, systeemeigenschap_id)
 );
 
+-- Meervoudige relaties: het COMMENT ON CONSTRAINT op de object-zijde van de
+-- junction bepaalt het RDF-predicaat (db2turtle leest dit uit pg_catalog).
+
+
 -- Proces versies en relaties
 CREATE TABLE mjv.proces_versie
 (
@@ -494,6 +500,8 @@ COMMENT ON COLUMN mjv.proces_proces_volgt_op.geldig_van IS 'http://purl.org/dc/t
 COMMENT ON COLUMN mjv.proces_proces_volgt_op.geldig_tot IS 'http://purl.org/dc/terms/valid';
 COMMENT ON COLUMN mjv.proces_proces_volgt_op.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN mjv.proces_proces_volgt_op.gewijzigd_op IS 'http://purl.org/dc/terms/modified';
+COMMENT ON CONSTRAINT c_doel_proces_id_proces_fk
+    ON mjv.proces_proces_volgt_op IS 'http://purl.org/net/p-plan/isPrecededBy';
 
 CREATE TABLE mjv.proces_versie_rubriek
 (
@@ -508,6 +516,8 @@ CREATE TABLE mjv.proces_versie_rubriek
 
 COMMENT ON TABLE mjv.proces_versie_rubriek IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
 COMMENT ON COLUMN mjv.proces_versie_rubriek.rubriek_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek';
+COMMENT ON CONSTRAINT c_proces_versie_rubriek_rubriek_fk
+    ON mjv.proces_versie_rubriek IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#rubriek';
 
 CREATE TABLE mjv.ui_proces_metadata
 (

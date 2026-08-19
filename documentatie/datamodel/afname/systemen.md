@@ -17,8 +17,11 @@ Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn alle
 | `ssn:isHostedBy` | Exploitatielocatie | Locatie waar het systeem gehost wordt |
 | `riepr:inGebruikVanaf` | date | Datum waarop het systeem operationeel werd |
 | `ssn:hasProperty` | Systeemeigenschap | Eigenschappen van het systeem |
+| `adms:identifier` | adms:Identifier (0..n) | Externe (bron/migratie) identificatoren |
 
 Alle systemen zijn subklassen van `sosa:System` en `ogc:SpatialObject`.
+
+> **Externe identificatoren**: `adms:identifier` bewaart codes uit bron-systemen (VMM-migratie, DOMG/INSPIRE) naast de eigen RIE-IEPR-URI. Zie [Basisaannames: externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
 > **Codelijsten en Systeemeigenschappen**: Het `dct:type` van een systeem (bijv. `installatie_type`, `emissiepunt_type`) bepaalt welke `Systeemeigenschap`-concepten relevant zijn. De codelijsten in [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) bevatten per eigenschap metadata zoals `relevantDataType`, `relevantUnit`, `isVerplicht` en `isMeervoudig`, en koppelen eigenschappen aan systeemtypes via `relevantRiepr`. Dit maakt het mogelijk om te weten welke eigenschappen verplicht zijn voor een bepaald systeemtype en welk datatype/eenheid verwacht wordt.
 

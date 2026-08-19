@@ -39,8 +39,11 @@ Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 
 - **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
 - **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
+- **ADMS** ([Agent Design Memorandum Schema](https://www.w3.org/TR/vocab-adms/)) externe/bibliotheek-identificatoren via `adms:identifier`
 - **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geografische objecten
 - **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
+
+> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u het aftrekt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
 ## Codelijsten (SKOS concepten)
 

@@ -1,3 +1,9 @@
+# Structuur: mjv-database -> exploitatie LDES-stream via:
+#   postgres-mjv (PostGIS, schema + testdata)
+#     -> LDIO (Ldio:RdbmsInput leest de DB en genereert de turtle -> datamodel-
+#              transformaties (DATAPLATFORM.md) via SparqlConstructTransformer
+#              -> HttpOut)
+#       -> ldes-server (enkele eventstream: exploitatie, by-page + by-time views)
 services:
   ldes-server:
     image: openldes/ldes-server:4.1.1
@@ -6,7 +12,7 @@ services:
     volumes:
       - ./server/application.yaml:/config/application.yaml:ro
     ports:
-      - "8080:8080"
+      - "8081:8080"
     networks:
       - ldes-server
       - ldio
@@ -30,6 +36,32 @@ services:
       - POSTGRES_DB=ldesserver
     networks:
       - ldes-server
+    healthcheck:
+      test: pg_isready -U admin || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 50
+      start_period: 5s
+
+  postgres-mjv:
+    container_name: ldes-postgres-mjv
+    image: postgis/postgis:16-3.4-alpine
+    ports:
+      - 5438:5432
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=structuur
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - mjv
+    healthcheck:
+      test: pg_isready -U admin || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 50
+      start_period: 5s
 
   sleep-ldes:
     container_name: sleep-ldes
@@ -54,10 +86,7 @@ services:
       - |
         export SERVER_URL=http://ldes-server:8080
         export STREAMS="
-        resultaat
-        observatie
-        emissieobservatie
-        filter
+        exploitatie
         "
         post_to_admin() {
           echo "creating $$1 with body content of file $$2"
@@ -73,11 +102,11 @@ services:
           sleep 5
         done
         echo "LDES server is ready. $${SERVER_URL}"
-        
+
         while IFS= read -r i; do
         [ -z "$$i" ] && continue
           post_to_admin "admin/api/v1/eventstreams" "$$i-stream.ttl"
-        
+
           if [ -f /config/server/$$i-by-page.ttl ]; then
             post_to_admin "admin/api/v1/eventstreams/$$i/views" "$$i-by-page.ttl"
           fi
@@ -90,63 +119,30 @@ services:
     networks:
       - ldes-server
 
-  ingest-data:
-    image: alpine/curl:latest
-    volumes:
-      - ./server:/config/server:ro
-    depends_on:
-      ldes-server:
-        condition: service_healthy
-      create-eventstreams:
-        condition: service_completed_successfully
-    command:
-      - /bin/sh
-      - -c
-      - |
-        export SERVER_URL=http://ldes-server:8080
-        export STREAMS="
-        resultaat
-        observatie
-        emissieobservatie
-        filter
-        "
-        post_to_ingest() {
-          echo "ingesting $$1 with body content of file $$2"
-          curl -X POST "$${SERVER_URL}/$$1" \
-            -H "Content-Type: text/turtle" \
-            -d @/config/server/$$2 \
-            -w "\nHTTP status: %{http_code}\n" \
-            --fail-with-body || echo "Warning: failed to create $$1 (it may already exist)"
-        }
-        while IFS= read -r i; do
-        [ -z "$$i" ] && continue
-          post_to_ingest "$$i" "$$i-data.ttl"
-        done <<EOF
-        $$STREAMS
-        EOF
-    networks:
-      - ldes-server
-
   postgres-ldio-rdb-out:
     container_name: postgres-ldio-rdb-out
     image: postgres:16-alpine
     ports:
-      - 5432:5432
+      - 5439:5432
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
       - POSTGRES_DB=ldio-rdb-out
-    volumes:
-      - ./ldio/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     networks:
       - ldio
+    healthcheck:
+      test: pg_isready -U admin || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 50
+      start_period: 5s
 
   sleep-ldio:
     container_name: sleep
     image: busybox
     command: ["sh", "-c", "sleep 120"]
     depends_on:
-      ingest-data:
+      create-eventstreams:
         condition: service_completed_successfully
 
   ldio:
@@ -155,20 +151,24 @@ services:
     volumes:
       - ./ldio/application.yml:/ldio/application.yml:ro
       - ./ldio/pipelines/:/ldio/pipelines/:ro
+      - ./ldio/queries/:/ldio/queries/:ro
+      - ./ldio-rdbms-input/target/ldio-rdbms-input.jar:/ldio/lib/ldio-rdbms-input.jar:ro
+      - ./out:/out
     ports:
-      - 8090:8080
+      - 8091:8080
     networks:
       - ldio
       - ldes-server
+      - mjv
     depends_on:
-      ingest-data:
-        condition: service_completed_successfully
+      postgres-ldio-rdb-out:
+        condition: service_healthy
       sleep-ldio:
         condition: service_completed_successfully
     healthcheck:
       test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://ldio:8080/actuator/health" ]
 
-
 networks:
   ldes-server:
   ldio:
+  mjv:

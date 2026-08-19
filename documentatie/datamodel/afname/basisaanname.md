@@ -177,6 +177,113 @@ Elke entiteit kan een primaire bron hebben via `prov:hadPrimarySource`. Dit trac
     prov:hadPrimarySource <https://data.vlaanderen.be/id/vestiging/2081766488> .
 ```
 
+## 9. Externe identificatoren (`adms:identifier`)
+
+RIE-IEPR kent twee vormen van identificatie:
+
+- De **URI** (UUID-gebaseerd) is de eigen identity van RIE-IEPR (zie [URI-ontwerp](#2-uri-ontwerp-en-versiebeheer)).
+- Een **externe identificator** (`adms:Identifier`) bewaart een code die afkomstig is uit een **bovenliggend of voorgaand bron-systeem**.
+
+`adms:identifier` is dus geen duplicatie van de URI: het is de bewaargebleven **bron-identificatie**. Zo blijft data:
+
+- traceerbaar terug naar de bovengelegde systemen (migratie VMM → RIE-IEPR),
+- kruisreferentieerbaar met andere Vlaamse datasets (bijv. INSPIRE/DOMG),
+- herkenbaar in herkomst, naast `prov:hadPrimarySource` (zie [Provenance](#8-provenance-en-herkomst)).
+
+### Structuur
+
+Elke externe identificator is een anonieme node met twee onderdelen:
+
+| Onderdeel | Property | Omschrijving |
+|---|---|---|
+| Bron/systeem | `adms:scheme` | Naam van het systeem waar de code vandaan komt, bijv. `"VMM"`, `"DOMG"` |
+| Waarde | `rdf:value` | De code zelf; kan een **datatype** krijgen dat aangeeft welk bron-veld het vertegenwoordigt |
+
+`adms:identifier` is **optioneel** (`minCardinality 0`) en **meervoudig**: een entiteit kan meerdere externe identificatoren tegelijk hebben.
+
+### Schemas (bronnen)
+
+| `adms:scheme` | Bron | Soort code | Voorbeeld `rdf:value` |
+|---|---|---|---|
+| `VMM` | Voorgaand VMM/MJV-systeem (migratie) | CBB-nummer, apparaat-id, emissiepunt-id, put-id, vergunning-id, ... | `"01787986000160"^^vmm:cbbNummer` |
+| `DOMG` | Vlaamse databron / INSPIRE | INSPIRE-identifier | `"BE.VL.000000034.SITE"^^riepr:inspireId` |
+
+> **Let op:** In het datavoorbeeld krijgen `rdf:value`-waarden een datatype uit de dummy-namespace `vmm:` (bijv. `^^vmm:cbbNummer`) óf `riepr:inspireId`. Dit datatype is **illustratief**: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace `vmm:` (`<http://vmm.be#>`) dient enkel als placeholder in het voorbeeld.
+
+### Klassen die `adms:identifier` ondersteunen
+
+In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in de SHACL-shapes verschijnt dit als `sh:property` met `sh:class adms:Identifier`, `sh:minCount 0`):
+
+| Klasse | Ook in het datavoorbeeld? |
+|---|---|
+| `riepr:Exploitatielocatie` | ja (DOMG/INSPIRE) |
+| `riepr:Exploitatie` | ja (VMM/CBB) |
+| `riepr:Installatie` | ja (VMM/apparaat, DOMG-INSPIRE) |
+| `riepr:Emissiepunt` | ja (VMM/emissiepunt) |
+| `riepr:Onttrekkingspunt` | ja (VMM/meerdere) |
+| `riepr:Meetpunt` | ja (VMM/lozings- en onttrekkingspunt) |
+| `riepr:MeetInstrument` | nee |
+| `riepr:Filter` | ja (VMM/filter) |
+
+### Voorbeelden (uit `datavoorbeelden/`)
+
+**Enkele** externe identificatoren op een exploitatielocatie (INSPIRE/DOMG) en een exploitatie (VMM-migratie):
+
+```turtle
+@prefix adms:  <http://www.w3.org/ns/adms#> .
+@prefix vmm:   <http://vmm.be#> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+
+# Exploitatielocatie: INSPIRE-identifier uit DOMG
+<.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "DOMG" ;
+        rdf:value "BE.VL.000000034.SITE"^^riepr:inspireId ] .
+
+# Exploitatie: CBB-nummer uit VMM (migratie)
+<.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "01787986000160"^^vmm:cbbNummer ] .
+```
+
+**Meerdere** identificatoren op één onttrekkingspunt (elk een ander VMM-bron-veld):
+
+```turtle
+<.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "46769"^^vmm:onttrekkingspuntCode
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-010762"^^vmm:exploitantID
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-052596"^^vmm:vergunningID
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-043747"^^vmm:putID ] .
+```
+
+### Afname (SPARQL)
+
+Externe identificatoren laten zich filteren op schema en waarde. Hierbij let je op de anonieme nodes (`adms:Identifier`):
+
+```sparql
+PREFIX adms:  <http://www.w3.org/ns/adms#>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+
+# Onttrekkingspunten met een specifieke VMM-put-id
+SELECT ?put WHERE {
+    ?put a riepr:Onttrekkingspunt ;
+        adms:identifier [ adms:scheme "VMM" ;
+                          rdf:value "2019-043747" ] .
+}
+```
+
+Zie ook [Gebruiksscenario's](./gebruiksscenario.md) voor bredere afname-voorbeelden.
+
 ## Referenties
 
 - [Gebruiksscenario's](./gebruiksscenario.md) - concrete voorbeelden van data-afname

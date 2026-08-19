@@ -478,6 +478,12 @@
         owl:onProperty ssn:implementedBy ;
         owl:someValuesFrom :Installatie ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een proces kan externe identificaties hebben (optioneel)"@nl ;
+        owl:onProperty adms:identifier ;
+        owl:someValuesFrom adms:Identifier ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
 :Procesvariabele a owl:Class ;
@@ -1449,7 +1455,7 @@
 
 :Emissie a owl:Class ;
     rdfs:label "Emissie"@nl ;
-    rdfs:comment "Een emissie is een specifiek emissieevent dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname."@nl ;
+    rdfs:comment "Een emissie is een specifieke gebeurtenis dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf prov:Entity, sosa:FeatureOfInterest ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}"^^hydra:Rfc6570Template ;
