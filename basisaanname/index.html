@@ -725,6 +725,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#9-externe-identificatoren-admsidentifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Externe identificatoren (adms:identifier)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Externe identificatoren (adms:identifier)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structuur" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structuur
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schemas-bronnen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schemas (bronnen)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#klassen-die-admsidentifier-ondersteunen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Klassen die adms:identifier ondersteunen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#voorbeelden-uit-datavoorbeelden" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voorbeelden (uit datavoorbeelden/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#afname-sparql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Afname (SPARQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#referenties" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1333,6 +1405,161 @@
 <span class="nv">&lt;.../exploitatielocatie/.../2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="nn">prov</span><span class="p">:</span><span class="nt">hadPrimarySource</span> <span class="nv">&lt;https://data.vlaanderen.be/id/vestiging/2081766488&gt;</span> <span class="p">.</span>
 </code></pre></div>
+<h2 id="9-externe-identificatoren-admsidentifier">9. Externe identificatoren (<code>adms:identifier</code>)</h2>
+<p>RIE-IEPR kent twee vormen van identificatie:</p>
+<ul>
+<li>De <strong>URI</strong> (UUID-gebaseerd) is de eigen identity van RIE-IEPR (zie <a href="#2-uri-ontwerp-en-versiebeheer">URI-ontwerp</a>).</li>
+<li>Een <strong>externe identificator</strong> (<code>adms:Identifier</code>) bewaart een code die afkomstig is uit een <strong>bovenliggend of voorgaand bron-systeem</strong>.</li>
+</ul>
+<p><code>adms:identifier</code> is dus geen duplicatie van de URI: het is de bewaargebleven <strong>bron-identificatie</strong>. Zo blijft data:</p>
+<ul>
+<li>traceerbaar terug naar de bovengelegde systemen (migratie VMM → RIE-IEPR),</li>
+<li>kruisreferentieerbaar met andere Vlaamse datasets (bijv. INSPIRE/DOMG),</li>
+<li>herkenbaar in herkomst, naast <code>prov:hadPrimarySource</code> (zie <a href="#8-provenance-en-herkomst">Provenance</a>).</li>
+</ul>
+<h3 id="structuur">Structuur</h3>
+<p>Elke externe identificator is een anonieme node met twee onderdelen:</p>
+<table>
+<thead>
+<tr>
+<th>Onderdeel</th>
+<th>Property</th>
+<th>Omschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bron/systeem</td>
+<td><code>adms:scheme</code></td>
+<td>Naam van het systeem waar de code vandaan komt, bijv. <code>"VMM"</code>, <code>"DOMG"</code></td>
+</tr>
+<tr>
+<td>Waarde</td>
+<td><code>rdf:value</code></td>
+<td>De code zelf; kan een <strong>datatype</strong> krijgen dat aangeeft welk bron-veld het vertegenwoordigt</td>
+</tr>
+</tbody>
+</table>
+<p><code>adms:identifier</code> is <strong>optioneel</strong> (<code>minCardinality 0</code>) en <strong>meervoudig</strong>: een entiteit kan meerdere externe identificatoren tegelijk hebben.</p>
+<h3 id="schemas-bronnen">Schemas (bronnen)</h3>
+<table>
+<thead>
+<tr>
+<th><code>adms:scheme</code></th>
+<th>Bron</th>
+<th>Soort code</th>
+<th>Voorbeeld <code>rdf:value</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VMM</code></td>
+<td>Voorgaand VMM/MJV-systeem (migratie)</td>
+<td>CBB-nummer, apparaat-id, emissiepunt-id, put-id, vergunning-id, ...</td>
+<td><code>"01787986000160"^^vmm:cbbNummer</code></td>
+</tr>
+<tr>
+<td><code>DOMG</code></td>
+<td>Vlaamse databron / INSPIRE</td>
+<td>INSPIRE-identifier</td>
+<td><code>"BE.VL.000000034.SITE"^^riepr:inspireId</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Let op:</strong> In het datavoorbeeld krijgen <code>rdf:value</code>-waarden een datatype uit de dummy-namespace <code>vmm:</code> (bijv. <code>^^vmm:cbbNummer</code>) óf <code>riepr:inspireId</code>. Dit datatype is <strong>illustratief</strong>: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace <code>vmm:</code> (<code>&lt;http://vmm.be#&gt;</code>) dient enkel als placeholder in het voorbeeld.</p>
+</blockquote>
+<h3 id="klassen-die-admsidentifier-ondersteunen">Klassen die <code>adms:identifier</code> ondersteunen</h3>
+<p>In de ontologie is <code>adms:identifier</code> (0..n) toegestaan op volgende klassen (in de SHACL-shapes verschijnt dit als <code>sh:property</code> met <code>sh:class adms:Identifier</code>, <code>sh:minCount 0</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Klasse</th>
+<th>Ook in het datavoorbeeld?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>riepr:Exploitatielocatie</code></td>
+<td>ja (DOMG/INSPIRE)</td>
+</tr>
+<tr>
+<td><code>riepr:Exploitatie</code></td>
+<td>ja (VMM/CBB)</td>
+</tr>
+<tr>
+<td><code>riepr:Installatie</code></td>
+<td>ja (VMM/apparaat, DOMG-INSPIRE)</td>
+</tr>
+<tr>
+<td><code>riepr:Emissiepunt</code></td>
+<td>ja (VMM/emissiepunt)</td>
+</tr>
+<tr>
+<td><code>riepr:Onttrekkingspunt</code></td>
+<td>ja (VMM/meerdere)</td>
+</tr>
+<tr>
+<td><code>riepr:Meetpunt</code></td>
+<td>ja (VMM/lozings- en onttrekkingspunt)</td>
+</tr>
+<tr>
+<td><code>riepr:MeetInstrument</code></td>
+<td>nee</td>
+</tr>
+<tr>
+<td><code>riepr:Filter</code></td>
+<td>ja (VMM/filter)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="voorbeelden-uit-datavoorbeelden">Voorbeelden (uit <code>datavoorbeelden/</code>)</h3>
+<p><strong>Enkele</strong> externe identificatoren op een exploitatielocatie (INSPIRE/DOMG) en een exploitatie (VMM-migratie):</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">adms:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/adms#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">vmm:</span><span class="w">   </span><span class="nv">&lt;http://vmm.be#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="c"># Exploitatielocatie: INSPIRE-identifier uit DOMG</span>
+<span class="nv">&lt;.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">identifier</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"DOMG"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"BE.VL.000000034.SITE"</span><span class="p">^^</span><span class="nn">riepr</span><span class="p">:</span><span class="nt">inspireId</span> <span class="p">]</span> <span class="p">.</span>
+
+<span class="c"># Exploitatie: CBB-nummer uit VMM (migratie)</span>
+<span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">identifier</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"01787986000160"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">cbbNummer</span> <span class="p">]</span> <span class="p">.</span>
+</code></pre></div>
+<p><strong>Meerdere</strong> identificatoren op één onttrekkingspunt (elk een ander VMM-bron-veld):</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">identifier</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"46769"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">onttrekkingspuntCode</span>
+    <span class="p">],</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2019-010762"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">exploitantID</span>
+    <span class="p">],</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2019-052596"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">vergunningID</span>
+    <span class="p">],</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">Identifier</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+        <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2019-043747"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">putID</span> <span class="p">]</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="afname-sparql">Afname (SPARQL)</h3>
+<p>Externe identificatoren laten zich filteren op schema en waarde. Hierbij let je op de anonieme nodes (<code>adms:Identifier</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">adms</span><span class="p">:</span>  <span class="nl">&lt;http://www.w3.org/ns/adms#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">rdf</span><span class="p">:</span>   <span class="nl">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">riepr</span><span class="p">:</span> <span class="nl">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span>
+
+<span class="c"># Onttrekkingspunten met een specifieke VMM-put-id</span>
+<span class="k">SELECT</span> <span class="nv">?put</span> <span class="k">WHERE</span> <span class="p">{</span>
+    <span class="nv">?put</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekkingspunt</span> <span class="p">;</span>
+        <span class="nn">adms</span><span class="p">:</span><span class="nt">identifier</span> <span class="p">[</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">scheme</span> <span class="s">"VMM"</span> <span class="p">;</span>
+                          <span class="nn">rdf</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2019-043747"</span> <span class="p">]</span> <span class="p">.</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Zie ook <a href="../gebruiksscenario/">Gebruiksscenario's</a> voor bredere afname-voorbeelden.</p>
 <h2 id="referenties">Referenties</h2>
 <ul>
 <li><a href="../gebruiksscenario/">Gebruiksscenario's</a> - concrete voorbeelden van data-afname</li>

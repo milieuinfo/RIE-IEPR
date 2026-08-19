@@ -1282,10 +1282,16 @@
 <td>Systeemeigenschap</td>
 <td>Eigenschappen van het systeem</td>
 </tr>
+<tr>
+<td><code>adms:identifier</code></td>
+<td>adms:Identifier (0..n)</td>
+<td>Externe (bron/migratie) identificatoren</td>
+</tr>
 </tbody>
 </table>
 <p>Alle systemen zijn subklassen van <code>sosa:System</code> en <code>ogc:SpatialObject</code>.</p>
 <blockquote>
+<p><strong>Externe identificatoren</strong>: <code>adms:identifier</code> bewaart codes uit bron-systemen (VMM-migratie, DOMG/INSPIRE) naast de eigen RIE-IEPR-URI. Zie <a href="../basisaanname/#9-externe-identificatoren-admsidentifier">Basisaannames: externe identificatoren</a>.</p>
 <p><strong>Codelijsten en Systeemeigenschappen</strong>: Het <code>dct:type</code> van een systeem (bijv. <code>installatie_type</code>, <code>emissiepunt_type</code>) bepaalt welke <code>Systeemeigenschap</code>-concepten relevant zijn. De codelijsten in <a href="https://github.com/milieuinfo/codelijst-rie-iepr">milieuinfo/codelijst-rie-iepr</a> bevatten per eigenschap metadata zoals <code>relevantDataType</code>, <code>relevantUnit</code>, <code>isVerplicht</code> en <code>isMeervoudig</code>, en koppelen eigenschappen aan systeemtypes via <code>relevantRiepr</code>. Dit maakt het mogelijk om te weten welke eigenschappen verplicht zijn voor een bepaald systeemtype en welk datatype/eenheid verwacht wordt.</p>
 </blockquote>
 <h2 id="2-installaties">2. Installaties</h2>
