@@ -418,11 +418,3 @@
   </build>
 
 </project>
-        feat: Organisatie/Vestiging toevoegen aan datamodel, build-fixes voor generated Java
-     - Organisatie (org:Organization) en Vestiging (org:Site) concepten toegevoegd aan riepr.ttl, als primaire VKBO-bron voor exploitant/exploitatielocatie
-        - notatietype range gecorrigeerd van xsd:anyURI naar rdfs:Datatype
-        - org# en NACE 2.1-adapters toegevoegd aan ODDToolkit config.yml
-        - gegenereerde artefacten (Java, SQL, SHACL, TypeScript) herbouwd op basis van het aangepaste model
-        - pom.xml: maven.compiler.release=17 gepind (compileerde voorheen impliciet op JDK 21, wat classfile-versieproblemen gaf bij afnemers zoals imjv-migratie die op release 17 pinnen)
-        - pom.xml: jakarta.persistence-api en lombok toegevoegd, en build-helper-maven-plugin om documentatie/datamodel/generated/java als extra source root te compileren
-        - oddtoolkit-versie opgehoogd naar 0.1.0
