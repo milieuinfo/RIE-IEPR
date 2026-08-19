@@ -45,7 +45,12 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'jenkins-jenkins-agent'
-      yaml podBuilder.from([maven.podSpec(25), dind.podSpec(), sonar, trivy, nodePodSpec, pythonPodSpec])
+      // JDK 25 has open Lombok annotation-processing bugs (silently drops generated
+      // accessors, e.g. setUri() on the ODDToolkit-generated model classes — see
+      // https://github.com/projectlombok/lombok/issues/3983). maven.compiler.release
+      // in pom.xml is pinned to 17 anyway, so there's no reason to build on 25;
+      // 21 compiles the exact same generated sources cleanly (verified locally).
+      yaml podBuilder.from([maven.podSpec(21), dind.podSpec(), sonar, trivy, nodePodSpec, pythonPodSpec])
     }
   }
 
