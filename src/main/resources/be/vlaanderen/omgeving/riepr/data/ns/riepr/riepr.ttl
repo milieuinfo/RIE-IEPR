@@ -6,6 +6,12 @@
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
+# sosa-2023: de W3C SSN/SOSA 2023-extensions (https://www.w3.org/TR/vocab-ssn-ext/) definiëren
+# ObservationCollection, hasMember en isMemberOf; die termen bestaan niet in de oorspronkelijke
+# sosa-vocab (2014) waarmee sosa: hierboven mapt. De 2023-vocab hergebruikt wel dezelfde
+# namespace (http://www.w3.org/ns/sosa/), vandaar dezelfde mapping: de prefix markeert uitsluitend
+# de herkomst van de term.
+@prefix sosa-2023: <http://www.w3.org/ns/sosa/> .
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
 @prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
 @prefix hydra:  <http://www.w3.org/ns/hydra/core#> .
@@ -46,7 +52,7 @@
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
     rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
     foaf:homepage <https://github.com/milieuinfo/RIE-IEPR> ;
-    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf:, qudt:, adms: , locn:, nace:, <http://www.w3.org/ns/sosa/prov> .
+    owl:imports prov: , pplan: , ogc: , sosa: , ssn: , dbo: , org: , skos: , foaf:, qudt:, adms: , locn:, nace:, <http://www.w3.org/ns/sosa/prov> , <http://www.w3.org/ns/ssn/ext> .
 
 # --------------------------------------- #
 # Classes
@@ -94,20 +100,31 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-:Contactgegevens a owl:Class ;
-    # TODO: Wanneer we meerdere contactpersonen gaan opnemen dient dit vanuit contactgegevens via oa:hasBody gelinkt aan worden
-    rdfs:label "Contactgegevens"@nl ;
-    rdfs:comment "Contactgegevens zijn de gegevens van een persoon die optreedt als contactpersoon voor een exploitant."@nl ;
+:Contactpersoon a owl:Class ;
+    rdfs:label "Contactpersoon"@nl ;
+    rdfs:comment "Contactpersoon zijn de gegevens van een persoon die optreedt als contact binnen een bepaalde functie voor een exploitant."@nl ;
     rdfs:subClassOf oa:Annotation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/contactgegevens/{uuid}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
                       [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Contactgegevens kunnen een telefoonnummer hebben"@nl ;
+        rdfs:comment "Contactpersonen kunnen een telefoonnummer hebben"@nl ;
+        owl:onProperty dct:type ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Contactpersonen kunnen een telefoonnummer hebben"@nl ;
         owl:onProperty foaf:phone ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Contactpersonen kunnen een e-mail adres hebben"@nl ;
+        owl:onProperty foaf:mbox ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -125,17 +142,17 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Contactgegevens moeten een naam hebben"@nl ;
+        rdfs:comment "Contactpersonen moeten een naam hebben"@nl ;
         owl:onProperty foaf:name ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Contactgegevens kunnen een opmerking hebben"@nl ;
+        rdfs:comment "Contactpersonen kunnen een opmerking hebben"@nl ;
         owl:onProperty rdfs:comment ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Contactgegevens moeten gekoppeld zijn aan exact één exploitant"@nl ;
+        rdfs:comment "Contactpersonen moeten gekoppeld zijn aan exact één exploitant"@nl ;
         owl:onProperty oa:hasTarget ;
         owl:someValuesFrom :Exploitatie ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
@@ -1447,9 +1464,9 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # *..* relation with sosa:isFeatureOfInterestOf
+        # *..* relation with sosa:isFeatureOfInterestOf (observaties rechtstreeks, of via een observatieverzameling)
         owl:onProperty sosa:isFeatureOfInterestOf ;
-        owl:someValuesFrom sosa:Observation ;
+        owl:someValuesFrom [ owl:unionOf ( sosa:Observation sosa-2023:ObservationCollection ) ] ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -1468,9 +1485,9 @@
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        # *..* relation with sosa:isFeatureOfInterestOf
+        # *..* relation with sosa:isFeatureOfInterestOf (observaties rechtstreeks, of via een observatieverzameling)
         owl:onProperty sosa:isFeatureOfInterestOf ;
-        owl:someValuesFrom sosa:Observation ;
+        owl:someValuesFrom [ owl:unionOf ( sosa:Observation sosa-2023:ObservationCollection ) ] ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
@@ -1537,6 +1554,13 @@
         # Codelijst: operationeel_bepalingsmethode
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan deel uitmaken van een observatieverzameling"@nl ;
+        owl:onProperty sosa-2023:isMemberOf ;
+        owl:someValuesFrom sosa-2023:ObservationCollection ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
 :Resultaat a owl:Class ;
@@ -1564,6 +1588,43 @@
         rdfs:comment "Een resultaat kan een tekstuele waarde hebben"@nl ;
         owl:onProperty rdfs:comment ;
         owl:someValuesFrom xsd:string ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+:ObservatieVerzameling a owl:Class ;
+    rdfs:label "Observatieverzameling"@nl ;
+    rdfs:comment "Een observatieverzameling is een verzameling van waarnemingen of metingen uitgevoerd op een emissie of onttrekking over een bepaalde periode of op een bepaald moment."@nl ;
+    rdfs:subClassOf sosa-2023:ObservationCollection ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ;
+        hydra:mapping [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatieverzameling bestaat uit ten minste één observatie (of geneste observatieverzameling)"@nl ;
+        owl:onProperty sosa-2023:hasMember ;
+        owl:someValuesFrom sosa:Observation ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatieverzameling is gekoppeld aan een Emissie of Onttrekking"@nl ;
+        owl:onProperty sosa:hasFeatureOfInterest ;
+        owl:someValuesFrom sosa:FeatureOfInterest ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatieverzameling moet een creatie datum hebben"@nl ;
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatieverzameling is optioneel gekoppeld aan een aangifte"@nl ;
+        owl:onProperty :aangifte ;
+        owl:someValuesFrom :Aangifte ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .

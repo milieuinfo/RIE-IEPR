@@ -1,5 +1,6 @@
 import { Aangifte } from './aangifte.model';
 import { Gebeurtenis } from './gebeurtenis.interface';
+import { ObservatieVerzameling } from './observatieverzameling.model';
 import { Resultaat } from './resultaat.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
@@ -56,6 +57,14 @@ export class Observatie {
 	 */
 	@jsonMember(() => Resultaat, { name: 'hasResult' })
 	heeftResultaat?: Resultaat;
+
+	/**
+	 * isMemberOf
+	 * @see {@link http://www.w3.org/ns/sosa/isMemberOf}
+	 * Een observatie kan deel uitmaken van een observatieverzameling
+	 */
+	@jsonMember(() => ObservatieVerzameling, { name: 'isMemberOf' })
+	isMemberOf?: ObservatieVerzameling;
 
 	/**
 	 * observedProperty

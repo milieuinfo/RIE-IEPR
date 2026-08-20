@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Emissie
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie">Emissie</a>
- * Een emissie is een specifiek emissieevent dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname.
+ * Een emissie is een specifieke gebeurtenis dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname.
  **/
 @Getter
 @Setter
@@ -77,6 +77,14 @@ public class Emissie implements IGebeurtenis {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
-	@JsonProperty("isFeatureOfInterestOf")
-	private List<Observatie> isFeatureOfInterestOf;
+	@JsonProperty("isFeatureOfInterestOf_observatie")
+	private List<Observatie> isFeatureOfInterestOfObservatie;
+	@ManyToMany
+	@JoinTable(
+		name = "emissie_observatie_verzameling",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("isFeatureOfInterestOf_observatie_verzameling")
+	private List<ObservatieVerzameling> isFeatureOfInterestOfObservatieVerzameling;
 }

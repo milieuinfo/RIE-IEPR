@@ -178,6 +178,19 @@ public class Proces {
 	@JsonProperty("label")
 	private String benaming;
 	/**
+	 * identifier
+	 * <a href="http://www.w3.org/ns/adms#identifier">identifier</a>
+	 * Een proces kan externe identificaties hebben (optioneel)
+	 */
+	@ManyToMany
+	@JoinTable(
+		name = "proces_externe_identificator",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("identifier")
+	private List<ExterneIdentificator> identifier;
+	/**
 	 * wasRevisionOf
 	 * <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
 	 * Een proces kan een revisie zijn van een ander proces (optioneel)

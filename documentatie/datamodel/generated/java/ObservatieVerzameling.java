@@ -26,18 +26,18 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Observatie
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie">Observatie</a>
- * Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking.
+ * ObservatieVerzameling
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling">ObservatieVerzameling</a>
+ * Een observatieverzameling is een verzameling van waarnemingen of metingen uitgevoerd op een emissie of onttrekking over een bepaalde periode of op een bepaald moment.
  **/
 @Getter
 @Setter
-@Entity(name = "Observatie")
+@Entity(name = "ObservatieVerzameling")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "observatie")
-public class Observatie {
+@Table(name = "observatie_verzameling")
+public class ObservatieVerzameling {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -65,7 +65,7 @@ public class Observatie {
 	/**
 	 * created
 	 * <a href="http://purl.org/dc/terms/created">created</a>
-	 * Een observatie moet een creatie datum hebben
+	 * Een observatieverzameling moet een creatie datum hebben
 	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
@@ -73,59 +73,24 @@ public class Observatie {
 	/**
 	 * hasFeatureOfInterest
 	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
-	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
+	 * Een observatieverzameling is gekoppeld aan een Emissie of Onttrekking
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasFeatureOfInterest")
 	private IGebeurtenis betrekkingTot;
 	/**
-	 * hasResult
-	 * <a href="http://www.w3.org/ns/sosa/hasResult">hasResult</a>
-	 * Een observatie heeft één resultaat.
+	 * hasMember
+	 * <a href="http://www.w3.org/ns/sosa/hasMember">hasMember</a>
+	 * Een observatieverzameling bestaat uit ten minste één observatie (of geneste observatieverzameling)
 	 */
-	@JoinColumn(name = "uuid", nullable = true)
-	@JsonProperty("hasResult")
-	private Resultaat heeftResultaat;
-	/**
-	 * isMemberOf
-	 * <a href="http://www.w3.org/ns/sosa/isMemberOf">isMemberOf</a>
-	 * Een observatie kan deel uitmaken van een observatieverzameling
-	 */
-	@JoinColumn(name = "uuid", nullable = true)
-	@JsonProperty("isMemberOf")
-	private ObservatieVerzameling isMemberOf;
-	/**
-	 * observedProperty
-	 * <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
-	 * Een observatie kan een geobserveerde eigenschap hebben
-	 */
-	@Column(name = "eigenschap", nullable = true)
-	@JsonProperty("observedProperty")
-	private String eigenschap;
-	/**
-	 * phenomenonTime
-	 * <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenonTime</a>
-	 * Een observatie kan een verschijnsel tijdsinterval hebben
-	 */
-	@Column(name = "phenomenon_time", nullable = true)
-	@JsonProperty("phenomenonTime")
-	private String phenomenonTime;
-	/**
-	 * resultTime
-	 * <a href="http://www.w3.org/ns/sosa/resultTime">resultTime</a>
-	 * Een observatie kan een resultaat tijdstip hebben
-	 */
-	@Column(name = "result_time", nullable = true)
-	@JsonProperty("resultTime")
-	private LocalDateTime resultTime;
-	/**
-	 * usedProcedure
-	 * <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
-	 * Een observatie kan een gebruikte bepalingsmethode hebben
-	 */
-	@Column(name = "used_procedure", nullable = true)
-	@JsonProperty("usedProcedure")
-	private String usedProcedure;
+	@ManyToMany
+	@JoinTable(
+		name = "observatie_verzameling_observatie",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("hasMember")
+	private List<Observatie> hasMember;
 	/**
 	 * aangifte
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>

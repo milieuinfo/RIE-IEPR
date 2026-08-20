@@ -1,4 +1,5 @@
 import { Aangifte } from './aangifte.model';
+import { ExterneIdentificator } from './externeidentificator.model';
 import { Procedure } from './procedure.enum';
 import { Procesvariabele } from './procesvariabele.model';
 import { Rubriek } from './rubriek.model';
@@ -129,6 +130,14 @@ export class Proces {
 	 */
 	@jsonMember({ name: 'label' })
 	benaming?: string;
+
+	/**
+	 * identifier
+	 * @see {@link http://www.w3.org/ns/adms#identifier}
+	 * Een proces kan externe identificaties hebben (optioneel)
+	 */
+	@jsonArrayMember(() => ExterneIdentificator, { name: 'identifier' })
+	identifier?: ExterneIdentificator[];
 
 	/**
 	 * wasRevisionOf

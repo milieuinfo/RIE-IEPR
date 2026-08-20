@@ -1,12 +1,13 @@
 import { Gebeurtenis } from './gebeurtenis.interface';
 import { Observatie } from './observatie.model';
+import { ObservatieVerzameling } from './observatieverzameling.model';
 import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
  * Emissie
  * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie}
- * Een emissie is een specifiek emissieevent dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname.
+ * Een emissie is een specifieke gebeurtenis dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname.
  */
 @jsonObject
 export class Emissie implements Gebeurtenis {
@@ -39,6 +40,6 @@ export class Emissie implements Gebeurtenis {
 	 * @see {@link http://www.w3.org/ns/sosa/isFeatureOfInterestOf}
 	 */
 	@jsonArrayMember(() => Observatie, { name: 'isFeatureOfInterestOf' })
-	isFeatureOfInterestOf?: Observatie[];
+	isFeatureOfInterestOf?: (Observatie | ObservatieVerzameling)[];
 
 }
