@@ -271,6 +271,43 @@ pipeline {
         }
       }
       stages {
+        stage("ODDToolkit regenerate & commit") {
+          steps {
+            script {
+              // Regenerates documentatie/datamodel/generated/** (java/sql/shacl/typescript) and
+              // the diagrammen .mmd files from the ontology, the same way a full mvn build does.
+              maven.goal([goal: 'generate-resources', skipTests: true])
+            }
+            container('jnlp') {
+              script {
+                git.withGitAuth {
+                  sh '''
+                    set -e
+                    git add documentatie/datamodel/generated \\
+                            documentatie/datamodel/diagrammen/class-diagram.mmd \\
+                            documentatie/datamodel/diagrammen/er-diagram.mmd
+                    if git diff --cached --quiet; then
+                      echo "ODDToolkit gegenereerde artefacten up to date, nothing to commit"
+                    else
+                      git config user.email "$GIT_USER_EMAIL"
+                      git config user.name "$GIT_USER_NAME"
+                      # Cumulus-Skip-Ci trailer: git.notSkipCi() recognizes it, so the build
+                      # triggered by this push does not loop.
+                      git commit --trailer "Cumulus-Skip-Ci: true" -m "chore: ODDToolkit gegenereerde artefacten herbouwd"
+                      git push origin "HEAD:refs/heads/$BRANCH_NAME"
+                    fi
+                    # Sync the workspace with origin, so subsequent maven-release-plugin commits
+                    # (release:prepare/perform) fast-forward instead of being rejected.
+                    git fetch origin "$BRANCH_NAME"
+                    if [ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/$BRANCH_NAME")" ]; then
+                      git reset --hard "origin/$BRANCH_NAME"
+                    fi
+                  '''
+                }
+              }
+            }
+          }
+        }
         stage("Reset workspace") {
           steps {
             container('jnlp') {
