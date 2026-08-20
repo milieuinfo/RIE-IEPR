@@ -62,22 +62,24 @@ erDiagram
 	  locator_designator VARCHAR 
 	}
 	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens
-	contactgegevens {
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
+	contactpersoon {
 	  id VARCHAR PK
 	  uuid VARCHAR 
 	  uri VARCHAR 
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van VARCHAR 
 	  aangepast_op TIMESTAMP 
+	  type VARCHAR 
 	  beschrijving VARCHAR 
 	  has_target VARCHAR FK
+	  email VARCHAR 
 	  name VARCHAR 
 	  telefoonnummer VARCHAR 
 	}
 	
 	%% http://www.w3.org/ns/oa#hasTarget
-	contactgegevens many to one exploitatie : has_target_exploitatie
+	contactpersoon many to one exploitatie : has_target_exploitatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie {

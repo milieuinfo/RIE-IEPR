@@ -2,12 +2,12 @@ import { Exploitatie } from './exploitatie.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
- * Contactgegevens
- * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens}
- * Contactgegevens zijn de gegevens van een persoon die optreedt als contactpersoon voor een exploitant.
+ * Contactpersoon
+ * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon}
+ * Contactpersoon zijn de gegevens van een persoon die optreedt als contact binnen een bepaalde functie voor een exploitant.
  */
 @jsonObject
-export class Contactgegevens {
+export class Contactpersoon {
 	/**
 	 * id
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
@@ -54,9 +54,17 @@ export class Contactgegevens {
 	aangepastOp?: Date;
 
 	/**
+	 * type
+	 * @see {@link http://purl.org/dc/terms/type}
+	 * Contactpersonen kunnen een telefoonnummer hebben
+	 */
+	@jsonMember({ name: 'type' })
+	type?: string;
+
+	/**
 	 * comment
 	 * @see {@link http://www.w3.org/2000/01/rdf-schema#comment}
-	 * Contactgegevens kunnen een opmerking hebben
+	 * Contactpersonen kunnen een opmerking hebben
 	 */
 	@jsonMember({ name: 'comment' })
 	beschrijving?: string;
@@ -64,15 +72,23 @@ export class Contactgegevens {
 	/**
 	 * hasTarget
 	 * @see {@link http://www.w3.org/ns/oa#hasTarget}
-	 * Contactgegevens moeten gekoppeld zijn aan exact één exploitant
+	 * Contactpersonen moeten gekoppeld zijn aan exact één exploitant
 	 */
 	@jsonMember(() => Exploitatie, { name: 'hasTarget' })
 	hasTarget?: Exploitatie;
 
 	/**
+	 * mbox
+	 * @see {@link http://xmlns.com/foaf/0.1/mbox}
+	 * Contactpersonen kunnen een e-mail adres hebben
+	 */
+	@jsonMember({ name: 'mbox' })
+	email?: string;
+
+	/**
 	 * name
 	 * @see {@link http://xmlns.com/foaf/0.1/name}
-	 * Contactgegevens moeten een naam hebben
+	 * Contactpersonen moeten een naam hebben
 	 */
 	@jsonArrayMember(() => string, { name: 'name' })
 	name?: string[];
@@ -80,7 +96,7 @@ export class Contactgegevens {
 	/**
 	 * phone
 	 * @see {@link http://xmlns.com/foaf/0.1/phone}
-	 * Contactgegevens kunnen een telefoonnummer hebben
+	 * Contactpersonen kunnen een telefoonnummer hebben
 	 */
 	@jsonMember({ name: 'phone' })
 	telefoonnummer?: string;

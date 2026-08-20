@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-08-19T14:56:08.290924543Z[Etc/UTC]
+-- Generated: 2026-08-20T12:38:07.007308851Z[GMT]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -111,33 +111,37 @@ COMMENT ON COLUMN adres.locator_designator IS 'http://www.w3.org/ns/locn#locator
 
 ----------------------------------------------------------------------
 
--- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens
-CREATE TABLE contactgegevens (
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
+CREATE TABLE contactpersoon (
   id VARCHAR,
   uuid VARCHAR,
   uri VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van VARCHAR,
   aangepast_op TIMESTAMP,
+  type VARCHAR,
   beschrijving VARCHAR,
   -- Foreign key referencing exploitatie(uuid)
   has_target VARCHAR,
+  email VARCHAR,
   name VARCHAR,
   telefoonnummer VARCHAR,
   PRIMARY KEY (id)
 );
 
-COMMENT ON TABLE contactgegevens IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens';
-COMMENT ON COLUMN contactgegevens.id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id';
-COMMENT ON COLUMN contactgegevens.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
-COMMENT ON COLUMN contactgegevens.uri IS 'http://example.org/vocab/uri';
-COMMENT ON COLUMN contactgegevens.aangemaakt_op IS 'http://purl.org/dc/terms/created';
-COMMENT ON COLUMN contactgegevens.geldig_van IS 'http://purl.org/dc/terms/issued';
-COMMENT ON COLUMN contactgegevens.aangepast_op IS 'http://purl.org/dc/terms/modified';
-COMMENT ON COLUMN contactgegevens.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
-COMMENT ON COLUMN contactgegevens.has_target IS 'http://www.w3.org/ns/oa#hasTarget';
-COMMENT ON COLUMN contactgegevens.name IS 'http://xmlns.com/foaf/0.1/name';
-COMMENT ON COLUMN contactgegevens.telefoonnummer IS 'http://xmlns.com/foaf/0.1/phone';
+COMMENT ON TABLE contactpersoon IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon';
+COMMENT ON COLUMN contactpersoon.id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id';
+COMMENT ON COLUMN contactpersoon.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN contactpersoon.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN contactpersoon.aangemaakt_op IS 'http://purl.org/dc/terms/created';
+COMMENT ON COLUMN contactpersoon.geldig_van IS 'http://purl.org/dc/terms/issued';
+COMMENT ON COLUMN contactpersoon.aangepast_op IS 'http://purl.org/dc/terms/modified';
+COMMENT ON COLUMN contactpersoon.type IS 'http://purl.org/dc/terms/type';
+COMMENT ON COLUMN contactpersoon.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
+COMMENT ON COLUMN contactpersoon.has_target IS 'http://www.w3.org/ns/oa#hasTarget';
+COMMENT ON COLUMN contactpersoon.email IS 'http://xmlns.com/foaf/0.1/mbox';
+COMMENT ON COLUMN contactpersoon.name IS 'http://xmlns.com/foaf/0.1/name';
+COMMENT ON COLUMN contactpersoon.telefoonnummer IS 'http://xmlns.com/foaf/0.1/phone';
 
 ----------------------------------------------------------------------
 
@@ -1724,7 +1728,7 @@ COMMENT ON COLUMN vestiging.uri IS 'http://example.org/vocab/uri';
 
 ALTER TABLE aangifte ADD FOREIGN KEY (onderdeel_van) REFERENCES aangiftebundel(uuid);
 ALTER TABLE aangiftebundel ADD FOREIGN KEY (creator) REFERENCES exploitant(uuid);
-ALTER TABLE contactgegevens ADD FOREIGN KEY (has_target) REFERENCES exploitatie(uuid);
+ALTER TABLE contactpersoon ADD FOREIGN KEY (has_target) REFERENCES exploitatie(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (systeem_uuid) REFERENCES emissiepunt_identity(systeem_uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (systeem_uuid) REFERENCES emissiepunt_identity(systeem_uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);

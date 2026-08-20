@@ -26,18 +26,18 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Contactgegevens
- * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactgegevens">Contactgegevens</a>
- * Contactgegevens zijn de gegevens van een persoon die optreedt als contactpersoon voor een exploitant.
+ * Contactpersoon
+ * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon">Contactpersoon</a>
+ * Contactpersoon zijn de gegevens van een persoon die optreedt als contact binnen een bepaalde functie voor een exploitant.
  **/
 @Getter
 @Setter
-@Entity(name = "Contactgegevens")
+@Entity(name = "Contactpersoon")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "contactgegevens")
-public class Contactgegevens {
+@Table(name = "contactpersoon")
+public class Contactpersoon {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -85,9 +85,17 @@ public class Contactgegevens {
 	@JsonProperty("modified")
 	private LocalDateTime aangepastOp;
 	/**
+	 * type
+	 * <a href="http://purl.org/dc/terms/type">type</a>
+	 * Contactpersonen kunnen een telefoonnummer hebben
+	 */
+	@Column(name = "type", nullable = true)
+	@JsonProperty("type")
+	private String type;
+	/**
 	 * comment
 	 * <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
-	 * Contactgegevens kunnen een opmerking hebben
+	 * Contactpersonen kunnen een opmerking hebben
 	 */
 	@Column(name = "beschrijving", nullable = true)
 	@JsonProperty("comment")
@@ -95,15 +103,23 @@ public class Contactgegevens {
 	/**
 	 * hasTarget
 	 * <a href="http://www.w3.org/ns/oa#hasTarget">hasTarget</a>
-	 * Contactgegevens moeten gekoppeld zijn aan exact één exploitant
+	 * Contactpersonen moeten gekoppeld zijn aan exact één exploitant
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasTarget")
 	private Exploitatie hasTarget;
 	/**
+	 * mbox
+	 * <a href="http://xmlns.com/foaf/0.1/mbox">mbox</a>
+	 * Contactpersonen kunnen een e-mail adres hebben
+	 */
+	@Column(name = "email", nullable = true)
+	@JsonProperty("mbox")
+	private String email;
+	/**
 	 * name
 	 * <a href="http://xmlns.com/foaf/0.1/name">name</a>
-	 * Contactgegevens moeten een naam hebben
+	 * Contactpersonen moeten een naam hebben
 	 */
 	@Column(name = "name", nullable = true)
 	@JsonProperty("name")
@@ -111,7 +127,7 @@ public class Contactgegevens {
 	/**
 	 * phone
 	 * <a href="http://xmlns.com/foaf/0.1/phone">phone</a>
-	 * Contactgegevens kunnen een telefoonnummer hebben
+	 * Contactpersonen kunnen een telefoonnummer hebben
 	 */
 	@Column(name = "telefoonnummer", nullable = true)
 	@JsonProperty("phone")
