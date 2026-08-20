@@ -6,11 +6,6 @@
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix ogc:    <http://www.opengis.net/ont/geosparql#> .
 @prefix sosa:   <http://www.w3.org/ns/sosa/> .
-# sosa-2023: de W3C SSN/SOSA 2023-extensions (https://www.w3.org/TR/vocab-ssn-ext/) definiëren
-# ObservationCollection, hasMember en isMemberOf; die termen bestaan niet in de oorspronkelijke
-# sosa-vocab (2014) waarmee sosa: hierboven mapt. De 2023-vocab hergebruikt wel dezelfde
-# namespace (http://www.w3.org/ns/sosa/), vandaar dezelfde mapping: de prefix markeert uitsluitend
-# de herkomst van de term.
 @prefix sosa-2023: <http://www.w3.org/ns/sosa/> .
 @prefix ssn:    <http://www.w3.org/ns/ssn/> .
 @prefix ssn-system: <http://www.w3.org/ns/ssn/systems/> .
@@ -135,7 +130,7 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Contactgegevens kunnen een modificatie datum hebben"@nl ;
+        rdfs:comment "Contactpersonen kunnen een modificatie datum hebben"@nl ;
         owl:onProperty dct:modified ;
         owl:someValuesFrom xsd:dateTime ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
