@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-08-20T12:38:07.007308851Z[GMT]
+-- Generated: 2026-08-20T13:02:33.305627076Z[GMT]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -124,7 +124,7 @@ CREATE TABLE contactpersoon (
   -- Foreign key referencing exploitatie(uuid)
   has_target VARCHAR,
   email VARCHAR,
-  name VARCHAR,
+  naam VARCHAR,
   telefoonnummer VARCHAR,
   PRIMARY KEY (id)
 );
@@ -140,7 +140,7 @@ COMMENT ON COLUMN contactpersoon.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN contactpersoon.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
 COMMENT ON COLUMN contactpersoon.has_target IS 'http://www.w3.org/ns/oa#hasTarget';
 COMMENT ON COLUMN contactpersoon.email IS 'http://xmlns.com/foaf/0.1/mbox';
-COMMENT ON COLUMN contactpersoon.name IS 'http://xmlns.com/foaf/0.1/name';
+COMMENT ON COLUMN contactpersoon.naam IS 'http://xmlns.com/foaf/0.1/name';
 COMMENT ON COLUMN contactpersoon.telefoonnummer IS 'http://xmlns.com/foaf/0.1/phone';
 
 ----------------------------------------------------------------------
@@ -578,7 +578,8 @@ COMMENT ON COLUMN externe_identificator.notatietype_datatype IS 'https://data.ri
 
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 CREATE TABLE filter (
-  id VARCHAR,
+  -- Foreign key referencing systeem(uuid)
+  systeem_uuid VARCHAR,
   uri VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
@@ -594,11 +595,11 @@ CREATE TABLE filter (
   aangifte VARCHAR,
   in_gebruik_tot DATE,
   in_gebruik_vanaf DATE,
-  PRIMARY KEY (id)
+  PRIMARY KEY (systeem_uuid)
 );
 
 COMMENT ON TABLE filter IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter';
-COMMENT ON COLUMN filter.id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id';
+COMMENT ON COLUMN filter.systeem_uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN filter.uri IS 'http://example.org/vocab/uri';
 COMMENT ON COLUMN filter.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN filter.geldig_van IS 'http://purl.org/dc/terms/issued';
@@ -619,7 +620,7 @@ COMMENT ON COLUMN filter.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaand
 -- Table type: JOIN
 -- Original relation: has_deployment_exploitatie
 CREATE TABLE filter_exploitatie (
-  -- Foreign key referencing filter_identity(systeem_uuid)
+  -- Foreign key referencing filter(systeem_uuid)
   filter_id VARCHAR,
   -- Foreign key referencing exploitatie(uuid)
   exploitatie_id VARCHAR,
@@ -642,7 +643,7 @@ COMMENT ON COLUMN filter_exploitatie.geldig_tot IS 'http://purl.org/dc/terms/val
 -- Table type: JOIN
 -- Original relation: identifier_externe_identificator
 CREATE TABLE filter_externe_identificator (
-  -- Foreign key referencing filter_identity(systeem_uuid)
+  -- Foreign key referencing filter(systeem_uuid)
   filter_id VARCHAR,
   -- Foreign key referencing externe_identificator(uuid)
   externe_identificator_id VARCHAR,
@@ -658,19 +659,6 @@ COMMENT ON COLUMN filter_externe_identificator.externe_identificator_id IS 'http
 COMMENT ON COLUMN filter_externe_identificator.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN filter_externe_identificator.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN filter_externe_identificator.geldig_tot IS 'http://purl.org/dc/terms/valid';
-
-----------------------------------------------------------------------
-
--- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
--- Table type: IDENTITY
-CREATE TABLE filter_identity (
-  -- Foreign key referencing systeem(uuid)
-  systeem_uuid VARCHAR,
-  PRIMARY KEY (systeem_uuid)
-);
-
-COMMENT ON TABLE filter_identity IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter';
-COMMENT ON COLUMN filter_identity.systeem_uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 
 ----------------------------------------------------------------------
 
@@ -932,7 +920,7 @@ COMMENT ON COLUMN meetpunt_externe_identificator.geldig_tot IS 'http://purl.org/
 CREATE TABLE meetpunt_filter (
   -- Foreign key referencing meetpunt_identity(systeem_uuid)
   meetpunt_id VARCHAR,
-  -- Foreign key referencing filter_identity(systeem_uuid)
+  -- Foreign key referencing filter(systeem_uuid)
   filter_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
@@ -1222,7 +1210,7 @@ COMMENT ON COLUMN onttrekkingspunt_externe_identificator.geldig_tot IS 'http://p
 CREATE TABLE onttrekkingspunt_filter (
   -- Foreign key referencing onttrekkingspunt_identity(systeem_uuid)
   onttrekkingspunt_id VARCHAR,
-  -- Foreign key referencing filter_identity(systeem_uuid)
+  -- Foreign key referencing filter(systeem_uuid)
   filter_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
@@ -1232,7 +1220,7 @@ CREATE TABLE onttrekkingspunt_filter (
 
 COMMENT ON TABLE onttrekkingspunt_filter IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt';
 COMMENT ON COLUMN onttrekkingspunt_filter.onttrekkingspunt_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
-COMMENT ON COLUMN onttrekkingspunt_filter.filter_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id';
+COMMENT ON COLUMN onttrekkingspunt_filter.filter_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN onttrekkingspunt_filter.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN onttrekkingspunt_filter.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN onttrekkingspunt_filter.geldig_tot IS 'http://purl.org/dc/terms/valid';
@@ -1658,7 +1646,7 @@ COMMENT ON COLUMN uitwisselpunt_externe_identificator.geldig_tot IS 'http://purl
 CREATE TABLE uitwisselpunt_filter (
   -- Foreign key referencing uitwisselpunt_identity(systeem_uuid)
   uitwisselpunt_id VARCHAR,
-  -- Foreign key referencing filter_identity(systeem_uuid)
+  -- Foreign key referencing filter(systeem_uuid)
   filter_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
@@ -1668,7 +1656,7 @@ CREATE TABLE uitwisselpunt_filter (
 
 COMMENT ON TABLE uitwisselpunt_filter IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt';
 COMMENT ON COLUMN uitwisselpunt_filter.uitwisselpunt_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
-COMMENT ON COLUMN uitwisselpunt_filter.filter_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id';
+COMMENT ON COLUMN uitwisselpunt_filter.filter_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN uitwisselpunt_filter.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN uitwisselpunt_filter.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN uitwisselpunt_filter.geldig_tot IS 'http://purl.org/dc/terms/valid';
@@ -1749,8 +1737,6 @@ ALTER TABLE exploitatielocatie ADD FOREIGN KEY (revisie_van) REFERENCES exploita
 ALTER TABLE exploitatielocatie ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE filter ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE filter ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
-ALTER TABLE filter_exploitatie ADD FOREIGN KEY (filter_id) REFERENCES filter_identity(systeem_uuid);
-ALTER TABLE filter_externe_identificator ADD FOREIGN KEY (filter_id) REFERENCES filter_identity(systeem_uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (systeem_uuid) REFERENCES installatie_identity(systeem_uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (systeem_uuid) REFERENCES installatie_identity(systeem_uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
@@ -1766,7 +1752,6 @@ ALTER TABLE meetpunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE meetpunt_exploitatie ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
 ALTER TABLE meetpunt_externe_identificator ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
 ALTER TABLE meetpunt_filter ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
-ALTER TABLE meetpunt_filter ADD FOREIGN KEY (filter_id) REFERENCES filter_identity(systeem_uuid);
 ALTER TABLE meetpunt_systeemeigenschap ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
 ALTER TABLE observatie ADD FOREIGN KEY (betrekking_tot) REFERENCES gebeurtenis(uuid);
 ALTER TABLE observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);

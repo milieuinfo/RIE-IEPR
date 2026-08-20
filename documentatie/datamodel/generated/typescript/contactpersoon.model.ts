@@ -48,7 +48,7 @@ export class Contactpersoon {
 	/**
 	 * modified
 	 * @see {@link http://purl.org/dc/terms/modified}
-	 * Contactgegevens kunnen een modificatie datum hebben
+	 * Contactpersonen kunnen een modificatie datum hebben
 	 */
 	@jsonMember(() => Date, { name: 'modified' })
 	aangepastOp?: Date;
@@ -91,7 +91,7 @@ export class Contactpersoon {
 	 * Contactpersonen moeten een naam hebben
 	 */
 	@jsonArrayMember(() => string, { name: 'name' })
-	name?: string[];
+	naam?: string[];
 
 	/**
 	 * phone

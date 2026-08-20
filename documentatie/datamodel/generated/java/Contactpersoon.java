@@ -79,7 +79,7 @@ public class Contactpersoon {
 	/**
 	 * modified
 	 * <a href="http://purl.org/dc/terms/modified">modified</a>
-	 * Contactgegevens kunnen een modificatie datum hebben
+	 * Contactpersonen kunnen een modificatie datum hebben
 	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
@@ -121,9 +121,9 @@ public class Contactpersoon {
 	 * <a href="http://xmlns.com/foaf/0.1/name">name</a>
 	 * Contactpersonen moeten een naam hebben
 	 */
-	@Column(name = "name", nullable = true)
+	@Column(name = "naam", nullable = true)
 	@JsonProperty("name")
-	private List<String> name;
+	private List<String> naam;
 	/**
 	 * phone
 	 * <a href="http://xmlns.com/foaf/0.1/phone">phone</a>
