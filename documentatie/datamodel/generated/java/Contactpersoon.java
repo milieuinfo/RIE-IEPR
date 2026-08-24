@@ -66,7 +66,7 @@ public class Contactpersoon {
 	 * created
 	 * <a href="http://purl.org/dc/terms/created">created</a>
 	 */
-	@Column(name = "aangemaakt_op", nullable = false)
+	@Column(name = "aangemaakt_op", nullable = true)
 	@JsonProperty("created")
 	private LocalDateTime aangemaaktOp;
 	/**
