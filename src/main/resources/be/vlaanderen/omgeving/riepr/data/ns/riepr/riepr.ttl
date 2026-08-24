@@ -100,10 +100,9 @@
     rdfs:comment "Contactpersoon zijn de gegevens van een persoon die optreedt als contact binnen een bepaalde functie voor een exploitant."@nl ;
     rdfs:subClassOf oa:Annotation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}/{created}"^^hydra:Rfc6570Template ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
-                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
-                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Contactpersonen kunnen een telefoonnummer hebben"@nl ;
@@ -1806,38 +1805,6 @@ rdfs:subClassOf [ a owl:Restriction ;
     owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger
 ] .
-
-# Proces Procedures. Deze zijn overgenomen van de codelijsten en worden hier hard gecodeerd als concepten omdat deze business logica bevatten.
-:verwerkingProcedure a sosa:Procedure, skos:Concept ;
-    rdfs:label "Verwerkingsprocedure"@nl ;
-    rdfs:comment "Een verwerkingsprocedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> .
-:onttrekkingProcedure a sosa:Procedure, skos:Concept ;
-    rdfs:label "Onttrekkingprocedure"@nl ;
-    rdfs:comment "Een onttrekkingsprocedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> .
-:emissieProcedure a sosa:Procedure, skos:Concept ;
-    rdfs:label "Emissieprocedure"@nl ;
-    rdfs:comment "Een emissieprocedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> .
-:meetProcedure a sosa:Procedure, skos:Concept ;
-    rdfs:label "Meetprocedure"@nl ;
-    rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet> .
-:uitwisselProcedure a sosa:Procedure, skos:Concept ;
-    rdfs:label "Uitwisselprocedure"@nl ;
-    rdfs:comment "Een uitwisselprocedure is een specifieke procedure die betrekking heeft op het uitwisselen van stoffen tussen processen."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel> .
-
-# Status types. Deze zijn overgenomen van de codelijsten en worden hier hard gecodeerd als concepten omdat deze business logica bevatten.
-:inGebruik a adms:Status, skos:Concept ;
-    rdfs:label "In gebruik"@nl ;
-    rdfs:comment "De entiteit is in gebruik."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in-gebruik> .
-:ontmanteld a adms:Status, skos:Concept ;
-    rdfs:label "Ontmanteld"@nl ;
-    rdfs:comment "De entiteit is ontmanteld."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/ontmanteld> .
 
 # --------------------------------------- #
 # Axioms

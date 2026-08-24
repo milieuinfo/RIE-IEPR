@@ -5,13 +5,14 @@ Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het R
 
 ## Scenario 1: Een exploitant identificeren en contacteren
 
-> **Doel**: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactgegevens.
+> **Doel**: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactpersonen.
 
-Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactgegevens worden geannoteerd via de `oa:Annotation`-klasse en verwijzen naar de exploitatie (niet direct naar de exploitant).
+Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de `oa:Annotation`-subklasse `riepr:Contactpersoon` en verwijzen naar de exploitatie (niet direct naar de exploitant). Het `dct:type` verwijst naar het concept `:milieucoordinator` of `:contactpersoon` en bepaalt wat de persoon is. Er is **geen versionering**: de URI is een vaste identity-URI op basis van een UUID.
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 @prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix oa:    <http://www.w3.org/ns/oa#> .
 
@@ -19,8 +20,9 @@ Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactgegevens worde
     a riepr:Exploitant ;
     prov:hadPrimarySource <https://data.vlaanderen.be/id/onderneming/0413638187> .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/contactgegevens/019ed475-eb52-76ad-9c36-96ef45d889d0/2026-01-01T10:00:00Z>
-    a riepr:Contactgegevens ;
+<https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/019ed475-eb52-76ad-9c36-96ef45d889d0>
+    a riepr:Contactpersoon ;
+    dct:type <https://data.riepr.omgeving.vlaanderen.be/id/concept/milieucoordinator> ;
     oa:hasTarget <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> ;
     foaf:name "John Doe"@nl ;
     foaf:mbox <mailto:info@example.com> .
@@ -28,10 +30,11 @@ Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactgegevens worde
 
 **SPARQL-query voorbeeld:**
 ```sparql
-SELECT ?contactNaam ?contactEmail
+SELECT ?contactNaam ?contactEmail ?type
 WHERE {
   ?exploitant a riepr:Exploitant .
-  ?contact a riepr:Contactgegevens ;
+  ?contact a riepr:Contactpersoon ;
+           dct:type ?type ;
            oa:hasTarget ?exploitatie ;
            foaf:name ?contactNaam ;
            foaf:mbox ?contactEmail .

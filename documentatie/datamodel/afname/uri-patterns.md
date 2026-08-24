@@ -14,7 +14,7 @@ De RIE-IEPR ontologie definieert URI-patronen voor elke klasse via Hydra `hydra:
 | Klasse | Hydra template | Variabelen |
 |---|---|---|
 | Exploitant | `https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}` | `ondernemingsnummer` → `:localId` |
-| Contactgegevens | `https://data.mjv.omgeving.vlaanderen.be/id/contactgegevens/{uuid}/{created}` | `uuid` → `:localId`, `issued` → `dct:issued`, `created` → `dct:created` |
+| Contactpersoon | `https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}` | `uuid` → `:localId` (geen versie) |
 | Exploitatie | `https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
 | Exploitatielocatie | `https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
 | Proces | `https://data.mjv.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
