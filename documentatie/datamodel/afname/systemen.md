@@ -1,5 +1,6 @@
 # Systemen: installaties, emissiepunten en meetpunten
 
+> **Structurele gegevens**: Systemen behoren tot de structurele stroom van het datamodel. Ze beschrijven de fysieke infrastructuur en organisatie van de exploitatie en vormen de basis waarop operationele gegevens zoals observaties worden gekoppeld.
 
 Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunten, meetpunten en filters - en hun onderlinge relaties in het RIE-IEPR-datamodel.
 

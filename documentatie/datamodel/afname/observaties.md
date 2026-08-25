@@ -1,5 +1,6 @@
 # Observaties en emissies
 
+> **Operationele gegevens**: Observaties, emissies, onttrekkingen en observatieverzamelingen behoren tot de operationele stroom van het datamodel. Ze beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens zoals systemen en processen.
 
 Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C ([vocab-ssn](https://www.w3.org/TR/vocab-ssn/)).
 

@@ -4,13 +4,19 @@ Deze pagina beschrijft hoe de gecontroleerde vocabulaires / codelijsten van RIE-
 
 ## Overzicht
 
-Het RIE-IEPR-datamodel maakt gebruik van SKOS-concepten voor:
+Het RIE-IEPR-datamodel maakt gebruik van SKOS-concepten voor structurele en operationele gegevens.
+
+**Structurele codelijsten** typeren de organisatie en infrastructuur:
 
 * typeringen van systemen: `installatie_type`, `emissiepunt_type`, `onttrekkingspunt_type`, `meetpunt_type`, `filter_type`, `meetinstrument_type`, `uitwisselpunt_type`
 * proces- en status-typering: `procedure_type`, `status_type`, `rubriek_type`, `aangifte_type`, `aangifte_status`
 * eigenschappen-koppeling: `installatie_eigenschappen`, `emissiepunt_eigenschappen`, `meetpunt_eigenschappen`, `onttrekkingspunt_eigenschappen`, `filter_eigenschappen`, `uitwisselpunt_eigenschappen`
-* operationele rapportage: `operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`, `operationeel_contextueel`
-* hulpcodelijsten: `eenheden.csv`, `thema_type.csv`, `emissie_type.csv`
+* hulpcodelijsten: `eenheden.csv`, `emissie_type.csv`
+
+**Operationele codelijsten** ondersteunen rapportage en metingen:
+
+* operationele rapportage: `operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`, `operationeel_contextueel`, `operationeel_bepalingsmethode`
+* operationele hulpcodelijst: `thema_type.csv`
 
 Alle lijsten worden vanuit CSV-bronbestanden gegenereerd naar meerdere RDF-formaten: Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel.
 

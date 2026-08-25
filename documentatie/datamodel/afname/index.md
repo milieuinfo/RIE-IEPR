@@ -3,6 +3,12 @@
 
 Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van een data-afnemer die de gegevens raadpleegt via Linked Open Data (LOD). De documentatie behandelt **wat er beschikbaar is** en **hoe u het kunt gebruiken**. Er wordt geen informatie gegeven over databanken, transformatieprocessen of applicatielogica.
 
+Het datamodel kent twee aparte stromen:
+
+**Structurele gegevens** omvatten exploitanten, exploitatielocaties, exploitaties, systemen (installaties, emissiepunten, onttrekkingspunten, meetpunten, filters) en processen. Dit zijn versioneerbare entiteiten die de organisatie en infrastructuur beschrijven.
+
+**Operationele gegevens** omvatten observaties, emissies, onttrekkingen, observatieverzamelingen en de bijbehorende operationele codelijsten (`operationeel_*.csv`, `thema_type.csv`). Deze gegevens beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens.
+
 ## Inhoud
 
 - [End-to-end voorbeeld](./endtoend.md) de volledige dataketen van exploitant tot gemeten waarde
