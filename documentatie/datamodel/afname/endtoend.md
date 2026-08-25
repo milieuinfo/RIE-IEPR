@@ -4,6 +4,8 @@ Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de ex
 
 Lees dit document na [Basisaannames](./basisaanname.md); het gaat ervan uit dat u de URI-patronen en het versiebeheer kent.
 
+Het voorbeeld is opgesplitst in **structurele gegevens** en **operationele gegevens**. De structurele stroom beschrijft exploitant, locatie, exploitatie, processen en systemen. De operationele stroom beschrijft emissies/onttrekkingen, observaties en resultaten. Operationele gegevens linken altijd naar structurele gegevens.
+
 ## Het geheel
 
 ```mermaid
@@ -29,7 +31,9 @@ flowchart LR
 
 De keten in één zin: een **exploitant** voert op een **locatie** een **plan van processen** uit, waarvoor **systemen** (installaties, emissie-, meet- en onttrekkingspunten) worden ingezet; een **emissie** is de gebeurtenis die uit een emissieproces *afgeleid* is; **observaties** meten die gebeurtenis en leveren een **resultaat**; en een **aangifte** is het administratieve document waarop al die entiteiten (optioneel) wijzen.
 
-## 1. Exploitant en exploitatie
+## Structurele gegevens
+
+### 1. Exploitant en exploitatie
 
 De **exploitant** is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segment URI en wordt niet geversioneerd.
 
@@ -70,7 +74,7 @@ Een **contactpersoon** is een `oa:Annotation` op de exploitatie (twee-segment UR
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 ```
 
-## 2. Exploitatielocatie
+### 2. Exploitatielocatie
 
 De locatie is een `sosa:Platform`/`ogc:Feature` en het ankerpunt voor alle systemen:
 
@@ -90,7 +94,7 @@ De locatie is een `sosa:Platform`/`ogc:Feature` en het ankerpunt voor alle syste
     prov:hadPrimarySource <https://data.vlaanderen.be/id/vestiging/2081766488> .
 ```
 
-## 3. Het procesplan (P-Plan)
+### 3. Het procesplan (P-Plan)
 
 Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hangen eronder via `pplan:isStepOfPlan`; de volgorde van stappen wordt aangegeven met `pplan:isPrecededBy`. Het type van elk proces komt uit de codelijst [`procedure_type`](https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv) en dwingt via een OWL-axioma af welk systeem het proces moet implementeren (zie [Basisaannames](./basisaanname.md)):
 
@@ -140,7 +144,9 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
 
 > **P-Plan** ([www.opmw.org/model/p-plan](https://www.opmw.org/model/p-plan/)) is een W3C-ontologie voor processen: een `pplan:Plan` is een geordende reeks `pplan:Step`'s. RIE-IEPR maakt er gebruik van via `pplan:isStepOfPlan` (hierarchical) en `pplan:isPrecededBy` (volgorde). Het hoofdproces is tegelijk `pplan:Plan` en `pplan:Step`; elke stap is een `pplan:Step`.
 
-## 4. Systemen en hun eigenschappen
+## Structurele gegevens
+
+### 4. Systemen en hun eigenschappen
 
 Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploitatielocatie via `sosa:isHostedBy` en kunnen **eigenschappen** hebben via `ssn:hasProperty`:
 
@@ -167,7 +173,9 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
     riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/emissiepunt-eigenschappen/hoogte> .
 ```
 
-## 5. De gebeurtenis: emissie
+## Operationele gegevens
+
+### 5. De gebeurtenis: emissie
 
 Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov:wasDerivedFrom`, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:
 
@@ -180,7 +188,7 @@ Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov
 
 Onttrekkingen werken analoog: `riepr:Onttrekking` is `prov:wasDerivedFrom` een onttrekkingsproces (`dct:type` = `procedure-type/onttrekking`, `ssn:implementedBy` een `riepr:Onttrekkingspunt`).
 
-## 6. De meting: observatieverzameling, observatie, resultaat
+### 6. De meting: observatieverzameling, observatie, resultaat
 
 Eén meting of bemonstering levert doorgaans **meerdere individuele observaties** op (bijv. één per gemeten stof). Die delen gemeenschappelijke context (zelfde emissie, meetpunt, moment). Voor die gedeelde context is er de **observatieverzameling** (`sosa-2023:ObservationCollection`):
 
@@ -222,7 +230,7 @@ Eén meting of bemonstering levert doorgaans **meerdere individuele observaties*
 
 Let op: de observatie wijst via `sosa:hasFeatureOfInterest` rechtstreeks naar de **emissie** (de gebeurtenis), niet naar het emissiepunt of het meetpunt. Het meetpunt verschijnt via `sosa:madeBySensor`.
 
-## 7. De aangifte als lijm
+### 7. De aangifte als lijm
 
 Een **aangifte** (`dossier:Stuk`) is het administratieve document. Via de objectproperty `riepr:aangifte` kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is **optioneel**: data kan ook zonder aangifte bestaan (bijv. in concept).
 
