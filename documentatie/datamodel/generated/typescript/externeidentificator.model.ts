@@ -39,19 +39,11 @@ export class ExterneIdentificator {
 	notatie_datatype: string;
 
 	/**
-	 * notatietype
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype}
-	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
+	 * schemaAgency
+	 * @see {@link http://www.w3.org/ns/adms#schemaAgency}
+	 * Een externe identificator heeft een schema-agentschap dat de bron van de identificator aanduidt (bv. 'VMM', 'DOMG')
 	 */
-	@jsonMember({ name: 'notatietype' })
-	notatietype?: string;
-
-	/**
-	 * notatietype
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype}
-	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
-	 */
-	@jsonMember({ name: 'notatietype' })
-	notatietype_datatype: string;
+	@jsonMember({ name: 'schemaAgency' })
+	schemaAgency?: string;
 
 }

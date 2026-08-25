@@ -70,19 +70,11 @@ public class ExterneIdentificator {
 	@JsonProperty("notation")
 	private String notatie_datatype;
 	/**
-	 * notatietype
-	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype">notatietype</a>
-	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
+	 * schemaAgency
+	 * <a href="http://www.w3.org/ns/adms#schemaAgency">schemaAgency</a>
+	 * Een externe identificator heeft een schema-agentschap dat de bron van de identificator aanduidt (bv. 'VMM', 'DOMG')
 	 */
-	@Column(name = "notatietype", nullable = true)
-	@JsonProperty("notatietype")
-	private String notatietype;
-	/**
-	 * notatietype
-	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype">notatietype</a>
-	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
-	 */
-	@Column(name = "notatietype", nullable = true)
-	@JsonProperty("notatietype")
-	private String notatietype_datatype;
+	@Column(name = "schema_agency", nullable = true)
+	@JsonProperty("schemaAgency")
+	private String schemaAgency;
 }

@@ -1714,7 +1714,7 @@
     rdfs:comment "De niet-functionele datum waarop een entiteit buiten gebruik is gesteld."@nl ;
     rdfs:range xsd:date .
 
-# Expliciete restricties op adms:Identifier voor notatie en notatie-datatype (M5)
+# Expliciete restricties op adms:Identifier voor notatie en schema-agentschap (M5)
 adms:Identifier rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een externe identificator heeft een notatie waarde"@nl ;
     owl:onProperty skos:notation ;
@@ -1722,9 +1722,8 @@ adms:Identifier rdfs:subClassOf [ a owl:Restriction ;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger
 ] ;
 rdfs:subClassOf [ a owl:Restriction ;
-    rdfs:comment "Een externe identificator heeft een notatie type (het datatype-IRI van de skos:notation typed literal)"@nl ;
-    owl:onProperty :notatietype ;
-    owl:someValuesFrom rdfs:Datatype ;
+    rdfs:comment "Een externe identificator heeft een schema-agentschap dat de bron van de identificator aanduidt (bv. 'VMM', 'DOMG')"@nl ;
+    owl:onProperty adms:schemaAgency ;
     owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger
 ] .

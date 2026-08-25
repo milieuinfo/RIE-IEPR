@@ -14,8 +14,7 @@ classDiagram
 	  String uri
 	  String notatie
 	  String notatie_datatype
-	  String notatietype
-	  String notatietype_datatype
+	  String schemaAgency
 	}
 	%% http://www.w3.org/ns/locn#Address
 	class Adres {
@@ -206,7 +205,8 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan

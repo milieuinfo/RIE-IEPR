@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-08-25T12:30:36.421944107+02:00[Europe/Amsterdam]
+-- Generated: 2026-08-25T15:25:37.644490220+02:00[Europe/Amsterdam]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -560,8 +560,7 @@ CREATE TABLE externe_identificator (
   uri VARCHAR,
   notatie VARCHAR,
   notatie_datatype VARCHAR,
-  notatietype VARCHAR,
-  notatietype_datatype VARCHAR,
+  schema VARCHAR,
   PRIMARY KEY (uuid)
 );
 
@@ -570,8 +569,7 @@ COMMENT ON COLUMN externe_identificator.uuid IS 'https://data.riepr.omgeving.vla
 COMMENT ON COLUMN externe_identificator.uri IS 'http://example.org/vocab/uri';
 COMMENT ON COLUMN externe_identificator.notatie IS 'http://www.w3.org/2004/02/skos/core#notation';
 COMMENT ON COLUMN externe_identificator.notatie_datatype IS 'http://www.w3.org/2004/02/skos/core#notation';
-COMMENT ON COLUMN externe_identificator.notatietype IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype';
-COMMENT ON COLUMN externe_identificator.notatietype_datatype IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#notatietype';
+COMMENT ON COLUMN externe_identificator.schema IS 'http://www.w3.org/ns/adms#schemeAgency';
 
 ----------------------------------------------------------------------
 
