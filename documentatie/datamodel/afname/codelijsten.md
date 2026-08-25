@@ -90,23 +90,62 @@ riepr-procedure-type:transport,skos:Concept,conceptscheme:procedure_type,concept
 * `uitwissel` – proces geïmplementeerd door een uitwisselpunt
 * `meting` – proces geïmplementeerd door een meetpunt
 
-Transportprocessen worden gebruikt om de keten tussen bron en sink expliciet te maken. In de applicatieve datastructuur wordt een transportproces aangemaakt met `dct:type = riepr-procedure-type:transport` en gekoppeld aan de twee processen via `pplan:isPrecededBy`:
+Transportprocessen worden gebruikt om de keten tussen bron en sink expliciet te maken. In het datamodel is een proces tegelijk een `pplan:Plan`, `pplan:Step` en `sosa:Procedure`. De typering komt uit de codelijst `procedure_type` via `dct:type`.
+
+In het datamodel geldt:
+
+* Elk proces is een stap in een hoger plan: `pplan:isStepOfPlan`
+* De volgorde van stappen wordt vastgelegd met `pplan:isPrecededBy`: *stap X is voorafgegaan door stap Y*
+* Een proces kan een systeem implementeren: `ssn:implementedBy` / `ssn:implements`
+
+Voor transport:
 
 ```
-PROCES_INSTALLATIE --> isPrecededBy --> PROCES_TRANSPORT --> isPrecededBy --> PROCES_EMISSIE
+PROCES_INSTALLATIE -- pplan:isPrecededBy --> PROCES_TRANSPORT -- pplan:isPrecededBy --> PROCES_EMISSIE
 ```
 
-Voorbeeld uit de applicatieve documentatie:
+In Turtle:
 
-1. Een proces van type `VERWERKING` implementeert een installatie.
-2. Een proces van type `EMISSIE` wordt geïmplementeerd door een emissiepunt.
+```turtle
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix pplan: <http://www.w3.org/ns/p-plan#> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+
+<.../proces/INSTALLATIE/uuid/2026-01-01/...>
+    a riepr:Proces ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    ssn:implementedBy <.../installatie/uuid/2026-01-01/...> ;
+    pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> .
+
+<.../proces/TRANSPORT/uuid/2026-01-01/...>
+    a riepr:Proces ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> ;
+    pplan:isPrecededBy <.../proces/INSTALLATIE/uuid/2026-01-01/...> .
+
+<.../proces/EMISSIE/uuid/2026-01-01/...>
+    a riepr:Proces ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    ssn:implementedBy <.../emissiepunt/uuid/2026-01-01/...> ;
+    pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> ;
+    pplan:isPrecededBy <.../proces/TRANSPORT/uuid/2026-01-01/...> .
+```
+
+Praktisch voorbeeld uit de applicatieve documentatie `DATASTRUCTUUR.md`:
+
+1. Een proces van type `VERWERKING` implementeert een installatie via `ssn:implementedBy`.
+2. Een proces van type `EMISSIE` wordt geïmplementeerd door een emissiepunt via `ssn:implementedBy`.
 3. Een nieuw proces van type `TRANSPORT` wordt aangemaakt met benaming bv. "Transport CO2 van Oven naar Schouw".
-4. Het transportproces is een stap in het hoofdplan `pplan:isStepOfPlan`.
-5. Relaties:
+   * `dct:type = riepr-procedure-type:transport`
+   * `pplan:isStepOfPlan` naar het hoofdproces van de exploitatie
+4. Volgorde koppeling:
    * `PROCES_EMISSIE --> pplan:isPrecededBy --> PROCES_TRANSPORT`
    * `PROCES_TRANSPORT --> pplan:isPrecededBy --> PROCES_INSTALLATIE`
 
-Dit maakt de massabalans en de herkomst van emissies traceerbaar en laat toe om stoffen expliciet te koppelen over processen heen. Zie ook de applicatieve documentatie `DATASTRUCTUUR.md` sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces".
+Hierdoor wordt het transportproces de brug tussen de twee processen. De stof die in het verwerkingsproces vrijkomt, wordt via het transportproces naar het emissieproces geleid. Dit maakt de massabalans en de herkomst van emissies traceerbaar en laat toe om stoffen expliciet te koppelen over processen heen.
+
+Zie ook de applicatieve documentatie `DATASTRUCTUUR.md` sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces", en het datamodel [Basisaannames](./basisaanname.md) over P-Plan.
 
 ## CSV-kolommen
 
