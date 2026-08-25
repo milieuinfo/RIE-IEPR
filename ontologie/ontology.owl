@@ -657,14 +657,14 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid7">
-        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>uuid</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid8">
         <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>issued</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid8">
+        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>uuid</core:variable>
     </rdf:Description>
     
 
@@ -1081,9 +1081,9 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid56">
-        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
+        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>created</core:variable>
+        <core:variable>uuid</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid57">
         <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
@@ -1091,9 +1091,9 @@
         <core:variable>issued</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid58">
-        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
+        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>uuid</core:variable>
+        <core:variable>created</core:variable>
     </rdf:Description>
     
 
@@ -1302,25 +1302,25 @@
 
     <owl:Class rdf:about="https://data.vlaanderen.be/ns/dossier#Stuk"/>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren</rdfs:comment>
-    </rdf:Description>
-    <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren</rdfs:comment>
-    </rdf:Description>
-    <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt</rdfs:comment>
-    </rdf:Description>
-    <rdf:Description>
         <rdfs:comment xml:lang="nl">Proces kan een plan op zichzelf zijn (multi step)</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
         <rdfs:comment xml:lang="nl">Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
+        <rdfs:comment xml:lang="nl">Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description>
         <rdfs:comment xml:lang="nl">Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:comment xml:lang="nl">Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description>
+        <rdfs:comment xml:lang="nl">Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt</rdfs:comment>
     </rdf:Description>
     
 

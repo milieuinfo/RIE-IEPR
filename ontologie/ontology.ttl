@@ -384,13 +384,13 @@ _:genid6 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                     _:genid8 ;
           <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid7 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
-          <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-          <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-
-_:genid8 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+_:genid7 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
           <http://www.w3.org/ns/hydra/core#variable> "issued" .
+
+_:genid8 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+          <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+          <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
@@ -711,17 +711,17 @@ _:genid55 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                      _:genid58 ;
            <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid56 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+_:genid56 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "created" .
+           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
 _:genid57 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "issued" .
 
-_:genid58 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid58 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+           <http://www.w3.org/ns/hydra/core#variable> "created" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
@@ -877,25 +877,25 @@ _:genid85 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgevin
 <https://data.vlaanderen.be/ns/dossier#Stuk> rdf:type owl:Class .
 
 
-[ rdfs:comment "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl
+[ rdfs:comment "Proces kan een plan op zichzelf zijn (multi step)"@nl
 ] .
 
-[ rdfs:comment "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl
- ] .
-
-[ rdfs:comment "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl
- ] .
-
-[ rdfs:comment "Proces kan een plan op zichzelf zijn (multi step)"@nl
- ] .
-
 [ rdfs:comment "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"@nl
+ ] .
+
+[ rdfs:comment "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl
  ] .
 
 [ rdfs:comment "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl
  ] .
 
-[ rdfs:comment "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl
+[ rdfs:comment "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl
+ ] .
+
+[ rdfs:comment "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl
+ ] .
+
+[ rdfs:comment "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl
  ] .
 
 #################################################################
