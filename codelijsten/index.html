@@ -1180,13 +1180,18 @@
 <h1 id="codelijsten-beheer">Codelijsten beheer</h1>
 <p>Deze pagina beschrijft hoe de gecontroleerde vocabulaires / codelijsten van RIE-IEPR zijn opgebouwd, beheerd en gepubliceerd. De bronbestanden staan in het aparte repository <a href="https://github.com/milieuinfo/codelijst-rie-iepr">milieuinfo/codelijst-rie-iepr</a> onder <code>src/source/</code>. De codelijsten worden als SKOS concepten en concept schemes gepubliceerd op <code>https://data.omgeving.vlaanderen.be/id/concept/riepr/</code>.</p>
 <h2 id="overzicht">Overzicht</h2>
-<p>Het RIE-IEPR-datamodel maakt gebruik van SKOS-concepten voor:</p>
+<p>Het RIE-IEPR-datamodel maakt gebruik van SKOS-concepten voor structurele en operationele gegevens.</p>
+<p><strong>Structurele codelijsten</strong> typeren de organisatie en infrastructuur:</p>
 <ul>
 <li>typeringen van systemen: <code>installatie_type</code>, <code>emissiepunt_type</code>, <code>onttrekkingspunt_type</code>, <code>meetpunt_type</code>, <code>filter_type</code>, <code>meetinstrument_type</code>, <code>uitwisselpunt_type</code></li>
 <li>proces- en status-typering: <code>procedure_type</code>, <code>status_type</code>, <code>rubriek_type</code>, <code>aangifte_type</code>, <code>aangifte_status</code></li>
 <li>eigenschappen-koppeling: <code>installatie_eigenschappen</code>, <code>emissiepunt_eigenschappen</code>, <code>meetpunt_eigenschappen</code>, <code>onttrekkingspunt_eigenschappen</code>, <code>filter_eigenschappen</code>, <code>uitwisselpunt_eigenschappen</code></li>
-<li>operationele rapportage: <code>operationeel_lucht</code>, <code>operationeel_water</code>, <code>operationeel_grondwater</code>, <code>operationeel_grondstoffen</code>, <code>operationeel_zelfcontrole_lucht</code>, <code>operationeel_zelfcontrole_water</code>, <code>operationeel_misc</code>, <code>operationeel_contextueel</code></li>
-<li>hulpcodelijsten: <code>eenheden.csv</code>, <code>thema_type.csv</code>, <code>emissie_type.csv</code></li>
+<li>hulpcodelijsten: <code>eenheden.csv</code>, <code>emissie_type.csv</code></li>
+</ul>
+<p><strong>Operationele codelijsten</strong> ondersteunen rapportage en metingen:</p>
+<ul>
+<li>operationele rapportage: <code>operationeel_lucht</code>, <code>operationeel_water</code>, <code>operationeel_grondwater</code>, <code>operationeel_grondstoffen</code>, <code>operationeel_zelfcontrole_lucht</code>, <code>operationeel_zelfcontrole_water</code>, <code>operationeel_misc</code>, <code>operationeel_contextueel</code>, <code>operationeel_bepalingsmethode</code></li>
+<li>operationele hulpcodelijst: <code>thema_type.csv</code></li>
 </ul>
 <p>Alle lijsten worden vanuit CSV-bronbestanden gegenereerd naar meerdere RDF-formaten: Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel.</p>
 <h2 id="repository-structuur">Repository structuur</h2>
