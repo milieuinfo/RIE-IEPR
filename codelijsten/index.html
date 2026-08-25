@@ -1252,20 +1252,54 @@ riepr-procedure-type:transport,skos:Concept,conceptscheme:procedure_type,concept
 <li><code>uitwissel</code> – proces geïmplementeerd door een uitwisselpunt</li>
 <li><code>meting</code> – proces geïmplementeerd door een meetpunt</li>
 </ul>
-<p>Transportprocessen worden gebruikt om de keten tussen bron en sink expliciet te maken. In de applicatieve datastructuur wordt een transportproces aangemaakt met <code>dct:type = riepr-procedure-type:transport</code> en gekoppeld aan de twee processen via <code>pplan:isPrecededBy</code>:</p>
-<div class="highlight"><pre><span></span><code>PROCES_INSTALLATIE --&gt; isPrecededBy --&gt; PROCES_TRANSPORT --&gt; isPrecededBy --&gt; PROCES_EMISSIE
+<p>Transportprocessen worden gebruikt om de keten tussen bron en sink expliciet te maken. In het datamodel is een proces tegelijk een <code>pplan:Plan</code>, <code>pplan:Step</code> en <code>sosa:Procedure</code>. De typering komt uit de codelijst <code>procedure_type</code> via <code>dct:type</code>.</p>
+<p>In het datamodel geldt:</p>
+<ul>
+<li>Elk proces is een stap in een hoger plan: <code>pplan:isStepOfPlan</code></li>
+<li>De volgorde van stappen wordt vastgelegd met <code>pplan:isPrecededBy</code>: <em>stap X is voorafgegaan door stap Y</em></li>
+<li>Een proces kan een systeem implementeren: <code>ssn:implementedBy</code> / <code>ssn:implements</code></li>
+</ul>
+<p>Voor transport:</p>
+<div class="highlight"><pre><span></span><code>PROCES_INSTALLATIE -- pplan:isPrecededBy --&gt; PROCES_TRANSPORT -- pplan:isPrecededBy --&gt; PROCES_EMISSIE
 </code></pre></div>
-<p>Voorbeeld uit de applicatieve documentatie:</p>
+<p>In Turtle:</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">pplan:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/p-plan#&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="nv">&lt;.../proces/INSTALLATIE/uuid/2026-01-01/...&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../installatie/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
+
+<span class="nv">&lt;.../proces/TRANSPORT/uuid/2026-01-01/...&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/INSTALLATIE/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
+
+<span class="nv">&lt;.../proces/EMISSIE/uuid/2026-01-01/...&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/TRANSPORT/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>Praktisch voorbeeld uit de applicatieve documentatie <code>DATASTRUCTUUR.md</code>:</p>
 <ol>
-<li>Een proces van type <code>VERWERKING</code> implementeert een installatie.</li>
-<li>Een proces van type <code>EMISSIE</code> wordt geïmplementeerd door een emissiepunt.</li>
+<li>Een proces van type <code>VERWERKING</code> implementeert een installatie via <code>ssn:implementedBy</code>.</li>
+<li>Een proces van type <code>EMISSIE</code> wordt geïmplementeerd door een emissiepunt via <code>ssn:implementedBy</code>.</li>
 <li>Een nieuw proces van type <code>TRANSPORT</code> wordt aangemaakt met benaming bv. "Transport CO2 van Oven naar Schouw".</li>
-<li>Het transportproces is een stap in het hoofdplan <code>pplan:isStepOfPlan</code>.</li>
-<li>Relaties:</li>
+<li><code>dct:type = riepr-procedure-type:transport</code></li>
+<li><code>pplan:isStepOfPlan</code> naar het hoofdproces van de exploitatie</li>
+<li>Volgorde koppeling:</li>
 <li><code>PROCES_EMISSIE --&gt; pplan:isPrecededBy --&gt; PROCES_TRANSPORT</code></li>
 <li><code>PROCES_TRANSPORT --&gt; pplan:isPrecededBy --&gt; PROCES_INSTALLATIE</code></li>
 </ol>
-<p>Dit maakt de massabalans en de herkomst van emissies traceerbaar en laat toe om stoffen expliciet te koppelen over processen heen. Zie ook de applicatieve documentatie <code>DATASTRUCTUUR.md</code> sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces".</p>
+<p>Hierdoor wordt het transportproces de brug tussen de twee processen. De stof die in het verwerkingsproces vrijkomt, wordt via het transportproces naar het emissieproces geleid. Dit maakt de massabalans en de herkomst van emissies traceerbaar en laat toe om stoffen expliciet te koppelen over processen heen.</p>
+<p>Zie ook de applicatieve documentatie <code>DATASTRUCTUUR.md</code> sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces", en het datamodel <a href="../basisaanname/">Basisaannames</a> over P-Plan.</p>
 <h2 id="csv-kolommen">CSV-kolommen</h2>
 <p>De CSV-koppen zijn de bron voor RDF-triples. De meest voorkomende kolommen:</p>
 <ul>
