@@ -55,6 +55,14 @@ public class Resultaat {
 	@JsonProperty("uri")
 	private String uri;
 	/**
+	 * hasUnit
+	 * <a href="http://qudt.org/schema/qudt/hasUnit">hasUnit</a>
+	 * Een resultaat kan een eenheid hebben
+	 */
+	@Column(name = "eenheid", nullable = true)
+	@JsonProperty("hasUnit")
+	private String eenheid;
+	/**
 	 * numericValue
 	 * <a href="http://qudt.org/schema/qudt/numericValue">numericValue</a>
 	 * Een resultaat kan een numerieke waarde hebben
@@ -62,14 +70,6 @@ public class Resultaat {
 	@Column(name = "waarde", nullable = true)
 	@JsonProperty("numericValue")
 	private Double waarde;
-	/**
-	 * unit
-	 * <a href="http://qudt.org/schema/qudt/unit">unit</a>
-	 * Een resultaat kan een eenheid hebben
-	 */
-	@Column(name = "eenheid", nullable = true)
-	@JsonProperty("unit")
-	private String eenheid;
 	/**
 	 * comment
 	 * <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>

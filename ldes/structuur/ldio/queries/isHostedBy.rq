@@ -1,0 +1,12 @@
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX sosa:  <http://www.w3.org/ns/sosa/>
+PREFIX ssn:   <http://www.w3.org/ns/ssn/>
+
+CONSTRUCT {
+    ?system sosa:isHostedBy ?exploitatielocatie .
+}
+WHERE {
+    ?exploitatie a riepr:Exploitatie ;
+        ssn:deployedOnPlatform ?exploitatielocatie ;
+        ssn:deployedSystem ?system .
+}

@@ -35,7 +35,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
 ```
 
-## `dct:isVersionOf` de link tussen versie en identity
+## 2. `dct:isVersionOf` de link tussen versie en identity
 
 De relatie `dct:isVersionOf` koppelt een versie aan haar identity URI:
 
@@ -52,22 +52,31 @@ De relatie `dct:isVersionOf` koppelt een versie aan haar identity URI:
 
 Meerdere versies kunnen naar dezelfde identity verwijzen. Ze beschrijven verschillende toestanden van hetzelfde object.
 
-## 3. Geldigheid: `dct:issued` en `adms:status`
+## 3. Geldigheid: `dct:issued`, `dct:valid` en `adms:status`
 
-Elke versie heeft een geldigheidsdatum (`dct:issued`) en een status (`adms:status`):
+Elke versie heeft een **geldigheidsperiode** en een status:
+
+- `dct:issued` (verplicht): de **start** van de geldigheid.
+- `dct:valid` (optioneel): het **einde** van de geldigheid. Ontbreekt het, dan geldt de versie tot op heden (of tot het begin van de volgende versie).
+- `adms:status`: de status van de entiteit in die versie.
 
 ```turtle
 @prefix dct:  <http://purl.org/dc/terms/> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 
+# Versie 1: geldig van 2026-01-01 tot 2026-06-30 (geldigheidseinde expliciet)
 <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
     dct:issued "2026-01-01"^^xsd:date ;
+    dct:valid  "2026-06-30"^^xsd:date ;
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
 
+# Versie 2: geldig van 2026-07-01, geen einde (huidige versie)
 <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-07-01/2026-07-01T10:00:00Z>
     dct:issued "2026-07-01"^^xsd:date ;
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
 ```
+
+> **Note**: het model gebruikt geen `prov:wasRevisionOf` tussen versies. Versies zijn afzonderlijke URIs die via `dct:isVersionOf` naar dezelfde identity verwijzen; de volgorde en geldigheid volgt uit `dct:issued`/`dct:valid`.
 
 ### Beschikbare statussen
 
@@ -97,7 +106,7 @@ Elke versie bevat provenance-informatie via PROV-O:
 
 ### Huidige toestand opvragen
 
-Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste `dct:issued` die nog geldig is:
+Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste `dct:issued` waarvoor `dct:valid` ontbreekt of in de toekomst ligt:
 
 ```sparql
 SELECT ?versie ?label ?issued
@@ -106,6 +115,8 @@ WHERE {
           dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
           rdfs:label ?label ;
           dct:issued ?issued .
+  OPTIONAL { ?versie dct:valid ?valid }
+  FILTER(!BOUND(?valid) || ?valid >= "2026-08-01"^^xsd:date)
 }
 ORDER BY DESC(?issued)
 LIMIT 1
@@ -113,7 +124,7 @@ LIMIT 1
 
 ### Toestand op een historisch moment
 
-Om de toestand van een installatie op een specifiek datum te vinden:
+Om de toestand van een installatie op een specifiek datum te vinden (`?issued <= moment` en `dct:valid` ontbreekt of ligt na het moment):
 
 ```sparql
 SELECT ?versie ?label ?issued
@@ -122,7 +133,9 @@ WHERE {
           dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
           rdfs:label ?label ;
           dct:issued ?issued .
+  OPTIONAL { ?versie dct:valid ?valid }
   FILTER(?issued <= "2026-03-01"^^xsd:date)
+  FILTER(!BOUND(?valid) || ?valid >= "2026-03-01"^^xsd:date)
 }
 ORDER BY DESC(?issued)
 LIMIT 1
@@ -131,13 +144,14 @@ LIMIT 1
 ### Versies van een entiteit door de tijd heen
 
 ```sparql
-SELECT ?versie ?label ?issued ?created ?status
+SELECT ?versie ?label ?issued ?valid ?created ?status
 WHERE {
   ?versie a riepr:Installatie ;
           dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
           rdfs:label ?label ;
           dct:issued ?issued ;
           dct:created ?created .
+  OPTIONAL { ?versie dct:valid ?valid }
   OPTIONAL { ?versie adms:status ?status }
 }
 ORDER BY ?issued, ?created
@@ -224,11 +238,11 @@ classDiagram
       String uri
     }
     
-    %% Links between identity and version URIs
-    ExploitatieIdentity <|-- ExploitatieVersion1 : isVersionOf
-    ExploitatieIdentity <|-- ExploitatieVersion2 : isVersionOf
-    InstallatieIdentity <|-- InstallatieVersion1 : isVersionOf
-    InstallatieIdentity <|-- InstallatieVersion2 : isVersionOf
+    %% Links between version URIs and identity URIs (versie isVersionOf identity)
+    ExploitatieVersion1 --> ExploitatieIdentity : isVersionOf
+    ExploitatieVersion2 --> ExploitatieIdentity : isVersionOf
+    InstallatieVersion1 --> InstallatieIdentity : isVersionOf
+    InstallatieVersion2 --> InstallatieIdentity : isVersionOf
     
     %% Version attributes
     class VersionAttributes {

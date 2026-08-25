@@ -3,8 +3,15 @@
 
 Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van een data-afnemer die de gegevens raadpleegt via Linked Open Data (LOD). De documentatie behandelt **wat er beschikbaar is** en **hoe u het kunt gebruiken**. Er wordt geen informatie gegeven over databanken, transformatieprocessen of applicatielogica.
 
+Het datamodel kent twee aparte stromen:
+
+**Structurele gegevens** omvatten exploitanten, exploitatielocaties, exploitaties, systemen (installaties, emissiepunten, onttrekkingspunten, meetpunten, filters) en processen. Dit zijn versioneerbare entiteiten die de organisatie en infrastructuur beschrijven.
+
+**Operationele gegevens** omvatten observaties, emissies, onttrekkingen, observatieverzamelingen en de bijbehorende operationele codelijsten (`operationeel_*.csv`, `thema_type.csv`). Deze gegevens beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens.
+
 ## Inhoud
 
+- [End-to-end voorbeeld](./endtoend.md) de volledige dataketen van exploitant tot gemeten waarde
 - [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
 - [Basisaannames](./basisaanname.md) de modellen en aannames die ten grondslag liggen aan het datamodel
 - [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
@@ -39,8 +46,11 @@ Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 
 - **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
 - **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
+- **ADMS** ([Agent Design Memorandum Schema](https://www.w3.org/TR/vocab-adms/)) externe/bibliotheek-identificatoren via `adms:identifier`
 - **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geografische objecten
 - **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
+
+> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u het aftrekt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
 ## Codelijsten (SKOS concepten)
 
@@ -58,7 +68,7 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 | **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (meetput, controle-inrichting, …) |
 | **filter_type** | `…/concept/riepr/filter-type/` | Typen filters |
 | **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (emissie, onttrekking, verwerking, meet, uitwissel) |
-| **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Hoofdactiviteit van een exploitant |
+| **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Typering van het hoofdproces (dat de exploitatie implementeert) |
 | **status_type** | `…/concept/riepr/status-type/` | Statussen (in_dienst, ontmanteld, …) |
 | **rubriek_type** | `…/concept/riepr/rubriek-type/` | Classificaties (VLAREM, EGW, …) |
 | **aangifte_type** | `…/concept/riepr/aangifte-type/` | Typen aangiften |
@@ -104,6 +114,6 @@ Het codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepublicee
 
 Deze documentatie is gebaseerd op:
 
-- **Ontologie**: `documentatie/datamodel/src/ns/riepr/riepr.ttl`
+- **Ontologie**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl`
 - **Datavoorbeeld**: `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl` (AGC Glass Europe)
 - **SHACL-shapes**: `documentatie/datamodel/generated/shacl/schema.ttl`

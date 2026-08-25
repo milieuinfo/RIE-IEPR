@@ -1,5 +1,5 @@
-export SERVER_URL=http://localhost:8080
-export LDIO_URL=http://localhost:8090
+export SERVER_URL=http://localhost:8081
+export LDIO_URL=http://localhost:8091
 
 post_to_ingest() {
   echo "ingesting to stream $1 with body content of file $2"

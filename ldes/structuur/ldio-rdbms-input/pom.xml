@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.openldes.ldio</groupId>
+    <artifactId>ldio-rdbms-input</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--
+      Compile-only dependencies. At runtime the jar is dropped into /ldio/lib/ of
+      the ldi-orchestrator container, which already provides Jena 5.1.0, Spring,
+      the LDIO SPI (ldio-common) and the PostgreSQL JDBC driver (ldio-rdb-out).
+      For compilation we reuse the bundled ldio-http-in jar (contains all of it).
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>org.openldes.ldio</groupId>
+            <artifactId>ldio-http-in</artifactId>
+            <version>3.1.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ldio-http-in-jar-with-dependencies.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/postgresql.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>ldio-rdbms-input</finalName>
+    </build>
+</project>

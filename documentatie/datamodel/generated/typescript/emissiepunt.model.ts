@@ -109,14 +109,6 @@ export class Emissiepunt implements Systeem {
 	status?: Status;
 
 	/**
-	 * wasRevisionOf
-	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
-	 * Een emissiepunt kan een revisie zijn van een andere systemen (optioneel)
-	 */
-	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
-	revisieVan?: Systeem;
-
-	/**
 	 * hasDeployment
 	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
 	 */

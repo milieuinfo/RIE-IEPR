@@ -415,6 +415,38 @@
               </arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>oddtoolkit-class-diagram</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=class-diagram</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>oddtoolkit-er-diagram</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=er-diagram</argument>
+                <argument>--config-file=documentatie/datamodel/src/config.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 

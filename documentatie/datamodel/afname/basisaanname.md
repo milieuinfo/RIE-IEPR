@@ -29,6 +29,16 @@ Processen vormen het organisatieprincipe van het hele datamodel. **Alles hangt a
     ssn:implementedBy <.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
+### Wat is P-Plan?
+
+[P-Plan](https://www.opmw.org/model/p-plan/) is een W3C-ontologie voor het modelleren van processen als geordende plannen. De kernbegrippen:
+
+- Een **`pplan:Plan`** is een (samengesteld) plan van stappen.
+- Een **`pplan:Step`** is een individuele stap; `pplan:isStepOfPlan` legt een stap onder een hoger niveau (plan of stap).
+- **`pplan:isPrecededBy`** geeft de volgorde aan: welke stap vóór een andere moet plaatsvinden.
+
+In RIE-IEPR is elk `riepr:Proces` tegelijk een `pplan:Plan`, een `pplan:Step` en een `sosa:Procedure`. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (`pplan:isStepOfPlan`) en kunnen met `pplan:isPrecededBy` onderling geordend worden.
+
 ## 2. URI-ontwerp en versiebeheer
 
 Het model maakt onderscheid tussen **identity URIs** (tijdsloos) en **versie-URIs** (met tijd).
@@ -101,13 +111,9 @@ De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaander
 
 ## 5. Disjoint classes
 
-Enkele klassen zijn onderling **disjoint**: een entiteit kan niet tegelijkertijd tot meerdere van deze klassen behoren.
+Een **meetpunt** is per definitie geen emissiepunt of onttrekkingspunt: `riepr:Meetpunt` staat `owl:disjointWith` `riepr:Emissiepunt` én `riepr:Onttrekkingspunt`.
 
-- `riepr:Emissiepunt`
-- `riepr:Onttrekkingspunt`
-- `riepr:Meetpunt`
-
-Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt - nooit twee tegelijk. Het **Uitwisselpunt** is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).
+Een **uitwisselpunt** daarentegen is wél zowel emissiepunt als onttrekkingspunt: `riepr:Uitwisselpunt` is gedefinieerd als de equivalentie van de intersectie `Emissiepunt ∩ Onttrekkingspunt` — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.
 
 ## 6. Observaties en Features of Interest
 
@@ -150,14 +156,14 @@ Elke systeemeigenschap heeft twee kenmerken:
 - **`riepr:parameter`** - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
 - **`riepr:datatype`** - het datatype van de waarde (bijv. `xsd:decimal`)
 
-De eenheid wordt vastgelegd via `qudt:hasUnit` conform de ontologie; in praktijkvoorbeelden wordt vaak `qudt:unit` gebruikt voor leesbaarheid.
+De eenheid wordt vastgelegd via `qudt:hasUnit` naar een QUDT-eenheid (bijv. `http://qudt.org/vocab/unit/M`).
 
 ```turtle
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
     rdfs:value "0"^^xsd:decimal ;
-    qudt:hasUnit unit:Percent ;
+    qudt:hasUnit unit:PERCENT ;
     riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
 ```
 
@@ -176,6 +182,112 @@ Elke entiteit kan een primaire bron hebben via `prov:hadPrimarySource`. Dit trac
 <.../exploitatielocatie/.../2026-01-01/2026-01-01T10:00:00Z>
     prov:hadPrimarySource <https://data.vlaanderen.be/id/vestiging/2081766488> .
 ```
+
+## 9. Externe identificatoren (`adms:identifier`)
+
+RIE-IEPR kent twee vormen van identificatie:
+
+- De **URI** (UUID-gebaseerd) is de eigen identity van RIE-IEPR (zie [URI-ontwerp](#2-uri-ontwerp-en-versiebeheer)).
+- Een **externe identificator** (`adms:Identifier`) bewaart een code die afkomstig is uit een **bovenliggend of voorgaand bron-systeem**.
+
+`adms:identifier` is dus geen duplicatie van de URI: het is de bewaargebleven **bron-identificatie**. Zo blijft data:
+
+- traceerbaar terug naar de bovengelegde systemen (migratie VMM → RIE-IEPR),
+- kruisreferentieerbaar met andere Vlaamse datasets (bijv. INSPIRE/DOMG),
+- herkenbaar in herkomst, naast `prov:hadPrimarySource` (zie [Provenance](#8-provenance-en-herkomst)).
+
+### Structuur
+
+Elke externe identificator is een anonieme node met twee onderdelen:
+
+| Onderdeel | Property | Omschrijving |
+|---|---|---|
+| Bron/systeem | `adms:scheme` | Naam van het systeem waar de code vandaan komt, bijv. `"VMM"`, `"DOMG"` |
+| Waarde | `rdf:value` | De code zelf; kan een **datatype** krijgen dat aangeeft welk bron-veld het vertegenwoordigt |
+
+`adms:identifier` is **optioneel** (`minCardinality 0`) en **meervoudig**: een entiteit kan meerdere externe identificatoren tegelijk hebben.
+
+### Schemas (bronnen)
+
+| `adms:scheme` | Bron | Soort code | Voorbeeld `rdf:value` |
+|---|---|---|---|
+| `VMM` | Voorgaand VMM/MJV-systeem (migratie) | CBB-nummer, apparaat-id, emissiepunt-id, put-id, vergunning-id, ... | `"01787986000160"^^vmm:cbbNummer` |
+| `DOMG` | Vlaamse databron / INSPIRE | INSPIRE-identifier | `"BE.VL.000000034.SITE"^^riepr:inspireId` |
+
+> **Let op:** In het datavoorbeeld krijgen `rdf:value`-waarden een datatype uit de dummy-namespace `vmm:` (bijv. `^^vmm:cbbNummer`) óf `riepr:inspireId`. Dit datatype is **illustratief**: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace `vmm:` (`<http://vmm.be#>`) dient enkel als placeholder in het voorbeeld.
+
+### Klassen die `adms:identifier` ondersteunen
+
+In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in de SHACL-shapes verschijnt dit als `sh:property` met `sh:class adms:Identifier`, `sh:minCount 0`):
+
+| Klasse | Ook in het datavoorbeeld? |
+|---|---|
+| `riepr:Exploitatielocatie` | ja (DOMG/INSPIRE) |
+| `riepr:Exploitatie` | ja (VMM/CBB) |
+| `riepr:Installatie` | ja (VMM/apparaat, DOMG-INSPIRE) |
+| `riepr:Emissiepunt` | ja (VMM/emissiepunt) |
+| `riepr:Onttrekkingspunt` | ja (VMM/meerdere) |
+| `riepr:Meetpunt` | ja (VMM/lozings- en onttrekkingspunt) |
+| `riepr:Filter` | ja (VMM/filter) |
+
+### Voorbeelden (uit `datavoorbeelden/`)
+
+**Enkele** externe identificatoren op een exploitatielocatie (INSPIRE/DOMG) en een exploitatie (VMM-migratie):
+
+```turtle
+@prefix adms:  <http://www.w3.org/ns/adms#> .
+@prefix vmm:   <http://vmm.be#> .
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+
+# Exploitatielocatie: INSPIRE-identifier uit DOMG
+<.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "DOMG" ;
+        rdf:value "BE.VL.000000034.SITE"^^riepr:inspireId ] .
+
+# Exploitatie: CBB-nummer uit VMM (migratie)
+<.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "01787986000160"^^vmm:cbbNummer ] .
+```
+
+**Meerdere** identificatoren op één onttrekkingspunt (elk een ander VMM-bron-veld):
+
+```turtle
+<.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>
+    adms:identifier [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "46769"^^vmm:onttrekkingspuntCode
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-010762"^^vmm:exploitantID
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-052596"^^vmm:vergunningID
+    ], [ a adms:Identifier ;
+        adms:scheme "VMM" ;
+        rdf:value "2019-043747"^^vmm:putID ] .
+```
+
+### Afname (SPARQL)
+
+Externe identificatoren laten zich filteren op schema en waarde. Hierbij let je op de anonieme nodes (`adms:Identifier`):
+
+```sparql
+PREFIX adms:  <http://www.w3.org/ns/adms#>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+
+# Onttrekkingspunten met een specifieke VMM-put-id
+SELECT ?put WHERE {
+    ?put a riepr:Onttrekkingspunt ;
+        adms:identifier [ adms:scheme "VMM" ;
+                          rdf:value "2019-043747" ] .
+}
+```
+
+Zie ook [Gebruiksscenario's](./gebruiksscenario.md) voor bredere afname-voorbeelden.
 
 ## Referenties
 

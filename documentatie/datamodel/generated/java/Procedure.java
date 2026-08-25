@@ -28,20 +28,4 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/sosa/Procedure">Procedure</a>
  **/
 public enum Procedure {
-	EMISSIE("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie"),
-	MEET("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting"),
-	ONTTREKKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking"),
-	TRANSPORT("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport"),
-	UITWISSEL("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel"),
-	VERWERKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking");
-
-	private final String uri;
-
-	Procedure(String uri) {
-		this.uri = uri;
-	}
-
-	public String getUri() {
-		return uri;
-	}
 }

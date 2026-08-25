@@ -1,5 +1,6 @@
 import { Gebeurtenis } from './gebeurtenis.interface';
 import { Observatie } from './observatie.model';
+import { ObservatieVerzameling } from './observatieverzameling.model';
 import { Proces } from './proces.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
@@ -39,6 +40,6 @@ export class Onttrekking implements Gebeurtenis {
 	 * @see {@link http://www.w3.org/ns/sosa/isFeatureOfInterestOf}
 	 */
 	@jsonArrayMember(() => Observatie, { name: 'isFeatureOfInterestOf' })
-	isFeatureOfInterestOf?: Observatie[];
+	isFeatureOfInterestOf?: (Observatie | ObservatieVerzameling)[];
 
 }

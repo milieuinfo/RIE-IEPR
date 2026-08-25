@@ -77,6 +77,14 @@ public class Onttrekking implements IGebeurtenis {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
-	@JsonProperty("isFeatureOfInterestOf")
-	private List<Observatie> isFeatureOfInterestOf;
+	@JsonProperty("isFeatureOfInterestOf_observatie")
+	private List<Observatie> isFeatureOfInterestOfObservatie;
+	@ManyToMany
+	@JoinTable(
+		name = "onttrekking_observatie_verzameling",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("isFeatureOfInterestOf_observatie_verzameling")
+	private List<ObservatieVerzameling> isFeatureOfInterestOfObservatieVerzameling;
 }

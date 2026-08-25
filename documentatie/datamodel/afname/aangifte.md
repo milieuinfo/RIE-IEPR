@@ -1,56 +1,145 @@
 # Aangifte en dossier
 
 
-Dit document beschrijft hoe aangiften en dossiers gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de **Dossier**-ontologie van Vlaanderen voor documentbeheer.
+Een **aangifte** is een document ingediend bij de overheid. In de ontologie is het een subklasse van `dossier:Stuk` ([Dossier-model](https://data.vlaanderen.be/ns/dossier#)). Aangiften vormen de administratieve lijm van het model: de operationele entiteiten (exploitaties, systemen, processen, observaties) kunnen er via `riepr:aangifte` naar verwijzen.
 
 ## 1. Aangifte
 
-Een **aangifte** is een document ingediend bij de overheid. In de ontologie is het een subklasse van `dossier:Stuk`.
+### Kenmerken
+
+| Eigenschap | Type | Verplicht | Beschrijving |
+|---|---|---|---|
+| `dct:subject` | riepr:Exploitatie | Ja (exact 1) | De exploitatie waarnaar de aangifte betrekking heeft |
+| `dct:created` | date | Ja (exact 1) | Datum van indiening |
+| `dct:modified` | date | Nee | Datum van goedkeuring |
+| `dct:isPartOf` | riepr:Aangiftebundel | Nee | De bundel waartoe de aangifte behoort |
+| `dossier:informatieclassificatie` | concept | Nee | Informatieclassificatie (openbaar, vertrouwelijk, ...) |
+
+### URI-patroon
+
+Aangiften gebruiken een **`vlaanderenId`** (geen UUID) en worden niet geversioneerd:
+
+```
+https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}
+```
 
 ```turtle
 @prefix dossier: <https://data.vlaanderen.be/ns/dossier#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
-    a dossier:Stuk ;
-    dct:title "RIE-IEPR aangifte 2026"@nl ;
-    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
+    a riepr:Aangifte, dossier:Stuk ;
+    rdfs:label "Bijzondere toelating - wijziging GL012345"@nl ;
+    dct:subject <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> ;
+    dct:created "2025-12-01"^^xsd:date ;
+    dct:modified "2026-01-15"^^xsd:date ;
+    dossier:informatieclassificatie <https://data.vlaanderen.be/ns/dossier#openbaar> .
 ```
 
 ## 2. Aangiftebundel
 
-Een **aangiftebundel** is een verzameling van aangiften. Het is eveneens een subklasse van `dossier:Stuk`.
+Een **aangiftebundel** is een verzameling van aangiften die samen worden ingediend door een enkele exploitant. Ook de bundel is een `dossier:Stuk` en gebruikt hetzelfde URI-patroon (`aangifte/{vlaanderenId}`).
 
-```turtle
-<https://data.mjv.omgeving.vlaanderen.be/id/aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9>
-    a dossier:Stuk ;
-    dct:title "Bundel RIE-IEPR aangiften 2026"@nl .
-```
+| Eigenschap | Type | Verplicht | Beschrijving |
+|---|---|---|---|
+| `dct:type` | concept (aangifte_type) | Ja (exact 1) | Typering van de bundel (bijv. `structuur`) |
+| `dct:creator` | riepr:Exploitant | Ja (exact 1) | De exploitant die de bundel indient |
+| `dct:created` | date | Ja (exact 1) | Datum van indiening |
+| `dct:modified` | date | Nee | Datum van goedkeuring |
+| `adms:status` | concept (aangifte_status) | Ja (exact 1) | Status van de bundel |
 
-Een aangifte kan deel uitmaken van een aangiftebundel via `dct:isPartOf`:
+De individuele aangiften verwijzen naar hun bundel via `dct:isPartOf`:
 
 ```turtle
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
 
-<.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
-    dct:isPartOf <.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9> .
+<https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9>
+    a riepr:Aangiftebundel, dossier:Stuk ;
+    rdfs:label "Bundel RIE-IEPR aangiften GL012345"@nl ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-type/structuur> ;
+    dct:creator <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7> ;
+    dct:created "2025-12-01"^^xsd:date ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingediend> .
+
+# Een aangifte uit die bundel
+<https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
+    dct:isPartOf <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9> .
 ```
 
-## 3. Relaties tussen entiteiten
+### Beschikbare statussen (`aangifte_status`)
+
+| Status | Betekenis | ADMS-equivalent |
+|---|---|---|
+| `concept` | Nog niet ingediend (werkversie) | UnderDevelopment |
+| `ingediend` | Ingediend bij de overheid | Completed |
+| `gefaald` | De procedure is gefaald | — |
+| `ingetrokken` | De aangifte is ingetrokken | Withdrawn |
+
+## 3. `riepr:aangifte`: de link van data naar aangifte
+
+Naast `dct:isPartOf` (aangifte → bundel) bestaat de objectproperty **`riepr:aangifte`**, waarmee de **operationele entiteiten** naar de aangifte verwijzen waaraan ze gerelateerd zijn. De property is **optioneel** (0..1) en staat op volgende klassen:
+
+- `riepr:Exploitatie`
+- `riepr:Exploitatielocatie`
+- `riepr:Proces`
+- `riepr:Installatie`
+- `riepr:Emissiepunt`
+- `riepr:Onttrekkingspunt`
+- `riepr:Uitwisselpunt`
+- `riepr:Meetpunt`
+- `riepr:Filter`
+- `riepr:Observatie`
+- `riepr:ObservatieVerzameling`
+
+```turtle
+@prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
+
+# De exploitatie en de meting wijzen naar dezelfde aangifte
+<.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
+    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> .
+
+<.../observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z>
+    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> .
+```
+
+### Waarom optioneel?
+
+Data kan bestaan zonder aangifte (bijv. in concept, of afkomstig uit een bron zonder administratieve koppeling). De property is dus geen verplichte referentie, maar een **contextlink**:
+
+- Ze geeft aan **in de context van welke aangifte** de data is vastgelegd.
+- Ze maakt het mogelijk de consequenties van een **ingetrokken** aangifte (`adms:status` = `ingetrokken`) te bepalen: alle entiteiten die via `riepr:aangifte` naar die aangifte wijzen, behoren tot de ingetrokken context, zonder de data zelf te verwijderen.
+
+**SPARQL: alle data die behoort tot een ingetrokken aangifte:**
+```sparql
+PREFIX adms:  <http://www.w3.org/ns/adms#>
+PREFIX dct:   <http://purl.org/dc/terms/>
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+
+SELECT ?entiteit ?type
+WHERE {
+  ?aangifte adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingetrokken> .
+  ?entiteit a ?type ;
+            riepr:aangifte ?aangifte .
+}
+```
+
+## 4. Diagram
 
 ```mermaid
 graph LR
-    Aangifte["Aangifte<br/>(dossier:Stuk)"] -->|dct:isPartOf| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
-    
-    style Aangifte fill:#007A87,stroke:#005f6a,color:#fff
-    style Bundel fill:#e6f4f5,stroke:#007A87,color:#000
+    Exploitant["Exploitant"] -->|dct:creator| Bundel["Aangiftebundel<br/>(dossier:Stuk)"]
+    Aangifte["Aangifte<br/>(dossier:Stuk)"] -->|dct:isPartOf| Bundel
+    Exploitatie["Exploitatie"] -.->|riepr:aangifte| Aangifte
+    ObservatieVerzameling["ObservatieVerzameling"] -.->|riepr:aangifte| Aangifte
+    Emissiepunt["Emissiepunt"] -.->|riepr:aangifte| Aangifte
+    Aangifte -->|dct:subject| Exploitatie
 ```
-
-## 4. Integratie met data
-
-Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.
 
 ## Referenties
 
-- [Basisaannames](./basisaanname.md) PROV-O provenance patroon
-- [Versiebeheer en tijdsrecht](./versiebeheer.md) relatie tussen indienen en versies
+- [End-to-end voorbeeld](./endtoend.md) — de aangifte als lijm in de volledige keten
+- [Exploitant en exploitatie](./exploitant.md) — `dct:subject` wijst naar de exploitatie
+- [Observaties en emissies](./observaties.md) — observaties en verzamelingen met `riepr:aangifte`
+- **Codelijsten**: `aangifte_type` en `aangifte_status` uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)
