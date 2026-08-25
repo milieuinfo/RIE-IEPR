@@ -148,14 +148,6 @@ public class Installatie implements ISysteem {
 	@JsonProperty("status")
 	private Status status;
 	/**
-	 * wasRevisionOf
-	 * <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
-	 * Een installatie kan een revisie zijn van een andere systemen (optioneel)
-	 */
-	@JoinColumn(name = "uuid", nullable = true)
-	@JsonProperty("wasRevisionOf")
-	private ISysteem revisieVan;
-	/**
 	 * hasDeployment
 	 * <a href="http://www.w3.org/ns/ssn/hasDeployment">hasDeployment</a>
 	 */

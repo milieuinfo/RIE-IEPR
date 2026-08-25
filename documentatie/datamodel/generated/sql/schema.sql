@@ -1,6 +1,10 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
+<<<<<<< HEAD
 -- Generated: 2026-08-24T08:31:39.757357533Z[GMT]
+=======
+-- Generated: 2026-08-24T19:14:35.591135824Z[Etc/UTC]
+>>>>>>> d22c27d (docs: updated docs)
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -219,8 +223,6 @@ CREATE TABLE emissiepunt (
   geometrie VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -240,7 +242,6 @@ COMMENT ON COLUMN emissiepunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN emissiepunt.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN emissiepunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN emissiepunt.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN emissiepunt.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN emissiepunt.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN emissiepunt.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN emissiepunt.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -479,8 +480,6 @@ CREATE TABLE exploitatielocatie (
   primaire_bron VARCHAR,
   -- Foreign key referencing exploitant(uuid)
   toegewezen_aan VARCHAR,
-  -- Foreign key referencing exploitatielocatie(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   PRIMARY KEY (id)
@@ -500,7 +499,6 @@ COMMENT ON COLUMN exploitatielocatie.benaming IS 'http://www.w3.org/2000/01/rdf-
 COMMENT ON COLUMN exploitatielocatie.adres IS 'http://www.w3.org/ns/locn#address';
 COMMENT ON COLUMN exploitatielocatie.primaire_bron IS 'http://www.w3.org/ns/prov#hadPrimarySource';
 COMMENT ON COLUMN exploitatielocatie.toegewezen_aan IS 'http://www.w3.org/ns/prov#wasAttributedTo';
-COMMENT ON COLUMN exploitatielocatie.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN exploitatielocatie.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 
 ----------------------------------------------------------------------
@@ -583,8 +581,6 @@ CREATE TABLE filter (
   geometrie VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -603,7 +599,6 @@ COMMENT ON COLUMN filter.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN filter.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN filter.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN filter.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN filter.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN filter.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN filter.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN filter.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -697,8 +692,6 @@ CREATE TABLE installatie (
   beschrijving VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -720,7 +713,6 @@ COMMENT ON COLUMN installatie.geometrie IS 'http://www.opengis.net/ont/geosparql
 COMMENT ON COLUMN installatie.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
 COMMENT ON COLUMN installatie.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN installatie.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN installatie.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN installatie.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN installatie.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN installatie.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -847,8 +839,6 @@ CREATE TABLE meetpunt (
   geometrie VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -868,7 +858,6 @@ COMMENT ON COLUMN meetpunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN meetpunt.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN meetpunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN meetpunt.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN meetpunt.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN meetpunt.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN meetpunt.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN meetpunt.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -992,6 +981,8 @@ CREATE TABLE observatie (
   heeft_resultaat VARCHAR,
   -- Foreign key referencing observatie_verzameling(uuid)
   is_member_of VARCHAR,
+  -- Foreign key referencing systeem(uuid)
+  made_by_sensor VARCHAR,
   eigenschap VARCHAR,
   phenomenon_time VARCHAR,
   result_time TIMESTAMP,
@@ -1009,6 +1000,7 @@ COMMENT ON COLUMN observatie.aangemaakt_op IS 'http://purl.org/dc/terms/created'
 COMMENT ON COLUMN observatie.betrekking_tot IS 'http://www.w3.org/ns/sosa/hasFeatureOfInterest';
 COMMENT ON COLUMN observatie.heeft_resultaat IS 'http://www.w3.org/ns/sosa/hasResult';
 COMMENT ON COLUMN observatie.is_member_of IS 'http://www.w3.org/ns/sosa/isMemberOf';
+COMMENT ON COLUMN observatie.made_by_sensor IS 'http://www.w3.org/ns/sosa/madeBySensor';
 COMMENT ON COLUMN observatie.eigenschap IS 'http://www.w3.org/ns/sosa/observedProperty';
 COMMENT ON COLUMN observatie.phenomenon_time IS 'http://www.w3.org/ns/sosa/phenomenonTime';
 COMMENT ON COLUMN observatie.result_time IS 'http://www.w3.org/ns/sosa/resultTime';
@@ -1137,8 +1129,6 @@ CREATE TABLE onttrekkingspunt (
   geometrie VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -1158,7 +1148,6 @@ COMMENT ON COLUMN onttrekkingspunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN onttrekkingspunt.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN onttrekkingspunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN onttrekkingspunt.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN onttrekkingspunt.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN onttrekkingspunt.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN onttrekkingspunt.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN onttrekkingspunt.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -1297,8 +1286,6 @@ CREATE TABLE proces (
   onderdeel_van VARCHAR,
   beschrijving VARCHAR,
   benaming VARCHAR,
-  -- Foreign key referencing proces(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing systeem(uuid)
   systeem VARCHAR,
   -- Foreign key referencing aangifte(uuid)
@@ -1318,7 +1305,6 @@ COMMENT ON COLUMN proces.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN proces.onderdeel_van IS 'http://purl.org/net/p-plan#isStepOfPlan';
 COMMENT ON COLUMN proces.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
 COMMENT ON COLUMN proces.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
-COMMENT ON COLUMN proces.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN proces.systeem IS 'http://www.w3.org/ns/ssn/implementedBy';
 COMMENT ON COLUMN proces.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 
@@ -1480,8 +1466,8 @@ COMMENT ON COLUMN procesvariabele_proces.proces_id IS 'https://data.riepr.omgevi
 CREATE TABLE resultaat (
   uuid VARCHAR,
   uri VARCHAR,
-  waarde DECIMAL,
   eenheid VARCHAR,
+  waarde DECIMAL,
   beschrijving VARCHAR,
   PRIMARY KEY (uuid)
 );
@@ -1489,8 +1475,8 @@ CREATE TABLE resultaat (
 COMMENT ON TABLE resultaat IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat';
 COMMENT ON COLUMN resultaat.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN resultaat.uri IS 'http://example.org/vocab/uri';
+COMMENT ON COLUMN resultaat.eenheid IS 'http://qudt.org/schema/qudt/hasUnit';
 COMMENT ON COLUMN resultaat.waarde IS 'http://qudt.org/schema/qudt/numericValue';
-COMMENT ON COLUMN resultaat.eenheid IS 'http://qudt.org/schema/qudt/unit';
 COMMENT ON COLUMN resultaat.beschrijving IS 'http://www.w3.org/2000/01/rdf-schema#comment';
 
 ----------------------------------------------------------------------
@@ -1573,8 +1559,6 @@ CREATE TABLE uitwisselpunt (
   geometrie VARCHAR,
   benaming VARCHAR,
   status VARCHAR,
-  -- Foreign key referencing systeem(uuid)
-  revisie_van VARCHAR,
   -- Foreign key referencing aangifte(uuid)
   aangifte VARCHAR,
   in_gebruik_tot DATE,
@@ -1594,7 +1578,6 @@ COMMENT ON COLUMN uitwisselpunt.type IS 'http://purl.org/dc/terms/type';
 COMMENT ON COLUMN uitwisselpunt.geometrie IS 'http://www.opengis.net/ont/geosparql#hasGeometry';
 COMMENT ON COLUMN uitwisselpunt.benaming IS 'http://www.w3.org/2000/01/rdf-schema#label';
 COMMENT ON COLUMN uitwisselpunt.status IS 'http://www.w3.org/ns/adms#status';
-COMMENT ON COLUMN uitwisselpunt.revisie_van IS 'http://www.w3.org/ns/prov#wasRevisionOf';
 COMMENT ON COLUMN uitwisselpunt.aangifte IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte';
 COMMENT ON COLUMN uitwisselpunt.in_gebruik_tot IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikTot';
 COMMENT ON COLUMN uitwisselpunt.in_gebruik_vanaf IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruikVanaf';
@@ -1726,7 +1709,6 @@ ALTER TABLE aangiftebundel ADD FOREIGN KEY (creator) REFERENCES exploitant(uuid)
 ALTER TABLE contactpersoon ADD FOREIGN KEY (has_target) REFERENCES exploitatie(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (systeem_uuid) REFERENCES emissiepunt_identity(systeem_uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (systeem_uuid) REFERENCES emissiepunt_identity(systeem_uuid);
-ALTER TABLE emissiepunt ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE emissiepunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE emissiepunt_exploitatie ADD FOREIGN KEY (emissiepunt_id) REFERENCES emissiepunt_identity(systeem_uuid);
 ALTER TABLE emissiepunt_externe_identificator ADD FOREIGN KEY (emissiepunt_id) REFERENCES emissiepunt_identity(systeem_uuid);
@@ -1740,15 +1722,12 @@ ALTER TABLE exploitatie ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE exploitatielocatie ADD FOREIGN KEY (adres) REFERENCES adres(uuid);
 ALTER TABLE exploitatielocatie ADD FOREIGN KEY (primaire_bron) REFERENCES vestiging(uuid);
 ALTER TABLE exploitatielocatie ADD FOREIGN KEY (toegewezen_aan) REFERENCES exploitant(uuid);
-ALTER TABLE exploitatielocatie ADD FOREIGN KEY (revisie_van) REFERENCES exploitatielocatie(uuid);
 ALTER TABLE exploitatielocatie ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
-ALTER TABLE filter ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE filter ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE filter_exploitatie ADD FOREIGN KEY (filter_id) REFERENCES filter_identity(systeem_uuid);
 ALTER TABLE filter_externe_identificator ADD FOREIGN KEY (filter_id) REFERENCES filter_identity(systeem_uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (systeem_uuid) REFERENCES installatie_identity(systeem_uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (systeem_uuid) REFERENCES installatie_identity(systeem_uuid);
-ALTER TABLE installatie ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE installatie ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE installatie_exploitatie ADD FOREIGN KEY (installatie_id) REFERENCES installatie_identity(systeem_uuid);
 ALTER TABLE installatie_externe_identificator ADD FOREIGN KEY (installatie_id) REFERENCES installatie_identity(systeem_uuid);
@@ -1756,7 +1735,6 @@ ALTER TABLE installatie_systeem ADD FOREIGN KEY (installatie_id) REFERENCES inst
 ALTER TABLE installatie_systeemeigenschap ADD FOREIGN KEY (installatie_id) REFERENCES installatie_identity(systeem_uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (systeem_uuid) REFERENCES meetpunt_identity(systeem_uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (systeem_uuid) REFERENCES meetpunt_identity(systeem_uuid);
-ALTER TABLE meetpunt ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE meetpunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE meetpunt_exploitatie ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
 ALTER TABLE meetpunt_externe_identificator ADD FOREIGN KEY (meetpunt_id) REFERENCES meetpunt_identity(systeem_uuid);
@@ -1766,25 +1744,23 @@ ALTER TABLE meetpunt_systeemeigenschap ADD FOREIGN KEY (meetpunt_id) REFERENCES 
 ALTER TABLE observatie ADD FOREIGN KEY (betrekking_tot) REFERENCES gebeurtenis(uuid);
 ALTER TABLE observatie ADD FOREIGN KEY (heeft_resultaat) REFERENCES resultaat(uuid);
 ALTER TABLE observatie ADD FOREIGN KEY (is_member_of) REFERENCES observatie_verzameling(uuid);
+ALTER TABLE observatie ADD FOREIGN KEY (made_by_sensor) REFERENCES systeem(uuid);
 ALTER TABLE observatie ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE observatie_verzameling ADD FOREIGN KEY (betrekking_tot) REFERENCES gebeurtenis(uuid);
 ALTER TABLE observatie_verzameling ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (systeem_uuid) REFERENCES onttrekkingspunt_identity(systeem_uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (systeem_uuid) REFERENCES onttrekkingspunt_identity(systeem_uuid);
-ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE onttrekkingspunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE onttrekkingspunt_exploitatie ADD FOREIGN KEY (onttrekkingspunt_id) REFERENCES onttrekkingspunt_identity(systeem_uuid);
 ALTER TABLE onttrekkingspunt_externe_identificator ADD FOREIGN KEY (onttrekkingspunt_id) REFERENCES onttrekkingspunt_identity(systeem_uuid);
 ALTER TABLE onttrekkingspunt_filter ADD FOREIGN KEY (onttrekkingspunt_id) REFERENCES onttrekkingspunt_identity(systeem_uuid);
 ALTER TABLE onttrekkingspunt_systeemeigenschap ADD FOREIGN KEY (onttrekkingspunt_id) REFERENCES onttrekkingspunt_identity(systeem_uuid);
 ALTER TABLE proces ADD FOREIGN KEY (onderdeel_van) REFERENCES proces(uuid);
-ALTER TABLE proces ADD FOREIGN KEY (revisie_van) REFERENCES proces(uuid);
 ALTER TABLE proces ADD FOREIGN KEY (systeem) REFERENCES systeem(uuid);
 ALTER TABLE proces ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE systeemeigenschap ADD FOREIGN KEY (parameter) REFERENCES rubriek(uuid);
 ALTER TABLE uitwisselpunt ADD FOREIGN KEY (systeem_uuid) REFERENCES uitwisselpunt_identity(systeem_uuid);
 ALTER TABLE uitwisselpunt ADD FOREIGN KEY (systeem_uuid) REFERENCES uitwisselpunt_identity(systeem_uuid);
-ALTER TABLE uitwisselpunt ADD FOREIGN KEY (revisie_van) REFERENCES systeem(uuid);
 ALTER TABLE uitwisselpunt ADD FOREIGN KEY (aangifte) REFERENCES aangifte(uuid);
 ALTER TABLE uitwisselpunt_exploitatie ADD FOREIGN KEY (uitwisselpunt_id) REFERENCES uitwisselpunt_identity(systeem_uuid);
 ALTER TABLE uitwisselpunt_externe_identificator ADD FOREIGN KEY (uitwisselpunt_id) REFERENCES uitwisselpunt_identity(systeem_uuid);

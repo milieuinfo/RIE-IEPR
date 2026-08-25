@@ -87,7 +87,7 @@ public class Contactpersoon {
 	/**
 	 * type
 	 * <a href="http://purl.org/dc/terms/type">type</a>
-	 * Contactpersonen kunnen een telefoonnummer hebben
+	 * Contactpersonen moeten een functie hebben
 	 */
 	@Column(name = "type", nullable = true)
 	@JsonProperty("type")

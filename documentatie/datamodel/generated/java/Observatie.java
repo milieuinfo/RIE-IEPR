@@ -95,6 +95,14 @@ public class Observatie {
 	@JsonProperty("isMemberOf")
 	private ObservatieVerzameling isMemberOf;
 	/**
+	 * madeBySensor
+	 * <a href="http://www.w3.org/ns/sosa/madeBySensor">madeBySensor</a>
+	 * Een observatie kan zijn gemaakt door een meetpunt of ander systeem (sosa:madeBySensor)
+	 */
+	@JoinColumn(name = "uuid", nullable = true)
+	@JsonProperty("madeBySensor")
+	private ISysteem madeBySensor;
+	/**
 	 * observedProperty
 	 * <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
 	 * Een observatie kan een geobserveerde eigenschap hebben

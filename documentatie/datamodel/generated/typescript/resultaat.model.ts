@@ -24,20 +24,20 @@ export class Resultaat {
 	uri?: string;
 
 	/**
+	 * hasUnit
+	 * @see {@link http://qudt.org/schema/qudt/hasUnit}
+	 * Een resultaat kan een eenheid hebben
+	 */
+	@jsonMember({ name: 'hasUnit' })
+	eenheid?: string;
+
+	/**
 	 * numericValue
 	 * @see {@link http://qudt.org/schema/qudt/numericValue}
 	 * Een resultaat kan een numerieke waarde hebben
 	 */
 	@jsonMember({ name: 'numericValue' })
 	waarde?: number;
-
-	/**
-	 * unit
-	 * @see {@link http://qudt.org/schema/qudt/unit}
-	 * Een resultaat kan een eenheid hebben
-	 */
-	@jsonMember({ name: 'unit' })
-	eenheid?: string;
 
 	/**
 	 * comment

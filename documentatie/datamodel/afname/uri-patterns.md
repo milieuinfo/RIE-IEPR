@@ -11,25 +11,33 @@ De RIE-IEPR ontologie definieert URI-patronen voor elke klasse via Hydra `hydra:
 
 ## Hydra templates per klasse
 
-| Klasse | Hydra template | Variabelen |
+De variabele `uuid` mapt altijd op `:localId` (de UUID); `issued` op `dct:issued` en `created` op `dct:created`.
+
+| Klasse | Hydra template | Segments |
 |---|---|---|
-| Exploitant | `https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}` | `ondernemingsnummer` → `:localId` |
-| Contactpersoon | `https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}` | `uuid` → `:localId` (geen versie) |
-| Exploitatie | `https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
-| Exploitatielocatie | `https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
-| Proces | `https://data.mjv.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}` | `localId`, `issued`, `created` |
-| Procesvariabele | `https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/{uuid}` | `uuid` → `:localId` |
-| Installatie | `https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Emissiepunt | `https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Systeemeigenschap | `https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}` | `uuid` → `:localId` |
-| Onttrekkingspunt | `https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Uitwisselpunt | `https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Meetpunt | `https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Meetinstrument | `https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Filter | `https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}` | `uuid`, `issued`, `created` |
-| Uitwisseling | `https://data.mjv.omgeving.vlaanderen.be/id/uitwisseling/{uuid}` | `uuid` → `:localId` |
-| Onttrekking | `https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}` | `uuid` → `:localId` |
-| Emissie | `https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}` | `uuid` → `:localId` |
+| Exploitant | `.../id/exploitant/{ondernemingsnummer}` | 2 |
+| Contactpersoon | `.../id/contactpersoon/{uuid}` | 2 (geen versie) |
+| Exploitatie | `.../id/exploitatie/{uuid}/{issued}/{created}` | 3 (versie) |
+| Exploitatielocatie | `.../id/exploitatielocatie/{uuid}/{issued}/{created}` | 3 (versie) |
+| Proces | `.../id/proces/{uuid}/{issued}/{created}` | 3 (versie) |
+| Procesvariabele | `.../id/procesvariabele/{uuid}` | 2 |
+| Installatie | `.../id/installatie/{uuid}/{issued}/{created}` | 3 (versie) |
+| Emissiepunt | `.../id/emissiepunt/{uuid}/{issued}/{created}` | 3 (versie) |
+| Systeemeigenschap | `.../id/systeemeigenschap/{uuid}` | 2 |
+| Onttrekkingspunt | `.../id/onttrekkingspunt/{uuid}/{issued}/{created}` | 3 (versie) |
+| Uitwisselpunt | `.../id/uitwisselpunt/{uuid}/{issued}/{created}` | 3 (versie) |
+| Meetpunt | `.../id/meetpunt/{uuid}/{issued}/{created}` | 3 (versie) |
+| Filter | `.../id/filter/{uuid}/{issued}/{created}` | 3 (versie) |
+| Rubriek | `.../id/rubriek/{uuid}` | 2 |
+| Emissie | `.../id/emissie/{uuid}` | 2 (Feature of Interest, geen versie) |
+| Onttrekking | `.../id/onttrekking/{uuid}` | 2 (Feature of Interest, geen versie) |
+| Observatie | `.../id/observatie/{uuid}/{created}` | 2 (met aanmaaktimestamp, geen `issued`) |
+| ObservatieVerzameling | `.../id/observatieverzameling/{uuid}/{created}` | 2 (met aanmaaktimestamp, geen `issued`) |
+| Resultaat | `.../id/resultaat/{uuid}` | 2 |
+| Aangifte | `.../id/aangifte/{vlaanderenId}` | 2 (op `:vlaanderenId`, geen UUID) |
+| Aangiftebundel | `.../id/aangifte/{vlaanderenId}` | 2 (zelfde patroon als Aangifte) |
+
+Alle templates beginnen met `https://data.mjv.omgeving.vlaanderen.be`.
 
 ## Voorbeeld
 

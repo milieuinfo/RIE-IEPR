@@ -191,14 +191,6 @@ public class Proces {
 	@JsonProperty("identifier")
 	private List<ExterneIdentificator> identifier;
 	/**
-	 * wasRevisionOf
-	 * <a href="http://www.w3.org/ns/prov#wasRevisionOf">wasRevisionOf</a>
-	 * Een proces kan een revisie zijn van een ander proces (optioneel)
-	 */
-	@JoinColumn(name = "uuid", nullable = true)
-	@JsonProperty("wasRevisionOf")
-	private Proces revisieVan;
-	/**
 	 * implementedBy
 	 * <a href="http://www.w3.org/ns/ssn/implementedBy">implementedBy</a>
 	 * Een proces kan het gebruik van een systeem representeren

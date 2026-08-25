@@ -140,14 +140,6 @@ export class Proces {
 	identifier?: ExterneIdentificator[];
 
 	/**
-	 * wasRevisionOf
-	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
-	 * Een proces kan een revisie zijn van een ander proces (optioneel)
-	 */
-	@jsonMember(() => Proces, { name: 'wasRevisionOf' })
-	revisieVan?: Proces;
-
-	/**
 	 * implementedBy
 	 * @see {@link http://www.w3.org/ns/ssn/implementedBy}
 	 * Een proces kan het gebruik van een systeem representeren

@@ -139,7 +139,6 @@ erDiagram
 	  geometrie VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -148,9 +147,6 @@ erDiagram
 	class emissiepunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	emissiepunt many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	emissiepunt many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	emissiepunt many to one emissiepunt_identity : uuid_emissiepunt
@@ -323,7 +319,6 @@ erDiagram
 	  adres VARCHAR FK
 	  primaire_bron VARCHAR FK
 	  toegewezen_aan VARCHAR FK
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	}
 	
@@ -335,9 +330,6 @@ erDiagram
 	
 	%% http://www.w3.org/ns/prov#hadPrimarySource
 	exploitatielocatie many to one vestiging : primaire_bron_vestiging
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	exploitatielocatie many to one exploitatielocatie : revisie_van_exploitatielocatie
 	
 	%% http://www.w3.org/ns/prov#wasAttributedTo
 	exploitatielocatie many to one exploitant : toegewezen_aan_exploitant
@@ -394,7 +386,6 @@ erDiagram
 	  geometrie VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -403,9 +394,6 @@ erDiagram
 	class filter system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	filter many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	filter many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	filter one to many systeem : ""
@@ -462,7 +450,6 @@ erDiagram
 	  beschrijving VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -472,9 +459,6 @@ erDiagram
 	class installatie system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	installatie many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	installatie many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	installatie many to one installatie_identity : uuid_installatie
@@ -568,7 +552,6 @@ erDiagram
 	  geometrie VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -577,9 +560,6 @@ erDiagram
 	class meetpunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	meetpunt many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	meetpunt many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	meetpunt many to one meetpunt_identity : uuid_meetpunt
@@ -669,6 +649,7 @@ erDiagram
 	  betrekking_tot VARCHAR FK
 	  heeft_resultaat VARCHAR FK
 	  is_member_of VARCHAR FK
+	  made_by_sensor VARCHAR FK
 	  eigenschap VARCHAR 
 	  phenomenon_time VARCHAR 
 	  result_time TIMESTAMP 
@@ -687,6 +668,9 @@ erDiagram
 	
 	%% http://www.w3.org/ns/sosa/isMemberOf
 	observatie many to one observatie_verzameling : is_member_of_observatie_verzameling
+	
+	%% http://www.w3.org/ns/sosa/madeBySensor
+	observatie many to one systeem : made_by_sensor_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 	observatie_verzameling {
@@ -775,7 +759,6 @@ erDiagram
 	  geometrie VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -784,9 +767,6 @@ erDiagram
 	class onttrekkingspunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	onttrekkingspunt many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	onttrekkingspunt many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	onttrekkingspunt many to one onttrekkingspunt_identity : uuid_onttrekkingspunt
@@ -886,7 +866,6 @@ erDiagram
 	  onderdeel_van VARCHAR FK
 	  beschrijving VARCHAR 
 	  benaming VARCHAR 
-	  revisie_van VARCHAR FK
 	  systeem VARCHAR FK
 	  aangifte VARCHAR FK
 	}
@@ -897,9 +876,6 @@ erDiagram
 	
 	%% http://purl.org/net/p-plan#isStepOfPlan
 	proces many to one proces : onderdeel_van_proces
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	proces many to one proces : revisie_van_proces
 	
 	%% http://www.w3.org/ns/ssn/implementedBy
 	proces many to one systeem : systeem_systeem
@@ -1013,8 +989,8 @@ erDiagram
 	resultaat {
 	  uuid VARCHAR PK
 	  uri VARCHAR 
-	  waarde DECIMAL 
 	  eenheid VARCHAR 
+	  waarde DECIMAL 
 	  beschrijving VARCHAR 
 	}
 	
@@ -1066,7 +1042,6 @@ erDiagram
 	  geometrie VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
-	  revisie_van VARCHAR FK
 	  aangifte VARCHAR FK
 	  in_gebruik_tot DATE 
 	  in_gebruik_vanaf DATE 
@@ -1075,9 +1050,6 @@ erDiagram
 	class uitwisselpunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	uitwisselpunt many to one aangifte : aangifte_aangifte
-	
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	uitwisselpunt many to one systeem : revisie_van_systeem
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	uitwisselpunt many to one uitwisselpunt_identity : uuid_uitwisselpunt

@@ -29,6 +29,16 @@ Processen vormen het organisatieprincipe van het hele datamodel. **Alles hangt a
     ssn:implementedBy <.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
+### Wat is P-Plan?
+
+[P-Plan](https://www.opmw.org/model/p-plan/) is een W3C-ontologie voor het modelleren van processen als geordende plannen. De kernbegrippen:
+
+- Een **`pplan:Plan`** is een (samengesteld) plan van stappen.
+- Een **`pplan:Step`** is een individuele stap; `pplan:isStepOfPlan` legt een stap onder een hoger niveau (plan of stap).
+- **`pplan:isPrecededBy`** geeft de volgorde aan: welke stap vóór een andere moet plaatsvinden.
+
+In RIE-IEPR is elk `riepr:Proces` tegelijk een `pplan:Plan`, een `pplan:Step` en een `sosa:Procedure`. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (`pplan:isStepOfPlan`) en kunnen met `pplan:isPrecededBy` onderling geordend worden.
+
 ## 2. URI-ontwerp en versiebeheer
 
 Het model maakt onderscheid tussen **identity URIs** (tijdsloos) en **versie-URIs** (met tijd).
@@ -101,13 +111,9 @@ De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaander
 
 ## 5. Disjoint classes
 
-Enkele klassen zijn onderling **disjoint**: een entiteit kan niet tegelijkertijd tot meerdere van deze klassen behoren.
+Een **meetpunt** is per definitie geen emissiepunt of onttrekkingspunt: `riepr:Meetpunt` staat `owl:disjointWith` `riepr:Emissiepunt` én `riepr:Onttrekkingspunt`.
 
-- `riepr:Emissiepunt`
-- `riepr:Onttrekkingspunt`
-- `riepr:Meetpunt`
-
-Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt - nooit twee tegelijk. Het **Uitwisselpunt** is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).
+Een **uitwisselpunt** daarentegen is wél zowel emissiepunt als onttrekkingspunt: `riepr:Uitwisselpunt` is gedefinieerd als de equivalentie van de intersectie `Emissiepunt ∩ Onttrekkingspunt` — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.
 
 ## 6. Observaties en Features of Interest
 
@@ -150,14 +156,14 @@ Elke systeemeigenschap heeft twee kenmerken:
 - **`riepr:parameter`** - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
 - **`riepr:datatype`** - het datatype van de waarde (bijv. `xsd:decimal`)
 
-De eenheid wordt vastgelegd via `qudt:hasUnit` conform de ontologie; in praktijkvoorbeelden wordt vaak `qudt:unit` gebruikt voor leesbaarheid.
+De eenheid wordt vastgelegd via `qudt:hasUnit` naar een QUDT-eenheid (bijv. `http://qudt.org/vocab/unit/M`).
 
 ```turtle
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
     rdfs:value "0"^^xsd:decimal ;
-    qudt:hasUnit unit:Percent ;
+    qudt:hasUnit unit:PERCENT ;
     riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
 ```
 
@@ -222,7 +228,6 @@ In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in d
 | `riepr:Emissiepunt` | ja (VMM/emissiepunt) |
 | `riepr:Onttrekkingspunt` | ja (VMM/meerdere) |
 | `riepr:Meetpunt` | ja (VMM/lozings- en onttrekkingspunt) |
-| `riepr:MeetInstrument` | nee |
 | `riepr:Filter` | ja (VMM/filter) |
 
 ### Voorbeelden (uit `datavoorbeelden/`)

@@ -2,6 +2,7 @@ import { Aangifte } from './aangifte.model';
 import { Gebeurtenis } from './gebeurtenis.interface';
 import { ObservatieVerzameling } from './observatieverzameling.model';
 import { Resultaat } from './resultaat.model';
+import { Systeem } from './systeem.interface';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -65,6 +66,14 @@ export class Observatie {
 	 */
 	@jsonMember(() => ObservatieVerzameling, { name: 'isMemberOf' })
 	isMemberOf?: ObservatieVerzameling;
+
+	/**
+	 * madeBySensor
+	 * @see {@link http://www.w3.org/ns/sosa/madeBySensor}
+	 * Een observatie kan zijn gemaakt door een meetpunt of ander systeem (sosa:madeBySensor)
+	 */
+	@jsonMember(() => Systeem, { name: 'madeBySensor' })
+	madeBySensor?: Systeem;
 
 	/**
 	 * observedProperty

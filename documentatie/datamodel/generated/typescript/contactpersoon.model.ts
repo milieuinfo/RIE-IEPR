@@ -56,7 +56,7 @@ export class Contactpersoon {
 	/**
 	 * type
 	 * @see {@link http://purl.org/dc/terms/type}
-	 * Contactpersonen kunnen een telefoonnummer hebben
+	 * Contactpersonen moeten een functie hebben
 	 */
 	@jsonMember({ name: 'type' })
 	type?: string;

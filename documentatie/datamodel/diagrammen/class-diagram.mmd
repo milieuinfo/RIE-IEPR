@@ -109,7 +109,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
@@ -121,8 +120,6 @@ classDiagram
 	Emissiepunt --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Emissiepunt --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Emissiepunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Emissiepunt --> Exploitatie : hasDeployment
 	%% http://www.w3.org/ns/ssn/hasProperty
@@ -192,7 +189,6 @@ classDiagram
 	  Adres adres
 	  Vestiging primaireBron
 	  Exploitant toegewezenAan
-	  Exploitatielocatie revisieVan
 	  Exploitatie[] inDeployment
 	  Aangifte aangifte
 	}
@@ -204,8 +200,6 @@ classDiagram
 	Exploitatielocatie --> Vestiging : primaireBron
 	%% http://www.w3.org/ns/prov#wasAttributedTo
 	Exploitatielocatie --> Exploitant : toegewezenAan
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Exploitatielocatie --> Exploitatielocatie : revisieVan
 	%% http://www.w3.org/ns/ssn/inDeployment
 	Exploitatielocatie --> Exploitatie : inDeployment
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -223,7 +217,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Aangifte aangifte
 	  Date inGebruikTot
@@ -233,8 +226,6 @@ classDiagram
 	Filter --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Filter --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Filter --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Filter --> Exploitatie : hasDeployment
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -255,7 +246,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Systeemeigenschap[] heeftEigenschap
 	  Systeem[] heeftSubSysteem
@@ -268,8 +258,6 @@ classDiagram
 	Installatie --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Installatie --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Installatie --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Installatie --> Exploitatie : hasDeployment
 	%% http://www.w3.org/ns/ssn/hasProperty
@@ -293,7 +281,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Systeemeigenschap[] heeftEigenschap
 	  Filter[] heeftSubSysteem
@@ -305,8 +292,6 @@ classDiagram
 	Meetpunt --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Meetpunt --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Meetpunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Meetpunt --> Exploitatie : hasDeployment
 	%% http://www.w3.org/ns/ssn/hasProperty
@@ -325,6 +310,7 @@ classDiagram
 	  Gebeurtenis betrekkingTot
 	  Resultaat heeftResultaat
 	  ObservatieVerzameling isMemberOf
+	  Systeem madeBySensor
 	  String eigenschap
 	  String phenomenonTime
 	  DateTime resultTime
@@ -337,6 +323,8 @@ classDiagram
 	Observatie --> Resultaat : heeftResultaat
 	%% http://www.w3.org/ns/sosa/isMemberOf
 	Observatie --> ObservatieVerzameling : isMemberOf
+	%% http://www.w3.org/ns/sosa/madeBySensor
+	Observatie --> Systeem : madeBySensor
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Observatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
@@ -381,7 +369,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Systeemeigenschap[] heeftEigenschap
 	  Filter[] heeftSubSysteem
@@ -393,8 +380,6 @@ classDiagram
 	Onttrekkingspunt --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Onttrekkingspunt --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Onttrekkingspunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Onttrekkingspunt --> Exploitatie : hasDeployment
 	%% http://www.w3.org/ns/ssn/hasProperty
@@ -422,7 +407,6 @@ classDiagram
 	  String beschrijving
 	  String benaming
 	  ExterneIdentificator[] identifier
-	  Proces revisieVan
 	  Systeem systeem
 	  Aangifte aangifte
 	  Rubriek[] rubriek
@@ -441,8 +425,6 @@ classDiagram
 	Proces --> Proces : onderdeelVan
 	%% http://www.w3.org/ns/adms#identifier
 	Proces --> ExterneIdentificator : identifier
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Proces --> Proces : revisieVan
 	%% http://www.w3.org/ns/ssn/implementedBy
 	Proces --> Systeem : systeem
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
@@ -465,8 +447,8 @@ classDiagram
 	class Resultaat:::result {
 	  +String uuid
 	  String uri
-	  Decimal waarde
 	  String eenheid
+	  Decimal waarde
 	  String beschrijving
 	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek
@@ -507,7 +489,6 @@ classDiagram
 	  String benaming
 	  ExterneIdentificator[] identifier
 	  Status status
-	  Systeem revisieVan
 	  Exploitatie[] hasDeployment
 	  Systeemeigenschap[] heeftEigenschap
 	  Filter[] heeftSubSysteem
@@ -519,8 +500,6 @@ classDiagram
 	Uitwisselpunt --> ExterneIdentificator : identifier
 	%% http://www.w3.org/ns/adms#status
 	Uitwisselpunt --> Status : status
-	%% http://www.w3.org/ns/prov#wasRevisionOf
-	Uitwisselpunt --> Systeem : revisieVan
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Uitwisselpunt --> Exploitatie : hasDeployment
 	%% http://www.w3.org/ns/ssn/hasProperty

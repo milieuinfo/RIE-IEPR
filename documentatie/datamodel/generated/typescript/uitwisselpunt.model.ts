@@ -110,14 +110,6 @@ export class Uitwisselpunt implements Systeem {
 	status?: Status;
 
 	/**
-	 * wasRevisionOf
-	 * @see {@link http://www.w3.org/ns/prov#wasRevisionOf}
-	 * Een uitwisselpunt kan een revisie zijn van een andere systemen (optioneel)
-	 */
-	@jsonMember(() => Systeem, { name: 'wasRevisionOf' })
-	revisieVan?: Systeem;
-
-	/**
 	 * hasDeployment
 	 * @see {@link http://www.w3.org/ns/ssn/hasDeployment}
 	 */

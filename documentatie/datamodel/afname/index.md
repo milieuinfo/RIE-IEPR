@@ -5,6 +5,7 @@ Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van e
 
 ## Inhoud
 
+- [End-to-end voorbeeld](./endtoend.md) de volledige dataketen van exploitant tot gemeten waarde
 - [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
 - [Basisaannames](./basisaanname.md) de modellen en aannames die ten grondslag liggen aan het datamodel
 - [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
@@ -61,7 +62,7 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 | **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (meetput, controle-inrichting, …) |
 | **filter_type** | `…/concept/riepr/filter-type/` | Typen filters |
 | **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (emissie, onttrekking, verwerking, meet, uitwissel) |
-| **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Hoofdactiviteit van een exploitant |
+| **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Typering van het hoofdproces (dat de exploitatie implementeert) |
 | **status_type** | `…/concept/riepr/status-type/` | Statussen (in_dienst, ontmanteld, …) |
 | **rubriek_type** | `…/concept/riepr/rubriek-type/` | Classificaties (VLAREM, EGW, …) |
 | **aangifte_type** | `…/concept/riepr/aangifte-type/` | Typen aangiften |
@@ -107,6 +108,6 @@ Het codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepublicee
 
 Deze documentatie is gebaseerd op:
 
-- **Ontologie**: `documentatie/datamodel/src/ns/riepr/riepr.ttl`
+- **Ontologie**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl`
 - **Datavoorbeeld**: `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl` (AGC Glass Europe)
 - **SHACL-shapes**: `documentatie/datamodel/generated/shacl/schema.ttl`
