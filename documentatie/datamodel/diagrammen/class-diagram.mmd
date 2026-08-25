@@ -206,7 +206,8 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
@@ -524,10 +525,22 @@ classDiagram
 	%% http://www.w3.org/ns/adms#Status
 	class Status {
 	  <<enumerable>>
+	  DEFINITIEF_UIT_DIENST
+	  IN_GEBRUIK
+	  ONTMANTELD
+	  TIJDELIJK_UIT_DIENST
+	  VERKEERDE_REGISTRATIE
+	  VOORGESTELD
 	}
 	%% http://www.w3.org/ns/sosa/Procedure
 	class Procedure:::procedure {
 	  <<enumerable>>
+	  EMISSIE
+	  MEET
+	  ONTTREKKING
+	  TRANSPORT
+	  UITWISSEL
+	  VERWERKING
 	}
 	classDef system fill:#4bde2a,stroke:#000000
 	classDef procedure fill:#ccffcc,stroke:#000000
