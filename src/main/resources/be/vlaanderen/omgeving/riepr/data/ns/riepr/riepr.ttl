@@ -1726,6 +1726,13 @@ rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty adms:schemaAgency ;
     owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] ;
+rdfs:subClassOf [ a owl:Restriction ;
+  rdfs:comment "Een externe identificator heeft een notatie type (het datatype-IRI van de skos:notation typed literal)"@nl ;
+  owl:onProperty :notatietype ;
+  owl:someValuesFrom rdfs:Datatype ;
+  owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+  owl:maxCardinality "1"^^xsd:nonNegativeInteger
 ] .
 
 # Expliciete restricties op locn:Address voor ontbrekende adresvelden (M6)
