@@ -376,7 +376,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter {
-	  id VARCHAR PK
+	  systeem_uuid VARCHAR PK,FK
 	  uri VARCHAR 
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -396,10 +396,7 @@ erDiagram
 	filter many to one aangifte : aangifte_aangifte
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter many to one filter_identity : uuid_filter
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter many to one filter_identity : ""
+	filter one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_exploitatie {
@@ -415,7 +412,7 @@ erDiagram
 	filter_exploitatie many to one exploitatie : has_deployment_exploitatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_exploitatie many to one filter_identity : has_deployment_exploitatie
+	filter_exploitatie many to one filter : has_deployment_exploitatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_externe_identificator {
@@ -431,16 +428,7 @@ erDiagram
 	filter_externe_identificator many to one externe_identificator : identifier_externe_identificator
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_externe_identificator many to one filter_identity : identifier_externe_identificator
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
-	filter_identity {
-	  systeem_uuid VARCHAR PK,FK
-	}
-	
-	class filter_identity system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_identity one to many systeem : ""
+	filter_externe_identificator many to one filter : identifier_externe_identificator
 	
 	%% http://www.w3.org/ns/sosa/FeatureOfInterest
 	gebeurtenis {
@@ -622,7 +610,7 @@ erDiagram
 	
 	class meetpunt_filter system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meetpunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	meetpunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	meetpunt_filter many to one meetpunt_identity : heeft_sub_systeem_filter
@@ -828,8 +816,8 @@ erDiagram
 	}
 	
 	class onttrekkingspunt_filter system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id
-	onttrekkingspunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	onttrekkingspunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	onttrekkingspunt_filter many to one onttrekkingspunt_identity : heeft_sub_systeem_filter
@@ -1111,8 +1099,8 @@ erDiagram
 	}
 	
 	class uitwisselpunt_filter system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id
-	uitwisselpunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	uitwisselpunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	uitwisselpunt_filter many to one uitwisselpunt_identity : heeft_sub_systeem_filter
