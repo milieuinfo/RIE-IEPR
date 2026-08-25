@@ -546,6 +546,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -1061,102 +1089,124 @@
 <li>Relatie <code>dct:isVersionOf</code> verbindt versie aan identity</li>
 </ul>
 <h2 id="hydra-templates-per-klasse">Hydra templates per klasse</h2>
+<p>De variabele <code>uuid</code> mapt altijd op <code>:localId</code> (de UUID); <code>issued</code> op <code>dct:issued</code> en <code>created</code> op <code>dct:created</code>.</p>
 <table>
 <thead>
 <tr>
 <th>Klasse</th>
 <th>Hydra template</th>
-<th>Variabelen</th>
+<th>Segments</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Exploitant</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}</code></td>
-<td><code>ondernemingsnummer</code> → <code>:localId</code></td>
+<td><code>.../id/exploitant/{ondernemingsnummer}</code></td>
+<td>2</td>
 </tr>
 <tr>
 <td>Contactpersoon</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code> (geen versie)</td>
+<td><code>.../id/contactpersoon/{uuid}</code></td>
+<td>2 (geen versie)</td>
 </tr>
 <tr>
 <td>Exploitatie</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{localId}/{issued}/{created}</code></td>
-<td><code>localId</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/exploitatie/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Exploitatielocatie</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/{localId}/{issued}/{created}</code></td>
-<td><code>localId</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/exploitatielocatie/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Proces</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/proces/{localId}/{issued}/{created}</code></td>
-<td><code>localId</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/proces/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Procesvariabele</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code></td>
+<td><code>.../id/procesvariabele/{uuid}</code></td>
+<td>2</td>
 </tr>
 <tr>
 <td>Installatie</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/installatie/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Emissiepunt</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/emissiepunt/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Systeemeigenschap</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code></td>
+<td><code>.../id/systeemeigenschap/{uuid}</code></td>
+<td>2</td>
 </tr>
 <tr>
 <td>Onttrekkingspunt</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/onttrekkingspunt/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Uitwisselpunt</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/uitwisselpunt/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Meetpunt</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
-</tr>
-<tr>
-<td>Meetinstrument</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/meetinstrument/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/meetpunt/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
 <td>Filter</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}</code></td>
-<td><code>uuid</code>, <code>issued</code>, <code>created</code></td>
+<td><code>.../id/filter/{uuid}/{issued}/{created}</code></td>
+<td>3 (versie)</td>
 </tr>
 <tr>
-<td>Uitwisseling</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/uitwisseling/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code></td>
-</tr>
-<tr>
-<td>Onttrekking</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code></td>
+<td>Rubriek</td>
+<td><code>.../id/rubriek/{uuid}</code></td>
+<td>2</td>
 </tr>
 <tr>
 <td>Emissie</td>
-<td><code>https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}</code></td>
-<td><code>uuid</code> → <code>:localId</code></td>
+<td><code>.../id/emissie/{uuid}</code></td>
+<td>2 (Feature of Interest, geen versie)</td>
+</tr>
+<tr>
+<td>Onttrekking</td>
+<td><code>.../id/onttrekking/{uuid}</code></td>
+<td>2 (Feature of Interest, geen versie)</td>
+</tr>
+<tr>
+<td>Observatie</td>
+<td><code>.../id/observatie/{uuid}/{created}</code></td>
+<td>2 (met aanmaaktimestamp, geen <code>issued</code>)</td>
+</tr>
+<tr>
+<td>ObservatieVerzameling</td>
+<td><code>.../id/observatieverzameling/{uuid}/{created}</code></td>
+<td>2 (met aanmaaktimestamp, geen <code>issued</code>)</td>
+</tr>
+<tr>
+<td>Resultaat</td>
+<td><code>.../id/resultaat/{uuid}</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>Aangifte</td>
+<td><code>.../id/aangifte/{vlaanderenId}</code></td>
+<td>2 (op <code>:vlaanderenId</code>, geen UUID)</td>
+</tr>
+<tr>
+<td>Aangiftebundel</td>
+<td><code>.../id/aangifte/{vlaanderenId}</code></td>
+<td>2 (zelfde patroon als Aangifte)</td>
 </tr>
 </tbody>
 </table>
+<p>Alle templates beginnen met <code>https://data.mjv.omgeving.vlaanderen.be</code>.</p>
 <h2 id="voorbeeld">Voorbeeld</h2>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">hydra:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/hydra/core#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>

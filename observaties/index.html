@@ -549,6 +549,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -737,6 +765,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#relatie-tussen-punt-en-gebeurtenis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relatie tussen punt en gebeurtenis
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -759,6 +798,17 @@
     <span class="md-ellipsis">
       
         Kenmerken van een observatie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sosamadebysensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sosa:madeBySensor
       
     </span>
   </a>
@@ -804,10 +854,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-meetprocedures" class="md-nav__link">
+  <a href="#6-procedures-meetproces-en-bepalingsmethode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Meetprocedures
+        6. Procedures: meetproces en bepalingsmethode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-observatieverzamelingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Observatieverzamelingen
       
     </span>
   </a>
@@ -826,21 +887,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-relatie-tussen-emissiepunt-en-emissie" class="md-nav__link">
+  <a href="#9-volledig-observatiepatroon" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9. Relatie tussen emissiepunt en emissie
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-volledig-observatiepatroon" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10. Volledig observatiepatroon
+        9. Volledig observatiepatroon
       
     </span>
   </a>
@@ -1185,36 +1235,69 @@
 
 
 <h1 id="observaties-en-emissies">Observaties en emissies</h1>
-<p>Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het <strong>SOSA/SSN</strong>-patroon van de W3C.</p>
+<p>Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het <strong>SOSA/SSN</strong>-patroon van de W3C (<a href="https://www.w3.org/TR/vocab-ssn/">vocab-ssn</a>).</p>
 <h2 id="1-het-sosassn-observatiepatroon">1. Het SOSA/SSN observatiepatroon</h2>
 <p>Het model gebruikt het standaard SOSA-patroon voor observaties:</p>
-<div class="highlight"><pre><span></span><code>Observation
-  ├── hasFeatureOfInterest → Emissie / Onttrekking
-  ├── observedProperty     → Wat werd gemeten (stof, parameter)
-  ├── resultTime           → Wanneer werd gemeten
-  └── hasResult            → Resultaat
-        └── NumericValue   → De gemeten waarde + eenheid
+<div class="highlight"><pre><span></span><code>Observatie (sosa:Observation)
+  ├── hasFeatureOfInterest → Emissie / Onttrekking   (verplicht, exact 1)
+  ├── observedProperty     → wat werd gemeten (concept)
+  ├── madeBySensor         → meetpunt / systeem
+  ├── usedProcedure        → bepalingsmethode (concept)
+  ├── resultTime           → wanneer werd het resultaat vastgelegd
+  ├── phenomenonTime       → tijdstip of interval van het verschijnsel
+  ├── hasResult            → Resultaat (verplicht, exact 1)
+  │     └── qudt:numericValue + qudt:hasUnit (of rdfs:comment als tekst)
+  └── isMemberOf           → ObservatieVerzameling (optioneel)
 </code></pre></div>
 <h2 id="2-gebeurtenissen-emissie-onttrekking">2. Gebeurtenissen: Emissie, Onttrekking</h2>
-<p>Emissie en onttrekking zijn <strong>gebeurtenissen</strong> en fungeren als <code>sosa:FeatureOfInterest</code>. Ze vertegenwoordigen een tijdsloos concept. De gebeurtenis zelf heeft geen timestamp. De tijd wordt toegevoegd via de gekoppelde observatie.</p>
+<p>Emissie en onttrekking zijn <strong>gebeurtenissen</strong> en fungeren als <code>sosa:FeatureOfInterest</code>. Ze vertegenwoordigen een tijdsloos concept: de gebeurtenis zelf heeft geen timestamp, de tijd zit in de observaties.</p>
 <h3 id="emissie">Emissie</h3>
-<p>Een <strong>emissie</strong> is een gebeurtenis waarbij stoffen de installatie verlaten (aan een emissiepunt).</p>
+<p>Een <strong>emissie</strong> is een gebeurtenis waarbij stoffen de installatie verlaten (aan een emissiepunt). Ze is een subklasse van <code>prov:Entity</code> en <code>sosa:FeatureOfInterest</code> en wordt <strong>afgeleid</strong> (<code>prov:wasDerivedFrom</code>) van het emissieproces waaruit ze voortkomt (verplicht, minstens één):</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">prov:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/prov#&gt;</span><span class="w"> </span><span class="p">.</span>
 
+<span class="c"># De gebeurtenis (twee-segment URI, niet geversioneerd)</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">.</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Uitstoot schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="c"># De emissie is afgeleid van het emissieproces (verplicht, min 1)</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Enkele emissie, meerdere observaties:</span>
+<span class="c"># de emissie is het feature-of-interest van al die observaties (of verzamelingen)</span>
 </code></pre></div>
-<p>Emissies hebben een <strong>twee-segment URI</strong> (<code>{type}/{uuid}</code>). Ze worden niet geversioneerd.</p>
 <h3 id="onttrekking">Onttrekking</h3>
-<p>Een <strong>onttrekking</strong> is een gebeurtenis waarbij grondstoffen gewonnen worden (aan een onttrekkingspunt).</p>
+<p>Een <strong>onttrekking</strong> is een gebeurtenis waarbij grondstoffen worden gewonnen of gebonsterd (aan een onttrekkingspunt), analoog aan de emissie maar dan afgeleid van een onttrekkingsproces:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/019eaca0-b8c6-7096-886c-103c3e21466d&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekking</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">.</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekking</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Grondwaterwinning put 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7241-ac66-b7831d1b3624/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Opmerking</strong>: De klasse <code>Uitwisseling</code> is verwijderd uit de ontologie. Uitwisselingen worden nu rechtstreeks gekoppeld aan <code>Uitwisselpunt</code> via het procesmodel.</p>
+<p><strong>Opmerking</strong>: De klasse <code>Uitwisseling</code> is niet apart gemodelleerd. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie <a href="../basisaanname/#5-disjoint-classes">Basisaannames §5</a>); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.</p>
 </blockquote>
+<h3 id="relatie-tussen-punt-en-gebeurtenis">Relatie tussen punt en gebeurtenis</h3>
+<p>Een <strong>emissiepunt</strong> (het fysieke systeem) is niet hetzelfde als een <strong>emissie</strong> (de gebeurtenis). De keten loopt via het proces:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Emissiepunt = fysiek systeem (gehost op de locatie)</span>
+<span class="nv">&lt;.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nv">&lt;.../exploitatielocatie/...&gt;</span> <span class="p">.</span>
+
+<span class="c"># Emissieproces: type emissie, implementeert het emissiepunt (OWL-axioma)</span>
+<span class="nv">&lt;.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Emissie = gebeurtenis, afgeleid van dat proces</span>
+<span class="nv">&lt;.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Observatie koppelt aan de emissie (niet aan het emissiepunt!)</span>
+<span class="nv">&lt;.../observatie/.../2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">.</span>
+</code></pre></div>
 <h2 id="3-observaties">3. Observaties</h2>
 <p>Een <strong>observatie</strong> is een waarneming of meting. Het is een instantie van <code>sosa:Observation</code>.</p>
 <h3 id="kenmerken-van-een-observatie">Kenmerken van een observatie</h3>
@@ -1223,44 +1306,77 @@
 <tr>
 <th>Eigenschap</th>
 <th>Type</th>
+<th>Verplicht</th>
 <th>Beschrijving</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>sosa:hasFeatureOfInterest</code></td>
-<td>FeatureOfInterest</td>
-<td>De gebeurtenis die wordt waargenomen (emissie, onttrekking)</td>
-</tr>
-<tr>
-<td><code>sosa:observedProperty</code></td>
-<td>Concept</td>
-<td>Wat werd gemeten (stof, parameter)</td>
-</tr>
-<tr>
-<td><code>sosa:resultTime</code></td>
-<td>dateTime</td>
-<td>Wanneer werd de meting uitgevoerd</td>
+<td>Emissie/Onttrekking</td>
+<td>Ja (exact 1)</td>
+<td>De gebeurtenis die wordt waargenomen</td>
 </tr>
 <tr>
 <td><code>sosa:hasResult</code></td>
-<td>Resultaat</td>
+<td>riepr:Resultaat</td>
+<td>Ja (exact 1)</td>
 <td>Het resultaat van de meting</td>
 </tr>
 <tr>
+<td><code>dct:created</code></td>
+<td>dateTime</td>
+<td>Ja (exact 1)</td>
+<td>Aanmaaktimestamp (ook in de URI)</td>
+</tr>
+<tr>
+<td><code>sosa:observedProperty</code></td>
+<td>concept</td>
+<td>Nee</td>
+<td>Wat werd gemeten (stof, parameter)</td>
+</tr>
+<tr>
 <td><code>sosa:madeBySensor</code></td>
-<td>System</td>
+<td>ssn:System</td>
+<td>Nee</td>
 <td>Het meetpunt/systeem dat de meting uitvoerde</td>
 </tr>
 <tr>
 <td><code>sosa:usedProcedure</code></td>
-<td>Procedure</td>
-<td>De gebruikte meetprocedure</td>
+<td>concept</td>
+<td>Nee</td>
+<td>De bepalingsmethode</td>
+</tr>
+<tr>
+<td><code>sosa:resultTime</code></td>
+<td>dateTime</td>
+<td>Nee</td>
+<td>Wanneer het resultaat werd vastgelegd</td>
+</tr>
+<tr>
+<td><code>sosa:phenomenonTime</code></td>
+<td>dateTime/interval</td>
+<td>Nee</td>
+<td>Tijdstip of interval van het verschijnsel</td>
+</tr>
+<tr>
+<td><code>sosa-2023:isMemberOf</code></td>
+<td>riepr:ObservatieVerzameling</td>
+<td>Nee</td>
+<td>De verzameling waartoe de observatie behoort</td>
+</tr>
+<tr>
+<td><code>riepr:aangifte</code></td>
+<td>riepr:Aangifte</td>
+<td>Nee</td>
+<td>De aangifte waaraan de observatie gerelateerd is</td>
 </tr>
 </tbody>
 </table>
+<h3 id="sosamadebysensor"><code>sosa:madeBySensor</code></h3>
+<p><code>madeBySensor</code> is een standaard SOSA-property (<a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">SOSAmadeBySensor</a>): "het sensorapparaat dat de observatie heeft gemaakt". In de 2017 REC is de range <code>sosa:Sensor</code>; in het RIE-IEPR-model draagt het meetpunt die rol, en is het model daar <code>ssn:System</code>. De range is daarom in de ontologie <code>ssn:System</code>.</p>
 <h3 id="uri-patroon">URI-patroon</h3>
-<p>Observaties zijn <strong>versioneerbaar</strong> met een drie-segment patroon (<code>{type}/{uuid}/{created}</code>):</p>
+<p>Observaties zijn <strong>versioneerbaar</strong> met een twee-segment patroon (<code>{uuid}/{created}</code>; er is geen <code>issued</code>-segment, de geldigheid zit in de gekoppelde entiteiten):</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">qudt:</span><span class="w">  </span><span class="nv">&lt;http://qudt.org/schema/qudt/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">unit:</span><span class="w">  </span><span class="nv">&lt;http://qudt.org/vocab/unit/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1268,102 +1384,120 @@
 
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Observation</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4&gt;</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx&gt;</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">resultTime</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
-    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="p">[</span>
-        <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span> <span class="p">;</span>
-        <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">qudt</span><span class="p">:</span><span class="nt">NumericValue</span> <span class="p">;</span>
-        <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">PPM</span>
-    <span class="p">]</span> <span class="p">.</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="4-resultaten-en-waarden">4. Resultaten en waarden</h2>
-<p>Het resultaat van een observatie wordt voorgesteld als een <code>sosa:Result</code> met een numerieke waarde en een eenheid (via QUDT).</p>
-<div class="highlight"><pre><span></span><code><span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="p">[</span>
+<p>Het resultaat van een observatie is een <code>riepr:Resultaat</code> (<code>sosa:Result</code> + <code>prov:Entity</code>) met een <strong>eigen URI</strong> (twee segmenten: <code>resultaat/{uuid}</code>), geen anonieme node:</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">qudt:</span><span class="w"> </span><span class="nv">&lt;http://qudt.org/schema/qudt/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">unit:</span><span class="w">  </span><span class="nv">&lt;http://qudt.org/vocab/unit/&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="c"># Numeriek resultaat</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span>
     <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">qudt</span><span class="p">:</span><span class="nt">NumericValue</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">PPM</span>
-<span class="p">]</span> <span class="p">.</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">MG-PER-M3</span> <span class="p">.</span>
+
+<span class="c"># Tekstueel resultaat (vrije waarde, bijvoorbeeld een kwalificatie)</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-im4f-n9ojk7kgkfa&gt;</span>
+    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">comment</span> <span class="s">"Kleurafwijking geconstateerd, hermeting ingepland"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
 </code></pre></div>
 <p>QUDT (Quantities, Units, Types and Dimensions) biedt een gestandaardiseerd systeem voor eenheden:</p>
 <ul>
-<li><code>unit:PPM</code> parts per million</li>
 <li><code>unit:MG-PER-M3</code> milligram per kubieke meter</li>
 <li><code>unit:LITER-PER-SEC</code> liter per seconde</li>
+<li><code>unit:M</code> meter</li>
+<li><code>unit:PERCENT</code> percentage</li>
 <li>etc.</li>
 </ul>
 <h2 id="5-geobserveerde-eigenschappen-observedproperty">5. Geobserveerde eigenschappen (observedProperty)</h2>
-<p>De <code>sosa:observedProperty</code> geeft aan <strong>wat</strong> er werd gemeten. In het RIE-IEPR-model zijn dit concepten uit de codelijsten:</p>
+<p>De <code>sosa:observedProperty</code> geeft aan <strong>wat</strong> er werd gemeten. In het RIE-IEPR-model zijn dit concepten (bijv. stoffen) uit de codelijsten:</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Voorbeeld: NOx-meting</span>
-<span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/...&gt;</span> <span class="p">.</span>
 
-<span class="c"># Voorbeeld: CO-meting</span>
-<span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/CO&gt;</span> <span class="p">.</span>
-
-<span class="c"># Voorbeeld: TSP (Total Suspended Particulates)</span>
-<span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/TSP&gt;</span> <span class="p">.</span>
+<span class="c"># Voorbeeld: zuurstofgehalte</span>
+<span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/O2&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="6-meetprocedures">6. Meetprocedures</h2>
-<p>Elke observatie kan een procedure hebben via <code>sosa:usedProcedure</code>. Het model definieert specifieke meetprocedures:</p>
-<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
-
-<span class="c"># De meetprocedure als concept in de ontologie</span>
-<span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#meetProcedure&gt;</span>
-    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Procedure</span><span class="p">,</span> <span class="nn">skos</span><span class="p">:</span><span class="nt">Concept</span> <span class="p">;</span>
-    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meetprocedure"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
-    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">comment</span> <span class="s">"Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
+<h2 id="6-procedures-meetproces-en-bepalingsmethode">6. Procedures: meetproces en bepalingsmethode</h2>
+<p>Het model kent twee verschillende vormen van "procedure", die niet verward moeten worden:</p>
+<ol>
+<li>
+<p><strong>Het meetproces</strong> — een <code>riepr:Proces</code> zoals elk ander proces in het plan. Het heeft <code>dct:type</code> = <a href="https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv"><code>procedure-type/meet</code></a> (dezelfde codelijst als emissie, onttrekking, verwerking, uitwissel) en <strong>implementeert per OWL-axioma een <code>riepr:Meetpunt</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;.../proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../hoofdproces/...&gt;</span> <span class="p">.</span>
 </code></pre></div>
+</li>
+<li>
+<p><strong>De bepalingsmethode</strong> — de methodologie van de meting zelf (bijv. een norm als EN 1948). Die staat op de observatie via <code>sosa:usedProcedure</code> en verwijst naar een concept uit de codelijst <a href="https://github.com/milieuinfo/codelijst-rie-iepr/tree/main/src/source"><code>operationeel_bepalingsmethode</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;.../observatie/...&gt;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">usedProcedure</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/bepalingsmethode/EN1948&gt;</span> <span class="p">.</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="7-observatieverzamelingen">7. Observatieverzamelingen</h2>
+<p>Eén meting of bemonstering levert doorgaans <strong>meerdere individuele observaties</strong> op (bijv. één per gemeten stof). Die observaties delen een gemeenschappelijke context: dezelfde emissie, hetzelfde meetpunt, hetzelfde moment. Die gedeelde context is de <strong>observatieverzameling</strong> (<code>riepr:ObservatieVerzameling</code>, subklasse van <code>sosa-2023:ObservationCollection</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa-2023:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
+
+<span class="c"># De verzameling (twee segmenten: {uuid}/{created})</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">ObservatieVerzameling</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meting schoorsteen 1, 1 januari 2026"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="c"># De verzameling zelf wijst naar het feature of interest (exact 1)</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">;</span>
+    <span class="c"># en bevat minstens één observatie</span>
+    <span class="nn">sosa-2023</span><span class="p">:</span><span class="nt">hasMember</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z&gt;</span> <span class="p">,</span>
+                       <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-im4f-n9ojk7kgkf5/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="c"># optioneel: de aangifte waaraan de meting gerelateerd is</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">aangifte</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+</code></pre></div>
+<p>Elke individuele observatie wijst omgekeerd naar de verzameling via <code>sosa-2023:isMemberOf</code> (max 1). Een observatie kan ook <strong>zonder</strong> verzameling bestaan (<code>isMemberOf</code> is optioneel).</p>
 <h2 id="8-volledig-voorbeeld-emissie-observatie">8. Volledig voorbeeld: emissie-observatie</h2>
 <p>Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurtenis tot resultaat:</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">rdf:</span><span class="w">     </span><span class="nv">&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w">   </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w">    </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w">     </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">prov:</span><span class="w">    </span><span class="nv">&lt;http://www.w3.org/ns/prov#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">qudt:</span><span class="w">    </span><span class="nv">&lt;http://qudt.org/schema/qudt/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">unit:</span><span class="w">    </span><span class="nv">&lt;http://qudt.org/vocab/unit/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">     </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
-<span class="k">@prefix</span><span class="w"> </span><span class="nn">skos:</span><span class="w">    </span><span class="nv">&lt;http://www.w3.org/2004/02/skos/core#&gt;</span><span class="w"> </span><span class="p">.</span>
 
-<span class="c"># --- Gebeurtenis (Feature of Interest) ---</span>
+<span class="c"># --- Gebeurtenis (Feature of Interest), afgeleid van het emissieproces ---</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">.</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 
 <span class="c"># --- Meetpunt (systeem) ---</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded&gt;</span> <span class="p">.</span>
 
 <span class="c"># --- Observatie ---</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Observation</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4&gt;</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx&gt;</span> <span class="p">;</span>
-    <span class="nn">sosa</span><span class="p">:</span><span class="nt">resultTime</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">madeBySensor</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
-    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="p">[</span>
-        <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
-        <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">qudt</span><span class="p">:</span><span class="nt">NumericValue</span> <span class="p">;</span>
-        <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">PPM</span>
-    <span class="p">]</span> <span class="p">.</span>
-</code></pre></div>
-<h2 id="9-relatie-tussen-emissiepunt-en-emissie">9. Relatie tussen emissiepunt en emissie</h2>
-<p>Een <strong>emissiepunt</strong> (het fysieke systeem) is niet hetzelfde als een <strong>emissie</strong> (de gebeurtenis). Het emissiepunt is het platform waar de emissie plaatsvindt:</p>
-<div class="highlight"><pre><span></span><code><span class="c"># Emissiepunt = fysiek systeem</span>
-<span class="nv">&lt;.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">.</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">phenomenonTime</span> <span class="s">"2026-01-01T08:00:00Z/2026-01-01T12:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTimeInterval</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">resultTime</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
 
-<span class="c"># Emissie = gebeurtenis (Feature of Interest)</span>
-<span class="nv">&lt;.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span> <span class="p">.</span>
-
-<span class="c"># Observatie koppelt emissiepunt (via het proces) aan de emissie-gebeurtenis</span>
-<span class="nv">&lt;.../observatie/...&gt;</span>
-    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">.</span>
+<span class="c"># --- Resultaat (eigen URI) ---</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span>
+    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">MG-PER-M3</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="10-volledig-observatiepatroon">10. Volledig observatiepatroon</h2>
-<p>Hieronder een overzicht van het volledige SOSA/SSN observatiepatroon met alle gekoppelde entiteiten:</p>
+<h2 id="9-volledig-observatiepatroon">9. Volledig observatiepatroon</h2>
+<p>Hieronder een overzicht van het volledige SOSA/SSN-observatiepatroon met alle gekoppelde entiteiten:</p>
 <div class="mermaid">classDiagram
     %% System classes
     class Installatie {
@@ -1401,27 +1535,31 @@
       +String resultTime
       String uri
     }
-    class Resultaat {
-      +NumericValue
-      +Unit
+    class ObservatieVerzameling {
+      +String uuid
       String uri
     }
-
-    %% System hierarchy
-    Installatie &lt;|-- Emissiepunt
-    Installatie &lt;|-- Meetpunt
+    class Resultaat {
+      +String uuid
+      +qudt numericValue
+      +qudt hasUnit
+      String uri
+    }
 
     %% Process links
     Proces --&gt; Emissiepunt : implementedBy
     Proces --&gt; Meetpunt : implementedBy
-    Proces --&gt; Emissie : hasFeatureOfInterest
-    Proces --&gt; Onttrekking : hasFeatureOfInterest
+    Emissie --&gt; Proces : wasDerivedFrom
+    Onttrekking --&gt; Proces : wasDerivedFrom
 
     %% Observation links
     Observatie --&gt; Emissie : hasFeatureOfInterest
     Observatie --&gt; Onttrekking : hasFeatureOfInterest
     Observatie --&gt; Resultaat : hasResult
-    Observatie --&gt; Proces : usedProcedure
+    Observatie --&gt; Meetpunt : madeBySensor
+    ObservatieVerzameling --&gt; Emissie : hasFeatureOfInterest
+    ObservatieVerzameling --&gt; Onttrekking : hasFeatureOfInterest
+    Observatie --&gt; ObservatieVerzameling : isMemberOf
 
     %% System location links
     Emissiepunt --&gt; Exploitatielocatie : isHostedBy
@@ -1439,13 +1577,15 @@
     class Emissie foi
     class Onttrekking foi
     class Observatie observation
+    class ObservatieVerzameling observation
     class Resultaat observation</div>
 <h2 id="referenties">Referenties</h2>
 <ul>
-<li><a href="../basisaanname/">Basisaannames</a> Feature of Interest, SOSA/SSN patroon</li>
-<li><a href="../systemen/">Installaties en emissiepunten</a> fysieke systemen</li>
-<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> SPARQL-query's voor observaties</li>
-<li><strong>Codelijsten</strong>: De <code>observedProperty</code> waarden en andere categorisaties verwijzen naar SKOS concepten uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a>.</li>
+<li><a href="../endtoend/">End-to-end voorbeeld</a> — de volledige keten van exploitant tot gemeten waarde</li>
+<li><a href="../basisaanname/">Basisaannames</a> — Feature of Interest, SOSA/SSN patroon</li>
+<li><a href="../systemen/">Installaties en emissiepunten</a> — fysieke systemen</li>
+<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> — SPARQL-query's voor observaties</li>
+<li><strong>Codelijsten</strong>: De <code>observedProperty</code>-waarden, procedure-types en bepalingsmethodes verwijzen naar SKOS-concepten uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a>.</li>
 </ul>
 
 

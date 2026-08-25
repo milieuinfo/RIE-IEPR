@@ -546,6 +546,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -916,10 +944,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dctisversionof-de-link-tussen-versie-en-identity" class="md-nav__link">
+  <a href="#2-dctisversionof-de-link-tussen-versie-en-identity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        dct:isVersionOf de link tussen versie en identity
+        2. dct:isVersionOf de link tussen versie en identity
       
     </span>
   </a>
@@ -927,15 +955,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-geldigheid-dctissued-en-admsstatus" class="md-nav__link">
+  <a href="#3-geldigheid-dctissued-dctvalid-en-admsstatus" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Geldigheid: dct:issued en adms:status
+        3. Geldigheid: dct:issued, dct:valid en adms:status
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Geldigheid: dct:issued en adms:status">
+    <nav class="md-nav" aria-label="3. Geldigheid: dct:issued, dct:valid en adms:status">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1221,7 +1249,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 <div class="highlight"><pre><span></span><code>https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
 </code></pre></div>
-<h2 id="dctisversionof-de-link-tussen-versie-en-identity"><code>dct:isVersionOf</code> de link tussen versie en identity</h2>
+<h2 id="2-dctisversionof-de-link-tussen-versie-en-identity">2. <code>dct:isVersionOf</code> de link tussen versie en identity</h2>
 <p>De relatie <code>dct:isVersionOf</code> koppelt een versie aan haar identity URI:</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
 
@@ -1233,19 +1261,30 @@ https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <p>Meerdere versies kunnen naar dezelfde identity verwijzen. Ze beschrijven verschillende toestanden van hetzelfde object.</p>
-<h2 id="3-geldigheid-dctissued-en-admsstatus">3. Geldigheid: <code>dct:issued</code> en <code>adms:status</code></h2>
-<p>Elke versie heeft een geldigheidsdatum (<code>dct:issued</code>) en een status (<code>adms:status</code>):</p>
+<h2 id="3-geldigheid-dctissued-dctvalid-en-admsstatus">3. Geldigheid: <code>dct:issued</code>, <code>dct:valid</code> en <code>adms:status</code></h2>
+<p>Elke versie heeft een <strong>geldigheidsperiode</strong> en een status:</p>
+<ul>
+<li><code>dct:issued</code> (verplicht): de <strong>start</strong> van de geldigheid.</li>
+<li><code>dct:valid</code> (optioneel): het <strong>einde</strong> van de geldigheid. Ontbreekt het, dan geldt de versie tot op heden (of tot het begin van de volgende versie).</li>
+<li><code>adms:status</code>: de status van de entiteit in die versie.</li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">  </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">adms:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/adms#&gt;</span><span class="w"> </span><span class="p">.</span>
 
+<span class="c"># Versie 1: geldig van 2026-01-01 tot 2026-06-30 (geldigheidseinde expliciet)</span>
 <span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">valid</span>  <span class="s">"2026-06-30"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
     <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">.</span>
 
+<span class="c"># Versie 2: geldig van 2026-07-01, geen einde (huidige versie)</span>
 <span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-07-01/2026-07-01T10:00:00Z&gt;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-07-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
     <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">.</span>
 </code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: het model gebruikt geen <code>prov:wasRevisionOf</code> tussen versies. Versies zijn afzonderlijke URIs die via <code>dct:isVersionOf</code> naar dezelfde identity verwijzen; de volgorde en geldigheid volgt uit <code>dct:issued</code>/<code>dct:valid</code>.</p>
+</blockquote>
 <h3 id="beschikbare-statussen">Beschikbare statussen</h3>
 <table>
 <thead>
@@ -1300,38 +1339,43 @@ https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
 </code></pre></div>
 <h2 id="5-historische-querys-met-tijdsrecht">5. Historische query's met tijdsrecht</h2>
 <h3 id="huidige-toestand-opvragen">Huidige toestand opvragen</h3>
-<p>Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste <code>dct:issued</code> die nog geldig is:</p>
+<p>Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste <code>dct:issued</code> waarvoor <code>dct:valid</code> ontbreekt of in de toekomst ligt:</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?versie</span> <span class="nv">?label</span> <span class="nv">?issued</span>
 <span class="k">WHERE</span> <span class="p">{</span>
   <span class="nv">?versie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nl">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">;</span>
           <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="nv">?label</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="nv">?issued</span> <span class="p">.</span>
+  <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?versie</span> <span class="nn">dct</span><span class="p">:</span><span class="nt">valid</span> <span class="nv">?valid</span> <span class="p">}</span>
+  <span class="k">FILTER</span><span class="p">(</span><span class="o">!</span><span class="nf">BOUND</span><span class="p">(</span><span class="nv">?valid</span><span class="p">)</span> <span class="o">||</span> <span class="nv">?valid</span> <span class="o">&gt;=</span> <span class="s">"2026-08-01"</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="k">ORDER BY</span> <span class="k">DESC</span><span class="p">(</span><span class="nv">?issued</span><span class="p">)</span>
 <span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div>
 <h3 id="toestand-op-een-historisch-moment">Toestand op een historisch moment</h3>
-<p>Om de toestand van een installatie op een specifiek datum te vinden:</p>
+<p>Om de toestand van een installatie op een specifiek datum te vinden (<code>?issued &lt;= moment</code> en <code>dct:valid</code> ontbreekt of ligt na het moment):</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?versie</span> <span class="nv">?label</span> <span class="nv">?issued</span>
 <span class="k">WHERE</span> <span class="p">{</span>
   <span class="nv">?versie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nl">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">;</span>
           <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="nv">?label</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="nv">?issued</span> <span class="p">.</span>
+  <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?versie</span> <span class="nn">dct</span><span class="p">:</span><span class="nt">valid</span> <span class="nv">?valid</span> <span class="p">}</span>
   <span class="k">FILTER</span><span class="p">(</span><span class="nv">?issued</span> <span class="o">&lt;=</span> <span class="s">"2026-03-01"</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span><span class="p">)</span>
+  <span class="k">FILTER</span><span class="p">(</span><span class="o">!</span><span class="nf">BOUND</span><span class="p">(</span><span class="nv">?valid</span><span class="p">)</span> <span class="o">||</span> <span class="nv">?valid</span> <span class="o">&gt;=</span> <span class="s">"2026-03-01"</span><span class="o">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="k">ORDER BY</span> <span class="k">DESC</span><span class="p">(</span><span class="nv">?issued</span><span class="p">)</span>
 <span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div>
 <h3 id="versies-van-een-entiteit-door-de-tijd-heen">Versies van een entiteit door de tijd heen</h3>
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?versie</span> <span class="nv">?label</span> <span class="nv">?issued</span> <span class="nv">?created</span> <span class="nv">?status</span>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?versie</span> <span class="nv">?label</span> <span class="nv">?issued</span> <span class="nv">?valid</span> <span class="nv">?created</span> <span class="nv">?status</span>
 <span class="k">WHERE</span> <span class="p">{</span>
   <span class="nv">?versie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nl">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">;</span>
           <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="nv">?label</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="nv">?issued</span> <span class="p">;</span>
           <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="nv">?created</span> <span class="p">.</span>
+  <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?versie</span> <span class="nn">dct</span><span class="p">:</span><span class="nt">valid</span> <span class="nv">?valid</span> <span class="p">}</span>
   <span class="k">OPTIONAL</span> <span class="p">{</span> <span class="nv">?versie</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">?status</span> <span class="p">}</span>
 <span class="p">}</span>
 <span class="k">ORDER BY</span> <span class="nv">?issued</span><span class="p">,</span> <span class="nv">?created</span>
@@ -1411,11 +1455,11 @@ https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
       String uri
     }
 
-    %% Links between identity and version URIs
-    ExploitatieIdentity &lt;|-- ExploitatieVersion1 : isVersionOf
-    ExploitatieIdentity &lt;|-- ExploitatieVersion2 : isVersionOf
-    InstallatieIdentity &lt;|-- InstallatieVersion1 : isVersionOf
-    InstallatieIdentity &lt;|-- InstallatieVersion2 : isVersionOf
+    %% Links between version URIs and identity URIs (versie isVersionOf identity)
+    ExploitatieVersion1 --&gt; ExploitatieIdentity : isVersionOf
+    ExploitatieVersion2 --&gt; ExploitatieIdentity : isVersionOf
+    InstallatieVersion1 --&gt; InstallatieIdentity : isVersionOf
+    InstallatieVersion2 --&gt; InstallatieIdentity : isVersionOf
 
     %% Version attributes
     class VersionAttributes {

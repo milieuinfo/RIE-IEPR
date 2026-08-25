@@ -549,6 +549,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -1268,7 +1296,7 @@
 <td>Status (in_dienst, ontmanteld)</td>
 </tr>
 <tr>
-<td><code>ssn:isHostedBy</code></td>
+<td><code>sosa:isHostedBy</code></td>
 <td>Exploitatielocatie</td>
 <td>Locatie waar het systeem gehost wordt</td>
 </tr>
@@ -1283,13 +1311,23 @@
 <td>Eigenschappen van het systeem</td>
 </tr>
 <tr>
+<td><code>dct:valid</code></td>
+<td>date</td>
+<td>Einde geldigheid (zie <a href="../versiebeheer/">Versiebeheer</a>)</td>
+</tr>
+<tr>
+<td><code>riepr:aangifte</code></td>
+<td>riepr:Aangifte (0..1)</td>
+<td>De aangifte waaraan dit systeem gerelateerd is</td>
+</tr>
+<tr>
 <td><code>adms:identifier</code></td>
 <td>adms:Identifier (0..n)</td>
 <td>Externe (bron/migratie) identificatoren</td>
 </tr>
 </tbody>
 </table>
-<p>Alle systemen zijn subklassen van <code>sosa:System</code> en <code>ogc:SpatialObject</code>.</p>
+<p>Alle systemen zijn subklassen van <code>ssn:System</code> en <code>ogc:SpatialObject</code>.</p>
 <blockquote>
 <p><strong>Externe identificatoren</strong>: <code>adms:identifier</code> bewaart codes uit bron-systemen (VMM-migratie, DOMG/INSPIRE) naast de eigen RIE-IEPR-URI. Zie <a href="../basisaanname/#9-externe-identificatoren-admsidentifier">Basisaannames: externe identificatoren</a>.</p>
 <p><strong>Codelijsten en Systeemeigenschappen</strong>: Het <code>dct:type</code> van een systeem (bijv. <code>installatie_type</code>, <code>emissiepunt_type</code>) bepaalt welke <code>Systeemeigenschap</code>-concepten relevant zijn. De codelijsten in <a href="https://github.com/milieuinfo/codelijst-rie-iepr">milieuinfo/codelijst-rie-iepr</a> bevatten per eigenschap metadata zoals <code>relevantDataType</code>, <code>relevantUnit</code>, <code>isVerplicht</code> en <code>isMeervoudig</code>, en koppelen eigenschappen aan systeemtypes via <code>relevantRiepr</code>. Dit maakt het mogelijk om te weten welke eigenschappen verplicht zijn voor een bepaald systeemtype en welk datatype/eenheid verwacht wordt.</p>
@@ -1302,7 +1340,7 @@
 
 <span class="c"># Waterzuiveringsinstallatie</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"waterzuiveringsinstallatie"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/waterzuivering&gt;</span> <span class="p">;</span>
@@ -1312,7 +1350,7 @@
 
 <span class="c"># GPBV-installatie</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"AGC Glass Mol"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv-installatie&gt;</span> <span class="p">.</span>
@@ -1325,7 +1363,7 @@
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"0"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">Percent</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">PERCENT</span> <span class="p">;</span>
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N&gt;</span> <span class="p">.</span>
 
 <span class="c"># Geïnstalleerd vermogen</span>
@@ -1333,14 +1371,14 @@
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerd_vermogen&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"1500"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">KiloW</span> <span class="p">.</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">KW</span> <span class="p">.</span>
 
 <span class="c"># Geïnstalleerde productiecapaciteit</span>
 <span class="nv">&lt;.../systeemeigenschap/019edc4a-1a2c-72e4-9d56-e0f9a8b7c6d5&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/geinstalleerde_productiecapaciteit&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"100"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">TonnePerYear</span> <span class="p">.</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">TONNE-PER-YR</span> <span class="p">.</span>
 
 <span class="c"># Waterzuiveringstechniek (met parameter als concept)</span>
 <span class="nv">&lt;.../systeemeigenschap/019edc4a-1a2d-73f5-ae67-f1a9d8c7e6f5&gt;</span>
@@ -1350,17 +1388,17 @@
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/IJGRMHOSHXDMSA-UHFFFAOYSA-N&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="3-emissiepunten">3. Emissiepunten</h2>
-<p>Een <strong>emissiepunt</strong> is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van <code>riepr:Emissiepunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>. Emissiepunten zijn <strong>disjoint</strong> met onttrekkingspunten en meetpunten. Het type wordt bepaald door de codelijst <strong><code>emissiepunt_type</code></strong>.</p>
+<p>Een <strong>emissiepunt</strong> is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van <code>riepr:Emissiepunt</code>, <code>ssn:System</code> en <code>ogc:SpatialObject</code>. Emissiepunten zijn <strong>disjoint</strong> met meetpunten; met onttrekkingspunten niet — een punt dat zowel emissies als onttrekkingen toelaat is een <strong>uitwisselpunt</strong> (zie <a href="../basisaanname/#5-disjoint-classes">Basisaannames §5</a>). Het type wordt bepaald door de codelijst <strong><code>emissiepunt_type</code></strong>.</p>
 <h3 id="types-emissiepunten">Types emissiepunten</h3>
 <p>In het AGC Glass-voorbeeld komen verschillende types voor, zoals <code>schoorsteen_verticale_uitstroom</code> en <code>lozingspunt</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Schoorsteen (lucht)</span>
 <span class="nv">&lt;.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom&gt;</span> <span class="p">.</span>
 
 <span class="c"># Lozingspunt (water)</span>
 <span class="nv">&lt;.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h3 id="emissiepunt-eigenschappen">Emissiepunt-eigenschappen</h3>
@@ -1384,11 +1422,11 @@
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">datatype</span> <span class="nv">&lt;http://www.w3.org/2001/XMLSchema#decimal&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="4-onttrekkingspunten">4. Onttrekkingspunten</h2>
-<p>Een <strong>onttrekkingspunt</strong> is een punt waar grondstoffen gewonnen worden. Het is een subklasse van <code>riepr:Onttrekkingspunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>.</p>
+<p>Een <strong>onttrekkingspunt</strong> is een punt waar grondstoffen gewonnen worden. Het is een subklasse van <code>riepr:Onttrekkingspunt</code>, <code>ssn:System</code> en <code>ogc:SpatialObject</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekkingspunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Onttrekkingspunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"1 (FL koeltoren)"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/grondwaterput&gt;</span> <span class="p">.</span>
@@ -1399,12 +1437,12 @@
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"45.5"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="5-meetpunten">5. Meetpunten</h2>
-<p>Een <strong>meetpunt</strong> is een punt waar metingen worden uitgevoerd. Het is een subklasse van <code>riepr:Meetpunt</code>, <code>sosa:System</code> en <code>ogc:SpatialObject</code>. Meetpunten zijn <strong>disjoint</strong> met emissiepunten en onttrekkingspunten.</p>
+<p>Een <strong>meetpunt</strong> is een punt waar metingen worden uitgevoerd. Het is een subklasse van <code>riepr:Meetpunt</code>, <code>ssn:System</code> en <code>ogc:SpatialObject</code>. Meetpunten zijn <strong>disjoint</strong> met emissiepunten en onttrekkingspunten.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meetpunt 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
 </code></pre></div>
@@ -1435,7 +1473,7 @@
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"2.5"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">unit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="7-systeemhierarchie-via-ssnhassubsystem">7. Systeemhiërarchie via <code>ssn:hasSubSystem</code></h2>
 <p>Systemen kunnen genest zijn - een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):</p>
@@ -1538,16 +1576,16 @@
     ssn:System &lt;|-- Filter
     ssn:System &lt;|-- Uitwisselpunt
 
-    %% System → Process links (implementedBy)
-    Emissiepunt --&gt; Proces : implementedBy
-    Installatie --&gt; Proces : implementedBy
-    Meetpunt --&gt; Proces : implementedBy
-    Onttrekkingspunt --&gt; Proces : implementedBy
-    Uitwisselpunt --&gt; Proces : implementedBy
+    %% Process → System links (implementedBy)
+    Proces --&gt; Emissiepunt : implementedBy
+    Proces --&gt; Installatie : implementedBy
+    Proces --&gt; Meetpunt : implementedBy
+    Proces --&gt; Onttrekkingspunt : implementedBy
+    Proces --&gt; Uitwisselpunt : implementedBy
 
-    %% Feature → Process links (hasFeatureOfInterest)
-    Emissie --&gt; Proces : hasFeatureOfInterest
-    Onttrekking --&gt; Proces : hasFeatureOfInterest
+    %% Feature → Process links (wasDerivedFrom)
+    Emissie --&gt; Proces : wasDerivedFrom
+    Onttrekking --&gt; Proces : wasDerivedFrom
 
     %% System → Location links (isHostedBy)
     Installatie --&gt; Exploitatielocatie : isHostedBy

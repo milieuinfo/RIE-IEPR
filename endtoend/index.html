@@ -1,0 +1,1616 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://milieuinfo.github.io/RIE-IEPR/endtoend/">
+      
+      
+        <link rel="prev" href="../datamodel/">
+      
+      
+        <link rel="next" href="../basisaanname/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://omgeving.vlaanderen.be/sites/default/files/favicon-leeuw-grijs_0.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>End-to-end voorbeeld - RIE-IEPR Datamodel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra/omgeving.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#end-to-end-voorbeeld" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RIE-IEPR Datamodel" class="md-header__button md-logo" aria-label="RIE-IEPR Datamodel" data-md-component="logo">
+      
+  <img src="../assets/logo-omgeving.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RIE-IEPR Datamodel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              End-to-end voorbeeld
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/milieuinfo/RIE-IEPR" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milieuinfo/RIE-IEPR
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Inleiding
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../datamodel/" class="md-tabs__link">
+          
+  
+  
+  Datamodel
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../technisch/" class="md-tabs__link">
+          
+  
+  
+  Technisch
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../referentie/" class="md-tabs__link">
+          
+  
+  
+  Referentie
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RIE-IEPR Datamodel" class="md-nav__button md-logo" aria-label="RIE-IEPR Datamodel" data-md-component="logo">
+      
+  <img src="../assets/logo-omgeving.png" alt="logo">
+
+    </a>
+    RIE-IEPR Datamodel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milieuinfo/RIE-IEPR" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milieuinfo/RIE-IEPR
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inleiding
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inleiding
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overzicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gebruiksscenario/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gebruiksscenario's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datamodel
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Datamodel
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datamodel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datamodel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#het-geheel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Het geheel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-exploitant-en-exploitatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Exploitant en exploitatie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-exploitatielocatie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Exploitatielocatie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-het-procesplan-p-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Het procesplan (P-Plan)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-systemen-en-hun-eigenschappen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Systemen en hun eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-de-gebeurtenis-emissie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. De gebeurtenis: emissie
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-de-meting-observatieverzameling-observatie-resultaat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. De meting: observatieverzameling, observatie, resultaat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-de-aangifte-als-lijm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. De aangifte als lijm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samenvatting-van-de-koppelingen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Samenvatting van de koppelingen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#al-de-keten-in-een-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Al de keten in één query
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referenties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referenties
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basisaanname/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basisaannames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploitant en exploitatie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systemen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observaties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observaties en emissies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aangifte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aangifte en dossier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technisch
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technisch
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technisch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technisch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uri-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URI-patronen & Hydra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../versiebeheer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versiebeheer en tijdsrecht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referentie
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Referentie
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../referentie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referentie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ontologie/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ontologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="end-to-end-voorbeeld">End-to-end voorbeeld</h1>
+<p>Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de exploitant tot de gemeten waarde, en toont hoe een <strong>aangifte</strong> alle entiteiten aan elkaar bindt. Het voorbeeld is synthetisch (dezelfde URI-patronen en waarden als het datavoorbeeld van AGC Glass Europe in <code>documentatie/datamodel/datavoorbeelden/</code>).</p>
+<p>Lees dit document na <a href="../basisaanname/">Basisaannames</a>; het gaat ervan uit dat u de URI-patronen en het versiebeheer kent.</p>
+<h2 id="het-geheel">Het geheel</h2>
+<div class="mermaid">flowchart LR
+    E[Exploitant] --&gt;|prov:wasAttributedTo| X[Exploitatie]
+    L[Exploitatielocatie] --&gt;|ssn:deployedOnPlatform| X
+    X --&gt;|ssn:implements| HP[Hoofdproces]
+    HP --&gt;|pplan:isStepOfPlan| P1[Proces verwerking]
+    HP --&gt;|pplan:isStepOfPlan| P2[Proces emissie]
+    HP --&gt;|pplan:isStepOfPlan| P3[Proces meting]
+    P1 --&gt;|ssn:implementedBy| I[Installatie]
+    P2 --&gt;|ssn:implementedBy| EP[Emissiepunt]
+    P3 --&gt;|ssn:implementedBy| MP[Meetpunt]
+    P2 --&gt;|prov:wasDerivedFrom| EM[Emissie]
+    EM --&gt;|sosa:isFeatureOfInterestOf| O[Observatie]
+    O --&gt;|sosa:hasResult| R[Resultaat]
+    O -.-&gt;|sosa-2023:isMemberOf| OV[ObservatieVerzameling]
+    OV --&gt;|sosa:hasFeatureOfInterest| EM
+    A[Aangifte] -.-&gt;|riepr:aangifte| X
+    A -.-&gt;|riepr:aangifte| OV
+    EM --&gt;|prov:wasDerivedFrom| P2</div>
+<p>De keten in één zin: een <strong>exploitant</strong> voert op een <strong>locatie</strong> een <strong>plan van processen</strong> uit, waarvoor <strong>systemen</strong> (installaties, emissie-, meet- en onttrekkingspunten) worden ingezet; een <strong>emissie</strong> is de gebeurtenis die uit een emissieproces <em>afgeleid</em> is; <strong>observaties</strong> meten die gebeurtenis en leveren een <strong>resultaat</strong>; en een <strong>aangifte</strong> is het administratieve document waarop al die entiteiten (optioneel) wijzen.</p>
+<h2 id="1-exploitant-en-exploitatie">1. Exploitant en exploitatie</h2>
+<p>De <strong>exploitant</strong> is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segment URI en wordt niet geversioneerd.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitant</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"AGC Glass Europe NV"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">hadPrimarySource</span> <span class="nv">&lt;https://data.vlaanderen.be/id/onderneming/0413638187&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>De <strong>exploitatie</strong> is de uitrol van middelen door die exploitant op een locatie. Ze is geversioneerd (drie segmenten: <code>uuid/issued/created</code>) en draagt het procesplan:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatie</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Bijzondere toelating GL012345"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">modified</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">;</span>
+    <span class="c"># De hoofdactiviteit als NACE-code (de exploitant selecteert die uit zijn VKBO-activiteiten)</span>
+    <span class="nn">org</span><span class="p">:</span><span class="nt">classification</span> <span class="nv">&lt;http://data.europa.eu/ux2/nace2.1/231&gt;</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasAttributedTo</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">deployedOnPlatform</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implements</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>Een <strong>contactpersoon</strong> is een <code>oa:Annotation</code> op de exploitatie (twee-segment URI, geen versiebeheer):</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/019ed475-eb52-76ad-9c36-96ef45d889d0&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Contactpersoon</span> <span class="p">;</span>
+    <span class="nn">oa</span><span class="p">:</span><span class="nt">hasTarget</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/id/concept/milieucoordinator&gt;</span> <span class="p">;</span>
+    <span class="nn">foaf</span><span class="p">:</span><span class="nt">name</span> <span class="s">"John Doe"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">foaf</span><span class="p">:</span><span class="nt">mbox</span> <span class="nv">&lt;mailto:info@example.com&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="2-exploitatielocatie">2. Exploitatielocatie</h2>
+<p>De locatie is een <code>sosa:Platform</code>/<code>ogc:Feature</code> en het ankerpunt voor alle systemen:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatielocatie</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Site Mols"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">;</span>
+    <span class="nn">locn</span><span class="p">:</span><span class="nt">address</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">locn</span><span class="p">:</span><span class="nt">Address</span> <span class="p">;</span>
+        <span class="nn">locn</span><span class="p">:</span><span class="nt">streetAddress</span> <span class="s">"Voortstraat 27"</span> <span class="p">;</span>
+        <span class="nn">locn</span><span class="p">:</span><span class="nt">postalCode</span> <span class="s">"2400"</span> <span class="p">;</span>
+        <span class="nn">locn</span><span class="p">:</span><span class="nt">addressLocality</span> <span class="s">"Mol"</span>
+    <span class="p">]</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">hadPrimarySource</span> <span class="nv">&lt;https://data.vlaanderen.be/id/vestiging/2081766488&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="3-het-procesplan-p-plan">3. Het procesplan (P-Plan)</h2>
+<p>Elke exploitatie implementeert precies één <strong>hoofdproces</strong>. Subprocessen hangen eronder via <code>pplan:isStepOfPlan</code>; de volgorde van stappen wordt aangegeven met <code>pplan:isPrecededBy</code>. Het type van elk proces komt uit de codelijst <a href="https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv"><code>procedure_type</code></a> en dwingt via een OWL-axioma af welk systeem het proces moet implementeren (zie <a href="../basisaanname/">Basisaannames</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Hoofdproces: het plan zelf, getypeerd als hoofdactiviteit.</span>
+<span class="c"># Het wordt geïmplementeerd door de exploitatie (OWL-axioma).</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Productie van glas"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/hoofdactiviteit-type&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Stap 1: verwerking in de installatie</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Smeltoven"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Stap 2: emissie via de schoorsteen (na de smeltoven)</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1464-7b2e-9c11-aa22bb33cc44/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1464-7b2e-9c11-aa22bb33cc44&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Uitstoot schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Stap 3: meting aan het meetpunt (na de smeltoven)</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Luchtkwaliteitsmeting schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+</code></pre></div>
+<blockquote>
+<p><strong>P-Plan</strong> (<a href="https://www.opmw.org/model/p-plan/">www.opmw.org/model/p-plan</a>) is een W3C-ontologie voor processen: een <code>pplan:Plan</code> is een geordende reeks <code>pplan:Step</code>'s. RIE-IEPR maakt er gebruik van via <code>pplan:isStepOfPlan</code> (hierarchical) en <code>pplan:isPrecededBy</code> (volgorde). Het hoofdproces is tegelijk <code>pplan:Plan</code> en <code>pplan:Step</code>; elke stap is een <code>pplan:Step</code>.</p>
+</blockquote>
+<h2 id="4-systemen-en-hun-eigenschappen">4. Systemen en hun eigenschappen</h2>
+<p>Systemen (installaties, emissie- en meetpunten) worden <strong>gehost</strong> op de exploitatielocatie via <code>sosa:isHostedBy</code> en kunnen <strong>eigenschappen</strong> hebben via <code>ssn:hasProperty</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom&gt;</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">ogc</span><span class="p">:</span><span class="nt">hasGeometry</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">ogc</span><span class="p">:</span><span class="nt">Point</span> <span class="p">;</span>
+        <span class="nn">ogc</span><span class="p">:</span><span class="nt">asWKT</span> <span class="s">"POINT (205713.0 209689.0)"</span><span class="p">^^</span><span class="nn">ogc</span><span class="p">:</span><span class="nt">wktLiteral</span> <span class="p">;</span>
+        <span class="nn">ogc</span><span class="p">:</span><span class="nt">crs</span> <span class="nv">&lt;http://www.opengis.net/gml/srs/epsg.xml#31370&gt;</span>
+    <span class="p">]</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Een eigenschap van het emissiepunt: de hoogte</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/hoogte&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"50"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nv">&lt;http://qudt.org/vocab/unit/M&gt;</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/emissiepunt-eigenschappen/hoogte&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h2 id="5-de-gebeurtenis-emissie">5. De gebeurtenis: emissie</h2>
+<p>Een <strong>emissie</strong> is de gebeurtenis die uit het emissieproces is <em>afgeleid</em> (<code>prov:wasDerivedFrom</code>, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Uitstoot schoorsteen 1 (GL012345)"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1464-7b2e-9c11-aa22bb33cc44/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>Onttrekkingen werken analoog: <code>riepr:Onttrekking</code> is <code>prov:wasDerivedFrom</code> een onttrekkingsproces (<code>dct:type</code> = <code>procedure-type/onttrekking</code>, <code>ssn:implementedBy</code> een <code>riepr:Onttrekkingspunt</code>).</p>
+<h2 id="6-de-meting-observatieverzameling-observatie-resultaat">6. De meting: observatieverzameling, observatie, resultaat</h2>
+<p>Eén meting of bemonstering levert doorgaans <strong>meerdere individuele observaties</strong> op (bijv. één per gemeten stof). Die delen gemeenschappelijke context (zelfde emissie, meetpunt, moment). Voor die gedeelde context is er de <strong>observatieverzameling</strong> (<code>sosa-2023:ObservationCollection</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="c"># De verzameling: gedeelde context van de meting</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">ObservatieVerzameling</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meting schoorsteen 1, 1 januari 2026"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa-2023</span><span class="p">:</span><span class="nt">hasMember</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z&gt;</span> <span class="p">,</span>
+                       <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-im4f-n9ojk7kgkf5/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">aangifte</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Individuele observatie 1: NOx</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Observation</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">madeBySensor</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">usedProcedure</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/bepalingsmethode/EN1948&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">phenomenonTime</span> <span class="s">"2026-01-01T08:00:00Z/2026-01-01T12:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTimeInterval</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">resultTime</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">;</span>
+    <span class="nn">sosa-2023</span><span class="p">:</span><span class="nt">isMemberOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+
+<span class="c"># Het resultaat heeft een eigen URI (twee segmenten)</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9&gt;</span>
+    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nv">&lt;http://qudt.org/vocab/unit/MG-PER-M3&gt;</span> <span class="p">.</span>
+
+<span class="c"># Een resultaat kan ook puur tekstueel zijn (vrije waarde)</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-im4f-n9ojk7kgkfa&gt;</span>
+    <span class="kt">a</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">Result</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">comment</span> <span class="s">"Kleurafwijking geconstateerd, hermeting ingepland"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
+</code></pre></div>
+<p>Let op: de observatie wijst via <code>sosa:hasFeatureOfInterest</code> rechtstreeks naar de <strong>emissie</strong> (de gebeurtenis), niet naar het emissiepunt of het meetpunt. Het meetpunt verschijnt via <code>sosa:madeBySensor</code>.</p>
+<h2 id="7-de-aangifte-als-lijm">7. De aangifte als lijm</h2>
+<p>Een <strong>aangifte</strong> (<code>dossier:Stuk</code>) is het administratieve document. Via de objectproperty <code>riepr:aangifte</code> kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is <strong>optioneel</strong>: data kan ook zonder aangifte bestaan (bijv. in concept).</p>
+<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Aangifte</span><span class="p">,</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Bijzondere toelating - wijziging GL012345"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">subject</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2025-12-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">modified</span> <span class="s">"2026-01-15"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dossier</span><span class="p">:</span><span class="nt">informatieclassificatie</span> <span class="nv">&lt;https://data.vlaanderen.be/ns/dossier#openbaar&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>Zie <a href="../aangifte/">Aangifte en dossier</a> voor het volledige model, en <a href="../versiebeheer/">Versiebeheer en tijdsrecht</a> voor hoe ingediende data wordt geversioneerd.</p>
+<h2 id="samenvatting-van-de-koppelingen">Samenvatting van de koppelingen</h2>
+<table>
+<thead>
+<tr>
+<th>Van</th>
+<th>Property</th>
+<th>Naar</th>
+<th>Verplicht</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exploitatie</td>
+<td><code>prov:wasAttributedTo</code></td>
+<td>Exploitant</td>
+<td>ja</td>
+</tr>
+<tr>
+<td>Exploitatie</td>
+<td><code>ssn:deployedOnPlatform</code></td>
+<td>Exploitatielocatie</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Exploitatie</td>
+<td><code>ssn:implements</code></td>
+<td>Hoofdproces</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Proces (stap)</td>
+<td><code>pplan:isStepOfPlan</code></td>
+<td>Bovenliggend proces</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Proces</td>
+<td><code>pplan:isPrecededBy</code></td>
+<td>Voorafgaand proces</td>
+<td>nee (0..n)</td>
+</tr>
+<tr>
+<td>Proces</td>
+<td><code>ssn:implementedBy</code></td>
+<td>Systeem (type-afhankelijk)</td>
+<td>ja (min 1)</td>
+</tr>
+<tr>
+<td>Systeem</td>
+<td><code>sosa:isHostedBy</code></td>
+<td>Exploitatielocatie</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Systeem</td>
+<td><code>ssn:hasProperty</code></td>
+<td>Systeemeigenschap</td>
+<td>nee (0..n)</td>
+</tr>
+<tr>
+<td>Emissie/Onttrekking</td>
+<td><code>prov:wasDerivedFrom</code></td>
+<td>Proces</td>
+<td>ja (min 1)</td>
+</tr>
+<tr>
+<td>Observatie</td>
+<td><code>sosa:hasFeatureOfInterest</code></td>
+<td>Emissie/Onttrekking</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Observatie</td>
+<td><code>sosa:hasResult</code></td>
+<td>Resultaat</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Observatie</td>
+<td><code>sosa:madeBySensor</code></td>
+<td>Systeem (meetpunt)</td>
+<td>nee (0..1)</td>
+</tr>
+<tr>
+<td>Observatie</td>
+<td><code>sosa-2023:isMemberOf</code></td>
+<td>ObservatieVerzameling</td>
+<td>nee (0..1)</td>
+</tr>
+<tr>
+<td>ObservatieVerzameling</td>
+<td><code>sosa-2023:hasMember</code></td>
+<td>Observatie</td>
+<td>ja (min 1)</td>
+</tr>
+<tr>
+<td>ObservatieVerzameling</td>
+<td><code>sosa:hasFeatureOfInterest</code></td>
+<td>Emissie/Onttrekking</td>
+<td>ja (exact 1)</td>
+</tr>
+<tr>
+<td>Resultaat</td>
+<td><code>qudt:hasUnit</code></td>
+<td>QUDT-eenheid</td>
+<td>nee (0..1)</td>
+</tr>
+<tr>
+<td>Diverse entiteiten</td>
+<td><code>riepr:aangifte</code></td>
+<td>Aangifte</td>
+<td>nee (0..1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="al-de-keten-in-een-query">Al de keten in één query</h2>
+<div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">sosa</span><span class="p">:</span>    <span class="nl">&lt;http://www.w3.org/ns/sosa/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">ssn</span><span class="p">:</span>     <span class="nl">&lt;http://www.w3.org/ns/ssn/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">prov</span><span class="p">:</span>    <span class="nl">&lt;http://www.w3.org/ns/prov#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">pplan</span><span class="p">:</span>   <span class="nl">&lt;http://purl.org/net/p-plan#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">qudt</span><span class="p">:</span>    <span class="nl">&lt;http://qudt.org/schema/qudt/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">dct</span><span class="p">:</span>     <span class="nl">&lt;http://purl.org/dc/terms/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">riepr</span><span class="p">:</span>   <span class="nl">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span>
+
+<span class="c"># Voor elke exploitatie: locatie, emissies, en de gemeten NOx-waarden</span>
+<span class="k">SELECT</span> <span class="nv">?exploitatie</span> <span class="nv">?locatie</span> <span class="nv">?emissie</span> <span class="nv">?waarde</span> <span class="nv">?eenheid</span> <span class="k">WHERE</span> <span class="p">{</span>
+    <span class="nv">?exploitatie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatie</span> <span class="p">;</span>
+        <span class="nn">ssn</span><span class="p">:</span><span class="nt">deployedOnPlatform</span> <span class="nv">?locatie</span> <span class="p">.</span>
+    <span class="nv">?emissie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span> <span class="p">;</span>
+        <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">?proces</span> <span class="p">.</span>
+    <span class="nv">?proces</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">?emissiepunt</span> <span class="p">;</span>
+        <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span><span class="o">+</span> <span class="nv">?hoofd</span> <span class="p">.</span>
+    <span class="nv">?exploitatie</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">implements</span> <span class="nv">?hoofd</span> <span class="p">.</span>
+    <span class="nv">?emissiepunt</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nv">?locatie</span> <span class="p">.</span>
+    <span class="nv">?observatie</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasFeatureOfInterest</span> <span class="nv">?emissie</span> <span class="p">;</span>
+        <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="nv">?resultaat</span> <span class="p">.</span>
+    <span class="nv">?resultaat</span> <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="nv">?waarde</span> <span class="p">;</span>
+        <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nv">?eenheid</span> <span class="p">.</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="referenties">Referenties</h2>
+<ul>
+<li><a href="../basisaanname/">Basisaannames</a> — URI-ontwerp, OWL-axioma's, P-Plan</li>
+<li><a href="../exploitant/">Exploitant en exploitatie</a> — organisaties, locaties, contactpersonen</li>
+<li><a href="../systemen/">Systemen</a> — installaties, emissie- en meetpunten, eigenschappen</li>
+<li><a href="../observaties/">Observaties en emissies</a> — het SOSA/SSN-observatiepatroon</li>
+<li><a href="../aangifte/">Aangifte en dossier</a> — administratieve koppeling</li>
+<li><a href="../uri-patterns/">URI-patronen</a> — alle Hydra URI-templates</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-links md-grid md-typeset">
+    <div class="md-footer-links__col">
+      <h2 class="md-footer-links__title">Departement Omgeving</h2>
+      <ul class="md-footer-links__list">
+        <li><a href="https://omgeving.vlaanderen.be" target="_blank" rel="noopener">omgeving.vlaanderen.be</a></li>
+        <li><a href="https://data.omgeving.vlaanderen.be" target="_blank" rel="noopener">data.omgeving.vlaanderen.be</a></li>
+        <li><a href="https://www.omgevingsloket.be" target="_blank" rel="noopener">Omgevingsloket</a></li>
+      </ul>
+    </div>
+    <div class="md-footer-links__col">
+      <h2 class="md-footer-links__title">Project</h2>
+      <ul class="md-footer-links__list">
+        <li><a href="https://github.com/milieuinfo/RIE-IEPR" target="_blank" rel="noopener">GitHub repository</a></li>
+        <li><a href="https://github.com/milieuinfo/RIE-IEPR/issues" target="_blank" rel="noopener">Issues melden</a></li>
+        <li><a href="https://milieuinfo.github.io/RIE-IEPR/ontologie/">Ontologie-documentatie</a></li>
+      </ul>
+    </div>
+    <div class="md-footer-links__col">
+      <h2 class="md-footer-links__title">Deze documentatie</h2>
+      <ul class="md-footer-links__list">
+        <li><a href="https://milieuinfo.github.io/RIE-IEPR/">Overzicht</a></li>
+        <li><a href="https://milieuinfo.github.io/RIE-IEPR/gebruiksscenario/">Gebruiksscenario's</a></li>
+        <li><a href="https://milieuinfo.github.io/RIE-IEPR/versiebeheer/">Versiebeheer en tijdsrecht</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Departement Omgeving, Vlaamse overheid
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/milieuinfo/RIE-IEPR" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "toc.integrate", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../assets/js/mermaid.min.js"></script>
+      
+        <script src="../extra/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

@@ -549,6 +549,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basisaanname/" class="md-nav__link">
         
   
@@ -729,6 +757,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Aangifte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kenmerken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kenmerken
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri-patroon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URI-patroon
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -740,24 +796,58 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-relaties-tussen-entiteiten" class="md-nav__link">
+    <nav class="md-nav" aria-label="2. Aangiftebundel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beschikbare-statussen-aangifte_status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Relaties tussen entiteiten
+        Beschikbare statussen (aangifte_status)
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#4-integratie-met-data" class="md-nav__link">
+  <a href="#3-riepraangifte-de-link-van-data-naar-aangifte" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Integratie met data
+        3. riepr:aangifte: de link van data naar aangifte
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. riepr:aangifte: de link van data naar aangifte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#waarom-optioneel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Waarom optioneel?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Diagram
       
     </span>
   </a>
@@ -1074,41 +1164,215 @@
 
 
 <h1 id="aangifte-en-dossier">Aangifte en dossier</h1>
-<p>Dit document beschrijft hoe aangiften en dossiers gekoppeld zijn aan de RIE-IEPR-data. Het gebruikt de <strong>Dossier</strong>-ontologie van Vlaanderen voor documentbeheer.</p>
+<p>Een <strong>aangifte</strong> is een document ingediend bij de overheid. In de ontologie is het een subklasse van <code>dossier:Stuk</code> (<a href="https://data.vlaanderen.be/ns/dossier#">Dossier-model</a>). Aangiften vormen de administratieve lijm van het model: de operationele entiteiten (exploitaties, systemen, processen, observaties) kunnen er via <code>riepr:aangifte</code> naar verwijzen.</p>
 <h2 id="1-aangifte">1. Aangifte</h2>
-<p>Een <strong>aangifte</strong> is een document ingediend bij de overheid. In de ontologie is het een subklasse van <code>dossier:Stuk</code>.</p>
+<h3 id="kenmerken">Kenmerken</h3>
+<table>
+<thead>
+<tr>
+<th>Eigenschap</th>
+<th>Type</th>
+<th>Verplicht</th>
+<th>Beschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dct:subject</code></td>
+<td>riepr:Exploitatie</td>
+<td>Ja (exact 1)</td>
+<td>De exploitatie waarnaar de aangifte betrekking heeft</td>
+</tr>
+<tr>
+<td><code>dct:created</code></td>
+<td>date</td>
+<td>Ja (exact 1)</td>
+<td>Datum van indiening</td>
+</tr>
+<tr>
+<td><code>dct:modified</code></td>
+<td>date</td>
+<td>Nee</td>
+<td>Datum van goedkeuring</td>
+</tr>
+<tr>
+<td><code>dct:isPartOf</code></td>
+<td>riepr:Aangiftebundel</td>
+<td>Nee</td>
+<td>De bundel waartoe de aangifte behoort</td>
+</tr>
+<tr>
+<td><code>dossier:informatieclassificatie</code></td>
+<td>concept</td>
+<td>Nee</td>
+<td>Informatieclassificatie (openbaar, vertrouwelijk, ...)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="uri-patroon">URI-patroon</h3>
+<p>Aangiften gebruiken een <strong><code>vlaanderenId</code></strong> (geen UUID) en worden niet geversioneerd:</p>
+<div class="highlight"><pre><span></span><code>https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dossier:</span><span class="w"> </span><span class="nv">&lt;https://data.vlaanderen.be/ns/dossier#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">     </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">rdfs:</span><span class="w">    </span><span class="nv">&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span><span class="w"> </span><span class="p">.</span>
 
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
-    <span class="kt">a</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">title</span> <span class="s">"RIE-IEPR aangifte 2026"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Aangifte</span><span class="p">,</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Bijzondere toelating - wijziging GL012345"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">subject</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2025-12-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">modified</span> <span class="s">"2026-01-15"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">dossier</span><span class="p">:</span><span class="nt">informatieclassificatie</span> <span class="nv">&lt;https://data.vlaanderen.be/ns/dossier#openbaar&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="2-aangiftebundel">2. Aangiftebundel</h2>
-<p>Een <strong>aangiftebundel</strong> is een verzameling van aangiften. Het is eveneens een subklasse van <code>dossier:Stuk</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9&gt;</span>
-    <span class="kt">a</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">title</span> <span class="s">"Bundel RIE-IEPR aangiften 2026"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
-</code></pre></div>
-<p>Een aangifte kan deel uitmaken van een aangiftebundel via <code>dct:isPartOf</code>:</p>
+<p>Een <strong>aangiftebundel</strong> is een verzameling van aangiften die samen worden ingediend door een enkele exploitant. Ook de bundel is een <code>dossier:Stuk</code> en gebruikt hetzelfde URI-patroon (<code>aangifte/{vlaanderenId}</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Eigenschap</th>
+<th>Type</th>
+<th>Verplicht</th>
+<th>Beschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dct:type</code></td>
+<td>concept (aangifte_type)</td>
+<td>Ja (exact 1)</td>
+<td>Typering van de bundel (bijv. <code>structuur</code>)</td>
+</tr>
+<tr>
+<td><code>dct:creator</code></td>
+<td>riepr:Exploitant</td>
+<td>Ja (exact 1)</td>
+<td>De exploitant die de bundel indient</td>
+</tr>
+<tr>
+<td><code>dct:created</code></td>
+<td>date</td>
+<td>Ja (exact 1)</td>
+<td>Datum van indiening</td>
+</tr>
+<tr>
+<td><code>dct:modified</code></td>
+<td>date</td>
+<td>Nee</td>
+<td>Datum van goedkeuring</td>
+</tr>
+<tr>
+<td><code>adms:status</code></td>
+<td>concept (aangifte_status)</td>
+<td>Ja (exact 1)</td>
+<td>Status van de bundel</td>
+</tr>
+</tbody>
+</table>
+<p>De individuele aangiften verwijzen naar hun bundel via <code>dct:isPartOf</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">adms:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/adms#&gt;</span><span class="w"> </span><span class="p">.</span>
 
-<span class="nv">&lt;.../aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">isPartOf</span> <span class="nv">&lt;.../aangiftebundel/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9&gt;</span> <span class="p">.</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Aangiftebundel</span><span class="p">,</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Bundel RIE-IEPR aangiften GL012345"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-type/structuur&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">creator</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2025-12-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingediend&gt;</span> <span class="p">.</span>
+
+<span class="c"># Een aangifte uit die bundel</span>
+<span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">isPartOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a3a-7gs8-nr9k-s4tpp2plpl9&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="3-relaties-tussen-entiteiten">3. Relaties tussen entiteiten</h2>
-<div class="mermaid">graph LR
-    Aangifte["Aangifte&lt;br/&gt;(dossier:Stuk)"] --&gt;|dct:isPartOf| Bundel["Aangiftebundel&lt;br/&gt;(dossier:Stuk)"]
+<h3 id="beschikbare-statussen-aangifte_status">Beschikbare statussen (<code>aangifte_status</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Betekenis</th>
+<th>ADMS-equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>concept</code></td>
+<td>Nog niet ingediend (werkversie)</td>
+<td>UnderDevelopment</td>
+</tr>
+<tr>
+<td><code>ingediend</code></td>
+<td>Ingediend bij de overheid</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td><code>gefaald</code></td>
+<td>De procedure is gefaald</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ingetrokken</code></td>
+<td>De aangifte is ingetrokken</td>
+<td>Withdrawn</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-riepraangifte-de-link-van-data-naar-aangifte">3. <code>riepr:aangifte</code>: de link van data naar aangifte</h2>
+<p>Naast <code>dct:isPartOf</code> (aangifte → bundel) bestaat de objectproperty <strong><code>riepr:aangifte</code></strong>, waarmee de <strong>operationele entiteiten</strong> naar de aangifte verwijzen waaraan ze gerelateerd zijn. De property is <strong>optioneel</strong> (0..1) en staat op volgende klassen:</p>
+<ul>
+<li><code>riepr:Exploitatie</code></li>
+<li><code>riepr:Exploitatielocatie</code></li>
+<li><code>riepr:Proces</code></li>
+<li><code>riepr:Installatie</code></li>
+<li><code>riepr:Emissiepunt</code></li>
+<li><code>riepr:Onttrekkingspunt</code></li>
+<li><code>riepr:Uitwisselpunt</code></li>
+<li><code>riepr:Meetpunt</code></li>
+<li><code>riepr:Filter</code></li>
+<li><code>riepr:Observatie</code></li>
+<li><code>riepr:ObservatieVerzameling</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 
-    style Aangifte fill:#007A87,stroke:#005f6a,color:#fff
-    style Bundel fill:#e6f4f5,stroke:#007A87,color:#000</div>
-<h2 id="4-integratie-met-data">4. Integratie met data</h2>
-<p>Aangiften zijn gekoppeld aan de RIE-IEPR-data. Ze betreffen specifieke exploitaties, installaties of emissies. De koppeling gebeurt via URI-referenties naar de betreffende entiteiten in het datamodel.</p>
+<span class="c"># De exploitatie en de meting wijzen naar dezelfde aangifte</span>
+<span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">aangifte</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span> <span class="p">.</span>
+
+<span class="nv">&lt;.../observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span>
+    <span class="nn">riepr</span><span class="p">:</span><span class="nt">aangifte</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<h3 id="waarom-optioneel">Waarom optioneel?</h3>
+<p>Data kan bestaan zonder aangifte (bijv. in concept, of afkomstig uit een bron zonder administratieve koppeling). De property is dus geen verplichte referentie, maar een <strong>contextlink</strong>:</p>
+<ul>
+<li>Ze geeft aan <strong>in de context van welke aangifte</strong> de data is vastgelegd.</li>
+<li>Ze maakt het mogelijk de consequenties van een <strong>ingetrokken</strong> aangifte (<code>adms:status</code> = <code>ingetrokken</code>) te bepalen: alle entiteiten die via <code>riepr:aangifte</code> naar die aangifte wijzen, behoren tot de ingetrokken context, zonder de data zelf te verwijderen.</li>
+</ul>
+<p><strong>SPARQL: alle data die behoort tot een ingetrokken aangifte:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">adms</span><span class="p">:</span>  <span class="nl">&lt;http://www.w3.org/ns/adms#&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">dct</span><span class="p">:</span>   <span class="nl">&lt;http://purl.org/dc/terms/&gt;</span>
+<span class="k">PREFIX</span> <span class="nn">riepr</span><span class="p">:</span> <span class="nl">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span>
+
+<span class="k">SELECT</span> <span class="nv">?entiteit</span> <span class="nv">?type</span>
+<span class="k">WHERE</span> <span class="p">{</span>
+  <span class="nv">?aangifte</span> <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nl">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingetrokken&gt;</span> <span class="p">.</span>
+  <span class="nv">?entiteit</span> <span class="k">a</span> <span class="nv">?type</span> <span class="p">;</span>
+            <span class="nn">riepr</span><span class="p">:</span><span class="nt">aangifte</span> <span class="nv">?aangifte</span> <span class="p">.</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h2 id="4-diagram">4. Diagram</h2>
+<div class="mermaid">graph LR
+    Exploitant["Exploitant"] --&gt;|dct:creator| Bundel["Aangiftebundel&lt;br/&gt;(dossier:Stuk)"]
+    Aangifte["Aangifte&lt;br/&gt;(dossier:Stuk)"] --&gt;|dct:isPartOf| Bundel
+    Exploitatie["Exploitatie"] -.-&gt;|riepr:aangifte| Aangifte
+    ObservatieVerzameling["ObservatieVerzameling"] -.-&gt;|riepr:aangifte| Aangifte
+    Emissiepunt["Emissiepunt"] -.-&gt;|riepr:aangifte| Aangifte
+    Aangifte --&gt;|dct:subject| Exploitatie</div>
 <h2 id="referenties">Referenties</h2>
 <ul>
-<li><a href="../basisaanname/">Basisaannames</a> PROV-O provenance patroon</li>
-<li><a href="../versiebeheer/">Versiebeheer en tijdsrecht</a> relatie tussen indienen en versies</li>
+<li><a href="../endtoend/">End-to-end voorbeeld</a> — de aangifte als lijm in de volledige keten</li>
+<li><a href="../exploitant/">Exploitant en exploitatie</a> — <code>dct:subject</code> wijst naar de exploitatie</li>
+<li><a href="../observaties/">Observaties en emissies</a> — observaties en verzamelingen met <code>riepr:aangifte</code></li>
+<li><strong>Codelijsten</strong>: <code>aangifte_type</code> en <code>aangifte_status</code> uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a></li>
 </ul>
 
 

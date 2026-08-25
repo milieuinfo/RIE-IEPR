@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://milieuinfo.github.io/RIE-IEPR/basisaanname/">
       
       
-        <link rel="prev" href="../datamodel/">
+        <link rel="prev" href="../endtoend/">
       
       
         <link rel="next" href="../exploitant/">
@@ -546,6 +546,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../endtoend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-end voorbeeld
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -616,6 +644,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="1. Processen als centraal skelet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wat-is-p-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wat is P-Plan?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1242,6 +1287,14 @@
 <span class="nv">&lt;.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
+<h3 id="wat-is-p-plan">Wat is P-Plan?</h3>
+<p><a href="https://www.opmw.org/model/p-plan/">P-Plan</a> is een W3C-ontologie voor het modelleren van processen als geordende plannen. De kernbegrippen:</p>
+<ul>
+<li>Een <strong><code>pplan:Plan</code></strong> is een (samengesteld) plan van stappen.</li>
+<li>Een <strong><code>pplan:Step</code></strong> is een individuele stap; <code>pplan:isStepOfPlan</code> legt een stap onder een hoger niveau (plan of stap).</li>
+<li><strong><code>pplan:isPrecededBy</code></strong> geeft de volgorde aan: welke stap vóór een andere moet plaatsvinden.</li>
+</ul>
+<p>In RIE-IEPR is elk <code>riepr:Proces</code> tegelijk een <code>pplan:Plan</code>, een <code>pplan:Step</code> en een <code>sosa:Procedure</code>. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (<code>pplan:isStepOfPlan</code>) en kunnen met <code>pplan:isPrecededBy</code> onderling geordend worden.</p>
 <h2 id="2-uri-ontwerp-en-versiebeheer">2. URI-ontwerp en versiebeheer</h2>
 <p>Het model maakt onderscheid tussen <strong>identity URIs</strong> (tijdsloos) en <strong>versie-URIs</strong> (met tijd).</p>
 <h3 id="identity-uri-vs-versie-uri">Identity URI vs. versie URI</h3>
@@ -1347,13 +1400,8 @@
 <p>Dit betekent dat als een proces het type "emissie" heeft, het <strong>per definitie</strong> een emissiepunt moet implementeren. Deze axioma's zijn vastgelegd in de ontologie (<code>riepr.ttl</code>) en garanderen dataconsistentie.</p>
 <p>De volledige URI's van de procedure types verwijzen naar <a href="https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie">data.omgeving.vlaanderen.be</a>, waar ze als SKOS concepten gepubliceerd zijn.</p>
 <h2 id="5-disjoint-classes">5. Disjoint classes</h2>
-<p>Enkele klassen zijn onderling <strong>disjoint</strong>: een entiteit kan niet tegelijkertijd tot meerdere van deze klassen behoren.</p>
-<ul>
-<li><code>riepr:Emissiepunt</code></li>
-<li><code>riepr:Onttrekkingspunt</code></li>
-<li><code>riepr:Meetpunt</code></li>
-</ul>
-<p>Een punt is dus ofwel een emissiepunt, ofwel een onttrekkingspunt, ofwel een meetpunt - nooit twee tegelijk. Het <strong>Uitwisselpunt</strong> is gedefinieerd als de equivalentie van de intersectie van Emissiepunt en Onttrekkingspunt (een punt dat zowel emissies als onttrekkingen toelaat).</p>
+<p>Een <strong>meetpunt</strong> is per definitie geen emissiepunt of onttrekkingspunt: <code>riepr:Meetpunt</code> staat <code>owl:disjointWith</code> <code>riepr:Emissiepunt</code> én <code>riepr:Onttrekkingspunt</code>.</p>
+<p>Een <strong>uitwisselpunt</strong> daarentegen is wél zowel emissiepunt als onttrekkingspunt: <code>riepr:Uitwisselpunt</code> is gedefinieerd als de equivalentie van de intersectie <code>Emissiepunt ∩ Onttrekkingspunt</code> — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.</p>
 <h2 id="6-observaties-en-features-of-interest">6. Observaties en Features of Interest</h2>
 <p>Observaties volgen het <strong>SOSA/SSN</strong>-patroon:</p>
 <div class="mermaid">graph TD
@@ -1384,12 +1432,12 @@
 <p>Elke systeemeigenschap heeft twee kenmerken:
 - <strong><code>riepr:parameter</code></strong> - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
 - <strong><code>riepr:datatype</code></strong> - het datatype van de waarde (bijv. <code>xsd:decimal</code>)</p>
-<p>De eenheid wordt vastgelegd via <code>qudt:hasUnit</code> conform de ontologie; in praktijkvoorbeelden wordt vaak <code>qudt:unit</code> gebruikt voor leesbaarheid.</p>
+<p>De eenheid wordt vastgelegd via <code>qudt:hasUnit</code> naar een QUDT-eenheid (bijv. <code>http://qudt.org/vocab/unit/M</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement&gt;</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"0"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
-    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">Percent</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">PERCENT</span> <span class="p">;</span>
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="8-provenance-en-herkomst">8. Provenance en herkomst</h2>
@@ -1502,10 +1550,6 @@
 <tr>
 <td><code>riepr:Meetpunt</code></td>
 <td>ja (VMM/lozings- en onttrekkingspunt)</td>
-</tr>
-<tr>
-<td><code>riepr:MeetInstrument</code></td>
-<td>nee</td>
 </tr>
 <tr>
 <td><code>riepr:Filter</code></td>
