@@ -13,19 +13,12 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Filter implements Systeem {
 	/**
-	 * id
-	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
-	 */
-	@jsonMember({ name: 'id' })
-	id: string;
-
-	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid?: string;
+	uuid: string;
 
 	/**
 	 * uri
