@@ -620,6 +620,18 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#structurele-gegevens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structurele gegevens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structurele gegevens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#1-exploitant-en-exploitatie" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -629,8 +641,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#2-exploitatielocatie" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -640,8 +652,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#3-het-procesplan-p-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -651,8 +663,25 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
+  <a href="#structurele-gegevens_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structurele gegevens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structurele gegevens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#4-systemen-en-hun-eigenschappen" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -662,8 +691,25 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
+  <a href="#operationele-gegevens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operationele gegevens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operationele gegevens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#5-de-gebeurtenis-emissie" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -673,8 +719,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#6-de-meting-observatieverzameling-observatie-resultaat" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -684,8 +730,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#7-de-aangifte-als-lijm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -693,6 +739,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1198,6 +1249,7 @@
 <h1 id="end-to-end-voorbeeld">End-to-end voorbeeld</h1>
 <p>Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de exploitant tot de gemeten waarde, en toont hoe een <strong>aangifte</strong> alle entiteiten aan elkaar bindt. Het voorbeeld is synthetisch (dezelfde URI-patronen en waarden als het datavoorbeeld van AGC Glass Europe in <code>documentatie/datamodel/datavoorbeelden/</code>).</p>
 <p>Lees dit document na <a href="../basisaanname/">Basisaannames</a>; het gaat ervan uit dat u de URI-patronen en het versiebeheer kent.</p>
+<p>Het voorbeeld is opgesplitst in <strong>structurele gegevens</strong> en <strong>operationele gegevens</strong>. De structurele stroom beschrijft exploitant, locatie, exploitatie, processen en systemen. De operationele stroom beschrijft emissies/onttrekkingen, observaties en resultaten. Operationele gegevens linken altijd naar structurele gegevens.</p>
 <h2 id="het-geheel">Het geheel</h2>
 <div class="mermaid">flowchart LR
     E[Exploitant] --&gt;|prov:wasAttributedTo| X[Exploitatie]
@@ -1218,7 +1270,8 @@
     A -.-&gt;|riepr:aangifte| OV
     EM --&gt;|prov:wasDerivedFrom| P2</div>
 <p>De keten in één zin: een <strong>exploitant</strong> voert op een <strong>locatie</strong> een <strong>plan van processen</strong> uit, waarvoor <strong>systemen</strong> (installaties, emissie-, meet- en onttrekkingspunten) worden ingezet; een <strong>emissie</strong> is de gebeurtenis die uit een emissieproces <em>afgeleid</em> is; <strong>observaties</strong> meten die gebeurtenis en leveren een <strong>resultaat</strong>; en een <strong>aangifte</strong> is het administratieve document waarop al die entiteiten (optioneel) wijzen.</p>
-<h2 id="1-exploitant-en-exploitatie">1. Exploitant en exploitatie</h2>
+<h2 id="structurele-gegevens">Structurele gegevens</h2>
+<h3 id="1-exploitant-en-exploitatie">1. Exploitant en exploitatie</h3>
 <p>De <strong>exploitant</strong> is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segment URI en wordt niet geversioneerd.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitant</span> <span class="p">;</span>
@@ -1249,7 +1302,7 @@
     <span class="nn">foaf</span><span class="p">:</span><span class="nt">mbox</span> <span class="nv">&lt;mailto:info@example.com&gt;</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="2-exploitatielocatie">2. Exploitatielocatie</h2>
+<h3 id="2-exploitatielocatie">2. Exploitatielocatie</h3>
 <p>De locatie is een <code>sosa:Platform</code>/<code>ogc:Feature</code> en het ankerpunt voor alle systemen:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatielocatie</span> <span class="p">;</span>
@@ -1265,7 +1318,7 @@
     <span class="p">]</span> <span class="p">;</span>
     <span class="nn">prov</span><span class="p">:</span><span class="nt">hadPrimarySource</span> <span class="nv">&lt;https://data.vlaanderen.be/id/vestiging/2081766488&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="3-het-procesplan-p-plan">3. Het procesplan (P-Plan)</h2>
+<h3 id="3-het-procesplan-p-plan">3. Het procesplan (P-Plan)</h3>
 <p>Elke exploitatie implementeert precies één <strong>hoofdproces</strong>. Subprocessen hangen eronder via <code>pplan:isStepOfPlan</code>; de volgorde van stappen wordt aangegeven met <code>pplan:isPrecededBy</code>. Het type van elk proces komt uit de codelijst <a href="https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv"><code>procedure_type</code></a> en dwingt via een OWL-axioma af welk systeem het proces moet implementeren (zie <a href="../basisaanname/">Basisaannames</a>):</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Hoofdproces: het plan zelf, getypeerd als hoofdactiviteit.</span>
 <span class="c"># Het wordt geïmplementeerd door de exploitatie (OWL-axioma).</span>
@@ -1312,7 +1365,8 @@
 <blockquote>
 <p><strong>P-Plan</strong> (<a href="https://www.opmw.org/model/p-plan/">www.opmw.org/model/p-plan</a>) is een W3C-ontologie voor processen: een <code>pplan:Plan</code> is een geordende reeks <code>pplan:Step</code>'s. RIE-IEPR maakt er gebruik van via <code>pplan:isStepOfPlan</code> (hierarchical) en <code>pplan:isPrecededBy</code> (volgorde). Het hoofdproces is tegelijk <code>pplan:Plan</code> en <code>pplan:Step</code>; elke stap is een <code>pplan:Step</code>.</p>
 </blockquote>
-<h2 id="4-systemen-en-hun-eigenschappen">4. Systemen en hun eigenschappen</h2>
+<h2 id="structurele-gegevens_1">Structurele gegevens</h2>
+<h3 id="4-systemen-en-hun-eigenschappen">4. Systemen en hun eigenschappen</h3>
 <p>Systemen (installaties, emissie- en meetpunten) worden <strong>gehost</strong> op de exploitatielocatie via <code>sosa:isHostedBy</code> en kunnen <strong>eigenschappen</strong> hebben via <code>ssn:hasProperty</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
@@ -1335,7 +1389,8 @@
     <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nv">&lt;http://qudt.org/vocab/unit/M&gt;</span> <span class="p">;</span>
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">parameter</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/emissiepunt-eigenschappen/hoogte&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h2 id="5-de-gebeurtenis-emissie">5. De gebeurtenis: emissie</h2>
+<h2 id="operationele-gegevens">Operationele gegevens</h2>
+<h3 id="5-de-gebeurtenis-emissie">5. De gebeurtenis: emissie</h3>
 <p>Een <strong>emissie</strong> is de gebeurtenis die uit het emissieproces is <em>afgeleid</em> (<code>prov:wasDerivedFrom</code>, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
@@ -1343,7 +1398,7 @@
     <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1464-7b2e-9c11-aa22bb33cc44/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <p>Onttrekkingen werken analoog: <code>riepr:Onttrekking</code> is <code>prov:wasDerivedFrom</code> een onttrekkingsproces (<code>dct:type</code> = <code>procedure-type/onttrekking</code>, <code>ssn:implementedBy</code> een <code>riepr:Onttrekkingspunt</code>).</p>
-<h2 id="6-de-meting-observatieverzameling-observatie-resultaat">6. De meting: observatieverzameling, observatie, resultaat</h2>
+<h3 id="6-de-meting-observatieverzameling-observatie-resultaat">6. De meting: observatieverzameling, observatie, resultaat</h3>
 <p>Eén meting of bemonstering levert doorgaans <strong>meerdere individuele observaties</strong> op (bijv. één per gemeten stof). Die delen gemeenschappelijke context (zelfde emissie, meetpunt, moment). Voor die gedeelde context is er de <strong>observatieverzameling</strong> (<code>sosa-2023:ObservationCollection</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="c"># De verzameling: gedeelde context van de meting</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span>
@@ -1380,7 +1435,7 @@
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">comment</span> <span class="s">"Kleurafwijking geconstateerd, hermeting ingepland"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
 </code></pre></div>
 <p>Let op: de observatie wijst via <code>sosa:hasFeatureOfInterest</code> rechtstreeks naar de <strong>emissie</strong> (de gebeurtenis), niet naar het emissiepunt of het meetpunt. Het meetpunt verschijnt via <code>sosa:madeBySensor</code>.</p>
-<h2 id="7-de-aangifte-als-lijm">7. De aangifte als lijm</h2>
+<h3 id="7-de-aangifte-als-lijm">7. De aangifte als lijm</h3>
 <p>Een <strong>aangifte</strong> (<code>dossier:Stuk</code>) is het administratieve document. Via de objectproperty <code>riepr:aangifte</code> kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is <strong>optioneel</strong>: data kan ook zonder aangifte bestaan (bijv. in concept).</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Aangifte</span><span class="p">,</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
