@@ -88,6 +88,10 @@
 <http://www.w3.org/2004/02/skos/core#example> rdf:type owl:AnnotationProperty .
 
 
+###  http://www.w3.org/2004/02/skos/core#related
+<http://www.w3.org/2004/02/skos/core#related> rdf:type owl:AnnotationProperty .
+
+
 ###  http://www.w3.org/ns/adms#status
 <http://www.w3.org/ns/adms#status> rdf:type owl:AnnotationProperty .
 
@@ -284,6 +288,10 @@ rdfs:Datatype rdf:type owl:Class .
 <http://www.w3.org/ns/adms#Identifier> rdf:type owl:Class .
 
 
+###  http://www.w3.org/ns/adms#Status
+<http://www.w3.org/ns/adms#Status> rdf:type owl:Class .
+
+
 ###  http://www.w3.org/ns/hydra/core#IriTemplate
 <http://www.w3.org/ns/hydra/core#IriTemplate> rdf:type owl:Class .
 
@@ -384,13 +392,13 @@ _:genid6 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                     _:genid8 ;
           <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid7 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
-          <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-          <http://www.w3.org/ns/hydra/core#variable> "issued" .
-
-_:genid8 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid7 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+
+_:genid8 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+          <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+          <http://www.w3.org/ns/hydra/core#variable> "issued" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
@@ -434,17 +442,17 @@ _:genid13 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
 _:genid12 rdf:type <http://www.opengis.net/ont/geosparql#Geometry> ;
            <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4025 51.2194)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
 
-_:genid14 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
-           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "issued" .
-
-_:genid15 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+_:genid14 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "created" .
 
-_:genid16 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid15 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+
+_:genid16 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+           <http://www.w3.org/ns/hydra/core#variable> "issued" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant
@@ -476,17 +484,17 @@ _:genid19 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                      _:genid22 ;
            <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid20 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid20 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+           <http://www.w3.org/ns/hydra/core#variable> "created" .
 
 _:genid21 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "issued" .
 
-_:genid22 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+_:genid22 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "created" .
+           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie
@@ -512,17 +520,17 @@ _:genid25 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
 _:genid24 rdf:type <http://www.w3.org/ns/org#Site> ;
            rdfs:label "VKBO Vestiging Cementfabriek"@nl .
 
-_:genid26 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
-           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "created" .
-
-_:genid27 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid26 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
-_:genid28 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+_:genid27 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "issued" .
+
+_:genid28 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+           <http://www.w3.org/ns/hydra/core#variable> "created" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
@@ -621,17 +629,17 @@ _:genid42 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
 _:genid41 rdf:type <http://www.opengis.net/ont/geosparql#Geometry> ;
            <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4026 51.2195)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
 
-_:genid43 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
-           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "created" .
-
-_:genid44 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid43 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
-_:genid45 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+_:genid44 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "issued" .
+
+_:genid45 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+           <http://www.w3.org/ns/hydra/core#variable> "created" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
@@ -646,13 +654,13 @@ _:genid46 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                      _:genid48 ;
            <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid47 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
-           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "created" .
-
-_:genid48 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+_:genid47 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+
+_:genid48 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
+           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+           <http://www.w3.org/ns/hydra/core#variable> "created" .
 
 
 ###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
@@ -860,13 +868,13 @@ _:genid82 rdf:type <http://www.w3.org/ns/hydra/core#IriTemplate> ;
                                                      _:genid85 ;
            <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 
-_:genid83 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
-           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
-           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-
-_:genid84 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
+_:genid83 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
            <http://www.w3.org/ns/hydra/core#variable> "issued" .
+
+_:genid84 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> ;
+           <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
+           <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 
 _:genid85 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> ;
            <http://www.w3.org/ns/hydra/core#required> "true"^^xsd:boolean ;
@@ -877,7 +885,119 @@ _:genid85 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/c
 <https://data.vlaanderen.be/ns/dossier#Stuk> rdf:type owl:Class .
 
 
-[ rdfs:comment "Proces kan een plan op zichzelf zijn (multi step)"@nl
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#definitiefUitDienst
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#definitiefUitDienst> rdf:type owl:NamedIndividual ,
+                                                                                  <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                  <http://www.w3.org/ns/adms#Status> ;
+                                                                         rdfs:comment "De entiteit is definitief uit dienst."@nl ;
+                                                                         rdfs:label "Definitief uit dienst"@nl ;
+                                                                         <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/definitief_uit_dienst> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#emissieProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#emissieProcedure> rdf:type owl:NamedIndividual ,
+                                                                               <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                               <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                      rdfs:comment "Een emissieprocedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
+                                                                      rdfs:label "Emissieprocedure"@nl ;
+                                                                      <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruik
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#inGebruik> rdf:type owl:NamedIndividual ,
+                                                                        <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                        <http://www.w3.org/ns/adms#Status> ;
+                                                               rdfs:comment "De entiteit is in gebruik."@nl ;
+                                                               rdfs:label "In gebruik"@nl ;
+                                                               <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#meetProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#meetProcedure> rdf:type owl:NamedIndividual ,
+                                                                            <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                            <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                   rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
+                                                                   rdfs:label "Meetprocedure"@nl ;
+                                                                   <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ontmanteld
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ontmanteld> rdf:type owl:NamedIndividual ,
+                                                                         <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                         <http://www.w3.org/ns/adms#Status> ;
+                                                                rdfs:comment "De entiteit is ontmanteld."@nl ;
+                                                                rdfs:label "Ontmanteld"@nl ;
+                                                                <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/ontmanteld> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#onttrekkingProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#onttrekkingProcedure> rdf:type owl:NamedIndividual ,
+                                                                                   <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                   <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                          rdfs:comment "Een onttrekkingsprocedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
+                                                                          rdfs:label "Onttrekkingprocedure"@nl ;
+                                                                          <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#tijdelijkUitDienst
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#tijdelijkUitDienst> rdf:type owl:NamedIndividual ,
+                                                                                 <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                 <http://www.w3.org/ns/adms#Status> ;
+                                                                        rdfs:comment "De entiteit is tijdelijk uit dienst."@nl ;
+                                                                        rdfs:label "Tijdelijk uit dienst"@nl ;
+                                                                        <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/tijdelijk_uit_dienst> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#transportProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#transportProcedure> rdf:type owl:NamedIndividual ,
+                                                                                 <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                 <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                        rdfs:comment "Een transportprocedure is een specifieke procedure die betrekking heeft op het transport tussen twee processen."@nl ;
+                                                                        rdfs:label "Transportprocedure"@nl ;
+                                                                        <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitwisselProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#uitwisselProcedure> rdf:type owl:NamedIndividual ,
+                                                                                 <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                 <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                        rdfs:comment "Een uitwisselprocedure is een specifieke procedure die betrekking heeft op het uitwisselen van stoffen tussen processen."@nl ;
+                                                                        rdfs:label "Uitwisselprocedure"@nl ;
+                                                                        <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#verkeerdeRegistratie
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#verkeerdeRegistratie> rdf:type owl:NamedIndividual ,
+                                                                                   <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                   <http://www.w3.org/ns/adms#Status> ;
+                                                                          rdfs:comment "De entiteit is verkeerd geregistreerd."@nl ;
+                                                                          rdfs:label "Verkeerde registratie"@nl ;
+                                                                          <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/verkeerde_registratie> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#verwerkingProcedure
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#verwerkingProcedure> rdf:type owl:NamedIndividual ,
+                                                                                  <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                                  <http://www.w3.org/ns/sosa/Procedure> ;
+                                                                         rdfs:comment "Een verwerkingsprocedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
+                                                                         rdfs:label "Verwerkingsprocedure"@nl ;
+                                                                         <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> .
+
+
+###  https://data.riepr.omgeving.vlaanderen.be/ns/riepr#voorgesteld
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#voorgesteld> rdf:type owl:NamedIndividual ,
+                                                                          <http://www.w3.org/2004/02/skos/core#Concept> ,
+                                                                          <http://www.w3.org/ns/adms#Status> ;
+                                                                 rdfs:comment "De entiteit is voorgesteld."@nl ;
+                                                                 rdfs:label "Voorgesteld"@nl ;
+                                                                 <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/voorgesteld> .
+
+
+[ rdfs:comment "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl
 ] .
 
 [ rdfs:comment "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl
@@ -886,16 +1006,16 @@ _:genid85 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/c
 [ rdfs:comment "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl
  ] .
 
-[ rdfs:comment "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl
+[ rdfs:comment "Proces kan een plan op zichzelf zijn (multi step)"@nl
  ] .
 
 [ rdfs:comment "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"@nl
  ] .
 
-[ rdfs:comment "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl
+[ rdfs:comment "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl
  ] .
 
-[ rdfs:comment "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl
+[ rdfs:comment "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl
  ] .
 
 #################################################################
