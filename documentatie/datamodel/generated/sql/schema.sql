@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-08-25T14:41:55.341222243Z[GMT]
+-- Generated: 2026-08-26T06:38:52.132684843Z[GMT]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -113,6 +113,19 @@ COMMENT ON COLUMN adres.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/ri
 COMMENT ON COLUMN adres.uri IS 'http://example.org/vocab/uri';
 COMMENT ON COLUMN adres.full_address IS 'http://www.w3.org/ns/locn#fullAddress';
 COMMENT ON COLUMN adres.locator_designator IS 'http://www.w3.org/ns/locn#locatorDesignator';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof
+CREATE TABLE brandstof (
+  uuid VARCHAR,
+  uri VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE brandstof IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof';
+COMMENT ON COLUMN brandstof.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN brandstof.uri IS 'http://example.org/vocab/uri';
 
 ----------------------------------------------------------------------
 
@@ -1682,6 +1695,19 @@ COMMENT ON COLUMN uitwisselpunt_systeemeigenschap.systeemeigenschap_id IS 'https
 COMMENT ON COLUMN uitwisselpunt_systeemeigenschap.aangemaakt_op IS 'http://purl.org/dc/terms/created';
 COMMENT ON COLUMN uitwisselpunt_systeemeigenschap.geldig_van IS 'http://purl.org/dc/terms/issued';
 COMMENT ON COLUMN uitwisselpunt_systeemeigenschap.geldig_tot IS 'http://purl.org/dc/terms/valid';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
+CREATE TABLE verbruik (
+  uuid VARCHAR,
+  uri VARCHAR,
+  PRIMARY KEY (uuid)
+);
+
+COMMENT ON TABLE verbruik IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
+COMMENT ON COLUMN verbruik.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN verbruik.uri IS 'http://example.org/vocab/uri';
 
 ----------------------------------------------------------------------
 

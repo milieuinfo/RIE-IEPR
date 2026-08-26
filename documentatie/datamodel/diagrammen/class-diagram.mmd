@@ -67,6 +67,11 @@ classDiagram
 	Aangiftebundel --> Exploitant : creator
 	%% http://www.w3.org/ns/adms#status
 	Aangiftebundel --> Status : status
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof
+	class Brandstof {
+	  +String uuid
+	  String uri
+	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
 	class Contactpersoon {
 	  +String id
@@ -207,8 +212,7 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String id
-	  String uuid
+	  +String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
@@ -511,6 +515,11 @@ classDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Uitwisselpunt --> Aangifte : aangifte
 	Systeem <|-- Uitwisselpunt
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
+	class Verbruik {
+	  +String uuid
+	  String uri
+	}
 	%% http://www.w3.org/ns/sosa/FeatureOfInterest
 	class Gebeurtenis {
 	  <<interface>>
