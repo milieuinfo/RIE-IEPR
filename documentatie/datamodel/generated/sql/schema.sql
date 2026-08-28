@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-08-26T06:38:52.132684843Z[GMT]
+-- Generated: 2026-08-28T12:37:42.214437626Z[GMT]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -113,19 +113,6 @@ COMMENT ON COLUMN adres.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/ri
 COMMENT ON COLUMN adres.uri IS 'http://example.org/vocab/uri';
 COMMENT ON COLUMN adres.full_address IS 'http://www.w3.org/ns/locn#fullAddress';
 COMMENT ON COLUMN adres.locator_designator IS 'http://www.w3.org/ns/locn#locatorDesignator';
-
-----------------------------------------------------------------------
-
--- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof
-CREATE TABLE brandstof (
-  uuid VARCHAR,
-  uri VARCHAR,
-  PRIMARY KEY (uuid)
-);
-
-COMMENT ON TABLE brandstof IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof';
-COMMENT ON COLUMN brandstof.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
-COMMENT ON COLUMN brandstof.uri IS 'http://example.org/vocab/uri';
 
 ----------------------------------------------------------------------
 
@@ -1700,14 +1687,66 @@ COMMENT ON COLUMN uitwisselpunt_systeemeigenschap.geldig_tot IS 'http://purl.org
 
 -- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 CREATE TABLE verbruik (
-  uuid VARCHAR,
+  -- Foreign key referencing gebeurtenis(uuid)
+  gebeurtenis_uuid VARCHAR,
   uri VARCHAR,
-  PRIMARY KEY (uuid)
+  PRIMARY KEY (gebeurtenis_uuid)
 );
 
 COMMENT ON TABLE verbruik IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
-COMMENT ON COLUMN verbruik.uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN verbruik.gebeurtenis_uuid IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 COMMENT ON COLUMN verbruik.uri IS 'http://example.org/vocab/uri';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
+-- Table type: JOIN
+-- Original relation: is_feature_of_interest_of_observatie
+CREATE TABLE verbruik_observatie (
+  -- Foreign key referencing verbruik(gebeurtenis_uuid)
+  verbruik_id VARCHAR,
+  -- Foreign key referencing observatie(uuid)
+  observatie_id VARCHAR,
+  PRIMARY KEY (verbruik_id)
+);
+
+COMMENT ON TABLE verbruik_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
+COMMENT ON COLUMN verbruik_observatie.verbruik_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN verbruik_observatie.observatie_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
+-- Table type: JOIN
+-- Original relation: is_feature_of_interest_of_observatie_verzameling
+CREATE TABLE verbruik_observatie_verzameling (
+  -- Foreign key referencing verbruik(gebeurtenis_uuid)
+  verbruik_id VARCHAR,
+  -- Foreign key referencing observatie_verzameling(uuid)
+  observatie_verzameling_id VARCHAR,
+  PRIMARY KEY (verbruik_id)
+);
+
+COMMENT ON TABLE verbruik_observatie_verzameling IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
+COMMENT ON COLUMN verbruik_observatie_verzameling.verbruik_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN verbruik_observatie_verzameling.observatie_verzameling_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+
+----------------------------------------------------------------------
+
+-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
+-- Table type: JOIN
+-- Original relation: was_derived_from_proces
+CREATE TABLE verbruik_proces (
+  -- Foreign key referencing verbruik(gebeurtenis_uuid)
+  verbruik_id VARCHAR,
+  -- Foreign key referencing proces(uuid)
+  proces_id VARCHAR,
+  PRIMARY KEY (verbruik_id)
+);
+
+COMMENT ON TABLE verbruik_proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
+COMMENT ON COLUMN verbruik_proces.verbruik_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
+COMMENT ON COLUMN verbruik_proces.proces_id IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId';
 
 ----------------------------------------------------------------------
 

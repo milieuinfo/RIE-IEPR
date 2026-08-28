@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Resultaat
  * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat">Resultaat</a>
- * Een resultaat is de waarde van een observatie.
+ * Een resultaat is het resultaat record van een observatie.
  **/
 @Getter
 @Setter

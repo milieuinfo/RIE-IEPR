@@ -67,11 +67,6 @@ classDiagram
 	Aangiftebundel --> Exploitant : creator
 	%% http://www.w3.org/ns/adms#status
 	Aangiftebundel --> Status : status
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof
-	class Brandstof {
-	  +String uuid
-	  String uri
-	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
 	class Contactpersoon {
 	  +String id
@@ -519,7 +514,14 @@ classDiagram
 	class Verbruik {
 	  +String uuid
 	  String uri
+	  Proces[] wasDerivedFrom
+	  Observatie[] isFeatureOfInterestOf
 	}
+	%% http://www.w3.org/ns/prov#wasDerivedFrom
+	Verbruik --> Proces : wasDerivedFrom
+	%% http://www.w3.org/ns/sosa/isFeatureOfInterestOf
+	Verbruik --> Observatie : isFeatureOfInterestOf
+	Gebeurtenis <|-- Verbruik
 	%% http://www.w3.org/ns/sosa/FeatureOfInterest
 	class Gebeurtenis {
 	  <<interface>>
