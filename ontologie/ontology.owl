@@ -19,9 +19,9 @@
         <terms:creator xml:lang="nl">Vlaamse overheid - Departement Omgeving</terms:creator>
         <terms:description xml:lang="nl">De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitaties binnen het kader van het RIE-IEPR systeem.</terms:description>
         <terms:description xml:lang="en">The RIE-IEPR ontology defines a data model for describing industrial processes, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system.</terms:description>
-        <terms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-06-23</terms:issued>
+        <terms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-26</terms:issued>
         <terms:license rdf:resource="https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0"/>
-        <terms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-06-23</terms:modified>
+        <terms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-26</terms:modified>
         <terms:publisher xml:lang="en">Flemish Government - Department of Environment and Spatial Development</terms:publisher>
         <terms:publisher xml:lang="nl">Vlaamse overheid - Departement Omgeving</terms:publisher>
         <terms:title xml:lang="nl">RIE-IEPR Ontologie</terms:title>
@@ -29,7 +29,7 @@
         <vann:preferredNamespacePrefix>riepr</vann:preferredNamespacePrefix>
         <vann:preferredNamespaceUri>https://data.riepr.omgeving.vlaanderen.be/ns/riepr#</vann:preferredNamespaceUri>
         <rdfs:seeAlso rdf:resource="https://omgeving.vlaanderen.be"/>
-        <owl:versionInfo>1.0.0</owl:versionInfo>
+        <owl:versionInfo>1.0.1</owl:versionInfo>
         <foaf:homepage rdf:resource="https://github.com/milieuinfo/RIE-IEPR"/>
     </owl:Ontology>
     
@@ -436,6 +436,13 @@
     
 
 
+    <!-- http://purl.org/linked-data/cube#Observation -->
+
+
+    <owl:Class rdf:about="http://purl.org/linked-data/cube#Observation"/>
+    
+
+
     <!-- http://purl.org/net/p-plan#MultiStep -->
 
 
@@ -655,13 +662,6 @@
     
 
 
-    <!-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof -->
-
-
-    <owl:Class rdf:about="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Brandstof"/>
-    
-
-
     <!-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon -->
 
 
@@ -678,14 +678,14 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid7">
-        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>uuid</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid8">
         <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>issued</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid8">
+        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>uuid</core:variable>
     </rdf:Description>
     
 
@@ -804,14 +804,14 @@
         <core:variable>created</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid21">
-        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>issued</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid22">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid22">
+        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>issued</core:variable>
     </rdf:Description>
     
 
@@ -850,14 +850,14 @@
         <core:variable>created</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid27">
-        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>issued</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid28">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid28">
+        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>issued</core:variable>
     </rdf:Description>
     
 
@@ -891,19 +891,19 @@
         <core:variable>uuid</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid32">
-        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>created</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid33">
         <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>issued</core:variable>
     </rdf:Description>
-    <rdf:Description rdf:nodeID="genid34">
+    <rdf:Description rdf:nodeID="genid33">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid34">
+        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>created</core:variable>
     </rdf:Description>
     
 
@@ -935,14 +935,14 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid37">
-        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>issued</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid38">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid38">
+        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>issued</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid39">
         <core:property rdf:resource="http://purl.org/dc/terms/created"/>
@@ -988,14 +988,14 @@
         <core:variable>created</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid44">
-        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>issued</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid45">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid45">
+        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>issued</core:variable>
     </rdf:Description>
     
 
@@ -1016,14 +1016,14 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{created}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid47">
-        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>created</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid48">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid48">
+        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>created</core:variable>
     </rdf:Description>
     
 
@@ -1102,9 +1102,9 @@
         <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}</core:template>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid56">
-        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
+        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>created</core:variable>
+        <core:variable>uuid</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid57">
         <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
@@ -1112,9 +1112,9 @@
         <core:variable>issued</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid58">
-        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
+        <core:property rdf:resource="http://purl.org/dc/terms/created"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>uuid</core:variable>
+        <core:variable>created</core:variable>
     </rdf:Description>
     
 
@@ -1164,14 +1164,14 @@
         <core:variable>created</core:variable>
     </rdf:Description>
     <rdf:Description rdf:nodeID="genid67">
-        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
-        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
-        <core:variable>issued</core:variable>
-    </rdf:Description>
-    <rdf:Description rdf:nodeID="genid68">
         <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
         <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
         <core:variable>uuid</core:variable>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid68">
+        <core:property rdf:resource="http://purl.org/dc/terms/issued"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>issued</core:variable>
     </rdf:Description>
     
 
@@ -1212,9 +1212,9 @@
 
 
     <owl:Class rdf:about="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/linked-data/cube#Observation"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sosa/Result"/>
-        <rdfs:comment xml:lang="nl">Een resultaat is de waarde van een observatie.</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Een resultaat is het resultaat record van een observatie.</rdfs:comment>
         <rdfs:label xml:lang="nl">Resultaat</rdfs:label>
         <core:search rdf:nodeID="genid73"/>
     </owl:Class>
@@ -1321,7 +1321,23 @@
     <!-- https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik -->
 
 
-    <owl:Class rdf:about="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik"/>
+    <owl:Class rdf:about="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/sosa/FeatureOfInterest"/>
+        <rdfs:comment xml:lang="nl">Een verbruik is een specifieke gebeurtenis dat betrekking heeft op het verbruiken van stoffen aan verbruikspunten over of op een bepaalde periode of momentopname.</rdfs:comment>
+        <rdfs:label xml:lang="nl">Verbruik</rdfs:label>
+        <core:search rdf:nodeID="genid86"/>
+    </owl:Class>
+    <rdf:Description rdf:nodeID="genid86">
+        <rdf:type rdf:resource="http://www.w3.org/ns/hydra/core#IriTemplate"/>
+        <core:mapping rdf:nodeID="genid87"/>
+        <core:template rdf:datatype="http://www.w3.org/ns/hydra/core#Rfc6570Template">https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{uuid}</core:template>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid87">
+        <core:property rdf:resource="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"/>
+        <core:required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</core:required>
+        <core:variable>uuid</core:variable>
+    </rdf:Description>
     
 
 
@@ -1498,16 +1514,16 @@
         <skos:related rdf:resource="https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/voorgesteld"/>
     </owl:NamedIndividual>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Proces kan een plan op zichzelf zijn (multi step)</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
         <rdfs:comment xml:lang="nl">Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Proces kan een plan op zichzelf zijn (multi step)</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
         <rdfs:comment xml:lang="nl">Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren</rdfs:comment>
@@ -1516,7 +1532,7 @@
         <rdfs:comment xml:lang="nl">Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren</rdfs:comment>
     </rdf:Description>
     <rdf:Description>
-        <rdfs:comment xml:lang="nl">Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren</rdfs:comment>
+        <rdfs:comment xml:lang="nl">Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren</rdfs:comment>
     </rdf:Description>
     
 
