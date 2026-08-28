@@ -25,6 +25,7 @@
 @prefix nace:   <http://data.europa.eu/ux2/nace2.1/> .
 @prefix dossier: <https://data.vlaanderen.be/ns/dossier#> .
 @prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -40,9 +41,9 @@
     dct:description "De RIE-IEPR ontologie definieert een datamodel voor het beschrijven van industriele processen, installaties, emissiepunten, meetpunten, apparaten, observaties, exploitanten en exploitaties binnen het kader van het RIE-IEPR systeem."@nl ;
     dct:description "The RIE-IEPR ontology defines a data model for describing industrial processes, installations, emission points, measurement points, devices, observations, operators and operation locations within the context of the RIE-IEPR system."@en ;
     dct:license <https://data.vlaanderen.be/id/licentie/modellicentie-gratis-hergebruik/v1.0> ;
-    dct:issued "2026-06-23"^^xsd:date ;
-    dct:modified "2026-06-23"^^xsd:date ;
-    owl:versionInfo "1.0.0" ;
+    dct:issued "2026-08-26"^^xsd:date ;
+    dct:modified "2026-08-26"^^xsd:date ;
+    owl:versionInfo "1.0.1" ;
     vann:preferredNamespacePrefix "riepr" ;
     vann:preferredNamespaceUri "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#" ;
     rdfs:seeAlso <https://omgeving.vlaanderen.be> ;
@@ -1416,9 +1417,26 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] .
 
-:Verbruik a owl:Class .
-
-:Brandstof a owl:Class .
+:Verbruik a owl:Class ;
+    rdfs:label "Verbruik"@nl ;
+    rdfs:comment "Een verbruik is een specifieke gebeurtenis dat betrekking heeft op het verbruiken van stoffen aan verbruikspunten over of op een bepaalde periode of momentopname."@nl ;
+    rdfs:subClassOf prov:Entity, sosa:FeatureOfInterest ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{uuid}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een verbruik moet gekoppeld zijn aan een proces"@nl ;
+        owl:onProperty prov:wasDerivedFrom ;
+        owl:someValuesFrom :Proces ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        # *..* relation with sosa:isFeatureOfInterestOf (observaties rechtstreeks, of via een observatieverzameling)
+        owl:onProperty sosa:isFeatureOfInterestOf ;
+        owl:someValuesFrom [ owl:unionOf ( sosa:Observation sosa-2023:ObservationCollection ) ] ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] .
 
 ## Observaties
 :Observatie a owl:Class ;
@@ -1502,8 +1520,8 @@
 
 :Resultaat a owl:Class ;
     rdfs:label "Resultaat"@nl ;
-    rdfs:comment "Een resultaat is de waarde van een observatie."@nl ;
-    rdfs:subClassOf sosa:Result, prov:Entity ;
+    rdfs:comment "Een resultaat is het resultaat record van een observatie."@nl ;
+    rdfs:subClassOf sosa:Result, qb:Observation ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
