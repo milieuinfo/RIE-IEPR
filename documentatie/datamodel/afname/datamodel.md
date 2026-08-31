@@ -21,5 +21,8 @@ U vindt hier de modellen en aannames die ten grondslag liggen aan de data, evena
 
 ## Operationele gegevens
 
+!!! warning "Analyse nog lopende"
+    De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.
+
 - [Observaties en emissies](./observaties.md) - metingen, observaties en gebeurtenissen (emissie, onttrekking)
 - [Aangifte en dossier](./aangifte.md) - documenten gekoppeld aan de data

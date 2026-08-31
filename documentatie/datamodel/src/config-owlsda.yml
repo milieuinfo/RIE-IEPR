@@ -1,0 +1,135 @@
+# OWL-SDA configuratie (voor owlsda.jar) voor de synthetische datavoorbeelden van het
+# RIE-IEPR datamodel.
+#
+# Zusterconfiguratie van config-oddtoolkit.yml (voor oddtoolkit.jar): beide jars wonen in
+# deze folder en elk jar gebruikt zijn eigen config.
+#
+# Belangrijk: alle relatieve paden in dit bestand worden opgelost t.o.v. de working directory
+# op startmoment -- de repo-root -- omdat de jar vanuit de repo-root gestart wordt
+# (build-datavoorbeelden.sh; vergelijkbaar met de Maven exec-maven-plugin-runs voor ODDToolkit),
+# niet vanuit deze map.
+#
+# De LLM draait volledig lokaal: het model "muse-glimmer:30b" via het interne
+# OpenAI-compatible endpoint (zelfde endpoint en modellen als in
+# ~/.config/opencode/opencode.jsonc). De API-key is opzettelijk niet in dit bestand
+# gecommit: build-datavoorbeelden.sh exporteert OPENAI_API_KEY (omgevingsvariabele, met als
+# fallback de openai-provider-key uit ~/.config/opencode/opencode.jsonc).
+
+# 3 uur hard timeout voor de volledige run (lokale 30B-model = trage runs)
+program-timeout-ms: 10800000
+
+input-path: "src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl"
+output-path: "documentatie/datamodel/datavoorbeelden/agc-glass_synthetisch.ttl"
+user-input: |
+  Maak een gedetailleerd synthetisch datavoorbeeld voor het RIE-IEPR datamodel, naar het
+  voorbeeld van het AGC Glass Europe datavoorbeeld (zie de user-context "agc-glass"). Het
+  voorbeeld beschrijft een glasfabriek (exploitant) met een exploitatielocatie, meerdere
+  versies van de exploitatie over verschillende jaren, en per versie systemen, processen
+  (onderverdeeld in sub-processen), emissiepunten, onttrekkingspunten en meetpunten, plus
+  sosa-observaties en emissies met QUDT-eenheden. Gebruik exact dezelfde structuur,
+  URI-conventies, prefixen en Nederlandse commentaarstijl als het AGC-voorbeeld. Voeg bovenaan
+  een kop toe met de tekst "Datavoorbeeld - DIT IS GEEN ECHTE DATA".
+user-context:
+  - name: "agc-glass (referentie-voorbeeld)"
+    path: "documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl"
+  - name: "uri-patterns"
+    path: "documentatie/datamodel/afname/uri-patterns.md"
+  - name: "basisaanname"
+    path: "documentatie/datamodel/afname/basisaanname.md"
+log-level: "INFO"
+log-to-file: true
+log-file-path: ".cache/owlsda/owlsda.log"
+
+generation:
+  # rich: sterke optionele verrijking, net als het handgeschreven AGC-voorbeeld
+  data-richness: "rich"
+
+ontology:
+  # Workers krijgen de samenvatting + tools; de volledige ontologie (~100KB) kost per
+  # worker-sessie te veel context naast de ~176KB AGC-referentie. Supervisor en reviewer
+  # krijgen de volledige ontologie altijd.
+  provide-full-to-workers: false
+
+client:
+  provider: "openai-compatible"
+  openai-compatible:
+    base-url: "http://192.168.1.5:4000/v1"
+    # api-key opzettelijk leeg: OPENAI_API_KEY wordt door build-datavoorbeelden.sh geexporteerd
+  worker:
+    model: "muse-glimmer:30b"
+    timeout-ms: 900000
+    between-message-timeout-ms: 600000
+    batch-size: 2
+    pool-count: 2
+    context-window-tokens: 131072
+  supervisor:
+    model: "muse-glimmer:30b"
+    timeout-ms: 900000
+    between-message-timeout-ms: 600000
+    context-window-tokens: 131072
+  reviewer:
+    model: "muse-glimmer:30b"
+    timeout-ms: 900000
+    between-message-timeout-ms: 600000
+    max-review-attempts: 3
+    context-window-tokens: 131072
+
+# SHACL-shapes worden na de eerste run gecachet om herhaalde runs te versnellen.
+# Verwijder .cache/owlsda na een wijziging van de ontologie of de reasoner-instellingen.
+shacl:
+  output-dir: ".cache/owlsda/shacl"
+
+# Lege regelslijst -> GenericRuleReasoner zonder inferentie (de "inferred model" is een
+# doorslag van de union). OWL-, RDFS- én transitive-sluiting over de geunioniseerde
+# externe ontologieen (QUDT, NACE, ...; dezelfde als in config-oddtoolkit.yml)
+# materialiseren miljoenen geïnfereerde triples en hangen vast -- zie de commentaar in
+# reasoner-owlsda.rules en config-oddtoolkit.yml.
+reasoner:
+  rules-file: "documentatie/datamodel/src/reasoner-owlsda.rules"
+  inferred-output-path: ".cache/owlsda/inferred.ttl"
+
+# Externe ontologieen (owl:imports + namespace-prefixen) resolveerbaar maken.
+# Dezelfde mirrors als config-oddtoolkit.yml, uitgezonderd dbpedia: die mirror is een
+# meergigabyte N-Triples-dump die hier niet nodig is (dbpedia falen is onschuldig,
+# de extractor logt een warning en gaat door). De cache wordt gedeeld met ODDToolkit.
+extract:
+  connect-timeout-ms: 3000
+  read-timeout-ms: 60000
+  max-retries: 1
+  cache-dir: ".cache/external"
+  cache-ttl-ms: 3600000
+  mirrors:
+    - uri: "http://www.w3.org/ns/prov#"
+      mirrors:
+        - "https://www.w3.org/ns/prov-o"
+    - uri: "http://purl.org/net/p-plan#"
+      mirrors:
+        - "https://dgarijo.github.io/Vocabularies/P-PLAN/Releases/Release12032014/p-plan.owl"
+    - uri: "http://www.w3.org/ns/sosa/prov"
+      mirrors:
+        - "https://raw.githubusercontent.com/w3c/sdw/refs/heads/gh-pages/ssn/rdf/sosa-prov-mapping.ttl"
+    - uri: "http://www.w3.org/ns/ssn/ext"
+      mirrors:
+        - "https://www.w3.org/ns/ssn/ext/"
+        - "https://raw.githubusercontent.com/w3c/sdw/refs/heads/gh-pages/ssn-extensions/rdf/ssn-ext.ttl"
+    - uri: "http://qudt.org/schema/qudt/"
+      mirrors:
+        - "https://raw.githubusercontent.com/qudt/qudt-public-repo/refs/heads/main/src/main/rdf/schema/SCHEMA_QUDT.ttl"
+    - uri: "http://xmlns.com/foaf/0.1/"
+      mirrors:
+        - "https://xmlns.com/foaf/spec/index.rdf"
+    - uri: "http://www.w3.org/ns/locn#"
+      mirrors:
+        - "https://www.w3.org/ns/legacy_locn.ttl"
+    - uri: "http://www.w3.org/ns/adms#"
+      mirrors:
+        - "https://www.w3.org/ns/legacy_adms.ttl"
+    - uri: "http://www.w3.org/ns/org#"
+      mirrors:
+        - "https://www.w3.org/ns/org.ttl"
+    - uri: "http://data.europa.eu/ux2/nace2.1/"
+      mirrors:
+        - "https://publications.europa.eu/webapi/rdf/sparql?default-graph-uri=&query=prefix+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0A%0D%0ACONSTRUCT+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A%7D%0D%0AWHERE+%7B%0D%0A++%3Fs+%3Fp+%3Fo+%3B%0D%0Askos%3AinScheme++%3Chttp%3A%2F%2Fdata.europa.eu%2Fux2%2Fnace2.1%2Fnace2.1%3E%0D%0A%7D&format=text%2Fturtle&should-sponge=&timeout=0&signal_void=on&signal_unconnected=on"
+    - uri: "http://www.opengis.net/ont/geosparql#"
+      mirrors:
+        - "https://raw.githubusercontent.com/opengeospatial/ogc-geosparql/refs/heads/master/vocabularies/geo.ttl"

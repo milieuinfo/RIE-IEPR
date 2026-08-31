@@ -121,6 +121,10 @@ pipeline {
             # preprocess ontology for Widoco (strips owl:Restriction blocks OWLAPI cannot parse)
             docker_run sh -c "pip install -q --break-system-packages rdflib && python3 documentatie/datamodel/prepare-widoco.py"
 
+            # regenerate the datavoorbeelden mkdocs pages from the committed TTL files
+            # (no LLM involved; the OWL-SDA generation itself runs via build-datavoorbeelden.sh)
+            docker_run python3 documentatie/datamodel/datavoorbeelden-md.py
+
             bash "$ROOT/documentatie/datamodel/build-widoco.sh"
 
             # build the MkDocs site

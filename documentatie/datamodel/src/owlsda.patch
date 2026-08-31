@@ -1,0 +1,29 @@
+diff --git a/src/main/java/be/vlaanderen/omgeving/owlsda/ontology/OntologyReasoner.java b/src/main/java/be/vlaanderen/omgeving/owlsda/ontology/OntologyReasoner.java
+index da2c14a..ede9381 100644
+--- a/src/main/java/be/vlaanderen/omgeving/owlsda/ontology/OntologyReasoner.java
++++ b/src/main/java/be/vlaanderen/omgeving/owlsda/ontology/OntologyReasoner.java
+@@ -70,14 +70,22 @@ public class OntologyReasoner {
+ 
+   public void adapt(Ontology info) {
+     Model base = info.getModel();
+-    Model union = (base != null) ? base : ModelFactory.createDefaultModel();
++    // FLAT merged model instead of a left-deep ModelFactory.createUnion chain: Jena's nested
++    // ModelUnion iteration is pathologically slow (minutes to never) once a dozen or so
++    // external models are stacked (e.g. RIE-IEPR's prov/p-plan/sosa/qudt/nace union), which
++    // made the inferred model write and every union iteration hang indefinitely. A flat
++    // merged model is semantically equivalent for reasoning and serialization purposes.
++    Model union = ModelFactory.createDefaultModel();
++    if (base != null) {
++      union.add(base);
++    }
+ 
+     if (info.getExternalModels() != null) {
+       for (Model external : info.getExternalModels().values()) {
+         if (external == null) {
+           continue;
+         }
+-        union = ModelFactory.createUnion(union, external);
++        union.add(external);
+       }
+     }
+ 

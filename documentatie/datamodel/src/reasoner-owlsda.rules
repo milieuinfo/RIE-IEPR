@@ -1,0 +1,11 @@
+# Lege Jena-regelsbestaand voor OWL-SDA (config-owlsda.yml, reasoner.rules-file).
+#
+# Met een lege regelslijst gebruikt OWL-SDA een GenericRuleReasoner zonder inferentie:
+# de "inferred model" is dan slechts een doorslag van de union van de RIE-IEPR-ontologie en
+# de externe ontologieen (QUDT, NACE, prov, ...). Dit is opzettelijk: OWL-, RDFS- en
+# transitive-sluiting over die union materialiseren miljoenen geïnfereerde triples en
+# hangen vast (zelfde probleem als gedocumenteerd in config-oddtoolkit.yml, waar de
+# reasoner daarom is uitgeschakeld).
+#
+# De SHACL-shapes die de workers krijgen komen toch uitsluitend uit de basisontologie
+# (default-shacl); de "inferred" shapes dienen alleen de validatiepoort.

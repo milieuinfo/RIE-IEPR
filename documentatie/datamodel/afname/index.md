@@ -9,6 +9,9 @@ Het datamodel kent twee aparte stromen:
 
 **Operationele gegevens** omvatten observaties, emissies, onttrekkingen, observatieverzamelingen en de bijbehorende operationele codelijsten (`operationeel_*.csv`, `thema_type.csv`). Deze gegevens beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens.
 
+!!! warning "Analyse nog lopende"
+    De analyse van operationele gegevens is nog lopende. De informatie over operationele gegevens kan wijzigen na afronding van de analyse.
+
 ## Inhoud
 
 - [End-to-end voorbeeld](./endtoend.md) de volledige dataketen van exploitant tot gemeten waarde

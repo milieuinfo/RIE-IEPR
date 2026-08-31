@@ -175,6 +175,9 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
 
 ## Operationele gegevens
 
+!!! warning "Analyse nog lopende"
+    De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.
+
 ### 5. De gebeurtenis: emissie
 
 Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov:wasDerivedFrom`, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:
