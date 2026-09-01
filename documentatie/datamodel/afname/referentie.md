@@ -7,4 +7,4 @@ hide:
 
 Deze sectie bevat referentiemateriaal voor het RIE-IEPR-datamodel.
 
-- [Ontologie](./ontologie/) - de volledige ontologie-documentatie
+- [Ontologie](/ontologie/) - de volledige ontologie-documentatie
