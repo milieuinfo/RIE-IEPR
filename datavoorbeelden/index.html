@@ -896,45 +896,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#synthetische-datavoorbeelden-genereren-owl-sda" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Synthetische datavoorbeelden genereren (OWL-SDA)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Synthetische datavoorbeelden genereren (OWL-SDA)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pipeline-uitvoeren" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pipeline uitvoeren
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hoe-het-werkt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hoe het werkt
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -959,34 +920,6 @@
     
   
     AGC Glass (referentie)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="agc-glass-synthetisch/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AGC Glass (synthetisch)
   
 
     
@@ -1269,7 +1202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ontologie/index.html" class="md-nav__link">
+      <a href="../ontologie/" class="md-nav__link">
         
   
   
@@ -1334,70 +1267,8 @@ uitsluitend om het datamodel te verhelderen.</p>
 <td><a href="agc-glass/">AGC Glass Europe (referentie)</a></td>
 <td>handgeschreven door de MJV</td>
 </tr>
-<tr>
-<td><a href="agc-glass-synthetisch/">AGC Glass Europe (synthetisch)</a></td>
-<td>automatisch gegenereerd met OWL-SDA</td>
-</tr>
 </tbody>
 </table>
-<h2 id="synthetische-datavoorbeelden-genereren-owl-sda">Synthetische datavoorbeelden genereren (OWL-SDA)</h2>
-<p>Het synthetische voorbeeld wordt gegenereerd door
-<a href="https://github.com/milieuinfo/owl-sda">OWL-SDA</a> — een multi-agentsysteem dat van de
-RIE-IEPR-ontologie SHACL-shapes afleidt en met een team van LLM-agents (supervisor,
-workers, reviewer) RDF-gegevens genereert die tegen die shapes gevalideerd worden.</p>
-<p>De tooling staat in <code>documentatie/datamodel/src/</code>, op dezelfde manier als ODDToolkit:</p>
-<table>
-<thead>
-<tr>
-<th>Bestand</th>
-<th>Doel</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>src/owlsda.jar</code></td>
-<td>OWL-SDA-executable</td>
-</tr>
-<tr>
-<td><code>src/config-owlsda.yml</code></td>
-<td>OWL-SDA-configuratie (ontologie, LLM, SHACL, reasoner, externe ontologieën)</td>
-</tr>
-<tr>
-<td><code>build-datavoorbeelden.sh</code></td>
-<td>Pipeline: genereert het voorbeeld én vernieuwt deze mkdocs-pagina's</td>
-</tr>
-</tbody>
-</table>
-<h3 id="pipeline-uitvoeren">Pipeline uitvoeren</h3>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>documentatie/datamodel/build-datavoorbeelden.sh
-</code></pre></div>
-<p>Vereisten:</p>
-<ul>
-<li><strong>JDK 25</strong> (OWL-SDA bouwt en draait op JDK 25)</li>
-<li><strong>Lokale LLM</strong>: het model <code>muse-glimmer:30b</code> via het interne OpenAI-compatible
-  endpoint (zelfde endpoint en modellen als in <code>~/.config/opencode/opencode.jsonc</code>).
-  De API-key hoeft niet gezet te zijn: het script leest hem uit
-  <code>~/.config/opencode/opencode.jsonc</code> (of uit <code>OPENAI_API_KEY</code> als die staat).</li>
-</ul>
-<p>De run duurt enkele tientallen minuten (lokale 30B-model). De log staat in
-<code>.cache/owlsda/owlsda.log</code>; caches (externe ontologieën, SHACL, inferred model) zitten in
-<code>.cache/</code> en versnellen herhaalde runs. Na een wijziging van de ontologie:
-<code>rm -rf .cache/owlsda</code>.</p>
-<h3 id="hoe-het-werkt">Hoe het werkt</h3>
-<ol>
-<li><strong>Ontologie laden</strong> — de kanonieke <code>riepr.ttl</code> plus extern geïmporteerde
-   ontologieën (prov, p-plan, sosa, ssn, qudt, ...), gedeeld met de ODDToolkit-cache.</li>
-<li><strong>SHACL afleiden</strong> — shapes uit de ontologie (default en RDFS-geïnfereerd), gecachet.</li>
-<li><strong>Genereren</strong> — de supervisor deelt SHACL-shapes uit aan worker-sessies; elke worker
-   schrijft RDF-triples voor zijn shapes in de triplestore, conform de ontologie en de
-   URI-patronen. De volledige AGC-referentie wordt als user-context meegegeven zodat de
-   stijl en conventies gevolgd worden.</li>
-<li><strong>Reviewen</strong> — de reviewer valideert de output tegen de SHACL-shapes; bij overtredingen
-   krijgen de workers revisie-instructies (max. 3 ronden).</li>
-<li><strong>Publiceren</strong> — de gevalideerde Turtle wordt naar
-   <code>datavoorbeelden/agc-glass_synthetisch.ttl</code> geschreven en de mkdocs-pagina's
-   vernieuwd (herbouwen van de site: <code>bash documentatie/datamodel/build-mkdocs.sh</code>).</li>
-</ol>
 
 
 
