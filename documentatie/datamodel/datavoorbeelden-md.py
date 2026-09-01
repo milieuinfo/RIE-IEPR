@@ -24,29 +24,11 @@ PAGINAS = [
         "titel": "AGC Glass Europe (referentie)",
         "inleiding": (
             "Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de "
-            "gewenste structuur, URI-conventies en commentaarstijl. Het synthetische "
-            "voorbeeld wordt door OWL-SDA naar dit voorbeeld gegenereerd."
+            "gewenste structuur, URI-conventies en commentaarstijl."
         ),
         "bron": "handgeschreven (MJV, 01-07-2026)",
         "generator": None,
         "placeholder": None,
-    },
-    {
-        "ttl": "agc-glass_synthetisch.ttl",
-        "md": "agc-glass-synthetisch.md",
-        "titel": "AGC Glass Europe (synthetisch)",
-        "inleiding": (
-            "Synthetisch datavoorbeeld, automatisch gegenereerd door [OWL-SDA]"
-            "(https://github.com/milieuinfo/owl-sda) conform de RIE-IEPR-ontologie en "
-            "gevalideerd tegen SHACL-shapes. Naar het voorbeeld van het handgeschreven "
-            "[AGC-voorbeeld](agc-glass.md). Alle data is fictief."
-        ),
-        "bron": "automatisch gegenereerd",
-        "generator": "OWL-SDA 1.0-SNAPSHOT + muse-glimmer:30b (lokale LLM)",
-        "placeholder": (
-            "Dit voorbeeld is nog niet gegenereerd. Voer de pipeline uit met:\n\n"
-            "```bash\nbash documentatie/datamodel/build-datavoorbeelden.sh\n```\n"
-        ),
     },
 ]
 

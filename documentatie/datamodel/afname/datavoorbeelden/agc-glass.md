@@ -1,6 +1,6 @@
 # Datavoorbeeld: AGC Glass Europe (referentie)
 
-Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de gewenste structuur, URI-conventies en commentaarstijl. Het synthetische voorbeeld wordt door OWL-SDA naar dit voorbeeld gegenereerd.
+Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de gewenste structuur, URI-conventies en commentaarstijl.
 
 ```{note}
 Dit is een **datavoorbeeld**: de data is fictief en dient uitsluitend om het datamodel te illustreren.

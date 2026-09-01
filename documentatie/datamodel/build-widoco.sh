@@ -28,6 +28,11 @@ java -jar "$WIDOCO_JAR" \
   -webVowl \
   -rewriteAll > /dev/null 2>&1 || true
 
+# Widoco with -lang nl generates index-nl.html; ensure index.html exists for GitHub Pages
+if [ -f "$WIDOCO_OUT/index-nl.html" ] && [ ! -f "$WIDOCO_OUT/index.html" ]; then
+  cp "$WIDOCO_OUT/index-nl.html" "$WIDOCO_OUT/index.html"
+fi
+
 if [ "$(ls -A "$WIDOCO_OUT" 2>/dev/null)" ]; then
   rm -rf "$SITE_DIR/ontologie"/*
   cp -r "$WIDOCO_OUT"/* "$SITE_DIR/ontologie/"

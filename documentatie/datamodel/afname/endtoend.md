@@ -1,6 +1,6 @@
 # End-to-end voorbeeld
 
-Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de exploitant tot de gemeten waarde, en toont hoe een **aangifte** alle entiteiten aan elkaar bindt. Het voorbeeld is synthetisch (dezelfde URI-patronen en waarden als het datavoorbeeld van AGC Glass Europe in `documentatie/datamodel/datavoorbeelden/`).
+Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de exploitant tot de gemeten waarde, en toont hoe een **aangifte** alle entiteiten aan elkaar bindt. Het voorbeeld is synthetisch.
 
 Lees dit document na [Basisaannames](./basisaanname.md); het gaat ervan uit dat u de URI-patronen en het versiebeheer kent.
 

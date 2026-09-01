@@ -6,7 +6,6 @@ Deze map bevat twee generatie-tools. Elk jar heeft zijn eigen config (naamgeving
 | Jar              | Config                  | Doel                                                                    |
 | ---------------- | ----------------------- | ----------------------------------------------------------------------- |
 | `oddtoolkit.jar` | `config-oddtoolkit.yml` | Transformatie van het datamodel naar het applicatief datamodel (SQL, SHACL, Java, TypeScript, diagrammen) |
-| `owlsda.jar`     | `config-owlsda.yml` (+ `reasoner-owlsda.rules`) | Synthetische datavoorbeelden genereren conform de ontologie (OWL-SDA, LLM-gebaseerd, gevalideerd tegen SHACL) |
 
 ### owlsda.jar herbuilden
 
@@ -27,22 +26,7 @@ cp target/owlsda.jar /pad/naar/RIE-IEPR/documentatie/datamodel/src/owlsda.jar
 java -jar ./oddtoolkit.jar --config-file=config-oddtoolkit.yml --generator=all
 ```
 
-## OWL-SDA (datavoorbeelden)
 
-```bash
-bash ../../build-datavoorbeelden.sh
-```
-
-(OF handmatig vanuit de repo-root:
-`OPENAI_API_KEY=... java -jar ./owlsda.jar --config=config-owlsda.yml`)
-
-De LLM draait lokaal (`muse-glimmer:30b` via het interne OpenAI-compatible endpoint;
-zelfde endpoint/modellen als in `~/.config/opencode/opencode.jsonc`). De API-key wordt
-niet gecommit: `build-datavoorbeelden.sh` exporteert `OPENAI_API_KEY` (omgevingsvariabele,
-anders uit de openai-provider-key in `~/.config/opencode/opencode.jsonc`).
-
-Output: `documentatie/datamodel/datavoorbeelden/agc-glass_synthetisch.ttl`
-(mkdocs-pagina's worden door het build-script mee vernieuwd).
 
 ## Ontologie-bron
 `config-oddtoolkit.yml` en `config-owlsda.yml` wijzen beide naar
