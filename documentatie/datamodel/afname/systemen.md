@@ -3,7 +3,7 @@
 !!! info "Structurele stroom"
     Deze pagina beschrijft **structurele gegevens**: de organisatie en infrastructuur van de exploitatie. Metingen, emissies en observaties komen hier niet aan bod — die staan in [Observaties en emissies](./observaties.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
 
-Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunten, meetpunten en filters - en hun onderlinge relaties in het RIE-IEPR-datamodel.
+Dit document beschrijft systemen — installaties, emissiepunten, onttrekkingspunten, meetpunten en filters — en hun onderlinge relaties in het RIE-IEPR-datamodel.
 
 ## 1. Systemen: een gemeenschappelijk patroon
 
@@ -38,7 +38,7 @@ Alle systemen zijn subklassen van `ssn:System` en `ogc:SpatialObject`.
 
 ## 2. Installaties
 
-Een **installatie** is een infrastructuur voor een specifieke functie. Het type wordt bepaald door de codelijst **`installatie_type`** ([beheerd in milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)). In het AGC Glass-voorbeeld vinden we verschillende types:
+Een **installatie** is een stuk infrastructuur met een specifieke functie. Het type wordt bepaald door de codelijst **`installatie_type`** ([beheerd in milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)). In het AGC Glass-voorbeeld vinden we verschillende types:
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -102,7 +102,7 @@ Installaties kunnen verschillende eigenschappen hebben, zoals:
 
 ## 3. Emissiepunten
 
-Een **emissiepunt** is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met meetpunten; met onttrekkingspunten niet — een punt dat zowel emissies als onttrekkingen toelaat is een **uitwisselpunt** (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)). Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
+Een **emissiepunt** is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met meetpunten; met onttrekkingspunten niet — een punt dat zowel emissies als onttrekkingen toelaat is een **uitwisselpunt** (zie [Basisaannames §5](./basisaanname.md#5-disjuncte-klassen)). Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
 
 ### Types emissiepunten
 
@@ -220,7 +220,7 @@ Of de filtergegevens uiteindelijk op de filter dan wel op de put horen, is een o
 
 ## 7. Systeemhiërarchie via `ssn:hasSubSystem`
 
-Systemen kunnen genest zijn - een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters):
+Systemen kunnen genest zijn: een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters).
 
 ```mermaid
 graph TD
@@ -267,7 +267,7 @@ Processen koppelen aan systemen via `ssn:implementedBy`. Dit is een **OWL-axioma
     ssn:implementedBy <.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-## 9. Systeem → Exploitatielocatie relatie
+## 9. Relatie systeem → exploitatielocatie
 
 In het datavoorbeeld is elk systeem rechtstreeks gekoppeld aan een exploitatielocatie via `sosa:isHostedBy`. Die koppeling is redundant met de omweg exploitatie → exploitatielocatie, maar maakt het mogelijk een locatie aan een andere exploitatie te koppelen zonder het systeem te wijzigen. De ontologie legt de relatie **niet** als restrictie op; in `riepr.ttl` loopt de band tussen systeem en exploitatie via `ssn:hasDeployment` / `ssn:deployedSystem`.
 
@@ -370,7 +370,7 @@ Dit diagram bevat **uitsluitend structurele entiteiten**. De operationele stroom
 
 ## Referenties
 
-- [Basisaannames](./basisaanname.md) - proces-procedure koppels, disjoint classes
-- [Exploitant- en exploitatiemodel](./exploitant.md) - exploitatie -> systeem relatie
-- [Observaties en emissies](./observaties.md) - *operationele stroom*: metingen op deze systemen
-- **Codelijsten**: De `dct:type` waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
+- [Basisaannames](./basisaanname.md) — proces-procedurekoppels, disjuncte klassen
+- [Exploitant- en exploitatiemodel](./exploitant.md) — de relatie exploitatie → systeem
+- [Observaties en emissies](./observaties.md) — *operationele stroom*: metingen op deze systemen
+- **Codelijsten**: de `dct:type`-waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

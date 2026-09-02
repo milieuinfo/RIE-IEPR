@@ -3,7 +3,7 @@
 !!! abstract "Beide stromen"
     Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
-De RIE-IEPR ontologie definieert URI-patronen voor elke klasse via Hydra `hydra:IriTemplate`. Dit maakt machinaal vindbaar en genereerbaar van resources.
+De RIE-IEPR-ontologie definieert voor elke klasse een URI-patroon via `hydra:IriTemplate`. Daardoor zijn resources machinaal vindbaar en construeerbaar.
 
 ## Algemene principes
 
@@ -62,7 +62,7 @@ Alle templates beginnen met `https://data.mjv.omgeving.vlaanderen.be`.
 
 !!! note "Bekende afwijkingen tussen ontologie en datavoorbeeld"
     - De ontologie geeft `riepr:Exploitant` de variabele `{ondernemingsnummer}`; in het datavoorbeeld en in de rest van deze documentatie draagt de exploitant een UUID. Beide worden op `:localId` gemapt, maar welke sleutel de productie-URI gebruikt, is nog niet vastgelegd.
-    - `riepr:Filter` heeft in de ontologie twee templates (identity én versie). Alleen de versie-vorm wordt in de data gebruikt.
+    - `riepr:Filter` heeft in de ontologie twee templates (identity én versie). Alleen de versievorm wordt in de data gebruikt.
     - Het template van `riepr:Contactpersoon` bevat wel een mapping voor `issued`, maar geen `{issued}`-variabele; de contactpersoon wordt niet geversioneerd.
 
 ## Voorbeeld

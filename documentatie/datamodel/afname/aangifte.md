@@ -3,7 +3,7 @@
 !!! abstract "Beide stromen"
     Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
-Een **aangifte** is een document ingediend bij de overheid. In de ontologie is het een subklasse van `dossier:Stuk` ([Dossier-model](https://data.vlaanderen.be/ns/dossier#)). Aangiften vormen de administratieve lijm van het model: de operationele entiteiten (exploitaties, systemen, processen, observaties) kunnen er via `riepr:aangifte` naar verwijzen.
+Een **aangifte** is een document ingediend bij de overheid. In de ontologie is het een subklasse van `dossier:Stuk` ([Dossier-model](https://data.vlaanderen.be/ns/dossier#)). Aangiften vormen de administratieve lijm van het model: entiteiten uit beide stromen (exploitaties, systemen, processen, observaties) kunnen er via `riepr:aangifte` naar verwijzen.
 
 ## 1. Aangifte
 
@@ -11,7 +11,7 @@ Een **aangifte** is een document ingediend bij de overheid. In de ontologie is h
 
 | Eigenschap | Type | Verplicht | Beschrijving |
 |---|---|---|---|
-| `dct:subject` | riepr:Exploitatie | Ja (exact 1) | De exploitatie waarnaar de aangifte betrekking heeft |
+| `dct:subject` | riepr:Exploitatie | Ja (exact 1) | De exploitatie waarop de aangifte betrekking heeft |
 | `dct:created` | date | Ja (exact 1) | Datum van indiening |
 | `dct:modified` | date | Nee | Datum van goedkeuring |
 | `dct:isPartOf` | riepr:Aangiftebundel | Nee | De bundel waartoe de aangifte behoort |

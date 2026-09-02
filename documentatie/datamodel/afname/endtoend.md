@@ -55,7 +55,7 @@ De keten in één zin: een **exploitant** voert op een **locatie** een **plan va
 
 ### 1. Exploitant en exploitatie
 
-De **exploitant** is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segment URI en wordt niet geversioneerd.
+De **exploitant** is de rechtspersoon (VKBO-onderneming). De URI draagt geen tijdsegmenten en de exploitant wordt niet geversioneerd.
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7>
@@ -64,7 +64,7 @@ De **exploitant** is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segmen
     prov:hadPrimarySource <https://data.vlaanderen.be/id/onderneming/0413638187> .
 ```
 
-De **exploitatie** is de uitrol van middelen door die exploitant op een locatie. Ze is geversioneerd (drie segmenten: `uuid/issued/created`) en draagt het procesplan:
+De **exploitatie** is de uitrol van middelen door die exploitant op een locatie. Ze is geversioneerd (`uuid/issued/created`) en draagt het procesplan:
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
@@ -81,7 +81,7 @@ De **exploitatie** is de uitrol van middelen door die exploitant op een locatie.
     ssn:implements <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-Een **contactpersoon** is een `oa:Annotation` op de exploitatie (twee-segment URI, geen versiebeheer):
+Een **contactpersoon** is een `oa:Annotation` op de exploitatie (geen versiebeheer):
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/019ed475-eb52-76ad-9c36-96ef45d889d0>
@@ -163,7 +163,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 ```
 
-> **P-Plan** ([www.opmw.org/model/p-plan](https://www.opmw.org/model/p-plan/)) is een community-ontologie voor processen (een uitbreiding op PROV-O, geen W3C-aanbeveling): een `pplan:Plan` is een geordende reeks `pplan:Step`'s. RIE-IEPR maakt er gebruik van via `pplan:isStepOfPlan` (hierarchical) en `pplan:isPrecededBy` (volgorde). Het hoofdproces is tegelijk `pplan:Plan` en `pplan:Step`; elke stap is een `pplan:Step`.
+> **P-Plan** ([www.opmw.org/model/p-plan](https://www.opmw.org/model/p-plan/)) is een community-ontologie voor processen (een uitbreiding op PROV-O, geen W3C-aanbeveling): een `pplan:Plan` is een geordende reeks stappen (`pplan:Step`). RIE-IEPR gebruikt `pplan:isStepOfPlan` voor de hiërarchie en `pplan:isPrecededBy` voor de volgorde. Het hoofdproces is tegelijk `pplan:Plan` en `pplan:Step`; elke stap is een `pplan:Step`.
 
 ### 4. Systemen en hun eigenschappen
 
@@ -200,7 +200,7 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
 
 ### 5. De gebeurtenis: emissie
 
-Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov:wasDerivedFrom`, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:
+Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov:wasDerivedFrom`, verplicht, minstens één). De emissie zelf is tijdsloos (een URI zonder tijdsegmenten); de tijd zit in de observaties:
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c>
@@ -213,7 +213,7 @@ Onttrekkingen werken analoog: `riepr:Onttrekking` is `prov:wasDerivedFrom` een o
 
 ### 6. De meting: observatieverzameling, observatie, resultaat
 
-Eén meting of bemonstering levert doorgaans **meerdere individuele observaties** op (bijv. één per gemeten stof). Die delen gemeenschappelijke context (zelfde emissie, meetpunt, moment). Voor die gedeelde context is er de **observatieverzameling** (`sosa-2023:ObservationCollection`):
+Eén meting of bemonstering levert doorgaans **meerdere individuele observaties** op (bijv. één per gemeten stof). Die delen een gemeenschappelijke context: dezelfde emissie, hetzelfde meetpunt, hetzelfde moment. Voor die gedeelde context is er de **observatieverzameling** (`sosa-2023:ObservationCollection`):
 
 ```turtle
 # De verzameling: gedeelde context van de meting
@@ -244,7 +244,7 @@ Eén meting of bemonstering levert doorgaans **meerdere individuele observaties*
     sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
-# Het resultaat heeft een eigen URI (twee segmenten)
+# Het resultaat heeft een eigen URI
 <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d>
     a riepr:Resultaat ;
     qudt:numericValue "45.2"^^xsd:decimal ;
@@ -260,7 +260,7 @@ Let op: de observatie wijst via `sosa:hasFeatureOfInterest` rechtstreeks naar de
 
 ### 7. De aangifte als lijm
 
-Een **aangifte** (`dossier:Stuk`) is het administratieve document. Via de objectproperty `riepr:aangifte` kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is **optioneel**: data kan ook zonder aangifte bestaan (bijv. in concept).
+Een **aangifte** (`dossier:Stuk`) is het administratieve document. Via de objectproperty `riepr:aangifte` kunnen entiteiten uit beide stromen (exploitatie, exploitatielocatie, systemen, processen, observaties, observatieverzamelingen) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is **optioneel**: data kan ook zonder aangifte bestaan (bijv. in concept).
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001>
@@ -311,7 +311,7 @@ De kolom **Verplicht** geeft weer wat de *ontologie* (`riepr.ttl`) afdwingt — 
 | Observatie | `sosa:madeBySensor` | Systeem, i.h.b. het meetpunt (structureel) | nee (0..1) |
 | Beide stromen | `riepr:aangifte` | Aangifte (administratief) | nee (0..1) |
 
-## Al de keten in één query
+## De volledige keten in één query
 
 ```sparql
 PREFIX sosa:    <http://www.w3.org/ns/sosa/>

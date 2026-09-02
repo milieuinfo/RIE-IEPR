@@ -3,13 +3,13 @@
 !!! abstract "Beide stromen"
     Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
-Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Elk scenario is gemarkeerd met de stroom waartoe het behoort (zie [Twee stromen](./datamodel.md)): scenario's 1, 2, 4, 5 en 6 zijn **structureel**, scenario's 3 en 7 **operationeel**. De structurele voorbeelden komen uit het datavoorbeeld [AGC Glass Europe](./datavoorbeelden/agc-glass.md); de operationele voorbeelden (observaties, resultaten) zijn synthetisch, omdat de operationele stroom nog niet gemigreerd is.
+Deze pagina beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Elk scenario is gemarkeerd met de stroom waartoe het behoort (zie [Twee stromen](./datamodel.md)): scenario's 1, 2, 4, 5 en 6 zijn **structureel**, scenario's 3 en 7 **operationeel**. De structurele voorbeelden komen uit het datavoorbeeld [AGC Glass Europe](./datavoorbeelden/agc-glass.md); de operationele voorbeelden (observaties, resultaten) zijn synthetisch, omdat de operationele stroom nog niet gemigreerd is.
 
 ## Scenario 1: Een exploitant identificeren en contacteren
 
-> **Structurele stroom.** **Doel**: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactpersonen.
+> **Structurele stroom.** **Doel**: alle informatie vinden over een specifieke exploitant, inclusief contactpersonen.
 
-Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de `oa:Annotation`-subklasse `riepr:Contactpersoon` en verwijzen naar de exploitatie (niet direct naar de exploitant). Het `dct:type` verwijst naar het concept `:milieucoordinator` of `:contactpersoon` en bepaalt wat de persoon is. Er is **geen versionering**: de URI is een vaste identity-URI op basis van een UUID.
+Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de `oa:Annotation`-subklasse `riepr:Contactpersoon` en verwijzen naar de exploitatie (niet direct naar de exploitant). Het `dct:type` verwijst naar het concept `:milieucoordinator` of `:contactpersoon` en bepaalt wat de persoon is. Er is **geen versiebeheer**: de URI is een vaste identity-URI op basis van een UUID.
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -55,7 +55,7 @@ WHERE {
 
 ## Scenario 2: Alle installaties van een exploitatie ophalen
 
-> **Structurele stroom.** **Doel**: Het doel is om te achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.
+> **Structurele stroom.** **Doel**: achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.
 
 De relatie tussen een exploitatie en haar systemen wordt gelegd via `ssn:deployedSystem`. Dit omvat installaties, emissiepunten, onttrekkingspunten, meetpunten en filters.
 
@@ -90,7 +90,7 @@ WHERE {
 !!! warning "Analyse nog lopende"
     De operationele stroom is nog in analyse; dit scenario kan wijzigen.
 
-> **Operationele stroom.** **Doel**: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.
+> **Operationele stroom.** **Doel**: alle metingen en observaties vinden die aan een bepaald emissiepunt gekoppeld zijn.
 
 Let op: de `sosa:hasFeatureOfInterest` van een observatie wijst **altijd** naar een **emissie of onttrekking** (de gebeurtenis), nooit naar het emissiepunt zelf. Het emissiepunt is bereikbaar via de keten emissie → proces → emissiepunt. Elke observatie heeft een resultaat dat de gemeten waarde bevat:
 
@@ -167,7 +167,7 @@ ORDER BY DESC(?datum)
 
 ## Scenario 4: Processen en hun hiërarchie doorzoeken
 
-> **Structurele stroom.** **Doel**: Het doel is om de proceshiërarchie van een exploitatie in te zien. Welke stappen bij elkaar horen?
+> **Structurele stroom.** **Doel**: de proceshiërarchie van een exploitatie doorzien — welke stappen horen bij elkaar?
 
 Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoofdactiviteit) wordt geïmplementeerd door de exploitatie. Subprocessen zijn verbonden via `pplan:isStepOfPlan`.
 
@@ -207,7 +207,7 @@ WHERE {
 
 ## Scenario 5: Systeemeigenschappen van een installatie lezen
 
-> **Structurele stroom.** **Doel**: Het doel is om de eigenschappen (parameters) van een specifieke installatie op te vragen.
+> **Structurele stroom.** **Doel**: de eigenschappen van een specifieke installatie opvragen.
 
 Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. **Wat** de eigenschap is, staat in het verplichte `dct:type` (een concept uit een `*_eigenschappen`-codelijst); de waarde staat in `rdfs:value` met een `qudt:hasUnit`. `riepr:parameter` (optioneel) wijst naar het concept *waarover* de eigenschap gaat — bij een verwijderingsrendement is dat de chemische stof — en `riepr:datatype` (optioneel) naar het datatype-IRI. Beide zijn objectproperties: hun waarde is altijd een IRI.
 
@@ -227,7 +227,7 @@ Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. **Wat** de eigensch
 
 ## Scenario 6: Geografische data van een exploitatielocatie opvragen
 
-> **Structurele stroom.** **Doel**: Het doel is om de geografische locatie en het adres van een exploitatie te vinden.
+> **Structurele stroom.** **Doel**: de geografische locatie en het adres van een exploitatie vinden.
 
 Exploitatielocaties gebruiken GeoSPARQL voor geometrie en LOCN voor adressen.
 
@@ -256,7 +256,7 @@ Exploitatielocaties gebruiken GeoSPARQL voor geometrie en LOCN voor adressen.
 !!! warning "Analyse nog lopende"
     De operationele stroom is nog in analyse; dit scenario kan wijzigen.
 
-> **Operationele stroom.** **Doel**: Het doel is om alle observaties van een meetpunt binnen een bepaalde tijdspanne te vinden.
+> **Operationele stroom.** **Doel**: alle observaties van een meetpunt binnen een bepaalde tijdspanne vinden.
 
 Meetpunten zijn **geen** Feature of Interest (dat is de emissie of onttrekking). Een meetpunt is het **sensorapparaat** van de observatie: de `sosa:madeBySensor`-relatie koppelt observaties aan het meetpunt.
 
@@ -290,7 +290,7 @@ ORDER BY ?datum
 
 ## Referenties
 
-- [Basisaannames](./basisaanname.md) modellen en aannames achter het datamodel
-- [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties, activiteiten
-- [Installaties en emissiepunten](./systemen.md) systemen en subsystemen
-- [Observaties en emissies](./observaties.md) metingen en gebeurtenissen
+- [Basisaannames](./basisaanname.md) — modellen en aannames achter het datamodel
+- [Exploitant- en exploitatiemodel](./exploitant.md) — organisaties, locaties, activiteiten
+- [Systemen](./systemen.md) — systemen en subsystemen
+- [Observaties en emissies](./observaties.md) — metingen en gebeurtenissen

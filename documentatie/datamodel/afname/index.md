@@ -9,7 +9,7 @@
 
 Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van een data-afnemer die de gegevens raadpleegt via Linked Open Data (LOD). De documentatie behandelt **wat er beschikbaar is** en **hoe u het kunt gebruiken**. Er wordt geen informatie gegeven over databanken, transformatieprocessen of applicatielogica.
 
-Het datamodel kent **twee aparte stromen**, die in deze documentatie consequent uit elkaar gehouden worden. Elke pagina draagt bovenaan een banner die zegt tot welke stroom ze behoort.
+Het datamodel kent **twee aparte stromen**, die in deze documentatie consequent uit elkaar gehouden worden. Elke pagina draagt bovenaan een banner die aangeeft tot welke stroom ze behoort.
 
 **Structurele gegevens** omvatten exploitanten, contactpersonen, exploitatielocaties, exploitaties, processen en systemen (installaties, emissiepunten, onttrekkingspunten, uitwisselpunten, meetpunten, filters) met hun eigenschappen. Dit zijn de versioneerbare entiteiten die de organisatie en infrastructuur beschrijven, en de enige die in de applicatie worden ingegeven en beheerd.
 
@@ -24,28 +24,28 @@ De precieze grens — welke klassen, welke predicaten, en waarom emissies niet i
 
 **Overkoepelend**
 
-- [Twee stromen](./datamodel.md) de opdeling van het model en de grens ertussen
-- [Basisaannames](./basisaanname.md) de modellen en aannames die ten grondslag liggen aan het datamodel
-- [End-to-end voorbeeld](./endtoend.md) de volledige dataketen, per stroom uit elkaar gehouden
-- [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
-- [Aangifte en dossier](./aangifte.md) het administratieve document waaraan beide stromen kunnen hangen
+- [Twee stromen](./datamodel.md) — de opdeling van het model en de grens ertussen
+- [Basisaannames](./basisaanname.md) — de modellen en aannames die aan het datamodel ten grondslag liggen
+- [End-to-end voorbeeld](./endtoend.md) — de volledige dataketen, per stroom uit elkaar gehouden
+- [Gebruiksscenario's](./gebruiksscenario.md) — concrete voorbeelden van data-afname met SPARQL-query's
+- [Aangifte en dossier](./aangifte.md) — het administratieve document waaraan beide stromen kunnen hangen
 
 **Structurele gegevens**
 
-- [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
-- [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) systemen, subsystemen en eigenschappen
-- [Versiebeheer en tijdsrecht](./versiebeheer.md) versiebeheer, geldigheid en historische query's
-- [Migratie](./migratie.md) omzetting van de VMM/IMJV-gegevens naar dit model
+- [Exploitant- en exploitatiemodel](./exploitant.md) — organisaties, locaties en activiteiten
+- [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) — systemen, subsystemen en eigenschappen
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) — versiebeheer, geldigheid en historische query's
+- [Migratie](./migratie.md) — omzetting van de VMM/IMJV-gegevens naar dit model
 
 **Operationele gegevens**
 
-- [Observaties en emissies](./observaties.md) metingen, gebeurtenissen (emissie, onttrekking) en resultaten
+- [Observaties en emissies](./observaties.md) — metingen, gebeurtenissen (emissie, onttrekking) en resultaten
 
-> **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
+> **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in de aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
 
 ## Hoe deze documentatie gebruiken
 
-Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gemodelleerd naar de casus AGC Glass Europe. Het gaat om demonstratiedata, niet om echte aangiftedata. De Turtle-snippets tonen hoe de data eruitziet in RDF-formaat. Direct bruikbaar voor LOD-afnemers die SPARQL of RDF-libraries gebruiken.
+Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gemodelleerd naar de casus AGC Glass Europe. Het gaat om demonstratiedata, niet om echte aangiftedata. De Turtle-snippets tonen hoe de data er in RDF-formaat uitziet en zijn direct bruikbaar voor LOD-afnemers die SPARQL of RDF-bibliotheken gebruiken.
 
 ### URI-patronen
 
@@ -65,21 +65,21 @@ Zie [URI-patronen & Hydra](./uri-patterns.md) voor het volledige overzicht per k
 
 ## Externe standaarden
 
-Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
+Het RIE-IEPR-datamodel bouwt voort op de volgende externe standaarden:
 
-- **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
-- **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
-- **ADMS** ([Asset Description Metadata Schema](https://www.w3.org/TR/vocab-adms/)) externe/bibliotheek-identificatoren via `adms:identifier`
-- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geografische objecten
-- **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
+- **SOSA/SSN** ([Semantic Sensor Network Ontology](https://www.w3.org/TR/vocab-ssn/), W3C) — systemen, observaties, metingen
+- **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/), W3C) — herkomst en versiebeheer
+- **ADMS** ([Asset Description Metadata Schema](https://www.w3.org/TR/vocab-adms/), W3C) — externe identificatoren via `adms:identifier`
+- **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html), OGC) — geografische objecten
+- **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) — processen en stappen; dit is een community-ontologie, geen W3C-standaard
 
-> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u het bepaalt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
+> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u ze bevraagt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
-## Codelijsten (SKOS concepten)
+## Codelijsten (SKOS-concepten)
 
-Het RIE-IEPR-datamodel maakt uitgebreid gebruik van **gecontroleerde vocabulaires** (codelijsten), voorgesteld als [SKOS concepten](https://www.w3.org/TR/skos-reference/). Deze codelijsten worden beheerd in een apart repository: **[milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)**.
+Het RIE-IEPR-datamodel maakt uitgebreid gebruik van **gecontroleerde vocabulaires** (codelijsten), voorgesteld als [SKOS-concepten](https://www.w3.org/TR/skos-reference/). Deze codelijsten worden beheerd in een aparte repository: **[milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)**.
 
-De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/) en worden in de ontologie verwezen via hun volledige URI. Ze vormen de waarden voor `dct:type`, `adms:status` en andere categorisatie-eigenschappen.
+De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/) en er wordt in de ontologie naar verwezen via hun volledige URI. Ze vormen de waarden voor `dct:type`, `adms:status` en andere categorisatie-eigenschappen.
 
 ### Beschikbare codelijsten
 
@@ -136,9 +136,9 @@ De codelijsten zelf zijn gepubliceerd als Linked Open Data en kunnen worden gera
 
 - **Turtle**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.ttl`
 - **JSON-LD**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.jsonld`
-- **Individual concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv`
+- **Afzonderlijk concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv`
 
-Het codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepubliceerd in meerdere formaten (Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel).
+De codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepubliceerd in meerdere formaten (Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel).
 
 ## Databronnen
 

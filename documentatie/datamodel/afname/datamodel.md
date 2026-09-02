@@ -5,7 +5,7 @@ hide:
 
 # Datamodel
 
-Het RIE-IEPR-datamodel bestaat uit **twee stromen die apart gelezen en apart afgenomen worden**. Deze pagina beschrijft waar de grens ligt. Elke andere pagina in deze documentatie is aan één van beide stromen toegewezen en draagt bovenaan een banner die zegt welke.
+Het RIE-IEPR-datamodel bestaat uit **twee stromen die apart gelezen en apart afgenomen worden**. Deze pagina beschrijft waar de grens ligt. Elke andere pagina in deze documentatie is aan één van beide stromen toegewezen en draagt bovenaan een banner die aangeeft welke.
 
 ## De twee stromen
 
@@ -24,7 +24,7 @@ Het RIE-IEPR-datamodel bestaat uit **twee stromen die apart gelezen en apart afg
 
 ## De drie predicaten die de grens oversteken
 
-Tussen beide stromen bestaan **precies drie** relaties. Al de rest blijft binnen één stroom.
+Tussen beide stromen bestaan **precies drie** relaties. Al het overige blijft binnen één stroom.
 
 ```mermaid
 flowchart LR

@@ -116,7 +116,7 @@ De exploitatie zelf komt primair uit het **VIM**; de toestanden (versies) worden
 
 ## 2. Brondata: de VMM XML-aangiften
 
-De bron zijn de **vaste gegevens** van de IMJV-aangiften in XML, gesplitst per luik. De XML-schema's (stand 9.0.54.IMJV) staan op:
+De brondata zijn de **vaste gegevens** van de IMJV-aangiften in XML, gesplitst per luik. De XML-schema's (stand 9.0.54.IMJV) staan op:
 
 | Luik | Schema |
 |---|---|
@@ -208,7 +208,7 @@ Elk bronobject wordt afgebeeld op een klasse uit het RIE-IEPR-datamodel (zie [Sy
    * lucht: `DatumIngebruikname` van de activiteit of het zuiveringsapparaat;
    * water: `JaarIngebruikname` per techniek — bij meerdere technieken het **minimum**, omgezet naar 1 januari van dat jaar;
    * afgeleide meetpunten: gelijkgezet aan het systeem waaraan ze hangen.
-   Ontbreekt een ondubbelzinnige datum, dan wordt een mockdatum gebruikt en in een commentaar aangeduid.
+   Ontbreekt een ondubbelzinnige datum, dan wordt een mockdatum gebruikt en met een commentaar gemarkeerd.
 
 6. **Geometrie.** Coördinaten uit de bron (`XCoordinaat`/`YCoordinaat` bij emissiepunten, `LambertcoordinaatX`/`Y` bij grondwaterputten) worden `ogc:hasGeometry` met een `ogc:Point` in WKT en CRS `EPSG:31370`. Lozingspunten en filters hebben geen coördinaten in de bron en krijgen dus geen geometrie.
 
@@ -319,7 +319,7 @@ Alle numerieke en gecodeerde eigenschappen uit de brondata (hoogte, diameter, di
 * Het proces is een stap in het plan van de exploitatie: `pplan:isStepOfPlan` naar het proces van de GPBV-installatie, of — als er geen GPBV-installatie is — naar het hoofdproces van de exploitatie.
 * De scheiding tussen systeem en proces zorgt ervoor dat wijzigingen aan verbindingen (bv. een installatie die naar een andere zuiveringsinstallatie gaat) geen wijziging aan het systeem zelf vereisen.
 
-### 6.2 Hoe je `pplan:isPrecededBy` leest
+### 6.2 Hoe u `pplan:isPrecededBy` leest
 
 De volgorde van stappen wordt vastgelegd met `pplan:isPrecededBy`. De relatie wijst **tegen de stroomrichting in**:
 
@@ -337,7 +337,7 @@ Bij een lozing verlaat het water de exploitatie. De controle gebeurt **vóór** 
 meting (controleinrichting)  →  [transport]  →  emissie (lozingspunt)
 ```
 
-In RDF wordt dat het emissieproces dat voorafgegaan wordt door het meetproces:
+In RDF wordt dat: het emissieproces wordt voorafgegaan door het meetproces.
 
 ```turtle
 @prefix dct:   <http://purl.org/dc/terms/> .
@@ -387,7 +387,7 @@ Voor een grondwaterpompput geldt hetzelfde patroon, met een `meetpunt_type:debie
 
 ### 6.5 Transportprocessen
 
-Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt er een proces van type `procedure_type:transport` tussen geschoven. Het transportproces neemt de `pplan:isPrecededBy` van het volgende proces over en wijst zelf naar het vorige:
+Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt er een proces van type `procedure_type:transport` tussengeschoven. Het transportproces neemt de `pplan:isPrecededBy` van het volgende proces over en wijst zelf naar het vorige:
 
 ```turtle
 <.../proces/TRANSPORT_LP01/...> a riepr:Proces ;
@@ -399,7 +399,7 @@ Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt 
     pplan:isPrecededBy <.../proces/TRANSPORT_LP01/...> .
 ```
 
-Zo blijft de massabalans traceerbaar over processen heen. Zie [Codelijsten: procedure types en transportprocessen](./codelijsten.md#procedure-types-en-transportprocessen).
+Zo blijft de massabalans traceerbaar over processen heen. Zie [Codelijsten: proceduretypes en transportprocessen](./codelijsten.md#proceduretypes-en-transportprocessen).
 
 ### 6.6 Overzicht
 
@@ -423,7 +423,7 @@ De pijlen tonen de **stroomrichting**. In RDF staat telkens de omgekeerde `pplan
 
 ### 6.7 Rubrieken op processen
 
-Rubrieken hangen op de **processen**, niet op de systemen: ze hangen af van de installatie *voor een bepaald doel* (activiteit), en eenzelfde installatie kan onder verschillende rubrieken vallen naargelang de activiteit. Een rubriek is een anoniem `riepr:Rubriek`-object met `skos:notation` (bv. `20.3.4.1°b)`), `skos:definition`, `dct:type` uit `rubriek_type` (`vlarem`) en `prov:hadPrimarySource` (VITO). Bij de migratie draagt het hoofdproces de rubrieken.
+Rubrieken hangen aan de **processen**, niet aan de systemen: ze zijn afhankelijk van de installatie *voor een bepaald doel* (activiteit), en eenzelfde installatie kan onder verschillende rubrieken vallen naargelang de activiteit. Een rubriek is een anoniem `riepr:Rubriek`-object met `skos:notation` (bv. `20.3.4.1°b)`), `skos:definition`, `dct:type` uit `rubriek_type` (`vlarem`) en `prov:hadPrimarySource` (VITO). Bij de migratie draagt het hoofdproces de rubrieken.
 
 ---
 

@@ -6,7 +6,7 @@
 !!! warning "Analyse nog lopende"
     De analyse van operationele gegevens is nog lopende. De informatie in dit document kan wijzigen na afronding van de analyse.
 
-Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, verbruik) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C ([vocab-ssn](https://www.w3.org/TR/vocab-ssn/)).
+Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, verbruik) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van het W3C ([vocab-ssn](https://www.w3.org/TR/vocab-ssn/)).
 
 ## 0. Waar deze stroom aan de structuur hangt
 
@@ -18,7 +18,7 @@ De operationele stroom raakt de structurele stroom op precies drie plaatsen:
 | `sosa:madeBySensor` | `Observatie` | het meetpunt (`ssn:System`) | optioneel, 0..1 |
 | `riepr:aangifte` | `Observatie`, `ObservatieVerzameling` | `Aangifte` | optioneel, 0..1 |
 
-Al de rest — feature of interest, resultaat, verzameling, geobserveerde eigenschap — blijft binnen deze stroom. Zie [Twee stromen](./datamodel.md).
+Al het overige — feature of interest, resultaat, verzameling en geobserveerde eigenschap — blijft binnen deze stroom. Zie [Twee stromen](./datamodel.md).
 
 ## 1. Het SOSA/SSN observatiepatroon
 
@@ -43,7 +43,7 @@ Emissie en onttrekking zijn **gebeurtenissen** en fungeren als `sosa:FeatureOfIn
 
 ### Emissie
 
-Een **emissie** is een gebeurtenis waarbij stoffen de installatie verlaten (aan een emissiepunt). Ze is een subklasse van `prov:Entity` en `sosa:FeatureOfInterest` en wordt **afgeleid** (`prov:wasDerivedFrom`) van het emissieproces waaruit ze voortkomt (verplicht, minstens één):
+Een **emissie** is een gebeurtenis waarbij stoffen de exploitatie verlaten (aan een emissiepunt). Ze is een subklasse van `prov:Entity` en `sosa:FeatureOfInterest` en wordt **afgeleid** (`prov:wasDerivedFrom`) van het emissieproces waaruit ze voortkomt (verplicht, minstens één):
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -72,7 +72,7 @@ Een **onttrekking** is een gebeurtenis waarbij grondstoffen worden gewonnen of b
     prov:wasDerivedFrom <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7241-ac66-b7831d1b3624/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-> **Opmerking**: De ontologie kent naast `Emissie` en `Onttrekking` ook `riepr:Verbruik` (verbruik van stoffen), met exact hetzelfde patroon. Een klasse `Uitwisseling` is **niet** gemodelleerd, hoewel `DATAPLATFORM.md` in de applicatiedocumentatie er wel naar verwijst — dat is een openstaand punt. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.
+> **Opmerking**: De ontologie kent naast `Emissie` en `Onttrekking` ook `riepr:Verbruik` (verbruik van stoffen), met exact hetzelfde patroon. Een klasse `Uitwisseling` is **niet** gemodelleerd, hoewel `DATAPLATFORM.md` in de applicatiedocumentatie er wel naar verwijst — dat is een openstaand punt. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie [Basisaannames §5](./basisaanname.md#5-disjuncte-klassen)); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.
 
 ### Relatie tussen punt en gebeurtenis
 
@@ -120,7 +120,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 
 ### `sosa:madeBySensor`
 
-`madeBySensor` is een standaard SOSA-property ([SOSAmadeBySensor](https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor)): "het sensorapparaat dat de observatie heeft gemaakt". In de 2017 REC is de range `sosa:Sensor`; in het RIE-IEPR-model draagt het meetpunt die rol, en is het model daar `ssn:System`. De range is daarom in de ontologie `ssn:System`.
+`madeBySensor` is een standaard SOSA-property ([SOSAmadeBySensor](https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor)): "het sensorapparaat dat de observatie heeft gemaakt". De SOSA/SSN-aanbeveling uit 2017 geeft die property `sosa:Sensor` als range. In RIE-IEPR wordt die rol vervuld door het meetpunt, dat als `ssn:System` gemodelleerd is; de ontologie verruimt de range daarom tot `ssn:System`.
 
 ### URI-patroon
 
@@ -167,7 +167,7 @@ QUDT (Quantities, Units, Types and Dimensions) biedt een gestandaardiseerd syste
 - `unit:LITER-PER-SEC` liter per seconde
 - `unit:M` meter
 - `unit:PERCENT` percentage
-- etc.
+- …
 
 ## 5. Geobserveerde eigenschappen (observedProperty)
 
@@ -183,7 +183,7 @@ De `sosa:observedProperty` geeft aan **wat** er werd gemeten. In het RIE-IEPR-mo
 
 ## 6. Procedures: meetproces en bepalingsmethode
 
-Het model kent twee verschillende vormen van "procedure", die niet verward moeten worden:
+Het model kent twee verschillende vormen van "procedure", die niet met elkaar verward mogen worden:
 
 1. **Het meetproces** — een `riepr:Proces` zoals elk ander proces in het plan. Het heeft `dct:type` = [`procedure-type/meting`](https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv) (dezelfde codelijst als emissie, onttrekking, verwerking, uitwissel) en **implementeert per OWL-axioma een `riepr:Meetpunt`**:
 
@@ -360,7 +360,7 @@ classDiagram
 ## Referenties
 
 - [End-to-end voorbeeld](./endtoend.md) — de volledige keten van exploitant tot gemeten waarde
-- [Basisaannames](./basisaanname.md) — Feature of Interest, SOSA/SSN patroon
-- [Installaties en emissiepunten](./systemen.md) — fysieke systemen
+- [Basisaannames](./basisaanname.md) — feature of interest en het SOSA/SSN-patroon
+- [Systemen](./systemen.md) — de fysieke systemen
 - [Gebruiksscenario's](./gebruiksscenario.md) — SPARQL-query's voor observaties
-- **Codelijsten**: De `observedProperty`-waarden, procedure-types en bepalingsmethodes verwijzen naar SKOS-concepten uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
+- **Codelijsten**: de `observedProperty`-waarden, proceduretypes en bepalingsmethodes verwijzen naar SKOS-concepten uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).

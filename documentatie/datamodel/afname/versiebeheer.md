@@ -7,11 +7,11 @@ Dit document beschrijft hoe versiebeheer en tijdsrecht werken in het RIE-IEPR-da
 
 ## 1. URI-structuren voor versiebeheer
 
-Het model maakt een fundamenteel onderscheid tussen **identity URIs** (tijdsloos) en **versie URIs** (met tijd).
+Het model maakt een fundamenteel onderscheid tussen **identity-URI's** (tijdsloos) en **versie-URI's** (met tijd).
 
-### Identity URI (tijdsloos)
+### Identity-URI (tijdsloos)
 
-De identity URI verwijst naar de abstracte, tijdsloze entiteit. Deze verandert nooit:
+De identity-URI verwijst naar de abstracte, tijdsloze entiteit. Deze verandert nooit:
 
 ```
 https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}
@@ -19,9 +19,9 @@ https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}
 ```
 
-### Versie URI (met tijd)
+### Versie-URI (met tijd)
 
-Een versie URI bevat twee tijdsegmenten: de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`):
+Een versie-URI bevat twee tijdsegmenten: de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`):
 
 ```
 https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}
@@ -43,9 +43,9 @@ Wijzigingen overschrijven deze resources op dezelfde URI; er is geen historiek.
 !!! info "Operationele gegevens worden niet geversioneerd"
     Dit hoofdstuk gaat **uitsluitend** over de structurele stroom. Emissies, onttrekkingen, verbruiken, observaties, verzamelingen en resultaten kennen geen `dct:issued`, geen `dct:valid` en geen `dct:isVersionOf`. Hun tijdsaspect zit in de observatie zelf (`sosa:resultTime`, `sosa:phenomenonTime`) en in de aangifte waaraan ze hangen. Zie [Observaties en emissies](./observaties.md) en [Twee stromen](./datamodel.md).
 
-## 2. `dct:isVersionOf` de link tussen versie en identity
+## 2. `dct:isVersionOf`: de link tussen versie en identity
 
-De relatie `dct:isVersionOf` koppelt een versie aan haar identity URI:
+De relatie `dct:isVersionOf` koppelt een versie aan haar identity-URI:
 
 ```turtle
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -65,7 +65,7 @@ Meerdere versies kunnen naar dezelfde identity verwijzen. Ze beschrijven verschi
 Elke versie heeft een **geldigheidsperiode** en een status:
 
 - `dct:issued` (verplicht): de **start** van de geldigheid.
-- `dct:valid` (optioneel): het **einde** van de geldigheid. Ontbreekt het, dan geldt de versie tot op heden (of tot het begin van de volgende versie).
+- `dct:valid` (optioneel): het **einde** van de geldigheid. Ontbreekt `dct:valid`, dan geldt de versie tot op heden, of tot het begin van de volgende versie.
 - `adms:status`: de status van de entiteit in die versie.
 
 ```turtle
@@ -84,7 +84,7 @@ Elke versie heeft een **geldigheidsperiode** en een status:
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
 ```
 
-> **Note**: het model gebruikt geen `prov:wasRevisionOf` tussen versies. Versies zijn afzonderlijke URIs die via `dct:isVersionOf` naar dezelfde identity verwijzen; de volgorde en geldigheid volgt uit `dct:issued`/`dct:valid`.
+> **Let op**: het model gebruikt geen `prov:wasRevisionOf` tussen versies. Versies zijn afzonderlijke URI's die via `dct:isVersionOf` naar dezelfde identity verwijzen; de volgorde en de geldigheid volgen uit `dct:issued` en `dct:valid`.
 
 ### Beschikbare statussen
 
@@ -148,7 +148,7 @@ LIMIT 1
 
 ### Toestand op een historisch moment
 
-Om de toestand van een installatie op een specifiek datum te vinden (`?issued <= moment` en `dct:valid` ontbreekt of ligt na het moment):
+Om de toestand van een installatie op een specifieke datum te vinden (`?issued <= moment` en `dct:valid` ontbreekt of ligt na het moment):
 
 ```sparql
 SELECT ?versie ?label ?issued
@@ -186,8 +186,8 @@ ORDER BY ?issued, ?created
 
 De exploitatie heeft een specifiek versiebeheerpatroon met **twee lagen**:
 
-1. **Identity laag** de tijdsloze exploitatie (geen `issued`, geen `created`)
-2. **Versie laag** toestanden van de exploitatie (met `issued` en `created`)
+1. **Identity-laag** — de tijdsloze exploitatie (geen `issued`, geen `created`)
+2. **Versielaag** — de toestanden van de exploitatie (met `issued` en `created`)
 
 ```turtle
 # Laag 1: identity (geen tijd)
@@ -299,6 +299,6 @@ classDiagram
 
 ## Referenties
 
-- [Basisaannames](./basisaanname.md) URI-patronen, exploitatie twee lagen
-- [Gebruiksscenario's](./gebruiksscenario.md) SPARQL-query's voor versiebeheer
-- [Aangifte en dossier](./aangifte.md) relatie tussen indienen en versies
+- [Basisaannames](./basisaanname.md) — URI-patronen en de twee lagen van een exploitatie
+- [Gebruiksscenario's](./gebruiksscenario.md) — SPARQL-query's voor versiebeheer
+- [Aangifte en dossier](./aangifte.md) — de relatie tussen indienen en versies

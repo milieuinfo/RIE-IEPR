@@ -43,9 +43,9 @@ In RIE-IEPR is elk `riepr:Proces` tegelijk een `pplan:Plan`, een `pplan:Step` en
 
 ## 2. URI-ontwerp en versiebeheer
 
-Het model maakt onderscheid tussen **identity URIs** (tijdsloos) en **versie-URIs** (met tijd).
+Het model maakt onderscheid tussen **identity-URI's** (tijdsloos) en **versie-URI's** (met tijd).
 
-### Identity URI vs. versie URI
+### Identity-URI versus versie-URI
 
 | Type | URI-patroon | Voorbeeld | Doel |
 |---|---|---|---|
@@ -75,8 +75,8 @@ Zie [Versiebeheer en tijdsrecht](./versiebeheer.md) voor het structurele versieb
 
 Een exploitatie bestaat uit **twee lagen**:
 
-1. **De tijdsloze exploitatie** (identity URI) - representeert het abstracte concept van de exploitatie
-2. **De versies/toestanden** (versie URI) - beschrijven een specifieke toestand met geldigheid, status en inhoud
+1. **De tijdsloze exploitatie** (identity-URI) — het abstracte concept van de exploitatie
+2. **De versies of toestanden** (versie-URI) — elk een specifieke toestand met geldigheid, status en inhoud
 
 ```turtle
 # Laag 1: tijdsloze exploitatie (identity)
@@ -94,7 +94,7 @@ Een exploitatie bestaat uit **twee lagen**:
 
 ## 4. Proces-procedure koppels (OWL-axioma's)
 
-Het model bevat **OWL-axioma's** die proces types dwingen aan bepaalde systemen te koppelen. De proces types komen uit de codelijst **`procedure_type`** ([beheerd in milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)):
+Het model bevat **OWL-axioma's** die een proces van een bepaald type verplichten om aan een bepaald systeem gekoppeld te zijn. De procestypes komen uit de codelijst **`procedure_type`** ([beheerd in milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/)):
 
 | Proces type (`dct:type`) | URI | Moet implementeren (`ssn:implementedBy`) |
 |---|---|---|
@@ -111,13 +111,13 @@ Dit betekent dat als een proces het type "emissie" heeft, het **per definitie** 
 !!! warning "Afwijking in de ontologie"
     Het axioma voor het meetproces verwijst in `riepr.ttl` naar `…/procedure-type/meet`, terwijl de codelijst `procedure_type` en het datavoorbeeld `…/procedure-type/meting` gebruiken. De **codelijst is leidend**; het axioma moet nog bijgewerkt worden.
 
-De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie), waar ze als SKOS concepten gepubliceerd zijn.
+De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie), waar ze als SKOS-concepten gepubliceerd zijn.
 
-## 5. Disjoint classes
+## 5. Disjuncte klassen
 
 Een **meetpunt** is per definitie geen emissiepunt of onttrekkingspunt: `riepr:Meetpunt` staat `owl:disjointWith` `riepr:Emissiepunt` én `riepr:Onttrekkingspunt`.
 
-Een **uitwisselpunt** daarentegen is wél zowel emissiepunt als onttrekkingspunt: `riepr:Uitwisselpunt` is gedefinieerd als de equivalentie van de intersectie `Emissiepunt ∩ Onttrekkingspunt` — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.
+Een **uitwisselpunt** daarentegen is wél zowel emissiepunt als onttrekkingspunt: `riepr:Uitwisselpunt` is gedefinieerd als equivalent met de doorsnede `Emissiepunt ∩ Onttrekkingspunt` — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.
 
 ## 6. De grens met de operationele stroom
 
@@ -187,9 +187,9 @@ RIE-IEPR kent twee vormen van identificatie:
 - De **URI** (UUID-gebaseerd) is de eigen identity van RIE-IEPR (zie [URI-ontwerp](#2-uri-ontwerp-en-versiebeheer)).
 - Een **externe identificator** (`adms:Identifier`) bewaart een code die afkomstig is uit een **bovenliggend of voorgaand bron-systeem**.
 
-`adms:identifier` is dus geen duplicatie van de URI: het is de bewaargebleven **bron-identificatie**. Zo blijft data:
+`adms:identifier` is dus geen duplicaat van de URI: het is de bewaarde **bron-identificatie**. Zo blijft de data:
 
-- traceerbaar terug naar de bovengelegde systemen (migratie VMM → RIE-IEPR),
+- traceerbaar naar de bovenliggende systemen (migratie VMM → RIE-IEPR),
 - kruisreferentieerbaar met andere Vlaamse datasets (bijv. INSPIRE/DOMG),
 - herkenbaar in herkomst, naast `prov:hadPrimarySource` (zie [Provenance](#8-provenance-en-herkomst)).
 
@@ -204,7 +204,7 @@ Elke externe identificator is een anonieme node met twee onderdelen:
 
 `adms:identifier` is **optioneel** (`minCardinality 0`) en **meervoudig**: een entiteit kan meerdere externe identificatoren tegelijk hebben.
 
-### Schemas (bronnen)
+### Schema's (bronnen)
 
 | `adms:schemaAgency` | Bron | Soort code | Voorbeeld `skos:notation` |
 |---|---|---|---|
@@ -215,7 +215,7 @@ Elke externe identificator is een anonieme node met twee onderdelen:
 
 ### Klassen die `adms:identifier` ondersteunen
 
-In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in de SHACL-shapes verschijnt dit als `sh:property` met `sh:class adms:Identifier`, `sh:minCount 0`):
+In de ontologie is `adms:identifier` (0..n) toegestaan op de volgende klassen (in de SHACL-shapes verschijnt dit als `sh:property` met `sh:class adms:Identifier`, `sh:minCount 0`):
 
 | Klasse | Ook in het datavoorbeeld? |
 |---|---|
@@ -272,7 +272,7 @@ In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in d
 
 ### Afname (SPARQL)
 
-Externe identificatoren laten zich filteren op schema-agentschap en notatie. Hierbij let je op de anonieme nodes (`adms:Identifier`):
+Externe identificatoren laten zich filteren op schema-agentschap en notatie. Let daarbij op de anonieme nodes (`adms:Identifier`):
 
 ```sparql
 PREFIX adms:  <http://www.w3.org/ns/adms#>
@@ -296,6 +296,6 @@ Zie ook [Gebruiksscenario's](./gebruiksscenario.md) voor bredere afname-voorbeel
 
 ## Referenties
 
-- [Gebruiksscenario's](./gebruiksscenario.md) - concrete voorbeelden van data-afname
-- [Exploitant- en exploitatiemodel](./exploitant.md) - organisaties, locaties, activiteiten
-- [Versiebeheer en tijdsrecht](./versiebeheer.md) - versies, geldigheid, historische query's
+- [Gebruiksscenario's](./gebruiksscenario.md) — concrete voorbeelden van data-afname
+- [Exploitant- en exploitatiemodel](./exploitant.md) — organisaties, locaties, activiteiten
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) — versies, geldigheid, historische query's

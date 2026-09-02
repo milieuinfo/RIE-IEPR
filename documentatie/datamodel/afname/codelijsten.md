@@ -3,7 +3,7 @@
 !!! abstract "Beide stromen"
     Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
-Deze pagina beschrijft hoe de gecontroleerde vocabulaires / codelijsten van RIE-IEPR zijn opgebouwd, beheerd en gepubliceerd. De bronbestanden staan in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) onder `src/source/`. De codelijsten worden als SKOS concepten en concept schemes gepubliceerd op `https://data.omgeving.vlaanderen.be/id/concept/riepr/`.
+Deze pagina beschrijft hoe de gecontroleerde vocabulaires / codelijsten van RIE-IEPR zijn opgebouwd, beheerd en gepubliceerd. De bronbestanden staan in de aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) onder `src/source/`. De codelijsten worden als SKOS-concepten en conceptschema's gepubliceerd op `https://data.omgeving.vlaanderen.be/id/concept/riepr/`.
 
 ## Overzicht
 
@@ -26,7 +26,7 @@ Alle lijsten worden vanuit CSV-bronbestanden gegenereerd naar meerdere RDF-forma
 !!! note "Welke CSV's daadwerkelijk gegenereerd worden"
     Bepalend is de lijst `source.codelijst_csv` in `config.yml`, niet de inhoud van de map `src/source/`. Een paar bestanden staan wel in de map maar (nog) niet in de configuratie, en worden dus niet gepubliceerd: `filter_eigenschappen.csv` (bovendien leeg), `emissie_type.csv`, `operationeel_contextueel.csv` en `algmeen.csv`. Een codelijst voor **bepalingsmethodes** (`sosa:usedProcedure`, zie [Observaties §6](./observaties.md#6-procedures-meetproces-en-bepalingsmethode)) bestaat vandaag nog niet.
 
-## Repository structuur
+## Structuur van de repository
 
 ```
 src/source/
@@ -37,8 +37,8 @@ src/source/
 
 `config.yml` definieert:
 
-* `skos.prefixes.concept` en `collectie` – basis URI voor concepten en collecties
-* `skos.path` – waar de concept schemes worden uitgezet
+* `skos.prefixes.concept` en `collectie` – basis-URI voor concepten en collecties
+* `skos.path` – waar de conceptschema's worden weggeschreven
 * `source.path` – `src/source/`
 * `source.codelijst_csv` – lijst van CSV-bestanden die verwerkt worden
 * `source.context` – `context.json` die CSV-kolommen mapt naar SKOS / RDF-eigenschappen
@@ -54,7 +54,7 @@ src/source/
 "isVerplicht": { "@id": "https://data.riepr.omgeving.vlaanderen.be/ns/vocab#isVerplicht", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
 ```
 
-## Concepts en ConceptScheme
+## Concepten en conceptschema's
 
 In SKOS:
 
@@ -64,7 +64,7 @@ In SKOS:
 Relaties:
 
 * `skos:inScheme` – concept behoort tot een scheme
-* `skos:topConceptOf` – concept is top-level in scheme
+* `skos:topConceptOf` – concept is topconcept van een scheme
 * `skos:broader` / `skos:narrower` – hiërarchie
 * `skos:prefLabel`, `skos:altLabel`, `skos:notation`, `skos:definition`, `skos:scopeNote`
 * `skos:related`, `skos:broaderPartitive`, `skos:narrowerPartitive`
@@ -91,7 +91,7 @@ riepr-procedure-type:emissie,skos:Concept,conceptscheme:procedure_type,conceptsc
 riepr-procedure-type:transport,skos:Concept,conceptscheme:procedure_type,conceptscheme:procedure_type,Transport,,TRANSPORT,De procedure transport tussen twee processen.,,,http://www.w3.org/ns/sosa/Procedure,
 ```
 
-### Procedure types en transportprocessen
+### Proceduretypes en transportprocessen
 
 `procedure_type` bevat de typering van processen in een procesplan. Belangrijke concepten:
 
@@ -107,10 +107,10 @@ Transportprocessen worden gebruikt om de keten tussen bron en sink expliciet te 
 In het datamodel geldt:
 
 * Elk proces is een stap in een hoger plan: `pplan:isStepOfPlan`
-* De volgorde van stappen wordt vastgelegd met `pplan:isPrecededBy`: *stap X is voorafgegaan door stap Y*
+* De volgorde van stappen wordt vastgelegd met `pplan:isPrecededBy`: *stap X wordt voorafgegaan door stap Y*
 * Een proces kan een systeem implementeren: `ssn:implementedBy` / `ssn:implements`
 
-Voor transport. `pplan:isPrecededBy` wijst **tegen de stroomrichting in**: `X isPrecededBy Y` betekent dat Y vóór X komt (zie ook [Migratie §6.2](./migratie.md#62-hoe-je-pplanisprecededby-leest)).
+Voor transport geldt het volgende. `pplan:isPrecededBy` wijst **tegen de stroomrichting in**: `X isPrecededBy Y` betekent dat Y vóór X komt (zie ook [Migratie §6.2](./migratie.md#62-hoe-u-pplanisprecededby-leest)).
 
 Stroomrichting:
 
@@ -152,24 +152,24 @@ In Turtle:
     pplan:isPrecededBy <.../proces/TRANSPORT/uuid/2026-01-01/...> .
 ```
 
-Praktisch voorbeeld uit de applicatieve documentatie `DATASTRUCTUUR.md`:
+Praktisch voorbeeld uit de applicatiedocumentatie `DATASTRUCTUUR.md`:
 
 1. Een proces van type `VERWERKING` implementeert een installatie via `ssn:implementedBy`.
 2. Een proces van type `EMISSIE` wordt geïmplementeerd door een emissiepunt via `ssn:implementedBy`.
 3. Een nieuw proces van type `TRANSPORT` wordt aangemaakt met benaming bv. "Transport CO2 van Oven naar Schouw".
    * `dct:type = riepr-procedure-type:transport`
    * `pplan:isStepOfPlan` naar het hoofdproces van de exploitatie
-4. Volgorde koppeling:
+4. Volgordekoppeling:
    * `PROCES_EMISSIE --> pplan:isPrecededBy --> PROCES_TRANSPORT`
    * `PROCES_TRANSPORT --> pplan:isPrecededBy --> PROCES_INSTALLATIE`
 
-Hierdoor wordt het transportproces de brug tussen de twee processen. De stof die in het verwerkingsproces vrijkomt, wordt via het transportproces naar het emissieproces geleid. Dit maakt de massabalans en de herkomst van emissies traceerbaar en laat toe om stoffen expliciet te koppelen over processen heen.
+Hierdoor wordt het transportproces de brug tussen de twee processen. De stof die in het verwerkingsproces vrijkomt, wordt via het transportproces naar het emissieproces geleid. Dit maakt de massabalans en de herkomst van emissies traceerbaar, en maakt het mogelijk stoffen over processen heen expliciet te koppelen.
 
-Zie ook de applicatieve documentatie `DATASTRUCTUUR.md` sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces", en het datamodel [Basisaannames](./basisaanname.md) over P-Plan.
+Zie ook de applicatiedocumentatie `DATASTRUCTUUR.md` sectie "Verbinden van processen" en "Verbinden van een emissiepunt aan een ander proces", en het datamodel [Basisaannames](./basisaanname.md) over P-Plan.
 
 ## CSV-kolommen
 
-De CSV-koppen zijn de bron voor RDF-triples. De meest voorkomende kolommen:
+De CSV-kolomkoppen zijn de bron voor de RDF-triples. De meest voorkomende kolommen:
 
 * `_id` – lokale identifier, wordt omgezet naar volledige URI via prefixen
 * `_type` – `skos:ConceptScheme` of `skos:Concept`
@@ -193,7 +193,7 @@ De CSV-koppen zijn de bron voor RDF-triples. De meest voorkomende kolommen:
 * `isMeervoudig` – boolean, meerdere waarden toelaten?
 * `isMultiselect` – boolean, multiselect in UI?
 * `isOnzichtbaar` – boolean, concept niet tonen in UI
-* `conditionPath` / `conditionValue` – conditionele zichtbaarheid: toon concept enkel als pad een bepaalde waarde heeft
+* `conditionPath` / `conditionValue` – conditionele zichtbaarheid: toon het concept enkel als het pad een bepaalde waarde heeft
 * `seeAlso` – volgende stap / gerelateerd scheme (bij `status_type` en `aangifte_status`: de ADMS-status-equivalent)
 * `relation` – RDF-predikaat voor koppeling
 
@@ -210,13 +210,13 @@ Hier wordt `relevantRiepr` gebruikt om de eigenschap te koppelen aan een systeem
 Voor **operationele stromen**, bv. `operationeel_lucht.csv`:
 
 * Top-level `ConceptScheme` per thematische stroom.
-* Binnen het scheme staan `Concept`en die `sosa:ObservationCollection` of `sosa:Observation` mappen via `relevantClass`.
+* Binnen het scheme staan concepten die via `relevantClass` op `sosa:ObservationCollection` of `sosa:Observation` gemapt worden.
 * `isPartOf` en `broaderPartitive` modelleren composities.
 * `conditionPath`/`conditionValue` sturen conditionele velden.
 * `relevantCodeList` verwijst naar een ander scheme voor selectielijsten.
 * `seeAlso` definieert de volgende stap in de wizard.
 
-Voorbeeld fragment:
+Voorbeeldfragment:
 
 ```
 riepr-operationeel-lucht:brandstof,skos:Concept,conceptscheme:operationeel_lucht_rapportering,conceptscheme:operationeel_lucht_rapportering,Verbruikte brandstof,Geef de verbruikte brandstoffen op.,,sosa:ObservationCollection,,,,,,,,,,true,,,,true
@@ -248,9 +248,9 @@ _id,...,normstatus,...
 riepr-concept:x,skos:Concept,...,actief,...
 ```
 
-Bij het volgende `npm run generate_skos` wordt de kolom automatisch uitgezet naar RDF.
+Bij de volgende `npm run generate_skos` wordt de kolom automatisch naar RDF weggeschreven.
 
-Let op: kolommen die niet in `context.json` staan worden genegeerd. Kolommen die wel in `context.json` staan maar niet in de CSV krijgen geen waarde.
+Let op: kolommen die niet in `context.json` staan, worden genegeerd. Kolommen die wél in `context.json` staan maar niet in de CSV, krijgen geen waarde.
 
 ## Genereren van SKOS
 
@@ -279,7 +279,7 @@ Wat gebeurt er:
 6. Output wordt geschreven naar `skos.path` in de formaten gedefinieerd in config: `.ttl`, `.jsonld`, `.nt`, `.json`, `.csv`, `.parquet`, `.xlsx`.
 7. Na generatie worden DCAT-metadata aangemaakt via `npm run create_metadata` (`02_metadata.js`) en kan gepubliceerd worden met `npm run deploy`.
 
-De gegenereerde bestanden worden in het Maven-artifact geplaatst onder `main/resources/be/vlaanderen/omgeving/data/id/conceptscheme/` en kunnen vervolgens via de Maven-metadata-generator worden gepubliceerd naar de triplestore.
+De gegenereerde bestanden worden in het Maven-artifact geplaatst onder `main/resources/be/vlaanderen/omgeving/data/id/conceptscheme/` en kunnen vervolgens via de Maven-metadatagenerator in de triplestore gepubliceerd worden.
 
 ## Publicatie
 
@@ -297,9 +297,9 @@ npm run deploy
 
 ## Tips voor beheerders
 
-* Houd `prefLabel` kort en consistent NL.
+* Houd `prefLabel` kort en consistent Nederlandstalig.
 * Gebruik `notation` voor stabiele codes die in applicaties gebruikt worden.
 * Definieer hiërarchie via `broader` voor navigatie en filtering.
 * Voor operationele stromen: modelleer stappen als aparte `ConceptScheme` en koppel ze met `seeAlso`.
 * Gebruik `conditionPath`/`conditionValue` voor conditionele velden i.p.v. applicatielogica.
-* Test wijzigingen lokaal met `npm run generate_skos` en valideer de Turtle output met een SPARQL-query.
+* Test wijzigingen lokaal met `npm run generate_skos` en valideer de Turtle-output met een SPARQL-query.
