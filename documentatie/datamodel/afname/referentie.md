@@ -7,4 +7,4 @@ hide:
 
 Deze sectie bevat referentiemateriaal voor het RIE-IEPR-datamodel.
 
-- [Ontologie](https://milieuinfo.github.io/RIE-IEPR/ontologie/) - de volledige ontologie-documentatie
+- [Ontologie](ontologie.md) - de volledige ontologie-documentatie

@@ -180,20 +180,24 @@ pipeline {
                 git clone --depth 1 --branch "$GH_PAGES_BRANCH" "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy \
                     || git clone --depth 1 "https://github.com/${GITHUB_REPO}.git" .gh-pages-deploy
 
+                # Sanity check voor de destructieve stap hieronder: zonder deze guard
+                # zou een mislukte MkDocs-/Widoco-stap een lege of ontologie-loze site
+                # publiceren (dat is precies hoe /ontologie/ een 404 wordt).
+                for required in index.html ontologie/index.html referentie/index.html; do
+                  if [ ! -f "build-artifact/docs/$required" ]; then
+                    echo "build-artifact/docs/$required ontbreekt - deploy afgebroken"
+                    exit 1
+                  fi
+                done
+
                 cd .gh-pages-deploy
                 git checkout -B "$GH_PAGES_BRANCH"
                 find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 
-                # copy site files from build artifact
-                if [ -f ../build-artifact/index.html ]; then
-                  cp -f ../build-artifact/index.html index.html
-                fi
+                # copy MkDocs + Widoco site; deze levert ook de root index.html
+                cp -r ../build-artifact/docs/. .
                 if [ -f ../build-artifact/visualisatie.html ]; then
                   cp -f ../build-artifact/visualisatie.html visualisatie.html
-                fi
-                # copy MkDocs + Widoco site
-                if [ -d ../build-artifact/docs ]; then
-                  cp -r ../build-artifact/docs/* .
                 fi
 
                 # schema TTL en SHACL cache
@@ -204,16 +208,10 @@ pipeline {
                 done
 
                 touch .nojekyll
-                git add .nojekyll index.html
-                [ -f visualisatie.html ] && git add visualisatie.html || true
-                [ -f riepr-ontologie.ttl ] && git add riepr-ontologie.ttl || true
-                [ -f riepr-concept.ttl ] && git add riepr-concept.ttl || true
-                [ -f generated-shapes.ttl ] && git add generated-shapes.ttl || true
-                [ -f validation-report.json ] && git add validation-report.json || true
-                # add all files from docs deploy
-                if [ -d ../build-artifact/docs ]; then
-                  find . -type f ! -name '.git*' -exec git add {} +
-                fi
+                # "git add -A" stageert ook verwijderingen. De vorige variant voegde
+                # alleen bestaande bestanden toe, waardoor uit de bron verwijderde
+                # pagina's voor altijd op gh-pages bleven staan.
+                git add -A .
                 if ! git diff --cached --quiet; then
                   git config user.email "$GIT_USER_EMAIL"
                   git config user.name "$GIT_USER_NAME"
