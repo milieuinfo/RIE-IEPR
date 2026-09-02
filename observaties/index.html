@@ -1609,7 +1609,7 @@
 <p class="admonition-title">Analyse nog lopende</p>
 <p>De analyse van operationele gegevens is nog lopende. De informatie in dit document kan wijzigen na afronding van de analyse.</p>
 </div>
-<p>Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, verbruik) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het <strong>SOSA/SSN</strong>-patroon van de W3C (<a href="https://www.w3.org/TR/vocab-ssn/">vocab-ssn</a>).</p>
+<p>Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, verbruik) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het <strong>SOSA/SSN</strong>-patroon van het W3C (<a href="https://www.w3.org/TR/vocab-ssn/">vocab-ssn</a>).</p>
 <h2 id="0-waar-deze-stroom-aan-de-structuur-hangt">0. Waar deze stroom aan de structuur hangt</h2>
 <p>De operationele stroom raakt de structurele stroom op precies drie plaatsen:</p>
 <table>
@@ -1642,7 +1642,7 @@
 </tr>
 </tbody>
 </table>
-<p>Al de rest — feature of interest, resultaat, verzameling, geobserveerde eigenschap — blijft binnen deze stroom. Zie <a href="../datamodel/">Twee stromen</a>.</p>
+<p>Al het overige — feature of interest, resultaat, verzameling en geobserveerde eigenschap — blijft binnen deze stroom. Zie <a href="../datamodel/">Twee stromen</a>.</p>
 <h2 id="1-het-sosassn-observatiepatroon">1. Het SOSA/SSN observatiepatroon</h2>
 <p>Het model gebruikt het standaard SOSA-patroon voor observaties:</p>
 <div class="highlight"><pre><span></span><code>Observatie (sosa:Observation)
@@ -1659,7 +1659,7 @@
 <h2 id="2-gebeurtenissen-emissie-onttrekking">2. Gebeurtenissen: Emissie, Onttrekking</h2>
 <p>Emissie en onttrekking zijn <strong>gebeurtenissen</strong> en fungeren als <code>sosa:FeatureOfInterest</code>. Ze vertegenwoordigen een tijdsloos concept: de gebeurtenis zelf heeft geen timestamp, de tijd zit in de observaties.</p>
 <h3 id="emissie">Emissie</h3>
-<p>Een <strong>emissie</strong> is een gebeurtenis waarbij stoffen de installatie verlaten (aan een emissiepunt). Ze is een subklasse van <code>prov:Entity</code> en <code>sosa:FeatureOfInterest</code> en wordt <strong>afgeleid</strong> (<code>prov:wasDerivedFrom</code>) van het emissieproces waaruit ze voortkomt (verplicht, minstens één):</p>
+<p>Een <strong>emissie</strong> is een gebeurtenis waarbij stoffen de exploitatie verlaten (aan een emissiepunt). Ze is een subklasse van <code>prov:Entity</code> en <code>sosa:FeatureOfInterest</code> en wordt <strong>afgeleid</strong> (<code>prov:wasDerivedFrom</code>) van het emissieproces waaruit ze voortkomt (verplicht, minstens één):</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">prov:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/prov#&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1682,7 +1682,7 @@
     <span class="nn">prov</span><span class="p">:</span><span class="nt">wasDerivedFrom</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7241-ac66-b7831d1b3624/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Opmerking</strong>: De ontologie kent naast <code>Emissie</code> en <code>Onttrekking</code> ook <code>riepr:Verbruik</code> (verbruik van stoffen), met exact hetzelfde patroon. Een klasse <code>Uitwisseling</code> is <strong>niet</strong> gemodelleerd, hoewel <code>DATAPLATFORM.md</code> in de applicatiedocumentatie er wel naar verwijst — dat is een openstaand punt. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie <a href="../basisaanname/#5-disjoint-classes">Basisaannames §5</a>); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.</p>
+<p><strong>Opmerking</strong>: De ontologie kent naast <code>Emissie</code> en <code>Onttrekking</code> ook <code>riepr:Verbruik</code> (verbruik van stoffen), met exact hetzelfde patroon. Een klasse <code>Uitwisseling</code> is <strong>niet</strong> gemodelleerd, hoewel <code>DATAPLATFORM.md</code> in de applicatiedocumentatie er wel naar verwijst — dat is een openstaand punt. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie <a href="../basisaanname/#5-disjuncte-klassen">Basisaannames §5</a>); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.</p>
 </blockquote>
 <h3 id="relatie-tussen-punt-en-gebeurtenis">Relatie tussen punt en gebeurtenis</h3>
 <p>Een <strong>emissiepunt</strong> (het fysieke systeem) is niet hetzelfde als een <strong>emissie</strong> (de gebeurtenis). De keten loopt via het proces:</p>
@@ -1781,7 +1781,7 @@
 </tbody>
 </table>
 <h3 id="sosamadebysensor"><code>sosa:madeBySensor</code></h3>
-<p><code>madeBySensor</code> is een standaard SOSA-property (<a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">SOSAmadeBySensor</a>): "het sensorapparaat dat de observatie heeft gemaakt". In de 2017 REC is de range <code>sosa:Sensor</code>; in het RIE-IEPR-model draagt het meetpunt die rol, en is het model daar <code>ssn:System</code>. De range is daarom in de ontologie <code>ssn:System</code>.</p>
+<p><code>madeBySensor</code> is een standaard SOSA-property (<a href="https://www.w3.org/TR/vocab-ssn/#SOSAmadeBySensor">SOSAmadeBySensor</a>): "het sensorapparaat dat de observatie heeft gemaakt". De SOSA/SSN-aanbeveling uit 2017 geeft die property <code>sosa:Sensor</code> als range. In RIE-IEPR wordt die rol vervuld door het meetpunt, dat als <code>ssn:System</code> gemodelleerd is; de ontologie verruimt de range daarom tot <code>ssn:System</code>.</p>
 <h3 id="uri-patroon">URI-patroon</h3>
 <p>De observatie-URI draagt naast de identifier één tijdsegment: <code>{uuid}/{created}</code>. Er is <strong>geen</strong> <code>issued</code>-segment en <strong>geen</strong> <code>dct:isVersionOf</code>: een observatie wordt niet geversioneerd. De <code>created</code>-timestamp maakt de URI uniek per registratie; de geldigheid zit in de gekoppelde structurele entiteiten.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">sosa:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/sosa/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1819,7 +1819,7 @@
 <li><code>unit:LITER-PER-SEC</code> liter per seconde</li>
 <li><code>unit:M</code> meter</li>
 <li><code>unit:PERCENT</code> percentage</li>
-<li>etc.</li>
+<li>…</li>
 </ul>
 <h2 id="5-geobserveerde-eigenschappen-observedproperty">5. Geobserveerde eigenschappen (observedProperty)</h2>
 <p>De <code>sosa:observedProperty</code> geeft aan <strong>wat</strong> er werd gemeten. In het RIE-IEPR-model zijn dit concepten uit de codelijsten: chemische stoffen worden geïdentificeerd via hun InChIKey onder <code>…/id/concept/chemische_stof/</code>, andere gemeten grootheden komen uit de operationele codelijsten. Er is géén aparte <code>observed-property</code>-codelijst.</p>
@@ -1830,7 +1830,7 @@
 <span class="nv">&lt;.../observatie/...&gt;</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">observedProperty</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/operationeel-lucht/debiet&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="6-procedures-meetproces-en-bepalingsmethode">6. Procedures: meetproces en bepalingsmethode</h2>
-<p>Het model kent twee verschillende vormen van "procedure", die niet verward moeten worden:</p>
+<p>Het model kent twee verschillende vormen van "procedure", die niet met elkaar verward mogen worden:</p>
 <ol>
 <li>
 <p><strong>Het meetproces</strong> — een <code>riepr:Proces</code> zoals elk ander proces in het plan. Het heeft <code>dct:type</code> = <a href="https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv"><code>procedure-type/meting</code></a> (dezelfde codelijst als emissie, onttrekking, verwerking, uitwissel) en <strong>implementeert per OWL-axioma een <code>riepr:Meetpunt</code></strong>:</p>
@@ -1992,10 +1992,10 @@
 <h2 id="referenties">Referenties</h2>
 <ul>
 <li><a href="../endtoend/">End-to-end voorbeeld</a> — de volledige keten van exploitant tot gemeten waarde</li>
-<li><a href="../basisaanname/">Basisaannames</a> — Feature of Interest, SOSA/SSN patroon</li>
-<li><a href="../systemen/">Installaties en emissiepunten</a> — fysieke systemen</li>
+<li><a href="../basisaanname/">Basisaannames</a> — feature of interest en het SOSA/SSN-patroon</li>
+<li><a href="../systemen/">Systemen</a> — de fysieke systemen</li>
 <li><a href="../gebruiksscenario/">Gebruiksscenario's</a> — SPARQL-query's voor observaties</li>
-<li><strong>Codelijsten</strong>: De <code>observedProperty</code>-waarden, procedure-types en bepalingsmethodes verwijzen naar SKOS-concepten uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a>.</li>
+<li><strong>Codelijsten</strong>: de <code>observedProperty</code>-waarden, proceduretypes en bepalingsmethodes verwijzen naar SKOS-concepten uit <a href="https://github.com/milieuinfo/codelijst-rie-iepr/">milieuinfo/codelijst-rie-iepr</a>.</li>
 </ul>
 
 

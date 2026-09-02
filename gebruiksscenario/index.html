@@ -1494,12 +1494,12 @@
 <p class="admonition-title">Beide stromen</p>
 <p>Deze pagina behandelt structurele <strong>en</strong> operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie <a href="../datamodel/">Twee stromen</a> voor de grens.</p>
 </div>
-<p>Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Elk scenario is gemarkeerd met de stroom waartoe het behoort (zie <a href="../datamodel/">Twee stromen</a>): scenario's 1, 2, 4, 5 en 6 zijn <strong>structureel</strong>, scenario's 3 en 7 <strong>operationeel</strong>. De structurele voorbeelden komen uit het datavoorbeeld <a href="../datavoorbeelden/agc-glass/">AGC Glass Europe</a>; de operationele voorbeelden (observaties, resultaten) zijn synthetisch, omdat de operationele stroom nog niet gemigreerd is.</p>
+<p>Deze pagina beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Elk scenario is gemarkeerd met de stroom waartoe het behoort (zie <a href="../datamodel/">Twee stromen</a>): scenario's 1, 2, 4, 5 en 6 zijn <strong>structureel</strong>, scenario's 3 en 7 <strong>operationeel</strong>. De structurele voorbeelden komen uit het datavoorbeeld <a href="../datavoorbeelden/agc-glass/">AGC Glass Europe</a>; de operationele voorbeelden (observaties, resultaten) zijn synthetisch, omdat de operationele stroom nog niet gemigreerd is.</p>
 <h2 id="scenario-1-een-exploitant-identificeren-en-contacteren">Scenario 1: Een exploitant identificeren en contacteren</h2>
 <blockquote>
-<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactpersonen.</p>
+<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: alle informatie vinden over een specifieke exploitant, inclusief contactpersonen.</p>
 </blockquote>
-<p>Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de <code>oa:Annotation</code>-subklasse <code>riepr:Contactpersoon</code> en verwijzen naar de exploitatie (niet direct naar de exploitant). Het <code>dct:type</code> verwijst naar het concept <code>:milieucoordinator</code> of <code>:contactpersoon</code> en bepaalt wat de persoon is. Er is <strong>geen versionering</strong>: de URI is een vaste identity-URI op basis van een UUID.</p>
+<p>Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de <code>oa:Annotation</code>-subklasse <code>riepr:Contactpersoon</code> en verwijzen naar de exploitatie (niet direct naar de exploitant). Het <code>dct:type</code> verwijst naar het concept <code>:milieucoordinator</code> of <code>:contactpersoon</code> en bepaalt wat de persoon is. Er is <strong>geen versiebeheer</strong>: de URI is een vaste identity-URI op basis van een UUID.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">prov:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/prov#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">   </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1540,7 +1540,7 @@
 </code></pre></div></p>
 <h2 id="scenario-2-alle-installaties-van-een-exploitatie-ophalen">Scenario 2: Alle installaties van een exploitatie ophalen</h2>
 <blockquote>
-<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: Het doel is om te achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.</p>
+<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.</p>
 </blockquote>
 <p>De relatie tussen een exploitatie en haar systemen wordt gelegd via <code>ssn:deployedSystem</code>. Dit omvat installaties, emissiepunten, onttrekkingspunten, meetpunten en filters.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1571,7 +1571,7 @@
 <p>De operationele stroom is nog in analyse; dit scenario kan wijzigen.</p>
 </div>
 <blockquote>
-<p><strong>Operationele stroom.</strong> <strong>Doel</strong>: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.</p>
+<p><strong>Operationele stroom.</strong> <strong>Doel</strong>: alle metingen en observaties vinden die aan een bepaald emissiepunt gekoppeld zijn.</p>
 </blockquote>
 <p>Let op: de <code>sosa:hasFeatureOfInterest</code> van een observatie wijst <strong>altijd</strong> naar een <strong>emissie of onttrekking</strong> (de gebeurtenis), nooit naar het emissiepunt zelf. Het emissiepunt is bereikbaar via de keten emissie → proces → emissiepunt. Elke observatie heeft een resultaat dat de gemeten waarde bevat:</p>
 <div class="mermaid">graph LR
@@ -1640,7 +1640,7 @@
 </code></pre></div></p>
 <h2 id="scenario-4-processen-en-hun-hierarchie-doorzoeken">Scenario 4: Processen en hun hiërarchie doorzoeken</h2>
 <blockquote>
-<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: Het doel is om de proceshiërarchie van een exploitatie in te zien. Welke stappen bij elkaar horen?</p>
+<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: de proceshiërarchie van een exploitatie doorzien — welke stappen horen bij elkaar?</p>
 </blockquote>
 <p>Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoofdactiviteit) wordt geïmplementeerd door de exploitatie. Subprocessen zijn verbonden via <code>pplan:isStepOfPlan</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">pplan:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/net/p-plan#&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1675,7 +1675,7 @@
 </code></pre></div></p>
 <h2 id="scenario-5-systeemeigenschappen-van-een-installatie-lezen">Scenario 5: Systeemeigenschappen van een installatie lezen</h2>
 <blockquote>
-<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: Het doel is om de eigenschappen (parameters) van een specifieke installatie op te vragen.</p>
+<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: de eigenschappen van een specifieke installatie opvragen.</p>
 </blockquote>
 <p>Systeemeigenschappen worden gekoppeld via <code>ssn:hasProperty</code>. <strong>Wat</strong> de eigenschap is, staat in het verplichte <code>dct:type</code> (een concept uit een <code>*_eigenschappen</code>-codelijst); de waarde staat in <code>rdfs:value</code> met een <code>qudt:hasUnit</code>. <code>riepr:parameter</code> (optioneel) wijst naar het concept <em>waarover</em> de eigenschap gaat — bij een verwijderingsrendement is dat de chemische stof — en <code>riepr:datatype</code> (optioneel) naar het datatype-IRI. Beide zijn objectproperties: hun waarde is altijd een IRI.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w"> </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1692,7 +1692,7 @@
 </code></pre></div>
 <h2 id="scenario-6-geografische-data-van-een-exploitatielocatie-opvragen">Scenario 6: Geografische data van een exploitatielocatie opvragen</h2>
 <blockquote>
-<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: Het doel is om de geografische locatie en het adres van een exploitatie te vinden.</p>
+<p><strong>Structurele stroom.</strong> <strong>Doel</strong>: de geografische locatie en het adres van een exploitatie vinden.</p>
 </blockquote>
 <p>Exploitatielocaties gebruiken GeoSPARQL voor geometrie en LOCN voor adressen.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">ogc:</span><span class="w"> </span><span class="nv">&lt;http://www.opengis.net/ont/geosparql#&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1719,7 +1719,7 @@
 <p>De operationele stroom is nog in analyse; dit scenario kan wijzigen.</p>
 </div>
 <blockquote>
-<p><strong>Operationele stroom.</strong> <strong>Doel</strong>: Het doel is om alle observaties van een meetpunt binnen een bepaalde tijdspanne te vinden.</p>
+<p><strong>Operationele stroom.</strong> <strong>Doel</strong>: alle observaties van een meetpunt binnen een bepaalde tijdspanne vinden.</p>
 </blockquote>
 <p>Meetpunten zijn <strong>geen</strong> Feature of Interest (dat is de emissie of onttrekking). Een meetpunt is het <strong>sensorapparaat</strong> van de observatie: de <code>sosa:madeBySensor</code>-relatie koppelt observaties aan het meetpunt.</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Observaties uitgevoerd door meetpunt 019e9271-1465-72f2-8291-c289676c3ded</span>
@@ -1748,10 +1748,10 @@
 </code></pre></div></p>
 <h2 id="referenties">Referenties</h2>
 <ul>
-<li><a href="../basisaanname/">Basisaannames</a> modellen en aannames achter het datamodel</li>
-<li><a href="../exploitant/">Exploitant- en exploitatiemodel</a> organisaties, locaties, activiteiten</li>
-<li><a href="../systemen/">Installaties en emissiepunten</a> systemen en subsystemen</li>
-<li><a href="../observaties/">Observaties en emissies</a> metingen en gebeurtenissen</li>
+<li><a href="../basisaanname/">Basisaannames</a> — modellen en aannames achter het datamodel</li>
+<li><a href="../exploitant/">Exploitant- en exploitatiemodel</a> — organisaties, locaties, activiteiten</li>
+<li><a href="../systemen/">Systemen</a> — systemen en subsystemen</li>
+<li><a href="../observaties/">Observaties en emissies</a> — metingen en gebeurtenissen</li>
 </ul>
 
 

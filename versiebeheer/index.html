@@ -885,7 +885,7 @@
   <a href="#identity-uri-tijdsloos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Identity URI (tijdsloos)
+        Identity-URI (tijdsloos)
       
     </span>
   </a>
@@ -896,7 +896,7 @@
   <a href="#versie-uri-met-tijd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Versie URI (met tijd)
+        Versie-URI (met tijd)
       
     </span>
   </a>
@@ -923,7 +923,7 @@
   <a href="#2-dctisversionof-de-link-tussen-versie-en-identity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. dct:isVersionOf de link tussen versie en identity
+        2. dct:isVersionOf: de link tussen versie en identity
       
     </span>
   </a>
@@ -1591,15 +1591,15 @@
 </div>
 <p>Dit document beschrijft hoe versiebeheer en tijdsrecht werken in het RIE-IEPR-datamodel, vanuit het perspectief van Linked Open Data (LOD).</p>
 <h2 id="1-uri-structuren-voor-versiebeheer">1. URI-structuren voor versiebeheer</h2>
-<p>Het model maakt een fundamenteel onderscheid tussen <strong>identity URIs</strong> (tijdsloos) en <strong>versie URIs</strong> (met tijd).</p>
-<h3 id="identity-uri-tijdsloos">Identity URI (tijdsloos)</h3>
-<p>De identity URI verwijst naar de abstracte, tijdsloze entiteit. Deze verandert nooit:</p>
+<p>Het model maakt een fundamenteel onderscheid tussen <strong>identity-URI's</strong> (tijdsloos) en <strong>versie-URI's</strong> (met tijd).</p>
+<h3 id="identity-uri-tijdsloos">Identity-URI (tijdsloos)</h3>
+<p>De identity-URI verwijst naar de abstracte, tijdsloze entiteit. Deze verandert nooit:</p>
 <div class="highlight"><pre><span></span><code>https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}
 https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}
 </code></pre></div>
-<h3 id="versie-uri-met-tijd">Versie URI (met tijd)</h3>
-<p>Een versie URI bevat twee tijdsegmenten: de geldigheidsdatum (<code>issued</code>) en de aanmaaktimestamp (<code>created</code>):</p>
+<h3 id="versie-uri-met-tijd">Versie-URI (met tijd)</h3>
+<p>Een versie-URI bevat twee tijdsegmenten: de geldigheidsdatum (<code>issued</code>) en de aanmaaktimestamp (<code>created</code>):</p>
 <div class="highlight"><pre><span></span><code>https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}
 https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 </code></pre></div>
@@ -1614,8 +1614,8 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
 <p class="admonition-title">Operationele gegevens worden niet geversioneerd</p>
 <p>Dit hoofdstuk gaat <strong>uitsluitend</strong> over de structurele stroom. Emissies, onttrekkingen, verbruiken, observaties, verzamelingen en resultaten kennen geen <code>dct:issued</code>, geen <code>dct:valid</code> en geen <code>dct:isVersionOf</code>. Hun tijdsaspect zit in de observatie zelf (<code>sosa:resultTime</code>, <code>sosa:phenomenonTime</code>) en in de aangifte waaraan ze hangen. Zie <a href="../observaties/">Observaties en emissies</a> en <a href="../datamodel/">Twee stromen</a>.</p>
 </div>
-<h2 id="2-dctisversionof-de-link-tussen-versie-en-identity">2. <code>dct:isVersionOf</code> de link tussen versie en identity</h2>
-<p>De relatie <code>dct:isVersionOf</code> koppelt een versie aan haar identity URI:</p>
+<h2 id="2-dctisversionof-de-link-tussen-versie-en-identity">2. <code>dct:isVersionOf</code>: de link tussen versie en identity</h2>
+<p>De relatie <code>dct:isVersionOf</code> koppelt een versie aan haar identity-URI:</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
 
 <span class="c"># Versie → identity</span>
@@ -1630,7 +1630,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
 <p>Elke versie heeft een <strong>geldigheidsperiode</strong> en een status:</p>
 <ul>
 <li><code>dct:issued</code> (verplicht): de <strong>start</strong> van de geldigheid.</li>
-<li><code>dct:valid</code> (optioneel): het <strong>einde</strong> van de geldigheid. Ontbreekt het, dan geldt de versie tot op heden (of tot het begin van de volgende versie).</li>
+<li><code>dct:valid</code> (optioneel): het <strong>einde</strong> van de geldigheid. Ontbreekt <code>dct:valid</code>, dan geldt de versie tot op heden, of tot het begin van de volgende versie.</li>
 <li><code>adms:status</code>: de status van de entiteit in die versie.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">  </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1648,7 +1648,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
     <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Note</strong>: het model gebruikt geen <code>prov:wasRevisionOf</code> tussen versies. Versies zijn afzonderlijke URIs die via <code>dct:isVersionOf</code> naar dezelfde identity verwijzen; de volgorde en geldigheid volgt uit <code>dct:issued</code>/<code>dct:valid</code>.</p>
+<p><strong>Let op</strong>: het model gebruikt geen <code>prov:wasRevisionOf</code> tussen versies. Versies zijn afzonderlijke URI's die via <code>dct:isVersionOf</code> naar dezelfde identity verwijzen; de volgorde en de geldigheid volgen uit <code>dct:issued</code> en <code>dct:valid</code>.</p>
 </blockquote>
 <h3 id="beschikbare-statussen">Beschikbare statussen</h3>
 <p>De codelijst <a href="https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/status_type.csv"><code>status_type</code></a> telt zes waarden:</p>
@@ -1761,7 +1761,7 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
 <span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div>
 <h3 id="toestand-op-een-historisch-moment">Toestand op een historisch moment</h3>
-<p>Om de toestand van een installatie op een specifiek datum te vinden (<code>?issued &lt;= moment</code> en <code>dct:valid</code> ontbreekt of ligt na het moment):</p>
+<p>Om de toestand van een installatie op een specifieke datum te vinden (<code>?issued &lt;= moment</code> en <code>dct:valid</code> ontbreekt of ligt na het moment):</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?versie</span> <span class="nv">?label</span> <span class="nv">?issued</span>
 <span class="k">WHERE</span> <span class="p">{</span>
   <span class="nv">?versie</span> <span class="k">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span> <span class="p">;</span>
@@ -1791,8 +1791,8 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
 <h2 id="6-exploitatie-twee-lagen-in-versiebeheer">6. Exploitatie: twee lagen in versiebeheer</h2>
 <p>De exploitatie heeft een specifiek versiebeheerpatroon met <strong>twee lagen</strong>:</p>
 <ol>
-<li><strong>Identity laag</strong> de tijdsloze exploitatie (geen <code>issued</code>, geen <code>created</code>)</li>
-<li><strong>Versie laag</strong> toestanden van de exploitatie (met <code>issued</code> en <code>created</code>)</li>
+<li><strong>Identity-laag</strong> — de tijdsloze exploitatie (geen <code>issued</code>, geen <code>created</code>)</li>
+<li><strong>Versielaag</strong> — de toestanden van de exploitatie (met <code>issued</code> en <code>created</code>)</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="c"># Laag 1: identity (geen tijd)</span>
 <span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span>
@@ -1898,9 +1898,9 @@ https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
     class VersionAttributes attributes</div>
 <h2 id="referenties">Referenties</h2>
 <ul>
-<li><a href="../basisaanname/">Basisaannames</a> URI-patronen, exploitatie twee lagen</li>
-<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> SPARQL-query's voor versiebeheer</li>
-<li><a href="../aangifte/">Aangifte en dossier</a> relatie tussen indienen en versies</li>
+<li><a href="../basisaanname/">Basisaannames</a> — URI-patronen en de twee lagen van een exploitatie</li>
+<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> — SPARQL-query's voor versiebeheer</li>
+<li><a href="../aangifte/">Aangifte en dossier</a> — de relatie tussen indienen en versies</li>
 </ul>
 
 

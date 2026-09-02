@@ -1170,10 +1170,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-hoe-je-pplanisprecededby-leest" class="md-nav__link">
+  <a href="#62-hoe-u-pplanisprecededby-leest" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 Hoe je pplan:isPrecededBy leest
+        6.2 Hoe u pplan:isPrecededBy leest
       
     </span>
   </a>
@@ -1922,7 +1922,7 @@
 <p>De exploitatie zelf komt primair uit het <strong>VIM</strong>; de toestanden (versies) worden in het MJV bijgehouden.</p>
 <hr />
 <h2 id="2-brondata-de-vmm-xml-aangiften">2. Brondata: de VMM XML-aangiften</h2>
-<p>De bron zijn de <strong>vaste gegevens</strong> van de IMJV-aangiften in XML, gesplitst per luik. De XML-schema's (stand 9.0.54.IMJV) staan op:</p>
+<p>De brondata zijn de <strong>vaste gegevens</strong> van de IMJV-aangiften in XML, gesplitst per luik. De XML-schema's (stand 9.0.54.IMJV) staan op:</p>
 <table>
 <thead>
 <tr>
@@ -2189,7 +2189,7 @@
 <li>water: <code>JaarIngebruikname</code> per techniek — bij meerdere technieken het <strong>minimum</strong>, omgezet naar 1 januari van dat jaar;</li>
 <li>
 <p>afgeleide meetpunten: gelijkgezet aan het systeem waaraan ze hangen.
-   Ontbreekt een ondubbelzinnige datum, dan wordt een mockdatum gebruikt en in een commentaar aangeduid.</p>
+   Ontbreekt een ondubbelzinnige datum, dan wordt een mockdatum gebruikt en met een commentaar gemarkeerd.</p>
 </li>
 <li>
 <p><strong>Geometrie.</strong> Coördinaten uit de bron (<code>XCoordinaat</code>/<code>YCoordinaat</code> bij emissiepunten, <code>LambertcoordinaatX</code>/<code>Y</code> bij grondwaterputten) worden <code>ogc:hasGeometry</code> met een <code>ogc:Point</code> in WKT en CRS <code>EPSG:31370</code>. Lozingspunten en filters hebben geen coördinaten in de bron en krijgen dus geen geometrie.</p>
@@ -2356,7 +2356,7 @@
 <li>Het proces is een stap in het plan van de exploitatie: <code>pplan:isStepOfPlan</code> naar het proces van de GPBV-installatie, of — als er geen GPBV-installatie is — naar het hoofdproces van de exploitatie.</li>
 <li>De scheiding tussen systeem en proces zorgt ervoor dat wijzigingen aan verbindingen (bv. een installatie die naar een andere zuiveringsinstallatie gaat) geen wijziging aan het systeem zelf vereisen.</li>
 </ul>
-<h3 id="62-hoe-je-pplanisprecededby-leest">6.2 Hoe je <code>pplan:isPrecededBy</code> leest</h3>
+<h3 id="62-hoe-u-pplanisprecededby-leest">6.2 Hoe u <code>pplan:isPrecededBy</code> leest</h3>
 <p>De volgorde van stappen wordt vastgelegd met <code>pplan:isPrecededBy</code>. De relatie wijst <strong>tegen de stroomrichting in</strong>:</p>
 <div class="highlight"><pre><span></span><code>X pplan:isPrecededBy Y     betekent     Y komt vóór X in de keten
 </code></pre></div>
@@ -2365,7 +2365,7 @@
 <p>Bij een lozing verlaat het water de exploitatie. De controle gebeurt <strong>vóór</strong> het punt van lozing:</p>
 <div class="highlight"><pre><span></span><code>meting (controleinrichting)  →  [transport]  →  emissie (lozingspunt)
 </code></pre></div>
-<p>In RDF wordt dat het emissieproces dat voorafgegaan wordt door het meetproces:</p>
+<p>In RDF wordt dat: het emissieproces wordt voorafgegaan door het meetproces.</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">   </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">pplan:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/net/p-plan#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w">   </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -2403,7 +2403,7 @@
 </code></pre></div>
 <p>Voor een grondwaterpompput geldt hetzelfde patroon, met een <code>meetpunt_type:debietmeter</code> in plaats van een controleinrichting.</p>
 <h3 id="65-transportprocessen">6.5 Transportprocessen</h3>
-<p>Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt er een proces van type <code>procedure_type:transport</code> tussen geschoven. Het transportproces neemt de <code>pplan:isPrecededBy</code> van het volgende proces over en wijst zelf naar het vorige:</p>
+<p>Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt er een proces van type <code>procedure_type:transport</code> tussengeschoven. Het transportproces neemt de <code>pplan:isPrecededBy</code> van het volgende proces over en wijst zelf naar het vorige:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;.../proces/TRANSPORT_LP01/...&gt;</span> <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/...&gt;</span> <span class="p">;</span>
@@ -2412,7 +2412,7 @@
 <span class="nv">&lt;.../proces/EMISSIE_LP01/...&gt;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/TRANSPORT_LP01/...&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<p>Zo blijft de massabalans traceerbaar over processen heen. Zie <a href="../codelijsten/#procedure-types-en-transportprocessen">Codelijsten: procedure types en transportprocessen</a>.</p>
+<p>Zo blijft de massabalans traceerbaar over processen heen. Zie <a href="../codelijsten/#proceduretypes-en-transportprocessen">Codelijsten: proceduretypes en transportprocessen</a>.</p>
 <h3 id="66-overzicht">6.6 Overzicht</h3>
 <div class="mermaid">flowchart LR
   subgraph lozing ["Lozingspunt · MeetputType = lozend"]
@@ -2429,7 +2429,7 @@
   end</div>
 <p>De pijlen tonen de <strong>stroomrichting</strong>. In RDF staat telkens de omgekeerde <code>pplan:isPrecededBy</code>-relatie (§6.2).</p>
 <h3 id="67-rubrieken-op-processen">6.7 Rubrieken op processen</h3>
-<p>Rubrieken hangen op de <strong>processen</strong>, niet op de systemen: ze hangen af van de installatie <em>voor een bepaald doel</em> (activiteit), en eenzelfde installatie kan onder verschillende rubrieken vallen naargelang de activiteit. Een rubriek is een anoniem <code>riepr:Rubriek</code>-object met <code>skos:notation</code> (bv. <code>20.3.4.1°b)</code>), <code>skos:definition</code>, <code>dct:type</code> uit <code>rubriek_type</code> (<code>vlarem</code>) en <code>prov:hadPrimarySource</code> (VITO). Bij de migratie draagt het hoofdproces de rubrieken.</p>
+<p>Rubrieken hangen aan de <strong>processen</strong>, niet aan de systemen: ze zijn afhankelijk van de installatie <em>voor een bepaald doel</em> (activiteit), en eenzelfde installatie kan onder verschillende rubrieken vallen naargelang de activiteit. Een rubriek is een anoniem <code>riepr:Rubriek</code>-object met <code>skos:notation</code> (bv. <code>20.3.4.1°b)</code>), <code>skos:definition</code>, <code>dct:type</code> uit <code>rubriek_type</code> (<code>vlarem</code>) en <code>prov:hadPrimarySource</code> (VITO). Bij de migratie draagt het hoofdproces de rubrieken.</p>
 <hr />
 <h2 id="7-codelijsten">7. Codelijsten</h2>
 <p>VMM- en VITO-codes uit de bron worden tijdens de migratie vertaald naar concepten uit de <a href="../codelijsten/">codelijsten</a> (gepubliceerd op <code>https://data.omgeving.vlaanderen.be/id/concept/riepr/</code>, beheerd in <a href="https://github.com/milieuinfo/codelijst-rie-iepr">milieuinfo/codelijst-rie-iepr</a>):</p>

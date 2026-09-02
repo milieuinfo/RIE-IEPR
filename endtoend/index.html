@@ -830,10 +830,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#al-de-keten-in-een-query" class="md-nav__link">
+  <a href="#de-volledige-keten-in-een-query" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Al de keten in één query
+        De volledige keten in één query
       
     </span>
   </a>
@@ -1603,13 +1603,13 @@
 <p>De secties 1 tot en met 4 beschrijven uitsluitend structurele entiteiten. Dit is de stroom die in de applicatie wordt ingegeven en die uit CBB en de VMM-aangiften gemigreerd wordt.</p>
 </div>
 <h3 id="1-exploitant-en-exploitatie">1. Exploitant en exploitatie</h3>
-<p>De <strong>exploitant</strong> is de rechtsvorm (VKBO-onderneming). Hij heeft een twee-segment URI en wordt niet geversioneerd.</p>
+<p>De <strong>exploitant</strong> is de rechtspersoon (VKBO-onderneming). De URI draagt geen tijdsegmenten en de exploitant wordt niet geversioneerd.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitant</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"AGC Glass Europe NV"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">prov</span><span class="p">:</span><span class="nt">hadPrimarySource</span> <span class="nv">&lt;https://data.vlaanderen.be/id/onderneming/0413638187&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<p>De <strong>exploitatie</strong> is de uitrol van middelen door die exploitant op een locatie. Ze is geversioneerd (drie segmenten: <code>uuid/issued/created</code>) en draagt het procesplan:</p>
+<p>De <strong>exploitatie</strong> is de uitrol van middelen door die exploitant op een locatie. Ze is geversioneerd (<code>uuid/issued/created</code>) en draagt het procesplan:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatie</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
@@ -1623,7 +1623,7 @@
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">deployedOnPlatform</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">implements</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<p>Een <strong>contactpersoon</strong> is een <code>oa:Annotation</code> op de exploitatie (twee-segment URI, geen versiebeheer):</p>
+<p>Een <strong>contactpersoon</strong> is een <code>oa:Annotation</code> op de exploitatie (geen versiebeheer):</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/019ed475-eb52-76ad-9c36-96ef45d889d0&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Contactpersoon</span> <span class="p">;</span>
     <span class="nn">oa</span><span class="p">:</span><span class="nt">hasTarget</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
@@ -1695,7 +1695,7 @@
     <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
 </code></pre></div>
 <blockquote>
-<p><strong>P-Plan</strong> (<a href="https://www.opmw.org/model/p-plan/">www.opmw.org/model/p-plan</a>) is een community-ontologie voor processen (een uitbreiding op PROV-O, geen W3C-aanbeveling): een <code>pplan:Plan</code> is een geordende reeks <code>pplan:Step</code>'s. RIE-IEPR maakt er gebruik van via <code>pplan:isStepOfPlan</code> (hierarchical) en <code>pplan:isPrecededBy</code> (volgorde). Het hoofdproces is tegelijk <code>pplan:Plan</code> en <code>pplan:Step</code>; elke stap is een <code>pplan:Step</code>.</p>
+<p><strong>P-Plan</strong> (<a href="https://www.opmw.org/model/p-plan/">www.opmw.org/model/p-plan</a>) is een community-ontologie voor processen (een uitbreiding op PROV-O, geen W3C-aanbeveling): een <code>pplan:Plan</code> is een geordende reeks stappen (<code>pplan:Step</code>). RIE-IEPR gebruikt <code>pplan:isStepOfPlan</code> voor de hiërarchie en <code>pplan:isPrecededBy</code> voor de volgorde. Het hoofdproces is tegelijk <code>pplan:Plan</code> en <code>pplan:Step</code>; elke stap is een <code>pplan:Step</code>.</p>
 </blockquote>
 <h3 id="4-systemen-en-hun-eigenschappen">4. Systemen en hun eigenschappen</h3>
 <p>Systemen (installaties, emissie- en meetpunten) worden <strong>gehost</strong> op de exploitatielocatie via <code>sosa:isHostedBy</code> en kunnen <strong>eigenschappen</strong> hebben via <code>ssn:hasProperty</code>:</p>
@@ -1727,7 +1727,7 @@
 <p>De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.</p>
 </div>
 <h3 id="5-de-gebeurtenis-emissie">5. De gebeurtenis: emissie</h3>
-<p>Een <strong>emissie</strong> is de gebeurtenis die uit het emissieproces is <em>afgeleid</em> (<code>prov:wasDerivedFrom</code>, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:</p>
+<p>Een <strong>emissie</strong> is de gebeurtenis die uit het emissieproces is <em>afgeleid</em> (<code>prov:wasDerivedFrom</code>, verplicht, minstens één). De emissie zelf is tijdsloos (een URI zonder tijdsegmenten); de tijd zit in de observaties:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissie</span><span class="p">,</span> <span class="nn">sosa</span><span class="p">:</span><span class="nt">FeatureOfInterest</span><span class="p">,</span> <span class="nn">prov</span><span class="p">:</span><span class="nt">Entity</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Uitstoot schoorsteen 1 (GL012345)"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
@@ -1735,7 +1735,7 @@
 </code></pre></div>
 <p>Onttrekkingen werken analoog: <code>riepr:Onttrekking</code> is <code>prov:wasDerivedFrom</code> een onttrekkingsproces (<code>dct:type</code> = <code>procedure-type/onttrekking</code>, <code>ssn:implementedBy</code> een <code>riepr:Onttrekkingspunt</code>).</p>
 <h3 id="6-de-meting-observatieverzameling-observatie-resultaat">6. De meting: observatieverzameling, observatie, resultaat</h3>
-<p>Eén meting of bemonstering levert doorgaans <strong>meerdere individuele observaties</strong> op (bijv. één per gemeten stof). Die delen gemeenschappelijke context (zelfde emissie, meetpunt, moment). Voor die gedeelde context is er de <strong>observatieverzameling</strong> (<code>sosa-2023:ObservationCollection</code>):</p>
+<p>Eén meting of bemonstering levert doorgaans <strong>meerdere individuele observaties</strong> op (bijv. één per gemeten stof). Die delen een gemeenschappelijke context: dezelfde emissie, hetzelfde meetpunt, hetzelfde moment. Voor die gedeelde context is er de <strong>observatieverzameling</strong> (<code>sosa-2023:ObservationCollection</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="c"># De verzameling: gedeelde context van de meting</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">ObservatieVerzameling</span> <span class="p">;</span>
@@ -1764,7 +1764,7 @@
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">hasResult</span> <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d&gt;</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">created</span> <span class="s">"2026-01-01T10:00:00Z"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">dateTime</span> <span class="p">.</span>
 
-<span class="c"># Het resultaat heeft een eigen URI (twee segmenten)</span>
+<span class="c"># Het resultaat heeft een eigen URI</span>
 <span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Resultaat</span> <span class="p">;</span>
     <span class="nn">qudt</span><span class="p">:</span><span class="nt">numericValue</span> <span class="s">"45.2"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
@@ -1777,7 +1777,7 @@
 </code></pre></div>
 <p>Let op: de observatie wijst via <code>sosa:hasFeatureOfInterest</code> rechtstreeks naar de <strong>emissie</strong> (de gebeurtenis), niet naar het emissiepunt of het meetpunt. Het meetpunt verschijnt via <code>sosa:madeBySensor</code>.</p>
 <h3 id="7-de-aangifte-als-lijm">7. De aangifte als lijm</h3>
-<p>Een <strong>aangifte</strong> (<code>dossier:Stuk</code>) is het administratieve document. Via de objectproperty <code>riepr:aangifte</code> kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is <strong>optioneel</strong>: data kan ook zonder aangifte bestaan (bijv. in concept).</p>
+<p>Een <strong>aangifte</strong> (<code>dossier:Stuk</code>) is het administratieve document. Via de objectproperty <code>riepr:aangifte</code> kunnen entiteiten uit beide stromen (exploitatie, exploitatielocatie, systemen, processen, observaties, observatieverzamelingen) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is <strong>optioneel</strong>: data kan ook zonder aangifte bestaan (bijv. in concept).</p>
 <div class="highlight"><pre><span></span><code><span class="nv">&lt;https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Aangifte</span><span class="p">,</span> <span class="nn">dossier</span><span class="p">:</span><span class="nt">Stuk</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Bijzondere toelating - wijziging GL012345"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
@@ -1936,7 +1936,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="al-de-keten-in-een-query">Al de keten in één query</h2>
+<h2 id="de-volledige-keten-in-een-query">De volledige keten in één query</h2>
 <div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">sosa</span><span class="p">:</span>    <span class="nl">&lt;http://www.w3.org/ns/sosa/&gt;</span>
 <span class="k">PREFIX</span> <span class="nn">ssn</span><span class="p">:</span>     <span class="nl">&lt;http://www.w3.org/ns/ssn/&gt;</span>
 <span class="k">PREFIX</span> <span class="nn">prov</span><span class="p">:</span>    <span class="nl">&lt;http://www.w3.org/ns/prov#&gt;</span>

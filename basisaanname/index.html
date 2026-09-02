@@ -709,10 +709,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#identity-uri-vs-versie-uri" class="md-nav__link">
+  <a href="#identity-uri-versus-versie-uri" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Identity URI vs. versie URI
+        Identity-URI versus versie-URI
       
     </span>
   </a>
@@ -758,10 +758,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-disjoint-classes" class="md-nav__link">
+  <a href="#5-disjuncte-klassen" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Disjoint classes
+        5. Disjuncte klassen
       
     </span>
   </a>
@@ -828,7 +828,7 @@
   <a href="#schemas-bronnen" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Schemas (bronnen)
+        Schema's (bronnen)
       
     </span>
   </a>
@@ -1655,8 +1655,8 @@
 </ul>
 <p>In RIE-IEPR is elk <code>riepr:Proces</code> tegelijk een <code>pplan:Plan</code>, een <code>pplan:Step</code> en een <code>sosa:Procedure</code>. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (<code>pplan:isStepOfPlan</code>) en kunnen met <code>pplan:isPrecededBy</code> onderling geordend worden.</p>
 <h2 id="2-uri-ontwerp-en-versiebeheer">2. URI-ontwerp en versiebeheer</h2>
-<p>Het model maakt onderscheid tussen <strong>identity URIs</strong> (tijdsloos) en <strong>versie-URIs</strong> (met tijd).</p>
-<h3 id="identity-uri-vs-versie-uri">Identity URI vs. versie URI</h3>
+<p>Het model maakt onderscheid tussen <strong>identity-URI's</strong> (tijdsloos) en <strong>versie-URI's</strong> (met tijd).</p>
+<h3 id="identity-uri-versus-versie-uri">Identity-URI versus versie-URI</h3>
 <table>
 <thead>
 <tr>
@@ -1717,8 +1717,8 @@
 <h2 id="3-exploitatie-twee-lagen">3. Exploitatie: twee lagen</h2>
 <p>Een exploitatie bestaat uit <strong>twee lagen</strong>:</p>
 <ol>
-<li><strong>De tijdsloze exploitatie</strong> (identity URI) - representeert het abstracte concept van de exploitatie</li>
-<li><strong>De versies/toestanden</strong> (versie URI) - beschrijven een specifieke toestand met geldigheid, status en inhoud</li>
+<li><strong>De tijdsloze exploitatie</strong> (identity-URI) — het abstracte concept van de exploitatie</li>
+<li><strong>De versies of toestanden</strong> (versie-URI) — elk een specifieke toestand met geldigheid, status en inhoud</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="c"># Laag 1: tijdsloze exploitatie (identity)</span>
 <span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span>
@@ -1733,7 +1733,7 @@
     <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="4-proces-procedure-koppels-owl-axiomas">4. Proces-procedure koppels (OWL-axioma's)</h2>
-<p>Het model bevat <strong>OWL-axioma's</strong> die proces types dwingen aan bepaalde systemen te koppelen. De proces types komen uit de codelijst <strong><code>procedure_type</code></strong> (<a href="https://github.com/milieuinfo/codelijst-rie-iepr/">beheerd in milieuinfo/codelijst-rie-iepr</a>):</p>
+<p>Het model bevat <strong>OWL-axioma's</strong> die een proces van een bepaald type verplichten om aan een bepaald systeem gekoppeld te zijn. De procestypes komen uit de codelijst <strong><code>procedure_type</code></strong> (<a href="https://github.com/milieuinfo/codelijst-rie-iepr/">beheerd in milieuinfo/codelijst-rie-iepr</a>):</p>
 <table>
 <thead>
 <tr>
@@ -1785,10 +1785,10 @@
 <p class="admonition-title">Afwijking in de ontologie</p>
 <p>Het axioma voor het meetproces verwijst in <code>riepr.ttl</code> naar <code>…/procedure-type/meet</code>, terwijl de codelijst <code>procedure_type</code> en het datavoorbeeld <code>…/procedure-type/meting</code> gebruiken. De <strong>codelijst is leidend</strong>; het axioma moet nog bijgewerkt worden.</p>
 </div>
-<p>De volledige URI's van de procedure types verwijzen naar <a href="https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie">data.omgeving.vlaanderen.be</a>, waar ze als SKOS concepten gepubliceerd zijn.</p>
-<h2 id="5-disjoint-classes">5. Disjoint classes</h2>
+<p>De volledige URI's van de procedure types verwijzen naar <a href="https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie">data.omgeving.vlaanderen.be</a>, waar ze als SKOS-concepten gepubliceerd zijn.</p>
+<h2 id="5-disjuncte-klassen">5. Disjuncte klassen</h2>
 <p>Een <strong>meetpunt</strong> is per definitie geen emissiepunt of onttrekkingspunt: <code>riepr:Meetpunt</code> staat <code>owl:disjointWith</code> <code>riepr:Emissiepunt</code> én <code>riepr:Onttrekkingspunt</code>.</p>
-<p>Een <strong>uitwisselpunt</strong> daarentegen is wél zowel emissiepunt als onttrekkingspunt: <code>riepr:Uitwisselpunt</code> is gedefinieerd als de equivalentie van de intersectie <code>Emissiepunt ∩ Onttrekkingspunt</code> — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.</p>
+<p>Een <strong>uitwisselpunt</strong> daarentegen is wél zowel emissiepunt als onttrekkingspunt: <code>riepr:Uitwisselpunt</code> is gedefinieerd als equivalent met de doorsnede <code>Emissiepunt ∩ Onttrekkingspunt</code> — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.</p>
 <h2 id="6-de-grens-met-de-operationele-stroom">6. De grens met de operationele stroom</h2>
 <p>Het procesplan uit §1 is het <strong>einde</strong> van de structurele stroom. Alles wat gemeten wordt, hangt eraan via precies drie predicaten:</p>
 <table>
@@ -1896,9 +1896,9 @@
 <li>De <strong>URI</strong> (UUID-gebaseerd) is de eigen identity van RIE-IEPR (zie <a href="#2-uri-ontwerp-en-versiebeheer">URI-ontwerp</a>).</li>
 <li>Een <strong>externe identificator</strong> (<code>adms:Identifier</code>) bewaart een code die afkomstig is uit een <strong>bovenliggend of voorgaand bron-systeem</strong>.</li>
 </ul>
-<p><code>adms:identifier</code> is dus geen duplicatie van de URI: het is de bewaargebleven <strong>bron-identificatie</strong>. Zo blijft data:</p>
+<p><code>adms:identifier</code> is dus geen duplicaat van de URI: het is de bewaarde <strong>bron-identificatie</strong>. Zo blijft de data:</p>
 <ul>
-<li>traceerbaar terug naar de bovengelegde systemen (migratie VMM → RIE-IEPR),</li>
+<li>traceerbaar naar de bovenliggende systemen (migratie VMM → RIE-IEPR),</li>
 <li>kruisreferentieerbaar met andere Vlaamse datasets (bijv. INSPIRE/DOMG),</li>
 <li>herkenbaar in herkomst, naast <code>prov:hadPrimarySource</code> (zie <a href="#8-provenance-en-herkomst">Provenance</a>).</li>
 </ul>
@@ -1926,7 +1926,7 @@
 </tbody>
 </table>
 <p><code>adms:identifier</code> is <strong>optioneel</strong> (<code>minCardinality 0</code>) en <strong>meervoudig</strong>: een entiteit kan meerdere externe identificatoren tegelijk hebben.</p>
-<h3 id="schemas-bronnen">Schemas (bronnen)</h3>
+<h3 id="schemas-bronnen">Schema's (bronnen)</h3>
 <table>
 <thead>
 <tr>
@@ -1955,7 +1955,7 @@
 <p><strong>Let op:</strong> In het datavoorbeeld krijgen <code>skos:notation</code>-waarden een datatype uit de dummy-namespace <code>vmm:</code> (bijv. <code>^^vmm:cbbNummer</code>) óf <code>riepr:inspireId</code>. Dit datatype is <strong>illustratief</strong>: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace <code>vmm:</code> (<code>&lt;http://vmm.be#&gt;</code>) dient enkel als placeholder in het voorbeeld.</p>
 </blockquote>
 <h3 id="klassen-die-admsidentifier-ondersteunen">Klassen die <code>adms:identifier</code> ondersteunen</h3>
-<p>In de ontologie is <code>adms:identifier</code> (0..n) toegestaan op volgende klassen (in de SHACL-shapes verschijnt dit als <code>sh:property</code> met <code>sh:class adms:Identifier</code>, <code>sh:minCount 0</code>):</p>
+<p>In de ontologie is <code>adms:identifier</code> (0..n) toegestaan op de volgende klassen (in de SHACL-shapes verschijnt dit als <code>sh:property</code> met <code>sh:class adms:Identifier</code>, <code>sh:minCount 0</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2037,7 +2037,7 @@
         <span class="nn">skos</span><span class="p">:</span><span class="nt">notation</span> <span class="s">"2019-043747"</span><span class="p">^^</span><span class="nn">vmm</span><span class="p">:</span><span class="nt">putID</span> <span class="p">]</span> <span class="p">.</span>
 </code></pre></div>
 <h3 id="afname-sparql">Afname (SPARQL)</h3>
-<p>Externe identificatoren laten zich filteren op schema-agentschap en notatie. Hierbij let je op de anonieme nodes (<code>adms:Identifier</code>):</p>
+<p>Externe identificatoren laten zich filteren op schema-agentschap en notatie. Let daarbij op de anonieme nodes (<code>adms:Identifier</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="k">PREFIX</span> <span class="nn">adms</span><span class="p">:</span>  <span class="nl">&lt;http://www.w3.org/ns/adms#&gt;</span>
 <span class="k">PREFIX</span> <span class="nn">skos</span><span class="p">:</span>  <span class="nl">&lt;http://www.w3.org/2004/02/skos/core#&gt;</span>
 <span class="k">PREFIX</span> <span class="nn">riepr</span><span class="p">:</span> <span class="nl">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span>
@@ -2058,9 +2058,9 @@
 <p>Zie ook <a href="../gebruiksscenario/">Gebruiksscenario's</a> voor bredere afname-voorbeelden.</p>
 <h2 id="referenties">Referenties</h2>
 <ul>
-<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> - concrete voorbeelden van data-afname</li>
-<li><a href="../exploitant/">Exploitant- en exploitatiemodel</a> - organisaties, locaties, activiteiten</li>
-<li><a href="../versiebeheer/">Versiebeheer en tijdsrecht</a> - versies, geldigheid, historische query's</li>
+<li><a href="../gebruiksscenario/">Gebruiksscenario's</a> — concrete voorbeelden van data-afname</li>
+<li><a href="../exploitant/">Exploitant- en exploitatiemodel</a> — organisaties, locaties, activiteiten</li>
+<li><a href="../versiebeheer/">Versiebeheer en tijdsrecht</a> — versies, geldigheid, historische query's</li>
 </ul>
 
 
