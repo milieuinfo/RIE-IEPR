@@ -18,9 +18,9 @@ flowchart LR
         L[Exploitatielocatie] -->|prov:wasAttributedTo| E[Exploitant]
         X[Exploitatie] -->|ssn:deployedOnPlatform| L
         X -->|ssn:implements| HP[Hoofdproces]
-        HP -->|pplan:isStepOfPlan| P1[Proces verwerking]
-        HP -->|pplan:isStepOfPlan| P2[Proces emissie]
-        HP -->|pplan:isStepOfPlan| P3[Proces meting]
+        P1[Proces verwerking] -->|pplan:isStepOfPlan| HP
+        P2[Proces emissie] -->|pplan:isStepOfPlan| HP
+        P3[Proces meting] -->|pplan:isStepOfPlan| HP
         P1 -->|ssn:implementedBy| I[Installatie]
         P2 -->|ssn:implementedBy| EP[Emissiepunt]
         P3 -->|ssn:implementedBy| MP[Meetpunt]
