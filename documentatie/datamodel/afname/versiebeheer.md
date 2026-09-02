@@ -1,5 +1,7 @@
 # Versiebeheer en tijdsrecht
 
+!!! info "Structurele stroom"
+    Deze pagina beschrijft **structurele gegevens**: de organisatie en infrastructuur van de exploitatie. Metingen, emissies en observaties komen hier niet aan bod — die staan in [Observaties en emissies](./observaties.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
 
 Dit document beschrijft hoe versiebeheer en tijdsrecht werken in het RIE-IEPR-datamodel, vanuit het perspectief van Linked Open Data (LOD).
 
@@ -26,14 +28,20 @@ https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}
 https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}
 ```
 
-### Feature of Interest (geen versie)
+### Structurele entiteiten zonder versiebeheer
 
-Emissies en onttrekkingen hebben een **twee-segment URI** zonder tijd. Ze zijn geen versioneerbare entiteiten:
+Niet elke structurele entiteit is versioneerbaar. Exploitant, contactpersoon, systeemeigenschap, rubriek en procesvariabele dragen enkel een identifier:
 
 ```
-https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}
-https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}
+https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{uuid}
+https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}
+https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}
 ```
+
+Wijzigingen overschrijven deze resources op dezelfde URI; er is geen historiek.
+
+!!! info "Operationele gegevens worden niet geversioneerd"
+    Dit hoofdstuk gaat **uitsluitend** over de structurele stroom. Emissies, onttrekkingen, verbruiken, observaties, verzamelingen en resultaten kennen geen `dct:issued`, geen `dct:valid` en geen `dct:isVersionOf`. Hun tijdsaspect zit in de observatie zelf (`sosa:resultTime`, `sosa:phenomenonTime`) en in de aangifte waaraan ze hangen. Zie [Observaties en emissies](./observaties.md) en [Twee stromen](./datamodel.md).
 
 ## 2. `dct:isVersionOf` de link tussen versie en identity
 
@@ -80,33 +88,47 @@ Elke versie heeft een **geldigheidsperiode** en een status:
 
 ### Beschikbare statussen
 
-| Status | Beschrijving |
-|---|---|
-| `in_dienst` | De entiteit is actief en in gebruik |
-| `ontmanteld` | De entiteit is buiten gebruik gesteld |
+De codelijst [`status_type`](https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/status_type.csv) telt zes waarden:
+
+| Status | Beschrijving | ADMS-equivalent |
+|---|---|---|
+| `voorgesteld` | De entiteit is voorgesteld, nog niet bevestigd | `adms/status/UnderDevelopment` |
+| `in_dienst` | De entiteit is actief en in gebruik | `adms/status/Completed` |
+| `tijdelijk_uit_dienst` | De entiteit is tijdelijk buiten gebruik | `adms/status/Deprecated` |
+| `definitief_uit_dienst` | De entiteit is definitief buiten gebruik | `adms/status/Withdrawn` |
+| `ontmanteld` | De entiteit bestaat niet meer | `adms/status/Withdrawn` |
+| `verkeerde_registratie` | De entiteit werd verkeerd geregistreerd en is niet van toepassing | `adms/status/Withdrawn` |
+
+Voor **aangiften** geldt een aparte lijst (`aangifte_status`), zie [Aangifte en dossier](./aangifte.md#beschikbare-statussen-aangifte_status).
 
 ## 4. PROV-O provenance-attributen
 
-Elke versie bevat provenance-informatie via PROV-O:
+Elke versie draagt aanmaak- en wijzigingsinformatie:
 
-| Attribuut | Type | Beschrijving |
-|---|---|---|
-| `dct:created` | dateTime | Wanneer deze versie werd aangemaakt |
-| `dct:modified` | dateTime | Wanneer deze versie voor het laatst werd gewijzigd |
-| `prov:wasAttributedTo` | Agent | Aan wie is de data toe te schrijven (exploitant) |
+| Attribuut | Type | Waar | Beschrijving |
+|---|---|---|---|
+| `dct:created` | dateTime | elke versioneerbare klasse | Wanneer deze versie werd aangemaakt |
+| `dct:modified` | dateTime | elke versioneerbare klasse | Wanneer deze versie voor het laatst werd gewijzigd |
+| `prov:hadPrimarySource` | resource | exploitant, exploitatielocatie, exploitatie | De bron waaruit de data komt (VKBO, VIM) |
+| `prov:wasAttributedTo` | riepr:Exploitant | **enkel** `riepr:Exploitatielocatie` | Aan welke exploitant de locatie is toe te schrijven (verplicht, exact 1) |
 
 ```turtle
 <.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z>
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime .
+
+# De band met de exploitant loopt via de exploitatielocatie
+<.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z>
     prov:wasAttributedTo <.../exploitant/019e9271-1452-7630-be04-59ea199007a7> .
 ```
+
+> `prov:wasAttributedTo` staat in de ontologie **alleen** op `riepr:Exploitatielocatie`. Systemen en processen dragen de relatie niet; wie ze uitbaat, leidt u af via de exploitatie en haar locatie.
 
 ## 5. Historische query's met tijdsrecht
 
 ### Huidige toestand opvragen
 
-Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste `dct:issued` waarvoor `dct:valid` ontbreekt of in de toekomst ligt:
+Om de huidige versie van een installatie te vinden, zoekt u naar de versie met de hoogste `dct:issued` die niet in de toekomst ligt en waarvoor `dct:valid` ontbreekt of nog niet verstreken is. In het voorbeeld staat `NOW()` voor het moment van bevragen:
 
 ```sparql
 SELECT ?versie ?label ?issued
@@ -116,7 +138,9 @@ WHERE {
           rdfs:label ?label ;
           dct:issued ?issued .
   OPTIONAL { ?versie dct:valid ?valid }
-  FILTER(!BOUND(?valid) || ?valid >= "2026-08-01"^^xsd:date)
+  BIND(xsd:date(NOW()) AS ?vandaag)
+  FILTER(?issued <= ?vandaag)
+  FILTER(!BOUND(?valid) || ?valid >= ?vandaag)
 }
 ORDER BY DESC(?issued)
 LIMIT 1
@@ -232,8 +256,8 @@ classDiagram
       String uri
     }
     
-    %% Feature of Interest (geen versie)
-    class Emissie {
+    %% Structurele entiteit zonder versiebeheer
+    class ExploitantIdentityOnly["Exploitant / Contactpersoon"] {
       +String uuid
       String uri
     }
@@ -246,18 +270,14 @@ classDiagram
     
     %% Version attributes
     class VersionAttributes {
-      issued : date (geldigheid)
-      created : dateTime (aanmaak)
-      modified : dateTime (wijziging)
-      status : skos:Concept
-      wasAttributedTo : Agent
+      +date issued
+      +dateTime created
+      +dateTime modified
+      +Concept status
     }
     
-    %% Note about versioning
-    note1 .. ExploitatieVersion1 : Multiple versions can point to same identity
-    note1 .. ExploitatieVersion2 : with different issued dates
-    note2 .. Emissie : Feature of Interest has NO versioning
-    note2 .. EmissieIdentity : only two-segment URI
+    note for ExploitatieIdentity "Meerdere versies wijzen naar dezelfde identity, elk met een eigen issued-datum"
+    note for ExploitantIdentityOnly "Geen versiebeheer: enkel een identity-URI, wijzigingen overschrijven"
     
     classDef identity fill:#e6f4f5,stroke:#007A87,stroke-width:2px
     classDef version fill:#b2e0e3,stroke:#007A87,stroke-width:2px
@@ -273,7 +293,7 @@ classDiagram
     class ExploitatieVersion2 version
     class InstallatieVersion1 version
     class InstallatieVersion2 version
-    class Emissie foi
+    class ExploitantIdentityOnly foi
     class VersionAttributes attributes
 ```
 

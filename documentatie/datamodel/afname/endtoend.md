@@ -1,37 +1,57 @@
 # End-to-end voorbeeld
 
+!!! abstract "Beide stromen"
+    Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
+
 Dit document loopt de volledige dataketen van het RIE-IEPR-model door, van de exploitant tot de gemeten waarde, en toont hoe een **aangifte** alle entiteiten aan elkaar bindt. Het voorbeeld is synthetisch.
 
 Lees dit document na [Basisaannames](./basisaanname.md); het gaat ervan uit dat u de URI-patronen en het versiebeheer kent.
 
-Het voorbeeld is opgesplitst in **structurele gegevens** en **operationele gegevens**. De structurele stroom beschrijft exploitant, locatie, exploitatie, processen en systemen. De operationele stroom beschrijft emissies/onttrekkingen, observaties en resultaten. Operationele gegevens linken altijd naar structurele gegevens.
+Het voorbeeld is strikt opgesplitst: **deel ① structurele gegevens** (exploitant, locatie, exploitatie, processen, systemen) en **deel ② operationele gegevens** (emissies, observaties, resultaten). U kunt deel ① volledig lezen zonder deel ②; omgekeerd verwijst deel ② terug naar deel ① via de drie grenspredicaten uit [Twee stromen](./datamodel.md).
 
 ## Het geheel
 
 ```mermaid
 flowchart LR
-    E[Exploitant] -->|prov:wasAttributedTo| X[Exploitatie]
-    L[Exploitatielocatie] -->|ssn:deployedOnPlatform| X
-    X -->|ssn:implements| HP[Hoofdproces]
-    HP -->|pplan:isStepOfPlan| P1[Proces verwerking]
-    HP -->|pplan:isStepOfPlan| P2[Proces emissie]
-    HP -->|pplan:isStepOfPlan| P3[Proces meting]
-    P1 -->|ssn:implementedBy| I[Installatie]
-    P2 -->|ssn:implementedBy| EP[Emissiepunt]
-    P3 -->|ssn:implementedBy| MP[Meetpunt]
-    P2 -->|prov:wasDerivedFrom| EM[Emissie]
-    EM -->|sosa:isFeatureOfInterestOf| O[Observatie]
-    O -->|sosa:hasResult| R[Resultaat]
-    O -.->|sosa-2023:isMemberOf| OV[ObservatieVerzameling]
-    OV -->|sosa:hasFeatureOfInterest| EM
-    A[Aangifte] -.->|riepr:aangifte| X
-    A -.->|riepr:aangifte| OV
-    EM -->|prov:wasDerivedFrom| P2
+    subgraph STRUCT["① Structurele gegevens"]
+        direction TB
+        L[Exploitatielocatie] -->|prov:wasAttributedTo| E[Exploitant]
+        X[Exploitatie] -->|ssn:deployedOnPlatform| L
+        X -->|ssn:implements| HP[Hoofdproces]
+        HP -->|pplan:isStepOfPlan| P1[Proces verwerking]
+        HP -->|pplan:isStepOfPlan| P2[Proces emissie]
+        HP -->|pplan:isStepOfPlan| P3[Proces meting]
+        P1 -->|ssn:implementedBy| I[Installatie]
+        P2 -->|ssn:implementedBy| EP[Emissiepunt]
+        P3 -->|ssn:implementedBy| MP[Meetpunt]
+    end
+
+    subgraph OPER["② Operationele gegevens"]
+        direction TB
+        EM[Emissie]
+        O[Observatie] -->|sosa:hasFeatureOfInterest| EM
+        O -->|sosa:hasResult| R[Resultaat]
+        O -.->|sosa-2023:isMemberOf| OV[ObservatieVerzameling]
+        OV -->|sosa:hasFeatureOfInterest| EM
+    end
+
+    A["Aangifte<br/>(administratief)"]
+
+    %% de drie predicaten die de grens oversteken
+    EM ==>|prov:wasDerivedFrom| P2
+    O ==>|sosa:madeBySensor| MP
+    X -.->|riepr:aangifte| A
+    OV -.->|riepr:aangifte| A
 ```
+
+De dikke pijlen zijn de enige verbindingen tussen beide stromen. Alles links ervan is structureel en wordt in de applicatie beheerd; alles rechts ervan is operationeel. Zie [Twee stromen](./datamodel.md).
 
 De keten in één zin: een **exploitant** voert op een **locatie** een **plan van processen** uit, waarvoor **systemen** (installaties, emissie-, meet- en onttrekkingspunten) worden ingezet; een **emissie** is de gebeurtenis die uit een emissieproces *afgeleid* is; **observaties** meten die gebeurtenis en leveren een **resultaat**; en een **aangifte** is het administratieve document waarop al die entiteiten (optioneel) wijzen.
 
-## Structurele gegevens
+## ① Structurele gegevens
+
+!!! info "Structurele stroom"
+    De secties 1 tot en met 4 beschrijven uitsluitend structurele entiteiten. Dit is de stroom die in de applicatie wordt ingegeven en die uit CBB en de VMM-aangiften gemigreerd wordt.
 
 ### 1. Exploitant en exploitatie
 
@@ -57,7 +77,6 @@ De **exploitatie** is de uitrol van middelen door die exploitant op een locatie.
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
     # De hoofdactiviteit als NACE-code (de exploitant selecteert die uit zijn VKBO-activiteiten)
     org:classification <http://data.europa.eu/ux2/nace2.1/231> ;
-    prov:wasAttributedTo <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7> ;
     ssn:deployedOnPlatform <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     ssn:implements <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> .
 ```
@@ -91,6 +110,8 @@ De locatie is een `sosa:Platform`/`ogc:Feature` en het ankerpunt voor alle syste
         locn:postalCode "2400" ;
         locn:addressLocality "Mol"
     ] ;
+    # de exploitant hangt aan de locatie, niet aan de exploitatie
+    prov:wasAttributedTo <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7> ;
     prov:hadPrimarySource <https://data.vlaanderen.be/id/vestiging/2081766488> .
 ```
 
@@ -105,7 +126,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89> ;
     rdfs:label "Productie van glas"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/hoofdactiviteit-type> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
@@ -135,16 +156,14 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4> ;
     rdfs:label "Luchtkwaliteitsmeting schoorsteen 1"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 ```
 
-> **P-Plan** ([www.opmw.org/model/p-plan](https://www.opmw.org/model/p-plan/)) is een W3C-ontologie voor processen: een `pplan:Plan` is een geordende reeks `pplan:Step`'s. RIE-IEPR maakt er gebruik van via `pplan:isStepOfPlan` (hierarchical) en `pplan:isPrecededBy` (volgorde). Het hoofdproces is tegelijk `pplan:Plan` en `pplan:Step`; elke stap is een `pplan:Step`.
-
-## Structurele gegevens
+> **P-Plan** ([www.opmw.org/model/p-plan](https://www.opmw.org/model/p-plan/)) is een community-ontologie voor processen (een uitbreiding op PROV-O, geen W3C-aanbeveling): een `pplan:Plan` is een geordende reeks `pplan:Step`'s. RIE-IEPR maakt er gebruik van via `pplan:isStepOfPlan` (hierarchical) en `pplan:isPrecededBy` (volgorde). Het hoofdproces is tegelijk `pplan:Plan` en `pplan:Step`; elke stap is een `pplan:Step`.
 
 ### 4. Systemen en hun eigenschappen
 
@@ -164,19 +183,23 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
     ] ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
-# Een eigenschap van het emissiepunt: de hoogte
-<https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
+# Een eigenschap van het emissiepunt: de hoogte van de schouw.
+# dct:type benoemt de eigenschap; riepr:parameter is hier niet nodig
+# (die wijst naar een stof, bv. bij een verwijderingsrendement).
+<https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7f51-881b-55d6b3278a90>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
     rdfs:value "50"^^xsd:decimal ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/M> ;
-    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/emissiepunt-eigenschappen/hoogte> .
+    qudt:hasUnit <http://qudt.org/vocab/unit/M> .
 ```
 
-## Operationele gegevens
+## ② Operationele gegevens
 
 !!! warning "Analyse nog lopende"
     De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.
+
+!!! info "Deze entiteiten bestaan niet in de applicatie"
+    `Emissie`, `Onttrekking` en `Verbruik` worden nergens ingegeven: ze worden op het dataplatform afgeleid uit de structurele graaf hierboven, met een SPARQL construct-query die de identifier van het onderliggende systeem overneemt. Ze bestaan enkel om observaties een `sosa:FeatureOfInterest` te geven.
 
 ### 5. De gebeurtenis: emissie
 
@@ -201,33 +224,38 @@ Eén meting of bemonstering levert doorgaans **meerdere individuele observaties*
     a riepr:ObservatieVerzameling ;
     rdfs:label "Meting schoorsteen 1, 1 januari 2026"@nl ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    sosa-2023:hasMember <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z> ,
-                       <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-im4f-n9ojk7kgkf5/2026-01-01T10:00:00Z> ;
-    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> ;
+    sosa-2023:hasMember <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z> ,
+                       <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-9e4f-2d3e4f5a6b7c/2026-01-01T10:00:00Z> ;
+    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 # Individuele observatie 1: NOx
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z>
     a sosa:Observation ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
+    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/MGWGWNFMUOTEHG-UHFFFAOYSA-N> ;
     sosa:madeBySensor <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
+    # de bepalingsmethode-codelijst is nog niet gepubliceerd; deze URI is illustratief
     sosa:usedProcedure <https://data.omgeving.vlaanderen.be/id/concept/riepr/bepalingsmethode/EN1948> ;
-    sosa:phenomenonTime "2026-01-01T08:00:00Z/2026-01-01T12:00:00Z"^^xsd:dateTimeInterval ;
+    # tijdsinterval via OWL-Time (time: = http://www.w3.org/2006/time#);
+    # er bestaat geen XSD-datatype voor een interval
+    sosa:phenomenonTime [ a time:Interval ;
+        time:hasBeginning [ time:inXSDDateTimeStamp "2026-01-01T08:00:00Z"^^xsd:dateTimeStamp ] ;
+        time:hasEnd       [ time:inXSDDateTimeStamp "2026-01-01T12:00:00Z"^^xsd:dateTimeStamp ] ] ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     sosa-2023:isMemberOf <https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/019edc4a-1a30-7b33-9e4f-aabbccddeeff/2026-01-01T10:00:00Z> ;
-    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9> ;
+    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 # Het resultaat heeft een eigen URI (twee segmenten)
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d>
+    a riepr:Resultaat ;
     qudt:numericValue "45.2"^^xsd:decimal ;
     qudt:hasUnit <http://qudt.org/vocab/unit/MG-PER-M3> .
 
 # Een resultaat kan ook puur tekstueel zijn (vrije waarde)
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-im4f-n9ojk7kgkfa>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-9e4f-4f5a6b7c8d9e>
+    a riepr:Resultaat ;
     rdfs:comment "Kleurafwijking geconstateerd, hermeting ingepland"@nl .
 ```
 
@@ -238,7 +266,7 @@ Let op: de observatie wijst via `sosa:hasFeatureOfInterest` rechtstreeks naar de
 Een **aangifte** (`dossier:Stuk`) is het administratieve document. Via de objectproperty `riepr:aangifte` kunnen de operationele entiteiten (exploitatie, exploitatielocatie, systemen, processen, emissies, observatieverzamelingen, …) naar de aangifte verwijzen waaraan ze gerelateerd zijn. De koppeling is **optioneel**: data kan ook zonder aangifte bestaan (bijv. in concept).
 
 ```turtle
-<https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8>
+<https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001>
     a riepr:Aangifte, dossier:Stuk ;
     rdfs:label "Bijzondere toelating - wijziging GL012345"@nl ;
     dct:subject <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> ;
@@ -251,25 +279,40 @@ Zie [Aangifte en dossier](./aangifte.md) voor het volledige model, en [Versiebeh
 
 ## Samenvatting van de koppelingen
 
+De kolom **Verplicht** geeft weer wat de *ontologie* (`riepr.ttl`) afdwingt — niet wat de migratie of de aangifteflow in de praktijk oplegt.
+
+**① Binnen de structurele stroom**
+
 | Van | Property | Naar | Verplicht |
 |---|---|---|---|
-| Exploitatie | `prov:wasAttributedTo` | Exploitant | ja |
+| Exploitatielocatie | `prov:wasAttributedTo` | Exploitant | ja (exact 1) |
 | Exploitatie | `ssn:deployedOnPlatform` | Exploitatielocatie | ja (exact 1) |
 | Exploitatie | `ssn:implements` | Hoofdproces | ja (exact 1) |
-| Proces (stap) | `pplan:isStepOfPlan` | Bovenliggend proces | ja (exact 1) |
+| Exploitatie | `ssn:deployedSystem` | Systemen | nee (0..n) |
+| Proces (stap) | `pplan:isStepOfPlan` | Bovenliggend proces | nee (0..1) — het hoofdproces heeft er geen |
 | Proces | `pplan:isPrecededBy` | Voorafgaand proces | nee (0..n) |
-| Proces | `ssn:implementedBy` | Systeem (type-afhankelijk) | ja (min 1) |
-| Systeem | `sosa:isHostedBy` | Exploitatielocatie | ja (exact 1) |
-| Systeem | `ssn:hasProperty` | Systeemeigenschap | nee (0..n) |
-| Emissie/Onttrekking | `prov:wasDerivedFrom` | Proces | ja (min 1) |
-| Observatie | `sosa:hasFeatureOfInterest` | Emissie/Onttrekking | ja (exact 1) |
+| Proces | `ssn:implementedBy` | Systeem | nee (0..1), maar afgedwongen zodra `dct:type` gezet is (OWL-axioma's) |
+| Systeem | `sosa:isHostedBy` | Exploitatielocatie | niet in de ontologie; conventie in de data |
+| Systeem | `ssn:hasProperty` | Systeemeigenschap | nee (0..n); niet gedefinieerd op `riepr:Filter` |
+
+**② Binnen de operationele stroom**
+
+| Van | Property | Naar | Verplicht |
+|---|---|---|---|
+| Observatie | `sosa:hasFeatureOfInterest` | Emissie/Onttrekking/Verbruik | ja (exact 1) |
 | Observatie | `sosa:hasResult` | Resultaat | ja (exact 1) |
-| Observatie | `sosa:madeBySensor` | Systeem (meetpunt) | nee (0..1) |
 | Observatie | `sosa-2023:isMemberOf` | ObservatieVerzameling | nee (0..1) |
 | ObservatieVerzameling | `sosa-2023:hasMember` | Observatie | ja (min 1) |
-| ObservatieVerzameling | `sosa:hasFeatureOfInterest` | Emissie/Onttrekking | ja (exact 1) |
+| ObservatieVerzameling | `sosa:hasFeatureOfInterest` | Emissie/Onttrekking/Verbruik | ja (exact 1) |
 | Resultaat | `qudt:hasUnit` | QUDT-eenheid | nee (0..1) |
-| Diverse entiteiten | `riepr:aangifte` | Aangifte | nee (0..1) |
+
+**③ Over de grens heen**
+
+| Van | Property | Naar | Verplicht |
+|---|---|---|---|
+| Emissie/Onttrekking/Verbruik | `prov:wasDerivedFrom` | Proces (structureel) | ja (min 1) |
+| Observatie | `sosa:madeBySensor` | Systeem, i.h.b. het meetpunt (structureel) | nee (0..1) |
+| Beide stromen | `riepr:aangifte` | Aangifte (administratief) | nee (0..1) |
 
 ## Al de keten in één query
 

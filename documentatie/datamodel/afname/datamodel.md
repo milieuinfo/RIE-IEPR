@@ -5,24 +5,83 @@ hide:
 
 # Datamodel
 
-Deze sectie beschrijft het RIE-IEPR-datamodel in detail. Het datamodel is opgebouwd uit twee aparte stromen:
+Het RIE-IEPR-datamodel bestaat uit **twee stromen die apart gelezen en apart afgenomen worden**. Deze pagina beschrijft waar de grens ligt. Elke andere pagina in deze documentatie is aan één van beide stromen toegewezen en draagt bovenaan een banner die zegt welke.
 
-**Structurele gegevens** beschrijven de statische organisatie van de exploitatie: exploitanten, locaties, systemen (installaties, emissiepunten, meetpunten, filters), processen en hun onderlinge relaties. Deze gegevens zijn versioneerbaar en vormen het skelet van de data.
+## De twee stromen
 
-**Operationele gegevens** beschrijven wat er gebeurt: metingen, observaties, gebeurtenissen (emissie, onttrekking) en observatieverzamelingen, evenals de operationele rapportage-codelijsten. Operationele gegevens linken altijd naar structurele gegevens maar vormen een aparte stroom.
+| | **Structurele gegevens** | **Operationele gegevens** |
+|---|---|---|
+| Beschrijft | de organisatie en infrastructuur van de exploitatie | wat er gemeten en gerapporteerd wordt |
+| Klassen | `Exploitant`, `Contactpersoon`, `Exploitatielocatie`, `Exploitatie`, `Proces`, `Procesvariabele`, `Rubriek`, `Installatie`, `Emissiepunt`, `Onttrekkingspunt`, `Uitwisselpunt`, `Meetpunt`, `Filter`, `Systeemeigenschap` | `Emissie`, `Onttrekking`, `Verbruik`, `Observatie`, `ObservatieVerzameling`, `Resultaat` |
+| Versiebeheer | ja: `dct:issued` + `dct:created` in de URI, `dct:isVersionOf` naar de identity | nee: geen `issued`, geen `dct:isVersionOf` |
+| Codelijsten | `installatie_type`, `emissiepunt_type`, `procedure_type`, `status_type`, `*_eigenschappen`, … | `operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `thema_type`, … |
+| Herkomst | migratie uit CBB en de VMM XML-aangiften; daarna beheerd in de applicatie | de operationele rapportageflow (jaarvracht, zelfcontrole) |
+| Applicatiedocumentatie | ja — `DATASTRUCTUUR.md`, `VERSIONERING.md` | deels — `DATASTRUCTUUR.OBSERVATIES.md` (work in progress) |
+| Status | vastgelegd | **analyse nog lopende** |
 
-U vindt hier de modellen en aannames die ten grondslag liggen aan de data, evenals de belangrijkste entiteiten.
+!!! warning "Analyse operationele gegevens nog lopende"
+    Alles wat in deze documentatie onder de operationele stroom valt, kan nog wijzigen. De structurele stroom is stabiel.
 
-## Structurele gegevens
+## Waarom de scheiding zo scherp is
 
-- [Basisaannames](./basisaanname.md) - de modellen en aannames die ten grondslag liggen aan het datamodel
-- [Exploitant- en exploitatiemodel](./exploitant.md) - organisaties, locaties en activiteiten
-- [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) - systemen, subsystemen en eigenschappen
+De twee stromen worden niet alleen apart *beschreven*, ze ontstaan ook op een andere plaats:
 
-## Operationele gegevens
+- **Structurele entiteiten** worden in de applicatie ingegeven en bijgehouden. Ze hebben een tabel, een versiegeschiedenis en een aangifteflow.
+- **`Emissie`, `Onttrekking` en `Verbruik` bestaan niet in de applicatie.** Ze worden op het **dataplatform afgeleid** uit de structurele graaf, met een SPARQL construct-query die de identifier en de versionering van het onderliggende systeem overneemt. Functioneel hangt er niets aan het concept "emissie" — het bestaat alleen om observaties een `sosa:FeatureOfInterest` te geven. Zie `DATAPLATFORM.md` in de applicatiedocumentatie.
+- **Observaties** komen uit de rapportageflow, die volledig door de `operationeel_*`-codelijsten wordt aangestuurd.
 
-!!! warning "Analyse nog lopende"
-    De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.
+Voor een afnemer betekent dat: u kunt de structurele stroom volledig bevragen zonder ooit een observatie tegen te komen, en omgekeerd hangt elke observatie via een korte, vaste keten aan de structuur.
 
-- [Observaties en emissies](./observaties.md) - metingen, observaties en gebeurtenissen (emissie, onttrekking)
-- [Aangifte en dossier](./aangifte.md) - documenten gekoppeld aan de data
+## De drie predicaten die de grens oversteken
+
+Tussen beide stromen bestaan **precies drie** relaties. Al de rest blijft binnen één stroom.
+
+```mermaid
+flowchart LR
+    subgraph S["Structurele gegevens"]
+        direction TB
+        Proces["Proces"]
+        Meetpunt["Meetpunt / systeem"]
+    end
+    subgraph O["Operationele gegevens"]
+        direction TB
+        FOI["Emissie / Onttrekking / Verbruik<br/>(FeatureOfInterest)"]
+        Observatie["Observatie"]
+        Resultaat["Resultaat"]
+        Observatie -->|hasFeatureOfInterest| FOI
+        Observatie -->|hasResult| Resultaat
+    end
+    A["Aangifte<br/>(administratief)"]
+
+    FOI -->|prov:wasDerivedFrom| Proces
+    Observatie -->|sosa:madeBySensor| Meetpunt
+    S -.->|riepr:aangifte| A
+    O -.->|riepr:aangifte| A
+```
+
+| Predicaat | Van | Naar | Cardinaliteit |
+|---|---|---|---|
+| `prov:wasDerivedFrom` | `Emissie`, `Onttrekking`, `Verbruik` | `Proces` | verplicht, min 1 |
+| `sosa:madeBySensor` | `Observatie` | `ssn:System` (het meetpunt) | optioneel, 0..1 |
+| `riepr:aangifte` | beide stromen | `Aangifte` | optioneel, 0..1 |
+
+De omgekeerde weg — van een emissiepunt naar zijn metingen — loopt dus **niet** rechtstreeks. Een observatie wijst nooit naar een emissiepunt; ze wijst naar de *emissie*, en die is afgeleid van het emissieproces dat het emissiepunt implementeert. Zie [Observaties en emissies](./observaties.md#2-gebeurtenissen-emissie-onttrekking).
+
+## Waar u wat vindt
+
+### Structurele gegevens
+
+- [Exploitant- en exploitatiemodel](./exploitant.md) — organisaties, locaties en activiteiten
+- [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) — systemen, subsystemen en eigenschappen
+- [Versiebeheer en tijdsrecht](./versiebeheer.md) — versies, geldigheid en historische query's
+- [Migratie](./migratie.md) — hoe de VMM/IMJV-gegevens naar dit model zijn omgezet
+
+### Operationele gegevens
+
+- [Observaties en emissies](./observaties.md) — metingen, observaties en gebeurtenissen
+
+### Overkoepelend
+
+- [Basisaannames](./basisaanname.md) — de modellen en aannames onder het hele datamodel
+- [End-to-end voorbeeld](./endtoend.md) — de volledige keten, met beide stromen expliciet uit elkaar gehouden
+- [Aangifte en dossier](./aangifte.md) — het administratieve document waaraan beide stromen kunnen hangen

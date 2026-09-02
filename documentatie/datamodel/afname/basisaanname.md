@@ -1,5 +1,7 @@
 # Basisaannames
 
+!!! abstract "Beide stromen"
+    Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
 Dit document beschrijft de fundamentele aannames en modellen die ten grondslag liggen aan het RIE-IEPR-datamodel, vanuit het perspectief van Linked Open Data (LOD).
 
@@ -31,7 +33,7 @@ Processen vormen het organisatieprincipe van het hele datamodel. **Alles hangt a
 
 ### Wat is P-Plan?
 
-[P-Plan](https://www.opmw.org/model/p-plan/) is een W3C-ontologie voor het modelleren van processen als geordende plannen. De kernbegrippen:
+[P-Plan](https://www.opmw.org/model/p-plan/) is een community-ontologie (Ontology Engineering Group, een uitbreiding op PROV-O) voor het modelleren van processen als geordende plannen. Ze is geen W3C-aanbeveling. De kernbegrippen:
 
 - Een **`pplan:Plan`** is een (samengesteld) plan van stappen.
 - Een **`pplan:Step`** is een individuele stap; `pplan:isStepOfPlan` legt een stap onder een hoger niveau (plan of stap).
@@ -57,19 +59,17 @@ De relatie tussen versie en identity wordt gelegd via `dct:isVersionOf`:
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> .
 ```
 
-### Feature of Interest vs. versioneerbare entiteiten
+### Versiebeheer volgt de stroom
 
-Niet alle entiteiten zijn versioneerbaar. **Feature of Interest** entiteiten (Emissie, Onttrekking) hebben een **twee-segment URI** (`{type}/{uuid}`) en worden niet geversioneerd - ze vertegenwoordigen een tijdsloos concept dat door observaties wordt "gevuld" met tijd.
+Of een entiteit geversioneerd wordt, hangt af van de stroom waartoe ze behoort:
 
-```turtle
-# Feature of Interest (geen versie)
-<.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c>
-    a riepr:Emissie, sosa:FeatureOfInterest .
+| Stroom | URI | Versiebeheer |
+|---|---|---|
+| **Structureel**, versioneerbaar (exploitatie, exploitatielocatie, proces, systemen) | `{type}/{uuid}/{issued}/{created}` | ja, met `dct:isVersionOf` |
+| **Structureel**, niet-versioneerbaar (exploitant, contactpersoon, systeemeigenschap, rubriek, procesvariabele) | `{type}/{uuid}` | nee |
+| **Operationeel** (emissie, onttrekking, verbruik, observatie, verzameling, resultaat) | `{type}/{uuid}` of `{type}/{uuid}/{created}` | nee |
 
-# Observatie (met tijd) koppelt aan Feature of Interest
-<.../observatie/.../2026-01-01T10:00:00Z>
-    sosa:hasFeatureOfInterest <.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c> .
-```
+Zie [Versiebeheer en tijdsrecht](./versiebeheer.md) voor het structurele versiebeheer, en [Twee stromen](./datamodel.md) voor de grens tussen beide stromen.
 
 ## 3. Exploitatie: twee lagen
 
@@ -98,14 +98,18 @@ Het model bevat **OWL-axioma's** die proces types dwingen aan bepaalde systemen 
 
 | Proces type (`dct:type`) | URI | Moet implementeren (`ssn:implementedBy`) |
 |---|---|---|
+| Verwerking | `…/procedure-type/verwerking` | `riepr:Installatie` |
 | Emissie | `…/procedure-type/emissie` | `riepr:Emissiepunt` |
 | Onttrekking | `…/procedure-type/onttrekking` | `riepr:Onttrekkingspunt` |
-| Verwerking | `…/procedure-type/verwerking` | `riepr:Installatie` |
-| Meet | `…/procedure-type/meet` | `riepr:Meetpunt` |
 | Uitwissel | `…/procedure-type/uitwissel` | `riepr:Uitwisselpunt` |
-| Hoofdactiviteit | `…/hoofdactiviteit-type` | `riepr:Exploitatie` |
+| Meting | `…/procedure-type/meting` | `riepr:Meetpunt` |
+| Hoofdactiviteit | `…/procedure-type/hoofdactiviteit` | `riepr:Exploitatie` |
+| Transport | `…/procedure-type/transport` | — (geen axioma; verbindt twee processen) |
 
 Dit betekent dat als een proces het type "emissie" heeft, het **per definitie** een emissiepunt moet implementeren. Deze axioma's zijn vastgelegd in de ontologie (`riepr.ttl`) en garanderen dataconsistentie.
+
+!!! warning "Afwijking in de ontologie"
+    Het axioma voor het meetproces verwijst in `riepr.ttl` naar `…/procedure-type/meet`, terwijl de codelijst `procedure_type` en het datavoorbeeld `…/procedure-type/meting` gebruiken. De **codelijst is leidend**; het axioma moet nog bijgewerkt worden.
 
 De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie), waar ze als SKOS concepten gepubliceerd zijn.
 
@@ -115,56 +119,49 @@ Een **meetpunt** is per definitie geen emissiepunt of onttrekkingspunt: `riepr:M
 
 Een **uitwisselpunt** daarentegen is wél zowel emissiepunt als onttrekkingspunt: `riepr:Uitwisselpunt` is gedefinieerd als de equivalentie van de intersectie `Emissiepunt ∩ Onttrekkingspunt` — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.
 
-## 6. Observaties en Features of Interest
+## 6. De grens met de operationele stroom
 
-Observaties volgen het **SOSA/SSN**-patroon:
+Het procesplan uit §1 is het **einde** van de structurele stroom. Alles wat gemeten wordt, hangt eraan via precies drie predicaten:
 
-```mermaid
-graph TD
-    Observatie["sosa:Observation"] -->|sosa:hasFeatureOfInterest| FOI["Emissie/Onttrekking<br/>(sosa:FeatureOfInterest)"]
-    Observatie -->|sosa:hasResult| Resultaat["sosa:Result<br/>(met waarde + eenheid)"]
-    Observatie -->|sosa:observedProperty| Property["Wat werd gemeten<br/>(skos:Concept)"]
-    Observatie -->|sosa:resultTime| Tijd["Wanneer werd gemeten<br/>(xsd:dateTime)"]
-    
-    style Observatie fill:#007A87,stroke:#005f6a,color:#fff
-    style FOI fill:#e6f4f5,stroke:#007A87,color:#000
-    style Resultaat fill:#b2e0e3,stroke:#007A87,color:#000
-    style Property fill:#e6f4f5,stroke:#007A87,color:#000
-    style Tijd fill:#b2e0e3,stroke:#007A87,color:#000
-```
+| Predicaat | Van (operationeel) | Naar |
+|---|---|---|
+| `prov:wasDerivedFrom` | `Emissie`, `Onttrekking`, `Verbruik` | `Proces` (structureel, verplicht) |
+| `sosa:madeBySensor` | `Observatie` | het meetpunt (`ssn:System`, optioneel) |
+| `riepr:aangifte` | `Observatie`, `ObservatieVerzameling` | `Aangifte` (administratief, optioneel) |
 
-Emissie en onttrekking zijn **gebeurtenissen** en fungeren als `sosa:FeatureOfInterest`. Ze worden niet zelf "gemeten" - ze zijn het **onderwerp** van de meting.
+Emissie, onttrekking en verbruik zijn **gebeurtenissen** die als `sosa:FeatureOfInterest` dienen: ze worden niet zelf gemeten, ze zijn het *onderwerp* van de meting. Ze bestaan bovendien niet in de applicatie — ze worden op het dataplatform afgeleid uit de structurele graaf.
 
-```turtle
-@prefix sosa: <http://www.w3.org/ns/sosa/> .
+Het volledige SOSA/SSN-observatiepatroon staat in [Observaties en emissies](./observaties.md); de grens zelf in [Twee stromen](./datamodel.md).
 
-# Gebeurtenis (Feature of Interest)
-<.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c>
-    a riepr:Emissie, sosa:FeatureOfInterest .
-
-# Observatie van de gebeurtenis
-<.../observatie/.../2026-01-01T10:00:00Z>
-    a sosa:Observation ;
-    sosa:hasFeatureOfInterest <.../emissie/019eaca0-b8c6-7096-886c-103c3e21466c> .
-```
+!!! warning "Analyse nog lopende"
+    De operationele stroom is nog in analyse en kan na afronding wijzigen.
 
 ## 7. Systeemeigenschappen
 
 Systeemeigenschappen (`riepr:Systeemeigenschap`) zijn eigenschappen die betrekking hebben op een systeem (installatie, emissiepunt, meetpunt, ...). Ze worden gekoppeld via `ssn:hasProperty`.
 
-Elke systeemeigenschap heeft twee kenmerken:
-- **`riepr:parameter`** - de parameter als URI-referentie naar een concept (bijv. chemische stof of eigenschap)
-- **`riepr:datatype`** - het datatype van de waarde (bijv. `xsd:decimal`)
+Een systeemeigenschap draagt:
 
-De eenheid wordt vastgelegd via `qudt:hasUnit` naar een QUDT-eenheid (bijv. `http://qudt.org/vocab/unit/M`).
+| Eigenschap | Cardinaliteit | Beschrijving |
+|---|---|---|
+| `dct:type` | 1..1 (verplicht) | Het eigenschapsconcept uit een `*_eigenschappen`-codelijst; dit bepaalt **wat** de eigenschap is |
+| `rdfs:value` | 0..1 | De waarde zelf |
+| `qudt:hasUnit` | 0..1 | De QUDT-eenheid (bijv. `http://qudt.org/vocab/unit/M`) |
+| `riepr:parameter` | 0..1 | Objectproperty naar een concept waar de waarde over gaat (bijv. de chemische stof bij een verwijderingsrendement) |
+| `riepr:datatype` | 0..1 | Objectproperty naar het datatype-IRI van de waarde (bijv. `xsd:decimal`) |
+| `rdfs:label` | 0..n | Optionele benaming |
+
+`riepr:parameter` en `riepr:datatype` zijn **objectproperties**: hun waarde is altijd een IRI, nooit een tekstliteral.
 
 ```turtle
 <.../systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
+    # wat: verwijderingsrendement
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
+    # waarvoor: de chemische stof (chloride)
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-M> ;
     rdfs:value "0"^^xsd:decimal ;
-    qudt:hasUnit unit:PERCENT ;
-    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
+    qudt:hasUnit unit:PERCENT .
 ```
 
 ## 8. Provenance en herkomst
@@ -202,19 +199,19 @@ Elke externe identificator is een anonieme node met twee onderdelen:
 
 | Onderdeel | Property | Omschrijving |
 |---|---|---|
-| Bron/systeem | `adms:scheme` | Naam van het systeem waar de code vandaan komt, bijv. `"VMM"`, `"DOMG"` |
-| Waarde | `rdf:value` | De code zelf; kan een **datatype** krijgen dat aangeeft welk bron-veld het vertegenwoordigt |
+| Bron/systeem | `adms:schemaAgency` | Naam van het systeem waar de code vandaan komt, bijv. `"VMM"`, `"DOMG"` |
+| Waarde | `skos:notation` | De code zelf; kan een **datatype** krijgen dat aangeeft welk bron-veld het vertegenwoordigt |
 
 `adms:identifier` is **optioneel** (`minCardinality 0`) en **meervoudig**: een entiteit kan meerdere externe identificatoren tegelijk hebben.
 
 ### Schemas (bronnen)
 
-| `adms:scheme` | Bron | Soort code | Voorbeeld `rdf:value` |
+| `adms:schemaAgency` | Bron | Soort code | Voorbeeld `skos:notation` |
 |---|---|---|---|
 | `VMM` | Voorgaand VMM/MJV-systeem (migratie) | CBB-nummer, apparaat-id, emissiepunt-id, put-id, vergunning-id, ... | `"01787986000160"^^vmm:cbbNummer` |
 | `DOMG` | Vlaamse databron / INSPIRE | INSPIRE-identifier | `"BE.VL.000000034.SITE"^^riepr:inspireId` |
 
-> **Let op:** In het datavoorbeeld krijgen `rdf:value`-waarden een datatype uit de dummy-namespace `vmm:` (bijv. `^^vmm:cbbNummer`) óf `riepr:inspireId`. Dit datatype is **illustratief**: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace `vmm:` (`<http://vmm.be#>`) dient enkel als placeholder in het voorbeeld.
+> **Let op:** In het datavoorbeeld krijgen `skos:notation`-waarden een datatype uit de dummy-namespace `vmm:` (bijv. `^^vmm:cbbNummer`) óf `riepr:inspireId`. Dit datatype is **illustratief**: het markeert enkel welk bron-veld de code vertegenwoordigt. De code zelf is gewoon een string. De namespace `vmm:` (`<http://vmm.be#>`) dient enkel als placeholder in het voorbeeld.
 
 ### Klassen die `adms:identifier` ondersteunen
 
@@ -222,11 +219,13 @@ In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in d
 
 | Klasse | Ook in het datavoorbeeld? |
 |---|---|
-| `riepr:Exploitatielocatie` | ja (DOMG/INSPIRE) |
 | `riepr:Exploitatie` | ja (VMM/CBB) |
+| `riepr:Exploitatielocatie` | ja (DOMG/INSPIRE) |
+| `riepr:Proces` | ja (VMM) |
 | `riepr:Installatie` | ja (VMM/apparaat, DOMG-INSPIRE) |
 | `riepr:Emissiepunt` | ja (VMM/emissiepunt) |
 | `riepr:Onttrekkingspunt` | ja (VMM/meerdere) |
+| `riepr:Uitwisselpunt` | nee (nog geen transferpunten in het voorbeeld) |
 | `riepr:Meetpunt` | ja (VMM/lozings- en onttrekkingspunt) |
 | `riepr:Filter` | ja (VMM/filter) |
 
@@ -236,20 +235,21 @@ In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in d
 
 ```turtle
 @prefix adms:  <http://www.w3.org/ns/adms#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 @prefix vmm:   <http://vmm.be#> .
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 
 # Exploitatielocatie: INSPIRE-identifier uit DOMG
 <.../exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z>
     adms:identifier [ a adms:Identifier ;
-        adms:scheme "DOMG" ;
-        rdf:value "BE.VL.000000034.SITE"^^riepr:inspireId ] .
+        adms:schemaAgency "DOMG" ;
+        skos:notation "BE.VL.000000034.SITE"^^riepr:inspireId ] .
 
 # Exploitatie: CBB-nummer uit VMM (migratie)
 <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
     adms:identifier [ a adms:Identifier ;
-        adms:scheme "VMM" ;
-        rdf:value "01787986000160"^^vmm:cbbNummer ] .
+        adms:schemaAgency "VMM" ;
+        skos:notation "01787986000160"^^vmm:cbbNummer ] .
 ```
 
 **Meerdere** identificatoren op één onttrekkingspunt (elk een ander VMM-bron-veld):
@@ -257,35 +257,40 @@ In de ontologie is `adms:identifier` (0..n) toegestaan op volgende klassen (in d
 ```turtle
 <.../onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>
     adms:identifier [ a adms:Identifier ;
-        adms:scheme "VMM" ;
-        rdf:value "46769"^^vmm:onttrekkingspuntCode
+        adms:schemaAgency "VMM" ;
+        skos:notation "46769"^^vmm:onttrekkingspuntCode
     ], [ a adms:Identifier ;
-        adms:scheme "VMM" ;
-        rdf:value "2019-010762"^^vmm:exploitantID
+        adms:schemaAgency "VMM" ;
+        skos:notation "2019-010762"^^vmm:exploitantID
     ], [ a adms:Identifier ;
-        adms:scheme "VMM" ;
-        rdf:value "2019-052596"^^vmm:vergunningID
+        adms:schemaAgency "VMM" ;
+        skos:notation "2019-052596"^^vmm:vergunningID
     ], [ a adms:Identifier ;
-        adms:scheme "VMM" ;
-        rdf:value "2019-043747"^^vmm:putID ] .
+        adms:schemaAgency "VMM" ;
+        skos:notation "2019-043747"^^vmm:putID ] .
 ```
 
 ### Afname (SPARQL)
 
-Externe identificatoren laten zich filteren op schema en waarde. Hierbij let je op de anonieme nodes (`adms:Identifier`):
+Externe identificatoren laten zich filteren op schema-agentschap en notatie. Hierbij let je op de anonieme nodes (`adms:Identifier`):
 
 ```sparql
 PREFIX adms:  <http://www.w3.org/ns/adms#>
-PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 
 # Onttrekkingspunten met een specifieke VMM-put-id
 SELECT ?put WHERE {
     ?put a riepr:Onttrekkingspunt ;
-        adms:identifier [ adms:scheme "VMM" ;
-                          rdf:value "2019-043747" ] .
+         adms:identifier ?id .
+    ?id adms:schemaAgency "VMM" ;
+        skos:notation ?notatie .
+    FILTER(STR(?notatie) = "2019-043747")
 }
 ```
+
+!!! warning "Vergelijk op `STR()`, niet op de literal zelf"
+    De `skos:notation`-waarden dragen een **datatype** (bijv. `^^vmm:putID`). Een SPARQL-vergelijking met een gewone string (`skos:notation "2019-043747"`) levert daarom **geen** resultaten op: `"2019-043747"^^xsd:string` en `"2019-043747"^^vmm:putID` zijn verschillende RDF-termen. Gebruik `STR(?notatie)` of vermeld het exacte datatype.
 
 Zie ook [Gebruiksscenario's](./gebruiksscenario.md) voor bredere afname-voorbeelden.
 

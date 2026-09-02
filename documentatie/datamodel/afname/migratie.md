@@ -2,7 +2,10 @@
 
 > **Scope**: Dit hoofdstuk beschrijft hoe de historische VMM/IMJV-gegevens worden omgezet naar het **MJV-datamodel** (RIE-IEPR, zie [Datamodel](./datamodel.md)), inclusief de toepassing van de [codelijsten](./codelijsten.md). Het referentievoorbeeld staat in `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl`.
 
-De migratie is een eenmalige laadbewerking: er worden **structurele** entiteiten opgebouwd (exploitant, exploitatielocatie, exploitatie, systemen, processen). De operationele stroom (observaties, emissies, onttrekkingen) wordt niet in deze stap gemigreerd — zie [Observaties en emissies](./observaties.md).
+!!! info "Structurele stroom"
+    Deze pagina beschrijft **structurele gegevens**: de organisatie en infrastructuur van de exploitatie. Metingen, emissies en observaties komen hier niet aan bod — die staan in [Observaties en emissies](./observaties.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
+
+De migratie is een eenmalige laadbewerking: er worden uitsluitend **structurele** entiteiten opgebouwd (exploitant, exploitatielocatie, exploitatie, systemen, processen). De operationele stroom wordt in deze stap niet gemigreerd: emissies en onttrekkingen worden later op het dataplatform afgeleid, en observaties komen uit de rapportageflow. Zie [Twee stromen](./datamodel.md).
 
 De migratie put uit **twee verschillende bronnen** die op één sleutel aan elkaar hangen:
 
@@ -194,7 +197,6 @@ Elk bronobject wordt afgebeeld op een klasse uit het RIE-IEPR-datamodel (zie [Sy
 ## 4. Algemene migratieregels
 
 1. **Identiteiten behouden.** De VMM-identifiers worden op het gemigreerde object bewaard als `adms:Identifier` met `adms:schemaAgency "VMM"` en een VMM-datatype (bv. `vmm:activiteitId`, `vmm:emissiepuntId`, `vmm:apparaatId`, `vmm:lozingspuntCode`, `vmm:onttrekkingspuntCode`, `vmm:filterId`, `vmm:putID`, `vmm:putKey`). Zo blijft het object traceerbaar naar de bron. GPBV- en dOMG-objecten krijgen een identifier met `adms:schemaAgency "DOMG"`. Zie [Basisaannames: externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
-   De ontologie en het datavoorbeeld gebruiken hiervoor `adms:schemaAgency` en `skos:notation`; waar [Basisaannames](./basisaanname.md) nog `adms:scheme`/`rdf:value` vermeldt, is de ontologie leidend.
 
 2. **URI-toewijzing.** Nieuwe systemen krijgen een UUID als lokale identifier. Uitzondering: GPBV-installaties nemen hun identificator uit het GPBV-register over (bv. `BE_VL_000000002_INSTALLATION`, met de INSPIRE-id als `^^riepr:inspireId`).
 

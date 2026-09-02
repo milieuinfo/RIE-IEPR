@@ -75,6 +75,13 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       {% include "partials/copyright.html" %}
+      {% if config.extra.model %}
+        <div class="md-footer-model">
+          Datamodel <strong>v{{ config.extra.model.versie }}</strong>
+          &middot; documentatie bijgewerkt op {{ config.extra.model.datum }}
+          &middot; ontologie {{ config.extra.model.ontologie_datum }}
+        </div>
+      {% endif %}
       {% if config.extra.social %}
         {% include "partials/social.html" %}
       {% endif %}

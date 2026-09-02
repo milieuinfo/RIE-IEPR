@@ -1,33 +1,51 @@
 # Documentatie afname (Linked Open Data)
 
+| | |
+|---|---|
+| Modelversie | **1.0.1** |
+| Documentatie bijgewerkt | 2026-09-02 |
+| Ontologie (`riepr.ttl`) | 2026-08-26 |
+
 
 Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van een data-afnemer die de gegevens raadpleegt via Linked Open Data (LOD). De documentatie behandelt **wat er beschikbaar is** en **hoe u het kunt gebruiken**. Er wordt geen informatie gegeven over databanken, transformatieprocessen of applicatielogica.
 
-Het datamodel kent twee aparte stromen:
+Het datamodel kent **twee aparte stromen**, die in deze documentatie consequent uit elkaar gehouden worden. Elke pagina draagt bovenaan een banner die zegt tot welke stroom ze behoort.
 
-**Structurele gegevens** omvatten exploitanten, exploitatielocaties, exploitaties, systemen (installaties, emissiepunten, onttrekkingspunten, meetpunten, filters) en processen. Dit zijn versioneerbare entiteiten die de organisatie en infrastructuur beschrijven.
+**Structurele gegevens** omvatten exploitanten, contactpersonen, exploitatielocaties, exploitaties, processen en systemen (installaties, emissiepunten, onttrekkingspunten, uitwisselpunten, meetpunten, filters) met hun eigenschappen. Dit zijn de versioneerbare entiteiten die de organisatie en infrastructuur beschrijven, en de enige die in de applicatie worden ingegeven en beheerd.
 
-**Operationele gegevens** omvatten observaties, emissies, onttrekkingen, observatieverzamelingen en de bijbehorende operationele codelijsten (`operationeel_*.csv`, `thema_type.csv`). Deze gegevens beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens.
+**Operationele gegevens** omvatten de gebeurtenissen (emissie, onttrekking, verbruik) die als `sosa:FeatureOfInterest` dienen, plus observaties, observatieverzamelingen en resultaten, aangestuurd door de operationele codelijsten (`operationeel_*`, `thema_type`). Ze worden niet geversioneerd en hangen via drie vaste predicaten aan de structurele stroom.
 
 !!! warning "Analyse nog lopende"
-    De analyse van operationele gegevens is nog lopende. De informatie over operationele gegevens kan wijzigen na afronding van de analyse.
+    De analyse van operationele gegevens is nog lopende. De informatie over operationele gegevens kan wijzigen na afronding van de analyse. De structurele stroom is stabiel.
+
+De precieze grens — welke klassen, welke predicaten, en waarom emissies niet in de applicatie bestaan — staat in **[Twee stromen](./datamodel.md)**.
 
 ## Inhoud
 
-- [End-to-end voorbeeld](./endtoend.md) de volledige dataketen van exploitant tot gemeten waarde
-- [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
+**Overkoepelend**
+
+- [Twee stromen](./datamodel.md) de opdeling van het model en de grens ertussen
 - [Basisaannames](./basisaanname.md) de modellen en aannames die ten grondslag liggen aan het datamodel
+- [End-to-end voorbeeld](./endtoend.md) de volledige dataketen, per stroom uit elkaar gehouden
+- [Gebruiksscenario's](./gebruiksscenario.md) concrete voorbeelden van data-afname met SPARQL-query's
+- [Aangifte en dossier](./aangifte.md) het administratieve document waaraan beide stromen kunnen hangen
+
+**Structurele gegevens**
+
 - [Exploitant- en exploitatiemodel](./exploitant.md) organisaties, locaties en activiteiten
 - [Systemen: installaties, emissiepunten en meetpunten](./systemen.md) systemen, subsystemen en eigenschappen
-- [Observaties en emissies](./observaties.md) metingen, observaties en gebeurtenissen (emissie, onttrekking)
-- [Aangifte en dossier](./aangifte.md) documenten gekoppeld aan de data
 - [Versiebeheer en tijdsrecht](./versiebeheer.md) versiebeheer, geldigheid en historische query's
+- [Migratie](./migratie.md) omzetting van de VMM/IMJV-gegevens naar dit model
+
+**Operationele gegevens**
+
+- [Observaties en emissies](./observaties.md) metingen, gebeurtenissen (emissie, onttrekking) en resultaten
 
 > **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
 
 ## Hoe deze documentatie gebruiken
 
-Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gebaseerd op realistische data van AGC Glass Europe. De Turtle-snippets tonen hoe de data eruitziet in RDF-formaat. Direct bruikbaar voor LOD-afnemers die SPARQL of RDF-libraries gebruiken.
+Elk bestand bevat **concrete datavoorbeelden** uit de RIE-IEPR-ontologie, gemodelleerd naar de casus AGC Glass Europe. Het gaat om demonstratiedata, niet om echte aangiftedata. De Turtle-snippets tonen hoe de data eruitziet in RDF-formaat. Direct bruikbaar voor LOD-afnemers die SPARQL of RDF-libraries gebruiken.
 
 ### URI-patronen
 
@@ -39,9 +57,11 @@ De meeste entiteiten volgen een consistent URI-patroon:
 | Exploitatie (versie) | `.../exploitatie/{uuid}/{issued}/{created}` | `.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z` |
 | Installatie (versie) | `.../installatie/{uuid}/{issued}/{created}` | `.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z` |
 | Emissiepunt (versie) | `.../emissiepunt/{uuid}/{issued}/{created}` | `.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z` |
-| Observatie | `.../observatie/{uuid}/{created}` | `.../observatie/019edc4a-1a35-7bn3-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z` |
+| Observatie | `.../observatie/{uuid}/{created}` | `.../observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z` |
 
-Versioneerbare entiteiten bevatten **drie** segmenten in de URI: een unieke identifier, de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`). De tijdsloze identity-uri (twee segmenten) is bereikbaar via `dct:isVersionOf`.
+Na het entiteitstype dragen versioneerbare entiteiten **drie** URI-segmenten: een unieke identifier, de geldigheidsdatum (`issued`) en de aanmaaktimestamp (`created`). De tijdsloze identity-URI draagt er maar één (de identifier) en is bereikbaar via `dct:isVersionOf`. Observaties en observatieverzamelingen vormen een tussenvorm: identifier + `created`, zonder `issued`.
+
+Zie [URI-patronen & Hydra](./uri-patterns.md) voor het volledige overzicht per klasse, inclusief de klassen die een andere sleutel dan een UUID gebruiken (exploitant, aangifte).
 
 ## Externe standaarden
 
@@ -49,11 +69,11 @@ Het RIE-IEPR-datamodel bouwt voort op volgende W3C-standaarden:
 
 - **SOSA/SSN** ([Sensor Web Observation Model](https://www.w3.org/TR/vocab-ssn/)) systemen, observaties, metingen
 - **PROV-O** ([Provenance Ontology](https://www.w3.org/TR/prov-o/)) herkomst, versiebeheer
-- **ADMS** ([Agent Design Memorandum Schema](https://www.w3.org/TR/vocab-adms/)) externe/bibliotheek-identificatoren via `adms:identifier`
+- **ADMS** ([Asset Description Metadata Schema](https://www.w3.org/TR/vocab-adms/)) externe/bibliotheek-identificatoren via `adms:identifier`
 - **GeoSPARQL** ([OGC GeoSPARQL](https://docs.ogc.org/is/22-047r1/22-047r1.html)) geografische objecten
 - **P-Plan** ([Plan Ontology](https://www.opmw.org/model/p-plan/)) processen en stappen
 
-> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u het aftrekt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
+> **Externe identificatoren**: naast de eigen RIE-IEPR-URI bewaart het model externe (bron/migratie) identificatoren via `adms:identifier` (bijv. VMM-migratiecodes en DOMG/INSPIRE-id's). Hoe dit werkt en hoe u het bepaalt, staat in [Basisaannames §9 — Externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
 ## Codelijsten (SKOS concepten)
 
@@ -65,20 +85,27 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 
 | Codelijst | URI-prefix | Beschrijving |
 |---|---|---|
-| **installatie_type** | `…/concept/riepr/installatie-type/` | Typen installaties (GPBV, IEPR, stookinstallatie, …) |
-| **emissiepunt_type** | `…/concept/riepr/emissiepunt-type/` | Typen emissiepunten (schoorsteen, lozingspunt, …) |
-| **onttrekkingspunt_type** | `…/concept/riepr/onttrekkingspunt-type/` | Typen onttrekkingspunten (grondwaterput, …) |
-| **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (meetput, controle-inrichting, …) |
-| **filter_type** | `…/concept/riepr/filter-type/` | Typen filters |
-| **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (emissie, onttrekking, verwerking, meet, uitwissel) |
-| **hoofdactiviteit_type** | `…/concept/riepr/hoofdactiviteit-type/` | Typering van het hoofdproces (dat de exploitatie implementeert) |
-| **status_type** | `…/concept/riepr/status-type/` | Statussen (in_dienst, ontmanteld, …) |
-| **rubriek_type** | `…/concept/riepr/rubriek-type/` | Classificaties (VLAREM, EGW, …) |
-| **aangifte_type** | `…/concept/riepr/aangifte-type/` | Typen aangiften |
-| **data_type** | `…/concept/riepr/data-type/` | Datatype-kinds |
-| **emissiepunt_eigenschappen** | `…/concept/riepr/emissiepunt-eigenschappen/` | Koppeling emissiepunt-types en hun eigenschappen |
-| **installatie_eigenschappen** | `…/concept/riepr/installatie-eigenschappen/` | Koppeling installatie-types en hun eigenschappen |
-| **filter_eigenschappen** | `…/concept/riepr/filter-eigenschappen/` | Koppeling filter-types en hun eigenschappen |
+| **installatie_type** | `…/concept/riepr/installatie-type/` | Typen installaties (`installatie`, `stookinstallatie`, `luchtzuivering`, `waterzuivering`, `gpbv`, …) |
+| **emissiepunt_type** | `…/concept/riepr/emissiepunt-type/` | Typen emissiepunten (`schoorsteen`, `lozingspunt`, `fakkel`, `gebouw`, …) |
+| **onttrekkingspunt_type** | `…/concept/riepr/onttrekkingspunt-type/` | Typen onttrekkingspunten (`pompput`, `opnamepunt`) |
+| **uitwisselpunt_type** | `…/concept/riepr/uitwisselpunt-type/` | Typen uitwisselpunten (`uitwisselpunt`) |
+| **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (`peilput`, `debietmeter`, `controleinrichting`) |
+| **filter_type** | `…/concept/riepr/filter-type/` | Typen filters (`peil`, `pomp`, `injectie`, `omkeerbaar`) |
+| **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (`verwerking`, `emissie`, `onttrekking`, `uitwissel`, `meting`, `transport`, `hoofdactiviteit`) |
+| **status_type** | `…/concept/riepr/status-type/` | Statussen (`in_dienst`, `tijdelijk_uit_dienst`, `definitief_uit_dienst`, `ontmanteld`, `voorgesteld`, `verkeerde_registratie`) |
+| **rubriek_type** | `…/concept/riepr/rubriek-type/` | Classificaties (`vlarem`, …) |
+| **aangifte_type** | `…/concept/riepr/aangifte-type/` | Typen aangiften (`structuur`, `operationeel`) |
+| **aangifte_status** | `…/concept/riepr/aangifte-status/` | Statussen van een aangiftebundel (`concept`, `ingediend`, `gefaald`, `ingetrokken`) |
+| **installatie_eigenschappen** | `…/concept/riepr/installatie-eigenschappen/` | Eigenschappen van installaties |
+| **emissiepunt_eigenschappen** | `…/concept/riepr/emissiepunt-eigenschappen/` | Eigenschappen van emissiepunten |
+| **onttrekkingspunt_eigenschappen** | `…/concept/riepr/onttrekkingspunt-eigenschappen/` | Eigenschappen van onttrekkingspunten |
+| **meetpunt_eigenschappen** | `…/concept/riepr/meetpunt-eigenschappen/` | Eigenschappen van meetpunten |
+| **uitwisselpunt_eigenschappen** | `…/concept/riepr/uitwisselpunt-eigenschappen/` | Eigenschappen van uitwisselpunten |
+| **eenheden** | `…/concept/riepr/eenheden/` | Eenheden (verwijzingen naar QUDT) |
+
+> De typering van het **hoofdproces** is geen aparte codelijst: `hoofdactiviteit` is een concept binnen `procedure_type` (`…/concept/riepr/procedure-type/hoofdactiviteit`).
+
+Daarnaast bestaan er operationele codelijsten (`operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`, `thema_type`) voor de rapportagestroom. Zie [Codelijsten beheer](./codelijsten.md).
 
 ### Voorbeeld: procedure_type in gebruik
 
@@ -109,7 +136,7 @@ De codelijsten zelf zijn gepubliceerd als Linked Open Data en kunnen worden gera
 
 - **Turtle**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.ttl`
 - **JSON-LD**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.jsonld`
-- **Individual concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv-installatie`
+- **Individual concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv`
 
 Het codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepubliceerd in meerdere formaten (Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel).
 

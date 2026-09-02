@@ -1,11 +1,27 @@
 # Observaties en emissies
 
+!!! info "Operationele stroom"
+    Deze pagina beschrijft **operationele gegevens**: gebeurtenissen (emissie, onttrekking, verbruik), observaties, verzamelingen en resultaten. De structurele entiteiten waaraan ze hangen, staan in [Systemen](./systemen.md) en [Exploitant en exploitatie](./exploitant.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
+
 !!! warning "Analyse nog lopende"
     De analyse van operationele gegevens is nog lopende. De informatie in dit document kan wijzigen na afronding van de analyse.
 
-> **Operationele gegevens**: Observaties, emissies, onttrekkingen en observatieverzamelingen behoren tot de operationele stroom van het datamodel. Ze beschrijven wat er gemeten en gerapporteerd wordt en linken altijd naar structurele gegevens zoals systemen en processen.
+Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking, verbruik) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C ([vocab-ssn](https://www.w3.org/TR/vocab-ssn/)).
 
-Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, onttrekking) worden voorgesteld in het RIE-IEPR-datamodel. Het volgt het **SOSA/SSN**-patroon van de W3C ([vocab-ssn](https://www.w3.org/TR/vocab-ssn/)).
+## 0. Waar deze stroom aan de structuur hangt
+
+!!! info "Emissie, onttrekking en verbruik bestaan niet in de applicatie"
+    Deze drie klassen worden nergens ingegeven. Ze worden op het **dataplatform afgeleid** uit de structurele graaf, met een SPARQL construct-query die de identifier en de versionering van het onderliggende systeem overneemt. Functioneel hangt er niets aan het concept "emissie" — het bestaat uitsluitend om observaties een `sosa:FeatureOfInterest` te geven.
+
+De operationele stroom raakt de structurele stroom op precies drie plaatsen:
+
+| Predicaat | Van | Naar (structureel/administratief) | Cardinaliteit |
+|---|---|---|---|
+| `prov:wasDerivedFrom` | `Emissie`, `Onttrekking`, `Verbruik` | `Proces` | verplicht, min 1 |
+| `sosa:madeBySensor` | `Observatie` | het meetpunt (`ssn:System`) | optioneel, 0..1 |
+| `riepr:aangifte` | `Observatie`, `ObservatieVerzameling` | `Aangifte` | optioneel, 0..1 |
+
+Al de rest — feature of interest, resultaat, verzameling, geobserveerde eigenschap — blijft binnen deze stroom. Zie [Twee stromen](./datamodel.md).
 
 ## 1. Het SOSA/SSN observatiepatroon
 
@@ -50,7 +66,7 @@ Een **emissie** is een gebeurtenis waarbij stoffen de installatie verlaten (aan 
 
 ### Onttrekking
 
-Een **onttrekking** is een gebeurtenis waarbij grondstoffen worden gewonnen of gebonsterd (aan een onttrekkingspunt), analoog aan de emissie maar dan afgeleid van een onttrekkingsproces:
+Een **onttrekking** is een gebeurtenis waarbij grondstoffen worden gewonnen of bemonsterd (aan een onttrekkingspunt), analoog aan de emissie maar dan afgeleid van een onttrekkingsproces:
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/019eaca0-b8c6-7096-886c-103c3e21466d>
@@ -59,7 +75,7 @@ Een **onttrekking** is een gebeurtenis waarbij grondstoffen worden gewonnen of g
     prov:wasDerivedFrom <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7241-ac66-b7831d1b3624/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-> **Opmerking**: De klasse `Uitwisseling` is niet apart gemodelleerd. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.
+> **Opmerking**: De ontologie kent naast `Emissie` en `Onttrekking` ook `riepr:Verbruik` (verbruik van stoffen), met exact hetzelfde patroon. Een klasse `Uitwisseling` is **niet** gemodelleerd, hoewel `DATAPLATFORM.md` in de applicatiedocumentatie er wel naar verwijst — dat is een openstaand punt. Een uitwisselpunt is per definitie zowel emissiepunt als onttrekkingspunt (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)); er bestaan dus zowel emissie- als onttrekkingsgebeurtenissen voor.
 
 ### Relatie tussen punt en gebeurtenis
 
@@ -101,7 +117,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 | `sosa:madeBySensor` | ssn:System | Nee | Het meetpunt/systeem dat de meting uitvoerde |
 | `sosa:usedProcedure` | concept | Nee | De bepalingsmethode |
 | `sosa:resultTime` | dateTime | Nee | Wanneer het resultaat werd vastgelegd |
-| `sosa:phenomenonTime` | dateTime/interval | Nee | Tijdstip of interval van het verschijnsel |
+| `sosa:phenomenonTime` | `time:TemporalEntity` | Nee | Tijdstip of interval van het verschijnsel (OWL-Time; er bestaat geen XSD-datatype voor een interval) |
 | `sosa-2023:isMemberOf` | riepr:ObservatieVerzameling | Nee | De verzameling waartoe de observatie behoort |
 | `riepr:aangifte` | riepr:Aangifte | Nee | De aangifte waaraan de observatie gerelateerd is |
 
@@ -111,7 +127,7 @@ Een **observatie** is een waarneming of meting. Het is een instantie van `sosa:O
 
 ### URI-patroon
 
-Observaties zijn **versioneerbaar** met een twee-segment patroon (`{uuid}/{created}`; er is geen `issued`-segment, de geldigheid zit in de gekoppelde entiteiten):
+De observatie-URI draagt naast de identifier één tijdsegment: `{uuid}/{created}`. Er is **geen** `issued`-segment en **geen** `dct:isVersionOf`: een observatie wordt niet geversioneerd. De `created`-timestamp maakt de URI uniek per registratie; de geldigheid zit in de gekoppelde structurele entiteiten.
 
 ```turtle
 @prefix sosa:  <http://www.w3.org/ns/sosa/> .
@@ -119,32 +135,32 @@ Observaties zijn **versioneerbaar** met een twee-segment patroon (`{uuid}/{creat
 @prefix unit:  <http://qudt.org/vocab/unit/> .
 @prefix dct:   <http://purl.org/dc/terms/> .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z>
     a sosa:Observation ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
+    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/MGWGWNFMUOTEHG-UHFFFAOYSA-N> ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9> ;
+    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 ```
 
 ## 4. Resultaten en waarden
 
-Het resultaat van een observatie is een `riepr:Resultaat` (`sosa:Result` + `prov:Entity`) met een **eigen URI** (twee segmenten: `resultaat/{uuid}`), geen anonieme node:
+Het resultaat van een observatie is een `riepr:Resultaat` — subklasse van `sosa:Result` en `qb:Observation` (RDF Data Cube) — met een **eigen URI** (`resultaat/{uuid}`), geen anonieme node:
 
 ```turtle
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix unit:  <http://qudt.org/vocab/unit/> .
 
 # Numeriek resultaat
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d>
+    a riepr:Resultaat ;
     qudt:numericValue "45.2"^^xsd:decimal ;
     qudt:hasUnit unit:MG-PER-M3 .
 
 # Tekstueel resultaat (vrije waarde, bijvoorbeeld een kwalificatie)
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-im4f-n9ojk7kgkfa>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a41-7b33-9e4f-4f5a6b7c8d9e>
+    a riepr:Resultaat ;
     rdfs:comment "Kleurafwijking geconstateerd, hermeting ingepland"@nl .
 ```
 
@@ -158,30 +174,30 @@ QUDT (Quantities, Units, Types and Dimensions) biedt een gestandaardiseerd syste
 
 ## 5. Geobserveerde eigenschappen (observedProperty)
 
-De `sosa:observedProperty` geeft aan **wat** er werd gemeten. In het RIE-IEPR-model zijn dit concepten (bijv. stoffen) uit de codelijsten:
+De `sosa:observedProperty` geeft aan **wat** er werd gemeten. In het RIE-IEPR-model zijn dit concepten uit de codelijsten: chemische stoffen worden geïdentificeerd via hun InChIKey onder `…/id/concept/chemische_stof/`, andere gemeten grootheden komen uit de operationele codelijsten. Er is géén aparte `observed-property`-codelijst.
 
 ```turtle
-# Voorbeeld: NOx-meting
-<.../observatie/...> sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/...> .
+# Voorbeeld: een gemeten stof, geïdentificeerd via haar InChIKey
+<.../observatie/...> sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/MGWGWNFMUOTEHG-UHFFFAOYSA-N> .
 
-# Voorbeeld: zuurstofgehalte
-<.../observatie/...> sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/O2> .
+# Voorbeeld: een contextuele parameter uit een operationele codelijst
+<.../observatie/...> sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/operationeel-lucht/debiet> .
 ```
 
 ## 6. Procedures: meetproces en bepalingsmethode
 
 Het model kent twee verschillende vormen van "procedure", die niet verward moeten worden:
 
-1. **Het meetproces** — een `riepr:Proces` zoals elk ander proces in het plan. Het heeft `dct:type` = [`procedure-type/meet`](https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv) (dezelfde codelijst als emissie, onttrekking, verwerking, uitwissel) en **implementeert per OWL-axioma een `riepr:Meetpunt`**:
+1. **Het meetproces** — een `riepr:Proces` zoals elk ander proces in het plan. Het heeft `dct:type` = [`procedure-type/meting`](https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/procedure_type.csv) (dezelfde codelijst als emissie, onttrekking, verwerking, uitwissel) en **implementeert per OWL-axioma een `riepr:Meetpunt`**:
 
     ```turtle
     <.../proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z>
-        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet> ;
+        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
         ssn:implementedBy <.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
         pplan:isStepOfPlan <.../hoofdproces/...> .
     ```
 
-2. **De bepalingsmethode** — de methodologie van de meting zelf (bijv. een norm als EN 1948). Die staat op de observatie via `sosa:usedProcedure` en verwijst naar een concept uit de codelijst [`operationeel_bepalingsmethode`](https://github.com/milieuinfo/codelijst-rie-iepr/tree/main/src/source):
+2. **De bepalingsmethode** — de methodologie van de meting zelf (bijv. een norm als EN 1948). Die staat op de observatie via `sosa:usedProcedure` en verwijst naar een concept uit een bepalingsmethode-codelijst. Die codelijst is nog niet gepubliceerd in [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/tree/main/src/source); de onderstaande URI is dus illustratief:
 
     ```turtle
     <.../observatie/...>
@@ -202,10 +218,10 @@ Eén meting of bemonstering levert doorgaans **meerdere individuele observaties*
     # De verzameling zelf wijst naar het feature of interest (exact 1)
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
     # en bevat minstens één observatie
-    sosa-2023:hasMember <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z> ,
-                       <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-im4f-n9ojk7kgkf5/2026-01-01T10:00:00Z> ;
+    sosa-2023:hasMember <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z> ,
+                       <https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a36-7b33-9e4f-2d3e4f5a6b7c/2026-01-01T10:00:00Z> ;
     # optioneel: de aangifte waaraan de meting gerelateerd is
-    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/019edc4a-1a39-7fr7-mq8j-r3soo1okok8> ;
+    riepr:aangifte <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 ```
 
@@ -224,6 +240,7 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
 @prefix qudt:    <http://qudt.org/schema/qudt/> .
 @prefix unit:    <http://qudt.org/vocab/unit/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
+@prefix time:    <http://www.w3.org/2006/time#> .
 
 # --- Gebeurtenis (Feature of Interest), afgeleid van het emissieproces ---
 <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c>
@@ -236,19 +253,21 @@ Hieronder volgt een compleet voorbeeld van een emissie-observatie, van gebeurten
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded> .
 
 # --- Observatie ---
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z>
     a sosa:Observation ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
+    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/MGWGWNFMUOTEHG-UHFFFAOYSA-N> ;
     sosa:madeBySensor <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
-    sosa:phenomenonTime "2026-01-01T08:00:00Z/2026-01-01T12:00:00Z"^^xsd:dateTimeInterval ;
+    sosa:phenomenonTime [ a time:Interval ;
+        time:hasBeginning [ time:inXSDDateTimeStamp "2026-01-01T08:00:00Z"^^xsd:dateTimeStamp ] ;
+        time:hasEnd       [ time:inXSDDateTimeStamp "2026-01-01T12:00:00Z"^^xsd:dateTimeStamp ] ] ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9> ;
+    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
 # --- Resultaat (eigen URI) ---
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d>
+    a riepr:Resultaat ;
     qudt:numericValue "45.2"^^xsd:decimal ;
     qudt:hasUnit unit:MG-PER-M3 .
 ```

@@ -56,7 +56,8 @@ def schrijf_pagina(spec: dict) -> bool:
         aangepast = datetime.datetime.fromtimestamp(
             os.path.getmtime(ttl_path), datetime.timezone.utc
         ).strftime("%Y-%m-%d %H:%M UTC")
-        metadatum.append(f"| Laatst gegenereerd | {aangepast} |")
+        label = "Laatst gegenereerd" if spec["generator"] else "Laatst gewijzigd"
+        metadatum.append(f"| {label} | {aangepast} |")
         with open(ttl_path, encoding="utf-8") as f:
             ttl_inhoud = f.read()
         metadatum.append(f"| Grootte | {fmt_grootte(ttl_path)} |")
@@ -66,10 +67,9 @@ def schrijf_pagina(spec: dict) -> bool:
         "",
         spec["inleiding"],
         "",
-        "```{note}",
-        "Dit is een **datavoorbeeld**: de data is fictief en dient uitsluitend om het "
+        "!!! note",
+        "    Dit is een **datavoorbeeld**: de data is fictief en dient uitsluitend om het "
         "datamodel te illustreren.",
-        "```",
         "",
     ]
     if os.path.exists(ttl_path):

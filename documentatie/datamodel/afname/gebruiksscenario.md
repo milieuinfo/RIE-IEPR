@@ -1,11 +1,13 @@
 # Gebruiksscenario's
 
+!!! abstract "Beide stromen"
+    Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
 
-Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Alle voorbeelden zijn gebaseerd op een enkel voorbeeldbestand.
+Deze documentatie beschrijft concrete gebruiksscenario's voor afnemers van het RIE-IEPR-datamodel via Linked Open Data (LOD). Elk scenario is gemarkeerd met de stroom waartoe het behoort (zie [Twee stromen](./datamodel.md)): scenario's 1, 2, 4, 5 en 6 zijn **structureel**, scenario's 3 en 7 **operationeel**. De structurele voorbeelden komen uit het datavoorbeeld [AGC Glass Europe](./datavoorbeelden/agc-glass.md); de operationele voorbeelden (observaties, resultaten) zijn synthetisch, omdat de operationele stroom nog niet gemigreerd is.
 
 ## Scenario 1: Een exploitant identificeren en contacteren
 
-> **Doel**: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactpersonen.
+> **Structurele stroom.** **Doel**: Het doel is om alle informatie te vinden over een specifieke exploitant, inclusief contactpersonen.
 
 Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worden geannoteerd via de `oa:Annotation`-subklasse `riepr:Contactpersoon` en verwijzen naar de exploitatie (niet direct naar de exploitant). Het `dct:type` verwijst naar het concept `:milieucoordinator` of `:contactpersoon` en bepaalt wat de persoon is. Er is **geen versionering**: de URI is een vaste identity-URI op basis van een UUID.
 
@@ -30,21 +32,30 @@ Elke exploitant heeft een vaste URI gebaseerd op een UUID. Contactpersonen worde
 
 **SPARQL-query voorbeeld:**
 ```sparql
-SELECT ?contactNaam ?contactEmail ?type
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX prov:  <http://www.w3.org/ns/prov#>
+PREFIX dct:   <http://purl.org/dc/terms/>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX oa:    <http://www.w3.org/ns/oa#>
+PREFIX ssn:   <http://www.w3.org/ns/ssn/>
+
+SELECT ?exploitant ?contactNaam ?contactEmail ?type
 WHERE {
   ?exploitant a riepr:Exploitant .
+  # de band exploitatie -> exploitant loopt via de exploitatielocatie
+  ?locatie prov:wasAttributedTo ?exploitant .
+  ?exploitatie ssn:deployedOnPlatform ?locatie .
   ?contact a riepr:Contactpersoon ;
-            dct:type ?type ;
-            oa:hasTarget ?exploitatie ;
-            foaf:name ?contactNaam ;
-            foaf:mbox ?contactEmail .
-  ?exploitatie prov:wasAttributedTo ?exploitant .
+           dct:type ?type ;
+           oa:hasTarget ?exploitatie ;
+           foaf:name ?contactNaam ;
+           foaf:mbox ?contactEmail .
 }
 ```
 
 ## Scenario 2: Alle installaties van een exploitatie ophalen
 
-> **Doel**: Het doel is om te achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.
+> **Structurele stroom.** **Doel**: Het doel is om te achterhalen welke installaties, emissiepunten en meetpunten bij een bepaalde exploitatie horen.
 
 De relatie tussen een exploitatie en haar systemen wordt gelegd via `ssn:deployedSystem`. Dit omvat installaties, emissiepunten, onttrekkingspunten, meetpunten en filters.
 
@@ -61,6 +72,10 @@ De relatie tussen een exploitatie en haar systemen wordt gelegd via `ssn:deploye
 
 **SPARQL-query voorbeeld:**
 ```sparql
+PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
+PREFIX ssn:   <http://www.w3.org/ns/ssn/>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?systeem ?type ?label
 WHERE {
   ?exploitatie a riepr:Exploitatie ;
@@ -72,7 +87,10 @@ WHERE {
 
 ## Scenario 3: Emissieobservaties opvragen voor een specifiek emissiepunt
 
-> **Doel**: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.
+!!! warning "Analyse nog lopende"
+    De operationele stroom is nog in analyse; dit scenario kan wijzigen.
+
+> **Operationele stroom.** **Doel**: Het doel is om alle metingen en observaties te vinden die gekoppeld zijn aan een bepaald emissiepunt.
 
 Let op: de `sosa:hasFeatureOfInterest` van een observatie wijst **altijd** naar een **emissie of onttrekking** (de gebeurtenis), nooit naar het emissiepunt zelf. Het emissiepunt is bereikbaar via de keten emissie → proces → emissiepunt. Elke observatie heeft een resultaat dat de gemeten waarde bevat:
 
@@ -108,16 +126,16 @@ graph LR
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z> .
 
 # De observatie wijst naar de emissie (niet naar het emissiepunt)
-<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4/2026-01-01T10:00:00Z>
+<https://data.mjv.omgeving.vlaanderen.be/id/observatie/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b/2026-01-01T10:00:00Z>
     a sosa:Observation ;
     sosa:hasFeatureOfInterest <https://data.mjv.omgeving.vlaanderen.be/id/emissie/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/riepr/observed-property/NOx> ;
+    sosa:observedProperty <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/MGWGWNFMUOTEHG-UHFFFAOYSA-N> ;
     sosa:resultTime "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9> ;
+    sosa:hasResult <https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-im4f-n9ojk7kgkf9>
-    a sosa:Result, prov:Entity ;
+<https://data.mjv.omgeving.vlaanderen.be/id/resultaat/019edc4a-1a40-7b33-9e4f-3e4f5a6b7c8d>
+    a riepr:Resultaat ;
     qudt:numericValue "45.2"^^xsd:decimal ;
     qudt:hasUnit unit:MG-PER-M3 .
 ```
@@ -149,7 +167,7 @@ ORDER BY DESC(?datum)
 
 ## Scenario 4: Processen en hun hiërarchie doorzoeken
 
-> **Doel**: Het doel is om de proceshiërarchie van een exploitatie in te zien. Welke stappen bij elkaar horen?
+> **Structurele stroom.** **Doel**: Het doel is om de proceshiërarchie van een exploitatie in te zien. Welke stappen bij elkaar horen?
 
 Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoofdactiviteit) wordt geïmplementeerd door de exploitatie. Subprocessen zijn verbonden via `pplan:isStepOfPlan`.
 
@@ -161,7 +179,7 @@ Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoof
 <.../proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
     rdfs:label "Vormen en bewerken van vlakglas"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/hoofdactiviteit-type> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> .
 
 # Subproces: emissie
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
@@ -173,6 +191,11 @@ Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoof
 
 **SPARQL-query voorbeeld:**
 ```sparql
+PREFIX ssn:   <http://www.w3.org/ns/ssn/>
+PREFIX pplan: <http://purl.org/net/p-plan#>
+PREFIX dct:   <http://purl.org/dc/terms/>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?hoofdProces ?subProces ?label ?type
 WHERE {
   ?exploitatie ssn:implements ?hoofdProces .
@@ -184,9 +207,9 @@ WHERE {
 
 ## Scenario 5: Systeemeigenschappen van een installatie lezen
 
-> **Doel**: Het doel is om de eigenschappen (parameters) van een specifieke installatie op te vragen.
+> **Structurele stroom.** **Doel**: Het doel is om de eigenschappen (parameters) van een specifieke installatie op te vragen.
 
-Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. Elke eigenschap heeft een `riepr:parameter` (de naam) en een `riepr:datatype` (het datatype).
+Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. **Wat** de eigenschap is, staat in het verplichte `dct:type` (een concept uit een `*_eigenschappen`-codelijst); de waarde staat in `rdfs:value` met een `qudt:hasUnit`. `riepr:parameter` (optioneel) wijst naar het concept *waarover* de eigenschap gaat — bij een verwijderingsrendement is dat de chemische stof — en `riepr:datatype` (optioneel) naar het datatype-IRI. Beide zijn objectproperties: hun waarde is altijd een IRI.
 
 ```turtle
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
@@ -197,13 +220,14 @@ Systeemeigenschappen worden gekoppeld via `ssn:hasProperty`. Elke eigenschap hee
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-730f-8fc4-c09b55661a9f>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
-    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-M> ;
+    rdfs:value "0"^^xsd:decimal ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/PERCENT> .
 ```
 
 ## Scenario 6: Geografische data van een exploitatielocatie opvragen
 
-> **Doel**: Het doel is om de geografische locatie en het adres van een exploitatie te vinden.
+> **Structurele stroom.** **Doel**: Het doel is om de geografische locatie en het adres van een exploitatie te vinden.
 
 Exploitatielocaties gebruiken GeoSPARQL voor geometrie en LOCN voor adressen.
 
@@ -229,7 +253,10 @@ Exploitatielocaties gebruiken GeoSPARQL voor geometrie en LOCN voor adressen.
 
 ## Scenario 7: Observaties groeperen per meetpunt en tijdsperiode
 
-> **Doel**: Het doel is om alle observaties van een meetpunt binnen een bepaalde tijdspanne te vinden.
+!!! warning "Analyse nog lopende"
+    De operationele stroom is nog in analyse; dit scenario kan wijzigen.
+
+> **Operationele stroom.** **Doel**: Het doel is om alle observaties van een meetpunt binnen een bepaalde tijdspanne te vinden.
 
 Meetpunten zijn **geen** Feature of Interest (dat is de emissie of onttrekking). Een meetpunt is het **sensorapparaat** van de observatie: de `sosa:madeBySensor`-relatie koppelt observaties aan het meetpunt.
 

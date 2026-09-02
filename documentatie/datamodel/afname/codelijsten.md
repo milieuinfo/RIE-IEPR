@@ -1,5 +1,8 @@
 # Codelijsten beheer
 
+!!! abstract "Beide stromen"
+    Deze pagina behandelt structurele **en** operationele gegevens. Ze zijn hieronder per sectie uit elkaar gehouden en als zodanig gemarkeerd; zie [Twee stromen](./datamodel.md) voor de grens.
+
 Deze pagina beschrijft hoe de gecontroleerde vocabulaires / codelijsten van RIE-IEPR zijn opgebouwd, beheerd en gepubliceerd. De bronbestanden staan in het aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) onder `src/source/`. De codelijsten worden als SKOS concepten en concept schemes gepubliceerd op `https://data.omgeving.vlaanderen.be/id/concept/riepr/`.
 
 ## Overzicht
@@ -8,17 +11,20 @@ Het RIE-IEPR-datamodel maakt gebruik van SKOS-concepten voor structurele en oper
 
 **Structurele codelijsten** typeren de organisatie en infrastructuur:
 
-* typeringen van systemen: `installatie_type`, `emissiepunt_type`, `onttrekkingspunt_type`, `meetpunt_type`, `filter_type`, `meetinstrument_type`, `uitwisselpunt_type`
+* typeringen van systemen: `installatie_type`, `emissiepunt_type`, `onttrekkingspunt_type`, `meetpunt_type`, `filter_type`, `uitwisselpunt_type`
 * proces- en status-typering: `procedure_type`, `status_type`, `rubriek_type`, `aangifte_type`, `aangifte_status`
-* eigenschappen-koppeling: `installatie_eigenschappen`, `emissiepunt_eigenschappen`, `meetpunt_eigenschappen`, `onttrekkingspunt_eigenschappen`, `filter_eigenschappen`, `uitwisselpunt_eigenschappen`
-* hulpcodelijsten: `eenheden.csv`, `emissie_type.csv`
+* eigenschappen-koppeling: `installatie_eigenschappen`, `emissiepunt_eigenschappen`, `meetpunt_eigenschappen`, `onttrekkingspunt_eigenschappen`, `uitwisselpunt_eigenschappen`
+* hulpcodelijst: `eenheden`
 
 **Operationele codelijsten** ondersteunen rapportage en metingen:
 
-* operationele rapportage: `operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`, `operationeel_contextueel`, `operationeel_bepalingsmethode`
-* operationele hulpcodelijst: `thema_type.csv`
+* operationele rapportage: `operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`
+* operationele hulpcodelijst: `thema_type`
 
 Alle lijsten worden vanuit CSV-bronbestanden gegenereerd naar meerdere RDF-formaten: Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel.
+
+!!! note "Welke CSV's daadwerkelijk gegenereerd worden"
+    Bepalend is de lijst `source.codelijst_csv` in `config.yml`, niet de inhoud van de map `src/source/`. Een paar bestanden staan wel in de map maar (nog) niet in de configuratie, en worden dus niet gepubliceerd: `filter_eigenschappen.csv` (bovendien leeg), `emissie_type.csv`, `operationeel_contextueel.csv` en `algmeen.csv`. Een codelijst voor **bepalingsmethodes** (`sosa:usedProcedure`, zie [Observaties §6](./observaties.md#6-procedures-meetproces-en-bepalingsmethode)) bestaat vandaag nog niet.
 
 ## Repository structuur
 
@@ -104,17 +110,25 @@ In het datamodel geldt:
 * De volgorde van stappen wordt vastgelegd met `pplan:isPrecededBy`: *stap X is voorafgegaan door stap Y*
 * Een proces kan een systeem implementeren: `ssn:implementedBy` / `ssn:implements`
 
-Voor transport:
+Voor transport. `pplan:isPrecededBy` wijst **tegen de stroomrichting in**: `X isPrecededBy Y` betekent dat Y vóór X komt (zie ook [Migratie §6.2](./migratie.md#62-hoe-je-pplanisprecededby-leest)).
+
+Stroomrichting:
 
 ```
-PROCES_INSTALLATIE -- pplan:isPrecededBy --> PROCES_TRANSPORT -- pplan:isPrecededBy --> PROCES_EMISSIE
+PROCES_INSTALLATIE  -->  PROCES_TRANSPORT  -->  PROCES_EMISSIE
+```
+
+In RDF staat dus telkens de omgekeerde relatie:
+
+```
+PROCES_EMISSIE -- pplan:isPrecededBy --> PROCES_TRANSPORT -- pplan:isPrecededBy --> PROCES_INSTALLATIE
 ```
 
 In Turtle:
 
 ```turtle
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix pplan: <http://www.w3.org/ns/p-plan#> .
+@prefix pplan: <http://purl.org/net/p-plan#> .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 
@@ -180,9 +194,8 @@ De CSV-koppen zijn de bron voor RDF-triples. De meest voorkomende kolommen:
 * `isMultiselect` – boolean, multiselect in UI?
 * `isOnzichtbaar` – boolean, concept niet tonen in UI
 * `conditionPath` / `conditionValue` – conditionele zichtbaarheid: toon concept enkel als pad een bepaalde waarde heeft
-* `seeAlso` – volgende stap / gerelateerd scheme
+* `seeAlso` – volgende stap / gerelateerd scheme (bij `status_type` en `aangifte_status`: de ADMS-status-equivalent)
 * `relation` – RDF-predikaat voor koppeling
-* `seeAlso` – link naar volgend concept scheme
 
 Voor **eigenschappen-koppeling**, bv. `emissiepunt_eigenschappen.csv`:
 

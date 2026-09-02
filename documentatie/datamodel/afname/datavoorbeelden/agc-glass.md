@@ -2,15 +2,14 @@
 
 Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de gewenste structuur, URI-conventies en commentaarstijl.
 
-```{note}
-Dit is een **datavoorbeeld**: de data is fictief en dient uitsluitend om het datamodel te illustreren.
-```
+!!! note
+    Dit is een **datavoorbeeld**: de data is fictief en dient uitsluitend om het datamodel te illustreren.
 
 | | |
 |---|---|
 | Bestand | `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl` |
 | Bron | handgeschreven (MJV, 01-07-2026) |
-| Laatst gegenereerd | 2026-08-26 06:30 UTC |
+| Laatst gewijzigd | 2026-08-26 06:30 UTC |
 | Grootte | 174 KB |
 
 ## TTL

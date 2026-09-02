@@ -1,6 +1,7 @@
 # Systemen: installaties, emissiepunten en meetpunten
 
-> **Structurele gegevens**: Systemen behoren tot de structurele stroom van het datamodel. Ze beschrijven de fysieke infrastructuur en organisatie van de exploitatie en vormen de basis waarop operationele gegevens zoals observaties worden gekoppeld.
+!!! info "Structurele stroom"
+    Deze pagina beschrijft **structurele gegevens**: de organisatie en infrastructuur van de exploitatie. Metingen, emissies en observaties komen hier niet aan bod — die staan in [Observaties en emissies](./observaties.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
 
 Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunten, meetpunten en filters - en hun onderlinge relaties in het RIE-IEPR-datamodel.
 
@@ -8,21 +9,28 @@ Dit document beschrijft systemen - installaties, emissiepunten, onttrekkingspunt
 
 Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn allemaal **systemen**. Ze delen een gemeenschappelijk basispatroon:
 
-| Eigenschap | Type | Beschrijving |
-|---|---|---|
-| `rdfs:label` | string | Naam van het systeem |
-| `dct:type` | skos:Concept | Type (codelijst, bijv. "schoorsteen_verticale_uitstroom") |
-| `dct:issued` | date | Geldigheidsdatum |
-| `dct:created` | dateTime | Aanmaakdatum |
-| `adms:status` | skos:Concept | Status (in_dienst, ontmanteld) |
-| `sosa:isHostedBy` | Exploitatielocatie | Locatie waar het systeem gehost wordt |
-| `riepr:inGebruikVanaf` | date | Datum waarop het systeem operationeel werd |
-| `ssn:hasProperty` | Systeemeigenschap | Eigenschappen van het systeem |
-| `dct:valid` | date | Einde geldigheid (zie [Versiebeheer](./versiebeheer.md)) |
-| `riepr:aangifte` | riepr:Aangifte (0..1) | De aangifte waaraan dit systeem gerelateerd is |
-| `adms:identifier` | adms:Identifier (0..n) | Externe (bron/migratie) identificatoren |
+| Eigenschap | Type | Cardinaliteit | Beschrijving |
+|---|---|---|---|
+| `rdfs:label` | string | 1..n | Naam van het systeem |
+| `dct:type` | skos:Concept | 0..1 | Type uit de codelijst (bijv. `schoorsteen_verticale_uitstroom`) |
+| `dct:issued` | date | 1..1 | Start van de geldigheid |
+| `dct:valid` | date | 0..1 | Einde geldigheid (zie [Versiebeheer](./versiebeheer.md)) |
+| `dct:created` | dateTime | 1..1 | Aanmaakdatum |
+| `dct:modified` | dateTime | 1..1 | Laatste wijziging |
+| `adms:status` | skos:Concept | 1..1 | Status (`in_dienst`, `ontmanteld`, …) |
+| `riepr:inGebruikVanaf` | date | 1..1 | Datum waarop het systeem operationeel werd |
+| `riepr:inGebruikTot` | date | 0..1 | Datum waarop het systeem buiten gebruik werd gesteld |
+| `ssn:hasProperty` | Systeemeigenschap | 0..n | Eigenschappen van het systeem |
+| `ogc:hasGeometry` | ogc:Geometry | 0..1 | Geometrie, waar de bron coördinaten levert |
+| `riepr:aangifte` | riepr:Aangifte | 0..1 | De aangifte waaraan dit systeem gerelateerd is |
+| `adms:identifier` | adms:Identifier | 0..n | Externe (bron/migratie) identificatoren |
+| `sosa:isHostedBy` | Exploitatielocatie | — | Locatie waar het systeem gehost wordt (zie §9) |
 
 Alle systemen zijn subklassen van `ssn:System` en `ogc:SpatialObject`.
+
+!!! note "Twee nuances"
+    - `riepr:Filter` kent in de ontologie **geen** `ssn:hasProperty`-restrictie, terwijl de bron wél filtereigenschappen levert. Zie [Migratie §9](./migratie.md#9-bekende-afwijkingen-en-open-punten).
+    - `sosa:isHostedBy` staat niet in de ontologie: het is een conventie die in het datavoorbeeld consequent wordt toegepast, maar er is geen OWL-restrictie die het afdwingt (zie §9).
 
 > **Externe identificatoren**: `adms:identifier` bewaart codes uit bron-systemen (VMM-migratie, DOMG/INSPIRE) naast de eigen RIE-IEPR-URI. Zie [Basisaannames: externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
 
@@ -52,7 +60,7 @@ Een **installatie** is een infrastructuur voor een specifieke functie. Het type 
     a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION> ;
     rdfs:label "AGC Glass Mol"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv-installatie> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv> .
 ```
 
 **Opmerking:** GPBV-installaties gebruiken een andere identifier (GPBV-identificator) in plaats van een UUID.
@@ -68,7 +76,7 @@ Installaties kunnen verschillende eigenschappen hebben, zoals:
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/verwijderingsrendement> ;
     rdfs:value "0"^^xsd:decimal ;
     qudt:hasUnit unit:PERCENT ;
-    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-N> .
+    riepr:parameter <https://data.omgeving.vlaanderen.be/id/concept/chemische_stof/VEXZGXHMUGYJMC-UHFFFAOYSA-M> .
 
 # Geïnstalleerd vermogen
 <.../systeemeigenschap/019edc4a-1a2b-71f3-8c45-d9e8f7a6b5c4>
@@ -94,7 +102,7 @@ Installaties kunnen verschillende eigenschappen hebben, zoals:
 
 ## 3. Emissiepunten
 
-Een **emissiepunt** is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van `riepr:Emissiepunt`, `ssn:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met meetpunten; met onttrekkingspunten niet — een punt dat zowel emissies als onttrekkingen toelaat is een **uitwisselpunt** (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)). Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
+Een **emissiepunt** is een punt waar stoffen de exploitatie verlaten. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`. Emissiepunten zijn **disjoint** met meetpunten; met onttrekkingspunten niet — een punt dat zowel emissies als onttrekkingen toelaat is een **uitwisselpunt** (zie [Basisaannames §5](./basisaanname.md#5-disjoint-classes)). Het type wordt bepaald door de codelijst **`emissiepunt_type`**.
 
 ### Types emissiepunten
 
@@ -114,31 +122,35 @@ In het AGC Glass-voorbeeld komen verschillende types voor, zoals `schoorsteen_ve
 
 ### Emissiepunt-eigenschappen
 
-Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equivalente diameter:
+Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equivalente diameter. Het **`dct:type`** benoemt de eigenschap (uit `emissiepunt_eigenschappen`); de waarde staat in `rdfs:value` met een `qudt:hasUnit`:
 
 ```turtle
 # Aantal punten
-<.../systeemeigenschap/019ecf80-eae8-7fc8-a1ea-2e029966f763>
+<.../systeemeigenschap/019ecf80-eae8-7a2f-a407-9e4892c4debd>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "aantalpunten"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#integer> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    rdfs:value "1"^^xsd:integer .
 
-# Hoogte (in meter)
-<.../systeemeigenschap/019ecf80-eae8-7bf2-b175-a3a609e6f04b>
+# Hoogte van de schouw (in meter)
+<.../systeemeigenschap/019ecf80-eae8-7f51-881b-55d6b3278a90>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "hoogte"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    rdfs:value "80.0"^^xsd:decimal ;
+    qudt:hasUnit unit:M .
 
-# Equivalente diameter (in meter)
-<.../systeemeigenschap/019ecf80-eae8-7b3b-b30d-9009ac3ad4a1>
+# Diameter van de schouw (in meter)
+<.../systeemeigenschap/019ecf80-eae8-78e1-aeb9-c19e6918e530>
     a riepr:Systeemeigenschap ;
-    riepr:parameter "equivalente-diameter"@nl ;
-    riepr:datatype <http://www.w3.org/2001/XMLSchema#decimal> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    rdfs:value "2.2"^^xsd:decimal ;
+    qudt:hasUnit unit:M .
 ```
+
+> **Let op**: `riepr:parameter` is een **objectproperty** en mag dus geen tekstliteral als waarde krijgen. Ze wijst naar een concept (bijvoorbeeld een chemische stof) *waarover* de eigenschap gaat, niet naar de naam van de eigenschap zelf — die staat in `dct:type`. Het datavoorbeeld van 01/07/2026 gebruikt nog de slugs `hoogte` en `equivalente-diameter`; in de codelijst heten ze `schouw-hoogte` en `schouw-diameter`.
 
 ## 4. Onttrekkingspunten
 
-Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `riepr:Onttrekkingspunt`, `ssn:System` en `ogc:SpatialObject`.
+Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`.
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -147,14 +159,14 @@ Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is e
     a riepr:Onttrekkingspunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99> ;
     rdfs:label "1 (FL koeltoren)"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/grondwaterput> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> .
 ```
 
 ### Onttrekkingspunt-eigenschappen
 
 ```turtle
 # Diepte van het onttrekkingspunt
-<.../systeemeigenschap/019edc4a-1a35-7b33-im4f-n9ojk7kgkf4>
+<.../systeemeigenschap/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b>
     a riepr:Systeemeigenschap ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
     rdfs:value "45.5"^^xsd:decimal ;
@@ -163,7 +175,7 @@ Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is e
 
 ## 5. Meetpunten
 
-Een **meetpunt** is een punt waar metingen worden uitgevoerd. Het is een subklasse van `riepr:Meetpunt`, `ssn:System` en `ogc:SpatialObject`. Meetpunten zijn **disjoint** met emissiepunten en onttrekkingspunten.
+Een **meetpunt** is een punt waar metingen worden uitgevoerd. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`. Meetpunten zijn **disjoint** met emissiepunten en onttrekkingspunten.
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z>
@@ -174,7 +186,7 @@ Een **meetpunt** is een punt waar metingen worden uitgevoerd. Het is een subklas
 
 ## 6. Filters
 
-Filters zijn ook systemen, maar worden niet visueel weergegeven als aparte structurele elementen. Ze zijn gekoppeld aan een bovenliggend systeem via `ssn:hasSubSystem`.
+Filters zijn ook systemen, maar treden nooit zelfstandig op: ze hangen altijd via `ssn:hasSubSystem` onder een bovenliggend systeem.
 
 ### Filter als subsysteem
 
@@ -194,22 +206,17 @@ Filters kunnen gekoppeld zijn aan:
 
 ### Filter-eigenschappen
 
-Filters hebben specifieke eigenschappen zoals watervoerende laag, diepte en lengte:
+De bron levert per filter een watervoerende laag, een diepte en een lengte. De codelijst `filter_eigenschappen` bevat vandaag echter **nog geen concepten**: de conceptscheme bestaat, maar is leeg. Daarom worden diepte en watervoerende laag voorlopig op het **onttrekkingspunt** gemodelleerd, via `onttrekkingspunt_eigenschappen`:
 
 ```turtle
-# Watervoerende laag
+# Watervoerende laag, op het onttrekkingspunt
 <.../systeemeigenschap/019edc4a-1a36-7c04-8f5a-0a0b1c2d3e4f>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/watervoerendelaag> ;
     rdfs:value "Kalksteen"@nl .
-
-# Lengte
-<.../systeemeigenschap/019edc4a-1a37-7d45-8f6a-1b1c2d3e4f5a>
-    a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
-    rdfs:value "2.5"^^xsd:decimal ;
-    qudt:hasUnit unit:M .
 ```
+
+Of de filtergegevens uiteindelijk op de filter dan wel op de put horen, is een openstaand punt — zie [Migratie §9](./migratie.md#9-bekende-afwijkingen-en-open-punten).
 
 ## 7. Systeemhiërarchie via `ssn:hasSubSystem`
 
@@ -221,8 +228,8 @@ graph TD
     Installatie -->|hasSubSystem| Onttrekkingspunt["Onttrekkingspunt<br/>System"]
     Installatie -->|hasSubSystem| Meetpunt["Meetpunt<br/>System"]
     Installatie -->|hasSubSystem| Filter["Filter<br/>System"]
-    Onttrekkingspunt -->|hasSubSystem| Filter["Filter<br/>System"]
-    Meetpunt -->|hasSubSystem| Filter["Filter<br/>System"]
+    Onttrekkingspunt -->|hasSubSystem| Filter
+    Meetpunt -->|hasSubSystem| Filter
     
     style Installatie fill:#007A87,stroke:#005f6a,color:#fff
     style Emissiepunt fill:#e6f4f5,stroke:#007A87,color:#000
@@ -256,13 +263,13 @@ Processen koppelen aan systemen via `ssn:implementedBy`. Dit is een **OWL-axioma
 
 # Meetproces → meetpunt
 <.../proces/019eaca0-b8c6-7462-ce88-d9a53f43688e/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     ssn:implementedBy <.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
 ## 9. Systeem → Exploitatielocatie relatie
 
-Elk systeem is rechtstreeks gekoppeld aan een exploitatielocatie via `sosa:isHostedBy`:
+In het datavoorbeeld is elk systeem rechtstreeks gekoppeld aan een exploitatielocatie via `sosa:isHostedBy`. Die koppeling is redundant met de omweg exploitatie → exploitatielocatie, maar maakt het mogelijk een locatie aan een andere exploitatie te koppelen zonder het systeem te wijzigen. De ontologie legt de relatie **niet** als restrictie op; in `riepr.ttl` loopt de band tussen systeem en exploitatie via `ssn:hasDeployment` / `ssn:deployedSystem`.
 
 ```turtle
 <.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z>
@@ -309,14 +316,6 @@ classDiagram
       +String uuid
       String uri
     }
-    class Emissie {
-      +String uuid
-      String uri
-    }
-    class Onttrekking {
-      +String uuid
-      String uri
-    }
     class Exploitatielocatie {
       +String uuid
       String uri
@@ -337,10 +336,6 @@ classDiagram
     Proces --> Onttrekkingspunt : implementedBy
     Proces --> Uitwisselpunt : implementedBy
 
-    %% Feature → Process links (wasDerivedFrom)
-    Emissie --> Proces : wasDerivedFrom
-    Onttrekking --> Proces : wasDerivedFrom
-    
     %% System → Location links (isHostedBy)
     Installatie --> Exploitatielocatie : isHostedBy
     Emissiepunt --> Exploitatielocatie : isHostedBy
@@ -359,7 +354,6 @@ classDiagram
     
     classDef system fill:#e6f4f5,stroke:#007A87,stroke-width:2px
     classDef process fill:#b2e0e3,stroke:#007A87,stroke-width:2px
-    classDef foi fill:#007A87,stroke:#005f6a,stroke-width:2px,color:#fff
     classDef location fill:#fff3cd,stroke:#b8860b,stroke-width:2px
     
     class Installatie system
@@ -369,14 +363,14 @@ classDiagram
     class Uitwisselpunt system
     class Filter system
     class Proces process
-    class Emissie foi
-    class Onttrekking foi
     class Exploitatielocatie location
 ```
+
+Dit diagram bevat **uitsluitend structurele entiteiten**. De operationele stroom (emissie, onttrekking, observatie, resultaat) hangt aan het `Proces` via `prov:wasDerivedFrom` en aan het `Meetpunt` via `sosa:madeBySensor` — zie [Twee stromen](./datamodel.md#de-drie-predicaten-die-de-grens-oversteken).
 
 ## Referenties
 
 - [Basisaannames](./basisaanname.md) - proces-procedure koppels, disjoint classes
 - [Exploitant- en exploitatiemodel](./exploitant.md) - exploitatie -> systeem relatie
-- [Observaties en emissies](./observaties.md) - metingen op meetpunten
+- [Observaties en emissies](./observaties.md) - *operationele stroom*: metingen op deze systemen
 - **Codelijsten**: De `dct:type` waarden (installatie_type, emissiepunt_type, onttrekkingspunt_type, meetpunt_type, filter_type) verwijzen naar gecontroleerde vocabulaires uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
