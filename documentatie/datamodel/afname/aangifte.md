@@ -97,7 +97,7 @@ Naast `dct:isPartOf` (aangifte → bundel) bestaat de objectproperty **`riepr:aa
 | `riepr:Meetpunt` | |
 | `riepr:Filter` | |
 
-De gebeurtenissen zelf (`Emissie`, `Onttrekking`, `Verbruik`) dragen **geen** `riepr:aangifte`: ze worden afgeleid en zijn niet zelf aangeefbaar.
+De gebeurtenissen zelf (`Emissie`, `Onttrekking`, `Verbruik`) dragen **geen** `riepr:aangifte`: ze zijn niet zelf aangeefbaar.
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .

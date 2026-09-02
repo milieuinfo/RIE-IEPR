@@ -5,7 +5,7 @@
 !!! info "Structurele stroom"
     Deze pagina beschrijft **structurele gegevens**: de organisatie en infrastructuur van de exploitatie. Metingen, emissies en observaties komen hier niet aan bod — die staan in [Observaties en emissies](./observaties.md). De grens tussen beide stromen staat in [Twee stromen](./datamodel.md).
 
-De migratie is een eenmalige laadbewerking: er worden uitsluitend **structurele** entiteiten opgebouwd (exploitant, exploitatielocatie, exploitatie, systemen, processen). De operationele stroom wordt in deze stap niet gemigreerd: emissies en onttrekkingen worden later op het dataplatform afgeleid, en observaties komen uit de rapportageflow. Zie [Twee stromen](./datamodel.md).
+De migratie is een eenmalige laadbewerking: er worden uitsluitend **structurele** entiteiten opgebouwd (exploitant, exploitatielocatie, exploitatie, systemen, processen). De operationele stroom (emissies, onttrekkingen, verbruik, observaties) wordt in deze stap niet gemigreerd. Zie [Twee stromen](./datamodel.md).
 
 De migratie put uit **twee verschillende bronnen** die op één sleutel aan elkaar hangen:
 

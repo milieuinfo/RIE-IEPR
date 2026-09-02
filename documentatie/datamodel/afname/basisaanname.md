@@ -129,7 +129,7 @@ Het procesplan uit §1 is het **einde** van de structurele stroom. Alles wat gem
 | `sosa:madeBySensor` | `Observatie` | het meetpunt (`ssn:System`, optioneel) |
 | `riepr:aangifte` | `Observatie`, `ObservatieVerzameling` | `Aangifte` (administratief, optioneel) |
 
-Emissie, onttrekking en verbruik zijn **gebeurtenissen** die als `sosa:FeatureOfInterest` dienen: ze worden niet zelf gemeten, ze zijn het *onderwerp* van de meting. Ze bestaan bovendien niet in de applicatie — ze worden op het dataplatform afgeleid uit de structurele graaf.
+Emissie, onttrekking en verbruik zijn **gebeurtenissen** die als `sosa:FeatureOfInterest` dienen: ze worden niet zelf gemeten, ze zijn het *onderwerp* van de meting.
 
 Het volledige SOSA/SSN-observatiepatroon staat in [Observaties en emissies](./observaties.md); de grens zelf in [Twee stromen](./datamodel.md).
 

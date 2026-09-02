@@ -22,16 +22,6 @@ Het RIE-IEPR-datamodel bestaat uit **twee stromen die apart gelezen en apart afg
 !!! warning "Analyse operationele gegevens nog lopende"
     Alles wat in deze documentatie onder de operationele stroom valt, kan nog wijzigen. De structurele stroom is stabiel.
 
-## Waarom de scheiding zo scherp is
-
-De twee stromen worden niet alleen apart *beschreven*, ze ontstaan ook op een andere plaats:
-
-- **Structurele entiteiten** worden in de applicatie ingegeven en bijgehouden. Ze hebben een tabel, een versiegeschiedenis en een aangifteflow.
-- **`Emissie`, `Onttrekking` en `Verbruik` bestaan niet in de applicatie.** Ze worden op het **dataplatform afgeleid** uit de structurele graaf, met een SPARQL construct-query die de identifier en de versionering van het onderliggende systeem overneemt. Functioneel hangt er niets aan het concept "emissie" — het bestaat alleen om observaties een `sosa:FeatureOfInterest` te geven. Zie `DATAPLATFORM.md` in de applicatiedocumentatie.
-- **Observaties** komen uit de rapportageflow, die volledig door de `operationeel_*`-codelijsten wordt aangestuurd.
-
-Voor een afnemer betekent dat: u kunt de structurele stroom volledig bevragen zonder ooit een observatie tegen te komen, en omgekeerd hangt elke observatie via een korte, vaste keten aan de structuur.
-
 ## De drie predicaten die de grens oversteken
 
 Tussen beide stromen bestaan **precies drie** relaties. Al de rest blijft binnen één stroom.

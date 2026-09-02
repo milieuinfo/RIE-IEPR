@@ -198,9 +198,6 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
 !!! warning "Analyse nog lopende"
     De analyse van operationele gegevens is nog lopende. De informatie in deze sectie kan wijzigen na afronding van de analyse.
 
-!!! info "Deze entiteiten bestaan niet in de applicatie"
-    `Emissie`, `Onttrekking` en `Verbruik` worden nergens ingegeven: ze worden op het dataplatform afgeleid uit de structurele graaf hierboven, met een SPARQL construct-query die de identifier van het onderliggende systeem overneemt. Ze bestaan enkel om observaties een `sosa:FeatureOfInterest` te geven.
-
 ### 5. De gebeurtenis: emissie
 
 Een **emissie** is de gebeurtenis die uit het emissieproces is *afgeleid* (`prov:wasDerivedFrom`, verplicht, minstens één). De emissie zelf is tijdsloos (twee-segment URI); de tijd zit in de observaties:

@@ -10,9 +10,6 @@ Dit document beschrijft hoe metingen, observaties en gebeurtenissen (emissie, on
 
 ## 0. Waar deze stroom aan de structuur hangt
 
-!!! info "Emissie, onttrekking en verbruik bestaan niet in de applicatie"
-    Deze drie klassen worden nergens ingegeven. Ze worden op het **dataplatform afgeleid** uit de structurele graaf, met een SPARQL construct-query die de identifier en de versionering van het onderliggende systeem overneemt. Functioneel hangt er niets aan het concept "emissie" — het bestaat uitsluitend om observaties een `sosa:FeatureOfInterest` te geven.
-
 De operationele stroom raakt de structurele stroom op precies drie plaatsen:
 
 | Predicaat | Van | Naar (structureel/administratief) | Cardinaliteit |
