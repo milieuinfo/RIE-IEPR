@@ -654,17 +654,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#waarom-de-scheiding-zo-scherp-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Waarom de scheiding zo scherp is
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#de-drie-predicaten-die-de-grens-oversteken" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1541,14 +1530,6 @@
 <p class="admonition-title">Analyse operationele gegevens nog lopende</p>
 <p>Alles wat in deze documentatie onder de operationele stroom valt, kan nog wijzigen. De structurele stroom is stabiel.</p>
 </div>
-<h2 id="waarom-de-scheiding-zo-scherp-is">Waarom de scheiding zo scherp is</h2>
-<p>De twee stromen worden niet alleen apart <em>beschreven</em>, ze ontstaan ook op een andere plaats:</p>
-<ul>
-<li><strong>Structurele entiteiten</strong> worden in de applicatie ingegeven en bijgehouden. Ze hebben een tabel, een versiegeschiedenis en een aangifteflow.</li>
-<li><strong><code>Emissie</code>, <code>Onttrekking</code> en <code>Verbruik</code> bestaan niet in de applicatie.</strong> Ze worden op het <strong>dataplatform afgeleid</strong> uit de structurele graaf, met een SPARQL construct-query die de identifier en de versionering van het onderliggende systeem overneemt. Functioneel hangt er niets aan het concept "emissie" — het bestaat alleen om observaties een <code>sosa:FeatureOfInterest</code> te geven. Zie <code>DATAPLATFORM.md</code> in de applicatiedocumentatie.</li>
-<li><strong>Observaties</strong> komen uit de rapportageflow, die volledig door de <code>operationeel_*</code>-codelijsten wordt aangestuurd.</li>
-</ul>
-<p>Voor een afnemer betekent dat: u kunt de structurele stroom volledig bevragen zonder ooit een observatie tegen te komen, en omgekeerd hangt elke observatie via een korte, vaste keten aan de structuur.</p>
 <h2 id="de-drie-predicaten-die-de-grens-oversteken">De drie predicaten die de grens oversteken</h2>
 <p>Tussen beide stromen bestaan <strong>precies drie</strong> relaties. Al de rest blijft binnen één stroom.</p>
 <div class="mermaid">flowchart LR
