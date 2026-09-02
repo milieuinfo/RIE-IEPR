@@ -1571,9 +1571,9 @@
         L[Exploitatielocatie] --&gt;|prov:wasAttributedTo| E[Exploitant]
         X[Exploitatie] --&gt;|ssn:deployedOnPlatform| L
         X --&gt;|ssn:implements| HP[Hoofdproces]
-        HP --&gt;|pplan:isStepOfPlan| P1[Proces verwerking]
-        HP --&gt;|pplan:isStepOfPlan| P2[Proces emissie]
-        HP --&gt;|pplan:isStepOfPlan| P3[Proces meting]
+        P1[Proces verwerking] --&gt;|pplan:isStepOfPlan| HP
+        P2[Proces emissie] --&gt;|pplan:isStepOfPlan| HP
+        P3[Proces meting] --&gt;|pplan:isStepOfPlan| HP
         P1 --&gt;|ssn:implementedBy| I[Installatie]
         P2 --&gt;|ssn:implementedBy| EP[Emissiepunt]
         P3 --&gt;|ssn:implementedBy| MP[Meetpunt]
