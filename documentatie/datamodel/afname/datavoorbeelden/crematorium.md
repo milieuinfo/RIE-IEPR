@@ -127,12 +127,13 @@ emissieproces. Alle processen — verwerking, transport en emissie — hangen da
 
 ## 3. De data
 
-!!! tip "Leesbaarheid van de URI's"
-    De fragmenten hieronder gebruiken sprekende lokale namen (`installatie:crematieoven-1`)
-    in plaats van UUID-versie-URI's. In echte data volgt elke structurele entiteit het
-    patroon `{type}/{uuid}/{issued}/{created}` met `dct:isVersionOf` naar de identity-URI;
-    zie [URI-patronen](../uri-patterns.md) en [Versiebeheer](../versiebeheer.md). Aan het
-    eind van §3.5 staat één fragment in volledige vorm.
+!!! tip "URI's in dit voorbeeld"
+    Dit datavoorbeeld gebruikt sprekende namen onder
+    `https://data.riepr.omgeving.vlaanderen.be/id/`, net als de andere voorbeelden in
+    `src/main/input/activiteit/`. De productiedata van het MJV volgt het patroon
+    `{type}/{uuid}/{issued}/{created}` met `dct:isVersionOf` naar de identity-URI; zie
+    [URI-patronen](../uri-patterns.md) en [Versiebeheer](../versiebeheer.md), en §3.5 voor
+    hetzelfde fragment in die vorm.
 
 Alle fragmenten gebruiken deze prefixen:
 
@@ -149,15 +150,17 @@ Alle fragmenten gebruiken deze prefixen:
 @prefix unit:   <http://qudt.org/vocab/unit/> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 
-@prefix installatie:    <https://data.mjv.omgeving.vlaanderen.be/id/installatie/> .
-@prefix emissiepunt:    <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/> .
-@prefix meetpunt:       <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/> .
-@prefix proces:         <https://data.mjv.omgeving.vlaanderen.be/id/proces/> .
-@prefix exploitatie:    <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/> .
-@prefix locatie:        <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/> .
-@prefix eig:            <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/> .
-@prefix rubriek:        <https://data.mjv.omgeving.vlaanderen.be/id/rubriek/> .
-@prefix variabele:      <https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/> .
+@prefix installatie:    <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
+@prefix emissiepunt:    <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
+@prefix meetpunt:       <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
+@prefix onttrekkingspunt: <https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/> .
+@prefix filter:         <https://data.riepr.omgeving.vlaanderen.be/id/filter/> .
+@prefix proces:         <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
+@prefix exploitatie:    <https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/> .
+@prefix locatie:        <https://data.riepr.omgeving.vlaanderen.be/id/exploitatielocatie/> .
+@prefix eig:            <https://data.riepr.omgeving.vlaanderen.be/id/systeemeigenschap/> .
+@prefix rubriek:        <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/> .
+@prefix variabele:      <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/> .
 
 @prefix riepr-status-type:           <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/> .
 @prefix riepr-procedure-type:        <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/> .
@@ -171,11 +174,11 @@ Alle fragmenten gebruiken deze prefixen:
 ### 3.1 Exploitatie, locatie en hoofdproces
 
 ```turtle
-exploitatie:crematorium-gent
+exploitatie:crematoria-exploitatie-1
     a riepr:Exploitatie ;
     rdfs:label "Crematorium Gent"@nl ;
     adms:status riepr-status-type:in_dienst ;
-    ssn:deployedOnPlatform locatie:crematorium-gent ;
+    ssn:deployedOnPlatform locatie:crematoria-1 ;
     # Alle systemen hangen als deployedSystem aan de exploitatie
     ssn:deployedSystem
         installatie:crematieoven-1, installatie:crematieoven-2,
@@ -183,7 +186,7 @@ exploitatie:crematorium-gent
         installatie:centrale-verwarming-1, installatie:centrale-verwarming-2,
         emissiepunt:schoorsteen-1, emissiepunt:schoorsteen-2,
         emissiepunt:schoorsteen-3, emissiepunt:schoorsteen-4,
-        meetpunt:schoorsteen-1, meetpunt:schoorsteen-2 ;
+        meetpunt:meetpunt-schoorsteen-1, meetpunt:meetpunt-schoorsteen-2 ;
     # Precies één hoofdproces
     ssn:implements proces:crematorium-hoofdproces .
 
@@ -191,7 +194,7 @@ proces:crematorium-hoofdproces
     a riepr:Proces ;
     rdfs:label "Crematorium Proces"@nl ;
     dct:type riepr-procedure-type:hoofdactiviteit ;
-    ssn:implementedBy exploitatie:crematorium-gent .
+    ssn:implementedBy exploitatie:crematoria-exploitatie-1 .
 ```
 
 ### 3.2 De bronnen: installaties met hun verwerkingsproces
@@ -204,7 +207,7 @@ installatie:crematieoven-1
     adms:status riepr-status-type:in_dienst ;
     riepr:inGebruikVanaf "2021-08-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-1-vermogen ;
-    sosa:isHostedBy locatie:crematorium-gent .
+    sosa:isHostedBy locatie:crematoria-1 .
 
 eig:crematieoven-1-vermogen
     a riepr:Systeemeigenschap ;
@@ -213,7 +216,7 @@ eig:crematieoven-1-vermogen
     qudt:hasUnit unit:MegaW .
 
 # Het verwerkingsproces van deze bron
-proces:stookproces-1
+proces:stookproces-crematieoven-1
     a riepr:Proces ;
     rdfs:label "Stookproces Crematieoven 1"@nl ;
     dct:type riepr-procedure-type:verwerking ;
@@ -222,7 +225,7 @@ proces:stookproces-1
     riepr:rubriek rubriek:vlarem-43-1, rubriek:vlarem-43-2 .
 ```
 
-Crematieoven 2 is identiek opgebouwd, met een eigen `proces:stookproces-2`.
+Crematieoven 2 is identiek opgebouwd, met een eigen `proces:stookproces-crematieoven-2`.
 
 ### 3.3 Het emissiepunt met zijn ene emissieproces
 
@@ -234,7 +237,7 @@ emissiepunt:schoorsteen-1
     adms:status riepr-status-type:in_dienst ;
     riepr:inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-1-hoogte, eig:schoorsteen-1-diameter ;
-    sosa:isHostedBy locatie:crematorium-gent .
+    sosa:isHostedBy locatie:crematoria-1 .
 
 eig:schoorsteen-1-hoogte
     a riepr:Systeemeigenschap ;
@@ -249,7 +252,7 @@ eig:schoorsteen-1-diameter
     qudt:hasUnit unit:M .
 
 # Eén emissieproces voor dit emissiepunt — ook als er meerdere bronnen op uitkomen
-proces:emissieproces-schoorsteen-1
+proces:emissie-schoorsteen-1
     a riepr:Proces ;
     rdfs:label "Emissieproces Schoorsteen 1"@nl ;
     dct:type riepr-procedure-type:emissie ;
@@ -261,35 +264,36 @@ proces:emissieproces-schoorsteen-1
 
 ```turtle
 # Transport van oven 1 naar schoorsteen 1
-proces:transport-oven1-schoorsteen1
+proces:transport-crematieoven-1-schoorsteen-1
     a riepr:Proces ;
     rdfs:label "Transport rookgassen Crematieoven 1 → Schoorsteen 1"@nl ;
     dct:type riepr-procedure-type:transport ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
-    pplan:isPrecededBy proces:stookproces-1 .
+    pplan:isPrecededBy proces:stookproces-crematieoven-1 .
 
 # Transport van oven 2 naar schoorsteen 1
-proces:transport-oven2-schoorsteen1
+proces:transport-crematieoven-2-schoorsteen-1
     a riepr:Proces ;
     rdfs:label "Transport rookgassen Crematieoven 2 → Schoorsteen 1"@nl ;
     dct:type riepr-procedure-type:transport ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
-    pplan:isPrecededBy proces:stookproces-2 .
+    pplan:isPrecededBy proces:stookproces-crematieoven-2 .
 
 # Beide transporten komen samen op hetzelfde emissieproces
-proces:emissieproces-schoorsteen-1
+proces:emissie-schoorsteen-1
     pplan:isPrecededBy
-        proces:transport-oven1-schoorsteen1,
-        proces:transport-oven2-schoorsteen1 .
+        proces:transport-crematieoven-1-schoorsteen-1,
+        proces:transport-crematieoven-2-schoorsteen-1 .
 ```
 
 Dat laatste blok is het volledige antwoord op de vraag: **twee `pplan:isPrecededBy`-tripels
 op één emissieproces**. Een derde oven op dezelfde schoorsteen voegt één transportproces en
 één extra tripel toe — het emissieproces en het emissiepunt blijven ongewijzigd.
 
-### 3.5 Dezelfde tripels in volledige versie-URI-vorm
+### 3.5 Dezelfde tripels in de versie-URI-vorm van de productiedata
 
-Ter illustratie hetzelfde convergentieblok zoals het er in echte data uitziet:
+Dit datavoorbeeld gebruikt sprekende namen. De productiedata van het MJV gebruikt
+UUID-versie-URI's; hetzelfde convergentieblok ziet er daar zo uit:
 
 ```turtle
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019ee1b0-3a41-7c08-9f2d-4b6d1e2a7c31/2026-01-01/2026-01-01T10:00:00Z>
@@ -310,12 +314,12 @@ transportproces, en die is op haar beurt de invoer van het emissieproces. Eenzel
 variabele mag hergebruikt worden zolang het logisch om dezelfde stof gaat.
 
 ```turtle
-variabele:rookgas-oven-1
+variabele:rookgas-uitstoot
     a riepr:Procesvariabele ;
     rdfs:label "Rookgas Crematieoven 1"@nl ;
     qudt:hasUnit unit:MilliGM-PER-M3 ;
-    pplan:isOutputVarOf proces:stookproces-1 ;
-    pplan:isInputVarOf  proces:transport-oven1-schoorsteen1 .
+    pplan:isOutputVarOf proces:stookproces-crematieoven-1 ;
+    pplan:isInputVarOf  proces:transport-crematieoven-1-schoorsteen-1 .
 ```
 
 ## 4. Waarom niet rechtstreeks?
@@ -337,18 +341,21 @@ hangen, waardoor massabalans en herkomst traceerbaar blijven.
 ## 5. De structurele variant: `ssn:hasSubSystem`
 
 Naast de proceslijn bestaat er een puur **structurele** relatie tussen systemen:
-`ssn:hasSubSystem`. Die is in de ontologie een *-op-*-relatie — zowel `riepr:Installatie` als
-`riepr:Emissiepunt` mogen meerdere subsystemen hebben én zelf subsysteem zijn van meerdere
-systemen. Twee ovens mogen dus dezelfde schoorsteen als subsysteem aanwijzen:
+`ssn:hasSubSystem`. Ze drukt **samenstelling** uit — "dit zit in dat" — en geen stroom. In
+dit datavoorbeeld hangt elk meetpunt als subsysteem onder de schoorsteen die het bemeet, en
+de grondwaterfilter onder het onttrekkingspunt:
 
 ```turtle
-installatie:crematieoven-1 ssn:hasSubSystem emissiepunt:schoorsteen-1 .
-installatie:crematieoven-2 ssn:hasSubSystem emissiepunt:schoorsteen-1 .
+emissiepunt:schoorsteen-1 ssn:hasSubSystem meetpunt:meetpunt-schoorsteen-1 .
+emissiepunt:schoorsteen-2 ssn:hasSubSystem meetpunt:meetpunt-schoorsteen-2 .
+
+onttrekkingspunt:grondwaterput-1 ssn:hasSubSystem filter:grondwaterfilter-1 .
 ```
 
-Dit is de vorm die het TTL-voorbeeld `src/main/input/activiteit/05-ai-crematorium.ttl`
-vandaag gebruikt (sectie *UIT-verbindingen*). Ze drukt **samenstelling** uit — "deze
-schoorsteen hoort bij deze oven" — en geen stroom. Ze vervangt de proceslijn dus niet:
+De relatie is in de ontologie een *-op-*-relatie: een systeem mag meerdere subsystemen hebben
+én zelf subsysteem zijn van meerdere systemen. Twee ovens zouden dus dezelfde schoorsteen als
+subsysteem mogen aanwijzen. Dat legt echter alleen vast **dát** er een verband is, niet welke
+stof er stroomt, en het vervangt de proceslijn **niet**:
 
 | | `ssn:hasSubSystem` | Proceslijn (verwerking → transport → emissie) |
 |---|---|---|
@@ -357,29 +364,19 @@ schoorsteen hoort bij deze oven" — en geen stroom. Ze vervangt de proceslijn d
 | Draagt stoffen | nee | ja, via `riepr:Procesvariabele` |
 | Nodig voor de visualisatie | nee | ja |
 
-!!! warning "Afwijkingen in `05-ai-crematorium.ttl`"
-    Het TTL-bestand is een AI-gegenereerd voorbeeld en wijkt op enkele punten af van het
-    model zoals hier beschreven. Wie het als referentie gebruikt, moet daar rekening mee houden:
-
-    - er staat **geen enkele** `ssn:implementedBy` in; processen zijn niet aan systemen gekoppeld
-    - er is één gedeeld proces `proces/rookgas-transport` in plaats van één transportproces per bron-emissiepunt-verbinding
-    - `pplan:isPrecededBy` staat op `proces/crematie-activiteit` en wijst naar `proces/rookgas-transport`, dus in de verkeerde richting: het transport hoort voorafgegaan te worden door het verwerkingsproces, en het emissieproces door het transport
-    - `dct:type` van de processen wijst naar eigen `sosa:Procedure`-individuen in plaats van naar concepten uit de codelijst `procedure_type`
-    - de klassen `:AbstractEmissiepunt` en `:MeetInstrument` bestaan niet in `riepr.ttl`
-    - de URI's gebruiken sprekende namen zonder versiesegmenten en zonder `dct:isVersionOf`
-
 ## 6. Het spiegelbeeld: één bron, meerdere emissiepunten
 
 Hetzelfde patroon werkt in de andere richting. Eén installatie die op twee emissiepunten
 uitstoot, krijgt één verwerkingsproces en twee transportprocessen, elk naar het emissieproces
-van zijn eigen emissiepunt:
+van zijn eigen emissiepunt. Die situatie komt in dit crematorium niet voor; onderstaande
+tripels tonen hoe ze eruit zou zien als crematieoven 1 ook op schoorsteen 2 zou lozen:
 
 ```turtle
-proces:transport-oven1-schoorsteen1 pplan:isPrecededBy proces:stookproces-1 .
-proces:transport-oven1-schoorsteen2 pplan:isPrecededBy proces:stookproces-1 .
+proces:transport-crematieoven-1-schoorsteen-1 pplan:isPrecededBy proces:stookproces-crematieoven-1 .
+proces:transport-crematieoven-1-schoorsteen-2 pplan:isPrecededBy proces:stookproces-crematieoven-1 .
 
-proces:emissieproces-schoorsteen-1 pplan:isPrecededBy proces:transport-oven1-schoorsteen1 .
-proces:emissieproces-schoorsteen-2 pplan:isPrecededBy proces:transport-oven1-schoorsteen2 .
+proces:emissie-schoorsteen-1 pplan:isPrecededBy proces:transport-crematieoven-1-schoorsteen-1 .
+proces:emissie-schoorsteen-2 pplan:isPrecededBy proces:transport-crematieoven-1-schoorsteen-2 .
 ```
 
 Het transportproces is dus in beide richtingen het scharnierpunt: het aantal
@@ -391,16 +388,16 @@ Op schoorsteen 1 en 2 staat een meetpunt. Omdat beide schoorstenen gedeeld zijn,
 meetpunt de **gecombineerde** rookgassen van twee ovens:
 
 ```turtle
-meetpunt:schoorsteen-1
+meetpunt:meetpunt-schoorsteen-1
     a riepr:Meetpunt, ssn:System ;
     rdfs:label "Meetpunt Schoorsteen 1"@nl ;
     adms:status riepr-status-type:in_dienst ;
-    sosa:isHostedBy locatie:crematorium-gent .
+    sosa:isHostedBy locatie:crematoria-1 .
 
-proces:meetproces-schoorsteen-1
+proces:meting-schoorsteen-1
     a riepr:Proces ;
     dct:type riepr-procedure-type:meting ;
-    ssn:implementedBy meetpunt:schoorsteen-1 ;
+    ssn:implementedBy meetpunt:meetpunt-schoorsteen-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces .
 ```
 

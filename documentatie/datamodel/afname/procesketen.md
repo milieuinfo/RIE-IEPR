@@ -70,9 +70,8 @@ er geen GPBV-installatie is — verklaart die verdeling.
 
 Dit is het fragment uit het referentievoorbeeld dat de vraag doorgaans oproept. Het
 meetproces hangt onder de GPBV-installatie, maar de keten waarin het zit begint bij het
-onttrekkingsproces dat rechtstreeks onder het hoofdproces hangt. Sinds 2026-09-11 loopt die
-keten via een transportproces (§5); de plangrens wordt daardoor overgestoken door het
-transportproces:
+onttrekkingsproces dat rechtstreeks onder het hoofdproces hangt. De keten loopt via een
+transportproces (§5); de plangrens wordt daardoor overgestoken door het transportproces:
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -221,13 +220,11 @@ stof tussen twee installaties plaatsvindt — bijvoorbeeld een controleinrichtin
 vóór een lozingspunt in dezelfde leiding ligt — wordt de volgorde rechtstreeks gelegd (zie
 [Migratie §6.3](./migratie.md#63-lozingspunt-de-controleinrichting-ligt-ervoor)).
 
-!!! note "Toegevoegd aan het referentievoorbeeld op 2026-09-11"
-    Tot dan bevatte `agc-glass_MJV_01-07-2026.ttl` **geen enkel** proces van het type
-    `transport`: alle 31 `pplan:isPrecededBy`-relaties legden een rechtstreeks verband. Er
-    staat nu voor elk van die 31 paren een transportproces tussen, zodat het bestand de
-    keten `verwerking → transport → verwerking/emissie` toont. De proceduretypes zijn nu:
-    `verwerking` (21×), `transport` (31×), `emissie` (12×), `meting` (10×), `onttrekking`
-    (6×) en `hoofdactiviteit` (1×). Zie de changelog bovenaan dat bestand.
+!!! note "Transportprocessen in het referentievoorbeeld"
+    In `agc-glass_MJV_01-07-2026.ttl` staat tussen elk paar opeenvolgende processen een
+    transportproces, zodat het bestand de keten `verwerking → transport → verwerking/emissie`
+    toont. De proceduretypes die erin voorkomen zijn `transport` (31×), `verwerking` (21×),
+    `emissie` (12×), `meting` (10×), `onttrekking` (6×) en `hoofdactiviteit` (1×).
 
 ## 6. Query's die met de diepte omgaan
 
@@ -264,44 +261,6 @@ WHERE {
 
 Merk op dat deze tweede query **geen** voorwaarde op `pplan:isStepOfPlan` bevat. Dat is
 bewust: de keten mag plangrenzen oversteken.
-
-## 7. Aandachtspunten in het referentievoorbeeld
-
-Bij het lezen van `agc-glass_MJV_01-07-2026.ttl` zijn de volgende zaken opgevallen. De
-eerste twee zijn op 2026-09-11 in dat bestand rechtgezet; de derde is bewust blijven staan.
-
-| Vaststelling | Status |
-|---|---|
-| Het hoofdproces had **geen** `dct:type` | **Opgelost.** Het draagt nu `procedure-type/hoofdactiviteit` én de door het OWL-axioma vereiste `ssn:implementedBy` naar de exploitatie. |
-| Er stond **geen enkel** transportproces in het bestand | **Opgelost.** Zie §5. |
-| Het onttrekkingsproces hangt onder het hoofdproces, zijn meetproces onder de GPBV-installatie | **Bewust behouden.** Die asymmetrie is precies wat de plangrens in §3 doet ontstaan, en het oversteken van een plangrens is toegelaten en bedoeld. Beide processen onder de GPBV-installatie hangen zou de asymmetrie wegnemen, maar ook het enige voorbeeld van dit patroon uit het bestand halen. |
-| 1 van de 62 `pplan:isPrecededBy`-relaties steekt een plangrens over | Het oversteken is dus toegelaten maar zeldzaam in dit bestand. Sinds de invoering van de transportprocessen is het het transportproces dat de grens oversteekt. |
-
-!!! note "Ontologiewijziging van 2026-09-11: `ssn:implementedBy` aanvaardt nu ook een uitrol"
-    Het OWL-axioma voor `procedure-type/hoofdactiviteit` eist
-    `ssn:implementedBy some riepr:Exploitatie`, maar de restrictie op `:Proces` liet voor
-    `ssn:implementedBy` alleen een `ssn:System` toe. Een `riepr:Exploitatie` is een
-    `ssn:Deployment`, geen `ssn:System` — axioma en restrictie spraken elkaar dus tegen.
-
-    De restrictie in `riepr.ttl` aanvaardt nu de unie van beide:
-
-    ```turtle
-    rdfs:subClassOf [ a owl:Restriction ;
-        owl:onProperty ssn:implementedBy ;
-        owl:someValuesFrom [ owl:unionOf ( ssn:System ssn:Deployment ) ] ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
-        owl:maxCardinality "1"^^xsd:nonNegativeInteger
-    ] ;
-    ```
-
-    Tegelijk is een **tweede** restrictie op diezelfde property verwijderd. Die eiste
-    `:Installatie` als waarde van `ssn:implementedBy` voor élk proces, wat door elk emissie-,
-    meet- en onttrekkingsproces geschonden werd, en ze had bovendien een andere
-    cardinaliteit (onbegrensd in plaats van max 1). De omgekeerde richting staat al als
-    `ssn:implements` op `:Installatie` zelf.
-
-    Samen brengen die twee wijzigingen het aantal SHACL-schendingen op `ssn:implementedBy`
-    in het AGC-datavoorbeeld van 30 naar 0.
 
 ## Referenties
 
