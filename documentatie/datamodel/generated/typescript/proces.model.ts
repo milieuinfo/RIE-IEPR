@@ -1,4 +1,5 @@
 import { Aangifte } from './aangifte.model';
+import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Procedure } from './procedure.enum';
 import { Procesvariabele } from './procesvariabele.model';
@@ -142,10 +143,10 @@ export class Proces {
 	/**
 	 * implementedBy
 	 * @see {@link http://www.w3.org/ns/ssn/implementedBy}
-	 * Een proces kan het gebruik van een systeem representeren
+	 * Een proces kan het gebruik van een systeem of van een uitrol (exploitatie) representeren
 	 */
 	@jsonMember(() => Systeem, { name: 'implementedBy' })
-	systeem?: Systeem;
+	systeem?: (Systeem | Exploitatie);
 
 	/**
 	 * aangifte

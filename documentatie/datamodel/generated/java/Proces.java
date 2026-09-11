@@ -193,7 +193,7 @@ public class Proces {
 	/**
 	 * implementedBy
 	 * <a href="http://www.w3.org/ns/ssn/implementedBy">implementedBy</a>
-	 * Een proces kan het gebruik van een systeem representeren
+	 * Een proces kan het gebruik van een systeem of van een uitrol (exploitatie) representeren
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("implementedBy")
