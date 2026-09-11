@@ -14,7 +14,7 @@
         <link rel="prev" href="../datamodel/">
       
       
-        <link rel="next" href="../endtoend/">
+        <link rel="next" href="../procesketen/">
       
       
         
@@ -900,6 +900,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../procesketen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processtructuur: hiërarchie en volgorde
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../endtoend/" class="md-nav__link">
         
   
@@ -1328,6 +1356,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datavoorbeelden/crematorium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crematorium (meerdere bronnen, één emissiepunt)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1628,7 +1684,7 @@
 <ul>
 <li>Elke exploitatie implementeert precies één hoofdproces (<code>ssn:implements</code>)</li>
 <li>Subprocessen zijn gerelateerd via <code>pplan:isStepOfPlan</code></li>
-<li>Emissie-, onttrekkings-, verwerkings- en meetprocessen zijn subprocessen van het hoofdproces</li>
+<li>Emissie-, onttrekkings-, verwerkings- en meetprocessen hangen onder het hoofdproces — niet noodzakelijk <strong>rechtstreeks</strong>: waar er een GPBV-installatie is, hangen ze onder het proces van die installatie, dat op zijn beurt een stap van het hoofdproces is</li>
 <li>Systemen (installaties, emissiepunten, ...) worden geïmplementeerd door processen (<code>ssn:implementedBy</code>)</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">ssn:</span><span class="w">  </span><span class="nv">&lt;http://www.w3.org/ns/ssn/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1654,6 +1710,7 @@
 <li><strong><code>pplan:isPrecededBy</code></strong> geeft de volgorde aan: welke stap vóór een andere moet plaatsvinden.</li>
 </ul>
 <p>In RIE-IEPR is elk <code>riepr:Proces</code> tegelijk een <code>pplan:Plan</code>, een <code>pplan:Step</code> en een <code>sosa:Procedure</code>. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (<code>pplan:isStepOfPlan</code>) en kunnen met <code>pplan:isPrecededBy</code> onderling geordend worden.</p>
+<p>Beide eigenschappen staan <strong>los van elkaar</strong>: <code>pplan:isStepOfPlan</code> beschrijft de opbouw van de exploitatie, <code>pplan:isPrecededBy</code> de stroom van stof, water of lucht. Twee processen die met <code>pplan:isPrecededBy</code> verbonden zijn, hoeven dus <strong>niet</strong> tot hetzelfde plan te behoren. Zie <a href="../procesketen/">Processtructuur: hiërarchie en volgorde</a>.</p>
 <h2 id="2-uri-ontwerp-en-versiebeheer">2. URI-ontwerp en versiebeheer</h2>
 <p>Het model maakt onderscheid tussen <strong>identity-URI's</strong> (tijdsloos) en <strong>versie-URI's</strong> (met tijd).</p>
 <h3 id="identity-uri-versus-versie-uri">Identity-URI versus versie-URI</h3>

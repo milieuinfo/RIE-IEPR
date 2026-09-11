@@ -634,6 +634,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../procesketen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Processtructuur: hiërarchie en volgorde
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../endtoend/" class="md-nav__link">
         
   
@@ -908,6 +936,17 @@
     <span class="md-ellipsis">
       
         Emissiepunt-eigenschappen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meerdere-bronnen-op-een-emissiepunt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meerdere bronnen op één emissiepunt
       
     </span>
   </a>
@@ -1310,6 +1349,34 @@
     
   
     AGC Glass (referentie)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datavoorbeelden/crematorium/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crematorium (meerdere bronnen, één emissiepunt)
   
 
     
@@ -1821,6 +1888,26 @@
 </code></pre></div>
 <blockquote>
 <p><strong>Let op</strong>: <code>riepr:parameter</code> is een <strong>objectproperty</strong> en mag dus geen tekstliteral als waarde krijgen. Ze wijst naar een concept (bijvoorbeeld een chemische stof) <em>waarover</em> de eigenschap gaat, niet naar de naam van de eigenschap zelf — die staat in <code>dct:type</code>. Het datavoorbeeld van 01/07/2026 gebruikt nog de slugs <code>hoogte</code> en <code>equivalente-diameter</code>; in de codelijst heten ze <code>schouw-hoogte</code> en <code>schouw-diameter</code>.</p>
+</blockquote>
+<h3 id="meerdere-bronnen-op-een-emissiepunt">Meerdere bronnen op één emissiepunt</h3>
+<p>Een emissiepunt hoort <strong>niet</strong> één-op-één bij één installatie. Twee crematieovens die op
+dezelfde schoorsteen uitkomen, zijn eerder regel dan uitzondering. Die koppeling wordt niet
+met één predicaat tussen de systemen gelegd, maar via de processen: elke bron krijgt een
+eigen verwerkingsproces en een eigen transportproces, en die transportprocessen komen samen
+op <strong>één</strong> emissieproces dat het gedeelde emissiepunt implementeert (zie §8).</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Eén emissieproces per emissiepunt, met één isPrecededBy per bron die erop uitstoot</span>
+<span class="nv">&lt;.../proces/EMISSIE-SCHOORSTEEN-1/...&gt;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/SCHOORSTEEN-1/...&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/TRANSPORT-OVEN-1/...&gt;</span><span class="p">,</span> <span class="nv">&lt;.../proces/TRANSPORT-OVEN-2/...&gt;</span> <span class="p">.</span>
+</code></pre></div>
+<p>De structurele relatie <code>ssn:hasSubSystem</code> (§7) mag daarnaast dezelfde schoorsteen onder
+meerdere installaties hangen — ze is in de ontologie een <em>-op-</em>-relatie — maar ze drukt
+samenstelling uit, geen stroom, en vervangt de proceslijn niet.</p>
+<blockquote>
+<p>Volledig uitgewerkt in het datavoorbeeld <a href="../datavoorbeelden/crematorium/">Crematorium</a>,
+met de tegenvoorbeelden, het spiegelbeeld (één bron, meerdere emissiepunten) en een
+SPARQL-query die per emissiepunt de bijhorende bronnen oplevert.</p>
 </blockquote>
 <h2 id="4-onttrekkingspunten">4. Onttrekkingspunten</h2>
 <p>Een <strong>onttrekkingspunt</strong> is een punt waar grondstoffen gewonnen worden. Het is een subklasse van <code>ssn:System</code> en <code>ogc:SpatialObject</code>.</p>
