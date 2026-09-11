@@ -763,17 +763,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-aandachtspunten-in-het-referentievoorbeeld" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Aandachtspunten in het referentievoorbeeld
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#referenties" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1637,9 +1626,8 @@ Gebruik het transitieve pad <code>pplan:isStepOfPlan+</code>, zoals in
 <h2 id="3-een-voorbeeld-waarbij-de-volgorde-de-plangrens-oversteekt">3. Een voorbeeld waarbij de volgorde de plangrens oversteekt</h2>
 <p>Dit is het fragment uit het referentievoorbeeld dat de vraag doorgaans oproept. Het
 meetproces hangt onder de GPBV-installatie, maar de keten waarin het zit begint bij het
-onttrekkingsproces dat rechtstreeks onder het hoofdproces hangt. Sinds 2026-09-11 loopt die
-keten via een transportproces (§5); de plangrens wordt daardoor overgestoken door het
-transportproces:</p>
+onttrekkingsproces dat rechtstreeks onder het hoofdproces hangt. De keten loopt via een
+transportproces (§5); de plangrens wordt daardoor overgestoken door het transportproces:</p>
 <div class="highlight"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr:</span><span class="w"> </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/ns/riepr#&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">dct:</span><span class="w">   </span><span class="nv">&lt;http://purl.org/dc/terms/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">pplan:</span><span class="w"> </span><span class="nv">&lt;http://purl.org/net/p-plan#&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1765,13 +1753,11 @@ stof tussen twee installaties plaatsvindt — bijvoorbeeld een controleinrichtin
 vóór een lozingspunt in dezelfde leiding ligt — wordt de volgorde rechtstreeks gelegd (zie
 <a href="../migratie/#63-lozingspunt-de-controleinrichting-ligt-ervoor">Migratie §6.3</a>).</p>
 <div class="admonition note">
-<p class="admonition-title">Toegevoegd aan het referentievoorbeeld op 2026-09-11</p>
-<p>Tot dan bevatte <code>agc-glass_MJV_01-07-2026.ttl</code> <strong>geen enkel</strong> proces van het type
-<code>transport</code>: alle 31 <code>pplan:isPrecededBy</code>-relaties legden een rechtstreeks verband. Er
-staat nu voor elk van die 31 paren een transportproces tussen, zodat het bestand de
-keten <code>verwerking → transport → verwerking/emissie</code> toont. De proceduretypes zijn nu:
-<code>verwerking</code> (21×), <code>transport</code> (31×), <code>emissie</code> (12×), <code>meting</code> (10×), <code>onttrekking</code>
-(6×) en <code>hoofdactiviteit</code> (1×). Zie de changelog bovenaan dat bestand.</p>
+<p class="admonition-title">Transportprocessen in het referentievoorbeeld</p>
+<p>In <code>agc-glass_MJV_01-07-2026.ttl</code> staat tussen elk paar opeenvolgende processen een
+transportproces, zodat het bestand de keten <code>verwerking → transport → verwerking/emissie</code>
+toont. De proceduretypes die erin voorkomen zijn <code>transport</code> (31×), <code>verwerking</code> (21×),
+<code>emissie</code> (12×), <code>meting</code> (10×), <code>onttrekking</code> (6×) en <code>hoofdactiviteit</code> (1×).</p>
 </div>
 <h2 id="6-querys-die-met-de-diepte-omgaan">6. Query's die met de diepte omgaan</h2>
 <p>Alle processen van een exploitatie, ongeacht hoe diep genest:</p>
@@ -1801,57 +1787,6 @@ hiërarchie:</p>
 </code></pre></div>
 <p>Merk op dat deze tweede query <strong>geen</strong> voorwaarde op <code>pplan:isStepOfPlan</code> bevat. Dat is
 bewust: de keten mag plangrenzen oversteken.</p>
-<h2 id="7-aandachtspunten-in-het-referentievoorbeeld">7. Aandachtspunten in het referentievoorbeeld</h2>
-<p>Bij het lezen van <code>agc-glass_MJV_01-07-2026.ttl</code> zijn de volgende zaken opgevallen. De
-eerste twee zijn op 2026-09-11 in dat bestand rechtgezet; de derde is bewust blijven staan.</p>
-<table>
-<thead>
-<tr>
-<th>Vaststelling</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Het hoofdproces had <strong>geen</strong> <code>dct:type</code></td>
-<td><strong>Opgelost.</strong> Het draagt nu <code>procedure-type/hoofdactiviteit</code> én de door het OWL-axioma vereiste <code>ssn:implementedBy</code> naar de exploitatie.</td>
-</tr>
-<tr>
-<td>Er stond <strong>geen enkel</strong> transportproces in het bestand</td>
-<td><strong>Opgelost.</strong> Zie §5.</td>
-</tr>
-<tr>
-<td>Het onttrekkingsproces hangt onder het hoofdproces, zijn meetproces onder de GPBV-installatie</td>
-<td><strong>Bewust behouden.</strong> Die asymmetrie is precies wat de plangrens in §3 doet ontstaan, en het oversteken van een plangrens is toegelaten en bedoeld. Beide processen onder de GPBV-installatie hangen zou de asymmetrie wegnemen, maar ook het enige voorbeeld van dit patroon uit het bestand halen.</td>
-</tr>
-<tr>
-<td>1 van de 62 <code>pplan:isPrecededBy</code>-relaties steekt een plangrens over</td>
-<td>Het oversteken is dus toegelaten maar zeldzaam in dit bestand. Sinds de invoering van de transportprocessen is het het transportproces dat de grens oversteekt.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Ontologiewijziging van 2026-09-11: <code>ssn:implementedBy</code> aanvaardt nu ook een uitrol</p>
-<p>Het OWL-axioma voor <code>procedure-type/hoofdactiviteit</code> eist
-<code>ssn:implementedBy some riepr:Exploitatie</code>, maar de restrictie op <code>:Proces</code> liet voor
-<code>ssn:implementedBy</code> alleen een <code>ssn:System</code> toe. Een <code>riepr:Exploitatie</code> is een
-<code>ssn:Deployment</code>, geen <code>ssn:System</code> — axioma en restrictie spraken elkaar dus tegen.</p>
-<p>De restrictie in <code>riepr.ttl</code> aanvaardt nu de unie van beide:</p>
-<div class="highlight"><pre><span></span><code><span class="nn">rdfs</span><span class="p">:</span><span class="nt">subClassOf</span> <span class="p">[</span> <span class="kt">a</span> <span class="nn">owl</span><span class="p">:</span><span class="nt">Restriction</span> <span class="p">;</span>
-    <span class="nn">owl</span><span class="p">:</span><span class="nt">onProperty</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="p">;</span>
-    <span class="nn">owl</span><span class="p">:</span><span class="nt">someValuesFrom</span> <span class="p">[</span> <span class="nn">owl</span><span class="p">:</span><span class="nt">unionOf</span> <span class="p">(</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">Deployment</span> <span class="p">)</span> <span class="p">]</span> <span class="p">;</span>
-    <span class="nn">owl</span><span class="p">:</span><span class="nt">minCardinality</span> <span class="s">"0"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">nonNegativeInteger</span> <span class="p">;</span>
-    <span class="nn">owl</span><span class="p">:</span><span class="nt">maxCardinality</span> <span class="s">"1"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">nonNegativeInteger</span>
-<span class="p">]</span> <span class="p">;</span>
-</code></pre></div>
-<p>Tegelijk is een <strong>tweede</strong> restrictie op diezelfde property verwijderd. Die eiste
-<code>:Installatie</code> als waarde van <code>ssn:implementedBy</code> voor élk proces, wat door elk emissie-,
-meet- en onttrekkingsproces geschonden werd, en ze had bovendien een andere
-cardinaliteit (onbegrensd in plaats van max 1). De omgekeerde richting staat al als
-<code>ssn:implements</code> op <code>:Installatie</code> zelf.</p>
-<p>Samen brengen die twee wijzigingen het aantal SHACL-schendingen op <code>ssn:implementedBy</code>
-in het AGC-datavoorbeeld van 30 naar 0.</p>
-</div>
 <h2 id="referenties">Referenties</h2>
 <ul>
 <li><a href="../basisaanname/#1-processen-als-centraal-skelet">Basisaannames §1</a> — processen als skelet van het model, en wat P-Plan is</li>
