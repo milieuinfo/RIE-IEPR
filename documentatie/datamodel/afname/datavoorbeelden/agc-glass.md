@@ -9,8 +9,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 |---|---|
 | Bestand | `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl` |
 | Bron | handgeschreven (MJV, 01-07-2026) |
-| Laatst gewijzigd | 2026-08-26 06:30 UTC |
-| Grootte | 174 KB |
+| Laatst gewijzigd | 2026-09-11 12:17 UTC |
+| Grootte | 206 KB |
 
 ## TTL
 
@@ -19,6 +19,36 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 ##   AGC Glass Europe
 ##   Datavoorbeeld - DIT IS GEEN ECHTE DATA
 ##   Versie: 01/07/2026
+#################################
+##
+##   CHANGELOG
+##
+##   2026-09-11
+##     - Transportprocessen toegevoegd tussen elk paar processen dat voordien
+##       rechtstreeks met pplan:isPrecededBy verbonden was. Een overbrenging van
+##       stof tussen twee processen is zelf ook een proces
+##       (procedure-type/transport); zie Migratie 6.5. De keten is nu
+##       verwerking -> transport -> verwerking/emissie in plaats van een
+##       rechtstreekse koppeling.
+##     - Het hoofdproces "Vormen en bewerken van vlakglas" heeft nu
+##       dct:type procedure-type/hoofdactiviteit en de door het OWL-axioma
+##       vereiste ssn:implementedBy naar de exploitatie. Voordien had het
+##       hoofdproces helemaal geen dct:type.
+##
+##       Daarvoor is riepr.ttl mee aangepast: de restrictie op ssn:implementedBy
+##       van :Proces eiste een ssn:System, terwijl een :Exploitatie een
+##       ssn:Deployment is. Die restrictie aanvaardt nu de unie van ssn:System en
+##       ssn:Deployment. Tegelijk is een tweede, tegenstrijdige restrictie op
+##       dezelfde property verwijderd (die eiste :Installatie voor elk proces).
+##
+##   NIET gewijzigd (bewust):
+##     - "Proces onttrekkingspunt opgenomen oppervlaktewater" blijft rechtstreeks
+##       onder het hoofdproces hangen terwijl zijn meetproces onder het proces van
+##       de GPBV-installatie hangt. Daardoor steekt die keten een plangrens over.
+##       Dat is toegelaten en bedoeld: pplan:isStepOfPlan beschrijft de opbouw van
+##       de exploitatie, pplan:isPrecededBy de stofstroom. Zie de documentatie
+##       "Processtructuur: hierarchie en volgorde".
+##
 #################################
 
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -138,6 +168,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89> ;
     rdfs:label "Vormen en bewerken van vlakglas"@nl ;
+    # Het hoofdproces van een exploitatie draagt het type hoofdactiviteit; het
+    # OWL-axioma eist dan ssn:implementedBy naar de exploitatie. Een :Exploitatie is
+    # een ssn:Deployment, geen ssn:System; sinds 2026-09-11 laat de restrictie op
+    # ssn:implementedBy in riepr.ttl beide toe (unie ssn:System / ssn:Deployment).
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1355,7 +1391,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # [EIGEN INTERPRETATIE] De voorgaande stap zijn de twee installaties (demi en coater) die het proces van de GPBV installatie voorbereiden. De waterzuiveringsinstallatie komt hierna omdat deze het afvalwater van de andere installaties behandelt alvorens dit te lozen.
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1471-7efd-822f-bf68d1c55a77/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1472-775c-839d-d1482699ce7d/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cf1-89a8-03e95cb61f8e/2026-01-01/2026-01-01T10:00:00Z>,
+        <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-772d-8e4f-a99a175e869b/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor installatie "demi-installatie glasfabriek"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1471-7efd-822f-bf68d1c55a77/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1390,7 +1427,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # [EIGEN INTERPRETATIE] De centrifuge komt na de waterzuiveringsinstallatie omdat deze het afvalwater van de andere installaties behandelt alvorens dit te lozen.
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ebf-82c7-d180813898f6/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor installatie "ultrafiltratie"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1474-771b-839b-e3e39963d6e1/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1414,7 +1451,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # De controleinrichting gaat vooraf aan het lozingspunt
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1476-75aa-ab90-bafcb831f91c/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-768e-852a-40b87d2dfaf7/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor emissiepunt "LP02 Industrieel Kempenglas"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1477-7dde-b831-ede778f01064/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1427,7 +1464,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # De controleinrichting gaat vooraf aan het lozingspunt
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1478-74ce-9a2e-b8571f6b9e43/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-722c-8918-4504c319a980/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor emissiepunt "LP07 Industrieel Coater"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1479-7684-a8c3-6a59cb6e49d9/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1440,7 +1477,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # De controleinrichting gaat vooraf aan het lozingspunt
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147a-7b92-90cd-5639d24ad255/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c09-8814-6ff1165ffd4f/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Processen voor emissiepunten (lucht)
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-b8c6-7096-886c-103c3e21466c-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1458,7 +1495,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-ba55-72ab-979c-843563bcb58e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-af83-728f-99cc-fd2689c6f6a6-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7608-81f1-890597d2f980/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bbf3-7009-8da2-c864d3860720-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bbf3-7009-8da2-c864d3860720-lucht> ;
@@ -1467,7 +1504,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bbf3-7009-8da2-c864d3860720/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac24-9c91-7338-a285-c660a5b88d11-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a73-8cd2-817ff2ba6ed7/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bd81-7695-9a2b-2ded5be22aa0-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bd81-7695-9a2b-2ded5be22aa0-lucht> ;
@@ -1476,7 +1513,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bd81-7695-9a2b-2ded5be22aa0/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b109-76bd-824f-5373fd2495e3-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-77c5-8af6-8c839eb8884c/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bf2c-7592-bd64-f5bb8ce8376e-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-bf2c-7592-bd64-f5bb8ce8376e-lucht> ;
@@ -1485,7 +1522,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bf2c-7592-bd64-f5bb8ce8376e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-13eb-716d-a64e-daccacb9eaee-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7bb7-8b9a-51539b35b98d/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c0d0-7099-9a43-76e69454dc63-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c0d0-7099-9a43-76e69454dc63-lucht> ;
@@ -1494,7 +1531,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c0d0-7099-9a43-76e69454dc63/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b296-7358-966d-7a491c9fb7db-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-774c-80ec-6a4cf747adc1/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c262-75cb-8019-85ebb5792237-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c262-75cb-8019-85ebb5792237-lucht> ;
@@ -1503,7 +1540,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c262-75cb-8019-85ebb5792237/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-189b-735e-b875-c17c55aa0f04-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c0c-8a15-c2b9cda82707/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c3fe-77db-b321-7d13bfb958de-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c3fe-77db-b321-7d13bfb958de-lucht> ;
@@ -1512,7 +1549,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c3fe-77db-b321-7d13bfb958de/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1a2d-714b-9951-c87409bbc77e-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7289-86ba-f291ed0a08c3/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c589-72bc-a42c-b7140527c79f-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eaca0-c589-72bc-a42c-b7140527c79f-lucht> ;
@@ -1521,7 +1558,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1bc8-70ed-a287-c035b8c37909-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7236-8dbb-6109952fdfe8/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Processen voor installaties (lucht)
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac20-56eb-770d-bbb4-a099f0a90061-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1547,7 +1584,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac67-c259-746e-9dd6-86e632fbc5cb/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7066-847a-e9dfaa5e5a73/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht> ;
@@ -1564,7 +1601,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-13eb-716d-a64e-daccacb9eaee/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e21-8a5f-8fd50e361d03/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1581-763d-b48b-262afdcf970b-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1581-763d-b48b-262afdcf970b-lucht> ;
@@ -1589,7 +1626,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-189b-735e-b875-c17c55aa0f04/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73c5-8c00-2d6a909b9026/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1a2d-714b-9951-c87409bbc77e-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1a2d-714b-9951-c87409bbc77e-lucht> ;
@@ -1598,7 +1635,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1a2d-714b-9951-c87409bbc77e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72f4-8043-9cc0c4797b0f/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1bc8-70ed-a287-c035b8c37909-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1bc8-70ed-a287-c035b8c37909-lucht> ;
@@ -1607,7 +1644,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1bc8-70ed-a287-c035b8c37909/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-758a-8105-36648e54a7fc/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Processen voor installaties (luchtzuivering)
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb679-42b9-77df-bdc8-47ea9b612a9d-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1617,7 +1654,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb679-42b9-77df-bdc8-47ea9b612a9d/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a88-8e7f-2fb97ab166b1/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-adf1-735c-8bdb-bdf806a3ab25-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-adf1-735c-8bdb-bdf806a3ab25-lucht> ;
@@ -1626,7 +1663,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-adf1-735c-8bdb-bdf806a3ab25/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ec-8a93-a92a8ab13f49/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-af83-728f-99cc-fd2689c6f6a6-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-af83-728f-99cc-fd2689c6f6a6-lucht> ;
@@ -1635,7 +1672,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-af83-728f-99cc-fd2689c6f6a6/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac20-56eb-770d-bbb4-a099f0a90061-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7afb-878c-aa00a8de5446/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b109-76bd-824f-5373fd2495e3-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b109-76bd-824f-5373fd2495e3-lucht> ;
@@ -1644,7 +1681,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b109-76bd-824f-5373fd2495e3/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac67-c259-746e-9dd6-86e632fbc5cb-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72ef-8d6a-1bfcc330b964/2026-01-01/2026-01-01T10:00:00Z> .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b296-7358-966d-7a491c9fb7db-lucht/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b296-7358-966d-7a491c9fb7db-lucht> ;
@@ -1653,7 +1690,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b296-7358-966d-7a491c9fb7db/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1581-763d-b48b-262afdcf970b-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ae5-8ea0-c7bd5c531bc2/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor onttrekkingspunt "Opgenomen oppervlaktewater"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147b-712f-8499-6bbf0d73ed8a/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1749,7 +1786,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # [EIGEN INTERPRETATIE] De controleinrichting volgt op de zuivering
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7926-8f5c-4166b13fdfc1/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Controleinrichting Opgenomen oppervlakte"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1481-7a80-acfd-0fc82389cba6/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1762,7 +1799,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # De meetinrichting volgt op het onttrekkingspunt
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147b-712f-8499-6bbf0d73ed8a/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7394-829e-79a2dcd0e335/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Peilput"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1783,7 +1820,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cc0-8861-a908b15530ec/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Meetinrichting 2 (onderhoud)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1484-7cae-ae70-30f58d784e03/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1794,7 +1831,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e83-8969-5c6054353cfe/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Meetinrichting 1 (FL koeltoren)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1485-7e92-9aff-24678ba91e48/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1805,7 +1842,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146c-739e-af4f-7b3af72b9b4d/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73f1-8b5a-53457f6f8c4f/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Meetinrichting 3 (VT verzending)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1486-7672-86c4-290e4e8b39d6/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1816,7 +1853,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146d-7e15-8388-676b085f663f/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f/2026-01-01/2026-01-01T10:00:00Z> .
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ae-8107-169f6a2452fe/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Meetinrichting 5 (KG verzending)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1487-7487-b91c-9217e4b84e92/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
@@ -1826,6 +1863,354 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146e-737d-b305-650c48295731/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7526-83f2-801ec49ac999/2026-01-01/2026-01-01T10:00:00Z> .
+
+
+## Transportprocessen
+## Een overbrenging van stof tussen twee processen is zelf ook een proces.
+## Het transportproces neemt de pplan:isPrecededBy van het volgende proces over
+## en wijst zelf naar het vorige. Zie documentatie 'Migratie 6.5' en
+## 'Processtructuur: hierarchie en volgorde'.
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cf1-89a8-03e95cb61f8e/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cf1-89a8-03e95cb61f8e> ;
+    rdfs:label "Transport van demi-installatie glasfabriek naar waterzuiveringsinstallatie"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1471-7efd-822f-bf68d1c55a77/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-772d-8e4f-a99a175e869b/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-772d-8e4f-a99a175e869b> ;
+    rdfs:label "Transport van demi-installaties coater naar waterzuiveringsinstallatie"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1472-775c-839d-d1482699ce7d/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ebf-82c7-d180813898f6/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ebf-82c7-d180813898f6> ;
+    rdfs:label "Transport van waterzuiveringsinstallatie naar Centrifuge"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-768e-852a-40b87d2dfaf7/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-768e-852a-40b87d2dfaf7> ;
+    rdfs:label "Transport van Controleinrichting LP01 Industrieel glasfabriek naar LP01 Industrieel glasfabriek"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1476-75aa-ab90-bafcb831f91c/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-722c-8918-4504c319a980/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-722c-8918-4504c319a980> ;
+    rdfs:label "Transport van Controleinrichting LP02 Industrieel Kempenglas naar LP02 Industrieel Kempenglas"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1478-74ce-9a2e-b8571f6b9e43/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c09-8814-6ff1165ffd4f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c09-8814-6ff1165ffd4f> ;
+    rdfs:label "Transport van Controleinrichting LP07 Industrieel Coater naar LP07 Industrieel Coater"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147a-7b92-90cd-5639d24ad255/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7608-81f1-890597d2f980/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7608-81f1-890597d2f980> ;
+    rdfs:label "Transport van Wastoren etslijn 1 naar ETSLIJN 1etsafdeling"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-af83-728f-99cc-fd2689c6f6a6-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a73-8cd2-817ff2ba6ed7/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a73-8cd2-817ff2ba6ed7> ;
+    rdfs:label "Transport van STOOKINSTALLATIES EN STOOMKETELS naar STOOKINSTALLATIES"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac24-9c91-7338-a285-c660a5b88d11-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-77c5-8af6-8c839eb8884c/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-77c5-8af6-8c839eb8884c> ;
+    rdfs:label "Transport van NAVERBRANDER naar SCHOUW NAVERBRANDER"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b109-76bd-824f-5373fd2495e3-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7bb7-8b9a-51539b35b98d/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7bb7-8b9a-51539b35b98d> ;
+    rdfs:label "Transport van VACUUMPOMPEN naar VACUUMPOMPEN"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-13eb-716d-a64e-daccacb9eaee-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-774c-80ec-6a4cf747adc1/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-774c-80ec-6a4cf747adc1> ;
+    rdfs:label "Transport van Wastoren etslijn 2 naar ETSLIJN 2 etsafdeling"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b296-7358-966d-7a491c9fb7db-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c0c-8a15-c2b9cda82707/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c0c-8a15-c2b9cda82707> ;
+    rdfs:label "Transport van Steam reformer links naar Steam reformer links"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-189b-735e-b875-c17c55aa0f04-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7289-86ba-f291ed0a08c3/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7289-86ba-f291ed0a08c3> ;
+    rdfs:label "Transport van Steam reformer rechts naar Steam reformer rechts"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1a2d-714b-9951-c87409bbc77e-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7236-8dbb-6109952fdfe8/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7236-8dbb-6109952fdfe8> ;
+    rdfs:label "Transport van Steam reformer Hygen 3 naar Steam reformer Hygen 3"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1bc8-70ed-a287-c035b8c37909-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7066-847a-e9dfaa5e5a73/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7066-847a-e9dfaa5e5a73> ;
+    rdfs:label "Transport van COATER naar ELEKTRISCHE DROOGOVEN MET NAVERBRANDER"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e21-8a5f-8fd50e361d03/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e21-8a5f-8fd50e361d03> ;
+    rdfs:label "Transport van COATER naar VACUUMPOMPEN"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73c5-8c00-2d6a909b9026/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73c5-8c00-2d6a909b9026> ;
+    rdfs:label "Transport van GLASOVEN naar Steam reformer links"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72f4-8043-9cc0c4797b0f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72f4-8043-9cc0c4797b0f> ;
+    rdfs:label "Transport van GLASOVEN naar Steam reformer rechts"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-758a-8105-36648e54a7fc/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-758a-8105-36648e54a7fc> ;
+    rdfs:label "Transport van GLASOVEN naar Steam reformer Hygen 3"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a88-8e7f-2fb97ab166b1/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a88-8e7f-2fb97ab166b1> ;
+    rdfs:label "Transport van GLASOVEN naar ELECTROFILTER"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ec-8a93-a92a8ab13f49/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ec-8a93-a92a8ab13f49> ;
+    rdfs:label "Transport van GLASOVEN naar SCR"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7afb-878c-aa00a8de5446/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7afb-878c-aa00a8de5446> ;
+    rdfs:label "Transport van ETSLIJN 1 etsafdeling naar Wastoren etslijn 1"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac20-56eb-770d-bbb4-a099f0a90061-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72ef-8d6a-1bfcc330b964/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72ef-8d6a-1bfcc330b964> ;
+    rdfs:label "Transport van ELEKTRISCHE DROOGOVEN MET NAVERBRANDER naar NAVERBRANDER"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac67-c259-746e-9dd6-86e632fbc5cb-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ae5-8ea0-c7bd5c531bc2/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ae5-8ea0-c7bd5c531bc2> ;
+    rdfs:label "Transport van ETSLIJN 2 etsafdeling naar Wastoren etslijn 2"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1581-763d-b48b-262afdcf970b-lucht/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7926-8f5c-4166b13fdfc1/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7926-8f5c-4166b13fdfc1> ;
+    rdfs:label "Transport van waterzuiveringsinstallatie naar Controleinrichting LP07 Industrieel Coater"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7394-829e-79a2dcd0e335/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7394-829e-79a2dcd0e335> ;
+    rdfs:label "Transport van Opgenomen oppervlaktewater naar Controleinrichting Opgenomen oppervlakte"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147b-712f-8499-6bbf0d73ed8a/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cc0-8861-a908b15530ec/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cc0-8861-a908b15530ec> ;
+    rdfs:label "Transport van 4 (KG atelier) naar Meetinrichting 4 (KG atelier)"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e83-8969-5c6054353cfe/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e83-8969-5c6054353cfe> ;
+    rdfs:label "Transport van 2 (onderhoud) naar Meetinrichting 2 (onderhoud)"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73f1-8b5a-53457f6f8c4f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73f1-8b5a-53457f6f8c4f> ;
+    rdfs:label "Transport van 1 (FL koeltoren) naar Meetinrichting 1 (FL koeltoren)"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ae-8107-169f6a2452fe/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ae-8107-169f6a2452fe> ;
+    rdfs:label "Transport van 3 (VT verzending) naar Meetinrichting 3 (VT verzending)"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f/2026-01-01/2026-01-01T10:00:00Z> .
+
+<https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7526-83f2-801ec49ac999/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7526-83f2-801ec49ac999> ;
+    rdfs:label "Transport van 5 (KG verzending) naar Meetinrichting 5 (KG verzending)"@nl ;
+    dct:issued "2026-01-01"^^xsd:date ;
+    dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1480-7847-8ac1-d4c44a6dd474/2026-01-01/2026-01-01T10:00:00Z> .
 

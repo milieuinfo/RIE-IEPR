@@ -426,9 +426,12 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een proces kan het gebruik van een systeem representeren"@nl ;
+        # Een hoofdproces (procedure-type/hoofdactiviteit) implementeert een :Exploitatie en
+        # die is een ssn:Deployment, geen ssn:System. Vandaar de unie: alle andere
+        # procestypes implementeren een systeem (installatie, emissiepunt, meetpunt, ...).
+        rdfs:comment "Een proces kan het gebruik van een systeem of van een uitrol (exploitatie) representeren"@nl ;
         owl:onProperty ssn:implementedBy ;
-        owl:someValuesFrom ssn:System ;
+        owl:someValuesFrom [ owl:unionOf ( ssn:System ssn:Deployment ) ] ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -470,12 +473,6 @@
         owl:onProperty pplan:hasStep ;
         owl:someValuesFrom :Proces ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger
-    ] ;
-    rdfs:subClassOf [ a owl:Restriction ;
-        # *..* relation with ssn:implements
-        owl:onProperty ssn:implementedBy ;
-        owl:someValuesFrom :Installatie ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een proces kan externe identificaties hebben (optioneel)"@nl ;

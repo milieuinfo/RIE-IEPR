@@ -26,6 +26,7 @@ De precieze grens — welke klassen, welke predicaten, en waarom emissies niet i
 
 - [Twee stromen](./datamodel.md) — de opdeling van het model en de grens ertussen
 - [Basisaannames](./basisaanname.md) — de modellen en aannames die aan het datamodel ten grondslag liggen
+- [Processtructuur: hiërarchie en volgorde](./procesketen.md) — `isStepOfPlan` versus `isPrecededBy`, geneste processen en transportprocessen
 - [End-to-end voorbeeld](./endtoend.md) — de volledige dataketen, per stroom uit elkaar gehouden
 - [Gebruiksscenario's](./gebruiksscenario.md) — concrete voorbeelden van data-afname met SPARQL-query's
 - [Aangifte en dossier](./aangifte.md) — het administratieve document waaraan beide stromen kunnen hangen
@@ -40,6 +41,12 @@ De precieze grens — welke klassen, welke predicaten, en waarom emissies niet i
 **Operationele gegevens**
 
 - [Observaties en emissies](./observaties.md) — metingen, gebeurtenissen (emissie, onttrekking) en resultaten
+
+**Datavoorbeelden**
+
+- [Overzicht](./datavoorbeelden/index.md) — alle uitgewerkte voorbeelden
+- [AGC Glass Europe](./datavoorbeelden/agc-glass.md) — het handgeschreven referentievoorbeeld van de MJV
+- [Crematorium](./datavoorbeelden/crematorium.md) — hoe meerdere bronnen op één emissiepunt uitkomen
 
 > **Codelijsten**: Een overzicht van alle gecontroleerde vocabulaires (SKOS-concepten) die in dit model worden gebruikt, vindt u hieronder onder "Codelijsten (SKOS-concepten)". Deze codelijsten worden beheerd in de aparte repository [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr/).
 
@@ -146,4 +153,6 @@ Deze documentatie is gebaseerd op:
 
 - **Ontologie**: `src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl`
 - **Datavoorbeeld**: `documentatie/datamodel/datavoorbeelden/agc-glass_MJV_01-07-2026.ttl` (AGC Glass Europe)
+- **Datavoorbeeld**: `src/main/input/activiteit/05-ai-crematorium.ttl` (Crematorium)
+- **Applicatiedocumentatie**: `documentatie/applicatie/DATASTRUCTUUR.md` (*Use case 1: Crematorium*)
 - **SHACL-shapes**: `documentatie/datamodel/generated/shacl/schema.ttl`

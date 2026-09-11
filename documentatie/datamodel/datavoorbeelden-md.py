@@ -5,6 +5,9 @@ Leest de TTL-bestanden uit documentatie/datamodel/datavoorbeelden/ en schrijft d
 een mkdocs-pagina per voorbeeld naar documentatie/datamodel/afname/datavoorbeelden/
 (inclusief de volledige TTL in een codeblock). Alleen Python stdlib; wordt na elke
 OWL-SDA-run door build-datavoorbeelden.sh aangeroepen en in CI door de docs-build.
+
+Enkel de pagina's uit PAGINAS worden (over)geschreven. Handgeschreven pagina's in dezelfde
+map -- zoals datavoorbeelden/crematorium.md -- blijven ongemoeid.
 """
 
 from __future__ import annotations

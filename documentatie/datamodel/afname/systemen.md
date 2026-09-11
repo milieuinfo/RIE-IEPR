@@ -148,6 +148,30 @@ Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equ
 
 > **Let op**: `riepr:parameter` is een **objectproperty** en mag dus geen tekstliteral als waarde krijgen. Ze wijst naar een concept (bijvoorbeeld een chemische stof) *waarover* de eigenschap gaat, niet naar de naam van de eigenschap zelf — die staat in `dct:type`. Het datavoorbeeld van 01/07/2026 gebruikt nog de slugs `hoogte` en `equivalente-diameter`; in de codelijst heten ze `schouw-hoogte` en `schouw-diameter`.
 
+### Meerdere bronnen op één emissiepunt
+
+Een emissiepunt hoort **niet** één-op-één bij één installatie. Twee crematieovens die op
+dezelfde schoorsteen uitkomen, zijn eerder regel dan uitzondering. Die koppeling wordt niet
+met één predicaat tussen de systemen gelegd, maar via de processen: elke bron krijgt een
+eigen verwerkingsproces en een eigen transportproces, en die transportprocessen komen samen
+op **één** emissieproces dat het gedeelde emissiepunt implementeert (zie §8).
+
+```turtle
+# Eén emissieproces per emissiepunt, met één isPrecededBy per bron die erop uitstoot
+<.../proces/EMISSIE-SCHOORSTEEN-1/...>
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    ssn:implementedBy <.../emissiepunt/SCHOORSTEEN-1/...> ;
+    pplan:isPrecededBy <.../proces/TRANSPORT-OVEN-1/...>, <.../proces/TRANSPORT-OVEN-2/...> .
+```
+
+De structurele relatie `ssn:hasSubSystem` (§7) mag daarnaast dezelfde schoorsteen onder
+meerdere installaties hangen — ze is in de ontologie een *-op-*-relatie — maar ze drukt
+samenstelling uit, geen stroom, en vervangt de proceslijn niet.
+
+> Volledig uitgewerkt in het datavoorbeeld [Crematorium](./datavoorbeelden/crematorium.md),
+> met de tegenvoorbeelden, het spiegelbeeld (één bron, meerdere emissiepunten) en een
+> SPARQL-query die per emissiepunt de bijhorende bronnen oplevert.
+
 ## 4. Onttrekkingspunten
 
 Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`.

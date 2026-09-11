@@ -11,7 +11,7 @@ Processen vormen het organisatieprincipe van het hele datamodel. **Alles hangt a
 
 - Elke exploitatie implementeert precies één hoofdproces (`ssn:implements`)
 - Subprocessen zijn gerelateerd via `pplan:isStepOfPlan`
-- Emissie-, onttrekkings-, verwerkings- en meetprocessen zijn subprocessen van het hoofdproces
+- Emissie-, onttrekkings-, verwerkings- en meetprocessen hangen onder het hoofdproces — niet noodzakelijk **rechtstreeks**: waar er een GPBV-installatie is, hangen ze onder het proces van die installatie, dat op zijn beurt een stap van het hoofdproces is
 - Systemen (installaties, emissiepunten, ...) worden geïmplementeerd door processen (`ssn:implementedBy`)
 
 ```turtle
@@ -40,6 +40,8 @@ Processen vormen het organisatieprincipe van het hele datamodel. **Alles hangt a
 - **`pplan:isPrecededBy`** geeft de volgorde aan: welke stap vóór een andere moet plaatsvinden.
 
 In RIE-IEPR is elk `riepr:Proces` tegelijk een `pplan:Plan`, een `pplan:Step` en een `sosa:Procedure`. Het hoofdproces van een exploitatie is het bovenste niveau; alle emissie-, onttrekkings-, verwerkings-, meet- en uitwisselprocessen zijn stappen daaronder (`pplan:isStepOfPlan`) en kunnen met `pplan:isPrecededBy` onderling geordend worden.
+
+Beide eigenschappen staan **los van elkaar**: `pplan:isStepOfPlan` beschrijft de opbouw van de exploitatie, `pplan:isPrecededBy` de stroom van stof, water of lucht. Twee processen die met `pplan:isPrecededBy` verbonden zijn, hoeven dus **niet** tot hetzelfde plan te behoren. Zie [Processtructuur: hiërarchie en volgorde](./procesketen.md).
 
 ## 2. URI-ontwerp en versiebeheer
 
