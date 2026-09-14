@@ -1049,6 +1049,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#filter-proces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter-proces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#filter-eigenschappen" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1815,7 +1826,7 @@
 <div class="admonition note">
 <p class="admonition-title">Twee nuances</p>
 <ul>
-<li><code>riepr:Filter</code> kent in de ontologie <strong>geen</strong> <code>ssn:hasProperty</code>-restrictie, terwijl de bron wél filtereigenschappen levert. Zie <a href="../migratie/#9-bekende-afwijkingen-en-open-punten">Migratie §9</a>.</li>
+<li><code>riepr:Filter</code> kent in de ontologie <strong>geen</strong> <code>ssn:hasProperty</code>-restrictie, terwijl de bron wél filtereigenschappen levert en de codelijst <code>filter_eigenschappen</code> die concepten inmiddels bevat. Het datavoorbeeld hangt de eigenschappen dus wél op de filter; het axioma in <code>riepr.ttl</code> moet nog bijgewerkt worden.</li>
 <li><code>sosa:isHostedBy</code> staat niet in de ontologie: het is een conventie die in het datavoorbeeld consequent wordt toegepast, maar er is geen OWL-restrictie die het afdwingt (zie §9).</li>
 </ul>
 </div>
@@ -1976,15 +1987,38 @@ SPARQL-query die per emissiepunt de bijhorende bronnen oplevert.</p>
 <span class="nv">&lt;.../meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasSubSystem</span> <span class="nv">&lt;.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<h3 id="filter-eigenschappen">Filter-eigenschappen</h3>
-<p>De bron levert per filter een watervoerende laag, een diepte en een lengte. De codelijst <code>filter_eigenschappen</code> bevat vandaag echter <strong>nog geen concepten</strong>: de conceptscheme bestaat, maar is leeg. Daarom worden diepte en watervoerende laag voorlopig op het <strong>onttrekkingspunt</strong> gemodelleerd, via <code>onttrekkingspunt_eigenschappen</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c"># Watervoerende laag, op het onttrekkingspunt</span>
-<span class="nv">&lt;.../systeemeigenschap/019edc4a-1a36-7c04-8f5a-0a0b1c2d3e4f&gt;</span>
-    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/watervoerendelaag&gt;</span> <span class="p">;</span>
-    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"Kalksteen"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">.</span>
+<h3 id="filter-proces">Filter-proces</h3>
+<p>Ook een filter is een systeem en krijgt dus een eigen <code>riepr:Proces</code> (<a href="../migratie/#61-elk-systeem-krijgt-een-proces">Migratie §6.1</a>). Omdat een filter nooit zelfstandig optreedt, is dat proces een stap in het proces van de put waaronder de filter hangt — niet in het hoofdproces van de exploitatie. Systeemhiërarchie en proceshiërarchie lopen dus parallel:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Pompfilter onder een pompput: stap in het onttrekkingsproces van die put</span>
+<span class="nv">&lt;.../proces/01a0a02c-e670-7c22-8ab9-61e92f24d447/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
+
+<span class="c"># Peilfilter onder een peilput: stap in het meetproces van die put</span>
+<span class="nv">&lt;.../proces/01a0a02c-e66d-7b63-b8dc-c23cac8156af/2026-01-01/2026-01-01T10:00:00Z&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting&gt;</span> <span class="p">;</span>
+    <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">;</span>
+    <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z&gt;</span> <span class="p">.</span>
 </code></pre></div>
-<p>Of de filtergegevens uiteindelijk op de filter dan wel op de put horen, is een openstaand punt — zie <a href="../migratie/#9-bekende-afwijkingen-en-open-punten">Migratie §9</a>.</p>
+<p>De codelijst <code>procedure_type</code> kent nog geen filter-specifiek concept; de filter neemt daarom het proceduretype van de bovenliggende put over. Zie <a href="../migratie/#61-elk-systeem-krijgt-een-proces">Migratie §6.1</a>.</p>
+<h3 id="filter-eigenschappen">Filter-eigenschappen</h3>
+<p>De bron levert per filter een watervoerende laag, een diepte en een lengte. Die horen op de <strong>filter</strong> zelf en worden getypeerd met concepten uit <code>filter_eigenschappen</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Watervoerende laag, diepte en lengte, op de filter</span>
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-7511-b394-11b36f0d8374&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"0100"</span> <span class="p">.</span>
+
+<span class="nv">&lt;.../systeemeigenschap/019ecf80-eae8-70c9-a2ed-258f21b11a8e&gt;</span>
+    <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Systeemeigenschap</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte&gt;</span> <span class="p">;</span>
+    <span class="nn">rdfs</span><span class="p">:</span><span class="nt">value</span> <span class="s">"7.940"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">decimal</span> <span class="p">;</span>
+    <span class="nn">qudt</span><span class="p">:</span><span class="nt">hasUnit</span> <span class="nn">unit</span><span class="p">:</span><span class="nt">M</span> <span class="p">.</span>
+</code></pre></div>
+<p>De diepte en de watervoerende laag van de <strong>put</strong> zelf blijven op het onttrekkingspunt staan, via <code>onttrekkingspunt_eigenschappen</code> (zie §4). Voor <code>DieptePomp</code> van een pompfilter bestaat nog geen concept in <code>filter_eigenschappen</code>; dat brongegeven wordt daarom nog niet gemigreerd.</p>
 <h2 id="7-systeemhierarchie-via-ssnhassubsystem">7. Systeemhiërarchie via <code>ssn:hasSubSystem</code></h2>
 <p>Systemen kunnen genest zijn: een installatie kan subsystemen bevatten (emissiepunten, onttrekkingspunten, meetpunten, filters).</p>
 <div class="mermaid">graph TD
