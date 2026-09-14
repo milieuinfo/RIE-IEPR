@@ -3,6 +3,7 @@ import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
+import { Systeemeigenschap } from './systeemeigenschap.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -106,6 +107,14 @@ export class Filter implements Systeem {
 	 */
 	@jsonArrayMember(() => Exploitatie, { name: 'hasDeployment' })
 	hasDeployment?: Exploitatie[];
+
+	/**
+	 * hasProperty
+	 * @see {@link http://www.w3.org/ns/ssn/hasProperty}
+	 * Een filter kan meerdere eigenschappen hebben
+	 */
+	@jsonArrayMember(() => Systeemeigenschap, { name: 'hasProperty' })
+	heeftEigenschap?: Systeemeigenschap[];
 
 	/**
 	 * aangifte

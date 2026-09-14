@@ -443,6 +443,22 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	filter_identity one to many systeem : ""
 	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
+	filter_systeemeigenschap {
+	  filter_id VARCHAR PK,FK
+	  systeemeigenschap_id VARCHAR PK,FK
+	  aangemaakt_op TIMESTAMP 
+	  geldig_van DATE 
+	  geldig_tot DATE 
+	}
+	
+	class filter_systeemeigenschap system
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	filter_systeemeigenschap many to one filter_identity : heeft_eigenschap_systeemeigenschap
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	filter_systeemeigenschap many to one systeemeigenschap : heeft_eigenschap_systeemeigenschap
+	
 	%% http://www.w3.org/ns/sosa/FeatureOfInterest
 	gebeurtenis {
 	  uuid VARCHAR PK

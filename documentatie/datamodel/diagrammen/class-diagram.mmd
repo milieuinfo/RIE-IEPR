@@ -207,7 +207,8 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
@@ -219,6 +220,7 @@ classDiagram
 	  ExterneIdentificator[] identifier
 	  Status status
 	  Exploitatie[] hasDeployment
+	  Systeemeigenschap[] heeftEigenschap
 	  Aangifte aangifte
 	  Date inGebruikTot
 	  Date inGebruikVanaf
@@ -229,6 +231,8 @@ classDiagram
 	Filter --> Status : status
 	%% http://www.w3.org/ns/ssn/hasDeployment
 	Filter --> Exploitatie : hasDeployment
+	%% http://www.w3.org/ns/ssn/hasProperty
+	Filter --> Systeemeigenschap : heeftEigenschap
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Filter --> Aangifte : aangifte
 	Systeem <|-- Filter

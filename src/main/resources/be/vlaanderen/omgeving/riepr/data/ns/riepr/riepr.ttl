@@ -1331,6 +1331,13 @@
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een filter kan meerdere eigenschappen hebben"@nl ;
+        # Bepaald de codelijst voor systeemeigenschappen: https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/filter_eigenschappen.csv
+        owl:onProperty ssn:hasProperty ;
+        owl:someValuesFrom :Systeemeigenschap ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
+    ] ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,

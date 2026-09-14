@@ -448,12 +448,18 @@
             </configuration>
           </execution>
           <execution>
+            <!-- TIJDELIJK skip=true: de geïnstalleerde oddtoolkit:0.1.2-SNAPSHOT kent generator
+                 "ontology-diagram" niet meer (beschikbaar: bikeshed, class, class-diagram,
+                 data-frame, er-diagram, java, odcs, shacl, sql, typescript) — pre-existing
+                 mismatch, losstaand van de :Filter ssn:hasProperty-restrictie hierboven. Nodig om
+                 `mvn install` lokaal te laten doorlopen tot en met de java-generator. -->
             <id>oddtoolkit-ontology-diagram</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>java</goal>
             </goals>
             <configuration>
+              <skip>true</skip>
               <includeProjectDependencies>false</includeProjectDependencies>
               <includePluginDependencies>true</includePluginDependencies>
               <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
