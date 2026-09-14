@@ -13,6 +13,10 @@ SITE_DIR="$ROOT/site/mkdocs"
 WIDOCO_OUT="$ROOT/site/ontology"
 mkdir -p "$SITE_DIR/ontologie"
 
+# Plaats de gegenereerde mermaid-diagrammen (diagrammen/*.mmd) in de pagina's die ze
+# refereren via <!--mermaid:...--> placeholders.
+python3 diagram-inline.py
+
 if command -v mkdocs >/dev/null 2>&1; then
   mkdocs build --site-dir "$SITE_DIR"
 else

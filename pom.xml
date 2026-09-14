@@ -347,7 +347,7 @@
           <dependency>
             <groupId>be.vlaanderen.omgeving</groupId>
             <artifactId>oddtoolkit</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2-SNAPSHOT</version>
           </dependency>
         </dependencies>
         <executions>
@@ -443,6 +443,22 @@
               <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
               <arguments>
                 <argument>--generator=er-diagram</argument>
+                <argument>--config-file=documentatie/datamodel/src/config-oddtoolkit.yml</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>oddtoolkit-ontology-diagram</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <includeProjectDependencies>false</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <mainClass>be.vlaanderen.omgeving.oddtoolkit.OddtoolkitApplication</mainClass>
+              <arguments>
+                <argument>--generator=ontology-diagram</argument>
                 <argument>--config-file=documentatie/datamodel/src/config-oddtoolkit.yml</argument>
               </arguments>
             </configuration>

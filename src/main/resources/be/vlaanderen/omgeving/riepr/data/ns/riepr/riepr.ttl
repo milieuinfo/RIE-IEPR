@@ -26,6 +26,7 @@
 @prefix dossier: <https://data.vlaanderen.be/ns/dossier#> .
 @prefix oa: <http://www.w3.org/ns/oa#> .
 @prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix csor: <https://data.omgeving.vlaanderen.be/ns/csor#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -1681,11 +1682,22 @@
     rdfs:domain :Proces ;
     rdfs:range :Rubriek .
 
+## CSOR
 :parameter a owl:ObjectProperty ;
     rdfs:label "Parameter"@nl ;
     rdfs:comment "De parameter die wordt gebruikt bij een eigenschap of meting."@nl ;
     rdfs:domain :Systeemeigenschap ;
-    rdfs:range pplan:Variable .
+    rdfs:range csor:Variabele, pplan:Variable .
+:parameterAspect a owl:ObjectProperty ;
+    rdfs:label "Parameteraspect"@nl ;
+    rdfs:comment "Het aspect van de parameter die wordt gebruikt bij een eigenschap of meting."@nl ;
+    rdfs:domain :Systeemeigenschap ;
+    rdfs:range csor:ParameterAspect, pplan:Variable .
+:parameterVariabele a owl:ObjectProperty ;
+    rdfs:label "Parametervariabele"@nl ;
+    rdfs:comment "De variabele van de parameter die wordt gebruikt bij een eigenschap of meting."@nl ;
+    rdfs:domain :Systeemeigenschap ;
+    rdfs:range csor:Variabele, pplan:Variable .
 
 :datatype a owl:ObjectProperty ;
     rdfs:label "Datatype"@nl ;
@@ -1809,14 +1821,6 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:label "Definitief uit dienst"@nl ;
     rdfs:comment "De entiteit is definitief uit dienst."@nl ;
     skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/definitief_uit_dienst> .
-:tijdelijkUitDienst a adms:Status, skos:Concept ;
-    rdfs:label "Tijdelijk uit dienst"@nl ;
-    rdfs:comment "De entiteit is tijdelijk uit dienst."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/tijdelijk_uit_dienst> .
-:verkeerdeRegistratie a adms:Status, skos:Concept ;
-    rdfs:label "Verkeerde registratie"@nl ;
-    rdfs:comment "De entiteit is verkeerd geregistreerd."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/verkeerde_registratie> .
 :voorgesteld a adms:Status, skos:Concept ;
     rdfs:label "Voorgesteld"@nl ;
     rdfs:comment "De entiteit is voorgesteld."@nl ;
