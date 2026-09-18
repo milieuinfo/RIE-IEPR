@@ -288,7 +288,8 @@ pipeline {
                     git add documentatie/datamodel/generated \\
                             documentatie/datamodel/diagrammen/class-diagram.mmd \\
                             documentatie/datamodel/diagrammen/er-diagram.mmd \\
-                            documentatie/datamodel/diagrammen/ontology-diagram.mmd
+                            documentatie/datamodel/diagrammen/ontology-diagram.mmd \\
+                            documentatie/datamodel/diagrammen/ontology-diagram.png
                     if git diff --cached --quiet; then
                       echo "ODDToolkit gegenereerde artefacten up to date, nothing to commit"
                     else

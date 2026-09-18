@@ -190,7 +190,7 @@ Elk bronobject wordt afgebeeld op een klasse uit het RIE-IEPR-datamodel (zie [Sy
 | Opnamepunt → afgeleide controle | `riepr:Meetpunt` | `meetpunt_type:controleinrichting` (§5.6) |
 | Elk systeem → afgeleid proces | `riepr:Proces` | uit `procedure_type` (§6.1) |
 
-> **Let op — codelijsten zijn leidend.** De concepten hierboven komen uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr). Waarden die daar niet in staan (bv. `onttrekkingspunt_type:onttrekkingspunt`, `meetpunt_type:meetinrichting`, `filter_type:filter`, `installatie_type:gpbv-installatie`) mogen niet gebruikt worden. Zie §9 voor de plaatsen waar het datavoorbeeld hier nog van afwijkt.
+> **Let op — codelijsten zijn leidend.** De concepten hierboven komen uit [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr). Waarden die daar niet in staan (bv. `onttrekkingspunt_type:onttrekkingspunt`, `meetpunt_type:meetinrichting`, `filter_type:filter`, `installatie_type:gpbv-installatie`) mogen niet gebruikt worden; het [referentievoorbeeld](#8-referentievoorbeeld-agc-glass) gebruikt uitsluitend concepten die in de codelijsten bestaan.
 
 ---
 
@@ -260,9 +260,12 @@ Elk `Emissiepunt` wordt een `riepr:Emissiepunt`:
 |---|---|---|---|
 | `lozend` | `riepr:Emissiepunt` | `emissiepunt_type:lozingspunt` | controleinrichting **vóór** het punt (§6.3) |
 | `oppompend` | `riepr:Onttrekkingspunt` | `onttrekkingspunt_type:opnamepunt` | controleinrichting **na** het punt (§6.4) |
-| `transfer` | `riepr:Uitwisselpunt` | `uitwisselpunt_type:uitwisselpunt` | zie §9 — nog niet uitgewerkt |
+| `transfer` | `riepr:Uitwisselpunt` | `uitwisselpunt_type:uitwisselpunt` | nog niet uitgewerkt — zie hieronder |
 
 `Lozingsplaats` (oppervlaktewater, riool, grondwater, …) wordt een `riepr:Systeemeigenschap` van type `emissiepunt_eigenschappen:lozingspunt-lozingsplaats`, met als waarde het overeenkomstige selectiemogelijkheid-concept.
+
+!!! warning "`MeetputType = transfer` is nog niet uitgewerkt"
+    Het datamodel heeft met `riepr:Uitwisselpunt` en `procedure_type:uitwissel` alle bouwstenen, maar de afleidingsregels en de ketenrichting voor een transferpunt zijn nog niet vastgelegd. Het referentievoorbeeld bevat dan ook geen uitwisselpunt.
 
 ### 5.5 Onttrekkingspunten
 
@@ -271,6 +274,9 @@ Elk `Emissiepunt` wordt een `riepr:Emissiepunt`:
 * **Alle identifiers bewaren.** Grondwaterputten dragen in de bron een hele reeks VMM-sleutels. Die worden **allemaal** als aparte `adms:Identifier` bewaard: `onttrekkingspuntCode`, `exploitantID`, `watnr`, `vergunningID`, `installatieVergunningID`, `vergundeRubriekID`, `installatieID`, `iioaID`, `putID` en `putKey`.
 * **Filters** hangen als `ssn:hasSubSystem` onder het onttrekkingspunt (§5.7).
 * **Meting** — elk onttrekkingspunt krijgt een meetpunt, maar dat komt **ná** het onttrekkingspunt in de keten (§6.4).
+
+!!! warning "`Type = GEOTHERMIE` is nog niet uitgewerkt"
+    Grondwaterputten kennen naast `GRONDWATERWINNING` en `PEIL` ook `GEOTHERMIE`. Er is een `installatie_type:geothermisch`, maar geen bijbehorend `onttrekkingspunt_type`; de doelklasse voor zo'n put is nog te beslissen.
 
 ### 5.6 Meetpunten
 
@@ -286,12 +292,18 @@ De **controleinrichting** bestaat niet in de bron: ze wordt tijdens de migratie 
 
 Een **peilput** krijgt daarnaast diepte- en referentiepunteigenschappen (`meetpunt_eigenschappen:diepte`, `referentiepunt`, `referentiepunt_naam`, `referentiepunt_diepte`).
 
+!!! warning "Debietmeter-eigenschappen ontbreken in de codelijst"
+    `Merk`, `Serienummer` en `DatumLaatsteIjking` uit de bron hebben nog geen concept in `meetpunt_eigenschappen` en worden daarom (nog) niet gemigreerd.
+
 ### 5.7 Filters
 
 * `Peilfilter` → `riepr:Filter` met type `filter_type:peil`;
 * `Pompfilter` → `riepr:Filter` met type `filter_type:pomp`.
 
-Filters zijn `ssn:hasSubSystem` van de put waartoe ze behoren — een peilfilter onder de peilput (een meetpunt), een pompfilter onder de pompput (een onttrekkingspunt). Filtergegevens uit de bron (`WatervoerendeLaag`, `DiepteOnderkant`, `DieptePomp`, `Lengte`) worden `riepr:Systeemeigenschap`.
+Filters zijn `ssn:hasSubSystem` van de put waartoe ze behoren — een peilfilter onder de peilput (een meetpunt), een pompfilter onder de pompput (een onttrekkingspunt). Filtergegevens uit de bron worden `riepr:Systeemeigenschap` op de **filter** zelf, met een type uit `filter_eigenschappen`: `WatervoerendeLaag` → `filter_eigenschappen:watervoerendeLaag`, `DiepteOnderkant` → `filter_eigenschappen:diepte`, `Lengte` → `filter_eigenschappen:lengte`. De diepte en de watervoerende laag van de **put** zelf blijven op het onttrekkingspunt staan (`onttrekkingspunt_eigenschappen:diepte`, `onttrekkingspunt_eigenschappen:watervoerendelaag`).
+
+!!! warning "`DieptePomp` ontbreekt in de codelijst"
+    `filter_eigenschappen` heeft (nog) geen concept voor de pompdiepte van een pompfilter; dat brongegeven wordt daarom (nog) niet gemigreerd.
 
 ### 5.8 Systeemeigenschappen
 
@@ -315,9 +327,22 @@ Alle numerieke en gecodeerde eigenschappen uit de brondata (hoogte, diameter, di
 | onttrekkingspunt (opnamepunt, pompput) | `onttrekking` |
 | uitwisselpunt | `uitwissel` |
 | meetpunt (controleinrichting, debietmeter, peilput) | `meting` |
+| filter (peilfilter, pompfilter) | proceduretype van de bovenliggende put — zie hieronder |
 
 * Het proces is een stap in het plan van de exploitatie: `pplan:isStepOfPlan` naar het proces van de GPBV-installatie, of — als er geen GPBV-installatie is — naar het hoofdproces van de exploitatie.
+* **Uitzondering voor subsystemen.** Een filter treedt nooit zelfstandig op: het hangt via `ssn:hasSubSystem` onder een put. Het proces van de filter is daarom een stap in het proces van díe put, niet in het hoofdproces van de exploitatie. Een pompfilter wordt dus een stap in het **onttrekkingsproces** van de pompput, een peilfilter een stap in het **meetproces** van de peilput. De systeemhiërarchie (`ssn:hasSubSystem`) en de proceshiërarchie (`pplan:isStepOfPlan`) lopen zo parallel.
+* `procedure_type` kent (nog) geen filter-specifiek concept. Zolang dat er niet is, neemt het proces van de filter het proceduretype van de bovenliggende put over (`onttrekking` bij een pompput, `meting` bij een peilput). Of filters een eigen proceduretype verdienen, is nog te beslissen.
 * De scheiding tussen systeem en proces zorgt ervoor dat wijzigingen aan verbindingen (bv. een installatie die naar een andere zuiveringsinstallatie gaat) geen wijziging aan het systeem zelf vereisen.
+
+```turtle
+# Pompfilter: stap in het onttrekkingsproces van de pompput
+<.../proces/01a0a02c-e670-7c22-8ab9-61e92f24d447/2026-01-01/2026-01-01T10:00:00Z>
+    a riepr:Proces ;
+    rdfs:label "Proces pompfilter 1 van 4 (KG atelier)"@nl ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    ssn:implementedBy <.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isStepOfPlan <.../proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
+```
 
 ### 6.2 Hoe u `pplan:isPrecededBy` leest
 
@@ -461,29 +486,7 @@ Het volledige referentievoorbeeld staat in `documentatie/datamodel/datavoorbeeld
 * **Onttrekkingspunten**: `MeetputType = oppompend` (water) en `Type = GRONDWATERWINNING` (grondwater); per grondwaterput een meetpunt op basis van de putnaam.
 * **Grondwaterputten**: volledige set VMM-identifiers bewaard (`onttrekkingspuntCode`, `putID`, `putKey`, `watnr`, `vergunningID`, …); de peilput (`Type = PEIL`) is een meetpunt.
 * **GPBV-installatie**: identificator uit het GPBV-register (`BE_VL_000000002_INSTALLATION`), met alle overige systemen als `ssn:hasSubSystem`.
-* **Processen**: elk systeem heeft een proces met `pplan:isStepOfPlan` naar het GPBV-proces; het hoofdproces draagt de rubrieken.
+* **Processen**: elk systeem heeft een proces met `pplan:isStepOfPlan` naar het GPBV-proces; filters vormen de uitzondering en hangen onder het proces van hun put (§6.1). Het hoofdproces draagt de rubrieken.
+* **Codelijstconform**: elk `dct:type` en elke eigenschapstypering in het voorbeeld verwijst naar een concept dat in [milieuinfo/codelijst-rie-iepr](https://github.com/milieuinfo/codelijst-rie-iepr) bestaat.
 * **Ketenrichting**: het emissieproces van een lozingspunt is `isPrecededBy` het meetproces; bij een onttrekkingspunt is het **meetproces** `isPrecededBy` het onttrekkingsproces. De omkering uit §6.3/§6.4 is in het voorbeeld correct toegepast.
 * **Interpretaties**: aannames die niet uit de brondata volgen, zijn in het voorbeeld gemarkeerd met `[EIGEN INTERPRETATIE]` (bv. de volgorde van installaties in de keten).
-
----
-
-## 9. Bekende afwijkingen en open punten
-
-Het datavoorbeeld dateert van 01/07/2026 en loopt op enkele plaatsen achter op de codelijsten. Bij de eigenlijke migratie zijn de **codelijsten leidend**.
-
-| Onderwerp | Datavoorbeeld | Codelijst / regel |
-|---|---|---|
-| type van een opnamepunt | `onttrekkingspunt_type:onttrekkingspunt` | `onttrekkingspunt_type:opnamepunt` |
-| type van de meting bij een pompput | `meetpunt_type:meetinrichting` | `meetpunt_type:debietmeter` |
-| type van een peilfilter | `filter_type:filter` | `filter_type:peil` |
-| type van de GPBV-installatie | `installatie_type:gpbv-installatie` | `installatie_type:gpbv` |
-| type van de peilput | ontbreekt | `meetpunt_type:peilput` |
-| `sosa:isHostedBy` | ontbreekt op een deel van de afgeleide meetpunten | verplicht op elk systeem (§4, regel 4) |
-| transportprocessen | niet uitgewerkt; emissie- en meetprocessen zijn rechtstreeks gekoppeld | §6.5 |
-
-Nog niet uitgewerkt in de migratie:
-
-* **`MeetputType = transfer`** — het schema kent drie waarden (`lozend`, `transfer`, `oppompend`). Het datamodel heeft met `riepr:Uitwisselpunt` en `procedure_type:uitwissel` alle bouwstenen, maar de afleidingsregels en de ketenrichting voor een transferpunt zijn nog niet vastgelegd.
-* **`Type = GEOTHERMIE`** — grondwaterputten kennen naast `GRONDWATERWINNING` en `PEIL` ook `GEOTHERMIE`. Er is een `installatie_type:geothermisch`, maar geen bijbehorend `onttrekkingspunt_type`; de doelklasse voor zo'n put is nog te beslissen.
-* **`filter_eigenschappen`** — die codelijst is leeg, terwijl de bron per filter `WatervoerendeLaag`, `DiepteOnderkant`, `DieptePomp` en `Lengte` levert. Vandaag worden `diepte` en `watervoerendelaag` op het **onttrekkingspunt** gemodelleerd (`onttrekkingspunt_eigenschappen`). Of de filtergegevens op de filter dan wel op de put horen, is een openstaand punt.
-* **Debietmeter-eigenschappen** — `Merk`, `Serienummer` en `DatumLaatsteIjking` hebben nog geen concept in `meetpunt_eigenschappen`.

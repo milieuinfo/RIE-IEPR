@@ -29,7 +29,7 @@ Installaties, emissiepunten, onttrekkingspunten, meetpunten en filters zijn alle
 Alle systemen zijn subklassen van `ssn:System` en `ogc:SpatialObject`.
 
 !!! note "Twee nuances"
-    - `riepr:Filter` kent in de ontologie **geen** `ssn:hasProperty`-restrictie, terwijl de bron wél filtereigenschappen levert. Zie [Migratie §9](./migratie.md#9-bekende-afwijkingen-en-open-punten).
+    - `riepr:Filter` kent in de ontologie **geen** `ssn:hasProperty`-restrictie, terwijl de bron wél filtereigenschappen levert en de codelijst `filter_eigenschappen` die concepten inmiddels bevat. Het datavoorbeeld hangt de eigenschappen dus wél op de filter; het axioma in `riepr.ttl` moet nog bijgewerkt worden.
     - `sosa:isHostedBy` staat niet in de ontologie: het is een conventie die in het datavoorbeeld consequent wordt toegepast, maar er is geen OWL-restrictie die het afdwingt (zie §9).
 
 > **Externe identificatoren**: `adms:identifier` bewaart codes uit bron-systemen (VMM-migratie, DOMG/INSPIRE) naast de eigen RIE-IEPR-URI. Zie [Basisaannames: externe identificatoren](./basisaanname.md#9-externe-identificatoren-admsidentifier).
@@ -228,19 +228,47 @@ Filters kunnen gekoppeld zijn aan:
     ssn:hasSubSystem <.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-### Filter-eigenschappen
+### Filter-proces
 
-De bron levert per filter een watervoerende laag, een diepte en een lengte. De codelijst `filter_eigenschappen` bevat vandaag echter **nog geen concepten**: de conceptscheme bestaat, maar is leeg. Daarom worden diepte en watervoerende laag voorlopig op het **onttrekkingspunt** gemodelleerd, via `onttrekkingspunt_eigenschappen`:
+Ook een filter is een systeem en krijgt dus een eigen `riepr:Proces` ([Migratie §6.1](./migratie.md#61-elk-systeem-krijgt-een-proces)). Omdat een filter nooit zelfstandig optreedt, is dat proces een stap in het proces van de put waaronder de filter hangt — niet in het hoofdproces van de exploitatie. Systeemhiërarchie en proceshiërarchie lopen dus parallel:
 
 ```turtle
-# Watervoerende laag, op het onttrekkingspunt
-<.../systeemeigenschap/019edc4a-1a36-7c04-8f5a-0a0b1c2d3e4f>
-    a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/watervoerendelaag> ;
-    rdfs:value "Kalksteen"@nl .
+# Pompfilter onder een pompput: stap in het onttrekkingsproces van die put
+<.../proces/01a0a02c-e670-7c22-8ab9-61e92f24d447/2026-01-01/2026-01-01T10:00:00Z>
+    a riepr:Proces ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    ssn:implementedBy <.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isStepOfPlan <.../proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
+
+# Peilfilter onder een peilput: stap in het meetproces van die put
+<.../proces/01a0a02c-e66d-7b63-b8dc-c23cac8156af/2026-01-01/2026-01-01T10:00:00Z>
+    a riepr:Proces ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    ssn:implementedBy <.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> ;
+    pplan:isStepOfPlan <.../proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 
-Of de filtergegevens uiteindelijk op de filter dan wel op de put horen, is een openstaand punt — zie [Migratie §9](./migratie.md#9-bekende-afwijkingen-en-open-punten).
+De codelijst `procedure_type` kent nog geen filter-specifiek concept; de filter neemt daarom het proceduretype van de bovenliggende put over. Zie [Migratie §6.1](./migratie.md#61-elk-systeem-krijgt-een-proces).
+
+### Filter-eigenschappen
+
+De bron levert per filter een watervoerende laag, een diepte en een lengte. Die horen op de **filter** zelf en worden getypeerd met concepten uit `filter_eigenschappen`:
+
+```turtle
+# Watervoerende laag, diepte en lengte, op de filter
+<.../systeemeigenschap/019ecf80-eae8-7511-b394-11b36f0d8374>
+    a riepr:Systeemeigenschap ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    rdfs:value "0100" .
+
+<.../systeemeigenschap/019ecf80-eae8-70c9-a2ed-258f21b11a8e>
+    a riepr:Systeemeigenschap ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    rdfs:value "7.940"^^xsd:decimal ;
+    qudt:hasUnit unit:M .
+```
+
+De diepte en de watervoerende laag van de **put** zelf blijven op het onttrekkingspunt staan, via `onttrekkingspunt_eigenschappen` (zie §4). Voor `DieptePomp` van een pompfilter bestaat nog geen concept in `filter_eigenschappen`; dat brongegeven wordt daarom nog niet gemigreerd.
 
 ## 7. Systeemhiërarchie via `ssn:hasSubSystem`
 
