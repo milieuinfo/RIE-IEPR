@@ -1499,11 +1499,22 @@
         "Bereiding van etsoplossing om vlak glas te etsen - etsen van vlak glas. Wastoren is voorzien om zure dampen te wassen."@nl ;
     ssn:hasProperty <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7972-8add-ab826a6ce827> .
 
+# Wijzigingen van types ivm het MJV project
+#
+# De VMM levert de data aan met twee types:
+#
+# - ProductieEenheid       => zou moeten getransformeerd worden naar 'indirecte_stookinstallatie' (bestaat nog niet in de installatie-type codelijst)
+# - EnergieActiviteit      => zou moeten getransformeerd worden naar 'installatie'.
+#
+# Bijkomend merken we op dat de term `installatie` eigenlijk de naam van de super klasse is. Hieronder vallen verschillende
+# types installatie zoals productie eenheden en in/directe stookinstallaties. Is het mogelijk om de naam van het `installatie-type`
+# `installatie` te veranderen in `productieeenheid`. Zo is het duidelijker dat het over de subklasse 'productieeenheid' gaat.
+#
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac24-9c91-7338-a285-c660a5b88d11/2026-01-01/2026-01-01T10:00:00Z> a
         riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac24-9c91-7338-a285-c660a5b88d11> ;
     adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/indirecte_stookinstallatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
