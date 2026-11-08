@@ -43,27 +43,12 @@ import java.util.List;
 @Table(name = "filter")
 public class Filter implements ISysteem, IriReferentie {
 	/**
-	 * id
-	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
-	 */
-	@Id
-	@Column(name = "id", nullable = false)
-	@JsonProperty("id")
-	private String id;
-	/**
-	 * id
-	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
-	 */
-	@Id
-	@Column(name = "id", nullable = false)
-	@JsonProperty("id")
-	private String id;
-	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	 * UUID
 	 */
-	@ManyToOne
+	@Id
+	@Column(name = "systeem_uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
 	/**
@@ -79,7 +64,7 @@ public class Filter implements ISysteem, IriReferentie {
 	 * <a href="http://purl.org/dc/terms/created">created</a>
 	 * Een systeem moet een creatie datum hebben
 	 */
-	@Column(name = "aangemaakt_op", nullable = false)
+	@Column(name = "aangemaakt_op", nullable = true)
 	@JsonProperty("created")
 	private OffsetDateTime aangemaaktOp;
 	/**
@@ -87,7 +72,7 @@ public class Filter implements ISysteem, IriReferentie {
 	 * <a href="http://purl.org/dc/terms/issued">issued</a>
 	 * Een systeem moet een geldigheid start hebben
 	 */
-	@Column(name = "geldig_van", nullable = false)
+	@Column(name = "geldig_van", nullable = true)
 	@JsonProperty("issued")
 	private LocalDate geldigVan;
 	/**
