@@ -136,7 +136,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  benaming VARCHAR 
 	  status VARCHAR 
 	  aangifte VARCHAR FK
@@ -147,6 +147,9 @@ erDiagram
 	class emissiepunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	emissiepunt many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	emissiepunt many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	emissiepunt many to one emissiepunt_identity : uuid_emissiepunt
@@ -313,7 +316,7 @@ erDiagram
 	  geldig_van DATE 
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  beschrijving VARCHAR 
 	  benaming VARCHAR 
 	  adres VARCHAR FK
@@ -327,6 +330,9 @@ erDiagram
 	
 	%% http://www.w3.org/ns/locn#address
 	exploitatielocatie many to one adres : adres_adres
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	exploitatielocatie many to one geometry : geometrie_geometry
 	
 	%% http://www.w3.org/ns/prov#hadPrimarySource
 	exploitatielocatie many to one vestiging : primaire_bron_vestiging
@@ -384,7 +390,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  benaming VARCHAR 
 	  status VARCHAR 
 	  aangifte VARCHAR FK
@@ -395,6 +401,9 @@ erDiagram
 	class filter system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	filter many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	filter many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	filter many to one filter_identity : uuid_filter
@@ -465,6 +474,13 @@ erDiagram
 	  uri VARCHAR 
 	}
 	
+	%% http://www.opengis.net/ont/geosparql#Geometry
+	geometry {
+	  uuid VARCHAR PK
+	  uri VARCHAR 
+	  as_wkt VARCHAR 
+	}
+	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	installatie {
 	  id VARCHAR PK
@@ -475,7 +491,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  beschrijving VARCHAR 
 	  benaming VARCHAR 
 	  status VARCHAR 
@@ -488,6 +504,9 @@ erDiagram
 	class installatie system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	installatie many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	installatie many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	installatie many to one installatie_identity : uuid_installatie
@@ -578,7 +597,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  benaming VARCHAR 
 	  status VARCHAR 
 	  aangifte VARCHAR FK
@@ -589,6 +608,9 @@ erDiagram
 	class meetpunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	meetpunt many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	meetpunt many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	meetpunt many to one meetpunt_identity : uuid_meetpunt
@@ -785,7 +807,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  benaming VARCHAR 
 	  status VARCHAR 
 	  aangifte VARCHAR FK
@@ -796,6 +818,9 @@ erDiagram
 	class onttrekkingspunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	onttrekkingspunt many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	onttrekkingspunt many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	onttrekkingspunt many to one onttrekkingspunt_identity : uuid_onttrekkingspunt
@@ -1071,7 +1096,7 @@ erDiagram
 	  geldig_tot DATE 
 	  aangepast_op TIMESTAMP 
 	  type VARCHAR 
-	  geometrie VARCHAR 
+	  geometrie VARCHAR FK
 	  benaming VARCHAR 
 	  status VARCHAR 
 	  aangifte VARCHAR FK
@@ -1082,6 +1107,9 @@ erDiagram
 	class uitwisselpunt system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	uitwisselpunt many to one aangifte : aangifte_aangifte
+	
+	%% http://www.opengis.net/ont/geosparql#hasGeometry
+	uitwisselpunt many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	uitwisselpunt many to one uitwisselpunt_identity : uuid_uitwisselpunt

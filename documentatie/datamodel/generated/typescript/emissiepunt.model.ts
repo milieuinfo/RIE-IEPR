@@ -1,6 +1,7 @@
 import { Aangifte } from './aangifte.model';
 import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
+import { Geometry } from './geometry.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
 import { Systeemeigenschap } from './systeemeigenschap.model';
@@ -81,8 +82,8 @@ export class Emissiepunt implements Systeem {
 	 * @see {@link http://www.opengis.net/ont/geosparql#hasGeometry}
 	 * Een emissiepunt mag max 1 geometrie hebben
 	 */
-	@jsonMember({ name: 'hasGeometry' })
-	geometrie?: string;
+	@jsonMember(() => Geometry, { name: 'hasGeometry' })
+	geometrie?: Geometry;
 
 	/**
 	 * label

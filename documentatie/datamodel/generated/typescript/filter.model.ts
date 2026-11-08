@@ -1,6 +1,7 @@
 import { Aangifte } from './aangifte.model';
 import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
+import { Geometry } from './geometry.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
 import { Systeemeigenschap } from './systeemeigenschap.model';
@@ -14,12 +15,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Filter implements Systeem {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -74,8 +82,8 @@ export class Filter implements Systeem {
 	 * @see {@link http://www.opengis.net/ont/geosparql#hasGeometry}
 	 * Een systeem mag max 1 geometrie hebben
 	 */
-	@jsonMember({ name: 'hasGeometry' })
-	geometrie?: string;
+	@jsonMember(() => Geometry, { name: 'hasGeometry' })
+	geometrie?: Geometry;
 
 	/**
 	 * label
