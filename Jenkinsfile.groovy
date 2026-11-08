@@ -298,7 +298,19 @@ pipeline {
                       # Cumulus-Skip-Ci trailer: git.notSkipCi() recognizes it, so the build
                       # triggered by this push does not loop.
                       git commit --trailer "Cumulus-Skip-Ci: true" -m "chore: ODDToolkit gegenereerde artefacten herbouwd"
-                      git push origin "HEAD:refs/heads/$BRANCH_NAME"
+                      if ! git push origin "HEAD:refs/heads/$BRANCH_NAME"; then
+                        # Push geweigerd: main is tijdens deze build verder geschoven (typisch een
+                        # parallelle build voor een nieuwere commit die zelf al regenereerde).
+                        # Artefacten van deze verouderde build zijn dan overbodig: niet falen,
+                        # de reset hieronder synchroniseert met origin.
+                        git fetch origin "$BRANCH_NAME"
+                        if git merge-base --is-ancestor HEAD~1 "origin/$BRANCH_NAME"; then
+                          echo "origin/$BRANCH_NAME is verder dan deze build - gegenereerde artefacten niet gepusht"
+                        else
+                          echo "Push geweigerd en origin/$BRANCH_NAME bevat de gebouwde commit niet - afgebroken"
+                          exit 1
+                        fi
+                      fi
                     fi
                     # Sync the workspace with origin, so subsequent maven-release-plugin commits
                     # (release:prepare/perform) fast-forward instead of being rejected.
