@@ -1,8 +1,11 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -38,7 +41,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "installatie")
-public class Installatie implements ISysteem {
+public class Installatie implements ISysteem, IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -70,7 +73,7 @@ public class Installatie implements ISysteem {
 	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * issued
 	 * <a href="http://purl.org/dc/terms/issued">issued</a>
@@ -94,7 +97,7 @@ public class Installatie implements ISysteem {
 	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
-	private LocalDateTime aangepastOp;
+	private OffsetDateTime aangepastOp;
 	/**
 	 * type
 	 * <a href="http://purl.org/dc/terms/type">type</a>
@@ -157,6 +160,7 @@ public class Installatie implements ISysteem {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasDeployment")
 	private List<Exploitatie> hasDeployment;
 	/**
@@ -170,6 +174,7 @@ public class Installatie implements ISysteem {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasProperty")
 	private List<Systeemeigenschap> heeftEigenschap;
 	/**
@@ -183,6 +188,7 @@ public class Installatie implements ISysteem {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasSubSystem")
 	private List<ISysteem> heeftSubSysteem;
 	/**
@@ -191,6 +197,7 @@ public class Installatie implements ISysteem {
 	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
 	/**
@@ -217,4 +224,10 @@ public class Installatie implements ISysteem {
 	@Column(name = "ingediend", nullable = true)
 	@JsonProperty("ingediend")
 	private List<String> ingediend;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie";
+	}
 }

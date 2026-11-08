@@ -2,6 +2,9 @@ package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "aangifte")
-public class Aangifte {
+public class Aangifte implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -76,6 +79,7 @@ public class Aangifte {
 	 * Een aangifte kan deel zijn van een andere bundel.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("isPartOf")
 	private Aangiftebundel onderdeelVan;
 	/**
@@ -97,6 +101,7 @@ public class Aangifte {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("subject")
 	private List<Exploitatie> onderwerp;
 	/**
@@ -115,4 +120,10 @@ public class Aangifte {
 	@Column(name = "informatieclassificatie", nullable = true)
 	@JsonProperty("informatieclassificatie")
 	private String informatieclassificatie;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte";
+	}
 }

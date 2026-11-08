@@ -1,7 +1,10 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "contactpersoon")
-public class Contactpersoon {
+public class Contactpersoon implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -68,7 +71,7 @@ public class Contactpersoon {
 	 */
 	@Column(name = "aangemaakt_op", nullable = true)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * issued
 	 * <a href="http://purl.org/dc/terms/issued">issued</a>
@@ -83,7 +86,7 @@ public class Contactpersoon {
 	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
-	private LocalDateTime aangepastOp;
+	private OffsetDateTime aangepastOp;
 	/**
 	 * type
 	 * <a href="http://purl.org/dc/terms/type">type</a>
@@ -106,6 +109,7 @@ public class Contactpersoon {
 	 * Contactpersonen moeten gekoppeld zijn aan exact één exploitant
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("hasTarget")
 	private Exploitatie hasTarget;
 	/**
@@ -132,4 +136,10 @@ public class Contactpersoon {
 	@Column(name = "telefoonnummer", nullable = true)
 	@JsonProperty("phone")
 	private String telefoonnummer;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon";
+	}
 }

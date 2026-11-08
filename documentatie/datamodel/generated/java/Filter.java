@@ -1,8 +1,11 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -38,14 +41,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "filter")
-public class Filter implements ISysteem {
+public class Filter implements ISysteem, IriReferentie {
+	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
+	@Id
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
 	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	 * UUID
 	 */
-	@Id
-	@Column(name = "systeem_uuid", nullable = false)
+	@ManyToOne
 	@JsonProperty("uuid")
 	private String uuid;
 	/**
@@ -61,15 +71,15 @@ public class Filter implements ISysteem {
 	 * <a href="http://purl.org/dc/terms/created">created</a>
 	 * Een systeem moet een creatie datum hebben
 	 */
-	@Column(name = "aangemaakt_op", nullable = true)
+	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * issued
 	 * <a href="http://purl.org/dc/terms/issued">issued</a>
 	 * Een systeem moet een geldigheid start hebben
 	 */
-	@Column(name = "geldig_van", nullable = true)
+	@Column(name = "geldig_van", nullable = false)
 	@JsonProperty("issued")
 	private LocalDate geldigVan;
 	/**
@@ -87,7 +97,7 @@ public class Filter implements ISysteem {
 	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
-	private LocalDateTime aangepastOp;
+	private OffsetDateTime aangepastOp;
 	/**
 	 * type
 	 * <a href="http://purl.org/dc/terms/type">type</a>
@@ -142,6 +152,7 @@ public class Filter implements ISysteem {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasDeployment")
 	private List<Exploitatie> hasDeployment;
 	/**
@@ -155,6 +166,7 @@ public class Filter implements ISysteem {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasProperty")
 	private List<Systeemeigenschap> heeftEigenschap;
 	/**
@@ -163,6 +175,7 @@ public class Filter implements ISysteem {
 	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
 	/**
@@ -181,4 +194,10 @@ public class Filter implements ISysteem {
 	@Column(name = "in_gebruik_vanaf", nullable = true)
 	@JsonProperty("inGebruikVanaf")
 	private LocalDate inGebruikVanaf;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter";
+	}
 }

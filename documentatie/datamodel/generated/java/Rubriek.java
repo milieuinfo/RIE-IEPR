@@ -1,6 +1,9 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -36,7 +39,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rubriek")
-public class Rubriek {
+public class Rubriek implements IriReferentie {
 	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
@@ -76,7 +79,7 @@ public class Rubriek {
 	 * Een rubriek moet een code hebben
 	 */
 	@Column(name = "notatie", nullable = true)
-	@JsonProperty("notation")
+	@JsonIgnore
 	private String notatie;
 	/**
 	 * notation
@@ -84,7 +87,7 @@ public class Rubriek {
 	 * Een rubriek moet een code hebben
 	 */
 	@Column(name = "notatie", nullable = true)
-	@JsonProperty("notation")
+	@JsonIgnore
 	private String notatie_datatype;
 	/**
 	 * hadPrimarySource
@@ -94,4 +97,36 @@ public class Rubriek {
 	@Column(name = "primaire_bron", nullable = true)
 	@JsonProperty("hadPrimarySource")
 	private String primaireBron;
+
+	/** notation as JSON-LD: a typed literal when the datatype is set. */
+	@jakarta.persistence.Transient
+	@JsonProperty("notation")
+	public Object getNotatieJsonLd() {
+		if (notatie == null || notatie_datatype == null) {
+			return notatie;
+		}
+		java.util.Map<String, Object> literal = new java.util.LinkedHashMap<>();
+		literal.put("@value", notatie);
+		literal.put("@type", notatie_datatype);
+		return literal;
+	}
+
+	@JsonSetter("notation")
+	public void setNotatieJsonLd(Object value) {
+		if (value instanceof java.util.Map<?, ?> literal) {
+			Object literalValue = literal.get("@value");
+			Object literalType = literal.get("@type");
+			this.notatie = literalValue != null ? literalValue.toString() : null;
+			this.notatie_datatype = literalType != null ? literalType.toString() : null;
+		} else {
+			this.notatie = value != null ? value.toString() : null;
+			this.notatie_datatype = null;
+		}
+	}
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek";
+	}
 }

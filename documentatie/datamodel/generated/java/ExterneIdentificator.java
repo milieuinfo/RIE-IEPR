@@ -1,6 +1,9 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -35,7 +38,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "externe_identificator")
-public class ExterneIdentificator {
+public class ExterneIdentificator implements IriReferentie {
 	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
@@ -59,7 +62,7 @@ public class ExterneIdentificator {
 	 * Een externe identificator heeft een notatie waarde
 	 */
 	@Column(name = "notatie", nullable = true)
-	@JsonProperty("notation")
+	@JsonIgnore
 	private String notatie;
 	/**
 	 * notation
@@ -67,7 +70,7 @@ public class ExterneIdentificator {
 	 * Een externe identificator heeft een notatie waarde
 	 */
 	@Column(name = "notatie", nullable = true)
-	@JsonProperty("notation")
+	@JsonIgnore
 	private String notatie_datatype;
 	/**
 	 * schemaAgency
@@ -83,7 +86,7 @@ public class ExterneIdentificator {
 	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
 	 */
 	@Column(name = "notatietype", nullable = true)
-	@JsonProperty("notatietype")
+	@JsonIgnore
 	private String notatietype;
 	/**
 	 * notatietype
@@ -91,6 +94,64 @@ public class ExterneIdentificator {
 	 * Het datatype-IRI van een skos:notation typed literal, opgeslagen als URI-string zodat het datatype en de notatie-waarde afzonderlijk bewaard worden.
 	 */
 	@Column(name = "notatietype", nullable = true)
-	@JsonProperty("notatietype")
+	@JsonIgnore
 	private String notatietype_datatype;
+
+	/** notation as JSON-LD: a typed literal when the datatype is set. */
+	@jakarta.persistence.Transient
+	@JsonProperty("notation")
+	public Object getNotatieJsonLd() {
+		if (notatie == null || notatie_datatype == null) {
+			return notatie;
+		}
+		java.util.Map<String, Object> literal = new java.util.LinkedHashMap<>();
+		literal.put("@value", notatie);
+		literal.put("@type", notatie_datatype);
+		return literal;
+	}
+
+	@JsonSetter("notation")
+	public void setNotatieJsonLd(Object value) {
+		if (value instanceof java.util.Map<?, ?> literal) {
+			Object literalValue = literal.get("@value");
+			Object literalType = literal.get("@type");
+			this.notatie = literalValue != null ? literalValue.toString() : null;
+			this.notatie_datatype = literalType != null ? literalType.toString() : null;
+		} else {
+			this.notatie = value != null ? value.toString() : null;
+			this.notatie_datatype = null;
+		}
+	}
+
+	/** notatietype as JSON-LD: a typed literal when the datatype is set. */
+	@jakarta.persistence.Transient
+	@JsonProperty("notatietype")
+	public Object getNotatietypeJsonLd() {
+		if (notatietype == null || notatietype_datatype == null) {
+			return notatietype;
+		}
+		java.util.Map<String, Object> literal = new java.util.LinkedHashMap<>();
+		literal.put("@value", notatietype);
+		literal.put("@type", notatietype_datatype);
+		return literal;
+	}
+
+	@JsonSetter("notatietype")
+	public void setNotatietypeJsonLd(Object value) {
+		if (value instanceof java.util.Map<?, ?> literal) {
+			Object literalValue = literal.get("@value");
+			Object literalType = literal.get("@type");
+			this.notatietype = literalValue != null ? literalValue.toString() : null;
+			this.notatietype_datatype = literalType != null ? literalType.toString() : null;
+		} else {
+			this.notatietype = value != null ? value.toString() : null;
+			this.notatietype_datatype = null;
+		}
+	}
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "http://www.w3.org/ns/adms#Identifier";
+	}
 }

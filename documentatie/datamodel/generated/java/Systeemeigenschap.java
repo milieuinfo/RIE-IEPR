@@ -1,6 +1,9 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -36,7 +39,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "systeemeigenschap")
-public class Systeemeigenschap {
+public class Systeemeigenschap implements IriReferentie {
 	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
@@ -92,7 +95,7 @@ public class Systeemeigenschap {
 	 * Het datatype van de waarde van een systeem eigenschap.
 	 */
 	@Column(name = "datatype", nullable = true)
-	@JsonProperty("datatype")
+	@JsonIgnore
 	private String datatype;
 	/**
 	 * datatype
@@ -100,7 +103,7 @@ public class Systeemeigenschap {
 	 * Het datatype van de waarde van een systeem eigenschap.
 	 */
 	@Column(name = "datatype", nullable = true)
-	@JsonProperty("datatype")
+	@JsonIgnore
 	private String datatype_datatype;
 	/**
 	 * parameter
@@ -108,6 +111,39 @@ public class Systeemeigenschap {
 	 * De parameter die wordt gebruikt bij een eigenschap of meting.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("parameter")
 	private Rubriek parameter;
+
+	/** datatype as JSON-LD: a typed literal when the datatype is set. */
+	@jakarta.persistence.Transient
+	@JsonProperty("datatype")
+	public Object getDatatypeJsonLd() {
+		if (datatype == null || datatype_datatype == null) {
+			return datatype;
+		}
+		java.util.Map<String, Object> literal = new java.util.LinkedHashMap<>();
+		literal.put("@value", datatype);
+		literal.put("@type", datatype_datatype);
+		return literal;
+	}
+
+	@JsonSetter("datatype")
+	public void setDatatypeJsonLd(Object value) {
+		if (value instanceof java.util.Map<?, ?> literal) {
+			Object literalValue = literal.get("@value");
+			Object literalType = literal.get("@type");
+			this.datatype = literalValue != null ? literalValue.toString() : null;
+			this.datatype_datatype = literalType != null ? literalType.toString() : null;
+		} else {
+			this.datatype = value != null ? value.toString() : null;
+			this.datatype_datatype = null;
+		}
+	}
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap";
+	}
 }

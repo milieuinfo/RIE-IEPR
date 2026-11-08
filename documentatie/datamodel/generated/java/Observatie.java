@@ -1,7 +1,10 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "observatie")
-public class Observatie {
+public class Observatie implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -69,13 +72,14 @@ public class Observatie {
 	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * hasFeatureOfInterest
 	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
 	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("hasFeatureOfInterest")
 	private IGebeurtenis betrekkingTot;
 	/**
@@ -84,6 +88,7 @@ public class Observatie {
 	 * Een observatie heeft één resultaat.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("hasResult")
 	private Resultaat heeftResultaat;
 	/**
@@ -92,6 +97,7 @@ public class Observatie {
 	 * Een observatie kan deel uitmaken van een observatieverzameling
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("isMemberOf")
 	private ObservatieVerzameling isMemberOf;
 	/**
@@ -100,6 +106,7 @@ public class Observatie {
 	 * Een observatie kan zijn gemaakt door een meetpunt of ander systeem (sosa:madeBySensor)
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("madeBySensor")
 	private ISysteem madeBySensor;
 	/**
@@ -125,7 +132,7 @@ public class Observatie {
 	 */
 	@Column(name = "result_time", nullable = true)
 	@JsonProperty("resultTime")
-	private LocalDateTime resultTime;
+	private OffsetDateTime resultTime;
 	/**
 	 * usedProcedure
 	 * <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
@@ -140,6 +147,13 @@ public class Observatie {
 	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie";
+	}
 }

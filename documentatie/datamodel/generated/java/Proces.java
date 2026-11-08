@@ -1,8 +1,11 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -38,7 +41,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "proces")
-public class Proces {
+public class Proces implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -70,7 +73,7 @@ public class Proces {
 	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * issued
 	 * <a href="http://purl.org/dc/terms/issued">issued</a>
@@ -94,7 +97,7 @@ public class Proces {
 	 */
 	@Column(name = "aangepast_op", nullable = true)
 	@JsonProperty("modified")
-	private LocalDateTime aangepastOp;
+	private OffsetDateTime aangepastOp;
 	/**
 	 * type
 	 * <a href="http://purl.org/dc/terms/type">type</a>
@@ -113,6 +116,7 @@ public class Proces {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasInputVar")
 	private List<Procesvariabele> heeftInvoer;
 	/**
@@ -126,6 +130,7 @@ public class Proces {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasOutputVar")
 	private List<Procesvariabele> heeftUitvoer;
 	/**
@@ -138,6 +143,7 @@ public class Proces {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasStep")
 	private List<Proces> hasStep;
 	/**
@@ -151,6 +157,7 @@ public class Proces {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("isPrecededBy")
 	private List<Proces> volgtOp;
 	/**
@@ -159,6 +166,7 @@ public class Proces {
 	 * Een proces kan deel uitmaken van een ander proces
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("isStepOfPlan")
 	private Proces onderdeelVan;
 	/**
@@ -196,6 +204,7 @@ public class Proces {
 	 * Een proces kan het gebruik van een systeem of van een uitrol (exploitatie) representeren
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("implementedBy")
 	private ISysteem systeem;
 	/**
@@ -204,6 +213,7 @@ public class Proces {
 	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
 	/**
@@ -217,6 +227,13 @@ public class Proces {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("rubriek")
 	private List<Rubriek> rubriek;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces";
+	}
 }

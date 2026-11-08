@@ -1,6 +1,9 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -36,7 +39,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "procesvariabele")
-public class Procesvariabele {
+public class Procesvariabele implements IriReferentie {
 	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
@@ -72,6 +75,7 @@ public class Procesvariabele {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("isInputVarOf")
 	private List<Proces> isInputVarOf;
 	/**
@@ -98,4 +102,10 @@ public class Procesvariabele {
 	@Column(name = "benaming", nullable = true)
 	@JsonProperty("label")
 	private String benaming;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele";
+	}
 }

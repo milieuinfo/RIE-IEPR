@@ -1,7 +1,10 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "observatie_verzameling")
-public class ObservatieVerzameling {
+public class ObservatieVerzameling implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -69,13 +72,14 @@ public class ObservatieVerzameling {
 	 */
 	@Column(name = "aangemaakt_op", nullable = false)
 	@JsonProperty("created")
-	private LocalDateTime aangemaaktOp;
+	private OffsetDateTime aangemaaktOp;
 	/**
 	 * hasFeatureOfInterest
 	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
 	 * Een observatieverzameling is gekoppeld aan een Emissie of Onttrekking
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("hasFeatureOfInterest")
 	private IGebeurtenis betrekkingTot;
 	/**
@@ -89,6 +93,7 @@ public class ObservatieVerzameling {
 		joinColumns = @JoinColumn(name = "source_uuid"),
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasMember")
 	private List<Observatie> hasMember;
 	/**
@@ -97,6 +102,13 @@ public class ObservatieVerzameling {
 	 * De aangifte die gerelateerd is aan een exploitatielocatie of observatie.
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("aangifte")
 	private Aangifte aangifte;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling";
+	}
 }

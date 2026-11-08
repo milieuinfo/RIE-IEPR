@@ -2,6 +2,9 @@ package be.vlaanderen.omgeving.mjv.model.structuur;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +40,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "aangiftebundel")
-public class Aangiftebundel {
+public class Aangiftebundel implements IriReferentie {
 	/**
 	 * id
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
@@ -76,6 +79,7 @@ public class Aangiftebundel {
 	 * Een aangiftebundel is gelinkt aan de exploitant
 	 */
 	@JoinColumn(name = "uuid", nullable = true)
+	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("creator")
 	private Exploitant creator;
 	/**
@@ -109,4 +113,10 @@ public class Aangiftebundel {
 	@Column(name = "vlaanderen_id", nullable = false)
 	@JsonProperty("vlaanderenId")
 	private String vlaanderenId;
+
+	@jakarta.persistence.Transient
+	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)
+	public String getRdfType() {
+		return "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel";
+	}
 }

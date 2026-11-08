@@ -1,5 +1,7 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -39,7 +41,18 @@ public enum Status {
 		this.uri = uri;
 	}
 
+	@JsonValue
 	public String getUri() {
 		return uri;
+	}
+
+	@JsonCreator
+	public static Status fromUri(String uri) {
+		for (Status value : values()) {
+			if (value.uri.equals(uri)) {
+				return value;
+			}
+		}
+		throw new IllegalArgumentException("Unknown Status URI: " + uri);
 	}
 }
