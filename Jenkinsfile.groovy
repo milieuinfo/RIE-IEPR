@@ -40,6 +40,12 @@ spec:
           memory: "2Gi"
 '''
 
+// Handmatig gestarte builds negeren de Cumulus-Skip-Ci trailer: anders slaat een
+// handmatige (release-)build alles over zodra de laatste commit een Jenkins-commit is.
+def shouldRun() {
+  return !currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').isEmpty() || git.notSkipCi()
+}
+
 pipeline {
 
   agent {
@@ -167,7 +173,7 @@ pipeline {
       when {
         allOf {
           expression { env.BRANCH_IS_PRIMARY }
-          expression { git.notSkipCi() }
+          expression { shouldRun() }
         }
       }
       steps {
@@ -231,7 +237,7 @@ pipeline {
       when {
         allOf {
           not { expression { env.BRANCH_IS_PRIMARY } }
-          expression { git.notSkipCi() }
+          expression { shouldRun() }
         }
       }
       parallel {
@@ -269,7 +275,7 @@ pipeline {
       when {
         allOf {
           expression { env.BRANCH_IS_PRIMARY }
-          expression { git.notSkipCi() }
+          expression { shouldRun() }
         }
       }
       stages {
