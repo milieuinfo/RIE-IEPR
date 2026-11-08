@@ -51,6 +51,14 @@ public class Filter implements ISysteem, IriReferentie {
 	@JsonProperty("id")
 	private String id;
 	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
+	@Id
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
+	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	 * UUID
