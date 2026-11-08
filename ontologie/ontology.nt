@@ -132,9 +132,25 @@
 <http://purl.org/net/p-plan#isOutputVarOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
 <http://purl.org/net/p-plan#isOutputVarOf> <http://www.w3.org/2002/07/owl#inverseOf> <http://purl.org/net/p-plan#hasOutputVar> .
 # 
+# http://www.w3.org/ns/sosa/hosts
+<http://www.w3.org/ns/sosa/hosts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/sosa/hosts> <http://www.w3.org/2002/07/owl#propertyChainAxiom> _:genid2 .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid1 .
+_:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.w3.org/ns/ssn/deployedSystem> .
+<http://www.w3.org/ns/ssn/deployedSystem> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+_:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.w3.org/ns/ssn/inDeployment> .
+<http://www.w3.org/ns/ssn/inDeployment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+# 
+# http://www.w3.org/ns/ssn/deployedSystem
+# 
 # http://www.w3.org/ns/ssn/hasSubSystem
 <http://www.w3.org/ns/ssn/hasSubSystem> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-_:genid1 <http://www.w3.org/2002/07/owl#inverseOf> <http://www.w3.org/ns/ssn/hasSubSystem> .
+_:genid3 <http://www.w3.org/2002/07/owl#inverseOf> <http://www.w3.org/ns/ssn/hasSubSystem> .
+# 
+# http://www.w3.org/ns/ssn/inDeployment
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
@@ -335,20 +351,7 @@ _:genid1 <http://www.w3.org/2002/07/owl#inverseOf> <http://www.w3.org/ns/ssn/has
 <https://data.vlaanderen.be/ns/dossier#Stuk> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte> <http://www.w3.org/2000/01/rdf-schema#comment> "Een aangifte is een document dat wordt ingediend bij de overheid."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte> <http://www.w3.org/2000/01/rdf-schema#label> "Aangifte"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte> <http://www.w3.org/ns/hydra/core#search> _:genid2 .
-_:genid2 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid2 <http://www.w3.org/ns/hydra/core#mapping> _:genid3 .
-_:genid3 <http://www.w3.org/ns/hydra/core#variable> "vlaanderenId" .
-_:genid3 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid3 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId> .
-_:genid2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
-# 
-# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.vlaanderen.be/ns/dossier#Stuk> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#comment> "Een aangiftebundel is een verzameling van aangiften die samen worden ingediend bij de overheid door een enkele exploitant."@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#label> "Aangiftebundel"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/ns/hydra/core#search> _:genid4 .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte> <http://www.w3.org/ns/hydra/core#search> _:genid4 .
 _:genid4 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 _:genid4 <http://www.w3.org/ns/hydra/core#mapping> _:genid5 .
 _:genid5 <http://www.w3.org/ns/hydra/core#variable> "vlaanderenId" .
@@ -356,22 +359,35 @@ _:genid5 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2
 _:genid5 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId> .
 _:genid4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
+# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://data.vlaanderen.be/ns/dossier#Stuk> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#comment> "Een aangiftebundel is een verzameling van aangiften die samen worden ingediend bij de overheid door een enkele exploitant."@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/2000/01/rdf-schema#label> "Aangiftebundel"@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangiftebundel> <http://www.w3.org/ns/hydra/core#search> _:genid6 .
+_:genid6 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/aangifte/{vlaanderenId}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid6 <http://www.w3.org/ns/hydra/core#mapping> _:genid7 .
+_:genid7 <http://www.w3.org/ns/hydra/core#variable> "vlaanderenId" .
+_:genid7 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid7 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#vlaanderenId> .
+_:genid6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+# 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/oa#Annotation> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/2000/01/rdf-schema#comment> "Contactpersoon zijn de gegevens van een persoon die optreedt als contact binnen een bepaalde functie voor een exploitant."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/2000/01/rdf-schema#label> "Contactpersoon"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/ns/hydra/core#search> _:genid6 .
-_:genid6 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid6 <http://www.w3.org/ns/hydra/core#mapping> _:genid8 .
-_:genid8 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid8 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid8 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid6 <http://www.w3.org/ns/hydra/core#mapping> _:genid7 .
-_:genid7 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid7 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid7 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Contactpersoon> <http://www.w3.org/ns/hydra/core#search> _:genid8 .
+_:genid8 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/contactpersoon/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid8 <http://www.w3.org/ns/hydra/core#mapping> _:genid10 .
+_:genid10 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid10 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid10 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid8 <http://www.w3.org/ns/hydra/core#mapping> _:genid9 .
+_:genid9 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid9 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid9 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -379,13 +395,13 @@ _:genid6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/FeatureOfInterest> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/2000/01/rdf-schema#comment> "Een emissie is een specifieke gebeurtenis dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/2000/01/rdf-schema#label> "Emissie"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/ns/hydra/core#search> _:genid9 .
-_:genid9 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid9 <http://www.w3.org/ns/hydra/core#mapping> _:genid10 .
-_:genid10 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid10 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid10 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie> <http://www.w3.org/ns/hydra/core#search> _:genid11 .
+_:genid11 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid11 <http://www.w3.org/ns/hydra/core#mapping> _:genid12 .
+_:genid12 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid12 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid12 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid11 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -393,63 +409,63 @@ _:genid9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2000/01/rdf-schema#comment> "Een emissiepunt is een specifiek punt waar stoffen de installatie verlaten en in de omgeving worden uitgestoten."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2000/01/rdf-schema#label> "Emissiepunt"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2004/02/skos/core#example> _:genid11 .
-_:genid11 <http://www.w3.org/2000/01/rdf-schema#label> "Schouw 1 Cementfabriek Antwerpen"@nl .
-_:genid11 <http://www.opengis.net/ont/geosparql#hasGeometry> _:genid12 .
-_:genid12 <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4025 51.2194)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
-_:genid12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/ont/geosparql#Geometry> .
-_:genid11 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid11 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid11 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/ns/hydra/core#search> _:genid13 .
-_:genid13 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid13 <http://www.w3.org/ns/hydra/core#mapping> _:genid16 .
-_:genid16 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/2004/02/skos/core#example> _:genid13 .
+_:genid13 <http://www.w3.org/2000/01/rdf-schema#label> "Schouw 1 Cementfabriek Antwerpen"@nl .
+_:genid13 <http://www.opengis.net/ont/geosparql#hasGeometry> _:genid14 .
+_:genid14 <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4025 51.2194)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
+_:genid14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/ont/geosparql#Geometry> .
+_:genid13 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid13 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid13 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> <http://www.w3.org/ns/hydra/core#search> _:genid15 .
+_:genid15 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid15 <http://www.w3.org/ns/hydra/core#mapping> _:genid18 .
+_:genid18 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid18 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid18 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid15 <http://www.w3.org/ns/hydra/core#mapping> _:genid17 .
+_:genid17 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid17 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid17 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid15 <http://www.w3.org/ns/hydra/core#mapping> _:genid16 .
+_:genid16 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid16 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid16 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid13 <http://www.w3.org/ns/hydra/core#mapping> _:genid15 .
-_:genid15 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid15 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid15 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid13 <http://www.w3.org/ns/hydra/core#mapping> _:genid14 .
-_:genid14 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid14 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid14 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid13 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid16 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid15 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Agent> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/2000/01/rdf-schema#comment> "Een exploitant is een entiteit die een milieuimpact heeft."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/2000/01/rdf-schema#label> "Exploitant"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/ns/hydra/core#search> _:genid17 .
-_:genid17 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid17 <http://www.w3.org/ns/hydra/core#mapping> _:genid18 .
-_:genid18 <http://www.w3.org/ns/hydra/core#variable> "ondernemingsnummer" .
-_:genid18 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid18 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid17 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitant> <http://www.w3.org/ns/hydra/core#search> _:genid19 .
+_:genid19 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitant/{ondernemingsnummer}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid19 <http://www.w3.org/ns/hydra/core#mapping> _:genid20 .
+_:genid20 <http://www.w3.org/ns/hydra/core#variable> "ondernemingsnummer" .
+_:genid20 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid20 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid19 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/Deployment> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/2000/01/rdf-schema#comment> "Een exploitatie is de uitrol van middelen door een exploitant op een exploitatielocatie leidend tot een milieueffect."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/2000/01/rdf-schema#label> "Exploitatie"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/ns/hydra/core#search> _:genid19 .
-_:genid19 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid19 <http://www.w3.org/ns/hydra/core#mapping> _:genid22 .
-_:genid22 <http://www.w3.org/ns/hydra/core#variable> "created" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie> <http://www.w3.org/ns/hydra/core#search> _:genid21 .
+_:genid21 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid21 <http://www.w3.org/ns/hydra/core#mapping> _:genid24 .
+_:genid24 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid24 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid24 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid21 <http://www.w3.org/ns/hydra/core#mapping> _:genid23 .
+_:genid23 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid23 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid23 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid21 <http://www.w3.org/ns/hydra/core#mapping> _:genid22 .
+_:genid22 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid22 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid22 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid19 <http://www.w3.org/ns/hydra/core#mapping> _:genid21 .
-_:genid21 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid21 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid21 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid19 <http://www.w3.org/ns/hydra/core#mapping> _:genid20 .
-_:genid20 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid20 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid20 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid19 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid22 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid21 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -458,27 +474,27 @@ _:genid19 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Platform> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/2000/01/rdf-schema#comment> "Een exploitatielocatie is een specifieke geografische locatie waar een exploitant zijn processen uitvoert."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/2000/01/rdf-schema#label> "Exploitatielocatie"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/2004/02/skos/core#example> _:genid23 .
-_:genid23 <http://www.w3.org/ns/prov#hadPrimarySource> _:genid24 .
-_:genid24 <http://www.w3.org/2000/01/rdf-schema#label> "VKBO Vestiging Cementfabriek"@nl .
-_:genid24 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Site> .
-_:genid23 <http://www.w3.org/2000/01/rdf-schema#label> "Cementfabriek Antwerpen"@nl .
-_:genid23 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/ns/hydra/core#search> _:genid25 .
-_:genid25 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid25 <http://www.w3.org/ns/hydra/core#mapping> _:genid28 .
-_:genid28 <http://www.w3.org/ns/hydra/core#variable> "created" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/2004/02/skos/core#example> _:genid25 .
+_:genid25 <http://www.w3.org/ns/prov#hadPrimarySource> _:genid26 .
+_:genid26 <http://www.w3.org/2000/01/rdf-schema#label> "VKBO Vestiging Cementfabriek"@nl .
+_:genid26 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Site> .
+_:genid25 <http://www.w3.org/2000/01/rdf-schema#label> "Cementfabriek Antwerpen"@nl .
+_:genid25 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie> <http://www.w3.org/ns/hydra/core#search> _:genid27 .
+_:genid27 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid27 <http://www.w3.org/ns/hydra/core#mapping> _:genid30 .
+_:genid30 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid30 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid30 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid27 <http://www.w3.org/ns/hydra/core#mapping> _:genid29 .
+_:genid29 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid29 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid29 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid27 <http://www.w3.org/ns/hydra/core#mapping> _:genid28 .
+_:genid28 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid28 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid28 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid25 <http://www.w3.org/ns/hydra/core#mapping> _:genid27 .
-_:genid27 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid27 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid27 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid25 <http://www.w3.org/ns/hydra/core#mapping> _:genid26 .
-_:genid26 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid26 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid26 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid25 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid28 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid27 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -486,28 +502,28 @@ _:genid25 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/2000/01/rdf-schema#comment> "Een filter is een specifiek systeem dat wordt gebruikt om de kwaliteit van de uitstoot te verbeteren door het verwijderen of verminderen van schadelijke stoffen."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/2000/01/rdf-schema#label> "Filter"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/ns/hydra/core#search> _:genid29 .
-_:genid29 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid29 <http://www.w3.org/ns/hydra/core#mapping> _:genid30 .
-_:genid30 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid30 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid30 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid29 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/ns/hydra/core#search> _:genid31 .
-_:genid31 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid31 <http://www.w3.org/ns/hydra/core#mapping> _:genid34 .
+_:genid31 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid31 <http://www.w3.org/ns/hydra/core#mapping> _:genid32 .
+_:genid32 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid32 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid32 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid31 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter> <http://www.w3.org/ns/hydra/core#search> _:genid33 .
+_:genid33 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/filter/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid33 <http://www.w3.org/ns/hydra/core#mapping> _:genid36 .
+_:genid36 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid36 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid36 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid33 <http://www.w3.org/ns/hydra/core#mapping> _:genid35 .
+_:genid35 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid35 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid35 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid33 <http://www.w3.org/ns/hydra/core#mapping> _:genid34 .
 _:genid34 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid34 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
 _:genid34 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid31 <http://www.w3.org/ns/hydra/core#mapping> _:genid33 .
-_:genid33 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid33 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid33 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid31 <http://www.w3.org/ns/hydra/core#mapping> _:genid32 .
-_:genid32 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid32 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid32 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid31 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid33 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -515,28 +531,28 @@ _:genid31 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2000/01/rdf-schema#comment> "Een installatie is infrastructuur of een verzameling van infrastructuur op een bepaalde locatie die een specifieke functie vervult."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2000/01/rdf-schema#label> "Installatie"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2004/02/skos/core#example> _:genid35 .
-_:genid35 <http://www.w3.org/ns/adms#status> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#in_gebruik> .
-_:genid35 <http://www.w3.org/2000/01/rdf-schema#label> "Cementfabriek Antwerpen Installatie 1"@nl .
-_:genid35 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid35 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid35 <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
-_:genid35 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/ns/hydra/core#search> _:genid36 .
-_:genid36 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid36 <http://www.w3.org/ns/hydra/core#mapping> _:genid39 .
-_:genid39 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/2004/02/skos/core#example> _:genid37 .
+_:genid37 <http://www.w3.org/ns/adms#status> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#in_gebruik> .
+_:genid37 <http://www.w3.org/2000/01/rdf-schema#label> "Cementfabriek Antwerpen Installatie 1"@nl .
+_:genid37 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid37 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid37 <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+_:genid37 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie> <http://www.w3.org/ns/hydra/core#search> _:genid38 .
+_:genid38 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/installatie/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid38 <http://www.w3.org/ns/hydra/core#mapping> _:genid41 .
+_:genid41 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid41 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid41 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid38 <http://www.w3.org/ns/hydra/core#mapping> _:genid40 .
+_:genid40 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid40 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid40 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid38 <http://www.w3.org/ns/hydra/core#mapping> _:genid39 .
+_:genid39 <http://www.w3.org/ns/hydra/core#variable> "created" .
 _:genid39 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid39 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid36 <http://www.w3.org/ns/hydra/core#mapping> _:genid38 .
-_:genid38 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid38 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid38 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid36 <http://www.w3.org/ns/hydra/core#mapping> _:genid37 .
-_:genid37 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid37 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid37 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid36 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid39 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid38 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -544,64 +560,64 @@ _:genid36 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2000/01/rdf-schema#comment> "Een meetpunt is een specifiek punt waar metingen worden uitgevoerd om de kwaliteit van de uitstoot of de omgeving te controleren."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2000/01/rdf-schema#label> "Meetpunt"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2004/02/skos/core#example> _:genid40 .
-_:genid40 <http://www.w3.org/2000/01/rdf-schema#label> "Meetpunt Luchtkwaliteit Schouw 1"@nl .
-_:genid40 <http://www.opengis.net/ont/geosparql#hasGeometry> _:genid41 .
-_:genid41 <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4026 51.2195)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
-_:genid41 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/ont/geosparql#Geometry> .
-_:genid40 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid40 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
-_:genid40 <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
-_:genid40 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/ns/hydra/core#search> _:genid42 .
-_:genid42 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid42 <http://www.w3.org/ns/hydra/core#mapping> _:genid45 .
-_:genid45 <http://www.w3.org/ns/hydra/core#variable> "created" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/2004/02/skos/core#example> _:genid42 .
+_:genid42 <http://www.w3.org/2000/01/rdf-schema#label> "Meetpunt Luchtkwaliteit Schouw 1"@nl .
+_:genid42 <http://www.opengis.net/ont/geosparql#hasGeometry> _:genid43 .
+_:genid43 <http://www.opengis.net/ont/geosparql#asWKT> "POINT(4.4026 51.2195)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> .
+_:genid43 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/ont/geosparql#Geometry> .
+_:genid42 <http://purl.org/dc/terms/valid> "2030-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid42 <http://purl.org/dc/terms/issued> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+_:genid42 <http://purl.org/dc/terms/created> "2020-01-01T00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+_:genid42 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt> <http://www.w3.org/ns/hydra/core#search> _:genid44 .
+_:genid44 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid44 <http://www.w3.org/ns/hydra/core#mapping> _:genid47 .
+_:genid47 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid47 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid47 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid44 <http://www.w3.org/ns/hydra/core#mapping> _:genid46 .
+_:genid46 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid46 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid46 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid44 <http://www.w3.org/ns/hydra/core#mapping> _:genid45 .
+_:genid45 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid45 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid45 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid42 <http://www.w3.org/ns/hydra/core#mapping> _:genid44 .
-_:genid44 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid44 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid44 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid42 <http://www.w3.org/ns/hydra/core#mapping> _:genid43 .
-_:genid43 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid43 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid43 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid42 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid45 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid44 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Observation> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/2000/01/rdf-schema#comment> "Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/2000/01/rdf-schema#label> "Observatie"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/ns/hydra/core#search> _:genid46 .
-_:genid46 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid46 <http://www.w3.org/ns/hydra/core#mapping> _:genid48 .
-_:genid48 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid48 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid48 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid46 <http://www.w3.org/ns/hydra/core#mapping> _:genid47 .
-_:genid47 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid47 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid47 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid46 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie> <http://www.w3.org/ns/hydra/core#search> _:genid48 .
+_:genid48 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid48 <http://www.w3.org/ns/hydra/core#mapping> _:genid50 .
+_:genid50 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid50 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid50 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid48 <http://www.w3.org/ns/hydra/core#mapping> _:genid49 .
+_:genid49 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid49 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid49 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid48 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/ObservationCollection> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/2000/01/rdf-schema#comment> "Een observatieverzameling is een verzameling van waarnemingen of metingen uitgevoerd op een emissie of onttrekking over een bepaalde periode of op een bepaald moment."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/2000/01/rdf-schema#label> "Observatieverzameling"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/ns/hydra/core#search> _:genid49 .
-_:genid49 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid49 <http://www.w3.org/ns/hydra/core#mapping> _:genid51 .
-_:genid51 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid51 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid51 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid49 <http://www.w3.org/ns/hydra/core#mapping> _:genid50 .
-_:genid50 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid50 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid50 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid49 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling> <http://www.w3.org/ns/hydra/core#search> _:genid51 .
+_:genid51 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid51 <http://www.w3.org/ns/hydra/core#mapping> _:genid53 .
+_:genid53 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid53 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid53 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid51 <http://www.w3.org/ns/hydra/core#mapping> _:genid52 .
+_:genid52 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid52 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid52 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid51 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -609,13 +625,13 @@ _:genid49 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/FeatureOfInterest> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/2000/01/rdf-schema#comment> "Een onttrekking is een specifiek onttrekkingsevent dat betrekking heeft op het winnen of bemonsteren van grondstoffen aan onttrekkingspunten over of op een bepaalde periode of momentopname."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/2000/01/rdf-schema#label> "Onttrekking"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/ns/hydra/core#search> _:genid52 .
-_:genid52 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid52 <http://www.w3.org/ns/hydra/core#mapping> _:genid53 .
-_:genid53 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid53 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid53 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid52 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking> <http://www.w3.org/ns/hydra/core#search> _:genid54 .
+_:genid54 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid54 <http://www.w3.org/ns/hydra/core#mapping> _:genid55 .
+_:genid55 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid55 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid55 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid54 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -623,86 +639,86 @@ _:genid52 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/2000/01/rdf-schema#comment> "Een onttrekkingspunt is een punt waar grondstoffen worden gewonnen of bemonsterd (onttrekking)."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/2000/01/rdf-schema#label> "Onttrekkingspunt"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/2004/02/skos/core#example> _:genid54 .
-_:genid54 <http://www.w3.org/2000/01/rdf-schema#label> "Onttrekking 1"@nl .
-_:genid54 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/ns/hydra/core#search> _:genid55 .
-_:genid55 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid55 <http://www.w3.org/ns/hydra/core#mapping> _:genid58 .
-_:genid58 <http://www.w3.org/ns/hydra/core#variable> "created" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/2004/02/skos/core#example> _:genid56 .
+_:genid56 <http://www.w3.org/2000/01/rdf-schema#label> "Onttrekking 1"@nl .
+_:genid56 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> <http://www.w3.org/ns/hydra/core#search> _:genid57 .
+_:genid57 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid57 <http://www.w3.org/ns/hydra/core#mapping> _:genid60 .
+_:genid60 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid60 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid60 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid57 <http://www.w3.org/ns/hydra/core#mapping> _:genid59 .
+_:genid59 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid59 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid59 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid57 <http://www.w3.org/ns/hydra/core#mapping> _:genid58 .
+_:genid58 <http://www.w3.org/ns/hydra/core#variable> "issued" .
 _:genid58 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid58 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid55 <http://www.w3.org/ns/hydra/core#mapping> _:genid57 .
-_:genid57 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid57 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid57 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid55 <http://www.w3.org/ns/hydra/core#mapping> _:genid56 .
-_:genid56 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid56 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid56 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid55 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid58 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid57 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2002/07/owl#equivalentClass> _:genid59 .
-_:genid59 <http://www.w3.org/2002/07/owl#unionOf> _:genid62 .
-_:genid62 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid61 .
-_:genid61 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid60 .
-_:genid60 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:genid60 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#Step> .
-_:genid60 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
-_:genid61 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#Plan> .
-_:genid61 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
-_:genid62 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#MultiStep> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2002/07/owl#equivalentClass> _:genid61 .
+_:genid61 <http://www.w3.org/2002/07/owl#unionOf> _:genid64 .
+_:genid64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid63 .
+_:genid63 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid62 .
+_:genid62 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:genid62 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#Step> .
 _:genid62 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
-_:genid59 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:genid63 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#Plan> .
+_:genid63 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+_:genid64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.org/net/p-plan#MultiStep> .
+_:genid64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+_:genid61 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/net/p-plan#Plan> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/net/p-plan#Step> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Procedure> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2000/01/rdf-schema#comment> "Een (milieu)proces is een door de gebruiker in te vullen industrieel proces op een bepaalde locatie bestaande uit meerdere procedurestappen die het proces beschrijven. Een proces kan hiërarchisch opgebouwd zijn als een plan met substappen."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2000/01/rdf-schema#label> "Proces"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2004/02/skos/core#example> _:genid63 .
-_:genid63 <http://www.w3.org/2000/01/rdf-schema#label> "Productie van cement in een fabriek te Antwerpen"@nl .
-_:genid63 <http://purl.org/dc/terms/created> "2024-01-15T10:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
-_:genid63 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2004/02/skos/core#example> _:genid64 .
-_:genid64 <http://www.w3.org/2000/01/rdf-schema#label> "Verwerking van grondstoffen"@nl .
-_:genid64 <http://purl.org/dc/terms/type> <https://data.riepr.omgeving.vlaanderen.be/id/concept/verwerkingsprocedure> .
-_:genid64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/ns/hydra/core#search> _:genid65 .
-_:genid65 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/proces/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid65 <http://www.w3.org/ns/hydra/core#mapping> _:genid68 .
-_:genid68 <http://www.w3.org/ns/hydra/core#variable> "created" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2004/02/skos/core#example> _:genid65 .
+_:genid65 <http://www.w3.org/2000/01/rdf-schema#label> "Productie van cement in een fabriek te Antwerpen"@nl .
+_:genid65 <http://purl.org/dc/terms/created> "2024-01-15T10:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+_:genid65 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/2004/02/skos/core#example> _:genid66 .
+_:genid66 <http://www.w3.org/2000/01/rdf-schema#label> "Verwerking van grondstoffen"@nl .
+_:genid66 <http://purl.org/dc/terms/type> <https://data.riepr.omgeving.vlaanderen.be/id/concept/verwerkingsprocedure> .
+_:genid66 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces> <http://www.w3.org/ns/hydra/core#search> _:genid67 .
+_:genid67 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/proces/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid67 <http://www.w3.org/ns/hydra/core#mapping> _:genid70 .
+_:genid70 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid70 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid70 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid67 <http://www.w3.org/ns/hydra/core#mapping> _:genid69 .
+_:genid69 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid69 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid69 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid67 <http://www.w3.org/ns/hydra/core#mapping> _:genid68 .
+_:genid68 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid68 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid68 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid65 <http://www.w3.org/ns/hydra/core#mapping> _:genid67 .
-_:genid67 <http://www.w3.org/ns/hydra/core#variable> "issued" .
-_:genid67 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid67 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid65 <http://www.w3.org/ns/hydra/core#mapping> _:genid66 .
-_:genid66 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid66 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid66 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid65 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid68 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid67 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/net/p-plan#Variable> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/2000/01/rdf-schema#comment> "Een procesvariabele is een variabel gegeven die als input of output van een proces dient."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/2000/01/rdf-schema#label> "Procesvariabele"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/2004/02/skos/core#example> _:genid69 .
-_:genid69 <http://www.w3.org/2000/01/rdf-schema#label> "Meel"@nl .
-_:genid69 <http://purl.org/dc/terms/type> _:genid70 .
-_:genid70 <http://www.w3.org/2000/01/rdf-schema#label> "Stof"@nl .
-_:genid70 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Entity> .
-_:genid69 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/ns/hydra/core#search> _:genid71 .
-_:genid71 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid71 <http://www.w3.org/ns/hydra/core#mapping> _:genid72 .
-_:genid72 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid72 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid72 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid71 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/2004/02/skos/core#example> _:genid71 .
+_:genid71 <http://www.w3.org/2000/01/rdf-schema#label> "Meel"@nl .
+_:genid71 <http://purl.org/dc/terms/type> _:genid72 .
+_:genid72 <http://www.w3.org/2000/01/rdf-schema#label> "Stof"@nl .
+_:genid72 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Entity> .
+_:genid71 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele> <http://www.w3.org/ns/hydra/core#search> _:genid73 .
+_:genid73 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/procesvariabele/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid73 <http://www.w3.org/ns/hydra/core#mapping> _:genid74 .
+_:genid74 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid74 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid74 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid73 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -710,70 +726,70 @@ _:genid71 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/Result> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/2000/01/rdf-schema#comment> "Een resultaat is het resultaat record van een observatie."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/2000/01/rdf-schema#label> "Resultaat"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/ns/hydra/core#search> _:genid73 .
-_:genid73 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid73 <http://www.w3.org/ns/hydra/core#mapping> _:genid74 .
-_:genid74 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid74 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid74 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid73 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
-# 
-# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2004/02/skos/core#Concept> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#comment> "Een rubriek is een specifieke classificatie die wordt gebruikt om activiteiten te categoriseren volgens de regelgeving."@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#label> "Rubriek"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/ns/hydra/core#search> _:genid75 .
-_:genid75 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/rubriek/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat> <http://www.w3.org/ns/hydra/core#search> _:genid75 .
+_:genid75 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 _:genid75 <http://www.w3.org/ns/hydra/core#mapping> _:genid76 .
 _:genid76 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid76 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
 _:genid76 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
 _:genid75 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
-# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/Property> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#comment> "Een systeemeigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw."@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#label> "Systeemeigenschap"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/ns/hydra/core#search> _:genid77 .
-_:genid77 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#comment> "Een rubriek is een specifieke classificatie die wordt gebruikt om activiteiten te categoriseren volgens de regelgeving."@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/2000/01/rdf-schema#label> "Rubriek"@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Rubriek> <http://www.w3.org/ns/hydra/core#search> _:genid77 .
+_:genid77 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/rubriek/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
 _:genid77 <http://www.w3.org/ns/hydra/core#mapping> _:genid78 .
 _:genid78 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid78 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
 _:genid78 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
 _:genid77 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
+# https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/Property> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#comment> "Een systeemeigenschap is een specifieke eigenschap van een systeem, zoals de hoogte van de schouw."@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/2000/01/rdf-schema#label> "Systeemeigenschap"@nl .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Systeemeigenschap> <http://www.w3.org/ns/hydra/core#search> _:genid79 .
+_:genid79 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid79 <http://www.w3.org/ns/hydra/core#mapping> _:genid80 .
+_:genid80 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid80 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid80 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid79 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+# 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2002/07/owl#equivalentClass> _:genid79 .
-_:genid79 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:genid79 <http://www.w3.org/2002/07/owl#intersectionOf> _:genid81 .
-_:genid81 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid80 .
-_:genid80 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:genid80 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> .
-_:genid80 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
-_:genid81 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
-_:genid81 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2002/07/owl#equivalentClass> _:genid81 .
+_:genid81 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:genid81 <http://www.w3.org/2002/07/owl#intersectionOf> _:genid83 .
+_:genid83 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:genid82 .
+_:genid82 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:genid82 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt> .
+_:genid82 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
+_:genid83 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt> .
+_:genid83 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#List> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.opengis.net/ont/geosparql#SpatialObject> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/ssn/System> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2000/01/rdf-schema#comment> "Een uitwisselpunt is een bi-directioneel punt waar stoffen (m.n. grondwater) kunnen worden onttrokken of geïnjecteerd."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/2000/01/rdf-schema#label> "Uitwisselpunt"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/ns/hydra/core#search> _:genid82 .
-_:genid82 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid82 <http://www.w3.org/ns/hydra/core#mapping> _:genid85 .
-_:genid85 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt> <http://www.w3.org/ns/hydra/core#search> _:genid84 .
+_:genid84 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/{uuid}/{issued}/{created}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid84 <http://www.w3.org/ns/hydra/core#mapping> _:genid87 .
+_:genid87 <http://www.w3.org/ns/hydra/core#variable> "created" .
+_:genid87 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid87 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
+_:genid84 <http://www.w3.org/ns/hydra/core#mapping> _:genid86 .
+_:genid86 <http://www.w3.org/ns/hydra/core#variable> "issued" .
+_:genid86 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid86 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
+_:genid84 <http://www.w3.org/ns/hydra/core#mapping> _:genid85 .
+_:genid85 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
 _:genid85 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid85 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/issued> .
-_:genid82 <http://www.w3.org/ns/hydra/core#mapping> _:genid84 .
-_:genid84 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid84 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid84 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid82 <http://www.w3.org/ns/hydra/core#mapping> _:genid83 .
-_:genid83 <http://www.w3.org/ns/hydra/core#variable> "created" .
-_:genid83 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid83 <http://www.w3.org/ns/hydra/core#property> <http://purl.org/dc/terms/created> .
-_:genid82 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+_:genid85 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid84 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
@@ -781,13 +797,13 @@ _:genid82 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/sosa/FeatureOfInterest> .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/2000/01/rdf-schema#comment> "Een verbruik is een specifieke gebeurtenis dat betrekking heeft op het verbruiken van stoffen aan verbruikspunten over of op een bepaalde periode of momentopname."@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/2000/01/rdf-schema#label> "Verbruik"@nl .
-<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/ns/hydra/core#search> _:genid86 .
-_:genid86 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
-_:genid86 <http://www.w3.org/ns/hydra/core#mapping> _:genid87 .
-_:genid87 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
-_:genid87 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:genid87 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
-_:genid86 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
+<https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik> <http://www.w3.org/ns/hydra/core#search> _:genid88 .
+_:genid88 <http://www.w3.org/ns/hydra/core#template> "https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{uuid}"^^<http://www.w3.org/ns/hydra/core#Rfc6570Template> .
+_:genid88 <http://www.w3.org/ns/hydra/core#mapping> _:genid89 .
+_:genid89 <http://www.w3.org/ns/hydra/core#variable> "uuid" .
+_:genid89 <http://www.w3.org/ns/hydra/core#required> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:genid89 <http://www.w3.org/ns/hydra/core#property> <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId> .
+_:genid88 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/hydra/core#IriTemplate> .
 # 
 # https://data.vlaanderen.be/ns/dossier#Stuk
 # 
@@ -880,13 +896,13 @@ _:genid86 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/n
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#voorgesteld> <http://www.w3.org/2000/01/rdf-schema#label> "Voorgesteld"@nl .
 <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#voorgesteld> <http://www.w3.org/2004/02/skos/core#related> <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/voorgesteld> .
 # 
-_:genid88 <http://www.w3.org/2000/01/rdf-schema#comment> "Proces kan een plan op zichzelf zijn (multi step)"@nl .
-_:genid89 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl .
-_:genid90 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"@nl .
-_:genid91 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl .
-_:genid92 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl .
-_:genid93 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl .
-_:genid94 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl .
+_:genid90 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl .
+_:genid91 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"@nl .
+_:genid92 <http://www.w3.org/2000/01/rdf-schema#comment> "Proces kan een plan op zichzelf zijn (multi step)"@nl .
+_:genid93 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl .
+_:genid94 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl .
+_:genid95 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl .
+_:genid96 <http://www.w3.org/2000/01/rdf-schema#comment> "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl .
 # 
 # 
 # #################################################################
