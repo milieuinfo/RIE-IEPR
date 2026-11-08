@@ -2,6 +2,7 @@ import { Aangifte } from './aangifte.model';
 import { Exploitatie } from './exploitatie.model';
 import { ExterneIdentificator } from './externeidentificator.model';
 import { Filter } from './filter.model';
+import { Geometry } from './geometry.model';
 import { Status } from './status.enum';
 import { Systeem } from './systeem.interface';
 import { Systeemeigenschap } from './systeemeigenschap.model';
@@ -82,8 +83,8 @@ export class Uitwisselpunt implements Systeem {
 	 * @see {@link http://www.opengis.net/ont/geosparql#hasGeometry}
 	 * Een uitwisselpunt mag max 1 geometrie hebben
 	 */
-	@jsonMember({ name: 'hasGeometry' })
-	geometrie?: string;
+	@jsonMember(() => Geometry, { name: 'hasGeometry' })
+	geometrie?: Geometry;
 
 	/**
 	 * label

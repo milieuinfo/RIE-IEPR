@@ -239,6 +239,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een exploitatielocatie moet exact 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -650,6 +651,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een installatie mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -773,6 +775,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissiepunt mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -943,6 +946,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1067,6 +1071,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een uitwisselpunt mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1210,6 +1215,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een meetpunt mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1321,6 +1327,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een systeem mag max 1 geometrie hebben"@nl ;
         owl:onProperty ogc:hasGeometry ;
+        owl:someValuesFrom ogc:Geometry ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1771,6 +1778,27 @@ rdfs:subClassOf [ a owl:Restriction ;
   owl:someValuesFrom rdfs:Datatype ;
   owl:minCardinality "0"^^xsd:nonNegativeInteger ;
   owl:maxCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+# Expliciete restricties op ogc:Geometry, zodat de geometrie een eigen klasse met een WKT-serialisatie is (M7)
+# Lokaal gedeclareerd (zoals de LOCN-stub), omdat de GeoSPARQL-mirror geen owl:Class levert.
+ogc:Geometry a owl:Class ;
+    rdfs:label "Geometrie"@nl , "Geometry"@en .
+
+ogc:wktLiteral a rdfs:Datatype ;
+    rdfs:label "WKT-literal"@nl , "Well-known Text Literal"@en .
+
+ogc:asWKT a owl:DatatypeProperty ;
+    rdfs:label "als WKT"@nl , "as WKT"@en ;
+    rdfs:domain ogc:Geometry ;
+    rdfs:range ogc:wktLiteral .
+
+ogc:Geometry rdfs:subClassOf [ a owl:Restriction ;
+    rdfs:comment "Een geometrie heeft exact 1 WKT-serialisatie"@nl ;
+    owl:onProperty ogc:asWKT ;
+    owl:someValuesFrom ogc:wktLiteral ;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:maxCardinality "1"^^xsd:nonNegativeInteger
 ] .
 
 # Expliciete restricties op locn:Address voor ontbrekende adresvelden (M6)

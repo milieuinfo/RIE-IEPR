@@ -101,9 +101,9 @@ public class Filter implements ISysteem {
 	 * <a href="http://www.opengis.net/ont/geosparql#hasGeometry">hasGeometry</a>
 	 * Een systeem mag max 1 geometrie hebben
 	 */
-	@Column(name = "geometrie", nullable = true)
+	@JoinColumn(name = "uuid", nullable = true)
 	@JsonProperty("hasGeometry")
-	private String geometrie;
+	private Geometry geometrie;
 	/**
 	 * label
 	 * <a href="http://www.w3.org/2000/01/rdf-schema#label">label</a>

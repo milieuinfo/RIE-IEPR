@@ -65,6 +65,9 @@ ontology:
   override-datatypes:
     - uri: "http://www.w3.org/2000/01/rdf-schema#Literal"
       override: "http://www.w3.org/2001/XMLSchema#string"
+    # WKT-literal als tekst in Java/SQL; het datatype ogc:wktLiteral zit in de JSON-LD-context
+    - uri: "http://www.opengis.net/ont/geosparql#wktLiteral"
+      override: "http://www.w3.org/2001/XMLSchema#string"
   surrogate-keys:
     enabled: true
     name: "id" # Om verwarring tegen te gaan noem ik het 'id' ipv uuid
