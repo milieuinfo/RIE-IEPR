@@ -50,8 +50,8 @@ Een **installatie** is een stuk infrastructuur met een specifieke functie. Het t
     a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
     rdfs:label "waterzuiveringsinstallatie"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/waterzuivering> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/waterzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     dct:issued "2026-01-01"^^xsd:date ;
     riepr:inGebruikVanaf "1970-01-01"^^xsd:date .
 
@@ -60,7 +60,7 @@ Een **installatie** is een stuk infrastructuur met een specifieke functie. Het t
     a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION> ;
     rdfs:label "AGC Glass Mol"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/gpbv> .
 ```
 
 **Opmerking:** GPBV-installaties gebruiken een andere identifier (GPBV-identificator) in plaats van een UUID.
@@ -112,12 +112,12 @@ In het AGC Glass-voorbeeld komen verschillende types voor, zoals `schoorsteen_ve
 # Schoorsteen (lucht)
 <.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Emissiepunt, ssn:System ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> .
 
 # Lozingspunt (water)
 <.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Emissiepunt, ssn:System ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/lozingspunt> .
 ```
 
 ### Emissiepunt-eigenschappen
@@ -128,20 +128,20 @@ Emissiepunten hebben specifieke eigenschappen zoals aantal punten, hoogte en equ
 # Aantal punten
 <.../systeemeigenschap/019ecf80-eae8-7a2f-a407-9e4892c4debd>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer .
 
 # Hoogte van de schouw (in meter)
 <.../systeemeigenschap/019ecf80-eae8-7f51-881b-55d6b3278a90>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "80.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 # Diameter van de schouw (in meter)
 <.../systeemeigenschap/019ecf80-eae8-78e1-aeb9-c19e6918e530>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "2.2"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 ```
@@ -159,7 +159,7 @@ op **één** emissieproces dat het gedeelde emissiepunt implementeert (zie §8).
 ```turtle
 # Eén emissieproces per emissiepunt, met één isPrecededBy per bron die erop uitstoot
 <.../proces/EMISSIE-SCHOORSTEEN-1/...>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/SCHOORSTEEN-1/...> ;
     pplan:isPrecededBy <.../proces/TRANSPORT-OVEN-1/...>, <.../proces/TRANSPORT-OVEN-2/...> .
 ```
@@ -172,9 +172,9 @@ samenstelling uit, geen stroom, en vervangt de proceslijn niet.
 > met de tegenvoorbeelden, het spiegelbeeld (één bron, meerdere emissiepunten) en een
 > SPARQL-query die per emissiepunt de bijhorende bronnen oplevert.
 
-## 4. Onttrekkingspunten
+## 4. Onttrekkingspunten en uitwisselpunten
 
-Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`.
+Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is een subklasse van `ssn:System` en `ogc:SpatialObject`. Het type komt uit de codelijst **`onttrekkingspunttypes`** (bv. `opnamepunt` voor opgenomen oppervlaktewater).
 
 ```turtle
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
@@ -182,17 +182,27 @@ Een **onttrekkingspunt** is een punt waar grondstoffen gewonnen worden. Het is e
 <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Onttrekkingspunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99> ;
-    rdfs:label "1 (FL koeltoren)"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> .
+    rdfs:label "Opgenomen oppervlaktewater"@nl ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunttype/opnamepunt> .
 ```
 
-### Onttrekkingspunt-eigenschappen
+Een grondwaterput (**pompput**) is een **uitwisselpunt**: grondwater kan er onttrokken of geïnjecteerd worden. Het type komt uit de codelijst **`uitwisselpunttypes`**; de onttrekking zelf is het proces van de exploitatie aan die put.
 
 ```turtle
-# Diepte van het onttrekkingspunt
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z>
+    a riepr:Uitwisselpunt, ssn:System ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded> ;
+    rdfs:label "1 (FL koeltoren)"@nl ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> .
+```
+
+### Uitwisselpunt-eigenschappen
+
+```turtle
+# Diepte van de pompput
 <.../systeemeigenschap/019edc4a-1a35-7b33-9e4f-1c2d3e4f5a6b>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "45.5"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 ```
@@ -236,14 +246,14 @@ Ook een filter is een systeem en krijgt dus een eigen `riepr:Proces` ([Migratie 
 # Pompfilter onder een pompput: stap in het onttrekkingsproces van die put
 <.../proces/01a0a02c-e670-7c22-8ab9-61e92f24d447/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <.../proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Peilfilter onder een peilput: stap in het meetproces van die put
 <.../proces/01a0a02c-e66d-7b63-b8dc-c23cac8156af/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <.../filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <.../proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> .
 ```
@@ -258,12 +268,12 @@ De bron levert per filter een watervoerende laag, een diepte en een lengte. Die 
 # Watervoerende laag, diepte en lengte, op de filter
 <.../systeemeigenschap/019ecf80-eae8-7511-b394-11b36f0d8374>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0100" .
 
 <.../systeemeigenschap/019ecf80-eae8-70c9-a2ed-258f21b11a8e>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "7.940"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 ```
@@ -305,17 +315,17 @@ Processen koppelen aan systemen via `ssn:implementedBy`. Dit is een **OWL-axioma
 ```turtle
 # Emissieproces → emissiepunt
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Verwerkingsproces → installatie
 <.../proces/019eaca0-b8c6-7351-bd77-c8942e32577d/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Meetproces → meetpunt
 <.../proces/019eaca0-b8c6-7462-ce88-d9a53f43688e/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 

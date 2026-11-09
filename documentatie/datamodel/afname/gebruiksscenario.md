@@ -179,13 +179,13 @@ Processen vormen het centrale skelet van het model. Het hoofdproces (type = hoof
 <.../proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
     rdfs:label "Vormen en bewerken van vlakglas"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/hoofdactiviteit> .
 
 # Subproces: emissie
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
     rdfs:label "Emissieproces schoorsteen 1"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     pplan:isStepOfPlan <.../proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> .
 ```
 

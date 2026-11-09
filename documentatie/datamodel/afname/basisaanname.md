@@ -91,7 +91,7 @@ Een exploitatie bestaat uit **twee lagen**:
     a riepr:Exploitatie ;
     dct:isVersionOf <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> ;
     dct:issued "2026-01-01"^^xsd:date ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
 ```
 
 ## 4. Proces-procedure koppels (OWL-axioma's)
@@ -113,7 +113,7 @@ Dit betekent dat als een proces het type "emissie" heeft, het **per definitie** 
 !!! warning "Afwijking in de ontologie"
     Het axioma voor het meetproces verwijst in `riepr.ttl` naar `…/procedure-type/meet`, terwijl de codelijst `procedure_type` en het datavoorbeeld `…/procedure-type/meting` gebruiken. De **codelijst is leidend**; het axioma moet nog bijgewerkt worden.
 
-De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie), waar ze als SKOS-concepten gepubliceerd zijn.
+De volledige URI's van de procedure types verwijzen naar [data.omgeving.vlaanderen.be](https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie), waar ze als SKOS-concepten gepubliceerd zijn.
 
 ## 5. Disjuncte klassen
 

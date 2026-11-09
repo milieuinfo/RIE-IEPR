@@ -140,7 +140,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     prov:wasAttributedTo <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     # De exploitatielocatie is gebaseerd op een vestiging
     prov:hadPrimarySource <https://data.vlaanderen.be/id/vestiging/2081766488> ;
     # Adresgegevens zouden in principe opgehaald moeten worden van de primary source en niet dOMG
@@ -174,7 +174,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     # De primaire bron van de exploitant geeft een lijst van alle activiteiten (NACE codes). In MJV kunnen ze hun hoofdactiviteit selecteren
     org:classification <http://data.europa.eu/ux2/nace2.1/231> ;
     # De exploitatie implementeert 1 proces (hoofdproces of ook wel activiteit genoemd)
@@ -191,7 +191,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145c-7c92-9099-59b4286bc121/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145d-7a81-bc94-32c5eae624ad/2026-01-01/2026-01-01T10:00:00Z>,
         <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z>,
         <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145f-75f2-8222-342e7028bb37/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1460-7f57-81d2-d483a58d2439/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1461-7f34-b276-0b3c1bee1186/2026-01-01/2026-01-01T10:00:00Z>,
-        <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1462-7a6b-a750-ee0ec6f63870/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z>,
+        <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1462-7a6b-a750-ee0ec6f63870/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z>,
         <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> ,
         <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> , <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1468-7c83-bfd9-dc30667ab9a1/2026-01-01/2026-01-01T10:00:00Z>,
         <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b/2026-01-01/2026-01-01T10:00:00Z>, <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9/2026-01-01/2026-01-01T10:00:00Z>,
@@ -205,9 +205,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     # OWL-axioma eist dan ssn:implementedBy naar de exploitatie. Een :Exploitatie is
     # een ssn:Deployment, geen ssn:System; sinds 2026-09-11 laat de restrictie op
     # ssn:implementedBy in riepr.ttl beide toe (unie ssn:System / ssn:Deployment).
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/hoofdactiviteit> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -237,8 +237,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
     rdfs:label "waterzuiveringsinstallatie"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/waterzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/waterzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -255,8 +255,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1457-7564-86c0-e28e802b8fa2/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1457-7564-86c0-e28e802b8fa2> ;
     rdfs:label "demi-installatie glasfabriek"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -270,8 +270,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1458-7b1f-bc81-76e221cdb630/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     rdfs:label "demi-installaties coater"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -286,8 +286,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1459-714c-a5bc-ed1889914c81/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1459-714c-a5bc-ed1889914c81> ;
     rdfs:label "ultrafiltratie en recuperatie coater"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -302,8 +302,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-145a-7a7e-b483-954bb6b31bb9/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-145a-7a7e-b483-954bb6b31bb9> ;
     rdfs:label "Centrifuge"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -320,8 +320,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION> ;
     rdfs:label "AGC Glass Mol"@nl ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/gpbv> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -378,11 +378,11 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-145f-75f2-8222-342e7028bb37/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1460-7f57-81d2-d483a58d2439/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9/2026-01-01/2026-01-01T10:00:00Z> .
@@ -395,8 +395,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 #  meetputtype "lozend" voorkomen.
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/lozingspunt> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -406,8 +406,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145c-7c92-9099-59b4286bc121/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145c-7c92-9099-59b4286bc121> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/lozingspunt> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -417,8 +417,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145d-7a81-bc94-32c5eae624ad/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145d-7a81-bc94-32c5eae624ad> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/lozingspunt> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/lozingspunt> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -429,8 +429,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 # Emissiepunten (lucht)
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -449,8 +449,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-ba55-72ab-979c-843563bcb58e/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-ba55-72ab-979c-843563bcb58e> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -469,8 +469,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bbf3-7009-8da2-c864d3860720/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bbf3-7009-8da2-c864d3860720> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/emissiepunt> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/emissiepunt> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -489,8 +489,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bd81-7695-9a2b-2ded5be22aa0/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bd81-7695-9a2b-2ded5be22aa0> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -509,8 +509,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bf2c-7592-bd64-f5bb8ce8376e/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bf2c-7592-bd64-f5bb8ce8376e> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -529,8 +529,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c0d0-7099-9a43-76e69454dc63/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c0d0-7099-9a43-76e69454dc63> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -549,8 +549,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c262-75cb-8019-85ebb5792237/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c262-75cb-8019-85ebb5792237> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -569,8 +569,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c3fe-77db-b321-7d13bfb958de/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c3fe-77db-b321-7d13bfb958de> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -589,8 +589,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -612,8 +612,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 #  meetputtype "Oppompend" voorkomen.
 <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/opnamepunt> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunttype/opnamepunt> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -621,12 +621,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     rdfs:label "Opgenomen oppervlaktewater"@nl .
 
-## Onttrekkingspunten (migratie grondwater)
+## Uitwisselpunten (migratie grondwater)
 ## Op basis van VMM data type "GRONDWATERWINNING" voor grondwaterput
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> ;
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> a riepr:Uitwisselpunt ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -670,10 +670,10 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> ;
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> a riepr:Uitwisselpunt ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -717,10 +717,10 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> ;
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> a riepr:Uitwisselpunt ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -764,10 +764,10 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> ;
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> a riepr:Uitwisselpunt ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -811,10 +811,10 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Onttrekkingspunt ;
-    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/pompput> ;
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Uitwisselpunt ;
+    dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/pompput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -858,7 +858,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-# Filters voor onttrekkingspunten (migratie grondwater)
+# Filters voor uitwisselpunten (migratie grondwater)
 # Peilfilters (Type PEIL)
 <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> a riepr:Filter ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-711a-b032-2a0aea8fcdcb> ;
@@ -866,8 +866,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put meetpunt/019e9271-1469-7d16-975e-2b00841913e6 waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/peil> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/peil> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -882,8 +882,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put meetpunt/019e9271-1469-7d16-975e-2b00841913e6 waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/peil> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/peil> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -898,8 +898,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put meetpunt/019e9271-1469-7d16-975e-2b00841913e6 waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/peil> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/peil> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -914,9 +914,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02 waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/pomp> ;
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put uitwisselpunt/019e9271-1463-719b-948f-22a102653d02 waaronder de filter hangt
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/pomp> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -930,9 +930,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/pomp> ;
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea waaronder de filter hangt
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/pomp> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -946,9 +946,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/pomp> ;
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded waaronder de filter hangt
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/pomp> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -962,9 +962,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623 waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/pomp> ;
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623 waaronder de filter hangt
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/pomp> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -978,9 +978,9 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f waaronder de filter hangt
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-type/pomp> ;
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan de put uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f waaronder de filter hangt
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtertype/pomp> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -990,22 +990,22 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "1"@nl .
 
 # Filters gekoppeld aan de put waaronder ze hangen:
-#   peilfilters onder de peilput (een meetpunt), pompfilters onder het onttrekkingspunt.
+#   peilfilters onder de peilput (een meetpunt), pompfilters onder het uitwisselpunt (pompput).
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7674-8785-3698855d62cb/2026-01-01/2026-01-01T10:00:00Z> .
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-71bb-b7ef-1e2048da7fa4/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-783c-8c2e-fe459ade9731/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7a74-bc5c-22d1dd45dce9/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7b0d-83a3-1904844249d1/2026-01-01/2026-01-01T10:00:00Z> .
-<https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-77ec-b9a8-a16a5664e0f4/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-783c-8c2e-fe459ade9731/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7a74-bc5c-22d1dd45dce9/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7b0d-83a3-1904844249d1/2026-01-01/2026-01-01T10:00:00Z> .
+<https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> ssn:hasSubSystem <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-77ec-b9a8-a16a5664e0f4/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Meetpunten
 #  Bij een lozingspunt maken een controleinrichting met als naam "Controleinrichting " + <lozingspunt naam>.
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-145f-75f2-8222-342e7028bb37/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-145f-75f2-8222-342e7028bb37> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/controleinrichting> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/controleinrichting> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1021,8 +1021,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1461-7f34-b276-0b3c1bee1186/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1461-7f34-b276-0b3c1bee1186> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/controleinrichting> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/controleinrichting> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1036,8 +1036,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1460-7f57-81d2-d483a58d2439/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1460-7f57-81d2-d483a58d2439> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/controleinrichting> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/controleinrichting> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1051,8 +1051,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1462-7a6b-a750-ee0ec6f63870/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1462-7a6b-a750-ee0ec6f63870> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/controleinrichting> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/controleinrichting> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1068,8 +1068,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 # Migratie uit VMM data op basis van "PEIL" type van een grondwaterput
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/peilput> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/peilput> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1113,15 +1113,15 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         ogc:crs <http://www.opengis.net/gml/srs/epsg.xml#31370>
     ] .
 
-# Bij onttrekkingspunten maken we ook een meetinrichting op basis van de putnaam.
+# Bij uitwisselpunten (pompputten) maken we ook een meetinrichting op basis van de putnaam.
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/debietmeter> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/debietmeter> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld onttrekkingspunt 019e9271-1463-719b-948f-22a102653d02
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld uitwisselpunt 019e9271-1463-719b-948f-22a102653d02
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -1132,12 +1132,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/debietmeter> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/debietmeter> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld onttrekkingspunt 019e9271-1464-79bc-843b-87ccd701edea
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld uitwisselpunt 019e9271-1464-79bc-843b-87ccd701edea
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -1147,12 +1147,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146c-739e-af4f-7b3af72b9b4d/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146c-739e-af4f-7b3af72b9b4d> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/debietmeter> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/debietmeter> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld onttrekkingspunt 019e9271-1465-72f2-8291-c289676c3ded
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld uitwisselpunt 019e9271-1465-72f2-8291-c289676c3ded
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -1162,12 +1162,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146d-7e15-8388-676b085f663f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146d-7e15-8388-676b085f663f> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/debietmeter> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/debietmeter> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld onttrekkingspunt 019e9271-1466-7240-ac66-b7831d1b3623
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld uitwisselpunt 019e9271-1466-7240-ac66-b7831d1b3623
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -1177,12 +1177,12 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146e-737d-b305-650c48295731/2026-01-01/2026-01-01T10:00:00Z> a riepr:Meetpunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146e-737d-b305-650c48295731> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-type/debietmeter> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunttype/debietmeter> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld onttrekkingspunt 019e9271-1467-70da-9ee3-84dd0066573f
+    riepr:inGebruikVanaf "2026-01-01"^^xsd:date ; # afgeleid: gelijkgezet aan gekoppeld uitwisselpunt 019e9271-1467-70da-9ee3-84dd0066573f
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     adms:identifier [ a adms:Identifier ;
         adms:schemaAgency "VMM" ;
@@ -1193,8 +1193,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 # Installaties (lucht)
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac20-56eb-770d-bbb4-a099f0a90061/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac20-56eb-770d-bbb4-a099f0a90061> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1210,8 +1210,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac24-9c91-7338-a285-c660a5b88d11/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac24-9c91-7338-a285-c660a5b88d11> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1226,8 +1226,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac67-c259-746e-9dd6-86e632fbc5cb/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac67-c259-746e-9dd6-86e632fbc5cb> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1243,8 +1243,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac7b-b761-73fb-aac9-deea610bf316/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac7b-b761-73fb-aac9-deea610bf316> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2001-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1260,8 +1260,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-13eb-716d-a64e-daccacb9eaee/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-13eb-716d-a64e-daccacb9eaee> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2001-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1276,8 +1276,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1581-763d-b48b-262afdcf970b/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1581-763d-b48b-262afdcf970b> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2019-05-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1292,8 +1292,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1702-73bb-81a3-61f3c446dfae/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1702-73bb-81a3-61f3c446dfae> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2020-03-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1309,8 +1309,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-189b-735e-b875-c17c55aa0f04/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-189b-735e-b875-c17c55aa0f04> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2019-12-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1326,8 +1326,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1a2d-714b-9951-c87409bbc77e/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1a2d-714b-9951-c87409bbc77e> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2019-12-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1343,8 +1343,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1bc8-70ed-a287-c035b8c37909/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1bc8-70ed-a287-c035b8c37909> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/installatie> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/installatie> ;
     dct:issued "2022-07-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1361,8 +1361,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 # Installaties (zuiveringsinstallaties lucht)
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb679-42b9-77df-bdc8-47ea9b612a9d/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb679-42b9-77df-bdc8-47ea9b612a9d> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/luchtzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/luchtzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1377,8 +1377,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-adf1-735c-8bdb-bdf806a3ab25/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-adf1-735c-8bdb-bdf806a3ab25> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/luchtzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/luchtzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1393,8 +1393,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-af83-728f-99cc-fd2689c6f6a6/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-af83-728f-99cc-fd2689c6f6a6> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/luchtzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/luchtzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1408,8 +1408,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b109-76bd-824f-5373fd2495e3/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b109-76bd-824f-5373fd2495e3> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/luchtzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/luchtzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1423,8 +1423,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 
 <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b296-7358-966d-7a491c9fb7db/2026-01-01/2026-01-01T10:00:00Z> a riepr:Installatie ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b296-7358-966d-7a491c9fb7db> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/luchtzuivering> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/luchtzuivering> ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
@@ -1454,7 +1454,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces GPBV installatie AGC Glass Mol"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/BE_VL_000000002_INSTALLATION/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> ;
     riepr:rubriek [
@@ -1462,7 +1462,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         skos:notation "20.3.4.1°b)" ;
         skos:definition "Glasoven met max. 450 ton per dag en 155.000 ton per jaar productie aan vlak glas."@nl ;
         # Het soort/type rubriek (EGW, VLAREM, ...)
-        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriek-type/vlarem> ;
+        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriektype/vlarem> ;
         # De primaire bron is VITO
         prov:hadPrimarySource <https://URI_TE_BEPALEN_VITO>
     ], [
@@ -1470,7 +1470,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
         skos:notation "43.3.2°" ;
         skos:definition "Het stoken in installaties inclusief stationaire motoren en gasturbines, met een totaal nominaal thermisch ingangsvermogen van 75,465 MW, omvattend stookinstallaties van 26.515 kW, een glasoven van 48.000 kW en inwendige motoren van 2x 375 kW en 1x 200 kW."@nl ;
         # Het soort/type rubriek (EGW, VLAREM, ...)
-        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriek-type/vlarem> ;
+        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriektype/vlarem> ;
         # De primaire bron is VITO
         prov:hadPrimarySource <https://URI_TE_BEPALEN_VITO>
     ] .
@@ -1481,7 +1481,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces waterzuiveringsinstallatie"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -1495,7 +1495,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces demi-installatie glasfabriek"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1457-7564-86c0-e28e802b8fa2/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1506,7 +1506,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces demi-installatie coater"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1458-7b1f-bc81-76e221cdb630/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1517,7 +1517,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces centrifuge"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-145a-7a7e-b483-954bb6b31bb9/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -1530,7 +1530,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces ultrafiltratie"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1459-714c-a5bc-ed1889914c81/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1541,7 +1541,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt LP01 Industrieel glasfabriek"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -1554,7 +1554,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt LP02 Industrieel Kempenglas"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145c-7c92-9099-59b4286bc121/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -1567,7 +1567,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt LP07 Industrieel Coater"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145d-7a81-bc94-32c5eae624ad/2026-01-01/2026-01-01T10:00:00Z> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -1580,7 +1580,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt SCHOUW GLASOVEN"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-b8c6-7096-886c-103c3e21466c/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1589,7 +1589,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt ETSLIJN 1etsafdeling"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-ba55-72ab-979c-843563bcb58e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7608-81f1-890597d2f980/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1599,7 +1599,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt STOOKINSTALLATIES"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bbf3-7009-8da2-c864d3860720/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a73-8cd2-817ff2ba6ed7/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1609,7 +1609,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt SCHOUW NAVERBRANDER"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bd81-7695-9a2b-2ded5be22aa0/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-77c5-8af6-8c839eb8884c/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1619,7 +1619,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt VACUUMPOMPEN"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-bf2c-7592-bd64-f5bb8ce8376e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7bb7-8b9a-51539b35b98d/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1629,7 +1629,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt ETSLIJN 2 etsafdeling"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c0d0-7099-9a43-76e69454dc63/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-774c-80ec-6a4cf747adc1/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1639,7 +1639,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt Steam reformer links"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c262-75cb-8019-85ebb5792237/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7c0c-8a15-c2b9cda82707/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1649,7 +1649,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt Steam reformer rechts"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c3fe-77db-b321-7d13bfb958de/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7289-86ba-f291ed0a08c3/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1659,7 +1659,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces emissiepunt Steam reformer Hygen 3"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019eaca0-c589-72bc-a42c-b7140527c79f/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7236-8dbb-6109952fdfe8/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1670,7 +1670,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces ETSLIJN 1 etsafdeling"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac20-56eb-770d-bbb4-a099f0a90061/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1679,7 +1679,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces STOOKINSTALLATIES EN STOOMKETELS"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac24-9c91-7338-a285-c660a5b88d11/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1688,7 +1688,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces ELEKTRISCHE DROOGOVEN MET NAVERBRANDER"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac67-c259-746e-9dd6-86e632fbc5cb/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7066-847a-e9dfaa5e5a73/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1698,7 +1698,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces COATER"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac7b-b761-73fb-aac9-deea610bf316/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1707,7 +1707,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces VACUUMPOMPEN"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-13eb-716d-a64e-daccacb9eaee/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e21-8a5f-8fd50e361d03/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1717,7 +1717,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces ETSLIJN 2 etsafdeling"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1581-763d-b48b-262afdcf970b/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1726,7 +1726,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces GLASOVEN"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1702-73bb-81a3-61f3c446dfae/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1735,7 +1735,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces Steam reformer links"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-189b-735e-b875-c17c55aa0f04/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73c5-8c00-2d6a909b9026/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1745,7 +1745,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces Steam reformer rechts"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1a2d-714b-9951-c87409bbc77e/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72f4-8043-9cc0c4797b0f/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1755,7 +1755,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces Steam reformer Hygen 3"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eac98-1bc8-70ed-a287-c035b8c37909/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-758a-8105-36648e54a7fc/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1766,7 +1766,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces ELECTROFILTER"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb679-42b9-77df-bdc8-47ea9b612a9d/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7a88-8e7f-2fb97ab166b1/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1776,7 +1776,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces SCR"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-adf1-735c-8bdb-bdf806a3ab25/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ec-8a93-a92a8ab13f49/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1786,7 +1786,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces Wastoren etslijn 1"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-af83-728f-99cc-fd2689c6f6a6/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7afb-878c-aa00a8de5446/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1796,7 +1796,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces NAVERBRANDER"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b109-76bd-824f-5373fd2495e3/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-72ef-8d6a-1bfcc330b964/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1806,7 +1806,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces Wastoren etslijn 2"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019eb685-b296-7358-966d-7a491c9fb7db/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7ae5-8ea0-c7bd5c531bc2/2026-01-01/2026-01-01T10:00:00Z> .
@@ -1817,59 +1817,59 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces onttrekkingspunt opgenomen oppervlaktewater"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-145e-7f05-8a58-f670d6672c99/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> .
     # Voor de onttrekking komt de meetinrichting erna (dus niet 'isPrecededBy')
 
-# Proces voor onttrekkingspunt "4 (KG atelier)"
+# Proces voor uitwisselpunt "4 (KG atelier)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02> ;
-    rdfs:label "Proces onttrekkingspunt 4 (KG atelier)"@nl ;
+    rdfs:label "Proces uitwisselpunt 4 (KG atelier)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
-    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1463-719b-948f-22a102653d02/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
-# Proces voor onttrekkingspunt "2 (onderhoud)"
+# Proces voor uitwisselpunt "2 (onderhoud)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612> ;
-    rdfs:label "Proces onttrekkingspunt 2 (onderhoud)"@nl ;
+    rdfs:label "Proces uitwisselpunt 2 (onderhoud)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
-    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1464-79bc-843b-87ccd701edea/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
-# Proces voor onttrekkingspunt "1 (FL koeltoren)"
+# Proces voor uitwisselpunt "1 (FL koeltoren)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5> ;
-    rdfs:label "Proces onttrekkingspunt 1 (FL koeltoren)"@nl ;
+    rdfs:label "Proces uitwisselpunt 1 (FL koeltoren)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
-    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
-# Proces voor onttrekkingspunt "3 (VT verzending)"
+# Proces voor uitwisselpunt "3 (VT verzending)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f> ;
-    rdfs:label "Proces onttrekkingspunt 3 (VT verzending)"@nl ;
+    rdfs:label "Proces uitwisselpunt 3 (VT verzending)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
-    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1466-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
-# Proces voor onttrekkingspunt "5 (KG verzending)"
+# Proces voor uitwisselpunt "5 (KG verzending)"
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1480-7847-8ac1-d4c44a6dd474/2026-01-01/2026-01-01T10:00:00Z> a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1480-7847-8ac1-d4c44a6dd474> ;
-    rdfs:label "Proces onttrekkingspunt 5 (KG verzending)"@nl ;
+    rdfs:label "Proces uitwisselpunt 5 (KG verzending)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
-    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/onttrekkingspunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
+    ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/uitwisselpunt/019e9271-1467-70da-9ee3-84dd0066573f/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Controleinrichting LP01 Industrieel glasfabriek"
@@ -1879,7 +1879,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-145f-75f2-8222-342e7028bb37/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1890,7 +1890,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1461-7f34-b276-0b3c1bee1186/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1901,7 +1901,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1460-7f57-81d2-d483a58d2439/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     # [EIGEN INTERPRETATIE] De controleinrichting volgt op de zuivering
@@ -1914,10 +1914,10 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1462-7a6b-a750-ee0ec6f63870/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     # Standaard verbonden met het hoofdproces, maar in praktijk hierarchisch onder te brengen onder het proces van de GPBV installatie
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
-    # De meetinrichting volgt op het onttrekkingspunt
+    # De meetinrichting volgt op het uitwisselpunt
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7394-829e-79a2dcd0e335/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Peilput"
@@ -1927,7 +1927,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1469-7d16-975e-2b00841913e6/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Proces voor meetpunt "Meetinrichting 4 (KG atelier)"
@@ -1937,7 +1937,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146a-7933-a3fa-3e66af90b82b/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7cc0-8861-a908b15530ec/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1948,7 +1948,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146b-71c7-878c-20d0e9c8aea9/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7e83-8969-5c6054353cfe/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1959,7 +1959,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146c-739e-af4f-7b3af72b9b4d/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-73f1-8b5a-53457f6f8c4f/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1970,7 +1970,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146d-7e15-8388-676b085f663f/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-78ae-8107-169f6a2452fe/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -1981,7 +1981,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-146e-737d-b305-650c48295731/2026-01-01/2026-01-01T10:00:00Z> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/01a08fe8-e500-7526-83f2-801ec49ac999/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2000,7 +2000,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces peilfilter 1 peilput"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-711a-b032-2a0aea8fcdcb/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2009,7 +2009,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces peilfilter 2 peilput"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7674-8785-3698855d62cb/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2018,7 +2018,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces peilfilter 3 peilput"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-71bb-b7ef-1e2048da7fa4/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1482-7435-84b7-d9598ab331a1/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2027,7 +2027,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces pompfilter 1 van 4 (KG atelier)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2036,7 +2036,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces pompfilter 2 van 2 (onderhoud)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-783c-8c2e-fe459ade9731/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2045,7 +2045,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces pompfilter 1 van 1 (FL koeltoren)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7a74-bc5c-22d1dd45dce9/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2054,7 +2054,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces pompfilter 3 van 3 (VT verzending)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-7b0d-83a3-1904844249d1/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2063,7 +2063,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     rdfs:label "Proces pompfilter 1 van 5 (KG verzending)"@nl ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/filter/019e9682-6644-77ec-b9a8-a16a5664e0f4/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1480-7847-8ac1-d4c44a6dd474/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2079,8 +2079,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1471-7efd-822f-bf68d1c55a77/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2090,8 +2090,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1472-775c-839d-d1482699ce7d/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2101,8 +2101,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2112,8 +2112,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1476-75aa-ab90-bafcb831f91c/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2123,8 +2123,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1478-74ce-9a2e-b8571f6b9e43/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2134,8 +2134,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147a-7b92-90cd-5639d24ad255/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2145,8 +2145,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-af83-728f-99cc-fd2689c6f6a6-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2156,8 +2156,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac24-9c91-7338-a285-c660a5b88d11-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2167,8 +2167,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b109-76bd-824f-5373fd2495e3-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2178,8 +2178,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-13eb-716d-a64e-daccacb9eaee-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2189,8 +2189,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eb685-b296-7358-966d-7a491c9fb7db-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2200,8 +2200,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-189b-735e-b875-c17c55aa0f04-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2211,8 +2211,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1a2d-714b-9951-c87409bbc77e-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2222,8 +2222,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1bc8-70ed-a287-c035b8c37909-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2233,8 +2233,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2244,8 +2244,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac7b-b761-73fb-aac9-deea610bf316-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2255,8 +2255,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2266,8 +2266,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2277,8 +2277,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2288,8 +2288,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2299,8 +2299,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1702-73bb-81a3-61f3c446dfae-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2310,8 +2310,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac20-56eb-770d-bbb4-a099f0a90061-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2321,8 +2321,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac67-c259-746e-9dd6-86e632fbc5cb-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2332,8 +2332,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019eac98-1581-763d-b48b-262afdcf970b-lucht/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2343,8 +2343,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2354,8 +2354,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147b-712f-8499-6bbf0d73ed8a/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2365,8 +2365,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2376,8 +2376,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147d-721e-bd38-93f293fd5612/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2387,8 +2387,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147e-7034-85ba-66abf95ea2e5/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2398,8 +2398,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-147f-7752-9b8e-042cf1fbda4f/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2409,8 +2409,8 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-09-11T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1480-7847-8ac1-d4c44a6dd474/2026-01-01/2026-01-01T10:00:00Z> .
 
@@ -2444,291 +2444,291 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7a2f-a407-9e4892c4debd> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
 
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7f51-881b-55d6b3278a90> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
         rdfs:value "80.0"^^xsd:decimal ;
         qudt:hasUnit unit:M
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-78e1-aeb9-c19e6918e530> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
         rdfs:value "2.2"^^xsd:decimal ;
         qudt:hasUnit unit:M
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7b18-830e-9ec04686a339> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
 
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7405-88ed-011584565213> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "14.8"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7ef6-a1b0-b45096c5d67e> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.505"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-766c-9dcb-330766769529> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7195-ab0d-a841dc8a270a> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "0.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-79c0-9cbd-65234e23228b> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7256-9995-dd4d7afe8c83> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7f1a-aef0-87b093d545ca> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "9.3"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-747a-bb53-9177eeac43ac> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.4"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-729e-9f0e-28f6c9263b7a> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-72e5-a751-3697982ba05e> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "9.3"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7409-9d44-2f23b8eab79f> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.18"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7b1a-bbbe-521166ae2986> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7bb0-8eb5-0ab162782600> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "6.5"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-751f-8deb-2582305d7782> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.22"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-769e-81e8-a07592609129> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7dbe-892f-20edf9e9117c> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "5.6"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7bc0-a45e-ae8ba382dc53> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7692-8056-f66dc56e67dc> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-788e-ab7c-015d6910ccd1> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "5.6"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7976-a21f-ec2bf56eb420> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-71de-aa4a-2a574c159729> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/aantalpunten> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/aantal_punten> ;
     rdfs:value "1"^^xsd:integer ;
     qudt:hasUnit unit:PERCENT ;
      .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-710b-8b9f-5654b501a5fc> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "5.6"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-795f-90a4-c70e76112e84> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-diameter> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/diameter> ;
     rdfs:value "0.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7c21-b0a0-1a798becf2f9> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "168.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-70c0-99ae-423d2e7c5501> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "168.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7922-814d-2db735c083eb> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "168.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7304-956b-b2509b0fdcc7> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "168.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7a3d-8d0a-fd5a5f9fe433> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunteigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7511-b394-11b36f0d8374> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0100" # Codelijst, indien ja - welke
     .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-70c9-a2ed-258f21b11a8e> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "7.940"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-731a-854f-7cdb6c878196> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "1.940"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7106-ab58-fb7650ab5daa> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0230" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7161-9493-f0f15743dd24> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "25.080"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7e13-b8d5-7f7a74085072> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "1.940"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7bd1-b713-0373d720f8d4> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0250" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-761c-b018-31c9df52ad8d> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "40.560"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-761a-b36b-c04ab92595c1> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "1.940"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7896-89e8-346b388b7894> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0254" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-785c-b8e1-969dcac91749> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7065-8953-765dc937b866> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "10.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7ad6-aa26-614815274c25> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0254" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7e7b-8288-e8ca1fe01021> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7641-92d0-506f90e71e48> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "10.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7525-b7cd-1a260d9e4bd4> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0254" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-79e7-b257-5a12b78deb00> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7fa2-9df8-23dee3625403> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "10.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-76c7-b72e-5b4f237a7d25> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0254" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7ec4-948c-6d7ee4dec799> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7b24-8bfb-e1f1b108efaa> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "10.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7072-91da-219f80feab31> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/watervoerendeLaag> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/watervoerendeLaag> ;
     rdfs:value "0254" .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7059-b375-1386ee8298d7> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/diepte> ;
     rdfs:value "165.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-73b5-8270-1a05bc5046f0> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filter-eigenschappen/lengte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/filtereigenschappen/lengte> ;
     rdfs:value "10.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-77c8-85ea-cc2defa98785> a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-eigenschappen/diepte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunteigenschappen/diepte> ;
     rdfs:value "42.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-719b-a034-5e609820a784> a riepr:Systeemeigenschap ;
     # DOV: Referentiepunt moet kunnen worden ingegeven
     # [EIGEN AANVULLING]
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-eigenschappen/referentiepunt> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunteigenschappen/referentiepunt> ;
     rdfs:label "Maaiveld"@nl ;
     rdfs:value "1.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .
@@ -2736,7 +2736,7 @@ Handgeschreven referentie-voorbeeld van de MJV, gebruikt als voorbeeld van de ge
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7815-b7fd-cbb6110dcf99> a riepr:Systeemeigenschap ;
     # DOV: Referentiepunt moet kunnen worden ingegeven
     # [EIGEN AANVULLING]
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunt-eigenschappen/referentiepunt> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/meetpunteigenschappen/referentiepunt> ;
     rdfs:label "Maaiveld"@nl ;
     rdfs:value "1.000"^^xsd:decimal ;
     qudt:hasUnit unit:M .

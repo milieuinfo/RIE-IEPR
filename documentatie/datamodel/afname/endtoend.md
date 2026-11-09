@@ -74,7 +74,7 @@ De **exploitatie** is de uitrol van middelen door die exploitant op een locatie.
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     # De hoofdactiviteit als NACE-code (de exploitant selecteert die uit zijn VKBO-activiteiten)
     org:classification <http://data.europa.eu/ux2/nace2.1/231> ;
     ssn:deployedOnPlatform <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -104,7 +104,7 @@ De locatie is een `sosa:Platform`/`ogc:Feature` en het ankerpunt voor alle syste
     rdfs:label "Site Mols"@nl ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     locn:address [ a locn:Address ;
         locn:streetAddress "Voortstraat 27" ;
         locn:postalCode "2400" ;
@@ -126,7 +126,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89> ;
     rdfs:label "Productie van glas"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/hoofdactiviteit> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
 
@@ -135,7 +135,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc> ;
     rdfs:label "Smeltoven"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime .
@@ -145,7 +145,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1464-7b2e-9c11-aa22bb33cc44> ;
     rdfs:label "Uitstoot schoorsteen 1"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -156,7 +156,7 @@ Elke exploitatie implementeert precies één **hoofdproces**. Subprocessen hange
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1470-739e-b93b-ba3f6f75feb4> ;
     rdfs:label "Luchtkwaliteitsmeting schoorsteen 1"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-1455-78f7-94b6-becb88019f89/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy <https://data.mjv.omgeving.vlaanderen.be/id/proces/019e9271-146f-7bcc-a28a-c12c48a610fc/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -174,8 +174,8 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
     a riepr:Emissiepunt, ssn:System ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540> ;
     rdfs:label "Schoorsteen 1"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/schoorsteen_verticale_uitstroom> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     ogc:hasGeometry [ a ogc:Point ;
         ogc:asWKT "POINT (205713.0 209689.0)"^^ogc:wktLiteral ;
@@ -188,7 +188,7 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
 # (die wijst naar een stof, bv. bij een verwijderingsrendement).
 <https://data.mjv.omgeving.vlaanderen.be/id/systeemeigenschap/019ecf80-eae8-7f51-881b-55d6b3278a90>
     a riepr:Systeemeigenschap ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/schouw-hoogte> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/hoogte> ;
     rdfs:value "50"^^xsd:decimal ;
     qudt:hasUnit <http://qudt.org/vocab/unit/M> .
 ```

@@ -88,21 +88,21 @@ transportproces (§5); de plangrens wordt daardoor overgestoken door het transpo
 <.../proces/019e9271-146f-7bcc-a28a-c12c48a610fc/...>
     a riepr:Proces ;
     rdfs:label "Proces GPBV installatie AGC Glass Mol"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     pplan:isStepOfPlan <.../proces/019e9271-1455-78f7-94b6-becb88019f89/...> .
 
 # Niveau 2 — het onttrekkingsproces, óók rechtstreeks onder het hoofdproces
 <.../proces/019e9271-147b-712f-8499-6bbf0d73ed8a/...>
     a riepr:Proces ;
     rdfs:label "Proces onttrekkingspunt opgenomen oppervlaktewater"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     pplan:isStepOfPlan <.../proces/019e9271-1455-78f7-94b6-becb88019f89/...> .
 
 # Niveau 3 — het meetproces hangt onder de GPBV-installatie
 <.../proces/019e9271-1481-7a80-acfd-0fc82389cba6/...>
     a riepr:Proces ;
     rdfs:label "Proces controleinrichting opgenomen oppervlakte"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     pplan:isStepOfPlan <.../proces/019e9271-146f-7bcc-a28a-c12c48a610fc/...> ;
     pplan:isPrecededBy <.../proces/01a08fe8-e500-7394-829e-79a2dcd0e335/...> .
 
@@ -110,7 +110,7 @@ transportproces (§5); de plangrens wordt daardoor overgestoken door het transpo
 <.../proces/01a08fe8-e500-7394-829e-79a2dcd0e335/...>
     a riepr:Proces ;
     rdfs:label "Transport van Opgenomen oppervlaktewater naar Controleinrichting Opgenomen oppervlakte"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <.../proces/019e9271-146f-7bcc-a28a-c12c48a610fc/...> ;
     # ... maar wordt voorafgegaan door een proces uit een ánder plan
     pplan:isPrecededBy <.../proces/019e9271-147b-712f-8499-6bbf0d73ed8a/...> .
@@ -198,12 +198,12 @@ In RDF, met de omgekeerde richting van `pplan:isPrecededBy`:
 
 ```turtle
 <.../proces/TRANSPORT/...>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> ;
     pplan:isPrecededBy <.../proces/VERWERKING-BRON/...> .
 
 <.../proces/EMISSIE/...>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/.../...> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> ;
     pplan:isPrecededBy <.../proces/TRANSPORT/...> .

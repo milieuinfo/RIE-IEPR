@@ -86,7 +86,7 @@ Een **emissiepunt** (het fysieke systeem) is niet hetzelfde als een **emissie** 
 
 # Emissieproces: type emissie, implementeert het emissiepunt (OWL-axioma)
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540/2026-01-01/2026-01-01T10:00:00Z> .
 
 # Emissie = gebeurtenis, afgeleid van dat proces
@@ -189,7 +189,7 @@ Het model kent twee verschillende vormen van "procedure", die niet met elkaar ve
 
     ```turtle
     <.../proces/019e9271-1470-739e-b93b-ba3f6f75feb4/2026-01-01/2026-01-01T10:00:00Z>
-        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+        dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
         ssn:implementedBy <.../meetpunt/019e9271-1465-72f2-8291-c289676c3ded/2026-01-01/2026-01-01T10:00:00Z> ;
         pplan:isStepOfPlan <.../hoofdproces/...> .
     ```

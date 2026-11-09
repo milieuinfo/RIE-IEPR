@@ -76,12 +76,12 @@ Elke versie heeft een **geldigheidsperiode** en een status:
 <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-01-01/2026-01-01T10:00:00Z>
     dct:issued "2026-01-01"^^xsd:date ;
     dct:valid  "2026-06-30"^^xsd:date ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
 
 # Versie 2: geldig van 2026-07-01, geen einde (huidige versie)
 <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54/2026-07-01/2026-07-01T10:00:00Z>
     dct:issued "2026-07-01"^^xsd:date ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
 ```
 
 > **Let op**: het model gebruikt geen `prov:wasRevisionOf` tussen versies. Versies zijn afzonderlijke URI's die via `dct:isVersionOf` naar dezelfde identity verwijzen; de volgorde en de geldigheid volgen uit `dct:issued` en `dct:valid`.

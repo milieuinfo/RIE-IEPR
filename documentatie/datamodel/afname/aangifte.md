@@ -60,10 +60,10 @@ De individuele aangiften verwijzen naar hun bundel via `dct:isPartOf`:
 <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-B0007>
     a riepr:Aangiftebundel, dossier:Stuk ;
     rdfs:label "Bundel RIE-IEPR aangiften GL012345"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-type/structuur> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangiftetype/structuur> ;
     dct:creator <https://data.mjv.omgeving.vlaanderen.be/id/exploitant/019e9271-1452-7630-be04-59ea199007a7> ;
     dct:created "2025-12-01"^^xsd:date ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingediend> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangiftestatus/ingediend> .
 
 # Een aangifte uit die bundel
 <https://data.mjv.omgeving.vlaanderen.be/id/aangifte/MJV-2026-0001>
@@ -125,7 +125,7 @@ PREFIX riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#>
 
 SELECT ?entiteit ?type
 WHERE {
-  ?aangifte adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-status/ingetrokken> .
+  ?aangifte adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/aangiftestatus/ingetrokken> .
   ?entiteit a ?type ;
             riepr:aangifte ?aangifte .
 }

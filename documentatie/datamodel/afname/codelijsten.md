@@ -134,19 +134,19 @@ In Turtle:
 
 <.../proces/INSTALLATIE/uuid/2026-01-01/...>
     a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> ;
     ssn:implementedBy <.../installatie/uuid/2026-01-01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> .
 
 <.../proces/TRANSPORT/uuid/2026-01-01/...>
     a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> ;
     pplan:isPrecededBy <.../proces/INSTALLATIE/uuid/2026-01-01/...> .
 
 <.../proces/EMISSIE/uuid/2026-01-01/...>
     a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/uuid/2026-01-01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/uuid/2026-01-01/...> ;
     pplan:isPrecededBy <.../proces/TRANSPORT/uuid/2026-01-01/...> .
@@ -202,7 +202,7 @@ Voor **eigenschappen-koppeling**, bv. `emissiepunt_eigenschappen.csv`:
 ```
 _id,_type,topConceptOf,inScheme,isPartOf,prefLabel,altLabel,notation,definition,scopeNote,broaderPartitive,relation,relevantDataType,relevantRiepr,relevantProperty,relevantUnit,relevantCodeList
 conceptscheme:emissiepunt_eigenschappen,skos:ConceptScheme,,,conceptscheme:systeem_eigenschappen,Emissiepunt eigenschappen,,,Een typering van verschillende eigenschappen voor emissiepunten.,,,,,,,,
-riepr-emissiepunt-eigenschappen:schouw-hoogte,skos:Concept,conceptscheme:emissiepunt_eigenschappen,conceptscheme:emissiepunt_eigenschappen,,Hoogte van de schouw,,hoogte,,,,rdfs:value,http://www.w3.org/2001/XMLSchema#decimal,riepr-emissiepunt-type:schoorsteen,http://dbpedia.org/ontology/height,http://qudt.org/vocab/unit/M,
+riepr-emissiepunt-eigenschappen:hoogte,skos:Concept,conceptscheme:emissiepunt_eigenschappen,conceptscheme:emissiepunt_eigenschappen,,Hoogte van de schouw,,hoogte,,,,rdfs:value,http://www.w3.org/2001/XMLSchema#decimal,riepr-emissiepunt-type:schoorsteen,http://dbpedia.org/ontology/height,http://qudt.org/vocab/unit/M,
 ```
 
 Hier wordt `relevantRiepr` gebruikt om de eigenschap te koppelen aan een systeemtype en `relevantProperty`/`relevantUnit` geven datatype en eenheid.
@@ -293,7 +293,7 @@ npm run deploy
 `99_deploy_latest.js` leest `.env` voor Virtuoso-credentials en publiceert de Turtle/JSON-LD naar `https://data.omgeving.vlaanderen.be`. De codelijsten zijn dan raadpleegbaar via:
 
 * `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.ttl`
-* `https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie`
+* `https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie`
 
 ## Tips voor beheerders
 

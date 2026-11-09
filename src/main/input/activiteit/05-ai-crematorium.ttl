@@ -34,7 +34,7 @@
 
 @prefix installatie:      <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
 @prefix emissiepunt:      <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
-@prefix onttrekkingspunt: <https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/> .
+@prefix uitwisselpunt: <https://data.riepr.omgeving.vlaanderen.be/id/uitwisselpunt/> .
 @prefix meetpunt:         <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
 @prefix filter:           <https://data.riepr.omgeving.vlaanderen.be/id/filter/> .
 @prefix proces:           <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
@@ -49,14 +49,14 @@
 @prefix stuk:             <https://data.riepr.omgeving.vlaanderen.be/id/stuk/> .
 
 # Codelijsten (SKOS-concepten), beheerd in milieuinfo/codelijst-rie-iepr
-@prefix status-type:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/> .
-@prefix procedure-type:    <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/> .
-@prefix installatie-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/> .
-@prefix emissiepunt-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/> .
-@prefix onttrekking-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/onttrekkingspunt-type/> .
-@prefix rubriek-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriek-type/> .
+@prefix status-type:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/> .
+@prefix procedure-type:    <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/> .
+@prefix installatie-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/> .
+@prefix emissiepunt-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/> .
+@prefix uitwisselpunt-type: <https://data.omgeving.vlaanderen.be/id/concept/riepr/uitwisselpunttype/> .
+@prefix rubriek-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriektype/> .
 @prefix installatie-eig:   <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/> .
-@prefix emissiepunt-eig:   <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/> .
+@prefix emissiepunt-eig:   <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/> .
 @prefix nace:              <http://data.europa.eu/ux2/nace2.1/> .
 
 ## ---------------------------------------- ##
@@ -110,7 +110,7 @@ exploitatie:crematoria-exploitatie-1 a :Exploitatie ;
         installatie:centrale-verwarming-1, installatie:centrale-verwarming-2,
         emissiepunt:schoorsteen-1, emissiepunt:schoorsteen-2,
         emissiepunt:schoorsteen-3, emissiepunt:schoorsteen-4,
-        onttrekkingspunt:grondwaterput-1,
+        uitwisselpunt:grondwaterput-1,
         meetpunt:meetpunt-schoorsteen-1, meetpunt:meetpunt-schoorsteen-2 .
 
 contactpersoon:contactpersoon-1 a :Contactpersoon ;
@@ -307,49 +307,49 @@ emissiepunt:schoorsteen-4 a :Emissiepunt, ssn:System ;
 
 eig:schoorsteen-1-hoogte a :Systeemeigenschap ;
     rdfs:label "Hoogte schoorsteen 1"@nl ;
-    dct:type emissiepunt-eig:schouw-hoogte ;
+    dct:type emissiepunt-eig:hoogte ;
     rdfs:value "6.0" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-1-diameter a :Systeemeigenschap ;
     rdfs:label "Diameter schoorsteen 1"@nl ;
-    dct:type emissiepunt-eig:schouw-diameter ;
+    dct:type emissiepunt-eig:diameter ;
     rdfs:value "0.35" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-2-hoogte a :Systeemeigenschap ;
     rdfs:label "Hoogte schoorsteen 2"@nl ;
-    dct:type emissiepunt-eig:schouw-hoogte ;
+    dct:type emissiepunt-eig:hoogte ;
     rdfs:value "6.0" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-2-diameter a :Systeemeigenschap ;
     rdfs:label "Diameter schoorsteen 2"@nl ;
-    dct:type emissiepunt-eig:schouw-diameter ;
+    dct:type emissiepunt-eig:diameter ;
     rdfs:value "0.35" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-3-hoogte a :Systeemeigenschap ;
     rdfs:label "Hoogte schoorsteen 3"@nl ;
-    dct:type emissiepunt-eig:schouw-hoogte ;
+    dct:type emissiepunt-eig:hoogte ;
     rdfs:value "6.0" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-3-diameter a :Systeemeigenschap ;
     rdfs:label "Diameter schoorsteen 3"@nl ;
-    dct:type emissiepunt-eig:schouw-diameter ;
+    dct:type emissiepunt-eig:diameter ;
     rdfs:value "0.35" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-4-hoogte a :Systeemeigenschap ;
     rdfs:label "Hoogte schoorsteen 4"@nl ;
-    dct:type emissiepunt-eig:schouw-hoogte ;
+    dct:type emissiepunt-eig:hoogte ;
     rdfs:value "6.0" ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-4-diameter a :Systeemeigenschap ;
     rdfs:label "Diameter schoorsteen 4"@nl ;
-    dct:type emissiepunt-eig:schouw-diameter ;
+    dct:type emissiepunt-eig:diameter ;
     rdfs:value "0.35" ;
     qudt:hasUnit unit:M .
 
@@ -379,11 +379,11 @@ meetpunt:meetpunt-schoorsteen-2 a :Meetpunt, ssn:System ;
     ] ;
     sosa:isHostedBy locatie:crematoria-1 .
 
-# --- Onttrekkingspunt met filter ---
+# --- Uitwisselpunt (pompput) met filter ---
 
-onttrekkingspunt:grondwaterput-1 a :Onttrekkingspunt, ssn:System ;
+uitwisselpunt:grondwaterput-1 a :Uitwisselpunt, ssn:System ;
     rdfs:label "Grondwaterput 1"@nl ;
-    dct:type onttrekking-type:pompput ;
+    dct:type uitwisselpunt-type:pompput ;
     dct:issued "2022-01-15"^^xsd:date ;
     dct:created "2022-01-15T09:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-03-10T14:30:00Z"^^xsd:dateTime ;
@@ -678,7 +678,7 @@ proces:onttrekking-grondwaterput-1 a :Proces ;
     dct:created "2022-01-15T09:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-03-10T14:30:00Z"^^xsd:dateTime ;
     adms:status status-type:in_dienst ;
-    ssn:implementedBy onttrekkingspunt:grondwaterput-1 ;
+    ssn:implementedBy uitwisselpunt:grondwaterput-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces .
 
 ## ---------------------------------------- ##

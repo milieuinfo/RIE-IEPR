@@ -92,25 +92,25 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 
 | Codelijst | URI-prefix | Beschrijving |
 |---|---|---|
-| **installatie_type** | `…/concept/riepr/installatie-type/` | Typen installaties (`installatie`, `stookinstallatie`, `luchtzuivering`, `waterzuivering`, `gpbv`, …) |
-| **emissiepunt_type** | `…/concept/riepr/emissiepunt-type/` | Typen emissiepunten (`schoorsteen`, `lozingspunt`, `fakkel`, `gebouw`, …) |
-| **onttrekkingspunt_type** | `…/concept/riepr/onttrekkingspunt-type/` | Typen onttrekkingspunten (`pompput`, `opnamepunt`) |
-| **uitwisselpunt_type** | `…/concept/riepr/uitwisselpunt-type/` | Typen uitwisselpunten (`uitwisselpunt`) |
-| **meetpunt_type** | `…/concept/riepr/meetpunt-type/` | Typen meetpunten (`peilput`, `debietmeter`, `controleinrichting`) |
-| **filter_type** | `…/concept/riepr/filter-type/` | Typen filters (`peil`, `pomp`, `injectie`, `omkeerbaar`) |
-| **procedure_type** | `…/concept/riepr/procedure-type/` | Procesprocedures (`verwerking`, `emissie`, `onttrekking`, `uitwissel`, `meting`, `transport`, `hoofdactiviteit`) |
-| **status_type** | `…/concept/riepr/status-type/` | Statussen (`in_dienst`, `tijdelijk_uit_dienst`, `definitief_uit_dienst`, `ontmanteld`, `voorgesteld`, `verkeerde_registratie`) |
-| **rubriek_type** | `…/concept/riepr/rubriek-type/` | Classificaties (`vlarem`, …) |
-| **aangifte_type** | `…/concept/riepr/aangifte-type/` | Typen aangiften (`structuur`, `operationeel`) |
-| **aangifte_status** | `…/concept/riepr/aangifte-status/` | Statussen van een aangiftebundel (`concept`, `ingediend`, `gefaald`, `ingetrokken`) |
+| **installatie_type** | `…/concept/riepr/installatietype/` | Typen installaties (`installatie`, `stookinstallatie`, `luchtzuivering`, `waterzuivering`, `gpbv`, …) |
+| **emissiepunt_type** | `…/concept/riepr/emissiepunttype/` | Typen emissiepunten (`schoorsteen`, `lozingspunt`, `fakkel`, `gebouw`, …) |
+| **onttrekkingspunt_type** | `…/concept/riepr/onttrekkingspunttype/` | Typen onttrekkingspunten (`pompput`, `opnamepunt`) |
+| **uitwisselpunt_type** | `…/concept/riepr/uitwisselpunttype/` | Typen uitwisselpunten (`uitwisselpunt`) |
+| **meetpunt_type** | `…/concept/riepr/meetpunttype/` | Typen meetpunten (`peilput`, `debietmeter`, `controleinrichting`) |
+| **filter_type** | `…/concept/riepr/filtertype/` | Typen filters (`peil`, `pomp`, `injectie`, `omkeerbaar`) |
+| **procedure_type** | `…/concept/riepr/proceduretype/` | Procesprocedures (`verwerking`, `emissie`, `onttrekking`, `uitwissel`, `meting`, `transport`, `hoofdactiviteit`) |
+| **status_type** | `…/concept/riepr/statustype/` | Statussen (`in_dienst`, `tijdelijk_uit_dienst`, `definitief_uit_dienst`, `ontmanteld`, `voorgesteld`, `verkeerde_registratie`) |
+| **rubriek_type** | `…/concept/riepr/rubriektype/` | Classificaties (`vlarem`, …) |
+| **aangifte_type** | `…/concept/riepr/aangiftetype/` | Typen aangiften (`structuur`, `operationeel`) |
+| **aangifte_status** | `…/concept/riepr/aangiftestatus/` | Statussen van een aangiftebundel (`concept`, `ingediend`, `gefaald`, `ingetrokken`) |
 | **installatie_eigenschappen** | `…/concept/riepr/installatie-eigenschappen/` | Eigenschappen van installaties |
-| **emissiepunt_eigenschappen** | `…/concept/riepr/emissiepunt-eigenschappen/` | Eigenschappen van emissiepunten |
-| **onttrekkingspunt_eigenschappen** | `…/concept/riepr/onttrekkingspunt-eigenschappen/` | Eigenschappen van onttrekkingspunten |
-| **meetpunt_eigenschappen** | `…/concept/riepr/meetpunt-eigenschappen/` | Eigenschappen van meetpunten |
-| **uitwisselpunt_eigenschappen** | `…/concept/riepr/uitwisselpunt-eigenschappen/` | Eigenschappen van uitwisselpunten |
+| **emissiepunt_eigenschappen** | `…/concept/riepr/emissiepunteigenschappen/` | Eigenschappen van emissiepunten |
+| **onttrekkingspunt_eigenschappen** | `…/concept/riepr/onttrekkingspunteigenschappen/` | Eigenschappen van onttrekkingspunten |
+| **meetpunt_eigenschappen** | `…/concept/riepr/meetpunteigenschappen/` | Eigenschappen van meetpunten |
+| **uitwisselpunt_eigenschappen** | `…/concept/riepr/uitwisselpunteigenschappen/` | Eigenschappen van uitwisselpunten |
 | **eenheden** | `…/concept/riepr/eenheden/` | Eenheden (verwijzingen naar QUDT) |
 
-> De typering van het **hoofdproces** is geen aparte codelijst: `hoofdactiviteit` is een concept binnen `procedure_type` (`…/concept/riepr/procedure-type/hoofdactiviteit`).
+> De typering van het **hoofdproces** is geen aparte codelijst: `hoofdactiviteit` is een concept binnen `procedure_type` (`…/concept/riepr/proceduretype/hoofdactiviteit`).
 
 Daarnaast bestaan er operationele codelijsten (`operationeel_lucht`, `operationeel_water`, `operationeel_grondwater`, `operationeel_grondstoffen`, `operationeel_zelfcontrole_lucht`, `operationeel_zelfcontrole_water`, `operationeel_misc`, `thema_type`) voor de rapportagestroom. Zie [Codelijsten beheer](./codelijsten.md).
 
@@ -121,7 +121,7 @@ Daarnaast bestaan er operationele codelijsten (`operationeel_lucht`, `operatione
 
 # Een emissieproces heeft een procedure_type als dct:type
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> .
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> .
 
 # Dit dwingt het proces om een emissiepunt te implementeren (OWL-axioma)
 <.../proces/019eaca0-b8c6-7240-ac66-b7831d1b3623/2026-01-01/2026-01-01T10:00:00Z>
@@ -134,7 +134,7 @@ Daarnaast bestaan er operationele codelijsten (`operationeel_lucht`, `operatione
 @prefix adms: <http://www.w3.org/ns/adms#> .
 
 <.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z>
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
 ```
 
 ### Codelijsten als LOD
@@ -143,7 +143,7 @@ De codelijsten zelf zijn gepubliceerd als Linked Open Data en kunnen worden gera
 
 - **Turtle**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.ttl`
 - **JSON-LD**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.jsonld`
-- **Afzonderlijk concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/gpbv`
+- **Afzonderlijk concept**: `https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/gpbv`
 
 De codelijsten-repository wordt gegenereerd uit CSV-bronbestanden en gepubliceerd in meerdere formaten (Turtle, JSON-LD, N-Triples, JSON, CSV, Parquet, Excel).
 

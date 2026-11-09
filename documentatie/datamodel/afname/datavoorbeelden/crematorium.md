@@ -153,7 +153,7 @@ Alle fragmenten gebruiken deze prefixen:
 @prefix installatie:    <https://data.riepr.omgeving.vlaanderen.be/id/installatie/> .
 @prefix emissiepunt:    <https://data.riepr.omgeving.vlaanderen.be/id/emissiepunt/> .
 @prefix meetpunt:       <https://data.riepr.omgeving.vlaanderen.be/id/meetpunt/> .
-@prefix onttrekkingspunt: <https://data.riepr.omgeving.vlaanderen.be/id/onttrekkingspunt/> .
+@prefix uitwisselpunt: <https://data.riepr.omgeving.vlaanderen.be/id/uitwisselpunt/> .
 @prefix filter:         <https://data.riepr.omgeving.vlaanderen.be/id/filter/> .
 @prefix proces:         <https://data.riepr.omgeving.vlaanderen.be/id/proces/> .
 @prefix exploitatie:    <https://data.riepr.omgeving.vlaanderen.be/id/exploitatie/> .
@@ -162,13 +162,13 @@ Alle fragmenten gebruiken deze prefixen:
 @prefix rubriek:        <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/> .
 @prefix variabele:      <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/> .
 
-@prefix riepr-status-type:           <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/> .
-@prefix riepr-procedure-type:        <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/> .
-@prefix riepr-installatie-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type/> .
-@prefix riepr-emissiepunt-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-type/> .
-@prefix riepr-rubriek-type:          <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriek-type/> .
+@prefix riepr-status-type:           <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/> .
+@prefix riepr-procedure-type:        <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/> .
+@prefix riepr-installatie-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/> .
+@prefix riepr-emissiepunt-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/> .
+@prefix riepr-rubriek-type:          <https://data.omgeving.vlaanderen.be/id/concept/riepr/rubriektype/> .
 @prefix riepr-installatie-eig:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-eigenschappen/> .
-@prefix riepr-emissiepunt-eig:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunt-eigenschappen/> .
+@prefix riepr-emissiepunt-eig:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunteigenschappen/> .
 ```
 
 ### 3.1 Exploitatie, locatie en hoofdproces
@@ -241,13 +241,13 @@ emissiepunt:schoorsteen-1
 
 eig:schoorsteen-1-hoogte
     a riepr:Systeemeigenschap ;
-    dct:type riepr-emissiepunt-eig:schouw-hoogte ;
+    dct:type riepr-emissiepunt-eig:hoogte ;
     rdfs:value "6.0"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
 eig:schoorsteen-1-diameter
     a riepr:Systeemeigenschap ;
-    dct:type riepr-emissiepunt-eig:schouw-diameter ;
+    dct:type riepr-emissiepunt-eig:diameter ;
     rdfs:value "0.35"^^xsd:decimal ;
     qudt:hasUnit unit:M .
 
@@ -299,7 +299,7 @@ UUID-versie-URI's; hetzelfde convergentieblok ziet er daar zo uit:
 <https://data.mjv.omgeving.vlaanderen.be/id/proces/019ee1b0-3a41-7c08-9f2d-4b6d1e2a7c31/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/proces/019ee1b0-3a41-7c08-9f2d-4b6d1e2a7c31> ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019ee1b0-3a42-7dd5-8a14-c3f0b9e45a77/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isPrecededBy
         <https://data.mjv.omgeving.vlaanderen.be/id/proces/019ee1b0-3a43-71ba-b6c9-2e8d4f0a1b53/2026-01-01/2026-01-01T10:00:00Z> ,
@@ -343,13 +343,13 @@ hangen, waardoor massabalans en herkomst traceerbaar blijven.
 Naast de proceslijn bestaat er een puur **structurele** relatie tussen systemen:
 `ssn:hasSubSystem`. Ze drukt **samenstelling** uit — "dit zit in dat" — en geen stroom. In
 dit datavoorbeeld hangt elk meetpunt als subsysteem onder de schoorsteen die het bemeet, en
-de grondwaterfilter onder het onttrekkingspunt:
+de grondwaterfilter onder het uitwisselpunt (pompput):
 
 ```turtle
 emissiepunt:schoorsteen-1 ssn:hasSubSystem meetpunt:meetpunt-schoorsteen-1 .
 emissiepunt:schoorsteen-2 ssn:hasSubSystem meetpunt:meetpunt-schoorsteen-2 .
 
-onttrekkingspunt:grondwaterput-1 ssn:hasSubSystem filter:grondwaterfilter-1 .
+uitwisselpunt:grondwaterput-1 ssn:hasSubSystem filter:grondwaterfilter-1 .
 ```
 
 De relatie is in de ontologie een *-op-*-relatie: een systeem mag meerdere subsystemen hebben
@@ -432,7 +432,7 @@ PREFIX dct:     <http://purl.org/dc/terms/>
 PREFIX pplan:   <http://purl.org/net/p-plan#>
 PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ssn:     <http://www.w3.org/ns/ssn/>
-PREFIX riepr-procedure-type: <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/>
+PREFIX riepr-procedure-type: <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/>
 
 SELECT ?emissiepunt ?emissiepuntLabel ?bron ?bronLabel
 WHERE {

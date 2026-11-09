@@ -339,7 +339,7 @@ Alle numerieke en gecodeerde eigenschappen uit de brondata (hoogte, diameter, di
 <.../proces/01a0a02c-e670-7c22-8ab9-61e92f24d447/2026-01-01/2026-01-01T10:00:00Z>
     a riepr:Proces ;
     rdfs:label "Proces pompfilter 1 van 4 (KG atelier)"@nl ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <.../filter/019e9682-6644-7edf-b3c1-487ce3d798f5/2026-01-01/2026-01-01T10:00:00Z> ;
     pplan:isStepOfPlan <.../proces/019e9271-147c-78e0-9d71-20a8271b5e02/2026-01-01/2026-01-01T10:00:00Z> .
 ```
@@ -371,12 +371,12 @@ In RDF wordt dat: het emissieproces wordt voorafgegaan door het meetproces.
 @prefix riepr: <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#> .
 
 <.../proces/CONTROLEINRICHTING_LP01/...> a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <.../meetpunt/CI_LP01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> .
 
 <.../proces/EMISSIE_LP01/...> a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> ;
     ssn:implementedBy <.../emissiepunt/LP01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> ;
     # de controleinrichting gaat vooraf aan het lozingspunt
@@ -395,13 +395,13 @@ Dat is de spiegeling van §6.3 — niet dezelfde volgorde. Het onttrekkingsproce
 
 ```turtle
 <.../proces/ONTTREKKING_OP01/...> a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> ;
     ssn:implementedBy <.../onttrekkingspunt/OP01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> .
     # geen isPrecededBy: de onttrekking is het begin van de keten
 
 <.../proces/CONTROLEINRICHTING_OP01/...> a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> ;
     ssn:implementedBy <.../meetpunt/CI_OP01/...> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> ;
     # de meting volgt op het onttrekkingspunt
@@ -416,7 +416,7 @@ Waar de overbrenging tussen twee processen expliciet gemaakt moet worden, wordt 
 
 ```turtle
 <.../proces/TRANSPORT_LP01/...> a riepr:Proces ;
-    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> ;
+    dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> ;
     pplan:isStepOfPlan <.../proces/PARENT/...> ;
     pplan:isPrecededBy <.../proces/CONTROLEINRICHTING_LP01/...> .
 
