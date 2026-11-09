@@ -1608,7 +1608,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een aangifte bundel heeft een typering."@nl ;
         # Codelijst: https://github.com/milieuinfo/codelijst-rie-iepr/blob/main/src/source/aangifte_type.csv
-        owl:onProperty dct:type ; # e.g. https://data.omgeving.vlaanderen.be/id/concept/riepr/aangifte-type/structuur
+        owl:onProperty dct:type ; # e.g. https://data.omgeving.vlaanderen.be/id/concept/riepr/aangiftetype/structuur
         owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1821,45 +1821,45 @@ rdfs:subClassOf [ a owl:Restriction ;
 :verwerkingProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Verwerkingsprocedure"@nl ;
     rdfs:comment "Een verwerkingsprocedure is een specifieke procedure die betrekking heeft op de verwerking van stoffen binnen een proces."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking> .
 :onttrekkingProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Onttrekkingprocedure"@nl ;
     rdfs:comment "Een onttrekkingsprocedure is een specifieke procedure die betrekking heeft op het transport van grondstoffen binnen een proces."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking> .
 :emissieProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Emissieprocedure"@nl ;
     rdfs:comment "Een emissieprocedure is een specifieke procedure die betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie> .
 :meetProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Meetprocedure"@nl ;
     rdfs:comment "Een meetprocedure is een specifieke procedure die wordt gebruikt om metingen uit te voeren op meetpunten."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting> .
 :uitwisselProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Uitwisselprocedure"@nl ;
     rdfs:comment "Een uitwisselprocedure is een specifieke procedure die betrekking heeft op het uitwisselen van stoffen tussen processen."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/uitwissel> .
 :transportProcedure a sosa:Procedure, skos:Concept ;
     rdfs:label "Transportprocedure"@nl ;
     rdfs:comment "Een transportprocedure is een specifieke procedure die betrekking heeft op het transport tussen twee processen."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport> .
 
 # Status types. Deze zijn overgenomen van de codelijsten en worden hier hard gecodeerd als concepten omdat deze business logica bevatten.
 :inGebruik a adms:Status, skos:Concept ;
     rdfs:label "In gebruik"@nl ;
     rdfs:comment "De entiteit is in gebruik."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
 :ontmanteld a adms:Status, skos:Concept ;
     rdfs:label "Ontmanteld"@nl ;
     rdfs:comment "De entiteit is ontmanteld."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/ontmanteld> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/ontmanteld> .
 :definitiefUitDienst a adms:Status, skos:Concept ;
     rdfs:label "Definitief uit dienst"@nl ;
     rdfs:comment "De entiteit is definitief uit dienst."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/definitief_uit_dienst> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/definitief_uit_dienst> .
 :voorgesteld a adms:Status, skos:Concept ;
     rdfs:label "Voorgesteld"@nl ;
     rdfs:comment "De entiteit is voorgesteld."@nl ;
-    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/voorgesteld> .
+    skos:related <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/voorgesteld> .
 
 # --------------------------------------- #
 # Axioms
@@ -1868,7 +1868,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
@@ -1879,7 +1879,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
@@ -1890,7 +1890,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
@@ -1901,7 +1901,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meet>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
@@ -1912,7 +1912,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/uitwissel>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;
@@ -1923,7 +1923,7 @@ rdfs:subClassOf [ a owl:Restriction ;
     rdfs:comment "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"@nl ;
     owl:intersectionOf ( :Proces [ a owl:Restriction ;
         owl:onProperty dct:type ;
-        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/hoofdactiviteit>
+        owl:someValuesFrom <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/hoofdactiviteit>
     ] ) ;
 ] rdfs:subClassOf [ a owl:Restriction ;
     owl:onProperty ssn:implementedBy ;

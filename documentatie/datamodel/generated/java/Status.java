@@ -30,10 +30,10 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/adms#Status">Status</a>
  **/
 public enum Status {
-	DEFINITIEF_UIT_DIENST("https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/definitief_uit_dienst"),
-	IN_GEBRUIK("https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst"),
-	ONTMANTELD("https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/ontmanteld"),
-	VOORGESTELD("https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/voorgesteld");
+	DEFINITIEF_UIT_DIENST("https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/definitief_uit_dienst"),
+	IN_GEBRUIK("https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst"),
+	ONTMANTELD("https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/ontmanteld"),
+	VOORGESTELD("https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/voorgesteld");
 
 	private final String uri;
 

@@ -30,12 +30,12 @@ import java.util.List;
  * <a href="http://www.w3.org/ns/sosa/Procedure">Procedure</a>
  **/
 public enum Procedure {
-	EMISSIE("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie"),
-	MEET("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/meting"),
-	ONTTREKKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/onttrekking"),
-	TRANSPORT("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport"),
-	UITWISSEL("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/uitwissel"),
-	VERWERKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking");
+	EMISSIE("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie"),
+	MEET("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting"),
+	ONTTREKKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking"),
+	TRANSPORT("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport"),
+	UITWISSEL("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/uitwissel"),
+	VERWERKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking");
 
 	private final String uri;
 
