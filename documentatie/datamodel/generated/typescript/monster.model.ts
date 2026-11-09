@@ -8,12 +8,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Monster {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -22,5 +29,19 @@ export class Monster {
 	 */
 	@jsonMember({ name: 'uri' })
 	uri?: string;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 */
+	@jsonMember({ name: 'created' })
+	aangemaaktOp?: string;
+
+	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 */
+	@jsonMember({ name: 'issued' })
+	geldigVan?: string;
 
 }

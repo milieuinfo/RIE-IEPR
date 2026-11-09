@@ -12,12 +12,19 @@ import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 @jsonObject
 export class Emissie implements Gebeurtenis {
 	/**
+	 * id
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id}
+	 */
+	@jsonMember({ name: 'id' })
+	id: string;
+
+	/**
 	 * uuid
 	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId}
 	 * UUID
 	 */
 	@jsonMember({ name: 'uuid' })
-	uuid: string;
+	uuid?: string;
 
 	/**
 	 * uri
@@ -26,6 +33,20 @@ export class Emissie implements Gebeurtenis {
 	 */
 	@jsonMember({ name: 'uri' })
 	uri?: string;
+
+	/**
+	 * created
+	 * @see {@link http://purl.org/dc/terms/created}
+	 */
+	@jsonMember({ name: 'created' })
+	aangemaaktOp?: string;
+
+	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 */
+	@jsonMember({ name: 'issued' })
+	geldigVan?: string;
 
 	/**
 	 * wasDerivedFrom
@@ -41,5 +62,13 @@ export class Emissie implements Gebeurtenis {
 	 */
 	@jsonArrayMember(() => Observatie, { name: 'isFeatureOfInterestOf' })
 	isFeatureOfInterestOf?: (Observatie | ObservatieVerzameling)[];
+
+	/**
+	 * productiejaar
+	 * @see {@link https://data.riepr.omgeving.vlaanderen.be/ns/riepr#productiejaar}
+	 * Het jaar waarop een gerapporteerde emissie, onttrekking of verbruik betrekking heeft.
+	 */
+	@jsonMember({ name: 'productiejaar' })
+	productiejaar?: string;
 
 }

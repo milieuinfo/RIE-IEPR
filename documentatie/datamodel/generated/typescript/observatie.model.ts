@@ -44,6 +44,13 @@ export class Observatie {
 	aangemaaktOp?: Date;
 
 	/**
+	 * issued
+	 * @see {@link http://purl.org/dc/terms/issued}
+	 */
+	@jsonMember({ name: 'issued' })
+	geldigVan?: string;
+
+	/**
 	 * hasFeatureOfInterest
 	 * @see {@link http://www.w3.org/ns/sosa/hasFeatureOfInterest}
 	 * Een observatie is gekoppeld aan een Emissie of Onttrekking

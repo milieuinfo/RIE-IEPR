@@ -75,6 +75,13 @@ public class Observatie implements IriReferentie {
 	@JsonProperty("created")
 	private OffsetDateTime aangemaaktOp;
 	/**
+	 * issued
+	 * <a href="http://purl.org/dc/terms/issued">issued</a>
+	 */
+	@Column(name = "geldig_van", nullable = false)
+	@JsonProperty("issued")
+	private String geldigVan;
+	/**
 	 * hasFeatureOfInterest
 	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
 	 * Een observatie is gekoppeld aan een Emissie of Onttrekking

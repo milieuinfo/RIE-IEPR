@@ -41,11 +41,18 @@ import java.util.List;
 @Table(name = "monster")
 public class Monster implements IriReferentie {
 	/**
+	 * id
+	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id">id</a>
+	 */
+	@Id
+	@Column(name = "id", nullable = false)
+	@JsonProperty("id")
+	private String id;
+	/**
 	 * uuid
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId">uuid</a>
 	 * UUID
 	 */
-	@Id
 	@Column(name = "uuid", nullable = false)
 	@JsonProperty("uuid")
 	private String uuid;
@@ -57,6 +64,20 @@ public class Monster implements IriReferentie {
 	@Column(name = "uri", nullable = true)
 	@JsonProperty("uri")
 	private String uri;
+	/**
+	 * created
+	 * <a href="http://purl.org/dc/terms/created">created</a>
+	 */
+	@Column(name = "aangemaakt_op", nullable = false)
+	@JsonProperty("created")
+	private String aangemaaktOp;
+	/**
+	 * issued
+	 * <a href="http://purl.org/dc/terms/issued">issued</a>
+	 */
+	@Column(name = "geldig_van", nullable = false)
+	@JsonProperty("issued")
+	private String geldigVan;
 
 	@jakarta.persistence.Transient
 	@JsonProperty(value = "@type", access = JsonProperty.Access.READ_ONLY)

@@ -92,10 +92,14 @@ classDiagram
 	Contactpersoon --> Exploitatie : hasTarget
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	class Emissie {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
+	  String aangemaaktOp
+	  String geldigVan
 	  Proces[] wasDerivedFrom
 	  Observatie[] isFeatureOfInterestOf
+	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Emissie --> Proces : wasDerivedFrom
@@ -323,8 +327,11 @@ classDiagram
 	Systeem <|-- Meetpunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Monster
 	class Monster {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
+	  String aangemaaktOp
+	  String geldigVan
 	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 	class Observatie {
@@ -332,6 +339,7 @@ classDiagram
 	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
+	  String geldigVan
 	  Gebeurtenis betrekkingTot
 	  Resultaat heeftResultaat
 	  ObservatieVerzameling isMemberOf
@@ -358,6 +366,7 @@ classDiagram
 	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
+	  String geldigVan
 	  Gebeurtenis betrekkingTot
 	  Observatie[] hasMember
 	  Aangifte aangifte
@@ -370,10 +379,14 @@ classDiagram
 	ObservatieVerzameling --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	class Onttrekking {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
+	  String aangemaaktOp
+	  String geldigVan
 	  Proces[] wasDerivedFrom
 	  Observatie[] isFeatureOfInterestOf
+	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Onttrekking --> Proces : wasDerivedFrom
@@ -472,8 +485,11 @@ classDiagram
 	Procesvariabele --> Proces : isInputVarOf
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat
 	class Resultaat:::result {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
+	  String aangemaaktOp
+	  String geldigVan
 	  String eenheid
 	  Decimal waarde
 	  String beschrijving
@@ -540,10 +556,14 @@ classDiagram
 	Systeem <|-- Uitwisselpunt
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	class Verbruik {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
+	  String aangemaaktOp
+	  String geldigVan
 	  Proces[] wasDerivedFrom
 	  Observatie[] isFeatureOfInterestOf
+	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Verbruik --> Proces : wasDerivedFrom
