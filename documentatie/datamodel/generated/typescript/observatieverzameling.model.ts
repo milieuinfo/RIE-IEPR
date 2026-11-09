@@ -55,7 +55,7 @@ export class ObservatieVerzameling {
 	 * Een observatieverzameling bestaat uit ten minste één observatie (of geneste observatieverzameling)
 	 */
 	@jsonArrayMember(() => Observatie, { name: 'hasMember' })
-	hasMember?: Observatie[];
+	hasMember?: (Observatie | ObservatieVerzameling)[];
 
 	/**
 	 * aangifte

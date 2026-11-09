@@ -691,6 +691,12 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	meetpunt_systeemeigenschap many to one systeemeigenschap : heeft_eigenschap_systeemeigenschap
 	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Monster
+	monster {
+	  uuid VARCHAR PK
+	  uri VARCHAR 
+	}
+	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 	observatie {
 	  id VARCHAR PK
@@ -703,7 +709,7 @@ erDiagram
 	  made_by_sensor VARCHAR FK
 	  eigenschap VARCHAR 
 	  phenomenon_time VARCHAR 
-	  result_time TIMESTAMP 
+	  result_time DATE 
 	  used_procedure VARCHAR 
 	  aangifte VARCHAR FK
 	}
@@ -751,6 +757,19 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	observatie_verzameling_observatie many to one observatie_verzameling : has_member_observatie
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
+	observatie_verzameling_observatie_verzameling {
+	  observatie_verzameling_id VARCHAR FK
+	  has_member_observatie_verzameling_id VARCHAR FK
+	  aangemaakt_op TIMESTAMP 
+	}
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : has_member_observatie_verzameling
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : has_member_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking {

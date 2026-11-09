@@ -94,8 +94,17 @@ public class ObservatieVerzameling implements IriReferentie {
 		inverseJoinColumns = @JoinColumn(name = "target_uuid")
 	)
 	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
-	@JsonProperty("hasMember")
-	private List<Observatie> hasMember;
+	@JsonProperty("hasMember_observatie")
+	private List<Observatie> hasMemberObservatie;
+	@ManyToMany
+	@JoinTable(
+		name = "observatie_verzameling_observatie_verzameling",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
+	@JsonProperty("hasMember_observatie_verzameling")
+	private List<ObservatieVerzameling> hasMemberObservatieVerzameling;
 	/**
 	 * aangifte
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>

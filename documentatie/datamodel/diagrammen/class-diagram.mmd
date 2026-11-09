@@ -217,8 +217,7 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String id
-	  String uuid
+	  +String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
@@ -322,6 +321,11 @@ classDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Meetpunt --> Aangifte : aangifte
 	Systeem <|-- Meetpunt
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Monster
+	class Monster {
+	  +String uuid
+	  String uri
+	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
 	class Observatie {
 	  +String id
@@ -334,7 +338,7 @@ classDiagram
 	  Systeem madeBySensor
 	  String eigenschap
 	  String phenomenonTime
-	  DateTime resultTime
+	  Date resultTime
 	  String usedProcedure
 	  Aangifte aangifte
 	}

@@ -1,5 +1,6 @@
 package be.vlaanderen.omgeving.mjv.model.structuur;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -132,7 +133,7 @@ public class Observatie implements IriReferentie {
 	 */
 	@Column(name = "result_time", nullable = true)
 	@JsonProperty("resultTime")
-	private OffsetDateTime resultTime;
+	private LocalDate resultTime;
 	/**
 	 * usedProcedure
 	 * <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
