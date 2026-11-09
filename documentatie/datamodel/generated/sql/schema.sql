@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-11-08T17:46:38.015163392Z[GMT]
+-- Generated: 2026-11-09T14:41:12.140496158Z[GMT]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
