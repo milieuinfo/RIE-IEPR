@@ -1815,7 +1815,7 @@
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatie</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">isVersionOf</span> <span class="nv">&lt;.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54&gt;</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">issued</span> <span class="s">"2026-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
-    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status-type/in_dienst&gt;</span> <span class="p">.</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst&gt;</span> <span class="p">.</span>
 </code></pre></div>
 <h2 id="4-proces-procedure-koppels-owl-axiomas">4. Proces-procedure koppels (OWL-axioma's)</h2>
 <p>Het model bevat <strong>OWL-axioma's</strong> die een proces van een bepaald type verplichten om aan een bepaald systeem gekoppeld te zijn. De procestypes komen uit de codelijst <strong><code>procedure_type</code></strong> (<a href="https://github.com/milieuinfo/codelijst-rie-iepr/">beheerd in milieuinfo/codelijst-rie-iepr</a>):</p>
@@ -1870,7 +1870,7 @@
 <p class="admonition-title">Afwijking in de ontologie</p>
 <p>Het axioma voor het meetproces verwijst in <code>riepr.ttl</code> naar <code>…/procedure-type/meet</code>, terwijl de codelijst <code>procedure_type</code> en het datavoorbeeld <code>…/procedure-type/meting</code> gebruiken. De <strong>codelijst is leidend</strong>; het axioma moet nog bijgewerkt worden.</p>
 </div>
-<p>De volledige URI's van de procedure types verwijzen naar <a href="https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie">data.omgeving.vlaanderen.be</a>, waar ze als SKOS-concepten gepubliceerd zijn.</p>
+<p>De volledige URI's van de procedure types verwijzen naar <a href="https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie">data.omgeving.vlaanderen.be</a>, waar ze als SKOS-concepten gepubliceerd zijn.</p>
 <h2 id="5-disjuncte-klassen">5. Disjuncte klassen</h2>
 <p>Een <strong>meetpunt</strong> is per definitie geen emissiepunt of onttrekkingspunt: <code>riepr:Meetpunt</code> staat <code>owl:disjointWith</code> <code>riepr:Emissiepunt</code> én <code>riepr:Onttrekkingspunt</code>.</p>
 <p>Een <strong>uitwisselpunt</strong> daarentegen is wél zowel emissiepunt als onttrekkingspunt: <code>riepr:Uitwisselpunt</code> is gedefinieerd als equivalent met de doorsnede <code>Emissiepunt ∩ Onttrekkingspunt</code> — een bidirectioneel punt waar stoffen zowel kunnen worden uitgestoten als onttrokken (bijv. grondwater: onttrekken en herinfiltreren). Emissiepunt en Onttrekkingspunt zijn daarom onderling níet disjoint; een entiteit kan beide zijn, en dan is het per definitie een uitwisselpunt.</p>

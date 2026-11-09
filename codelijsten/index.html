@@ -1700,19 +1700,19 @@ riepr-procedure-type:transport,skos:Concept,conceptscheme:procedure_type,concept
 
 <span class="nv">&lt;.../proces/INSTALLATIE/uuid/2026-01-01/...&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/verwerking&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/verwerking&gt;</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../installatie/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
 
 <span class="nv">&lt;.../proces/TRANSPORT/uuid/2026-01-01/...&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/transport&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/INSTALLATIE/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
 
 <span class="nv">&lt;.../proces/EMISSIE/uuid/2026-01-01/...&gt;</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Proces</span> <span class="p">;</span>
-    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie&gt;</span> <span class="p">;</span>
+    <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie&gt;</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">implementedBy</span> <span class="nv">&lt;.../emissiepunt/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isStepOfPlan</span> <span class="nv">&lt;.../proces/PARENT/uuid/2026-01-01/...&gt;</span> <span class="p">;</span>
     <span class="nn">pplan</span><span class="p">:</span><span class="nt">isPrecededBy</span> <span class="nv">&lt;.../proces/TRANSPORT/uuid/2026-01-01/...&gt;</span> <span class="p">.</span>
@@ -1762,7 +1762,7 @@ riepr-procedure-type:transport,skos:Concept,conceptscheme:procedure_type,concept
 <p>Voor <strong>eigenschappen-koppeling</strong>, bv. <code>emissiepunt_eigenschappen.csv</code>:</p>
 <div class="highlight"><pre><span></span><code>_id,_type,topConceptOf,inScheme,isPartOf,prefLabel,altLabel,notation,definition,scopeNote,broaderPartitive,relation,relevantDataType,relevantRiepr,relevantProperty,relevantUnit,relevantCodeList
 conceptscheme:emissiepunt_eigenschappen,skos:ConceptScheme,,,conceptscheme:systeem_eigenschappen,Emissiepunt eigenschappen,,,Een typering van verschillende eigenschappen voor emissiepunten.,,,,,,,,
-riepr-emissiepunt-eigenschappen:schouw-hoogte,skos:Concept,conceptscheme:emissiepunt_eigenschappen,conceptscheme:emissiepunt_eigenschappen,,Hoogte van de schouw,,hoogte,,,,rdfs:value,http://www.w3.org/2001/XMLSchema#decimal,riepr-emissiepunt-type:schoorsteen,http://dbpedia.org/ontology/height,http://qudt.org/vocab/unit/M,
+riepr-emissiepunt-eigenschappen:hoogte,skos:Concept,conceptscheme:emissiepunt_eigenschappen,conceptscheme:emissiepunt_eigenschappen,,Hoogte van de schouw,,hoogte,,,,rdfs:value,http://www.w3.org/2001/XMLSchema#decimal,riepr-emissiepunt-type:schoorsteen,http://dbpedia.org/ontology/height,http://qudt.org/vocab/unit/M,
 </code></pre></div>
 <p>Hier wordt <code>relevantRiepr</code> gebruikt om de eigenschap te koppelen aan een systeemtype en <code>relevantProperty</code>/<code>relevantUnit</code> geven datatype en eenheid.</p>
 <p>Voor <strong>operationele stromen</strong>, bv. <code>operationeel_lucht.csv</code>:</p>
@@ -1827,7 +1827,7 @@ npm<span class="w"> </span>run<span class="w"> </span>deploy
 <p><code>99_deploy_latest.js</code> leest <code>.env</code> voor Virtuoso-credentials en publiceert de Turtle/JSON-LD naar <code>https://data.omgeving.vlaanderen.be</code>. De codelijsten zijn dan raadpleegbaar via:</p>
 <ul>
 <li><code>https://data.omgeving.vlaanderen.be/id/concept/riepr/installatie-type.ttl</code></li>
-<li><code>https://data.omgeving.vlaanderen.be/id/concept/riepr/procedure-type/emissie</code></li>
+<li><code>https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie</code></li>
 </ul>
 <h2 id="tips-voor-beheerders">Tips voor beheerders</h2>
 <ul>
