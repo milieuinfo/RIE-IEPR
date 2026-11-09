@@ -1387,13 +1387,18 @@
     ] .
 
 ## Feature of interests
+# Voor deze rapporteringsobjecten duidt dct:issued het tijdstip van indiening aan;
+# bij structurele systemen duidt dezelfde eigenschap de start van geldigheid aan.
 :Onttrekking a owl:Class ;
     rdfs:label "Onttrekking"@nl ;
     rdfs:comment "Een onttrekking is een specifiek onttrekkingsevent dat betrekking heeft op het winnen of bemonsteren van grondstoffen aan onttrekkingspunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf prov:Entity, sosa:FeatureOfInterest ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/onttrekking/{jaar}/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "jaar" ; hydra:property :productiejaar ; hydra:required true ] ,
+                      [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een onttrekking moet gekoppeld zijn aan een proces"@nl ;
@@ -1413,8 +1418,11 @@
     rdfs:comment "Een emissie is een specifieke gebeurtenis dat betrekking heeft op het uitstoten of lozen van stoffen aan emissiepunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf prov:Entity, sosa:FeatureOfInterest ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/emissie/{jaar}/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "jaar" ; hydra:property :productiejaar ; hydra:required true ] ,
+                      [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een emissie moet gekoppeld zijn aan een proces"@nl ;
@@ -1434,8 +1442,11 @@
     rdfs:comment "Een verbruik is een specifieke gebeurtenis dat betrekking heeft op het verbruiken van stoffen aan verbruikspunten over of op een bepaalde periode of momentopname."@nl ;
     rdfs:subClassOf prov:Entity, sosa:FeatureOfInterest ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/verbruik/{jaar}/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "jaar" ; hydra:property :productiejaar ; hydra:required true ] ,
+                      [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een verbruik moet gekoppeld zijn aan een proces"@nl ;
@@ -1454,16 +1465,23 @@
 :Monster a owl:Class ;
     rdfs:label "Monster"@nl ;
     rdfs:comment "Een monster is een deel van een onderzochte materie dat door een monstername wordt verkregen."@nl ;
-    rdfs:subClassOf sosa:Sample .
+    rdfs:subClassOf sosa:Sample ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/monster/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+    ] .
 
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking."@nl ;
     rdfs:subClassOf sosa:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{created}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ;
-        hydra:mapping [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatie is optioneel gekoppeld aan een aangifte tenzij het in concept staat."@nl ;
@@ -1540,8 +1558,10 @@
     rdfs:comment "Een resultaat is het resultaat record van een observatie."@nl ;
     rdfs:subClassOf sosa:Result, qb:Observation ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een resultaat kan een numerieke waarde hebben"@nl ;
@@ -1569,9 +1589,10 @@
     rdfs:comment "Een observatieverzameling is een verzameling van waarnemingen of metingen uitgevoerd op een emissie of onttrekking over een bepaalde periode of op een bepaald moment."@nl ;
     rdfs:subClassOf sosa-2023:ObservationCollection ;
     hydra:search [ a hydra:IriTemplate ;
-        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{created}"^^hydra:Rfc6570Template ;
-        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ;
-        hydra:mapping [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatieverzameling bestaat uit ten minste één observatie (of geneste observatieverzameling)"@nl ;
@@ -1737,6 +1758,11 @@
     rdfs:label "Local Identifier"@en ;
     rdfs:comment "Een local identifier is een unieke identificatie binnen de context van RIE-IEPR."@en ;
     rdfs:range xsd:string .
+
+:productiejaar a owl:DatatypeProperty ;
+    rdfs:label "Productiejaar"@nl ;
+    rdfs:comment "Het jaar waarop een gerapporteerde emissie, onttrekking of verbruik betrekking heeft."@nl ;
+    rdfs:range xsd:gYear .
 
 :vlaanderenId a owl:DatatypeProperty ;
     rdfs:label "Vlaanderen Identifier"@nl ;
