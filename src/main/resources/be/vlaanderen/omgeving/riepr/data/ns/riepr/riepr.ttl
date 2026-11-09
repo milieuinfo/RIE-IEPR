@@ -1451,6 +1451,11 @@
     ] .
 
 ## Observaties
+:Monster a owl:Class ;
+    rdfs:label "Monster"@nl ;
+    rdfs:comment "Een monster is een deel van een onderzochte materie dat door een monstername wordt verkregen."@nl ;
+    rdfs:subClassOf sosa:Sample .
+
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking."@nl ;
@@ -1491,7 +1496,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatie kan een resultaat tijdstip hebben"@nl ;
         owl:onProperty sosa:resultTime ;
-        owl:someValuesFrom xsd:dateTime ;
+        owl:someValuesFrom [ a rdfs:Datatype ; owl:unionOf ( xsd:date xsd:dateTime ) ] ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1541,7 +1546,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een resultaat kan een numerieke waarde hebben"@nl ;
         owl:onProperty qudt:numericValue ;
-        owl:someValuesFrom xsd:decimal ;
+        owl:someValuesFrom [ a rdfs:Datatype ; owl:unionOf ( xsd:decimal xsd:integer ) ] ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
@@ -1571,7 +1576,7 @@
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatieverzameling bestaat uit ten minste één observatie (of geneste observatieverzameling)"@nl ;
         owl:onProperty sosa-2023:hasMember ;
-        owl:someValuesFrom sosa:Observation ;
+        owl:someValuesFrom [ owl:unionOf ( sosa:Observation sosa-2023:ObservationCollection ) ] ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
