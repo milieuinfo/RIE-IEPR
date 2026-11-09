@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "jira": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "-c",
+        "JIRA_API_TOKEN=\"$(cat \"$HOME/.config/opencode/env/jira.env\")\" exec npx -y @atlassian-dc-mcp/jira"
+      ],
+      "env": {
+        "JIRA_HOST": "https://jira.omgeving.vlaanderen.be/jira",
+        "JIRA_SSL_VERIFY": "true"
+      }
+    },
+    "confluence": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "-c",
+        "CONFLUENCE_API_TOKEN=\"$(cat \"$HOME/.config/opencode/env/confluence.env\")\" exec npx -y @atlassian-dc-mcp/confluence"
+      ],
+      "env": {
+        "CONFLUENCE_HOST": "https://confluence.omgeving.vlaanderen.be/confluence",
+        "CONFLUENCE_SSL_VERIFY": "true"
+      }
+    }
+  }
+}
