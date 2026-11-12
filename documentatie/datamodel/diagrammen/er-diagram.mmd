@@ -27,8 +27,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte
 	aangifte_exploitatie {
-	  aangifte_id VARCHAR FK
-	  exploitatie_id VARCHAR FK
+	  aangifte_id VARCHAR PK,FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op DATE 
 	}
 	
@@ -108,7 +108,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie_observatie {
 	  emissie_id VARCHAR PK,FK
-	  observatie_id VARCHAR FK
+	  observatie_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -122,7 +122,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie_observatie_verzameling {
 	  emissie_id VARCHAR PK,FK
-	  observatie_verzameling_id VARCHAR FK
+	  observatie_verzameling_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -136,7 +136,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie_proces {
 	  emissie_id VARCHAR PK,FK
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -181,7 +181,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 	emissiepunt_exploitatie {
 	  emissiepunt_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -298,7 +298,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	exploitatie_externe_identificator {
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  externe_identificator_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -314,7 +314,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie
 	exploitatie_systeem {
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  systeem_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -363,8 +363,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie
 	exploitatielocatie_exploitatie {
-	  exploitatielocatie_id VARCHAR FK
-	  exploitatie_id VARCHAR FK
+	  exploitatielocatie_id VARCHAR PK,FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -378,7 +378,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie
 	exploitatielocatie_externe_identificator {
-	  exploitatielocatie_id VARCHAR FK
+	  exploitatielocatie_id VARCHAR PK,FK
 	  externe_identificator_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -435,7 +435,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_exploitatie {
 	  filter_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -538,7 +538,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie
 	installatie_exploitatie {
 	  installatie_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -642,7 +642,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt
 	meetpunt_exploitatie {
 	  meetpunt_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -773,8 +773,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 	observatie_verzameling_observatie {
-	  observatie_verzameling_id VARCHAR FK
-	  observatie_id VARCHAR FK
+	  observatie_verzameling_id VARCHAR PK,FK
+	  observatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van VARCHAR 
 	}
@@ -787,8 +787,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 	observatie_verzameling_observatie_verzameling {
-	  observatie_verzameling_id VARCHAR FK
-	  has_member_observatie_verzameling_id VARCHAR FK
+	  observatie_verzameling_id VARCHAR PK,FK
+	  has_member_observatie_verzameling_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van VARCHAR 
 	}
@@ -826,7 +826,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking_observatie {
 	  onttrekking_id VARCHAR PK,FK
-	  observatie_id VARCHAR FK
+	  observatie_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -840,7 +840,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking_observatie_verzameling {
 	  onttrekking_id VARCHAR PK,FK
-	  observatie_verzameling_id VARCHAR FK
+	  observatie_verzameling_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -854,7 +854,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking_proces {
 	  onttrekking_id VARCHAR PK,FK
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -899,7 +899,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 	onttrekkingspunt_exploitatie {
 	  onttrekkingspunt_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -1007,7 +1007,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_externe_identificator {
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  externe_identificator_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -1023,8 +1023,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_proces_has_step {
-	  proces_id VARCHAR FK
-	  has_step_proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
+	  has_step_proces_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -1039,8 +1039,8 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_proces_volgt_op {
-	  proces_id VARCHAR FK
-	  volgt_op_proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
+	  volgt_op_proces_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -1055,7 +1055,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_procesvariabele {
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  procesvariabele_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -1072,7 +1072,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces
 	proces_rubriek {
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  rubriek_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -1100,7 +1100,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele
 	procesvariabele_proces {
 	  procesvariabele_id VARCHAR PK,FK
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	}
 	
 	class procesvariabele_proces procedure
@@ -1191,7 +1191,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt
 	uitwisselpunt_exploitatie {
 	  uitwisselpunt_id VARCHAR PK,FK
-	  exploitatie_id VARCHAR FK
+	  exploitatie_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
 	  geldig_tot DATE 
@@ -1288,7 +1288,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	verbruik_observatie {
 	  verbruik_id VARCHAR PK,FK
-	  observatie_id VARCHAR FK
+	  observatie_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -1302,7 +1302,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	verbruik_observatie_verzameling {
 	  verbruik_id VARCHAR PK,FK
-	  observatie_verzameling_id VARCHAR FK
+	  observatie_verzameling_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}
@@ -1316,7 +1316,7 @@ erDiagram
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	verbruik_proces {
 	  verbruik_id VARCHAR PK,FK
-	  proces_id VARCHAR FK
+	  proces_id VARCHAR PK,FK
 	  aangemaakt_op VARCHAR 
 	  geldig_van VARCHAR 
 	}

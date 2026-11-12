@@ -1,6 +1,6 @@
 -- Auto-generated SQL schema from ODDToolkit
 -- Ontology: null
--- Generated: 2026-11-09T16:35:38.374069691Z[GMT]
+-- Generated: 2026-11-12T20:46:48.574505247+01:00[Europe/Amsterdam]
 
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
@@ -59,7 +59,8 @@ CREATE TABLE aangifte_exploitatie (
   aangifte_id VARCHAR,
   -- Foreign key referencing exploitatie(uuid)
   exploitatie_id VARCHAR,
-  aangemaakt_op DATE
+  aangemaakt_op DATE,
+  PRIMARY KEY (aangifte_id, exploitatie_id)
 );
 
 COMMENT ON TABLE aangifte_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Aangifte';
@@ -193,7 +194,7 @@ CREATE TABLE emissie_observatie (
   observatie_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (emissie_id)
+  PRIMARY KEY (emissie_id, observatie_id)
 );
 
 COMMENT ON TABLE emissie_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie';
@@ -214,7 +215,7 @@ CREATE TABLE emissie_observatie_verzameling (
   observatie_verzameling_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (emissie_id)
+  PRIMARY KEY (emissie_id, observatie_verzameling_id)
 );
 
 COMMENT ON TABLE emissie_observatie_verzameling IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie';
@@ -235,7 +236,7 @@ CREATE TABLE emissie_proces (
   proces_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (emissie_id)
+  PRIMARY KEY (emissie_id, proces_id)
 );
 
 COMMENT ON TABLE emissie_proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie';
@@ -297,7 +298,7 @@ CREATE TABLE emissiepunt_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (emissiepunt_id)
+  PRIMARY KEY (emissiepunt_id, exploitatie_id)
 );
 
 COMMENT ON TABLE emissiepunt_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt';
@@ -465,7 +466,7 @@ CREATE TABLE exploitatie_externe_identificator (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (externe_identificator_id)
+  PRIMARY KEY (exploitatie_id, externe_identificator_id)
 );
 
 COMMENT ON TABLE exploitatie_externe_identificator IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie';
@@ -488,7 +489,7 @@ CREATE TABLE exploitatie_systeem (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (systeem_id)
+  PRIMARY KEY (exploitatie_id, systeem_id)
 );
 
 COMMENT ON TABLE exploitatie_systeem IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatie';
@@ -552,7 +553,8 @@ CREATE TABLE exploitatielocatie_exploitatie (
   exploitatie_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
-  geldig_tot DATE
+  geldig_tot DATE,
+  PRIMARY KEY (exploitatielocatie_id, exploitatie_id)
 );
 
 COMMENT ON TABLE exploitatielocatie_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie';
@@ -575,7 +577,7 @@ CREATE TABLE exploitatielocatie_externe_identificator (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (externe_identificator_id)
+  PRIMARY KEY (exploitatielocatie_id, externe_identificator_id)
 );
 
 COMMENT ON TABLE exploitatielocatie_externe_identificator IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatielocatie';
@@ -659,7 +661,7 @@ CREATE TABLE filter_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (filter_id)
+  PRIMARY KEY (filter_id, exploitatie_id)
 );
 
 COMMENT ON TABLE filter_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter';
@@ -800,7 +802,7 @@ CREATE TABLE installatie_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (installatie_id)
+  PRIMARY KEY (installatie_id, exploitatie_id)
 );
 
 COMMENT ON TABLE installatie_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Installatie';
@@ -945,7 +947,7 @@ CREATE TABLE meetpunt_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (meetpunt_id)
+  PRIMARY KEY (meetpunt_id, exploitatie_id)
 );
 
 COMMENT ON TABLE meetpunt_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Meetpunt';
@@ -1134,7 +1136,8 @@ CREATE TABLE observatie_verzameling_observatie (
   -- Foreign key referencing observatie(uuid)
   observatie_id VARCHAR,
   aangemaakt_op TIMESTAMP,
-  geldig_van VARCHAR
+  geldig_van VARCHAR,
+  PRIMARY KEY (observatie_verzameling_id, observatie_id)
 );
 
 COMMENT ON TABLE observatie_verzameling_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling';
@@ -1154,7 +1157,8 @@ CREATE TABLE observatie_verzameling_observatie_verzameling (
   -- Foreign key referencing observatie_verzameling(uuid)
   has_member_observatie_verzameling_id VARCHAR,
   aangemaakt_op TIMESTAMP,
-  geldig_van VARCHAR
+  geldig_van VARCHAR,
+  PRIMARY KEY (observatie_verzameling_id, has_member_observatie_verzameling_id)
 );
 
 COMMENT ON TABLE observatie_verzameling_observatie_verzameling IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling';
@@ -1210,7 +1214,7 @@ CREATE TABLE onttrekking_observatie (
   observatie_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (onttrekking_id)
+  PRIMARY KEY (onttrekking_id, observatie_id)
 );
 
 COMMENT ON TABLE onttrekking_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking';
@@ -1231,7 +1235,7 @@ CREATE TABLE onttrekking_observatie_verzameling (
   observatie_verzameling_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (onttrekking_id)
+  PRIMARY KEY (onttrekking_id, observatie_verzameling_id)
 );
 
 COMMENT ON TABLE onttrekking_observatie_verzameling IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking';
@@ -1252,7 +1256,7 @@ CREATE TABLE onttrekking_proces (
   proces_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (onttrekking_id)
+  PRIMARY KEY (onttrekking_id, proces_id)
 );
 
 COMMENT ON TABLE onttrekking_proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking';
@@ -1314,7 +1318,7 @@ CREATE TABLE onttrekkingspunt_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (onttrekkingspunt_id)
+  PRIMARY KEY (onttrekkingspunt_id, exploitatie_id)
 );
 
 COMMENT ON TABLE onttrekkingspunt_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt';
@@ -1470,7 +1474,7 @@ CREATE TABLE proces_externe_identificator (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (externe_identificator_id)
+  PRIMARY KEY (proces_id, externe_identificator_id)
 );
 
 COMMENT ON TABLE proces_externe_identificator IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -1492,7 +1496,8 @@ CREATE TABLE proces_proces_has_step (
   has_step_proces_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
-  geldig_tot DATE
+  geldig_tot DATE,
+  PRIMARY KEY (proces_id, has_step_proces_id)
 );
 
 COMMENT ON TABLE proces_proces_has_step IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -1514,7 +1519,8 @@ CREATE TABLE proces_proces_volgt_op (
   volgt_op_proces_id VARCHAR,
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
-  geldig_tot DATE
+  geldig_tot DATE,
+  PRIMARY KEY (proces_id, volgt_op_proces_id)
 );
 
 COMMENT ON TABLE proces_proces_volgt_op IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -1538,7 +1544,7 @@ CREATE TABLE proces_procesvariabele (
   geldig_van DATE,
   geldig_tot DATE,
   relation_type proces_procesvariabele_merge_type,
-  PRIMARY KEY (procesvariabele_id, relation_type)
+  PRIMARY KEY (proces_id, procesvariabele_id, relation_type)
 );
 
 COMMENT ON TABLE proces_procesvariabele IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -1561,7 +1567,7 @@ CREATE TABLE proces_rubriek (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (rubriek_id)
+  PRIMARY KEY (proces_id, rubriek_id)
 );
 
 COMMENT ON TABLE proces_rubriek IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Proces';
@@ -1602,7 +1608,7 @@ CREATE TABLE procesvariabele_proces (
   procesvariabele_id VARCHAR,
   -- Foreign key referencing proces(uuid)
   proces_id VARCHAR,
-  PRIMARY KEY (procesvariabele_id)
+  PRIMARY KEY (procesvariabele_id, proces_id)
 );
 
 COMMENT ON TABLE procesvariabele_proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Procesvariabele';
@@ -1751,7 +1757,7 @@ CREATE TABLE uitwisselpunt_exploitatie (
   aangemaakt_op TIMESTAMP,
   geldig_van DATE,
   geldig_tot DATE,
-  PRIMARY KEY (uitwisselpunt_id)
+  PRIMARY KEY (uitwisselpunt_id, exploitatie_id)
 );
 
 COMMENT ON TABLE uitwisselpunt_exploitatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt';
@@ -1890,7 +1896,7 @@ CREATE TABLE verbruik_observatie (
   observatie_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (verbruik_id)
+  PRIMARY KEY (verbruik_id, observatie_id)
 );
 
 COMMENT ON TABLE verbruik_observatie IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
@@ -1911,7 +1917,7 @@ CREATE TABLE verbruik_observatie_verzameling (
   observatie_verzameling_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (verbruik_id)
+  PRIMARY KEY (verbruik_id, observatie_verzameling_id)
 );
 
 COMMENT ON TABLE verbruik_observatie_verzameling IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
@@ -1932,7 +1938,7 @@ CREATE TABLE verbruik_proces (
   proces_id VARCHAR,
   aangemaakt_op VARCHAR,
   geldig_van VARCHAR,
-  PRIMARY KEY (verbruik_id)
+  PRIMARY KEY (verbruik_id, proces_id)
 );
 
 COMMENT ON TABLE verbruik_proces IS 'https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik';
