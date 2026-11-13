@@ -74,7 +74,7 @@ De **exploitatie** is de uitrol van middelen door die exploitant op een locatie.
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
     dct:modified "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> ;
     # De hoofdactiviteit als NACE-code (de exploitant selecteert die uit zijn VKBO-activiteiten)
     org:classification <http://data.europa.eu/ux2/nace2.1/231> ;
     ssn:deployedOnPlatform <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
@@ -104,7 +104,7 @@ De locatie is een `sosa:Platform`/`ogc:Feature` en het ankerpunt voor alle syste
     rdfs:label "Site Mols"@nl ;
     dct:issued "2026-01-01"^^xsd:date ;
     dct:created "2026-01-01T10:00:00Z"^^xsd:dateTime ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> ;
     locn:address [ a locn:Address ;
         locn:streetAddress "Voortstraat 27" ;
         locn:postalCode "2400" ;
@@ -175,7 +175,7 @@ Systemen (installaties, emissie- en meetpunten) worden **gehost** op de exploita
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/emissiepunt/019e9271-145b-75f5-83d9-fe9b0b7e9540> ;
     rdfs:label "Schoorsteen 1"@nl ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/schoorsteen_verticale_uitstroom> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> ;
     sosa:isHostedBy <https://data.mjv.omgeving.vlaanderen.be/id/exploitatielocatie/019e9271-1453-7810-92ea-ccac2e6932b1/2026-01-01/2026-01-01T10:00:00Z> ;
     ogc:hasGeometry [ a ogc:Point ;
         ogc:asWKT "POINT (205713.0 209689.0)"^^ogc:wktLiteral ;

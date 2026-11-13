@@ -91,7 +91,7 @@ Een exploitatie bestaat uit **twee lagen**:
     a riepr:Exploitatie ;
     dct:isVersionOf <.../exploitatie/019e9271-1454-7b38-9eae-505cace7ca54> ;
     dct:issued "2026-01-01"^^xsd:date ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> .
 ```
 
 ## 4. Proces-procedure koppels (OWL-axioma's)

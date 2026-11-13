@@ -51,7 +51,7 @@ Een **installatie** is een stuk infrastructuur met een specifieke functie. Het t
     dct:isVersionOf <https://data.mjv.omgeving.vlaanderen.be/id/installatie/019e9271-1456-7a2f-ac4e-8904bab88f37> ;
     rdfs:label "waterzuiveringsinstallatie"@nl ;
     dct:type <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/waterzuivering> ;
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> ;
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> ;
     dct:issued "2026-01-01"^^xsd:date ;
     riepr:inGebruikVanaf "1970-01-01"^^xsd:date .
 

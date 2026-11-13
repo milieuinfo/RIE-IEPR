@@ -162,7 +162,7 @@ Alle fragmenten gebruiken deze prefixen:
 @prefix rubriek:        <https://data.riepr.omgeving.vlaanderen.be/id/rubriek/> .
 @prefix variabele:      <https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/> .
 
-@prefix riepr-status-type:           <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/> .
+@prefix riepr-status:           <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/> .
 @prefix riepr-procedure-type:        <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/> .
 @prefix riepr-installatie-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/> .
 @prefix riepr-emissiepunt-type:      <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/> .
@@ -177,7 +177,7 @@ Alle fragmenten gebruiken deze prefixen:
 exploitatie:crematoria-exploitatie-1
     a riepr:Exploitatie ;
     rdfs:label "Crematorium Gent"@nl ;
-    adms:status riepr-status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:deployedOnPlatform locatie:crematoria-1 ;
     # Alle systemen hangen als deployedSystem aan de exploitatie
     ssn:deployedSystem
@@ -204,7 +204,7 @@ installatie:crematieoven-1
     a riepr:Installatie, ssn:System ;
     rdfs:label "Crematieoven 1"@nl ;
     dct:type riepr-installatie-type:directe_stookinstallatie ;
-    adms:status riepr-status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     riepr:inGebruikVanaf "2021-08-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-1-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -234,7 +234,7 @@ emissiepunt:schoorsteen-1
     a riepr:Emissiepunt, ssn:System ;
     rdfs:label "Schoorsteen 1"@nl ;
     dct:type riepr-emissiepunt-type:schoorsteen_verticale_uitstroom ;
-    adms:status riepr-status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     riepr:inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-1-hoogte, eig:schoorsteen-1-diameter ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -391,7 +391,7 @@ meetpunt de **gecombineerde** rookgassen van twee ovens:
 meetpunt:meetpunt-schoorsteen-1
     a riepr:Meetpunt, ssn:System ;
     rdfs:label "Meetpunt Schoorsteen 1"@nl ;
-    adms:status riepr-status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     sosa:isHostedBy locatie:crematoria-1 .
 
 proces:meting-schoorsteen-1

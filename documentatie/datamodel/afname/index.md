@@ -99,7 +99,7 @@ De codelijsten zijn gepubliceerd als Linked Data op [data.omgeving.vlaanderen.be
 | **meetpunt_type** | `…/concept/riepr/meetpunttype/` | Typen meetpunten (`peilput`, `debietmeter`, `controleinrichting`) |
 | **filter_type** | `…/concept/riepr/filtertype/` | Typen filters (`peil`, `pomp`, `injectie`, `omkeerbaar`) |
 | **procedure_type** | `…/concept/riepr/proceduretype/` | Procesprocedures (`verwerking`, `emissie`, `onttrekking`, `uitwissel`, `meting`, `transport`, `hoofdactiviteit`) |
-| **status_type** | `…/concept/riepr/statustype/` | Statussen (`in_dienst`, `tijdelijk_uit_dienst`, `definitief_uit_dienst`, `ontmanteld`, `voorgesteld`, `verkeerde_registratie`) |
+| **status_type** | `…/concept/riepr/status/` | Statussen (`in_dienst`, `tijdelijk_uit_dienst`, `definitief_uit_dienst`, `ontmanteld`, `voorgesteld`, `verkeerde_registratie`) |
 | **rubriek_type** | `…/concept/riepr/rubriektype/` | Classificaties (`vlarem`, …) |
 | **aangifte_type** | `…/concept/riepr/aangiftetype/` | Typen aangiften (`structuur`, `operationeel`) |
 | **aangifte_status** | `…/concept/riepr/aangiftestatus/` | Statussen van een aangiftebundel (`concept`, `ingediend`, `gefaald`, `ingetrokken`) |
@@ -134,7 +134,7 @@ Daarnaast bestaan er operationele codelijsten (`operationeel_lucht`, `operatione
 @prefix adms: <http://www.w3.org/ns/adms#> .
 
 <.../installatie/019e9271-1456-7a2f-ac4e-8904bab88f37/2026-01-01/2026-01-01T10:00:00Z>
-    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/in_dienst> .
+    adms:status <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/in_dienst> .
 ```
 
 ### Codelijsten als LOD
