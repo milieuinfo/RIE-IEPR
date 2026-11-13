@@ -25,14 +25,14 @@
 }, {
   "@id" : "_:genid101",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+    "@id" : "http://purl.org/dc/terms/created"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "uuid"
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid102",
@@ -104,19 +104,19 @@
   "@id" : "_:genid107",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Proces kan een plan op zichzelf zijn (multi step)"
+    "@value" : "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"
   } ]
 }, {
   "@id" : "_:genid108",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"
+    "@value" : "Proces kan een plan op zichzelf zijn (multi step)"
   } ]
 }, {
   "@id" : "_:genid109",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"
+    "@value" : "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"
   } ]
 }, {
   "@id" : "_:genid11",
@@ -140,52 +140,40 @@
   "@id" : "_:genid110",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"
+    "@value" : "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"
   } ]
 }, {
   "@id" : "_:genid111",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een verwerkingsprocedure type als dct:type moet een installatie implementeren"
+    "@value" : "Een proces met een hoofdactiviteit type als dct:type moet een exploitatie implementeren"
   } ]
 }, {
   "@id" : "_:genid112",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een onttrekking procedure type als dct:type moet grondstoffen winnen of bemonsteren aan een onttrekkingspunt"
+    "@value" : "Een proces met een uitwisselprocedure type als dct:type moet een uitwisselpunt implementeren"
   } ]
 }, {
   "@id" : "_:genid113",
   "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
     "@language" : "nl",
-    "@value" : "Een proces met een emissie procedure type als dct:type moet stoffen uitstoten of lozen aan een emissiepunt"
+    "@value" : "Een proces met een meetprocedure type als dct:type moet een meetpunt implementeren"
   } ]
 }, {
   "@id" : "_:genid12",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#productiejaar"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "jaar"
   } ]
 }, {
   "@id" : "_:genid13",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid14",
   "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
@@ -197,16 +185,28 @@
     "@value" : "uuid"
   } ]
 }, {
-  "@id" : "_:genid15",
+  "@id" : "_:genid14",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#productiejaar"
+    "@id" : "http://purl.org/dc/terms/issued"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "jaar"
+    "@value" : "issued"
+  } ]
+}, {
+  "@id" : "_:genid15",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/created"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid16",
@@ -332,18 +332,6 @@
 }, {
   "@id" : "_:genid25",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid26",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -352,6 +340,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "uuid"
+  } ]
+}, {
+  "@id" : "_:genid26",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/issued"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid27",
@@ -410,18 +410,6 @@
 }, {
   "@id" : "_:genid31",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid32",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -430,6 +418,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "uuid"
+  } ]
+}, {
+  "@id" : "_:genid32",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/issued"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid33",
@@ -486,14 +486,14 @@
 }, {
   "@id" : "_:genid37",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "uuid"
   } ]
 }, {
   "@id" : "_:genid38",
@@ -510,14 +510,14 @@
 }, {
   "@id" : "_:genid39",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+    "@id" : "http://purl.org/dc/terms/created"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "uuid"
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid4",
@@ -659,18 +659,6 @@
 }, {
   "@id" : "_:genid48",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid49",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -679,6 +667,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "uuid"
+  } ]
+}, {
+  "@id" : "_:genid49",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/issued"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid5",
@@ -723,14 +723,14 @@
 }, {
   "@id" : "_:genid52",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "uuid"
   } ]
 }, {
   "@id" : "_:genid53",
@@ -747,14 +747,14 @@
 }, {
   "@id" : "_:genid54",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+    "@id" : "http://purl.org/dc/terms/created"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "uuid"
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid55",
@@ -775,18 +775,6 @@
 }, {
   "@id" : "_:genid56",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid57",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -795,6 +783,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "uuid"
+  } ]
+}, {
+  "@id" : "_:genid57",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/issued"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid58",
@@ -851,18 +851,6 @@
 }, {
   "@id" : "_:genid61",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
-  "@id" : "_:genid62",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -871,6 +859,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "uuid"
+  } ]
+}, {
+  "@id" : "_:genid62",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/issued"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid63",
@@ -893,17 +893,29 @@
 }, {
   "@id" : "_:genid64",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+    "@id" : "http://purl.org/dc/terms/issued"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "uuid"
+    "@value" : "issued"
   } ]
 }, {
   "@id" : "_:genid65",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/created"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "created"
+  } ]
+}, {
+  "@id" : "_:genid66",
   "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#productiejaar"
   } ],
@@ -915,28 +927,16 @@
     "@value" : "jaar"
   } ]
 }, {
-  "@id" : "_:genid66",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/issued"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "issued"
-  } ]
-}, {
   "@id" : "_:genid67",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "uuid"
   } ]
 }, {
   "@id" : "_:genid68",
@@ -978,14 +978,14 @@
 }, {
   "@id" : "_:genid70",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "uuid"
   } ]
 }, {
   "@id" : "_:genid71",
@@ -1002,14 +1002,14 @@
 }, {
   "@id" : "_:genid72",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
+    "@id" : "http://purl.org/dc/terms/created"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "uuid"
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid73",
@@ -1081,18 +1081,6 @@
 }, {
   "@id" : "_:genid80",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
-  } ],
-  "http://www.w3.org/ns/hydra/core#required" : [ {
-    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value" : "true"
-  } ],
-  "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
-  } ]
-}, {
-  "@id" : "_:genid81",
-  "http://www.w3.org/ns/hydra/core#property" : [ {
     "@id" : "http://purl.org/dc/terms/issued"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
@@ -1101,6 +1089,18 @@
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
     "@value" : "issued"
+  } ]
+}, {
+  "@id" : "_:genid81",
+  "http://www.w3.org/ns/hydra/core#property" : [ {
+    "@id" : "http://purl.org/dc/terms/created"
+  } ],
+  "http://www.w3.org/ns/hydra/core#required" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value" : "true"
+  } ],
+  "http://www.w3.org/ns/hydra/core#variable" : [ {
+    "@value" : "created"
   } ]
 }, {
   "@id" : "_:genid82",
@@ -1300,14 +1300,14 @@
 }, {
   "@id" : "_:genid99",
   "http://www.w3.org/ns/hydra/core#property" : [ {
-    "@id" : "http://purl.org/dc/terms/created"
+    "@id" : "https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId"
   } ],
   "http://www.w3.org/ns/hydra/core#required" : [ {
     "@type" : "http://www.w3.org/2001/XMLSchema#boolean",
     "@value" : "true"
   } ],
   "http://www.w3.org/ns/hydra/core#variable" : [ {
-    "@value" : "created"
+    "@value" : "uuid"
   } ]
 }, {
   "@id" : "file:///workspace/src/main/resources/be/vlaanderen/omgeving/riepr/data/ns/riepr/riepr.ttl",
