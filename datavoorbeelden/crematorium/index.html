@@ -1886,7 +1886,7 @@ hetzelfde fragment in die vorm.</p>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">rubriek:</span><span class="w">        </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/id/rubriek/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">variabele:</span><span class="w">      </span><span class="nv">&lt;https://data.riepr.omgeving.vlaanderen.be/id/procesvariabele/&gt;</span><span class="w"> </span><span class="p">.</span>
 
-<span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr-status-type:</span><span class="w">           </span><span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/&gt;</span><span class="w"> </span><span class="p">.</span>
+<span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr-status:</span><span class="w">           </span><span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/status/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr-procedure-type:</span><span class="w">        </span><span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr-installatie-type:</span><span class="w">      </span><span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/&gt;</span><span class="w"> </span><span class="p">.</span>
 <span class="k">@prefix</span><span class="w"> </span><span class="nn">riepr-emissiepunt-type:</span><span class="w">      </span><span class="nv">&lt;https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/&gt;</span><span class="w"> </span><span class="p">.</span>
@@ -1898,7 +1898,7 @@ hetzelfde fragment in die vorm.</p>
 <div class="highlight"><pre><span></span><code><span class="nn">exploitatie</span><span class="p">:</span><span class="nt">crematoria-exploitatie-1</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Exploitatie</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Crematorium Gent"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
-    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status-type</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">deployedOnPlatform</span> <span class="nn">locatie</span><span class="p">:</span><span class="nt">crematoria-1</span> <span class="p">;</span>
     <span class="c"># Alle systemen hangen als deployedSystem aan de exploitatie</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">deployedSystem</span>
@@ -1922,7 +1922,7 @@ hetzelfde fragment in die vorm.</p>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Installatie</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Crematieoven 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nn">riepr-installatie-type</span><span class="p">:</span><span class="nt">directe_stookinstallatie</span> <span class="p">;</span>
-    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status-type</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">inGebruikVanaf</span> <span class="s">"2021-08-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasProperty</span> <span class="nn">eig</span><span class="p">:</span><span class="nt">crematieoven-1-vermogen</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nn">locatie</span><span class="p">:</span><span class="nt">crematoria-1</span> <span class="p">.</span>
@@ -1948,7 +1948,7 @@ hetzelfde fragment in die vorm.</p>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Emissiepunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
     <span class="nn">dct</span><span class="p">:</span><span class="nt">type</span> <span class="nn">riepr-emissiepunt-type</span><span class="p">:</span><span class="nt">schoorsteen_verticale_uitstroom</span> <span class="p">;</span>
-    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status-type</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
     <span class="nn">riepr</span><span class="p">:</span><span class="nt">inGebruikVanaf</span> <span class="s">"2002-01-01"</span><span class="p">^^</span><span class="nn">xsd</span><span class="p">:</span><span class="nt">date</span> <span class="p">;</span>
     <span class="nn">ssn</span><span class="p">:</span><span class="nt">hasProperty</span> <span class="nn">eig</span><span class="p">:</span><span class="nt">schoorsteen-1-hoogte</span><span class="p">,</span> <span class="nn">eig</span><span class="p">:</span><span class="nt">schoorsteen-1-diameter</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nn">locatie</span><span class="p">:</span><span class="nt">crematoria-1</span> <span class="p">.</span>
@@ -2099,7 +2099,7 @@ meetpunt de <strong>gecombineerde</strong> rookgassen van twee ovens:</p>
 <div class="highlight"><pre><span></span><code><span class="nn">meetpunt</span><span class="p">:</span><span class="nt">meetpunt-schoorsteen-1</span>
     <span class="kt">a</span> <span class="nn">riepr</span><span class="p">:</span><span class="nt">Meetpunt</span><span class="p">,</span> <span class="nn">ssn</span><span class="p">:</span><span class="nt">System</span> <span class="p">;</span>
     <span class="nn">rdfs</span><span class="p">:</span><span class="nt">label</span> <span class="s">"Meetpunt Schoorsteen 1"</span><span class="o">@</span><span class="ge">nl</span> <span class="p">;</span>
-    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status-type</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
+    <span class="nn">adms</span><span class="p">:</span><span class="nt">status</span> <span class="nn">riepr-status</span><span class="p">:</span><span class="nt">in_dienst</span> <span class="p">;</span>
     <span class="nn">sosa</span><span class="p">:</span><span class="nt">isHostedBy</span> <span class="nn">locatie</span><span class="p">:</span><span class="nt">crematoria-1</span> <span class="p">.</span>
 
 <span class="nn">proces</span><span class="p">:</span><span class="nt">meting-schoorsteen-1</span>
