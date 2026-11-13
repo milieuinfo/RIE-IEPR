@@ -49,7 +49,7 @@
 @prefix stuk:             <https://data.riepr.omgeving.vlaanderen.be/id/stuk/> .
 
 # Codelijsten (SKOS-concepten), beheerd in milieuinfo/codelijst-rie-iepr
-@prefix status-type:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/statustype/> .
+@prefix riepr-status:       <https://data.omgeving.vlaanderen.be/id/concept/riepr/status/> .
 @prefix procedure-type:    <https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/> .
 @prefix installatie-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/installatietype/> .
 @prefix emissiepunt-type:  <https://data.omgeving.vlaanderen.be/id/concept/riepr/emissiepunttype/> .
@@ -83,7 +83,7 @@ locatie:crematoria-1 a :Exploitatielocatie ;
     dct:issued "2020-01-01"^^xsd:date ;
     dct:created "2020-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     # De exploitant hangt aan de locatie, niet rechtstreeks aan de exploitatie
     prov:wasAttributedTo exploitant:crematoria-beheerder ;
     locn:address [ a locn:Address ;
@@ -100,7 +100,7 @@ exploitatie:crematoria-exploitatie-1 a :Exploitatie ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-09-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:deployedOnPlatform locatie:crematoria-1 ;
     # Precies één hoofdproces
     ssn:implements proces:crematorium-hoofdproces ;
@@ -136,7 +136,7 @@ installatie:crematieoven-1 a :Installatie, ssn:System ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2021-08-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-1-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -148,7 +148,7 @@ installatie:crematieoven-2 a :Installatie, ssn:System ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2021-08-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-2-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -160,7 +160,7 @@ installatie:crematieoven-3 a :Installatie, ssn:System ;
     dct:issued "2002-08-01"^^xsd:date ;
     dct:created "2002-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-08-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-3-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -172,7 +172,7 @@ installatie:crematieoven-4 a :Installatie, ssn:System ;
     dct:issued "2011-01-01"^^xsd:date ;
     dct:created "2011-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2011-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2011-01-01"^^xsd:date ;
     ssn:hasProperty eig:crematieoven-4-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -186,7 +186,7 @@ installatie:centrale-verwarming-1 a :Installatie, ssn:System ;
     dct:issued "2016-08-01"^^xsd:date ;
     dct:created "2016-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2016-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2016-08-01"^^xsd:date ;
     ssn:hasProperty eig:centrale-verwarming-1-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -198,7 +198,7 @@ installatie:centrale-verwarming-2 a :Installatie, ssn:System ;
     dct:issued "2014-08-01"^^xsd:date ;
     dct:created "2014-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2014-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2014-08-01"^^xsd:date ;
     ssn:hasProperty eig:centrale-verwarming-2-vermogen ;
     sosa:isHostedBy locatie:crematoria-1 .
@@ -250,7 +250,7 @@ emissiepunt:schoorsteen-1 a :Emissiepunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-1-hoogte, eig:schoorsteen-1-diameter ;
     # De emissiemeter zit in de schoorsteen
@@ -266,7 +266,7 @@ emissiepunt:schoorsteen-2 a :Emissiepunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-2-hoogte, eig:schoorsteen-2-diameter ;
     ssn:hasSubSystem meetpunt:meetpunt-schoorsteen-2 ;
@@ -281,7 +281,7 @@ emissiepunt:schoorsteen-3 a :Emissiepunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-3-hoogte, eig:schoorsteen-3-diameter ;
     ogc:hasGeometry [ a ogc:Geometry ;
@@ -295,7 +295,7 @@ emissiepunt:schoorsteen-4 a :Emissiepunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ssn:hasProperty eig:schoorsteen-4-hoogte, eig:schoorsteen-4-diameter ;
     ogc:hasGeometry [ a ogc:Geometry ;
@@ -360,7 +360,7 @@ meetpunt:meetpunt-schoorsteen-1 a :Meetpunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ogc:hasGeometry [ a ogc:Geometry ;
         ogc:asWKT "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717813.117 678859.536)"^^ogc:wktLiteral
@@ -372,7 +372,7 @@ meetpunt:meetpunt-schoorsteen-2 a :Meetpunt, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     ogc:hasGeometry [ a ogc:Geometry ;
         ogc:asWKT "<http://www.opengis.net/def/crs/EPSG/0/31370> POINT(717817.118 678848.537)"^^ogc:wktLiteral
@@ -387,7 +387,7 @@ uitwisselpunt:grondwaterput-1 a :Uitwisselpunt, ssn:System ;
     dct:issued "2022-01-15"^^xsd:date ;
     dct:created "2022-01-15T09:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-03-10T14:30:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2022-01-15"^^xsd:date ;
     ssn:hasSubSystem filter:grondwaterfilter-1 ;
     ogc:hasGeometry [ a ogc:Geometry ;
@@ -400,7 +400,7 @@ filter:grondwaterfilter-1 a :Filter, ssn:System ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     :inGebruikVanaf "2002-01-01"^^xsd:date ;
     sosa:isHostedBy locatie:crematoria-1 .
 
@@ -437,7 +437,7 @@ proces:crematorium-hoofdproces a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy exploitatie:crematoria-exploitatie-1 .
 
 # --- Verwerkingsprocessen: één per bron ---
@@ -448,7 +448,7 @@ proces:stookproces-crematieoven-1 a :Proces ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:crematieoven-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -461,7 +461,7 @@ proces:stookproces-crematieoven-2 a :Proces ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:crematieoven-2 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -474,7 +474,7 @@ proces:stookproces-crematieoven-3 a :Proces ;
     dct:issued "2002-08-01"^^xsd:date ;
     dct:created "2002-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:crematieoven-3 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -487,7 +487,7 @@ proces:stookproces-crematieoven-4 a :Proces ;
     dct:issued "2011-01-01"^^xsd:date ;
     dct:created "2011-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2011-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:crematieoven-4 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -500,7 +500,7 @@ proces:stookproces-centrale-verwarming-1 a :Proces ;
     dct:issued "2016-08-01"^^xsd:date ;
     dct:created "2016-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2016-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:centrale-verwarming-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -513,7 +513,7 @@ proces:stookproces-centrale-verwarming-2 a :Proces ;
     dct:issued "2014-08-01"^^xsd:date ;
     dct:created "2014-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2014-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy installatie:centrale-verwarming-2 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:aardgas-verbruik ;
@@ -529,7 +529,7 @@ proces:emissie-schoorsteen-1 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy emissiepunt:schoorsteen-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
@@ -543,7 +543,7 @@ proces:emissie-schoorsteen-2 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy emissiepunt:schoorsteen-2 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
@@ -556,7 +556,7 @@ proces:emissie-schoorsteen-3 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy emissiepunt:schoorsteen-3 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:isPrecededBy proces:transport-centrale-verwarming-1-schoorsteen-3 .
@@ -567,7 +567,7 @@ proces:emissie-schoorsteen-4 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy emissiepunt:schoorsteen-4 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:isPrecededBy proces:transport-centrale-verwarming-2-schoorsteen-4 .
@@ -582,7 +582,7 @@ proces:transport-crematieoven-1-schoorsteen-1 a :Proces ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
     pplan:hasOutputVar variabele:rookgas-uitstoot ;
@@ -594,7 +594,7 @@ proces:transport-crematieoven-2-schoorsteen-1 a :Proces ;
     dct:issued "2021-08-01"^^xsd:date ;
     dct:created "2021-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2021-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
     pplan:hasOutputVar variabele:rookgas-uitstoot ;
@@ -606,7 +606,7 @@ proces:transport-crematieoven-3-schoorsteen-2 a :Proces ;
     dct:issued "2002-08-01"^^xsd:date ;
     dct:created "2002-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
     pplan:hasOutputVar variabele:rookgas-uitstoot ;
@@ -618,7 +618,7 @@ proces:transport-crematieoven-4-schoorsteen-2 a :Proces ;
     dct:issued "2011-01-01"^^xsd:date ;
     dct:created "2011-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2011-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:hasInputVar variabele:rookgas-uitstoot ;
     pplan:hasOutputVar variabele:rookgas-uitstoot ;
@@ -630,7 +630,7 @@ proces:transport-centrale-verwarming-1-schoorsteen-3 a :Proces ;
     dct:issued "2016-08-01"^^xsd:date ;
     dct:created "2016-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2016-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:isPrecededBy proces:stookproces-centrale-verwarming-1 .
 
@@ -640,7 +640,7 @@ proces:transport-centrale-verwarming-2-schoorsteen-4 a :Proces ;
     dct:issued "2014-08-01"^^xsd:date ;
     dct:created "2014-08-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2014-08-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces ;
     pplan:isPrecededBy proces:stookproces-centrale-verwarming-2 .
 
@@ -653,7 +653,7 @@ proces:meting-schoorsteen-1 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy meetpunt:meetpunt-schoorsteen-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces .
 
@@ -664,7 +664,7 @@ proces:meting-schoorsteen-2 a :Proces ;
     dct:issued "2002-01-01"^^xsd:date ;
     dct:created "2002-01-01T00:00:00Z"^^xsd:dateTime ;
     dct:modified "2002-01-01T00:00:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy meetpunt:meetpunt-schoorsteen-2 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces .
 
@@ -677,7 +677,7 @@ proces:onttrekking-grondwaterput-1 a :Proces ;
     dct:issued "2022-01-15"^^xsd:date ;
     dct:created "2022-01-15T09:00:00Z"^^xsd:dateTime ;
     dct:modified "2024-03-10T14:30:00Z"^^xsd:dateTime ;
-    adms:status status-type:in_dienst ;
+    adms:status riepr-status:in_dienst ;
     ssn:implementedBy uitwisselpunt:grondwaterput-1 ;
     pplan:isStepOfPlan proces:crematorium-hoofdproces .
 
