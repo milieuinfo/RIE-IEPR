@@ -5,6 +5,7 @@
 -- http://www.w3.org/ns/sosa/Procedure
 CREATE TYPE procedure AS ENUM (
   'EMISSIE',
+  'HOOFDACTIVITEIT',
   'MEET',
   'ONTTREKKING',
   'TRANSPORT',

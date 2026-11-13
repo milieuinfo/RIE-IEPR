@@ -31,6 +31,7 @@ import java.util.List;
  **/
 public enum Procedure {
 	EMISSIE("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/emissie"),
+	HOOFDACTIVITEIT("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/hoofdactiviteit"),
 	MEET("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/meting"),
 	ONTTREKKING("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/onttrekking"),
 	TRANSPORT("https://data.omgeving.vlaanderen.be/id/concept/riepr/proceduretype/transport"),
