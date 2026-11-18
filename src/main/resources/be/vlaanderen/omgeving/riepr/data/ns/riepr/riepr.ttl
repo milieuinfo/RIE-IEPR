@@ -1462,6 +1462,11 @@
     ] .
 
 ## Observaties
+:Uitvoerder a owl:Class ;
+    rdfs:label "Uitvoerder"@nl ;
+    rdfs:comment "Een uitvoerder is een persoon die een of meer observaties heeft uitgevoerd."@nl ;
+    rdfs:subClassOf prov:Agent .
+
 :Monster a owl:Class ;
     rdfs:label "Monster"@nl ;
     rdfs:comment "Een monster is een deel van een onderzochte materie dat door een monstername wordt verkregen."@nl ;
@@ -1476,7 +1481,7 @@
 :Observatie a owl:Class ;
     rdfs:label "Observatie"@nl ;
     rdfs:comment "Een observatie is een waarneming of meting uitgevoerd op een emissie of onttrekking."@nl ;
-    rdfs:subClassOf sosa:Observation ;
+    rdfs:subClassOf sosa-2023:Observation ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatie/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
