@@ -221,7 +221,8 @@ classDiagram
 	Exploitatielocatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String uuid
+	  +String id
+	  String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
@@ -518,6 +519,11 @@ classDiagram
 	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#parameter
 	Systeemeigenschap --> Rubriek : parameter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitvoerder
+	class Uitvoerder {
+	  +String uuid
+	  String uri
+	}
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Uitwisselpunt
 	class Uitwisselpunt:::system {
 	  +String id
