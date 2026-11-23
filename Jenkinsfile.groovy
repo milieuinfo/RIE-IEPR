@@ -56,7 +56,7 @@ pipeline {
       // https://github.com/projectlombok/lombok/issues/3983). maven.compiler.release
       // in pom.xml is pinned to 17 anyway, so there's no reason to build on 25;
       // 21 compiles the exact same generated sources cleanly (verified locally).
-      yaml podBuilder.from([maven.podSpec(21), dind.podSpec(), sonar, trivy, nodePodSpec, pythonPodSpec])
+      yaml podBuilder.from([maven.podSpec(21), dind.podSpec(), sonar, trivy.podSpec(), nodePodSpec, pythonPodSpec])
     }
   }
 
@@ -85,6 +85,21 @@ pipeline {
                 booleanParam(name: 'DEPLOY', defaultValue: false, description: 'If true, runs mvn deploy instead of mvn verify.')
             ])])
           }
+        }
+      }
+    }
+
+    stage('Gitleaks scan') {
+      when {
+        expression { shouldRun() }
+      }
+      steps {
+        container('maven') {
+          sh '''
+            docker run --rm -v "$(pwd):/workspace:ro" \
+              acd-docker.repository.milieuinfo.be/zricethezav/gitleaks:v8.24.2 \
+              dir --redact --no-banner /workspace
+          '''
         }
       }
     }
@@ -169,6 +184,17 @@ pipeline {
       }
     }
 
+    stage('Trivy scan') {
+      when {
+        expression { shouldRun() }
+      }
+      steps {
+        script {
+          trivy.scanFilesystem([ignoreFile: '.trivyignore.yaml'])
+        }
+      }
+    }
+
     stage('Deploy docs to GitHub Pages') {
       when {
         allOf {
@@ -241,13 +267,6 @@ pipeline {
         }
       }
       parallel {
-        stage("Trivy scan") {
-          steps {
-            script {
-              trivy.scanFilesystem([targetPath: 'pom.xml'])
-            }
-          }
-        }
         stage("Maven verify") {
           when {
             expression { !(params.DEPLOY ?: false) }
