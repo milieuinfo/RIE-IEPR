@@ -1530,9 +1530,9 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een observatie kan een geobserveerde eigenschap hebben"@nl ;
+        rdfs:comment "Een observatie moet precies één geobserveerde eigenschap hebben"@nl ;
         owl:onProperty sosa:observedProperty ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1549,6 +1549,12 @@
         owl:someValuesFrom ssn:System ;
         owl:minCardinality "0"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een observatie kan één of meer uitvoerders hebben."@nl ;
+        owl:onProperty prov:wasAssociatedWith ;
+        owl:allValuesFrom :Uitvoerder ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
         rdfs:comment "Een observatie kan deel uitmaken van een observatieverzameling"@nl ;

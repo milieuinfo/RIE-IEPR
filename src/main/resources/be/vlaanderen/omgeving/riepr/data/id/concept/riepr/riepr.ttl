@@ -156,7 +156,7 @@
 :datatype a skos:Concept ;
     skos:prefLabel "datatype"@nl ;
     skos:definition "De eigenschap die het datatype van de waarde van een systeemeigenschap beschrijft."@nl ;
-    owl:equivalentProperty riepr:datatype ;
+    owl:equivalentProperty riepr:datatype, <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat/Eigenschap/datatype> ;
     skos:inScheme <> .
 
 :hoogte a skos:Concept ;
@@ -370,6 +370,78 @@
     skos:prefLabel "eigenschap"@nl ;
     skos:definition "Een eigenschap die gemeten wordt bij de uitvoering van een observatie."@nl ;
     owl:equivalentProperty sosa:observedProperty ;
+    skos:inScheme <> .
+
+:waargenomenMet a skos:Concept ;
+    skos:prefLabel "waargenomen met"@nl ;
+    skos:definition "Het systeem waarmee een observatie is uitgevoerd."@nl ;
+    owl:equivalentProperty sosa:madeBySensor ;
+    skos:inScheme <> .
+
+:verschijnseltijd a skos:Concept ;
+    skos:prefLabel "verschijnseltijd"@nl ;
+    skos:definition "Het tijdstip of tijdsinterval waarop het geobserveerde verschijnsel betrekking heeft."@nl ;
+    owl:equivalentProperty sosa:phenomenonTime ;
+    skos:inScheme <> .
+
+:resultaattijd a skos:Concept ;
+    skos:prefLabel "resultaattijd"@nl ;
+    skos:definition "Het tijdstip waarop het resultaat van een observatie beschikbaar kwam."@nl ;
+    owl:equivalentProperty sosa:resultTime ;
+    skos:inScheme <> .
+
+:gebruikteProcedure a skos:Concept ;
+    skos:prefLabel "gebruikte procedure"@nl ;
+    skos:definition "De procedure waarmee een observatie is uitgevoerd."@nl ;
+    owl:equivalentProperty sosa:usedProcedure ;
+    skos:inScheme <> .
+
+:heeftLid a skos:Concept ;
+    skos:prefLabel "heeft lid"@nl ;
+    skos:definition "Een observatie of observatieverzameling die deel uitmaakt van een observatieverzameling."@nl ;
+    owl:equivalentProperty sosa:hasMember ;
+    skos:inScheme <> .
+
+:isLidVan a skos:Concept ;
+    skos:prefLabel "is lid van"@nl ;
+    skos:definition "De observatieverzameling waarvan een observatie of observatieverzameling deel uitmaakt."@nl ;
+    owl:equivalentProperty sosa:isMemberOf ;
+    skos:inScheme <> .
+
+:wordtGeobserveerdIn a skos:Concept ;
+    skos:prefLabel "wordt geobserveerd in"@nl ;
+    skos:definition "Een observatie of observatieverzameling die betrekking heeft op een gebeurtenis."@nl ;
+    owl:equivalentProperty sosa:isFeatureOfInterestOf ;
+    skos:inScheme <> .
+
+:predicaat a skos:Concept ;
+    skos:prefLabel "predicaat"@nl ;
+    skos:definition "De URI van het predicaat van een resultaatseigenschap."@nl ;
+    owl:equivalentProperty rdf:predicate ;
+    skos:inScheme <> .
+
+:objectwaarde a skos:Concept ;
+    skos:prefLabel "objectwaarde"@nl ;
+    skos:definition "De lexicale waarde of object-URI van een resultaatseigenschap."@nl ;
+    owl:equivalentProperty rdf:object ;
+    skos:inScheme <> .
+
+:objectsoort a skos:Concept ;
+    skos:prefLabel "objectsoort"@nl ;
+    skos:definition "De soort van het object van een resultaatseigenschap: een URI of een letterlijke waarde."@nl ;
+    owl:equivalentProperty <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat/Eigenschap/objectKind> ;
+    skos:inScheme <> .
+
+:taal a skos:Concept ;
+    skos:prefLabel "taal"@nl ;
+    skos:definition "De taalcode van een taalgebonden letterlijke waarde."@nl ;
+    owl:equivalentProperty <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat/Eigenschap/language> ;
+    skos:inScheme <> .
+
+:resultaatEigenschappen a skos:Concept ;
+    skos:prefLabel "resultaateigenschappen"@nl ;
+    skos:definition "De vrij gedefinieerde eigenschappen van een resultaat."@nl ;
+    owl:equivalentProperty <https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Resultaat/metadata-properties> ;
     skos:inScheme <> .
 
 # ---------------------------------------- #
