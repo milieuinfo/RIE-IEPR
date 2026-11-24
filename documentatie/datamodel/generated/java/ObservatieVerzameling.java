@@ -102,7 +102,7 @@ public class ObservatieVerzameling implements IriReferentie {
 	)
 	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasMember_observatie")
-	private List<Observatie> hasMemberObservatie;
+	private List<Observatie> heeftLidObservatie;
 	@ManyToMany
 	@JoinTable(
 		name = "observatie_verzameling_observatie_verzameling",
@@ -111,7 +111,7 @@ public class ObservatieVerzameling implements IriReferentie {
 	)
 	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("hasMember_observatie_verzameling")
-	private List<ObservatieVerzameling> hasMemberObservatieVerzameling;
+	private List<ObservatieVerzameling> heeftLidObservatieVerzameling;
 	/**
 	 * aangifte
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>

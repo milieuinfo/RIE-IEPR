@@ -82,6 +82,19 @@ public class Observatie implements IriReferentie {
 	@JsonProperty("issued")
 	private String geldigVan;
 	/**
+	 * wasAssociatedWith
+	 * <a href="http://www.w3.org/ns/prov#wasAssociatedWith">wasAssociatedWith</a>
+	 * Een observatie kan één of meer uitvoerders hebben.
+	 */
+	@ManyToMany
+	@JoinTable(
+		name = "observatie_uitvoerder",
+		joinColumns = @JoinColumn(name = "source_uuid"),
+		inverseJoinColumns = @JoinColumn(name = "target_uuid")
+	)
+	@JsonProperty("wasAssociatedWith")
+	private List<Uitvoerder> verantwoordelijke;
+	/**
 	 * hasFeatureOfInterest
 	 * <a href="http://www.w3.org/ns/sosa/hasFeatureOfInterest">hasFeatureOfInterest</a>
 	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
@@ -107,7 +120,7 @@ public class Observatie implements IriReferentie {
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("isMemberOf")
-	private ObservatieVerzameling isMemberOf;
+	private ObservatieVerzameling isLidVan;
 	/**
 	 * madeBySensor
 	 * <a href="http://www.w3.org/ns/sosa/madeBySensor">madeBySensor</a>
@@ -116,11 +129,11 @@ public class Observatie implements IriReferentie {
 	@JoinColumn(name = "uuid", nullable = true)
 	@JsonSerialize(using = IriReferentieSerializer.class)
 	@JsonProperty("madeBySensor")
-	private ISysteem madeBySensor;
+	private ISysteem waargenomenMet;
 	/**
 	 * observedProperty
 	 * <a href="http://www.w3.org/ns/sosa/observedProperty">observedProperty</a>
-	 * Een observatie kan een geobserveerde eigenschap hebben
+	 * Een observatie moet precies één geobserveerde eigenschap hebben
 	 */
 	@Column(name = "eigenschap", nullable = true)
 	@JsonProperty("observedProperty")
@@ -130,25 +143,25 @@ public class Observatie implements IriReferentie {
 	 * <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenonTime</a>
 	 * Een observatie kan een verschijnsel tijdsinterval hebben
 	 */
-	@Column(name = "phenomenon_time", nullable = true)
+	@Column(name = "verschijnseltijd", nullable = true)
 	@JsonProperty("phenomenonTime")
-	private String phenomenonTime;
+	private String verschijnseltijd;
 	/**
 	 * resultTime
 	 * <a href="http://www.w3.org/ns/sosa/resultTime">resultTime</a>
 	 * Een observatie kan een resultaat tijdstip hebben
 	 */
-	@Column(name = "result_time", nullable = true)
+	@Column(name = "resultaattijd", nullable = true)
 	@JsonProperty("resultTime")
-	private LocalDate resultTime;
+	private LocalDate resultaattijd;
 	/**
 	 * usedProcedure
 	 * <a href="http://www.w3.org/ns/sosa/usedProcedure">usedProcedure</a>
 	 * Een observatie kan een gebruikte bepalingsmethode hebben
 	 */
-	@Column(name = "used_procedure", nullable = true)
+	@Column(name = "gebruikte_procedure", nullable = true)
 	@JsonProperty("usedProcedure")
-	private String usedProcedure;
+	private String gebruikteProcedure;
 	/**
 	 * aangifte
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte">aangifte</a>

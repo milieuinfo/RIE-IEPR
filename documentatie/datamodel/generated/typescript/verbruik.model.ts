@@ -61,7 +61,7 @@ export class Verbruik implements Gebeurtenis {
 	 * @see {@link http://www.w3.org/ns/sosa/isFeatureOfInterestOf}
 	 */
 	@jsonArrayMember(() => Observatie, { name: 'isFeatureOfInterestOf' })
-	isFeatureOfInterestOf?: (Observatie | ObservatieVerzameling)[];
+	wordtGeobserveerdIn?: (Observatie | ObservatieVerzameling)[];
 
 	/**
 	 * productiejaar

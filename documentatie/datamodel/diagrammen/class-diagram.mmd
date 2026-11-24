@@ -98,13 +98,13 @@ classDiagram
 	  String aangemaaktOp
 	  String geldigVan
 	  Proces[] wasDerivedFrom
-	  Observatie[] isFeatureOfInterestOf
+	  Observatie[] wordtGeobserveerdIn
 	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Emissie --> Proces : wasDerivedFrom
 	%% http://www.w3.org/ns/sosa/isFeatureOfInterestOf
-	Emissie --> Observatie : isFeatureOfInterestOf
+	Emissie --> Observatie : wordtGeobserveerdIn
 	Gebeurtenis <|-- Emissie
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissiepunt
 	class Emissiepunt:::system {
@@ -341,24 +341,27 @@ classDiagram
 	  String uri
 	  DateTime aangemaaktOp
 	  String geldigVan
+	  Uitvoerder[] verantwoordelijke
 	  Gebeurtenis betrekkingTot
 	  Resultaat heeftResultaat
-	  ObservatieVerzameling isMemberOf
-	  Systeem madeBySensor
+	  ObservatieVerzameling isLidVan
+	  Systeem waargenomenMet
 	  String eigenschap
-	  String phenomenonTime
-	  Date resultTime
-	  String usedProcedure
+	  String verschijnseltijd
+	  Date resultaattijd
+	  String gebruikteProcedure
 	  Aangifte aangifte
 	}
+	%% http://www.w3.org/ns/prov#wasAssociatedWith
+	Observatie --> Uitvoerder : verantwoordelijke
 	%% http://www.w3.org/ns/sosa/hasFeatureOfInterest
 	Observatie --> Gebeurtenis : betrekkingTot
 	%% http://www.w3.org/ns/sosa/hasResult
 	Observatie --> Resultaat : heeftResultaat
 	%% http://www.w3.org/ns/sosa/isMemberOf
-	Observatie --> ObservatieVerzameling : isMemberOf
+	Observatie --> ObservatieVerzameling : isLidVan
 	%% http://www.w3.org/ns/sosa/madeBySensor
-	Observatie --> Systeem : madeBySensor
+	Observatie --> Systeem : waargenomenMet
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Observatie --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
@@ -369,13 +372,13 @@ classDiagram
 	  DateTime aangemaaktOp
 	  String geldigVan
 	  Gebeurtenis betrekkingTot
-	  Observatie[] hasMember
+	  Observatie[] heeftLid
 	  Aangifte aangifte
 	}
 	%% http://www.w3.org/ns/sosa/hasFeatureOfInterest
 	ObservatieVerzameling --> Gebeurtenis : betrekkingTot
 	%% http://www.w3.org/ns/sosa/hasMember
-	ObservatieVerzameling --> Observatie : hasMember
+	ObservatieVerzameling --> Observatie : heeftLid
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	ObservatieVerzameling --> Aangifte : aangifte
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
@@ -386,13 +389,13 @@ classDiagram
 	  String aangemaaktOp
 	  String geldigVan
 	  Proces[] wasDerivedFrom
-	  Observatie[] isFeatureOfInterestOf
+	  Observatie[] wordtGeobserveerdIn
 	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Onttrekking --> Proces : wasDerivedFrom
 	%% http://www.w3.org/ns/sosa/isFeatureOfInterestOf
-	Onttrekking --> Observatie : isFeatureOfInterestOf
+	Onttrekking --> Observatie : wordtGeobserveerdIn
 	Gebeurtenis <|-- Onttrekking
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekkingspunt
 	class Onttrekkingspunt:::system {
@@ -568,13 +571,13 @@ classDiagram
 	  String aangemaaktOp
 	  String geldigVan
 	  Proces[] wasDerivedFrom
-	  Observatie[] isFeatureOfInterestOf
+	  Observatie[] wordtGeobserveerdIn
 	  String productiejaar
 	}
 	%% http://www.w3.org/ns/prov#wasDerivedFrom
 	Verbruik --> Proces : wasDerivedFrom
 	%% http://www.w3.org/ns/sosa/isFeatureOfInterestOf
-	Verbruik --> Observatie : isFeatureOfInterestOf
+	Verbruik --> Observatie : wordtGeobserveerdIn
 	Gebeurtenis <|-- Verbruik
 	%% http://www.w3.org/ns/sosa/FeatureOfInterest
 	class Gebeurtenis {

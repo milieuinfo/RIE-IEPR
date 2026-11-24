@@ -104,7 +104,7 @@ public class Onttrekking implements IGebeurtenis, IriReferentie {
 	)
 	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("isFeatureOfInterestOf_observatie")
-	private List<Observatie> isFeatureOfInterestOfObservatie;
+	private List<Observatie> wordtGeobserveerdInObservatie;
 	@ManyToMany
 	@JoinTable(
 		name = "onttrekking_observatie_verzameling",
@@ -113,7 +113,7 @@ public class Onttrekking implements IGebeurtenis, IriReferentie {
 	)
 	@JsonSerialize(contentUsing = IriReferentieSerializer.class)
 	@JsonProperty("isFeatureOfInterestOf_observatie_verzameling")
-	private List<ObservatieVerzameling> isFeatureOfInterestOfObservatieVerzameling;
+	private List<ObservatieVerzameling> wordtGeobserveerdInObservatieVerzameling;
 	/**
 	 * productiejaar
 	 * <a href="https://data.riepr.omgeving.vlaanderen.be/ns/riepr#productiejaar">productiejaar</a>

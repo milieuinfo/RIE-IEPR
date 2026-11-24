@@ -114,10 +114,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	emissie_observatie many to one emissie_identity : is_feature_of_interest_of_observatie
+	emissie_observatie many to one emissie_identity : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	emissie_observatie many to one observatie : is_feature_of_interest_of_observatie
+	emissie_observatie many to one observatie : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie_observatie_verzameling {
@@ -128,10 +128,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	emissie_observatie_verzameling many to one emissie_identity : is_feature_of_interest_of_observatie_verzameling
+	emissie_observatie_verzameling many to one emissie_identity : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	emissie_observatie_verzameling many to one observatie_verzameling : is_feature_of_interest_of_observatie_verzameling
+	emissie_observatie_verzameling many to one observatie_verzameling : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Emissie
 	emissie_proces {
@@ -404,7 +404,7 @@ erDiagram
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter {
-	  id VARCHAR PK
+	  systeem_uuid VARCHAR PK,FK
 	  uri VARCHAR 
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van DATE 
@@ -427,10 +427,7 @@ erDiagram
 	filter many to one geometry : geometrie_geometry
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter many to one filter_identity : uuid_filter
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter many to one filter_identity : ""
+	filter one to many systeem : ""
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_exploitatie {
@@ -446,7 +443,7 @@ erDiagram
 	filter_exploitatie many to one exploitatie : has_deployment_exploitatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_exploitatie many to one filter_identity : has_deployment_exploitatie
+	filter_exploitatie many to one filter : has_deployment_exploitatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_externe_identificator {
@@ -462,16 +459,7 @@ erDiagram
 	filter_externe_identificator many to one externe_identificator : identifier_externe_identificator
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_externe_identificator many to one filter_identity : identifier_externe_identificator
-	
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
-	filter_identity {
-	  systeem_uuid VARCHAR PK,FK
-	}
-	
-	class filter_identity system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_identity one to many systeem : ""
+	filter_externe_identificator many to one filter : identifier_externe_identificator
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	filter_systeemeigenschap {
@@ -484,7 +472,7 @@ erDiagram
 	
 	class filter_systeemeigenschap system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	filter_systeemeigenschap many to one filter_identity : heeft_eigenschap_systeemeigenschap
+	filter_systeemeigenschap many to one filter : heeft_eigenschap_systeemeigenschap
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	filter_systeemeigenschap many to one systeemeigenschap : heeft_eigenschap_systeemeigenschap
@@ -682,7 +670,7 @@ erDiagram
 	
 	class meetpunt_filter system
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	meetpunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	meetpunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	meetpunt_filter many to one meetpunt_identity : heeft_sub_systeem_filter
@@ -730,12 +718,12 @@ erDiagram
 	  geldig_van VARCHAR 
 	  betrekking_tot VARCHAR FK
 	  heeft_resultaat VARCHAR FK
-	  is_member_of VARCHAR FK
-	  made_by_sensor VARCHAR FK
+	  is_lid_van VARCHAR FK
+	  waargenomen_met VARCHAR FK
 	  eigenschap VARCHAR 
-	  phenomenon_time VARCHAR 
-	  result_time DATE 
-	  used_procedure VARCHAR 
+	  verschijnseltijd VARCHAR 
+	  resultaattijd DATE 
+	  gebruikte_procedure VARCHAR 
 	  aangifte VARCHAR FK
 	}
 	
@@ -749,10 +737,24 @@ erDiagram
 	observatie many to one resultaat : heeft_resultaat_resultaat
 	
 	%% http://www.w3.org/ns/sosa/isMemberOf
-	observatie many to one observatie_verzameling : is_member_of_observatie_verzameling
+	observatie many to one observatie_verzameling : is_lid_van_observatie_verzameling
 	
 	%% http://www.w3.org/ns/sosa/madeBySensor
-	observatie many to one systeem : made_by_sensor_systeem
+	observatie many to one systeem : waargenomen_met_systeem
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Observatie
+	observatie_uitvoerder {
+	  observatie_id VARCHAR PK,FK
+	  uitvoerder_id VARCHAR PK,FK
+	  aangemaakt_op TIMESTAMP 
+	  geldig_van VARCHAR 
+	}
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	observatie_uitvoerder many to one observatie : verantwoordelijke_uitvoerder
+	
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	observatie_uitvoerder many to one uitvoerder : verantwoordelijke_uitvoerder
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 	observatie_verzameling {
@@ -780,24 +782,24 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	observatie_verzameling_observatie many to one observatie : has_member_observatie
+	observatie_verzameling_observatie many to one observatie : heeft_lid_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	observatie_verzameling_observatie many to one observatie_verzameling : has_member_observatie
+	observatie_verzameling_observatie many to one observatie_verzameling : heeft_lid_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#ObservatieVerzameling
 	observatie_verzameling_observatie_verzameling {
 	  observatie_verzameling_id VARCHAR PK,FK
-	  has_member_observatie_verzameling_id VARCHAR PK,FK
+	  heeft_lid_observatie_verzameling_id VARCHAR PK,FK
 	  aangemaakt_op TIMESTAMP 
 	  geldig_van VARCHAR 
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : has_member_observatie_verzameling
+	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : heeft_lid_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : has_member_observatie_verzameling
+	observatie_verzameling_observatie_verzameling many to one observatie_verzameling : heeft_lid_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking {
@@ -832,10 +834,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekking_observatie many to one observatie : is_feature_of_interest_of_observatie
+	onttrekking_observatie many to one observatie : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekking_observatie many to one onttrekking_identity : is_feature_of_interest_of_observatie
+	onttrekking_observatie many to one onttrekking_identity : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking_observatie_verzameling {
@@ -846,10 +848,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekking_observatie_verzameling many to one observatie_verzameling : is_feature_of_interest_of_observatie_verzameling
+	onttrekking_observatie_verzameling many to one observatie_verzameling : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	onttrekking_observatie_verzameling many to one onttrekking_identity : is_feature_of_interest_of_observatie_verzameling
+	onttrekking_observatie_verzameling many to one onttrekking_identity : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Onttrekking
 	onttrekking_proces {
@@ -938,8 +940,8 @@ erDiagram
 	}
 	
 	class onttrekkingspunt_filter system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id
-	onttrekkingspunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	onttrekkingspunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	onttrekkingspunt_filter many to one onttrekkingspunt_identity : heeft_sub_systeem_filter
@@ -1236,8 +1238,8 @@ erDiagram
 	}
 	
 	class uitwisselpunt_filter system
-	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#id
-	uitwisselpunt_filter many to one filter_identity : heeft_sub_systeem_filter
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
+	uitwisselpunt_filter many to one filter : heeft_sub_systeem_filter
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
 	uitwisselpunt_filter many to one uitwisselpunt_identity : heeft_sub_systeem_filter
@@ -1300,10 +1302,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	verbruik_observatie many to one observatie : is_feature_of_interest_of_observatie
+	verbruik_observatie many to one observatie : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	verbruik_observatie many to one verbruik_identity : is_feature_of_interest_of_observatie
+	verbruik_observatie many to one verbruik_identity : wordt_geobserveerd_in_observatie
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	verbruik_observatie_verzameling {
@@ -1314,10 +1316,10 @@ erDiagram
 	}
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	verbruik_observatie_verzameling many to one observatie_verzameling : is_feature_of_interest_of_observatie_verzameling
+	verbruik_observatie_verzameling many to one observatie_verzameling : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#localId
-	verbruik_observatie_verzameling many to one verbruik_identity : is_feature_of_interest_of_observatie_verzameling
+	verbruik_observatie_verzameling many to one verbruik_identity : wordt_geobserveerd_in_observatie_verzameling
 	
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Verbruik
 	verbruik_proces {

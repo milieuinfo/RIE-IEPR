@@ -3,6 +3,7 @@ import { Gebeurtenis } from './gebeurtenis.interface';
 import { ObservatieVerzameling } from './observatieverzameling.model';
 import { Resultaat } from './resultaat.model';
 import { Systeem } from './systeem.interface';
+import { Uitvoerder } from './uitvoerder.model';
 import { jsonObject, jsonMember, jsonArrayMember } from 'typedjson';
 
 /**
@@ -51,6 +52,14 @@ export class Observatie {
 	geldigVan?: string;
 
 	/**
+	 * wasAssociatedWith
+	 * @see {@link http://www.w3.org/ns/prov#wasAssociatedWith}
+	 * Een observatie kan één of meer uitvoerders hebben.
+	 */
+	@jsonArrayMember(() => Uitvoerder, { name: 'wasAssociatedWith' })
+	verantwoordelijke?: Uitvoerder[];
+
+	/**
 	 * hasFeatureOfInterest
 	 * @see {@link http://www.w3.org/ns/sosa/hasFeatureOfInterest}
 	 * Een observatie is gekoppeld aan een Emissie of Onttrekking
@@ -72,7 +81,7 @@ export class Observatie {
 	 * Een observatie kan deel uitmaken van een observatieverzameling
 	 */
 	@jsonMember(() => ObservatieVerzameling, { name: 'isMemberOf' })
-	isMemberOf?: ObservatieVerzameling;
+	isLidVan?: ObservatieVerzameling;
 
 	/**
 	 * madeBySensor
@@ -80,12 +89,12 @@ export class Observatie {
 	 * Een observatie kan zijn gemaakt door een meetpunt of ander systeem (sosa:madeBySensor)
 	 */
 	@jsonMember(() => Systeem, { name: 'madeBySensor' })
-	madeBySensor?: Systeem;
+	waargenomenMet?: Systeem;
 
 	/**
 	 * observedProperty
 	 * @see {@link http://www.w3.org/ns/sosa/observedProperty}
-	 * Een observatie kan een geobserveerde eigenschap hebben
+	 * Een observatie moet precies één geobserveerde eigenschap hebben
 	 */
 	@jsonMember({ name: 'observedProperty' })
 	eigenschap?: string;
@@ -96,7 +105,7 @@ export class Observatie {
 	 * Een observatie kan een verschijnsel tijdsinterval hebben
 	 */
 	@jsonMember({ name: 'phenomenonTime' })
-	phenomenonTime?: string;
+	verschijnseltijd?: string;
 
 	/**
 	 * resultTime
@@ -104,7 +113,7 @@ export class Observatie {
 	 * Een observatie kan een resultaat tijdstip hebben
 	 */
 	@jsonMember(() => Date, { name: 'resultTime' })
-	resultTime?: Date;
+	resultaattijd?: Date;
 
 	/**
 	 * usedProcedure
@@ -112,7 +121,7 @@ export class Observatie {
 	 * Een observatie kan een gebruikte bepalingsmethode hebben
 	 */
 	@jsonMember({ name: 'usedProcedure' })
-	usedProcedure?: string;
+	gebruikteProcedure?: string;
 
 	/**
 	 * aangifte
