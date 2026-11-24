@@ -1721,6 +1721,59 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
+:Exploitatietoestandstuk a owl:Class ;
+    rdfs:label "Exploitatietoestandstuk"@nl ;
+    rdfs:comment "Een document dat bij een exploitatietoestand hoort, zoals een voorblad of structuurdocument."@nl ;
+    rdfs:subClassOf dossier:Stuk ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk kan deel uitmaken van een aangifte."@nl ;
+        owl:onProperty dct:isPartOf ;
+        owl:someValuesFrom :Aangifte ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk kan betrekking hebben op een exploitatie."@nl ;
+        owl:onProperty dct:subject ;
+        owl:someValuesFrom :Exploitatie ;
+        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk heeft een type."@nl ;
+        owl:onProperty dct:type ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk heeft een MIME-type."@nl ;
+        owl:onProperty dct:format ;
+        owl:someValuesFrom xsd:string ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk heeft een status."@nl ;
+        owl:onProperty adms:status ;
+        owl:someValuesFrom adms:Status ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk heeft een creatiedatum."@nl ;
+        owl:onProperty dct:created ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een exploitatietoestandstuk heeft een wijzigingsdatum."@nl ;
+        owl:onProperty dct:modified ;
+        owl:someValuesFrom xsd:dateTime ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
 # --------------------------------------- #
 # Object Properties
 # --------------------------------------- #
