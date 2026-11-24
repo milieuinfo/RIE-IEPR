@@ -219,10 +219,27 @@ classDiagram
 	Exploitatielocatie --> Exploitatie : inDeployment
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#aangifte
 	Exploitatielocatie --> Aangifte : aangifte
+	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Exploitatietoestandstuk
+	class Exploitatietoestandstuk {
+	  +String uuid
+	  String uri
+	  DateTime aangemaaktOp
+	  String formaat
+	  Aangifte onderdeelVan
+	  DateTime aangepastOp
+	  Exploitatie onderwerp
+	  String type
+	  Status status
+	}
+	%% http://purl.org/dc/terms/isPartOf
+	Exploitatietoestandstuk --> Aangifte : onderdeelVan
+	%% http://purl.org/dc/terms/subject
+	Exploitatietoestandstuk --> Exploitatie : onderwerp
+	%% http://www.w3.org/ns/adms#status
+	Exploitatietoestandstuk --> Status : status
 	%% https://data.riepr.omgeving.vlaanderen.be/ns/riepr#Filter
 	class Filter:::system {
-	  +String id
-	  String uuid
+	  +String uuid
 	  String uri
 	  DateTime aangemaaktOp
 	  Date geldigVan
