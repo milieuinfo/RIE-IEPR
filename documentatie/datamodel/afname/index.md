@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Modelversie | **1.0.1** |
-| Documentatie bijgewerkt | 2026-09-02 |
+| Documentatie bijgewerkt | 2026-11-24 |
 | Ontologie (`riepr.ttl`) | 2026-08-26 |
 
 
@@ -13,7 +13,7 @@ Het datamodel kent **twee aparte stromen**, die in deze documentatie consequent 
 
 **Structurele gegevens** omvatten exploitanten, contactpersonen, exploitatielocaties, exploitaties, processen en systemen (installaties, emissiepunten, onttrekkingspunten, uitwisselpunten, meetpunten, filters) met hun eigenschappen. Dit zijn de versioneerbare entiteiten die de organisatie en infrastructuur beschrijven, en de enige die in de applicatie worden ingegeven en beheerd.
 
-**Operationele gegevens** omvatten de gebeurtenissen (emissie, onttrekking, verbruik) die als `sosa:FeatureOfInterest` dienen, plus observaties, observatieverzamelingen en resultaten, aangestuurd door de operationele codelijsten (`operationeel_*`, `thema_type`). Ze worden niet geversioneerd en hangen via drie vaste predicaten aan de structurele stroom.
+**Operationele gegevens** worden beschreven met `riepr:Gebeurtenis`, `riepr:Observatie`, `riepr:ObservatieVerzameling`, `riepr:Resultaat` en `riepr:Uitvoerder`. Gebeurtenissen zoals emissies of onttrekkingen zijn het onderwerp van observaties; verzamelingen groeperen metingen en hun context. De eigenschappen van een resultaat hangen af van de gegevens die worden verzameld. Operationele codelijsten (`operationeel_*`, `thema_type`) bieden de mogelijke rapportagewaarden.
 
 !!! warning "Analyse nog lopende"
     De analyse van operationele gegevens is nog lopende. De informatie over operationele gegevens kan wijzigen na afronding van de analyse. De structurele stroom is stabiel.
@@ -40,7 +40,7 @@ De precieze grens — welke klassen, welke predicaten, en waarom emissies niet i
 
 **Operationele gegevens**
 
-- [Observaties en emissies](./observaties.md) — metingen, gebeurtenissen (emissie, onttrekking) en resultaten
+- [Operationele gegevens](./observaties.md) — gebeurtenissen, observaties, observatieverzamelingen, resultaten en uitvoerders
 
 **Datavoorbeelden**
 

@@ -5,7 +5,8 @@ Deze map bevat twee generatie-tools. Elk jar heeft zijn eigen config (naamgeving
 
 | Jar              | Config                  | Doel                                                                    |
 | ---------------- | ----------------------- | ----------------------------------------------------------------------- |
-| `oddtoolkit.jar` | `config-oddtoolkit.yml` | Transformatie van het datamodel naar het applicatief datamodel (SQL, SHACL, Java, TypeScript, diagrammen) |
+| `oddtoolkit.jar` | `config-oddtoolkit.yml` | Transformatie van het volledige datamodel (SQL, SHACL, Java, TypeScript, diagrammen) |
+| `oddtoolkit.jar` | `config-oddtoolkit-operationeel.yml` | Configuratie voor operationele gegevens met gefilterd ER-diagram |
 
 ### owlsda.jar herbuilden
 
@@ -23,10 +24,30 @@ cp target/owlsda.jar /pad/naar/RIE-IEPR/documentatie/datamodel/src/owlsda.jar
 ## ODDToolkit
 
 ```bash
-java -jar ./oddtoolkit.jar --config-file=config-oddtoolkit.yml --generator=all
+java -jar documentatie/datamodel/src/oddtoolkit.jar \
+  --config-file=documentatie/datamodel/src/config-oddtoolkit.yml --generator=all
 ```
 
+Voor de operationele gegevens, vanuit de repo-root:
 
+```bash
+for generator in er-diagram sql java typescript; do
+  java -jar documentatie/datamodel/src/oddtoolkit.jar \
+    --config-file=documentatie/datamodel/src/config-oddtoolkit-operationeel.yml --generator="$generator"
+done
+```
+
+De uitvoer staat in `documentatie/datamodel/generated/operationeel`. Alleen het ER-diagram is
+gefilterd; SQL en klassen omvatten het volledige model. De operationele configuratie laadt geen
+externe ontologieën en gebruikt geen reasoner, identiteitstabellen of samengevoegde koppeltabellen.
+Het diagram is Mermaid-bron; PNG-export staat uit.
+
+Beide configs genereren bij `Resultaat` een `ResultaatEigenschap` per dynamisch predicaat/object,
+met objectsoort (`IRI` of `LITERAL`), optioneel datatype en taal, en een verwijzing naar de
+specifieke resultaatversie. De applicatie moet de eigenschaps-ID en verwijzing invullen en zelf
+de conversie naar RDF uitvoeren; blank nodes en automatische JSON-LD-expansie worden niet
+ondersteund. Namen komen uit de SKOS-concepten. De volledige SQL heeft nog een conflicterende
+foreign key voor `proces.systeem`; `resultaattijd` wordt als `DATE` gegenereerd.
 
 ## Ontologie-bron
 `config-oddtoolkit.yml` en `config-owlsda.yml` wijzen beide naar

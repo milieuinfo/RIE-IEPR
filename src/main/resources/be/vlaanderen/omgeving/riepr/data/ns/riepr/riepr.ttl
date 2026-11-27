@@ -27,6 +27,9 @@
 @prefix oa: <http://www.w3.org/ns/oa#> .
 @prefix qb: <http://purl.org/linked-data/cube#> .
 @prefix csor: <https://data.omgeving.vlaanderen.be/ns/csor#> .
+@prefix vocab: <https://data.riepr.omgeving.vlaanderen.be/ns/vocab#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix time: <http://www.w3.org/2006/time#> .
 
 # --------------------------------------- #
 # Ontology definition
@@ -1568,6 +1571,13 @@
     rdfs:label "Resultaat"@nl ;
     rdfs:comment "Een resultaat is het resultaat record van een observatie."@nl ;
     rdfs:subClassOf sosa:Result, qb:Observation ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        rdfs:comment "Een resultaat behoort tot precies een resultatendataset."@nl ;
+        owl:onProperty qb:dataSet ;
+        owl:allValuesFrom :ResultaatDataset ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultaat/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
@@ -1575,10 +1585,10 @@
                       [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
-        rdfs:comment "Een resultaat kan een numerieke waarde hebben"@nl ;
+        rdfs:comment "Een Cube-resultaat heeft precies een numerieke waarde."@nl ;
         owl:onProperty qudt:numericValue ;
         owl:someValuesFrom [ a rdfs:Datatype ; owl:unionOf ( xsd:decimal xsd:integer ) ] ;
-        owl:minCardinality "0"^^xsd:nonNegativeInteger ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -1595,10 +1605,94 @@
         owl:maxCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
+## Resultaatdimensies en projectieregels voor RDF Cube
+:contextPad a owl:AnnotationProperty ;
+    rdfs:label "Contextpad"@nl ;
+    rdfs:comment "Een SHACL-pad vanaf het resultaat naar de te materialiseren contextwaarde. Gedeelde observatiecontext wordt alleen via observatieverzamelingen geerfd."@nl .
+
+:gedeeldeContext a owl:AnnotationProperty ;
+    rdfs:label "Gedeelde observatiecontext"@nl ;
+    rdfs:comment "Een enkelwaardig predicaat waarvan de waarde gedeeld wordt met leden van een homogene observatieverzameling; expliciete waarden mogen niet conflicteren."@nl .
+
+:bronObservatie a owl:ObjectProperty, qb:DimensionProperty ;
+    rdfs:label "Bronobservatie"@nl ;
+    rdfs:comment "De afzonderlijke meetgebeurtenis waarvan dit resultaat afkomstig is; onderscheidt ook herhaalde metingen."@nl ;
+    rdfs:domain :Resultaat ;
+    rdfs:range sosa:Observation ;
+    :contextPad [ sh:inversePath sosa:hasResult ] .
+
+:referentieObject a owl:ObjectProperty, qb:DimensionProperty ;
+    rdfs:label "Referentieobject"@nl ;
+    rdfs:comment "Het werkelijke kenmerk van belang van de bronobservatie, niet noodzakelijk het geselecteerde fysieke systeem."@nl ;
+    rdfs:domain :Resultaat ;
+    rdfs:range sosa:FeatureOfInterest ;
+    :contextPad ( [ sh:inversePath sosa:hasResult ] sosa:hasFeatureOfInterest ) .
+
+:verslagjaar a owl:DatatypeProperty, qb:DimensionProperty ;
+    rdfs:label "Verslagjaar"@nl ;
+    rdfs:domain :Resultaat ;
+    rdfs:range xsd:gYear ;
+    :contextPad ( qb:dataSet :productiejaar ) .
+
+:meetmoment a owl:DatatypeProperty, qb:AttributeProperty ;
+    rdfs:label "Meetmoment"@nl ;
+    rdfs:comment "Het opgegeven resultaattijdstip van de bronobservatie of haar homogene verzameling; ontbrekende tijdstippen worden niet ingevuld."@nl ;
+    rdfs:domain :Resultaat ;
+    rdfs:range rdfs:Literal ;
+    :contextPad ( [ sh:inversePath sosa:hasResult ] sosa:resultTime ) .
+
+:meetperiode a owl:ObjectProperty, qb:AttributeProperty ;
+    rdfs:label "Meetperiode"@nl ;
+    rdfs:domain :Resultaat ;
+    rdfs:range time:TemporalEntity ;
+    :contextPad ( [ sh:inversePath sosa:hasResult ] sosa:phenomenonTime ) .
+
+vocab:variabele a qb:DimensionProperty ;
+    rdfs:range skos:Concept .
+vocab:kwantiteitsAspect a qb:DimensionProperty ;
+    rdfs:range skos:Concept .
+vocab:drager a qb:DimensionProperty ;
+    rdfs:range skos:Concept .
+vocab:soortWaartbepaling a qb:DimensionProperty ;
+    rdfs:range skos:Concept .
+qudt:numericValue a qb:MeasureProperty .
+qudt:hasUnit a qb:AttributeProperty .
+vocab:bepalingsgrensindicator a qb:AttributeProperty .
+vocab:bronMeetfrequentie a qb:AttributeProperty .
+vocab:duurPompenStil a qb:AttributeProperty .
+vocab:grenswaarde a qb:AttributeProperty .
+vocab:herkomst a qb:AttributeProperty .
+vocab:lozingsduur a qb:AttributeProperty .
+vocab:meetfrequentie a qb:AttributeProperty .
+vocab:pomptoestand a qb:AttributeProperty .
+vocab:referentiepunt a qb:AttributeProperty .
+vocab:soortMonster a qb:AttributeProperty .
+vocab:soortMonstername a qb:AttributeProperty .
+vocab:volumeVoorMeting a qb:AttributeProperty .
+
+:ResultaatDataset a owl:Class ;
+    rdfs:label "Resultatendataset"@nl ;
+    rdfs:comment "Een RDF Cube-dataset voor een bronrapportversie, verslagjaar en DSD. De bronobservatie maakt deel uit van de dimensiesleutel."@nl ;
+    rdfs:subClassOf qb:DataSet ;
+    rdfs:subClassOf [ a owl:Restriction ;
+        owl:onProperty qb:structure ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    hydra:search [ a hydra:IriTemplate ;
+        hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/resultatendataset/{jaar}/{rapport}/{dsd}/{issued}/{created}"^^hydra:Rfc6570Template ;
+        hydra:mapping [ hydra:variable "jaar" ; hydra:property :productiejaar ; hydra:required true ] ,
+                      [ hydra:variable "rapport" ; hydra:property dct:source ; hydra:required true ] ,
+                      [ hydra:variable "dsd" ; hydra:property qb:structure ; hydra:required true ] ,
+                      [ hydra:variable "issued" ; hydra:property dct:issued ; hydra:required true ] ,
+                      [ hydra:variable "created" ; hydra:property dct:created ; hydra:required true ]
+    ] .
+
 :ObservatieVerzameling a owl:Class ;
     rdfs:label "Observatieverzameling"@nl ;
     rdfs:comment "Een observatieverzameling is een verzameling van waarnemingen of metingen uitgevoerd op een emissie of onttrekking over een bepaalde periode of op een bepaald moment."@nl ;
     rdfs:subClassOf sosa-2023:ObservationCollection ;
+    :gedeeldeContext sosa:hasFeatureOfInterest, sosa:resultTime, sosa:phenomenonTime, sosa:usedProcedure ;
     hydra:search [ a hydra:IriTemplate ;
         hydra:template "https://data.mjv.omgeving.vlaanderen.be/id/observatieverzameling/{uuid}/{issued}/{created}"^^hydra:Rfc6570Template ;
         hydra:mapping [ hydra:variable "uuid" ; hydra:property :localId ; hydra:required true ] ,
