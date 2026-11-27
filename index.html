@@ -1157,7 +1157,7 @@
   <span class="md-ellipsis">
     
   
-    Observaties en emissies
+    Observaties en gebeurtenissen
   
 
     
@@ -1620,7 +1620,7 @@
 </tr>
 <tr>
 <td>Documentatie bijgewerkt</td>
-<td>2026-09-02</td>
+<td>2026-11-24</td>
 </tr>
 <tr>
 <td>Ontologie (<code>riepr.ttl</code>)</td>
@@ -1631,7 +1631,7 @@
 <p>Deze documentatie beschrijft het RIE-IEPR-datamodel vanuit het perspectief van een data-afnemer die de gegevens raadpleegt via Linked Open Data (LOD). De documentatie behandelt <strong>wat er beschikbaar is</strong> en <strong>hoe u het kunt gebruiken</strong>. Er wordt geen informatie gegeven over databanken, transformatieprocessen of applicatielogica.</p>
 <p>Het datamodel kent <strong>twee aparte stromen</strong>, die in deze documentatie consequent uit elkaar gehouden worden. Elke pagina draagt bovenaan een banner die aangeeft tot welke stroom ze behoort.</p>
 <p><strong>Structurele gegevens</strong> omvatten exploitanten, contactpersonen, exploitatielocaties, exploitaties, processen en systemen (installaties, emissiepunten, onttrekkingspunten, uitwisselpunten, meetpunten, filters) met hun eigenschappen. Dit zijn de versioneerbare entiteiten die de organisatie en infrastructuur beschrijven, en de enige die in de applicatie worden ingegeven en beheerd.</p>
-<p><strong>Operationele gegevens</strong> omvatten de gebeurtenissen (emissie, onttrekking, verbruik) die als <code>sosa:FeatureOfInterest</code> dienen, plus observaties, observatieverzamelingen en resultaten, aangestuurd door de operationele codelijsten (<code>operationeel_*</code>, <code>thema_type</code>). Ze worden niet geversioneerd en hangen via drie vaste predicaten aan de structurele stroom.</p>
+<p><strong>Operationele gegevens</strong> worden beschreven met <code>riepr:Gebeurtenis</code>, <code>riepr:Observatie</code>, <code>riepr:ObservatieVerzameling</code>, <code>riepr:Resultaat</code> en <code>riepr:Uitvoerder</code>. Gebeurtenissen zoals emissies of onttrekkingen zijn het onderwerp van observaties; verzamelingen groeperen metingen en hun context. De eigenschappen van een resultaat hangen af van de gegevens die worden verzameld. Operationele codelijsten (<code>operationeel_*</code>, <code>thema_type</code>) bieden de mogelijke rapportagewaarden.</p>
 <div class="admonition warning">
 <p class="admonition-title">Analyse nog lopende</p>
 <p>De analyse van operationele gegevens is nog lopende. De informatie over operationele gegevens kan wijzigen na afronding van de analyse. De structurele stroom is stabiel.</p>
@@ -1656,7 +1656,7 @@
 </ul>
 <p><strong>Operationele gegevens</strong></p>
 <ul>
-<li><a href="observaties/">Observaties en emissies</a> — metingen, gebeurtenissen (emissie, onttrekking) en resultaten</li>
+<li><a href="observaties/">Operationele gegevens</a> — gebeurtenissen, observaties, observatieverzamelingen, resultaten en uitvoerders</li>
 </ul>
 <p><strong>Datavoorbeelden</strong></p>
 <ul>
@@ -1922,7 +1922,7 @@
       
         <div class="md-footer-model">
           Datamodel <strong>v1.0.1</strong>
-          &middot; documentatie bijgewerkt op 2026-09-02
+          &middot; documentatie bijgewerkt op 2026-11-24
           &middot; ontologie 2026-08-26
         </div>
       
